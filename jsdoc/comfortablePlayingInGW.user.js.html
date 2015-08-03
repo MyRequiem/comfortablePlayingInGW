@@ -1,4 +1,32 @@
-// ==UserScript==
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: comfortablePlayingInGW.user.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: comfortablePlayingInGW.user.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// ==UserScript==
 // @name            Comfortable Playing In GW
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     Веселые плюшки для ganjawars.ru
@@ -143,7 +171,7 @@
 
                 if (head) {
                     linkTags = general.doc.querySelectorAll('head>link');
-                    for (i = 0; i < linkTags.length; i++) {
+                    for (i = 0; i &lt; linkTags.length; i++) {
                         if (/icon/.test(linkTags[i].getAttribute('rel'))) {
                             head.removeChild(linkTags[i]);
                         }
@@ -165,7 +193,7 @@
                     src,
                     i;
 
-                for (i = 0; i < imgs.length; i++) {
+                for (i = 0; i &lt; imgs.length; i++) {
                     src = imgs[i].getAttribute('src');
                     if (/\/i\/gon\.gif|\/info\.online\.php\?id=/.test(src)) {
                         imgs[i].setAttribute('src', this.FILL_GREEN);
@@ -230,7 +258,7 @@
                 var settingsButton = general.doc.createElement('a'),
                     target = this.topPanel.parentNode.nextElementSibling;
 
-                settingsButton.innerHTML = '<img src="' + general.imgPath +
+                settingsButton.innerHTML = '&lt;img src="' + general.imgPath +
                     'imgMainSettings.gif" whidth="15" height="15" ' +
                     'title="Настройки" alt="Настройки" />';
                 settingsButton.setAttribute('href', 'http://www.ganjawars.ru/' +
@@ -303,22 +331,22 @@
                         }
 
                         clearTimeout(timeout);
-                        if (xmlHttpRequest.readyState === 4 &&
-                                xmlHttpRequest.status === 200 && onsuccess) {
+                        if (xmlHttpRequest.readyState === 4 &amp;&amp;
+                                xmlHttpRequest.status === 200 &amp;&amp; onsuccess) {
                             onsuccess(xmlHttpRequest);
                         } else {
-                            if (xmlHttpRequest.readyState === 4 &&
-                                    xmlHttpRequest.status !== 200 &&
+                            if (xmlHttpRequest.readyState === 4 &amp;&amp;
+                                    xmlHttpRequest.status !== 200 &amp;&amp;
                                         onfailure) {
                                 onfailure(xmlHttpRequest);
                             }
                         }
                     };
                 } else {
-                    if (xmlHttpRequest.status === 200 && onsuccess) {
+                    if (xmlHttpRequest.status === 200 &amp;&amp; onsuccess) {
                         onsuccess(xmlHttpRequest);
                     } else {
-                        if (xmlHttpRequest.status !== 200 && onfailure) {
+                        if (xmlHttpRequest.status !== 200 &amp;&amp; onfailure) {
                             onfailure(xmlHttpRequest);
                         }
                     }
@@ -336,7 +364,7 @@
              * @type {String}
              */
             this.URLCHECKVERSION = 'http://www.ganjawars.ru/object-messages.' +
-                'php?id=117721&tid=88232514&fid=117721&page_id=last';
+                'php?id=117721&amp;tid=88232514&amp;fid=117721&amp;page_id=last';
 
             /**
              * @method showHideScriptInfo
@@ -347,7 +375,7 @@
 
                 if (info.style.display === 'none') {
                     info.style.display = '';
-                    this.innerHTML = '[&minus;]';
+                    this.innerHTML = '[&amp;minus;]';
                 } else {
                     info.style.display = 'none';
                     this.innerHTML = '[+]';
@@ -368,12 +396,12 @@
 
                 // выкл/вкл элементы управления настройками
                 inp = _this.nextElementSibling.querySelectorAll('input');
-                for (i = 0; i < inp.length; i++) {
+                for (i = 0; i &lt; inp.length; i++) {
                     inp[i].disabled = !_this.checked;
                 }
 
                 inp = _this.nextElementSibling.querySelectorAll('select');
-                for (i = 0; i < inp.length; i++) {
+                for (i = 0; i &lt; inp.length; i++) {
                     inp[i].disabled = !_this.checked;
                 }
             };
@@ -385,18 +413,18 @@
                 var settingsContainer = general.doc.querySelector('tr>td.txt' +
                         '[valign="top"]'),
                     groupStyle = ' style="background-color: #D0EED0; ' +
-                        'text-align: center; color: #990000;"><b>',
+                        'text-align: center; color: #990000;">&lt;b>',
                     spanStyle = ' style="cursor: pointer;">',
                     tdStyle = ' style="background-color: #E0FFE0;">',
                     hiddenDivStyle = ' style="display: none; padding-left: ' +
                         '50px; background-color: #E7E7E7">',
                     info = {
                         'Персонаж': [['Логотип игры', 'На всех страницах ' +
-                            'заменяет логотип игры &nbsp;&nbsp;<img style="' +
+                            'заменяет логотип игры &amp;nbsp;&amp;nbsp;&lt;img style="' +
                             'box-shadow: 2px 3px 3px rgba(122,122,122, 0.5);' +
                             '" src="http://images.ganjawars.ru/i/gon.gif" /> ' +
-                            '&nbsp;&nbsp;на зеленый листик &nbsp;&nbsp;' +
-                            '<img style="box-shadow: 2px 3px 3px ' +
+                            '&amp;nbsp;&amp;nbsp;на зеленый листик &amp;nbsp;&amp;nbsp;' +
+                            '&lt;img style="box-shadow: 2px 3px 3px ' +
                             'rgba(122,122,122,0.5);" src="' + general.imgPath +
                             'notGiveCannabisLeaf/fillGreen.gif" />']]
                     },
@@ -409,42 +437,42 @@
                     chk,
                     i;
 
-                settingsContainer.innerHTML = '<div></div>';
+                settingsContainer.innerHTML = '&lt;div>&lt;/div>';
                 settingsContainer = settingsContainer.firstElementChild;
                 settingsContainer.setAttribute('style',
                         'margin: 10px 0 20px 0');
-                str = '<div style="margin-bottom: 10px;">' +
-                    '<a id="linkNewVerScript" target="_blank" style="color: ' +
+                str = '&lt;div style="margin-bottom: 10px;">' +
+                    '&lt;a id="linkNewVerScript" target="_blank" style="color: ' +
                     '#008000; visibility: hidden;" href="https://' +
                     'raw.githubusercontent.com/MyRequiem/' +
                     'comfortablePlayingInGW/master/_comfortablePlayingInGW.' +
-                    'user.js">Доступна новая версия</a> <span ' +
-                    'id="refreshVer"></span></div><table style="width: ' +
+                    'user.js">Доступна новая версия&lt;/a> &lt;span ' +
+                    'id="refreshVer">&lt;/span>&lt;/div>&lt;table style="width: ' +
                     '100%; box-shadow: 8px 10px 7px rgba(122,122,122,0.5);">';
 
                 for (prop in info) {
                     if (info.hasOwnProperty(prop)) {
-                        str += '<tr><td' + groupStyle + prop + '</b></td></tr>';
+                        str += '&lt;tr>&lt;td' + groupStyle + prop + '&lt;/b>&lt;/td>&lt;/tr>';
 
-                        for (i = 0; i < info[prop].length; i++) {
-                            str += '<tr><td' + tdStyle + '<span' + spanStyle +
-                                '[+]</span> ' + '<input id="chk' + j +
+                        for (i = 0; i &lt; info[prop].length; i++) {
+                            str += '&lt;tr>&lt;td' + tdStyle + '&lt;span' + spanStyle +
+                                '[+]&lt;/span> ' + '&lt;input id="chk' + j +
                                 '" type="checkbox" /> ' + info[prop][i][0] +
-                                '<div' + hiddenDivStyle + info[prop][i][1] +
-                                '</div></td></tr>';
+                                '&lt;div' + hiddenDivStyle + info[prop][i][1] +
+                                '&lt;/div>&lt;/td>&lt;/tr>';
                             j++;
                         }
                     }
                 }
 
-                str += '</table>';
+                str += '&lt;/table>';
                 settingsContainer.innerHTML = str;
 
                 // проверка обновлений
                 query = new AjaxQuery();
                 query.ajaxQuery(this.URLCHECKVERSION, 'GET', null,
                         true, function (xml) {
-                        var v = /version: ([^<]+)<\/td>/.exec(xml.responseText);
+                        var v = /version: ([^&lt;]+)&lt;\/td>/.exec(xml.responseText);
                         if (v) {
                             if (v[1] !== general.version) {
                                 general.$('linkNewVerScript').style.
@@ -460,7 +488,7 @@
                 // значений чекбоксов
                 spans = settingsContainer.querySelectorAll('span[style="' +
                         'cursor: pointer;"]');
-                for (i = 0; i < spans.length; i++) {
+                for (i = 0; i &lt; spans.length; i++) {
                     spans[i].addEventListener('click',
                             this.showHideScriptInfo, false);
                     chk = spans[i].nextElementSibling;
@@ -575,7 +603,7 @@
     }
 
     // везде кроме боев
-    if (/\/\/www.ganjawars.ru\//.test(general.loc) &&
+    if (/\/\/www.ganjawars.ru\//.test(general.loc) &amp;&amp;
             !(/\/b0\//.test(general.loc))) {
 
         try {
@@ -591,3 +619,26 @@
 
 }());
 
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#ajaxQuery">ajaxQuery</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#createRequestObject">createRequestObject</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#getTopPanel">getTopPanel</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setSettingsButton">setSettingsButton</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Mon Aug 03 2015 02:54:17 GMT+0300 (MSK)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
