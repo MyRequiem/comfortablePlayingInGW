@@ -1,0 +1,10 @@
+
+[0] - script version
+# checkboxes
+[1] - initScript
+    [0] - NotGiveCannabisLeaf
+    [1] - AdditionForNavigationBar
+    [2] - AdsFilter
+# scripts data
+[2] - AdditionForNavigationBar
+
