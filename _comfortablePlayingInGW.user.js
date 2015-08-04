@@ -3,13 +3,13 @@
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     Веселые плюшки для ganjawars.ru
 // @id              comfortablePlayingInGW@MyRequiem
-// @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/comfortablePlayingInGW.meta.js
+// @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js
 // @include         http://www.ganjawars.ru/*
 // @include         http://quest.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.0-310715-dev
+// @version         1.00-040815-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -17,7 +17,7 @@
 
 /*jslint
     browser: true, todo: true, passfail: true, devel: true, regexp: true
-    nomen: true, plusplus: true, continue: true
+    nomen: true, plusplus: true, continue: true, vars: true
 */
 
 (function () {
@@ -49,7 +49,17 @@
              */
             this.st = this.root.localStorage;
             /**
-             * @property myId
+             * @property version
+             * @type {String}
+             */
+            this.version = '1.00-040815-dev';
+            /**
+             * @property stString
+             * @type {String}
+             */
+            this.stString = this.version + '@|||@@|||||||||||||||||';
+            /**
+             * @property myID
              * @type {String}
              */
             this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie);
@@ -65,75 +75,171 @@
              */
             this.STORAGENAME = '_comfortablePlayingInGW';
             /**
-             * @property version
-             * @type {String}
-             */
-            this.version = '1.0-310715-dev';
-            /**
              * @property imgPath
              * @type {String}
              */
             this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
                 'comfortablePlayingInGW/master/imgs/';
+            /**
+             * @property viewMode
+             * @type {Boolean}
+             */
+            this.viewMode = /\/warlog\.php/.test(this.loc);
+            /**
+             * @property mainDomain
+             * @type {Boolean}
+             */
+            this.mainDomain = /\/\/www.ganjawars.ru\//.test(this.loc);
+        };
+
+    /**
+     * @lends General.prototype
+     */
+    General.prototype = {
+        /**
+         * @method getRoot
+         * @return  {Object}
+         */
+        getRoot: function () {
+            var rt = typeof unsafeWindow;
+            return rt !== 'undefined' ? unsafeWindow : window;
         },
-        general,
-        initScript,
 
         /**
-         * @class GetSetData
-         * @constructor
+         * @method setNewStorage
          */
-        GetSetData = function () {
-            /**
-             * @method getData
-             * @param   {int}   ind
-             * @return  {Array}
-             */
-            this.getData = function (ind) {
-                return general.st.getItem(general.STORAGENAME).
-                    split('@')[ind].split('|');
-            };
+        setNewStorage: function () {
+            var oldSt = this.st.getItem(this.STORAGENAME);
+            if (!oldSt) {
+                this.st.setItem(this.STORAGENAME, this.stString);
+                return;
+            }
 
-            /**
-             * @method setData
-             * @param   {String|Array}  data
-             * @param   {int}           ind
-             */
-            this.setData = function (data, ind) {
-                var tmp = general.st.getItem(general.STORAGENAME).split('@');
-                tmp[ind] = typeof data !== 'string' ? data.join('|') : data;
-                general.st.setItem(general.STORAGENAME, tmp.join('@'));
-            };
+            // если были старые данные, переносим их в новую storage-строку
+            var newSt = this.stString.split('@');
+            oldSt = oldSt.split('@');
+            var nSt, oSt, i, j;
+            for (i = 1; i < oldSt.length; i++) {
+                nSt = newSt[i].split('|');
+                if (nSt.length === 1) {
+                    newSt[i] = oldSt[i];
+                    continue;
+                }
+
+                oSt = oldSt[i].split('|');
+                for (j = 0; j < oSt.length; j++) {
+                    nSt[j] = oSt[j];
+                }
+
+                newSt[i] = nSt.join('|');
+            }
+
+            this.st.setItem(this.STORAGENAME, newSt.join('@'));
         },
+
+        /**
+         * @method getData
+         * @param   {int}   ind
+         * @return  {Array}
+         */
+        getData: function (ind) {
+            return this.st.getItem(this.STORAGENAME).
+                split('@')[ind].split('|');
+        },
+
+        /**
+         * @method setData
+         * @param   {String|Array}  data
+         * @param   {int}           ind
+         */
+        setData: function (data, ind) {
+            var dt = this.st.getItem(this.STORAGENAME).split('@');
+            dt[ind] = typeof data !== 'string' ? data.join('|') : data;
+            this.st.setItem(this.STORAGENAME, dt.join('@'));
+        },
+
+        /**
+         * @method getInitScript
+         * @return  {Array}
+         */
+        getInitScript: function () {
+            if (this.mainDomain) {
+                return this.getData(1);
+            }
+
+            return [];
+        },
+
+        /**
+         * @method $
+         * @param   {string}    id
+         * @return  {HTMLElement|null}
+         */
+        $: function (id) {
+            return this.doc.querySelector('#' + id);
+        },
+
+        /**
+         * @method checkMainData
+         * @return  {Boolean}
+         */
+        checkMainData: function () {
+            if (!this.st) {
+                alert('Ваш браузер не поддерживает технологию localStorage.\n' +
+                    'MyRequiеm рекомендует вам установить один из\n' +
+                    'ниже перечисленных браузеров или удалите скрипт\n' +
+                    'Comfortable Playing In GW\n\nFireFox 4+\nOpera 11+\n' +
+                    'Chrome 12+');
+
+                return false;
+            }
+
+            if (this.mainDomain) {
+                if (!this.myID || !this.DESIGN_VERSION) {
+                    this.root.console.log('!this.myID || !this.DESIGN_VERSION');
+                    return false;
+                }
+
+                if (!this.st.getItem(this.STORAGENAME) ||
+                        this.getData(0)[0] !== this.version) {
+                    this.setNewStorage();
+                }
+
+                this.myID = this.myID[2];
+                this.DESIGN_VERSION = this.DESIGN_VERSION[2];
+            }
+
+            return true;
+        }
+    };
+
+    var general, initScript;
 
         /**
          * @class NotGiveCannabisLeaf
          * @constructor
          */
-        NotGiveCannabisLeaf = function () {
+    var NotGiveCannabisLeaf = function () {
             /**
              * @method  changeFavicon
              */
             this.changeFavicon = function () {
-                var FAVICON = 'http://gwscripts.ucoz.net/images_for_scripts/' +
-                                'notgivecannabisleaf/favicon.ico',
-                    head = general.doc.querySelector('head'),
-                    linkTags,
-                    link,
-                    i;
+                var head = general.doc.querySelector('head');
 
                 if (head) {
-                    linkTags = general.doc.querySelectorAll('head>link');
+                    var linkTags = head.querySelectorAll('link[rel*="icon"]'),
+                        i;
+
                     for (i = 0; i < linkTags.length; i++) {
-                        if (/icon/.test(linkTags[i].getAttribute('rel'))) {
-                            head.removeChild(linkTags[i]);
-                        }
+                        head.removeChild(linkTags[i]);
                     }
 
-                    link = general.doc.createElement('link');
+                    var link = general.doc.createElement('link');
                     link.setAttribute('type', 'image/x-icon');
                     link.setAttribute('rel', 'shortcut icon');
-                    link.setAttribute('href', FAVICON);
+                    link.setAttribute('href',
+                            'http://gwscripts.ucoz.net/images_for_scripts/' +
+                            'notgivecannabisleaf/favicon.ico');
                     head.appendChild(link);
                 }
             };
@@ -142,9 +248,9 @@
              * @method  changeIcons
              */
             this.changeIcons = function () {
-                var imgPath = general.imgPath + 'notGiveCannabisLeaf/',
-                    FILL_GREEN = imgPath + 'fillGreen.gif',
-                    FILL_GRAY = imgPath + 'fillGray.gif',
+                var imgPath = general.imgPath + 'NotGiveCannabisLeaf/',
+                    imgOn = imgPath + 'on.gif',
+                    imgOff = imgPath + 'off.gif',
                     imgs = general.doc.querySelectorAll('img'),
                     src,
                     i;
@@ -152,9 +258,9 @@
                 for (i = 0; i < imgs.length; i++) {
                     src = imgs[i].getAttribute('src');
                     if (/\/i\/gon\.gif|\/info\.online\.php\?id=/.test(src)) {
-                        imgs[i].setAttribute('src', FILL_GREEN);
+                        imgs[i].setAttribute('src', imgOn);
                     } else if (/\/i\/goff\.gif/.test(src)) {
-                        imgs[i].setAttribute('src', FILL_GRAY);
+                        imgs[i].setAttribute('src', imgOff);
                     }
                 }
             };
@@ -168,16 +274,16 @@
                     this.changeIcons();
                 }
             };
-        },
+        };
 
         /**
          * @class GetTopPanel
          * @constructor
          */
-        GetTopPanel = function () {
+    var GetTopPanel = function () {
             /**
              * @method init
-             * @return  {Object}
+             * @return  {HTMLElement|null}
              */
             this.init = function () {
                 // ищем верхнюю панель "Новости | Об игре | Форум"
@@ -188,13 +294,13 @@
 
                 return general.doc.querySelector('td.txt nobr:first-child');
             };
-        },
+        };
 
         /**
          * @class SetSettingsButton
          * @constructor
          */
-        SetSettingsButton = function () {
+    var SetSettingsButton = function () {
             /**
              * @method init
              */
@@ -216,13 +322,13 @@
                     'news.php?set=1');
                 target.insertBefore(settingsButton, target.firstChild);
             };
-        },
+        };
 
         /**
          * @class AjaxQuery
          * @constructor
          */
-        AjaxQuery = function () {
+    var AjaxQuery = function () {
             /**
              * @method createRequestObject
              * @return  {Object|null}
@@ -245,12 +351,12 @@
 
             /**
              * @method ajaxQuery
-             * @param   {string}        url
-             * @param   {string}        rmethod
-             * @param   {(string|null)} param
-             * @param   {boolean}       async
-             * @param   {function}      onsuccess
-             * @param   {function}      onfailure
+             * @param   {String}        url
+             * @param   {String}        rmethod
+             * @param   {String|null}   param
+             * @param   {Boolean}       async
+             * @param   {Function}      onsuccess
+             * @param   {Function}      onfailure
              */
             this.init = function (url, rmethod, param, async, onsuccess,
                     onfailure) {
@@ -303,13 +409,82 @@
                     }
                 }
             };
-        },
+        };
+
+        /**
+         * @class CheckInputText
+         * @constructor
+         */
+    var CheckInputText = function () {
+            /**
+             * @method init
+             * @param   {Object}  inp
+             * @param   {int}               limit
+             * @return  {Boolean}
+             */
+            this.init = function (inp, limit) {
+                var _inp = inp,
+                    val = +_inp.value,
+                    lim = limit || 0;
+
+                return !(isNaN(val) || val < lim);
+            };
+        };
 
         /**
          * @class ShowMainSettings
          * @constructor
          */
-        ShowMainSettings = function () {
+    var ShowMainSettings = function () {
+            /**
+             * @property infoScripts
+             * @type {Object}
+             */
+            this.infoScripts = {
+                'Персонаж': [
+                    ['Логотип игры', 'На всех страницах заменяет логотип ' +
+                        'игры &nbsp;&nbsp;<img style="box-shadow: 2px 3px ' +
+                        '3px rgba(122,122,122, 0.5);" src="http://images.' +
+                        'ganjawars.ru/i/gon.gif" /> &nbsp;&nbsp;на зеленый ' +
+                        'листик &nbsp;&nbsp;<img style="box-shadow: 2px 3px ' +
+                        '3px rgba(122,122,122,0.5);" src="' + general.imgPath +
+                        'NotGiveCannabisLeaf/on.gif" />', 0],
+                    ['Дополнение для панели навигации',
+                        'Добавляет возможность установить дополнительные ' +
+                        'ссылки в панель навигации.', 1]],
+
+                'Бои': [
+                    ['Дополнение для боев', 'Генератор ходов(только ' +
+                        'подсветка хода), нумерация противников, расширенная ' +
+                        'информация в списке выбора противника, сортировка ' +
+                        'списка, ДЦ, продвинутое расположение бойцов на поле ' +
+                        'боя как в бою, так и в режиме наблюдения за боем, ' +
+                        'полный лог боя в НЕ JS-версии, кнопка "Сказать ход"' +
+                        ', быстрая вставка ника в поле чата. Информация ' +
+                        'вверху страницы боя о набитом HP, вашем здоровье и ' +
+                        'т.д. При щелчке на картинке противника происходит ' +
+                        'его выбор в качестве цели. Кнопка "Обновить" на ' +
+                        'поле боя. В JS-версии боя подсвечивает зеленым ' +
+                        'цветом тех персонажей, которые уже сделали ход. В ' +
+                        'обоих версиях выводит количество персонажей, ' +
+                        'сделавших ход.<br><br><span style="color: #FF0000">' +
+                        'Не ставьте значения менее 3 секунд.</span><br>' +
+                        'Таймаут обновления данных в бою: <input id=' +
+                        '"refreshBattle" type="text" maxlength="3" ' +
+                        'style="width: 30px;" /> сек (0 - настройки игры по ' +
+                        'умолчанию)<br>Таймаут обновления заявки при входе ' +
+                        'в нее: <input id="refreshAppl" type="text" ' +
+                        'maxlength="3" style="width: 30px;" /> сек (0 - ' +
+                        'настройки игры по умолчанию)', 3]],
+
+                'Доска объявлений': [
+                    ['Фильтр поиска аренды/продажи', 'Фильтр онлайн/оффлайн ' +
+                        'и по островам на странице поиска аренды/продажи ' +
+                        'предметов.', 2]]
+
+                // 'Ферма': []
+            };
+
             /**
              * @method showHideScriptInfo
              */
@@ -336,7 +511,7 @@
                     i;
 
                 initScript[ind] = _this.checked ? '1' : '';
-                new GetSetData().setData(initScript, 1);
+                general.setData(initScript, 1);
 
                 // выкл/вкл элементы управления настройками
                 inp = _this.nextElementSibling.querySelectorAll('input');
@@ -365,32 +540,8 @@
                     tdStyle = ' style="background-color: #E0FFE0;">',
                     hiddenDivStyle = ' style="display: none; padding-left: ' +
                         '50px; background-color: #E7E7E7">',
-                    info = {
-                        'Персонаж': [
-                            ['Логотип игры',
-                                'На всех страницах заменяет логотип игры ' +
-                                '&nbsp;&nbsp;<img style="box-shadow: 2px 3px ' +
-                                '3px rgba(122,122,122, 0.5);" src="' +
-                                'http://images.ganjawars.ru/i/gon.gif" /> ' +
-                                '&nbsp;&nbsp;на зеленый листик &nbsp;&nbsp;' +
-                                '<img style="box-shadow: 2px 3px 3px ' +
-                                'rgba(122,122,122,0.5);" src="' +
-                                general.imgPath + 'notGiveCannabisLeaf/' +
-                                'fillGreen.gif" />'],
-                            ['Дополнение для панели навигации',
-                                'Добавляет возможность установить ' +
-                                'дополнительные ссылки в панель навигации.']],
-
-                        //'Бои': [],
-
-                        'Доска объявлений': [
-                            ['Фильтр поиска аренды/продажи',
-                                'Фильтр онлайн/оффлайн и по островам на ' +
-                                'странице поиска аренды/продажи предметов.']]
-
-                        //'Ферма': []
-                    },
-                    j = 0,
+                    refreshBattle,
+                    refreshAppl,
                     query,
                     spans,
                     chkid,
@@ -412,17 +563,19 @@
                     'id="refreshVer"></span></div><table style="width: ' +
                     '100%; box-shadow: 8px 10px 7px rgba(122,122,122,0.5);">';
 
-                for (prop in info) {
-                    if (info.hasOwnProperty(prop)) {
+                for (prop in this.infoScripts) {
+                    if (this.infoScripts.hasOwnProperty(prop)) {
                         str += '<tr><td' + groupStyle + prop + '</b></td></tr>';
 
-                        for (i = 0; i < info[prop].length; i++) {
+                        for (i = 0; i < this.infoScripts[prop].length; i++) {
                             str += '<tr><td' + tdStyle + '<span' + spanStyle +
-                                '[+]</span> ' + '<input id="chk' + j +
-                                '" type="checkbox" /> ' + info[prop][i][0] +
-                                '<div' + hiddenDivStyle + info[prop][i][1] +
+                                '[+]</span> ' + '<input id="chk' +
+                                this.infoScripts[prop][i][2] +
+                                '" type="checkbox" /> ' +
+                                this.infoScripts[prop][i][0] + '<div' +
+                                hiddenDivStyle +
+                                this.infoScripts[prop][i][1] +
                                 '</div></td></tr>';
-                            j++;
                         }
                     }
                 }
@@ -462,50 +615,78 @@
                         chk.click();
                     }
                 }
+
+                // заполнение полей настроек и обработчики
+                // модуля дополнений для боев
+                refreshBattle = general.$('refreshBattle');
+                refreshBattle.value = general.getData(3)[0] || '0';
+                refreshBattle.addEventListener('input', function () {
+                    var _this = this,
+                        val = _this.value,
+                        data;
+
+                    if (!new CheckInputText().init(_this, 3)) {
+                        val = '';
+                    }
+
+                    data = general.getData(3);
+                    data[0] = val;
+                    general.setData(data, 3);
+                }, false);
+
+                refreshAppl = general.$('refreshAppl');
+                refreshAppl.value = general.getData(3)[1] || '0';
+                refreshAppl.addEventListener('input', function () {
+                    var _this = this,
+                        val = _this.value,
+                        data;
+
+                    if (!new CheckInputText().init(_this, 3)) {
+                        val = '';
+                    }
+
+                    data = general.getData(3);
+                    data[1] = val;
+                    general.setData(data, 3);
+                }, false);
             };
-        },
+        };
 
         /**
          * @class GetPos
          * @constructor
          */
-        GetPos = function () {
+    var GetPos = function () {
             /**
              * @method init
-             * @param   {Object}    obj
+             * @param   {HTMLElement}   obj
              * @return  {Object}
              */
             this.init = function (obj) {
                 var x = 0,
                     y = 0,
-                    tmp = obj;
+                    _obj = obj;
 
-                while (tmp) {
-                    x += tmp.offsetLeft;
-                    y += tmp.offsetTop;
-                    tmp = tmp.offsetParent;
+                while (_obj) {
+                    x += _obj.offsetLeft;
+                    y += _obj.offsetTop;
+                    _obj = _obj.offsetParent;
                 }
 
                 return {x: x, y: y};
             };
-        },
+        };
 
         /**
          * @class AdditionForNavigationBar
          * @constructor
          */
-        AdditionForNavigationBar = function () {
-            /**
-             * @property getSetData
-             * @type {Object}
-             */
-            this.getSetData = new GetSetData();
-
+    var AdditionForNavigationBar = function () {
             /**
              * @method addLink
              * @param   {HTMLLinkElement}   link
-             * @param   {Object}            panel
-             * @param   {Object}            div_main
+             * @param   {HTMLElement}       panel
+             * @param   {HTMLElement}       div_main
              * @param   {Boolean}           mode
              */
             this.addLink = function (link, panel, div_main, mode) {
@@ -534,8 +715,7 @@
                         var _this = this,
                             name = _this.previousElementSibling.innerHTML,
                             a_panel = panel.querySelectorAll('a'),
-                            getSetData = new GetSetData(),
-                            data = JSON.parse(getSetData.getData(2)[0]),
+                            data = JSON.parse(general.getData(2)[0]),
                             temp = {},
                             n,
                             i;
@@ -563,7 +743,7 @@
                             }
                         }
 
-                        getSetData.setData(JSON.stringify(temp), 2);
+                        general.setData(JSON.stringify(temp), 2);
                     }, false);
                 }
             };
@@ -597,10 +777,11 @@
              * @method init
              */
             this.init = function () {
-                var data = this.getSetData.getData(2)[0],
+                var data = general.getData(2)[0],
                     add_link = general.doc.createElement('span'),
                     div_add = general.doc.createElement('div'),
                     div_main = general.doc.createElement('div'),
+                    _this = this,
                     panel,
                     lnk,
                     pos,
@@ -608,7 +789,7 @@
 
                 if (!data) {
                     data = '{}';
-                    this.getSetData.setData(data, 2);
+                    general.setData(data, 2);
                 }
 
                 data = JSON.parse(data);
@@ -656,10 +837,10 @@
                 // добавляем ссылки из хранилища в панель и в div
                 for (n in data) {
                     if (data.hasOwnProperty(n)) {
-                        lnk = this.createLink(n, data[n], 7);
-                        this.addLink(lnk, panel, div_main, false);
-                        lnk = this.createLink(n, data[n], 9);
-                        this.addLink(lnk, panel, div_main, true);
+                        lnk = _this.createLink(n, data[n], 7);
+                        _this.addLink(lnk, panel, div_main, false);
+                        lnk = _this.createLink(n, data[n], 9);
+                        _this.addLink(lnk, panel, div_main, true);
                     }
                 }
 
@@ -667,14 +848,14 @@
                 general.$('hide_nav_div').addEventListener('click',
                     function () {
                         div_main.style.display = 'none';
-                        new AdditionForNavigationBar().clearFields();
+                        _this.clearFields();
                     }, false);
 
                 // обработчик открытия/закрытия div'а
                 add_link.addEventListener('click', function () {
                     div_main.style.display = div_main.style.display ? '' :
                             'none';
-                    new AdditionForNavigationBar().clearFields();
+                    _this.clearFields();
                 }, false);
 
                 // обработчик кнопы добавления ссылки
@@ -682,11 +863,9 @@
                     var val1 = general.$('lname').value,
                         val2 = general.$('lhref').value,
                         val3 = general.$('lstyle').value,
-                        _this = new AdditionForNavigationBar(),
-                        getSetData = new GetSetData(),
                         datast,
-                        link,
                         a_pan,
+                        link,
                         i;
 
                     if (!val1 || !val2) {
@@ -709,27 +888,26 @@
                     link = _this.createLink(val1, [val2, val3], 9);
                     // добавляем ссылку в div
                     _this.addLink(link, panel, div_main, true);
-
-                    // добавляем ссылку в хранилище
-                    datast = JSON.parse(getSetData.getData(2)[0]);
+                    // добавляем данные в хранилище
+                    datast = JSON.parse(general.getData(2)[0]);
                     datast[val1] = [val2, val3];
-                    getSetData.setData(JSON.stringify(datast), 2);
+                    general.setData(JSON.stringify(datast), 2);
 
                     _this.clearFields();
                 }, false);
             };
-        },
+        };
 
         /**
          * @class AdsFilter
          * @constructor
          */
-        AdsFilter = function () {
+    var AdsFilter = function () {
             /**
              * @method setButton
-             * @param   {String}    id
-             * @param   {String}    value
-             * @param   {Object}    target
+             * @param   {String}        id
+             * @param   {String}        value
+             * @param   {HTMLElement}   target
              */
             this.setButton = function (id, value, target) {
                 var but = general.doc.createElement('span');
@@ -793,6 +971,7 @@
             this.init = function () {
                 var li = general.doc.querySelector('li'),
                     span = general.doc.createElement('span'),
+                    _this = this,
                     lines;
 
                 if (!li) {
@@ -817,19 +996,19 @@
                 }
 
                 general.$('reset1').addEventListener('click', function () {
-                    new AdsFilter().setFilter(lines, 0, null);
+                    _this.setFilter(lines, 0, null);
                 }, false);
 
                 general.$('isl_z').addEventListener('click', function () {
-                    new AdsFilter().setFilter(lines, 1, new RegExp('Z'));
+                    _this.setFilter(lines, 1, new RegExp('Z'));
                 }, false);
 
                 general.$('isl_g').addEventListener('click', function () {
-                    new AdsFilter().setFilter(lines, 1, new RegExp('G'));
+                    _this.setFilter(lines, 1, new RegExp('G'));
                 }, false);
 
                 general.$('online').addEventListener('click', function () {
-                    new AdsFilter().setFilter(lines, 2, null);
+                    _this.setFilter(lines, 2, null);
                 }, false);
 
                 /**
@@ -841,81 +1020,221 @@
             };
         };
 
-    /**
-     * @lends General.prototype
-     */
-    General.prototype = {
         /**
-         * @method getRoot
-         * @return  {Object}
+         * @class AdvBattleAll
+         * @constructor
          */
-        getRoot: function () {
-            var rt = typeof unsafeWindow;
-            return rt !== 'undefined' ? unsafeWindow : window;
-        },
+    var AdvBattleAll = function () {
+            /**
+             * @property myPers
+             * @type {Object|null}
+             */
+            this.myPers = null;
+            /**
+             * @property leftPers
+             * @type {Array|null}
+             */
+            this.leftPers = null;
+            /**
+             * @property rightPers
+             * @type {Array|null}
+             */
+            this.rightPers = null;
+            /**
+             * @property td_info
+             * @type {HTMLTableCellElement|null}
+             */
+            this.td_info = null;
+            /**
+             * @property allFighters
+             * @type {Array}
+             */
+            this.allFighters = [];
+            /**
+             * @property inp_text
+             * @type {HTMLInputElement}
+             */
+            this.inp_text = null;
+            /**
+             * @property enemy
+             * @type {Object|null}
+             */
+            this.enemy = null;
 
-        /**
-         * @method setNewStorage
-         */
-        setNewStorage: function () {
-            this.st.setItem(this.STORAGENAME, this.version + '@||@');
-        },
+            /**
+             * @method getPers возвращает массив бойцов одной из сторон
+             * @param   {HTMLDivElement}    obj
+             * @return  {Array}
+             */
+            this.getPers = function (obj) {
+                var mass = [],
+                    a_pers,
+                    b,
+                    i;
 
-        /**
-         * @method getInitScript
-         * @return  {Array}
-         */
-        getInitScript: function () {
-            if (/\/\/www.ganjawars.ru\//.test(this.loc)) {
-                return new GetSetData().getData(1);
-            }
-
-            return [];
-        },
-
-        /**
-         * @method $
-         * @param   {string}    id
-         * @return  {object}
-         */
-        $: function (id) {
-            return this.doc.querySelector('#' + id);
-        },
-
-        /**
-         * @method checkMainData
-         * @return  {Boolean}
-         */
-        checkMainData: function () {
-            if (!this.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.\n' +
-                    'MyRequiеm рекомендует вам установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'Comfortable Playing In GW\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
-
-                return false;
-            }
-
-            if (/\/\/www.ganjawars.ru\//.test(this.loc)) {
-                if (!this.myID || !this.DESIGN_VERSION) {
-                    general.root.console.log('!this.myID || ' +
-                            '!this.DESIGN_VERSION');
-                    return false;
+                // если это поки (<b>Seel [Superb]</b>)
+                if (/<b>[^<\[]+\[[^<\[]+\]<\/b>/.test(obj.innerHTML)) {
+                    b = obj.querySelectorAll('b');
+                    for (i = 0; i < b.length; i++) {
+                        if (/[^<\[]+\[[^<\[]+\]/.test(b[i].innerHTML)) {
+                            mass.push(b[i]);
+                        }
+                    }
+                } else {
+                    a_pers = obj.querySelectorAll('a');
+                    for (i = 0; i < a_pers.length; i++) {
+                        if (/info\.php\?id=\d+/.test(a_pers[i].href)) {
+                            mass.push(a_pers[i]);
+                        }
+                    }
                 }
 
-                if (!this.st.getItem(this.STORAGENAME) || new GetSetData().
-                        getData(0)[0] !== this.version) {
-                    this.setNewStorage();
+                return mass;
+            };
+
+            /**
+             * @method setMyinfo устанавливает информацию о набитом HP и т.д.
+             * @param   {int}   count   количество персонажей, сделавших ход
+             */
+            this.setMyinfo = function (count) {
+                // если здоровье меньше максимального, то меняем цвет
+                var color = this.myPers.hp[1] === this.myPers.hp[2] ?
+                            '#008000' : '#b84906',
+                    str = '<span style="font-weight: bold; font-style: ' +
+                        'italic; color: #0000FF;">HP:</span> <span style=' +
+                        '"color: ' + color + ';">' + this.myPers.hp[1] +
+                        '</span>/<span style="color: #008000;font-weight: ' +
+                        'bold;">' + this.myPers.hp[2] + '</span><span style=' +
+                        '"margin-left: 20px;">урон: ' + this.myPers.damage[1] +
+                        '(<span style="font-weight: bold; color: #FF0000;">' +
+                        this.myPers.damage[2] + '</span>)</span><span style=' +
+                        '"margin-left: 20px;">видимость: <span style=' +
+                        '"font-weight: bold;">' + this.myPers.visib +
+                        '</span></span><span style="margin-left: 20px; ' +
+                        'font-weight: bold;"><span style="color: #FF0000;">' +
+                        this.leftPers.length + '</span> / <span style=' +
+                        '"color: #0000FF;">' + this.rightPers.length +
+                        '</span></span>';
+
+                if (count) {
+                    str += '<span style="margin-left: 20px;">Сделали ход: ' +
+                        count + '/' + (this.leftPers.length +
+                            this.rightPers.length) + '</span>';
                 }
 
-                this.myID = this.myID[2];
-                this.DESIGN_VERSION = this.DESIGN_VERSION[2];
-            }
+                this.td_info.innerHTML = str;
+            };
 
-            return true;
-        }
-    };
+            /**
+             * @method getDataFighters заносит данные о персонаже в массив
+             * @param   {HTMLLinkElement}   linkPers    ссылка на песонажа
+             */
+            this.getDataFighters  = function (linkPers) {
+                var a = linkPers.parentNode.querySelectorAll('a'),
+                    info = linkPers.parentNode.textContent,
+                    obj = {},
+                    // названия вооружения и амуниции
+                    li = [],
+                    i;
+
+                for (i = 0; i < a.length; i++) {
+                    if (/\/item\.php\?item_id=/.test(a[i].href)) {
+                        li.push(a[i].innerHTML);
+                    }
+                }
+
+                // если пок, то будет не ссылка на перса, а <b> с именем пока
+                obj.name = a.firstElementChild ? a.firstElementChild.innerHTML.
+                    replace(/&amp;/, '&') : a.innerHTML;
+                obj.lvl = a.nextSibling.textContent;
+                obj.hp = /HP: \d+\/\d+/.test(info) ?
+                        (/HP: (\d+)\/(\d+)/.exec(info)) : '';
+                obj.dist = /расстояние: \d+/.test(info) ?
+                        (/расстояние: (\d+)/.exec(info)[1]) : '';
+                obj.visib = /видимость: \d+%/.test(info) ?
+                        (/видимость: (\d+%)/.exec(info)[1]) : '';
+                obj.power = /мощность: \d+/.test(info) ?
+                        (/мощность: (\d+)/.exec(info)[1]) : '';
+
+                obj.weapon = '';    // оружие (для списка выбора врагов)
+                obj.allWeapon = ''; // оружие и амуниция
+                if (li.length) {
+                    obj.weapon = li[0];
+                    for (i = 0; i < li.length; i++) {
+                        obj.allWeapon += '<li>' + li[i];
+                    }
+                }
+
+                this.allFighters.push(obj);
+
+                // в бою и это мой перс, то запоминаем его
+                if (!general.viewMode &&
+                        linkPers.href.indexOf(general.myID) !== -1) {
+                    this.myPers = obj;
+                    this.myPers.damage = /урон: (\d+) \((\d+)\)/.exec(info);
+                }
+            };
+
+            /**
+             * @method setNameInChat
+             * @param   {String}    nik
+             */
+            this.setNameInChat = function (nik) {
+                return function () {
+                    var _this = this;
+                    _this.inp_text.value += nik + ': ';
+                    _this.inp_text.focus();
+                };
+            };
+
+            /**
+             * @method setEnvelope расставляет конвертики и номера бойцов
+             * @param   {Boolean}   side
+             */
+            this.setEnvelope = function (side) {
+                var a_pers = !side ? this.leftPers : this.rightPers,
+                    _this = this,
+                    before,
+                    number,
+                    span,
+                    pok,
+                    name,
+                    env,
+                    i;
+
+                for (i = 0; i < a_pers.length; i++) {
+                    // если это пок, то будет не ссылка, а <b> с именем пока
+                    pok = a_pers[i].nodeName === 'B';
+                    name = pok ? a_pers[i].innerHTML :
+                            a_pers[i].firstElementChild.innerHTML;
+                    this.getDataFighters(a_pers[i]);
+                    // конвертики и номера покам не нужны
+                    if (pok) {
+                        continue;
+                    }
+
+                    number = '';
+                    if (this.enemy) {
+                        number = general.viewMode ? '' :
+                                (this.enemy[name] ?
+                                        (' <span style="font-weight: bold;">' +
+                                        this.enemy[name] + '.</span> ') : '');
+                    }
+
+                    env = ' <img src="' + general.imgPath + 'advBattleAll/' +
+                        'envelope.gif" style="width: 15px; cursor: pointer;" ' +
+                        'alt="Написать"> ';
+                    span = general.doc.createElement('span');
+                    span.innerHTML = !side ? number + env : env + number;
+                    before = !side ? a_pers[i].nextElementSibling : a_pers[i];
+                    a_pers[i].parentNode.insertBefore(span, before);
+
+                    span.querySelector('img').addEventListener('click',
+                            _this.setNameInChat(name), false);
+                }
+            };
+        };
+
 
     general = new General();
     if (!general.checkMainData()) {
@@ -929,7 +1248,6 @@
     }
 
     initScript = general.getInitScript();
-
     // везде
     if (initScript[0]) {
         try {
@@ -976,6 +1294,18 @@
                 } catch (e) {
                     console.log(e);
                 }
+            }
+        }
+    }
+
+    // бои
+    if (/(\/b0\/|\/wargroup\.php|\/warlist\.php|\/warlog\.php)/.
+            test(general.loc)) {
+        if (initScript[3]) {
+            try {
+                new AdvBattleAll().init();
+            } catch (e) {
+                console.log(e);
             }
         }
     }
