@@ -305,22 +305,18 @@
              * @method init
              */
             this.init = function () {
-                var topPanel = new GetTopPanel().init(),
-                    settingsButton,
-                    target;
+                var topPanel = new GetTopPanel().init();
 
-                if (!topPanel) {
-                    return;
+                if (topPanel) {
+                    var settingsButton = general.doc.createElement('a');
+                    var target = topPanel.parentNode.nextElementSibling;
+                    settingsButton.innerHTML = '<img src="' + general.imgPath +
+                        'NotGiveCannabisLeaf/on.gif" whidth="15" height="15" ' +
+                        'title="Настройки" alt="Настройки" />';
+                    settingsButton.setAttribute('href',
+                            'http://www.ganjawars.ru/news.php?set=1');
+                    target.insertBefore(settingsButton, target.firstChild);
                 }
-
-                settingsButton = general.doc.createElement('a');
-                target = topPanel.parentNode.nextElementSibling;
-                settingsButton.innerHTML = '<img src="' + general.imgPath +
-                    'imgMainSettings.gif" whidth="15" height="15" ' +
-                    'title="Настройки" alt="Настройки" />';
-                settingsButton.setAttribute('href', 'http://www.ganjawars.ru/' +
-                    'news.php?set=1');
-                target.insertBefore(settingsButton, target.firstChild);
             };
         };
 
@@ -360,8 +356,7 @@
              */
             this.init = function (url, rmethod, param, async, onsuccess,
                     onfailure) {
-                var xmlHttpRequest = this.createRequestObject(),
-                    timeout;
+                var xmlHttpRequest = this.createRequestObject();
 
                 if (!xmlHttpRequest) {
                     general.root.console.log('Error create xmlHttpRequest !!!');
@@ -378,7 +373,7 @@
                 xmlHttpRequest.send(param);
 
                 if (async) {
-                    timeout = general.root.setTimeout(function () {
+                    var timeout = general.root.setTimeout(function () {
                         xmlHttpRequest.abort();
                     }, 10000);
 
@@ -418,16 +413,16 @@
     var CheckInputText = function () {
             /**
              * @method init
-             * @param   {Object}  inp
-             * @param   {int}               limit
+             * @param   {Object}    inp
+             * @param   {int}       limit
              * @return  {Boolean}
              */
             this.init = function (inp, limit) {
                 var _inp = inp,
-                    val = +_inp.value,
+                    val = _inp.value,
                     lim = limit || 0;
 
-                return !(isNaN(val) || val < lim);
+                return !(!val || isNaN(+val) || +val < lim);
             };
         };
 
@@ -471,18 +466,21 @@
                         'Не ставьте значения менее 3 секунд.</span><br>' +
                         'Таймаут обновления данных в бою: <input id=' +
                         '"refreshBattle" type="text" maxlength="3" ' +
-                        'style="width: 30px;" /> сек (0 - настройки игры по ' +
-                        'умолчанию)<br>Таймаут обновления заявки при входе ' +
-                        'в нее: <input id="refreshAppl" type="text" ' +
-                        'maxlength="3" style="width: 30px;" /> сек (0 - ' +
-                        'настройки игры по умолчанию)', 3]],
+                        'style="width: 30px;" value="' +
+                        (general.getData(3)[0] || '0') + '" disabled /> ' +
+                        'сек (0 - настройки игры по умолчанию)<br>Таймаут ' +
+                        'обновления заявки при входе в нее: <input id="' +
+                        'refreshAppl" type="text" maxlength="3" style=' +
+                        '"width: 30px;" value="' +
+                        (general.getData(3)[1] || '0') + '" disabled /> ' +
+                        'сек (0 - настройки игры по умолчанию)', 3]],
 
                 'Доска объявлений': [
                     ['Фильтр поиска аренды/продажи', 'Фильтр онлайн/оффлайн ' +
                         'и по островам на странице поиска аренды/продажи ' +
-                        'предметов.', 2]]
+                        'предметов.', 2]],
 
-                // 'Ферма': []
+                'Ферма': []
             };
 
             /**
@@ -492,12 +490,12 @@
                 var _this = this,
                     info = _this.parentNode.lastElementChild;
 
-                if (info.style.display === 'none') {
+                if (info.style.display) {
                     info.style.display = '';
-                    this.innerHTML = '[&minus;]';
+                    _this.innerHTML = '[&minus;]';
                 } else {
                     info.style.display = 'none';
-                    this.innerHTML = '[+]';
+                    _this.innerHTML = '[+]';
                 }
             };
 
@@ -507,62 +505,79 @@
             this.onOffScript = function () {
                 var _this = this,
                     ind = /chk(\d+)/.exec(_this.id)[1],
-                    inp,
+                    hiddenDiv = _this.nextElementSibling,
+                    inp = hiddenDiv.querySelectorAll('input'),
+                    sel = hiddenDiv.querySelectorAll('select'),
                     i;
 
                 initScript[ind] = _this.checked ? '1' : '';
                 general.setData(initScript, 1);
 
                 // выкл/вкл элементы управления настройками
-                inp = _this.nextElementSibling.querySelectorAll('input');
                 for (i = 0; i < inp.length; i++) {
                     inp[i].disabled = !_this.checked;
                 }
 
-                inp = _this.nextElementSibling.querySelectorAll('select');
-                for (i = 0; i < inp.length; i++) {
-                    inp[i].disabled = !_this.checked;
+                for (i = 0; i < sel.length; i++) {
+                    sel[i].disabled = !_this.checked;
                 }
+            };
+
+            /**
+             * @method checkScriptUpdate
+             */
+            this.checkScriptUpdate = function () {
+                var url = 'http://www.ganjawars.ru/object-messages.php?' +
+                    'id=117721&tid=88232514&fid=117721&page_id=last';
+                new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                    var v = /version: ([^<]+)<\/td>/.exec(xml.responseText);
+                    if (v) {
+                        if (v[1] !== general.version) {
+                            general.$('linkNewVerScript').style.
+                                visibility = 'visible';
+                            general.$('refreshVer').innerHTML = '(' +
+                                v[1] + ')';
+                        }
+                    }
+                }, null);
+            };
+
+            /**
+             * @method setSettingsForAdvBattleAll
+             */
+            this.setSettingsForAdvBattleAll = function () {
+                var _this = this,
+                    ind = _this.id === 'refreshBattle' ? 0 : 1,
+                    data = general.getData(3);
+
+                data[ind] = new CheckInputText().init(_this, 3) ?
+                        _this.value : '';
+                general.setData(data, 3);
             };
 
             /**
              * @method init
              */
             this.init = function () {
-                var URLCHECKVERSION = 'http://www.ganjawars.ru/' +
-                        'object-messages.php?id=117721&tid=88232514&' +
-                        'fid=117721&page_id=last',
-                    settingsContainer = general.doc.querySelector('tr>td.txt' +
-                        '[valign="top"]'),
+                var str = '<div style="margin-bottom: 10px;"><a id="' +
+                        'linkNewVerScript" target="_blank" style="color: ' +
+                        '#008000; visibility: hidden;" href="https://raw.' +
+                        'githubusercontent.com/MyRequiem/' +
+                        'comfortablePlayingInGW/master/' +
+                        '_comfortablePlayingInGW.user.js">Доступна новая ' +
+                        'версия</a> <span id="refreshVer"></span></div>' +
+                        '<table style="width: 100%; box-shadow: 8px 10px ' +
+                        '7px rgba(122,122,122,0.5);">',
                     groupStyle = ' style="background-color: #D0EED0; ' +
                         'text-align: center; color: #990000;"><b>',
                     spanStyle = ' style="cursor: pointer;">',
                     tdStyle = ' style="background-color: #E0FFE0;">',
                     hiddenDivStyle = ' style="display: none; padding-left: ' +
                         '50px; background-color: #E7E7E7">',
-                    refreshBattle,
-                    refreshAppl,
-                    query,
-                    spans,
-                    chkid,
                     prop,
-                    str,
-                    chk,
                     i;
 
-                settingsContainer.innerHTML = '<div></div>';
-                settingsContainer = settingsContainer.firstElementChild;
-                settingsContainer.setAttribute('style',
-                        'margin: 10px 0 20px 0');
-                str = '<div style="margin-bottom: 10px;">' +
-                    '<a id="linkNewVerScript" target="_blank" style="color: ' +
-                    '#008000; visibility: hidden;" href="https://' +
-                    'raw.githubusercontent.com/MyRequiem/' +
-                    'comfortablePlayingInGW/master/_comfortablePlayingInGW.' +
-                    'user.js">Доступна новая версия</a> <span ' +
-                    'id="refreshVer"></span></div><table style="width: ' +
-                    '100%; box-shadow: 8px 10px 7px rgba(122,122,122,0.5);">';
-
+                // формирование таблицы настроек
                 for (prop in this.infoScripts) {
                     if (this.infoScripts.hasOwnProperty(prop)) {
                         str += '<tr><td' + groupStyle + prop + '</b></td></tr>';
@@ -581,27 +596,24 @@
                 }
 
                 str += '</table>';
+                var settingsContainer = general.doc.querySelector('tr>td.txt' +
+                        '[valign="top"]');
+                settingsContainer.innerHTML = '<div></div>';
+                settingsContainer = settingsContainer.firstElementChild;
+                settingsContainer.setAttribute('style',
+                        'margin: 10px 0 20px 0');
                 settingsContainer.innerHTML = str;
 
                 // проверка обновлений
-                query = new AjaxQuery();
-                query.init(URLCHECKVERSION, 'GET', null, true, function (xml) {
-                    var v = /version: ([^<]+)<\/td>/.exec(xml.responseText);
-                    if (v) {
-                        if (v[1] !== general.version) {
-                            general.$('linkNewVerScript').style.
-                                visibility = 'visible';
-                            general.$('refreshVer').innerHTML = '(' +
-                                v[1] + ')';
-                        }
-                    }
-                }, null);
+                this.checkScriptUpdate();
 
-                // обрабочики открытия/закрытия скрытых контейнеров
-                // описания скрипта, обработчики чекбоксов и установка
-                // значений чекбоксов
-                spans = settingsContainer.querySelectorAll('span[style="' +
-                        'cursor: pointer;"]');
+                // обрабочики открытия/закрытия скрытых контейнеров описания
+                // скрипта, обработчики чекбоксов и установка значений чекбоксов
+                var spans = settingsContainer.
+                        querySelectorAll('span[style="cursor: pointer;"]'),
+                    chkid,
+                    chk;
+
                 for (i = 0; i < spans.length; i++) {
                     spans[i].addEventListener('click',
                             this.showHideScriptInfo, false);
@@ -610,45 +622,16 @@
                     chkid = +(/chk(\d+)/.exec(chk.getAttribute('id')))[1];
                     if (initScript[chkid]) {
                         chk.click();
-                    } else {
-                        chk.click();
-                        chk.click();
                     }
                 }
 
-                // заполнение полей настроек и обработчики
-                // модуля дополнений для боев
-                refreshBattle = general.$('refreshBattle');
-                refreshBattle.value = general.getData(3)[0] || '0';
-                refreshBattle.addEventListener('input', function () {
-                    var _this = this,
-                        val = _this.value,
-                        data;
-
-                    if (!new CheckInputText().init(_this, 3)) {
-                        val = '';
-                    }
-
-                    data = general.getData(3);
-                    data[0] = val;
-                    general.setData(data, 3);
-                }, false);
-
-                refreshAppl = general.$('refreshAppl');
-                refreshAppl.value = general.getData(3)[1] || '0';
-                refreshAppl.addEventListener('input', function () {
-                    var _this = this,
-                        val = _this.value,
-                        data;
-
-                    if (!new CheckInputText().init(_this, 3)) {
-                        val = '';
-                    }
-
-                    data = general.getData(3);
-                    data[1] = val;
-                    general.setData(data, 3);
-                }, false);
+                // обработчики текстовых полей модуля дополнений для боев
+                general.$('refreshBattle').
+                    addEventListener('input',
+                            this.setSettingsForAdvBattleAll, false);
+                general.$('refreshAppl').
+                    addEventListener('input',
+                            this.setSettingsForAdvBattleAll, false);
             };
         };
 
@@ -663,9 +646,9 @@
              * @return  {Object}
              */
             this.init = function (obj) {
-                var x = 0,
-                    y = 0,
-                    _obj = obj;
+                var _obj = obj,
+                    x = 0,
+                    y = 0;
 
                 while (_obj) {
                     x += _obj.offsetLeft;
