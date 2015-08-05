@@ -2,15 +2,23 @@
 # The structure localStorage
 
 [0] - script version
+
 # checkboxes initScript
 [1] - initScript
     [0]  - NotGiveCannabisLeaf
     [1]  - AdditionForNavigationBar
     [2]  - AdsFilter
     [3]  - AdvBattleAll
+
 # scripts data
 [2]  - AdditionForNavigationBar
-[3]  - AdvBattleAll
+    [0] - JSON.stringify({"linkName": ["href", "style"], ...})
+
+[3]  - AdsFilter
+    [0] - остров (нет,Z,G: '', 1, 2)
+    [1] - фильтр по онлайну
+
+[4]  - AdvBattleAll
     # настройки
     [0]  - таймаут обновления данных в бою
     [1]  - таймаут обновления страницы, когда уже висим в заявке

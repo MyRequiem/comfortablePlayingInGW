@@ -9,7 +9,7 @@
 // @include         http://quest.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.00-040815-dev
+// @version         1.00-050815-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -49,15 +49,20 @@
              */
             this.st = this.root.localStorage;
             /**
+             * @property cons
+             * @type {Object}
+             */
+            this.cons = this.root.console;
+            /**
              * @property version
              * @type {String}
              */
-            this.version = '1.00-040815-dev';
+            this.version = '1.00-050815-dev';
             /**
              * @property stString
              * @type {String}
              */
-            this.stString = this.version + '@|||@@|||||||||||||||||';
+            this.stString = this.version + '@|||@@|@|||||||||||||||||';
             /**
              * @property myID
              * @type {String}
@@ -196,7 +201,7 @@
 
             if (this.mainDomain) {
                 if (!this.myID || !this.DESIGN_VERSION) {
-                    this.root.console.log('!this.myID || !this.DESIGN_VERSION');
+                    this.cons.log('!this.myID || !this.DESIGN_VERSION');
                     return false;
                 }
 
@@ -362,7 +367,7 @@
                 var xmlHttpRequest = this.createRequestObject();
 
                 if (!xmlHttpRequest) {
-                    general.root.console.log('Error create xmlHttpRequest !!!');
+                    general.cons.log('Error create xmlHttpRequest !!!');
                     return;
                 }
 
@@ -890,57 +895,100 @@
          */
     var AdsFilter = function () {
             /**
+             * @property spanContainer
+             * @type {HTMLElement|null}
+             */
+            this.spanContainer = null;
+            /**
+             * @property stl
+             * @type {String}
+             */
+            this.stl = 'cursor: pointer; margin-right: 3px; ';
+            /**
+             * @property styleNormal
+             * @type {String}
+             */
+            this.styleNormal = this.stl + 'color: #808080';
+            /**
+             * @property styleBold
+             * @type {String}
+             */
+            this.styleBold =  this.stl + 'color: #990000; font-weight: bold;';
+
+            /**
              * @method setButton
              * @param   {String}        id
              * @param   {String}        value
-             * @param   {HTMLElement}   target
              */
-            this.setButton = function (id, value, target) {
-                var but = general.doc.createElement('span');
-                but.setAttribute('style', 'cursor: pointer; color: #808080; ' +
-                        'margin-right: 3px;');
-                but.id = id;
-                but.innerHTML = value;
-                target.appendChild(but);
+            this.setButton = function (id, value) {
+                var button = general.doc.createElement('span');
+                button.setAttribute('style', this.styleNormal);
+                button.id = id;
+                button.innerHTML = value;
+                this.spanContainer.appendChild(button);
             };
 
             /**
              * @method setFilter
-             * @param   {Array}     lines
-             * @param   {int}       type
-             * @param   {Object}    reg
+             * @param   {NodeList}  trs
+             * @param   {String}    type
+             * @param   {String}    island
              */
-            this.setFilter = function (lines, type, reg) {
-                var i;
+            this.setFilter = function (trs, type, island) {
+                var dataSt = general.getData(3),
+                    i;
 
                 switch (type) {
-                case 0: // показать все
-                    for (i = 3; i < lines.length; i++) {
-                        lines[i].style.display = '';
+                case 'reset':
+                    if (!island) {
+                        general.setData('|', 3);
+                        general.$('islZ').
+                            setAttribute('style', this.styleNormal);
+                        general.$('islG').
+                            setAttribute('style', this.styleNormal);
+                        general.$('online').
+                            setAttribute('style', this.styleNormal);
+                    }
+
+                    for (i = 3; i < trs.length; i++) {
+                        trs[i].style.display = '';
                     }
 
                     break;
 
-                case 1: // острова
-                    this.setFilter(lines, 0, null);    // сброс всех фильтров
-                    for (i = 3; i < lines.length; i++) {
-                        if (!reg.test(lines[i].querySelector('td:nth-child(4)').
-                                    innerHTML)) {
-                            lines[i].style.display = 'none';
+                case 'island':
+                    this.setFilter(trs, 'reset', 'flag');
+                    dataSt[0] = island === 'Z' ? '1' : '2';
+                    general.setData(dataSt, 3);
+                    general.$('isl' + island).
+                        setAttribute('style', this.styleBold);
+                    general.$('isl' + (island === 'G' ? 'Z' : 'G')).
+                        setAttribute('style', this.styleNormal);
+
+                    for (i = 3; i < trs.length; i++) {
+                        if (trs[i].querySelector('td:nth-child(4)').
+                                    innerHTML.indexOf(island) === -1) {
+                            trs[i].style.display = 'none';
                         }
+                    }
+
+                    if (dataSt[1]) {
+                        this.setFilter(trs, 'online', 'flag');
                     }
 
                     break;
 
-                case 2: // онлайн/оффлайн
-                    for (i = 3; i < lines.length; i++) {
-                        if (lines[i].style.display === 'none') {
-                            continue;
-                        }
+                case 'online':
+                    if (!island) {
+                        dataSt[1] = '1';
+                        general.setData(dataSt, 3);
+                        general.$('online').
+                            setAttribute('style', this.styleBold);
+                    }
 
-                        if (lines[i].querySelector('td:last-child ' +
-                                    'a:first-child[style="color:#999999"]')) {
-                            lines[i].style.display = 'none';
+                    for (i = 3; i < trs.length; i++) {
+                        if (trs[i].querySelector('a[style*="#999999"]')) {
+                            trs[i].style.display = 'none';
                         }
                     }
 
@@ -955,54 +1003,58 @@
              * @method init
              */
             this.init = function () {
-                var li = general.doc.querySelector('li'),
-                    span = general.doc.createElement('span'),
-                    _this = this,
-                    lines;
+                var table = general.doc.querySelector('table.wb' +
+                        '[align="center"]');
+                if (!table) {
+                    return;
+                }
 
+                var li = table.querySelector('li');
                 if (!li) {
                     return;
                 }
 
-                span.setAttribute('style', 'margin-left: 10px;');
-                this.setButton('isl_z', '[Z]', span);
-                this.setButton('isl_g', '[G]', span);
-                this.setButton('online', '[Online]', span);
-                this.setButton('reset1', '[Сброс]', span);
-                li.insertBefore(span, li.lastElementChild);
-                if (span.previousElementSibling.nodeName === 'BR') {
-                    li.removeChild(span.previousElementSibling);
+                this.spanContainer = general.doc.createElement('span');
+                this.spanContainer.setAttribute('style', 'margin-left: 10px;');
+                this.setButton('islz', '[Z]');
+                this.setButton('islg', '[G]');
+                this.setButton('online', '[Online]');
+                this.setButton('resetFilter', '[Сброс]');
+                li.insertBefore(this.spanContainer, li.lastElementChild);
+                if (this.spanContainer.previousElementSibling.
+                        nodeName === 'BR') {
+                    li.removeChild(this.spanContainer.previousElementSibling);
                 }
 
-                lines = general.doc.querySelector('table.wb[align="center"]').
-                    querySelectorAll('tr');
+                var trs = table.querySelectorAll('tr'),
+                    _this = this;
 
-                if (!lines) {
-                    return;
-                }
-
-                general.$('reset1').addEventListener('click', function () {
-                    _this.setFilter(lines, 0, null);
+                general.$('resetFilter').addEventListener('click', function () {
+                    _this.setFilter(trs, 'reset', null);
                 }, false);
 
-                general.$('isl_z').addEventListener('click', function () {
-                    _this.setFilter(lines, 1, new RegExp('Z'));
+                general.$('islZ').addEventListener('click', function () {
+                    _this.setFilter(trs, 'island', 'Z');
                 }, false);
 
-                general.$('isl_g').addEventListener('click', function () {
-                    _this.setFilter(lines, 1, new RegExp('G'));
+                general.$('islG').addEventListener('click', function () {
+                    _this.setFilter(trs, 'island', 'G');
                 }, false);
 
                 general.$('online').addEventListener('click', function () {
-                    _this.setFilter(lines, 2, null);
+                    _this.setFilter(trs, 'online', null);
                 }, false);
 
-                /**
-                 * TODO:
-                 * убрать в общей версии скрипта
-                 */
-                general.$('isl_g').click();
-                general.$('online').click();
+                var dataSt = general.getData(3);
+                if (dataSt[0] === '1') {
+                    general.$('islZ').click();
+                } else if (dataSt[0] === '2') {
+                    general.$('islG').click();
+                }
+
+                if (dataSt[1]) {
+                    general.$('online').click();
+                }
             };
         };
 
@@ -1239,7 +1291,7 @@
         try {
             new NotGiveCannabisLeaf().init();
         } catch (e) {
-            general.root.console.log(e);
+            general.cons.log(e);
         }
     }
 
@@ -1253,14 +1305,14 @@
         try {
             new SetSettingsButton().init();
         } catch (e) {
-            general.root.console.log(e);
+            general.cons.log(e);
         }
 
         if (/\/news\.php\?set=1/.test(general.loc)) {
             try {
                 new ShowMainSettings().init();
             } catch (e) {
-                general.root.console.log(e);
+                general.cons.log(e);
             }
         }
 
@@ -1268,7 +1320,7 @@
             try {
                 new AdditionForNavigationBar().init();
             } catch (e) {
-                general.root.console.log(e);
+                general.cons.log(e);
             }
         }
 
@@ -1278,7 +1330,7 @@
                 try {
                     new AdsFilter().init();
                 } catch (e) {
-                    console.log(e);
+                    general.cons.log(e);
                 }
             }
         }
@@ -1291,7 +1343,7 @@
             try {
                 new AdvBattleAll().init();
             } catch (e) {
-                console.log(e);
+                general.cons.log(e);
             }
         }
     }
