@@ -17,7 +17,7 @@
 
 /*jslint
     browser: true, todo: true, passfail: true, devel: true, regexp: true
-    nomen: true, plusplus: true, continue: true, vars: true
+    plusplus: true, continue: true, vars: true, nomen: true
 */
 
 (function () {
@@ -238,6 +238,9 @@
                     link.setAttribute('type', 'image/x-icon');
                     link.setAttribute('rel', 'shortcut icon');
                     link.setAttribute('href',
+                            /** TODO исправить images_for_scripts
+                             * на imagesForScripts
+                             */
                             'http://gwscripts.ucoz.net/images_for_scripts/' +
                             'notgivecannabisleaf/favicon.ico');
                     head.appendChild(link);
@@ -443,10 +446,10 @@
                         'ganjawars.ru/i/gon.gif" /> &nbsp;&nbsp;на зеленый ' +
                         'листик &nbsp;&nbsp;<img style="box-shadow: 2px 3px ' +
                         '3px rgba(122,122,122,0.5);" src="' + general.imgPath +
-                        'NotGiveCannabisLeaf/on.gif" />', 0],
+                        'NotGiveCannabisLeaf/on.gif" />', '0'],
                     ['Дополнение для панели навигации',
                         'Добавляет возможность установить дополнительные ' +
-                        'ссылки в панель навигации.', 1]],
+                        'ссылки в панель навигации.', '1']],
 
                 'Бои': [
                     ['Дополнение для боев', 'Генератор ходов(только ' +
@@ -473,12 +476,12 @@
                         'refreshAppl" type="text" maxlength="3" style=' +
                         '"width: 30px;" value="' +
                         (general.getData(3)[1] || '0') + '" disabled /> ' +
-                        'сек (0 - настройки игры по умолчанию)', 3]],
+                        'сек (0 - настройки игры по умолчанию)', '3']],
 
                 'Доска объявлений': [
                     ['Фильтр поиска аренды/продажи', 'Фильтр онлайн/оффлайн ' +
                         'и по островам на странице поиска аренды/продажи ' +
-                        'предметов.', 2]],
+                        'предметов.', '2']],
 
                 'Ферма': []
             };
@@ -666,84 +669,96 @@
          */
     var AdditionForNavigationBar = function () {
             /**
-             * @method addLink
-             * @param   {HTMLLinkElement}   link
-             * @param   {HTMLElement}       panel
-             * @param   {HTMLElement}       div_main
-             * @param   {Boolean}           mode
+             * @property navigPanel
+             * @type {HTMLElement|null}
              */
-            this.addLink = function (link, panel, div_main, mode) {
-                var del_link = general.doc.createElement('span'),
-                    divLink,
-                    target;
+            this.navigPanel = null;
+            /**
+             * @property divMain
+             * @type {HTMLDivElement|null}
+             */
+            this.divMain = null;
 
-                if (!mode) {    // добавление в панель
-                    target = panel.lastElementChild.previousSibling;
-                    panel.insertBefore(general.doc.createTextNode(' | '),
-                            target);
-                    panel.insertBefore(link, target);
-                } else {    // добавление в div
-                    // кнопка удаления ссылки
-                    del_link.setAttribute('style', 'margin-left: 2px; ' +
-                            'cursor: pointer; font-size: 7pt;');
-                    del_link.innerHTML = '[x]';
+            /**
+             * @method addLink
+             * @param   {HTMLElement}   link
+             */
+            this.addLink = function (link) {
+                // добавление в панель
+                var target = this.navigPanel.
+                        lastElementChild.previousSibling;
+                this.navigPanel.insertBefore(general.doc.createTextNode(' | '),
+                        target);
+                this.navigPanel.insertBefore(link, target);
 
-                    divLink = general.doc.createElement('div');
-                    divLink.appendChild(link);
-                    divLink.appendChild(del_link);
-                    div_main.insertBefore(divLink, div_main.lastElementChild);
+                // добавление ссылки и кнопы ее удаления в основной div
+                var divLink = general.doc.createElement('div');
 
-                    // обработчик удаления ссылки
-                    del_link.addEventListener('click', function () {
-                        var _this = this,
-                            name = _this.previousElementSibling.innerHTML,
-                            a_panel = panel.querySelectorAll('a'),
-                            data = JSON.parse(general.getData(2)[0]),
-                            temp = {},
-                            n,
-                            i;
+                var linkClone = link.cloneNode(true);
+                linkClone.style.fontSize = '9pt';
+                divLink.appendChild(linkClone);
 
-                        // удаляем ссылку из панели
-                        for (i = 0; i < a_panel.length; i++) {
-                            if (a_panel[i].innerHTML === name) {
-                                panel.removeChild(a_panel[i].previousSibling);
-                                panel.removeChild(a_panel[i]);
-                                break;
-                            }
+                var delLinkButton = general.doc.createElement('span');
+                delLinkButton.setAttribute('style', 'margin-left: 2px; ' +
+                        'cursor: pointer; font-size: 7pt;');
+                delLinkButton.innerHTML = '[x]';
+                divLink.appendChild(delLinkButton);
+
+                this.divMain.insertBefore(divLink,
+                        this.divMain.lastElementChild);
+
+                // обработчик кнопы удаления ссылки
+                var _this = this;
+                delLinkButton.addEventListener('click', function () {
+                    var thisLink = this,
+                        linkName = thisLink.previousElementSibling.innerHTML,
+                        allPanelLinks = _this.navigPanel.querySelectorAll('a'),
+                        i;
+
+                    // удаляем ссылку из панели
+                    for (i = 0; i < allPanelLinks.length; i++) {
+                        if (allPanelLinks[i].innerHTML === linkName) {
+                            _this.navigPanel.removeChild(allPanelLinks[i].
+                                previousSibling);
+                            _this.navigPanel.removeChild(allPanelLinks[i]);
+                            break;
                         }
+                    }
 
-                        // удаляем ссылку из div'а
-                        div_main.removeChild(_this.parentNode);
+                    // удаляем ссылку из div'а
+                    _this.divMain.removeChild(thisLink.parentNode);
 
-                        // удаляем запись из хранилища
-                        for (n in data) {
-                            if (data.hasOwnProperty(n)) {
-                                if (n === name) {
-                                    continue;
-                                }
+                    // удаляем запись из хранилища
+                    var dataSt = JSON.parse(general.getData(2)[0]),
+                        temp = {},
+                        name;
 
-                                temp[n] = data[n];
+                    for (name in dataSt) {
+                        if (dataSt.hasOwnProperty(name)) {
+                            if (name === linkName) {
+                                continue;
                             }
-                        }
 
-                        general.setData(JSON.stringify(temp), 2);
-                    }, false);
-                }
+                            temp[name] = dataSt[name];
+                        }
+                    }
+
+                    general.setData(JSON.stringify(temp), 2);
+                }, false);
             };
 
             /**
              * @method createLink
              * @param   {String}    name
-             * @param   {Array}     href
-             * @param   {int}       size
-             * @return  {Object}
+             * @param   {Array}     attr    href, style
+             * @return  {HTMLElement}
              */
-            this.createLink = function (name, href, size) {
+            this.createLink = function (name, attr) {
                 var link = general.doc.createElement('a');
                 link.setAttribute('style', 'color: #669966; text-decoration: ' +
-                        'none; font-size: ' + size + 'pt;' + href[1]);
+                        'none; font-size: 7pt;' + attr[1]);
                 link.innerHTML = name;
-                link.href = href[0];
+                link.href = attr[0];
                 return link;
             };
 
@@ -760,25 +775,7 @@
              * @method init
              */
             this.init = function () {
-                var data = general.getData(2)[0],
-                    add_link = general.doc.createElement('span'),
-                    div_add = general.doc.createElement('div'),
-                    div_main = general.doc.createElement('div'),
-                    _this = this,
-                    panel,
-                    lnk,
-                    pos,
-                    n;
-
-                if (!data) {
-                    data = '{}';
-                    general.setData(data, 2);
-                }
-
-                data = JSON.parse(data);
-
-                // ищем панель навигации
-                panel = general.DESIGN_VERSION === 'v2' ?
+                this.navigPanel = general.DESIGN_VERSION === 'v2' ?
                         general.doc.querySelector('div[style="position: ' +
                             'relative; left: 0; top: 0; width:100%; ' +
                             'font-size:7pt;color:#669966;"] ' +
@@ -786,20 +783,37 @@
                         general.doc.querySelector('td[style="font-size:7pt;' +
                             'color:#669966;"]');
 
-                // панель не найдена
-                if (!panel) {
+                if (!this.navigPanel) {
                     return;
                 }
 
-                // добавляем в панель '+'
-                add_link.setAttribute('style', 'cursor: pointer;');
-                add_link.innerHTML = '+';
-                panel.appendChild(general.doc.createTextNode(' | '));
-                panel.appendChild(add_link);
+                var dataSt = general.getData(2)[0];
+                if (!dataSt) {
+                    dataSt = '{}';
+                    general.setData(dataSt, 2);
+                }
+
+                dataSt = JSON.parse(dataSt);
+
+                // добавляем в панель кнопу для создания ссылки
+                var addLinkButton = general.doc.createElement('span');
+                addLinkButton.setAttribute('style', 'cursor: pointer;');
+                addLinkButton.innerHTML = '+';
+                this.navigPanel.appendChild(general.doc.createTextNode(' | '));
+                this.navigPanel.appendChild(addLinkButton);
+
+                var _this = this;
+                // обработчик открытия/закрытия div'а
+                addLinkButton.addEventListener('click', function () {
+                    _this.divMain.style.display = _this.divMain.style.display ?
+                            '' : 'none';
+                    _this.clearFields();
+                }, false);
 
                 // div для добавления ссылок
-                div_add.setAttribute('style', 'margin-top: 5px;');
-                div_add.innerHTML = 'Название:<br><input id="lname" ' +
+                var divAddLink = general.doc.createElement('div');
+                divAddLink.setAttribute('style', 'margin-top: 5px;');
+                divAddLink.innerHTML = 'Название:<br><input id="lname" ' +
                     'type="text" maxlength="20" style="width: 237px;" /><br>' +
                     'Ссылка:<br><input id="lhref" style="width: 237px;" ' +
                     'value="http://"/><br>Стиль, например: "color: blue;"<br>' +
@@ -808,73 +822,62 @@
                     '#0000FF;">Добавить</span><span id="hide_nav_div" ' +
                     'style="cursor: pointer; margin-left: 20px; color: ' +
                     '#FF0000;">Закрыть</span>';
-                div_main.appendChild(div_add);
+                this.divMain = general.doc.createElement('div');
+                this.divMain.appendChild(divAddLink);
 
-                pos = new GetPos().init(add_link);
-                div_main.setAttribute('style', 'position: absolute; ' +
+                var pos = new GetPos().init(addLinkButton);
+                this.divMain.setAttribute('style', 'position: absolute; ' +
                     'display: none; border: 1px #339933 solid; background: ' +
                     '#F0FFF0; width: 240px; font-size: 8pt; padding: 3px; ' +
                     'left: ' + (pos.x - 260) + '; top: ' + (pos.y + 12) + ';');
-                general.doc.body.appendChild(div_main);
+                general.doc.body.appendChild(this.divMain);
 
                 // добавляем ссылки из хранилища в панель и в div
-                for (n in data) {
-                    if (data.hasOwnProperty(n)) {
-                        lnk = _this.createLink(n, data[n], 7);
-                        _this.addLink(lnk, panel, div_main, false);
-                        lnk = _this.createLink(n, data[n], 9);
-                        _this.addLink(lnk, panel, div_main, true);
+                var linkName, lnk;
+                for (linkName in dataSt) {
+                    if (dataSt.hasOwnProperty(linkName)) {
+                        lnk = this.createLink(linkName, dataSt[linkName]);
+                        this.addLink(lnk);
                     }
                 }
 
                 // кнопа закрытия div'а
                 general.$('hide_nav_div').addEventListener('click',
                     function () {
-                        div_main.style.display = 'none';
                         _this.clearFields();
+                        _this.divMain.style.display = 'none';
                     }, false);
 
-                // обработчик открытия/закрытия div'а
-                add_link.addEventListener('click', function () {
-                    div_main.style.display = div_main.style.display ? '' :
-                            'none';
-                    _this.clearFields();
-                }, false);
 
                 // обработчик кнопы добавления ссылки
                 general.$('set_link').addEventListener('click', function () {
-                    var val1 = general.$('lname').value,
-                        val2 = general.$('lhref').value,
-                        val3 = general.$('lstyle').value,
-                        datast,
-                        a_pan,
-                        link,
-                        i;
+                    var name = general.$('lname').value,
+                        href = general.$('lhref').value,
+                        style = general.$('lstyle').value;
 
-                    if (!val1 || !val2) {
+                    if (!name || !href) {
                         alert('Не верно введены данные');
                         return;
                     }
 
-                    // если ссылка с таким названием уже есть
-                    a_pan = panel.querySelectorAll('a');
-                    for (i = 0; i < a_pan.length; i++) {
-                        if (a_pan[i].innerHTML === val1) {
+                    var allPanelLinks = _this.navigPanel.querySelectorAll('a'),
+                        i;
+
+                    for (i = 0; i < allPanelLinks.length; i++) {
+                        if (allPanelLinks[i].innerHTML === name) {
                             alert('Ссылка с таким названием уже существует');
                             return;
                         }
                     }
 
-                    // создаем ссылку и втыкаем ее в панель
-                    link = _this.createLink(val1, [val2, val3], 7);
-                    _this.addLink(link, panel, div_main, false);
-                    link = _this.createLink(val1, [val2, val3], 9);
-                    // добавляем ссылку в div
-                    _this.addLink(link, panel, div_main, true);
+                    // создаем ссылку и втыкаем ее в панель и в div
+                    var newLink = _this.createLink(name, [href, style]);
+                    _this.addLink(newLink);
+
                     // добавляем данные в хранилище
-                    datast = JSON.parse(general.getData(2)[0]);
-                    datast[val1] = [val2, val3];
-                    general.setData(JSON.stringify(datast), 2);
+                    var dtSt = JSON.parse(general.getData(2)[0]);
+                    dtSt[name] = [href, style];
+                    general.setData(JSON.stringify(dtSt), 2);
 
                     _this.clearFields();
                 }, false);
