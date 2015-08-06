@@ -23,79 +23,79 @@
 (function () {
     'use strict';
 
-        /**
-         * @class General
-         * @constructor
-         */
+    /**
+     * @class General
+     * @constructor
+     */
     var General = function () {
-            /**
-             * @property root
-             * @type {Object}
-             */
-            this.root = this.getRoot();
-            /**
-             * @property doc
-             * @type {Object}
-             */
-            this.doc = this.root.document;
-            /**
-             * @property loc
-             * @type {String}
-             */
-            this.loc = this.root.location.href;
-            /**
-             * @property st
-             * @type {Object}
-             */
-            this.st = this.root.localStorage;
-            /**
-             * @property cons
-             * @type {Object}
-             */
-            this.cons = this.root.console;
-            /**
-             * @property version
-             * @type {String}
-             */
-            this.version = '1.00-050815-dev';
-            /**
-             * @property stString
-             * @type {String}
-             */
-            this.stString = this.version + '@|||@@|@|||||||||||||||||';
-            /**
-             * @property myID
-             * @type {String}
-             */
-            this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie);
-            /**
-             * @property DESIGN_VERSION
-             * @type {String}
-             */
-            this.DESIGN_VERSION = /(^|;) ?version=([^;]*)(;|$)/.
-                    exec(this.doc.cookie);
-            /**
-             * @property STORAGENAME
-             * @type {String}
-             */
-            this.STORAGENAME = '_comfortablePlayingInGW';
-            /**
-             * @property imgPath
-             * @type {String}
-             */
-            this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
-                'comfortablePlayingInGW/master/imgs/';
-            /**
-             * @property viewMode
-             * @type {Boolean}
-             */
-            this.viewMode = /\/warlog\.php/.test(this.loc);
-            /**
-             * @property mainDomain
-             * @type {Boolean}
-             */
-            this.mainDomain = /\/\/www.ganjawars.ru\//.test(this.loc);
-        };
+        /**
+         * @property root
+         * @type {Object}
+         */
+        this.root = this.getRoot();
+        /**
+         * @property doc
+         * @type {Object}
+         */
+        this.doc = this.root.document;
+        /**
+         * @property loc
+         * @type {String}
+         */
+        this.loc = this.root.location.href;
+        /**
+         * @property st
+         * @type {Object}
+         */
+        this.st = this.root.localStorage;
+        /**
+         * @property cons
+         * @type {Object}
+         */
+        this.cons = this.root.console;
+        /**
+         * @property version
+         * @type {String}
+         */
+        this.version = '1.00-050815-dev';
+        /**
+         * @property stString
+         * @type {String}
+         */
+        this.stString = this.version + '@|||@@|@|||||||||||||||||';
+        /**
+         * @property myID
+         * @type {String}
+         */
+        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie);
+        /**
+         * @property DESIGN_VERSION
+         * @type {String}
+         */
+        this.DESIGN_VERSION = /(^|;) ?version=([^;]*)(;|$)/.
+                exec(this.doc.cookie);
+        /**
+         * @property STORAGENAME
+         * @type {String}
+         */
+        this.STORAGENAME = '_comfortablePlayingInGW';
+        /**
+         * @property imgPath
+         * @type {String}
+         */
+        this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
+            'comfortablePlayingInGW/master/imgs/';
+        /**
+         * @property viewMode
+         * @type {Boolean}
+         */
+        //this.viewMode = /\/warlog\.php/.test(this.loc);
+        /**
+         * @property mainDomain
+         * @type {Boolean}
+         */
+        this.mainDomain = /\/\/www.ganjawars.ru\//.test(this.loc);
+    };
 
     /**
      * @lends General.prototype
@@ -220,1058 +220,852 @@
 
     var general, initScript;
 
-        /**
-         * @class NotGiveCannabisLeaf
-         * @constructor
-         */
+    /**
+     * @class NotGiveCannabisLeaf
+     * @constructor
+     */
     var NotGiveCannabisLeaf = function () {
-            /**
-             * @method  changeFavicon
-             */
-            this.changeFavicon = function () {
-                var head = general.doc.querySelector('head');
+        /**
+         * @method  changeFavicon
+         */
+        this.changeFavicon = function () {
+            var head = general.doc.querySelector('head');
 
-                if (head) {
-                    var linkTags = head.querySelectorAll('link[rel*="icon"]'),
-                        i;
-
-                    for (i = 0; i < linkTags.length; i++) {
-                        head.removeChild(linkTags[i]);
-                    }
-
-                    var link = general.doc.createElement('link');
-                    link.setAttribute('type', 'image/x-icon');
-                    link.setAttribute('rel', 'shortcut icon');
-                    link.setAttribute('href',
-                            /** TODO исправить images_for_scripts
-                             * на imagesForScripts
-                             */
-                            'http://gwscripts.ucoz.net/images_for_scripts/' +
-                            'notgivecannabisleaf/favicon.ico');
-                    head.appendChild(link);
-                }
-            };
-
-            /**
-             * @method  changeIcons
-             */
-            this.changeIcons = function () {
-                var imgPath = general.imgPath + 'NotGiveCannabisLeaf/',
-                    imgOn = imgPath + 'on.gif',
-                    imgOff = imgPath + 'off.gif',
-                    imgs = general.doc.querySelectorAll('img'),
-                    src,
+            if (head) {
+                var linkTags = head.querySelectorAll('link[rel*="icon"]'),
                     i;
 
-                for (i = 0; i < imgs.length; i++) {
-                    src = imgs[i].getAttribute('src');
-                    if (/\/i\/gon\.gif|\/info\.online\.php\?id=/.test(src)) {
-                        imgs[i].setAttribute('src', imgOn);
-                    } else if (/\/i\/goff\.gif/.test(src)) {
-                        imgs[i].setAttribute('src', imgOff);
-                    }
+                for (i = 0; i < linkTags.length; i++) {
+                    head.removeChild(linkTags[i]);
                 }
-            };
 
-            /**
-             * @method init
-             */
-            this.init = function () {
-                this.changeFavicon();
-                if (!(/\/news\.php\?set=1/.test(general.loc))) {
-                    this.changeIcons();
-                }
-            };
+                var link = general.doc.createElement('link');
+                link.setAttribute('type', 'image/x-icon');
+                link.setAttribute('rel', 'shortcut icon');
+                link.setAttribute('href',
+                        /** TODO исправить images_for_scripts
+                         * на imagesForScripts
+                         */
+                        'http://gwscripts.ucoz.net/images_for_scripts/' +
+                        'notgivecannabisleaf/favicon.ico');
+                head.appendChild(link);
+            }
         };
 
         /**
-         * @class GetTopPanel
-         * @constructor
+         * @method  changeIcons
          */
+        this.changeIcons = function () {
+            var imgPath = general.imgPath + 'NotGiveCannabisLeaf/',
+                imgOn = imgPath + 'on.gif',
+                imgOff = imgPath + 'off.gif',
+                imgs = general.doc.querySelectorAll('img'),
+                src,
+                i;
+
+            for (i = 0; i < imgs.length; i++) {
+                src = imgs[i].getAttribute('src');
+                if (/\/i\/gon\.gif|\/info\.online\.php\?id=/.test(src)) {
+                    imgs[i].setAttribute('src', imgOn);
+                } else if (/\/i\/goff\.gif/.test(src)) {
+                    imgs[i].setAttribute('src', imgOff);
+                }
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            this.changeFavicon();
+            if (!(/\/news\.php\?set=1/.test(general.loc))) {
+                this.changeIcons();
+            }
+        };
+    };
+
+    /**
+     * @class GetTopPanel
+     * @constructor
+     */
     var GetTopPanel = function () {
-            /**
-             * @method init
-             * @return  {HTMLElement|null}
-             */
-            this.init = function () {
-                // ищем верхнюю панель "Новости | Об игре | Форум"
-                if (general.DESIGN_VERSION === 'v2') {  // новый дизайн
-                    return general.doc.querySelector('td.gw-header-col2 ' +
-                            'div:first-child nobr:first-child');
-                }
-
-                return general.doc.querySelector('td.txt nobr:first-child');
-            };
-        };
-
         /**
-         * @class SetSettingsButton
-         * @constructor
+         * @method init
+         * @return  {HTMLElement|null}
          */
+        this.init = function () {
+            // ищем верхнюю панель "Новости | Об игре | Форум"
+            if (general.DESIGN_VERSION === 'v2') {  // новый дизайн
+                return general.doc.querySelector('td.gw-header-col2 ' +
+                        'div:first-child nobr:first-child');
+            }
+
+            return general.doc.querySelector('td.txt nobr:first-child');
+        };
+    };
+
+    /**
+     * @class SetSettingsButton
+     * @constructor
+     */
     var SetSettingsButton = function () {
-            /**
-             * @method init
-             */
-            this.init = function () {
-                var topPanel = new GetTopPanel().init();
-
-                if (topPanel) {
-                    var settingsButton = general.doc.createElement('a');
-                    var target = topPanel.parentNode.nextElementSibling;
-                    settingsButton.innerHTML = '<img src="' + general.imgPath +
-                        'NotGiveCannabisLeaf/on.gif" whidth="15" height="15" ' +
-                        'title="Настройки" alt="Настройки" />';
-                    settingsButton.setAttribute('href',
-                            'http://www.ganjawars.ru/news.php?set=1');
-                    target.insertBefore(settingsButton, target.firstChild);
-                }
-            };
-        };
-
         /**
-         * @class AjaxQuery
-         * @constructor
+         * @method init
          */
+        this.init = function () {
+            var topPanel = new GetTopPanel().init();
+
+            if (topPanel) {
+                var settingsButton = general.doc.createElement('a');
+                var target = topPanel.parentNode.nextElementSibling;
+                settingsButton.innerHTML = '<img src="' + general.imgPath +
+                    'NotGiveCannabisLeaf/on.gif" whidth="15" height="15" ' +
+                    'title="Настройки" alt="Настройки" />';
+                settingsButton.setAttribute('href',
+                        'http://www.ganjawars.ru/news.php?set=1');
+                target.insertBefore(settingsButton, target.firstChild);
+            }
+        };
+    };
+
+    /**
+     * @class AjaxQuery
+     * @constructor
+     */
     var AjaxQuery = function () {
-            /**
-             * @method createRequestObject
-             * @return  {Object|null}
-             */
-            this.createRequestObject = function () {
+        /**
+         * @method createRequestObject
+         * @return  {Object|null}
+         */
+        this.createRequestObject = function () {
+            try {
+                return new XMLHttpRequest();
+            } catch (e) {
                 try {
-                    return new XMLHttpRequest();
-                } catch (e) {
+                    return new ActiveXObject('Msxml2.XMLHTTP');
+                } catch (e1) {
                     try {
-                        return new ActiveXObject('Msxml2.XMLHTTP');
-                    } catch (e1) {
-                        try {
-                            return new ActiveXObject('Microsoft.XMLHTTP');
-                        } catch (e2) {
-                            return null;
-                        }
+                        return new ActiveXObject('Microsoft.XMLHTTP');
+                    } catch (e2) {
+                        return null;
                     }
                 }
-            };
-
-            /**
-             * @method ajaxQuery
-             * @param   {String}        url
-             * @param   {String}        rmethod
-             * @param   {String|null}   param
-             * @param   {Boolean}       async
-             * @param   {Function}      onsuccess
-             * @param   {Function}      onfailure
-             */
-            this.init = function (url, rmethod, param, async, onsuccess,
-                    onfailure) {
-                var xmlHttpRequest = this.createRequestObject();
-
-                if (!xmlHttpRequest) {
-                    general.cons.log('Error create xmlHttpRequest !!!');
-                    return;
-                }
-
-                xmlHttpRequest.open(rmethod, url, async);
-
-                if (rmethod === 'POST') {
-                    xmlHttpRequest.setRequestHeader('Content-Type',
-                        'application/x-www-form-urlencoded');
-                }
-
-                xmlHttpRequest.send(param);
-
-                if (async) {
-                    var timeout = general.root.setTimeout(function () {
-                        xmlHttpRequest.abort();
-                    }, 10000);
-
-                    xmlHttpRequest.onreadystatechange = function () {
-                        if (xmlHttpRequest.readyState !== 4) {
-                            return;
-                        }
-
-                        clearTimeout(timeout);
-                        if (xmlHttpRequest.readyState === 4 &&
-                                xmlHttpRequest.status === 200 && onsuccess) {
-                            onsuccess(xmlHttpRequest);
-                        } else {
-                            if (xmlHttpRequest.readyState === 4 &&
-                                    xmlHttpRequest.status !== 200 &&
-                                        onfailure) {
-                                onfailure(xmlHttpRequest);
-                            }
-                        }
-                    };
-                } else {
-                    if (xmlHttpRequest.status === 200 && onsuccess) {
-                        onsuccess(xmlHttpRequest);
-                    } else {
-                        if (xmlHttpRequest.status !== 200 && onfailure) {
-                            onfailure(xmlHttpRequest);
-                        }
-                    }
-                }
-            };
+            }
         };
 
         /**
-         * @class CheckInputText
-         * @constructor
+         * @method ajaxQuery
+         * @param   {String}        url
+         * @param   {String}        rmethod
+         * @param   {String|null}   param
+         * @param   {Boolean}       async
+         * @param   {Function}      onsuccess
+         * @param   {Function}      onfailure
          */
-    var CheckInputText = function () {
-            /**
-             * @method init
-             * @param   {Object}    inp
-             * @param   {int}       limit
-             * @return  {Boolean}
-             */
-            this.init = function (inp, limit) {
-                var _inp = inp,
-                    val = _inp.value,
-                    lim = limit || 0;
+        this.init = function (url, rmethod, param, async, onsuccess,
+                onfailure) {
+            var xmlHttpRequest = this.createRequestObject();
 
-                return !(!val || isNaN(+val) || +val < lim);
-            };
-        };
+            if (!xmlHttpRequest) {
+                general.cons.log('Error create xmlHttpRequest !!!');
+                return;
+            }
 
-        /**
-         * @class ShowMainSettings
-         * @constructor
-         */
-    var ShowMainSettings = function () {
-            /**
-             * @property infoScripts
-             * @type {Object}
-             */
-            this.infoScripts = {
-                'Персонаж': [
-                    ['Логотип игры', 'На всех страницах заменяет логотип ' +
-                        'игры &nbsp;&nbsp;<img style="box-shadow: 2px 3px ' +
-                        '3px rgba(122,122,122, 0.5);" src="http://images.' +
-                        'ganjawars.ru/i/gon.gif" /> &nbsp;&nbsp;на зеленый ' +
-                        'листик &nbsp;&nbsp;<img style="box-shadow: 2px 3px ' +
-                        '3px rgba(122,122,122,0.5);" src="' + general.imgPath +
-                        'NotGiveCannabisLeaf/on.gif" />', '0'],
-                    ['Дополнение для панели навигации',
-                        'Добавляет возможность установить дополнительные ' +
-                        'ссылки в панель навигации.', '1']],
+            xmlHttpRequest.open(rmethod, url, async);
 
-                'Бои': [
-                    ['Дополнение для боев', 'Генератор ходов(только ' +
-                        'подсветка хода), нумерация противников, расширенная ' +
-                        'информация в списке выбора противника, сортировка ' +
-                        'списка, ДЦ, продвинутое расположение бойцов на поле ' +
-                        'боя как в бою, так и в режиме наблюдения за боем, ' +
-                        'полный лог боя в НЕ JS-версии, кнопка "Сказать ход"' +
-                        ', быстрая вставка ника в поле чата. Информация ' +
-                        'вверху страницы боя о набитом HP, вашем здоровье и ' +
-                        'т.д. При щелчке на картинке противника происходит ' +
-                        'его выбор в качестве цели. Кнопка "Обновить" на ' +
-                        'поле боя. В JS-версии боя подсвечивает зеленым ' +
-                        'цветом тех персонажей, которые уже сделали ход. В ' +
-                        'обоих версиях выводит количество персонажей, ' +
-                        'сделавших ход.<br><br><span style="color: #FF0000">' +
-                        'Не ставьте значения менее 3 секунд.</span><br>' +
-                        'Таймаут обновления данных в бою: <input id=' +
-                        '"refreshBattle" type="text" maxlength="3" ' +
-                        'style="width: 30px;" value="' +
-                        (general.getData(3)[0] || '0') + '" disabled /> ' +
-                        'сек (0 - настройки игры по умолчанию)<br>Таймаут ' +
-                        'обновления заявки при входе в нее: <input id="' +
-                        'refreshAppl" type="text" maxlength="3" style=' +
-                        '"width: 30px;" value="' +
-                        (general.getData(3)[1] || '0') + '" disabled /> ' +
-                        'сек (0 - настройки игры по умолчанию)', '3']],
+            if (rmethod === 'POST') {
+                xmlHttpRequest.setRequestHeader('Content-Type',
+                    'application/x-www-form-urlencoded');
+            }
 
-                'Доска объявлений': [
-                    ['Фильтр поиска аренды/продажи', 'Фильтр онлайн/оффлайн ' +
-                        'и по островам на странице поиска аренды/продажи ' +
-                        'предметов.', '2']],
+            xmlHttpRequest.send(param);
 
-                'Ферма': []
-            };
+            if (async) {
+                var timeout = general.root.setTimeout(function () {
+                    xmlHttpRequest.abort();
+                }, 10000);
 
-            /**
-             * @method showHideScriptInfo
-             */
-            this.showHideScriptInfo = function () {
-                var _this = this,
-                    info = _this.parentNode.lastElementChild;
-
-                if (info.style.display) {
-                    info.style.display = '';
-                    _this.innerHTML = '[&minus;]';
-                } else {
-                    info.style.display = 'none';
-                    _this.innerHTML = '[+]';
-                }
-            };
-
-            /**
-             * @method onOffScript
-             */
-            this.onOffScript = function () {
-                var _this = this,
-                    ind = /chk(\d+)/.exec(_this.id)[1],
-                    hiddenDiv = _this.nextElementSibling,
-                    inp = hiddenDiv.querySelectorAll('input'),
-                    sel = hiddenDiv.querySelectorAll('select'),
-                    i;
-
-                initScript[ind] = _this.checked ? '1' : '';
-                general.setData(initScript, 1);
-
-                // выкл/вкл элементы управления настройками
-                for (i = 0; i < inp.length; i++) {
-                    inp[i].disabled = !_this.checked;
-                }
-
-                for (i = 0; i < sel.length; i++) {
-                    sel[i].disabled = !_this.checked;
-                }
-            };
-
-            /**
-             * @method checkScriptUpdate
-             */
-            this.checkScriptUpdate = function () {
-                var url = 'http://www.ganjawars.ru/object-messages.php?' +
-                    'id=117721&tid=88232514&fid=117721&page_id=last';
-                new AjaxQuery().init(url, 'GET', null, true, function (xml) {
-                    var v = /version: ([^<]+)<\/td>/.exec(xml.responseText);
-                    if (v) {
-                        if (v[1] !== general.version) {
-                            general.$('linkNewVerScript').style.
-                                visibility = 'visible';
-                            general.$('refreshVer').innerHTML = '(' +
-                                v[1] + ')';
-                        }
-                    }
-                }, null);
-            };
-
-            /**
-             * @method setSettingsForAdvBattleAll
-             */
-            this.setSettingsForAdvBattleAll = function () {
-                var _this = this,
-                    ind = _this.id === 'refreshBattle' ? 0 : 1,
-                    data = general.getData(3);
-
-                data[ind] = new CheckInputText().init(_this, 3) ?
-                        _this.value : '';
-                general.setData(data, 3);
-            };
-
-            /**
-             * @method init
-             */
-            this.init = function () {
-                var str = '<div style="margin-bottom: 10px;"><a id="' +
-                        'linkNewVerScript" target="_blank" style="color: ' +
-                        '#008000; visibility: hidden;" href="https://raw.' +
-                        'githubusercontent.com/MyRequiem/' +
-                        'comfortablePlayingInGW/master/' +
-                        '_comfortablePlayingInGW.user.js">Доступна новая ' +
-                        'версия</a> <span id="refreshVer"></span></div>' +
-                        '<table style="width: 100%; box-shadow: 8px 10px ' +
-                        '7px rgba(122,122,122,0.5);">',
-                    groupStyle = ' style="background-color: #D0EED0; ' +
-                        'text-align: center; color: #990000;"><b>',
-                    spanStyle = ' style="cursor: pointer;">',
-                    tdStyle = ' style="background-color: #E0FFE0;">',
-                    hiddenDivStyle = ' style="display: none; padding-left: ' +
-                        '50px; background-color: #E7E7E7">',
-                    prop,
-                    i;
-
-                // формирование таблицы настроек
-                for (prop in this.infoScripts) {
-                    if (this.infoScripts.hasOwnProperty(prop)) {
-                        str += '<tr><td' + groupStyle + prop + '</b></td></tr>';
-
-                        for (i = 0; i < this.infoScripts[prop].length; i++) {
-                            str += '<tr><td' + tdStyle + '<span' + spanStyle +
-                                '[+]</span> ' + '<input id="chk' +
-                                this.infoScripts[prop][i][2] +
-                                '" type="checkbox" /> ' +
-                                this.infoScripts[prop][i][0] + '<div' +
-                                hiddenDivStyle +
-                                this.infoScripts[prop][i][1] +
-                                '</div></td></tr>';
-                        }
-                    }
-                }
-
-                str += '</table>';
-                var settingsContainer = general.doc.querySelector('tr>td.txt' +
-                        '[valign="top"]');
-                settingsContainer.innerHTML = '<div></div>';
-                settingsContainer = settingsContainer.firstElementChild;
-                settingsContainer.setAttribute('style',
-                        'margin: 10px 0 20px 0');
-                settingsContainer.innerHTML = str;
-
-                // проверка обновлений
-                this.checkScriptUpdate();
-
-                // обрабочики открытия/закрытия скрытых контейнеров описания
-                // скрипта, обработчики чекбоксов и установка значений чекбоксов
-                var spans = settingsContainer.
-                        querySelectorAll('span[style="cursor: pointer;"]'),
-                    chkid,
-                    chk;
-
-                for (i = 0; i < spans.length; i++) {
-                    spans[i].addEventListener('click',
-                            this.showHideScriptInfo, false);
-                    chk = spans[i].nextElementSibling;
-                    chk.addEventListener('click', this.onOffScript, false);
-                    chkid = +(/chk(\d+)/.exec(chk.getAttribute('id')))[1];
-                    if (initScript[chkid]) {
-                        chk.click();
-                    }
-                }
-
-                // обработчики текстовых полей модуля дополнений для боев
-                general.$('refreshBattle').
-                    addEventListener('input',
-                            this.setSettingsForAdvBattleAll, false);
-                general.$('refreshAppl').
-                    addEventListener('input',
-                            this.setSettingsForAdvBattleAll, false);
-            };
-        };
-
-        /**
-         * @class GetPos
-         * @constructor
-         */
-    var GetPos = function () {
-            /**
-             * @method init
-             * @param   {HTMLElement}   obj
-             * @return  {Object}
-             */
-            this.init = function (obj) {
-                var _obj = obj,
-                    x = 0,
-                    y = 0;
-
-                while (_obj) {
-                    x += _obj.offsetLeft;
-                    y += _obj.offsetTop;
-                    _obj = _obj.offsetParent;
-                }
-
-                return {x: x, y: y};
-            };
-        };
-
-        /**
-         * @class AdditionForNavigationBar
-         * @constructor
-         */
-    var AdditionForNavigationBar = function () {
-            /**
-             * @property navigPanel
-             * @type {HTMLElement|null}
-             */
-            this.navigPanel = null;
-            /**
-             * @property divMain
-             * @type {HTMLDivElement|null}
-             */
-            this.divMain = null;
-
-            /**
-             * @method addLink
-             * @param   {HTMLElement}   link
-             */
-            this.addLink = function (link) {
-                // добавление в панель
-                var target = this.navigPanel.
-                        lastElementChild.previousSibling;
-                this.navigPanel.insertBefore(general.doc.createTextNode(' | '),
-                        target);
-                this.navigPanel.insertBefore(link, target);
-
-                // добавление ссылки и кнопы ее удаления в основной div
-                var divLink = general.doc.createElement('div');
-
-                var linkClone = link.cloneNode(true);
-                linkClone.style.fontSize = '9pt';
-                divLink.appendChild(linkClone);
-
-                var delLinkButton = general.doc.createElement('span');
-                delLinkButton.setAttribute('style', 'margin-left: 2px; ' +
-                        'cursor: pointer; font-size: 7pt;');
-                delLinkButton.innerHTML = '[x]';
-                divLink.appendChild(delLinkButton);
-
-                this.divMain.insertBefore(divLink,
-                        this.divMain.lastElementChild);
-
-                // обработчик кнопы удаления ссылки
-                var _this = this;
-                delLinkButton.addEventListener('click', function () {
-                    var thisLink = this,
-                        linkName = thisLink.previousElementSibling.innerHTML,
-                        allPanelLinks = _this.navigPanel.querySelectorAll('a'),
-                        i;
-
-                    // удаляем ссылку из панели
-                    for (i = 0; i < allPanelLinks.length; i++) {
-                        if (allPanelLinks[i].innerHTML === linkName) {
-                            _this.navigPanel.removeChild(allPanelLinks[i].
-                                previousSibling);
-                            _this.navigPanel.removeChild(allPanelLinks[i]);
-                            break;
-                        }
-                    }
-
-                    // удаляем ссылку из div'а
-                    _this.divMain.removeChild(thisLink.parentNode);
-
-                    // удаляем запись из хранилища
-                    var dataSt = JSON.parse(general.getData(2)[0]),
-                        temp = {},
-                        name;
-
-                    for (name in dataSt) {
-                        if (dataSt.hasOwnProperty(name)) {
-                            if (name === linkName) {
-                                continue;
-                            }
-
-                            temp[name] = dataSt[name];
-                        }
-                    }
-
-                    general.setData(JSON.stringify(temp), 2);
-                }, false);
-            };
-
-            /**
-             * @method createLink
-             * @param   {String}    name
-             * @param   {Array}     attr    href, style
-             * @return  {HTMLElement}
-             */
-            this.createLink = function (name, attr) {
-                var link = general.doc.createElement('a');
-                link.setAttribute('style', 'color: #669966; text-decoration: ' +
-                        'none; font-size: 7pt;' + attr[1]);
-                link.innerHTML = name;
-                link.href = attr[0];
-                return link;
-            };
-
-            /**
-             * @method clearFields
-             */
-            this.clearFields = function () {
-                general.$('lname').value = '';
-                general.$('lhref').value = '';
-                general.$('lstyle').value = '';
-            };
-
-            /**
-             * @method init
-             */
-            this.init = function () {
-                this.navigPanel = general.DESIGN_VERSION === 'v2' ?
-                        general.doc.querySelector('div[style="position: ' +
-                            'relative; left: 0; top: 0; width:100%; ' +
-                            'font-size:7pt;color:#669966;"] ' +
-                            'center:first-child') :
-                        general.doc.querySelector('td[style="font-size:7pt;' +
-                            'color:#669966;"]');
-
-                if (!this.navigPanel) {
-                    return;
-                }
-
-                var dataSt = general.getData(2)[0];
-                if (!dataSt) {
-                    dataSt = '{}';
-                    general.setData(dataSt, 2);
-                }
-
-                dataSt = JSON.parse(dataSt);
-
-                // добавляем в панель кнопу для создания ссылки
-                var addLinkButton = general.doc.createElement('span');
-                addLinkButton.setAttribute('style', 'cursor: pointer;');
-                addLinkButton.innerHTML = '+';
-                this.navigPanel.appendChild(general.doc.createTextNode(' | '));
-                this.navigPanel.appendChild(addLinkButton);
-
-                var _this = this;
-                // обработчик открытия/закрытия div'а
-                addLinkButton.addEventListener('click', function () {
-                    _this.divMain.style.display = _this.divMain.style.display ?
-                            '' : 'none';
-                    _this.clearFields();
-                }, false);
-
-                // div для добавления ссылок
-                var divAddLink = general.doc.createElement('div');
-                divAddLink.setAttribute('style', 'margin-top: 5px;');
-                divAddLink.innerHTML = 'Название:<br><input id="lname" ' +
-                    'type="text" maxlength="20" style="width: 237px;" /><br>' +
-                    'Ссылка:<br><input id="lhref" style="width: 237px;" ' +
-                    'value="http://"/><br>Стиль, например: "color: blue;"<br>' +
-                    '<input id="lstyle" type="text" style="width: 237px;" />' +
-                    '<br><span id="set_link" style="cursor: pointer; color: ' +
-                    '#0000FF;">Добавить</span><span id="hide_nav_div" ' +
-                    'style="cursor: pointer; margin-left: 20px; color: ' +
-                    '#FF0000;">Закрыть</span>';
-                this.divMain = general.doc.createElement('div');
-                this.divMain.appendChild(divAddLink);
-
-                var pos = new GetPos().init(addLinkButton);
-                this.divMain.setAttribute('style', 'position: absolute; ' +
-                    'display: none; border: 1px #339933 solid; background: ' +
-                    '#F0FFF0; width: 240px; font-size: 8pt; padding: 3px; ' +
-                    'left: ' + (pos.x - 260) + '; top: ' + (pos.y + 12) + ';');
-                general.doc.body.appendChild(this.divMain);
-
-                // добавляем ссылки из хранилища в панель и в div
-                var linkName, lnk;
-                for (linkName in dataSt) {
-                    if (dataSt.hasOwnProperty(linkName)) {
-                        lnk = this.createLink(linkName, dataSt[linkName]);
-                        this.addLink(lnk);
-                    }
-                }
-
-                // кнопа закрытия div'а
-                general.$('hide_nav_div').addEventListener('click',
-                    function () {
-                        _this.clearFields();
-                        _this.divMain.style.display = 'none';
-                    }, false);
-
-
-                // обработчик кнопы добавления ссылки
-                general.$('set_link').addEventListener('click', function () {
-                    var name = general.$('lname').value,
-                        href = general.$('lhref').value,
-                        style = general.$('lstyle').value;
-
-                    if (!name || !href) {
-                        alert('Не верно введены данные');
+                xmlHttpRequest.onreadystatechange = function () {
+                    if (xmlHttpRequest.readyState !== 4) {
                         return;
                     }
 
-                    var allPanelLinks = _this.navigPanel.querySelectorAll('a'),
-                        i;
-
-                    for (i = 0; i < allPanelLinks.length; i++) {
-                        if (allPanelLinks[i].innerHTML === name) {
-                            alert('Ссылка с таким названием уже существует');
-                            return;
+                    clearTimeout(timeout);
+                    if (xmlHttpRequest.readyState === 4 &&
+                            xmlHttpRequest.status === 200 && onsuccess) {
+                        onsuccess(xmlHttpRequest);
+                    } else {
+                        if (xmlHttpRequest.readyState === 4 &&
+                                xmlHttpRequest.status !== 200 &&
+                                    onfailure) {
+                            onfailure(xmlHttpRequest);
                         }
                     }
+                };
+            } else {
+                if (xmlHttpRequest.status === 200 && onsuccess) {
+                    onsuccess(xmlHttpRequest);
+                } else {
+                    if (xmlHttpRequest.status !== 200 && onfailure) {
+                        onfailure(xmlHttpRequest);
+                    }
+                }
+            }
+        };
+    };
 
-                    // создаем ссылку и втыкаем ее в панель и в div
-                    var newLink = _this.createLink(name, [href, style]);
-                    _this.addLink(newLink);
+    /**
+     * @class CheckInputText
+     * @constructor
+     */
+    var CheckInputText = function () {
+        /**
+         * @method init
+         * @param   {Object}    inp
+         * @param   {int}       limit
+         * @return  {Boolean}
+         */
+        this.init = function (inp, limit) {
+            var _inp = inp,
+                val = _inp.value,
+                lim = limit || 0;
 
-                    // добавляем данные в хранилище
-                    var dtSt = JSON.parse(general.getData(2)[0]);
-                    dtSt[name] = [href, style];
-                    general.setData(JSON.stringify(dtSt), 2);
+            return !(!val || isNaN(+val) || +val < lim);
+        };
+    };
 
-                    _this.clearFields();
-                }, false);
-            };
+    /**
+     * @class ShowMainSettings
+     * @constructor
+     */
+    var ShowMainSettings = function () {
+        /**
+         * @property infoScripts
+         * @type {Object}
+         */
+        this.infoScripts = {
+            'Персонаж': [
+                ['Логотип игры', 'На всех страницах заменяет логотип игры ' +
+                    '&nbsp;&nbsp;<img style="box-shadow: 2px 3px 3px ' +
+                    'rgba(122,122,122, 0.5);" src="http://images.ganjawars.' +
+                    'ru/i/gon.gif" /> &nbsp;&nbsp;на зеленый листик &nbsp;' +
+                    '&nbsp;<img style="box-shadow: 2px 3px 3px ' +
+                    'rgba(122,122,122,0.5);" src="' + general.imgPath +
+                    'NotGiveCannabisLeaf/on.gif" />', '0'],
+                ['Дополнение для панели навигации',
+                    'Добавляет возможность установить дополнительные ссылки ' +
+                    'в панель навигации.', '1']],
+
+            'Бои': [
+                ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
+                    'хода), нумерация противников, расширенная информация в ' +
+                    'списке выбора противника, сортировка списка, ДЦ, ' +
+                    'продвинутое расположение бойцов на поле боя как в бою, ' +
+                    'так и в режиме наблюдения за боем, полный лог боя в НЕ ' +
+                    'JS-версии, кнопка "Сказать ход", быстрая вставка ника в ' +
+                    'поле чата. Информация вверху страницы боя о набитом HP, ' +
+                    'вашем здоровье и т.д. При щелчке на картинке противника ' +
+                    'происходит его выбор в качестве цели. Кнопка "Обновить" ' +
+                    'на поле боя. В JS-версии боя подсвечивает зеленым ' +
+                    'цветом тех персонажей, которые уже сделали ход. В обоих ' +
+                    'версиях выводит количество персонажей, сделавших ход.' +
+                    '<br><br><span style="color: #FF0000">Не ставьте ' +
+                    'значения менее 3 секунд.</span><br>Таймаут обновления ' +
+                    'данных в бою: <input id="refreshBattle" type="text" ' +
+                    'maxlength="3" style="width: 30px;" value="' +
+                    (general.getData(3)[0] || '0') + '" disabled /> сек (0 - ' +
+                    'настройки игры по умолчанию)<br>Таймаут обновления ' +
+                    'заявки при входе в нее: <input id="refreshAppl" type="' +
+                    'text" maxlength="3" style="width: 30px;" value="' +
+                    (general.getData(3)[1] || '0') + '" disabled /> сек (0 - ' +
+                    'настройки игры по умолчанию)', '3']],
+
+            'Доска объявлений': [
+                ['Фильтр поиска аренды/продажи', 'Фильтр онлайн/оффлайн и по ' +
+                    'островам на странице поиска аренды/продажи предметов.',
+                    '2']],
+
+            'Ферма': []
         };
 
         /**
-         * @class AdsFilter
-         * @constructor
+         * @method showHideScriptInfo
          */
-    var AdsFilter = function () {
-            /**
-             * @property spanContainer
-             * @type {HTMLElement|null}
-             */
-            this.spanContainer = null;
-            /**
-             * @property stl
-             * @type {String}
-             */
-            this.stl = 'cursor: pointer; margin-right: 3px; ';
-            /**
-             * @property styleNormal
-             * @type {String}
-             */
-            this.styleNormal = this.stl + 'color: #808080';
-            /**
-             * @property styleBold
-             * @type {String}
-             */
-            this.styleBold =  this.stl + 'color: #990000; font-weight: bold;';
+        this.showHideScriptInfo = function () {
+            var _this = this,
+                info = _this.parentNode.lastElementChild;
 
-            /**
-             * @method setButton
-             * @param   {String}        id
-             * @param   {String}        value
-             */
-            this.setButton = function (id, value) {
-                var button = general.doc.createElement('span');
-                button.setAttribute('style', this.styleNormal);
-                button.id = id;
-                button.innerHTML = value;
-                this.spanContainer.appendChild(button);
-            };
+            if (info.style.display) {
+                info.style.display = '';
+                _this.innerHTML = '[&minus;]';
+            } else {
+                info.style.display = 'none';
+                _this.innerHTML = '[+]';
+            }
+        };
 
-            /**
-             * @method setFilter
-             * @param   {NodeList}  trs
-             * @param   {String}    type
-             * @param   {String}    island
-             */
-            this.setFilter = function (trs, type, island) {
-                var dataSt = general.getData(3),
+        /**
+         * @method onOffScript
+         */
+        this.onOffScript = function () {
+            var _this = this,
+                ind = /chk(\d+)/.exec(_this.id)[1],
+                hiddenDiv = _this.nextElementSibling,
+                inp = hiddenDiv.querySelectorAll('input'),
+                sel = hiddenDiv.querySelectorAll('select'),
+                i;
+
+            initScript[ind] = _this.checked ? '1' : '';
+            general.setData(initScript, 1);
+
+            // выкл/вкл элементы управления настройками
+            for (i = 0; i < inp.length; i++) {
+                inp[i].disabled = !_this.checked;
+            }
+
+            for (i = 0; i < sel.length; i++) {
+                sel[i].disabled = !_this.checked;
+            }
+        };
+
+        /**
+         * @method checkScriptUpdate
+         */
+        this.checkScriptUpdate = function () {
+            var url = 'http://www.ganjawars.ru/object-messages.php?' +
+                'id=117721&tid=88232514&fid=117721&page_id=last';
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var v = /version: ([^<]+)<\/td>/.exec(xml.responseText);
+                if (v) {
+                    if (v[1] !== general.version) {
+                        general.$('linkNewVerScript').style.
+                            visibility = 'visible';
+                        general.$('refreshVer').innerHTML = '(' + v[1] + ')';
+                    }
+                }
+            }, null);
+        };
+
+        /**
+         * @method setSettingsForAdvBattleAll
+         */
+        this.setSettingsForAdvBattleAll = function () {
+            var _this = this,
+                ind = _this.id === 'refreshBattle' ? 0 : 1,
+                data = general.getData(3);
+
+            data[ind] = new CheckInputText().init(_this, 3) ?
+                    _this.value : '';
+            general.setData(data, 3);
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var str = '<div style="margin-bottom: 10px;"><a id="' +
+                    'linkNewVerScript" target="_blank" style="color: ' +
+                    '#008000; visibility: hidden;" href="https://raw.' +
+                    'githubusercontent.com/MyRequiem/comfortablePlayingInGW/' +
+                    'master/_comfortablePlayingInGW.user.js">Доступна новая ' +
+                    'версия</a> <span id="refreshVer"></span></div><table ' +
+                    'style="width: 100%; box-shadow: 8px 10px 7px ' +
+                    'rgba(122,122,122,0.5);">',
+                groupStyle = ' style="background-color: #D0EED0; text-align: ' +
+                    'center; color: #990000;"><b>',
+                spanStyle = ' style="cursor: pointer;">',
+                tdStyle = ' style="background-color: #E0FFE0;">',
+                hiddenDivStyle = ' style="display: none; padding-left: 50px; ' +
+                    'background-color: #E7E7E7">',
+                prop,
+                i;
+
+            // формирование таблицы настроек
+            for (prop in this.infoScripts) {
+                if (this.infoScripts.hasOwnProperty(prop)) {
+                    str += '<tr><td' + groupStyle + prop + '</b></td></tr>';
+
+                    for (i = 0; i < this.infoScripts[prop].length; i++) {
+                        str += '<tr><td' + tdStyle + '<span' + spanStyle +
+                            '[+]</span> ' + '<input id="chk' +
+                            this.infoScripts[prop][i][2] +
+                            '" type="checkbox" /> ' +
+                            this.infoScripts[prop][i][0] + '<div' +
+                            hiddenDivStyle + this.infoScripts[prop][i][1] +
+                            '</div></td></tr>';
+                    }
+                }
+            }
+
+            str += '</table>';
+            var settingsContainer = general.doc.querySelector('tr>td.txt' +
+                    '[valign="top"]');
+            settingsContainer.innerHTML = '<div></div>';
+            settingsContainer = settingsContainer.firstElementChild;
+            settingsContainer.setAttribute('style', 'margin: 10px 0 20px 0');
+            settingsContainer.innerHTML = str;
+
+            // проверка обновлений
+            this.checkScriptUpdate();
+
+            // обрабочики открытия/закрытия скрытых контейнеров описания
+            // скрипта, обработчики чекбоксов и установка значений чекбоксов
+            var spans = settingsContainer.
+                    querySelectorAll('span[style="cursor: pointer;"]'),
+                chkid,
+                chk;
+
+            for (i = 0; i < spans.length; i++) {
+                spans[i].addEventListener('click',
+                        this.showHideScriptInfo, false);
+                chk = spans[i].nextElementSibling;
+                chk.addEventListener('click', this.onOffScript, false);
+                chkid = +(/chk(\d+)/.exec(chk.getAttribute('id')))[1];
+                if (initScript[chkid]) {
+                    chk.click();
+                }
+            }
+
+            // обработчики текстовых полей модуля дополнений для боев
+            general.$('refreshBattle').
+                addEventListener('input',
+                        this.setSettingsForAdvBattleAll, false);
+            general.$('refreshAppl').
+                addEventListener('input',
+                        this.setSettingsForAdvBattleAll, false);
+        };
+    };
+
+    /**
+     * @class GetPos
+     * @constructor
+     */
+    var GetPos = function () {
+        /**
+         * @method init
+         * @param   {HTMLElement}   obj
+         * @return  {Object}
+         */
+        this.init = function (obj) {
+            var _obj = obj,
+                x = 0,
+                y = 0;
+
+            while (_obj) {
+                x += _obj.offsetLeft;
+                y += _obj.offsetTop;
+                _obj = _obj.offsetParent;
+            }
+
+            return {x: x, y: y};
+        };
+    };
+
+    /**
+     * @class AdditionForNavigationBar
+     * @constructor
+     */
+    var AdditionForNavigationBar = function () {
+        /**
+         * @property navigPanel
+         * @type {HTMLElement|null}
+         */
+        this.navigPanel = null;
+        /**
+         * @property divMain
+         * @type {HTMLDivElement|null}
+         */
+        this.divMain = null;
+
+        /**
+         * @method addLink
+         * @param   {HTMLElement}   link
+         */
+        this.addLink = function (link) {
+            // добавление в панель
+            var target = this.navigPanel.
+                    lastElementChild.previousSibling;
+            this.navigPanel.insertBefore(general.doc.createTextNode(' | '),
+                    target);
+            this.navigPanel.insertBefore(link, target);
+
+            // добавление ссылки и кнопы ее удаления в основной div
+            var divLink = general.doc.createElement('div');
+
+            var linkClone = link.cloneNode(true);
+            linkClone.style.fontSize = '9pt';
+            divLink.appendChild(linkClone);
+
+            var delLinkButton = general.doc.createElement('span');
+            delLinkButton.setAttribute('style', 'margin-left: 2px; ' +
+                    'cursor: pointer; font-size: 7pt;');
+            delLinkButton.innerHTML = '[x]';
+            divLink.appendChild(delLinkButton);
+
+            this.divMain.insertBefore(divLink,
+                    this.divMain.lastElementChild);
+
+            // обработчик кнопы удаления ссылки
+            var _this = this;
+            delLinkButton.addEventListener('click', function () {
+                var thisLink = this,
+                    linkName = thisLink.previousElementSibling.innerHTML,
+                    allPanelLinks = _this.navigPanel.querySelectorAll('a'),
                     i;
 
-                switch (type) {
-                case 'reset':
-                    if (!island) {
-                        general.setData('|', 3);
-                        general.$('islZ').
-                            setAttribute('style', this.styleNormal);
-                        general.$('islG').
-                            setAttribute('style', this.styleNormal);
-                        general.$('online').
-                            setAttribute('style', this.styleNormal);
+                // удаляем ссылку из панели
+                for (i = 0; i < allPanelLinks.length; i++) {
+                    if (allPanelLinks[i].innerHTML === linkName) {
+                        _this.navigPanel.removeChild(allPanelLinks[i].
+                            previousSibling);
+                        _this.navigPanel.removeChild(allPanelLinks[i]);
+                        break;
                     }
-
-                    for (i = 3; i < trs.length; i++) {
-                        trs[i].style.display = '';
-                    }
-
-                    break;
-
-                case 'island':
-                    this.setFilter(trs, 'reset', 'flag');
-                    dataSt[0] = island === 'Z' ? '1' : '2';
-                    general.setData(dataSt, 3);
-                    general.$('isl' + island).
-                        setAttribute('style', this.styleBold);
-                    general.$('isl' + (island === 'G' ? 'Z' : 'G')).
-                        setAttribute('style', this.styleNormal);
-
-                    for (i = 3; i < trs.length; i++) {
-                        if (trs[i].querySelector('td:nth-child(4)').
-                                    innerHTML.indexOf(island) === -1) {
-                            trs[i].style.display = 'none';
-                        }
-                    }
-
-                    if (dataSt[1]) {
-                        this.setFilter(trs, 'online', 'flag');
-                    }
-
-                    break;
-
-                case 'online':
-                    if (!island) {
-                        dataSt[1] = '1';
-                        general.setData(dataSt, 3);
-                        general.$('online').
-                            setAttribute('style', this.styleBold);
-                    }
-
-                    for (i = 3; i < trs.length; i++) {
-                        if (trs[i].querySelector('a[style*="#999999"]')) {
-                            trs[i].style.display = 'none';
-                        }
-                    }
-
-                    break;
-
-                default:
-                    break;
                 }
-            };
 
-            /**
-             * @method init
-             */
-            this.init = function () {
-                var table = general.doc.querySelector('table.wb' +
-                        '[align="center"]');
-                if (!table) {
+                // удаляем ссылку из div'а
+                _this.divMain.removeChild(thisLink.parentNode);
+
+                // удаляем запись из хранилища
+                var dataSt = JSON.parse(general.getData(2)[0]),
+                    temp = {},
+                    name;
+
+                for (name in dataSt) {
+                    if (dataSt.hasOwnProperty(name)) {
+                        if (name === linkName) {
+                            continue;
+                        }
+
+                        temp[name] = dataSt[name];
+                    }
+                }
+
+                general.setData(JSON.stringify(temp), 2);
+            }, false);
+        };
+
+        /**
+         * @method createLink
+         * @param   {String}    name
+         * @param   {Array}     attr    href, style
+         * @return  {HTMLElement}
+         */
+        this.createLink = function (name, attr) {
+            var link = general.doc.createElement('a');
+            link.setAttribute('style', 'color: #669966; text-decoration: ' +
+                    'none; font-size: 7pt;' + attr[1]);
+            link.innerHTML = name;
+            link.href = attr[0];
+            return link;
+        };
+
+        /**
+         * @method clearFields
+         */
+        this.clearFields = function () {
+            general.$('lname').value = '';
+            general.$('lhref').value = '';
+            general.$('lstyle').value = '';
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            this.navigPanel = general.DESIGN_VERSION === 'v2' ?
+                    general.doc.querySelector('div[style="position: ' +
+                        'relative; left: 0; top: 0; width:100%; ' +
+                        'font-size:7pt;color:#669966;"] ' +
+                        'center:first-child') :
+                    general.doc.querySelector('td[style="font-size:7pt;' +
+                        'color:#669966;"]');
+
+            if (!this.navigPanel) {
+                return;
+            }
+
+            var dataSt = general.getData(2)[0];
+            if (!dataSt) {
+                dataSt = '{}';
+                general.setData(dataSt, 2);
+            }
+
+            dataSt = JSON.parse(dataSt);
+
+            // добавляем в панель кнопу для создания ссылки
+            var addLinkButton = general.doc.createElement('span');
+            addLinkButton.setAttribute('style', 'cursor: pointer;');
+            addLinkButton.innerHTML = '+';
+            this.navigPanel.appendChild(general.doc.createTextNode(' | '));
+            this.navigPanel.appendChild(addLinkButton);
+
+            var _this = this;
+            // обработчик открытия/закрытия div'а
+            addLinkButton.addEventListener('click', function () {
+                _this.divMain.style.display = _this.divMain.style.display ?
+                        '' : 'none';
+                _this.clearFields();
+            }, false);
+
+            // div для добавления ссылок
+            var divAddLink = general.doc.createElement('div');
+            divAddLink.setAttribute('style', 'margin-top: 5px;');
+            divAddLink.innerHTML = 'Название:<br><input id="lname" ' +
+                'type="text" maxlength="20" style="width: 237px;" /><br>' +
+                'Ссылка:<br><input id="lhref" style="width: 237px;" ' +
+                'value="http://"/><br>Стиль, например: "color: blue;"<br>' +
+                '<input id="lstyle" type="text" style="width: 237px;" />' +
+                '<br><span id="set_link" style="cursor: pointer; color: ' +
+                '#0000FF;">Добавить</span><span id="hide_nav_div" ' +
+                'style="cursor: pointer; margin-left: 20px; color: ' +
+                '#FF0000;">Закрыть</span>';
+            this.divMain = general.doc.createElement('div');
+            this.divMain.appendChild(divAddLink);
+
+            var pos = new GetPos().init(addLinkButton);
+            this.divMain.setAttribute('style', 'position: absolute; ' +
+                'display: none; border: 1px #339933 solid; background: ' +
+                '#F0FFF0; width: 240px; font-size: 8pt; padding: 3px; ' +
+                'left: ' + (pos.x - 260) + '; top: ' + (pos.y + 12) + ';');
+            general.doc.body.appendChild(this.divMain);
+
+            // добавляем ссылки из хранилища в панель и в div
+            var linkName, lnk;
+            for (linkName in dataSt) {
+                if (dataSt.hasOwnProperty(linkName)) {
+                    lnk = this.createLink(linkName, dataSt[linkName]);
+                    this.addLink(lnk);
+                }
+            }
+
+            // кнопа закрытия div'а
+            general.$('hide_nav_div').addEventListener('click',
+                function () {
+                    _this.clearFields();
+                    _this.divMain.style.display = 'none';
+                }, false);
+
+
+            // обработчик кнопы добавления ссылки
+            general.$('set_link').addEventListener('click', function () {
+                var name = general.$('lname').value,
+                    href = general.$('lhref').value,
+                    style = general.$('lstyle').value;
+
+                if (!name || !href) {
+                    alert('Не верно введены данные');
                     return;
                 }
 
-                var li = table.querySelector('li');
-                if (!li) {
-                    return;
+                var allPanelLinks = _this.navigPanel.querySelectorAll('a'),
+                    i;
+
+                for (i = 0; i < allPanelLinks.length; i++) {
+                    if (allPanelLinks[i].innerHTML === name) {
+                        alert('Ссылка с таким названием уже существует');
+                        return;
+                    }
                 }
 
-                this.spanContainer = general.doc.createElement('span');
-                this.spanContainer.setAttribute('style', 'margin-left: 10px;');
-                this.setButton('islz', '[Z]');
-                this.setButton('islg', '[G]');
-                this.setButton('online', '[Online]');
-                this.setButton('resetFilter', '[Сброс]');
-                li.insertBefore(this.spanContainer, li.lastElementChild);
-                if (this.spanContainer.previousElementSibling.
-                        nodeName === 'BR') {
-                    li.removeChild(this.spanContainer.previousElementSibling);
+                // создаем ссылку и втыкаем ее в панель и в div
+                var newLink = _this.createLink(name, [href, style]);
+                _this.addLink(newLink);
+
+                // добавляем данные в хранилище
+                var dtSt = JSON.parse(general.getData(2)[0]);
+                dtSt[name] = [href, style];
+                general.setData(JSON.stringify(dtSt), 2);
+
+                _this.clearFields();
+            }, false);
+        };
+    };
+
+    /**
+     * @class AdsFilter
+     * @constructor
+     */
+    var AdsFilter = function () {
+        /**
+         * @property spanContainer
+         * @type {HTMLElement|null}
+         */
+        this.spanContainer = null;
+        /**
+         * @property stl
+         * @type {String}
+         */
+        this.stl = 'cursor: pointer; margin-right: 3px; ';
+        /**
+         * @property styleNormal
+         * @type {String}
+         */
+        this.styleNormal = this.stl + 'color: #808080';
+        /**
+         * @property styleBold
+         * @type {String}
+         */
+        this.styleBold =  this.stl + 'color: #990000; font-weight: bold;';
+
+        /**
+         * @method setButton
+         * @param   {String}        id
+         * @param   {String}        value
+         */
+        this.setButton = function (id, value) {
+            var button = general.doc.createElement('span');
+            button.setAttribute('style', this.styleNormal);
+            button.id = id;
+            button.innerHTML = value;
+            this.spanContainer.appendChild(button);
+        };
+
+        /**
+         * @method setFilter
+         * @param   {NodeList}  trs
+         * @param   {String}    type
+         * @param   {String}    island
+         */
+        this.setFilter = function (trs, type, island) {
+            var dataSt = general.getData(3),
+                i;
+
+            switch (type) {
+            case 'reset':
+                if (!island) {
+                    general.setData('|', 3);
+                    general.$('islZ').setAttribute('style', this.styleNormal);
+                    general.$('islG').setAttribute('style', this.styleNormal);
+                    general.$('online').setAttribute('style', this.styleNormal);
                 }
 
-                var trs = table.querySelectorAll('tr'),
-                    _this = this;
+                for (i = 3; i < trs.length; i++) {
+                    trs[i].style.display = '';
+                }
 
-                general.$('resetFilter').addEventListener('click', function () {
-                    _this.setFilter(trs, 'reset', null);
-                }, false);
+                break;
 
-                general.$('islZ').addEventListener('click', function () {
-                    _this.setFilter(trs, 'island', 'Z');
-                }, false);
+            case 'island':
+                this.setFilter(trs, 'reset', 'flag');
+                dataSt[0] = island === 'Z' ? '1' : '2';
+                general.setData(dataSt, 3);
+                general.$('isl' + island).setAttribute('style', this.styleBold);
+                general.$('isl' + (island === 'G' ? 'Z' : 'G')).
+                    setAttribute('style', this.styleNormal);
 
-                general.$('islG').addEventListener('click', function () {
-                    _this.setFilter(trs, 'island', 'G');
-                }, false);
-
-                general.$('online').addEventListener('click', function () {
-                    _this.setFilter(trs, 'online', null);
-                }, false);
-
-                var dataSt = general.getData(3);
-                if (dataSt[0] === '1') {
-                    general.$('islZ').click();
-                } else if (dataSt[0] === '2') {
-                    general.$('islG').click();
+                for (i = 3; i < trs.length; i++) {
+                    if (trs[i].querySelector('td:nth-child(4)').
+                                innerHTML.indexOf(island) === -1) {
+                        trs[i].style.display = 'none';
+                    }
                 }
 
                 if (dataSt[1]) {
-                    general.$('online').click();
+                    this.setFilter(trs, 'online', 'flag');
                 }
-            };
+
+                break;
+
+            case 'online':
+                if (!island) {
+                    dataSt[1] = '1';
+                    general.setData(dataSt, 3);
+                    general.$('online').setAttribute('style', this.styleBold);
+                }
+
+                for (i = 3; i < trs.length; i++) {
+                    if (trs[i].querySelector('a[style*="#999999"]')) {
+                        trs[i].style.display = 'none';
+                    }
+                }
+
+                break;
+
+            default:
+                break;
+            }
         };
 
         /**
-         * @class AdvBattleAll
-         * @constructor
+         * @method init
          */
-    var AdvBattleAll = function () {
-            /**
-             * @property myPers
-             * @type {Object|null}
-             */
-            this.myPers = null;
-            /**
-             * @property leftPers
-             * @type {Array|null}
-             */
-            this.leftPers = null;
-            /**
-             * @property rightPers
-             * @type {Array|null}
-             */
-            this.rightPers = null;
-            /**
-             * @property td_info
-             * @type {HTMLTableCellElement|null}
-             */
-            this.td_info = null;
-            /**
-             * @property allFighters
-             * @type {Array}
-             */
-            this.allFighters = [];
-            /**
-             * @property inp_text
-             * @type {HTMLInputElement}
-             */
-            this.inp_text = null;
-            /**
-             * @property enemy
-             * @type {Object|null}
-             */
-            this.enemy = null;
+        this.init = function () {
+            var table = general.doc.querySelector('table.wb[align="center"]');
+            if (!table) {
+                return;
+            }
 
-            /**
-             * @method getPers возвращает массив бойцов одной из сторон
-             * @param   {HTMLDivElement}    obj
-             * @return  {Array}
-             */
-            this.getPers = function (obj) {
-                var mass = [],
-                    a_pers,
-                    b,
-                    i;
+            var li = table.querySelector('li');
+            if (!li) {
+                return;
+            }
 
-                // если это поки (<b>Seel [Superb]</b>)
-                if (/<b>[^<\[]+\[[^<\[]+\]<\/b>/.test(obj.innerHTML)) {
-                    b = obj.querySelectorAll('b');
-                    for (i = 0; i < b.length; i++) {
-                        if (/[^<\[]+\[[^<\[]+\]/.test(b[i].innerHTML)) {
-                            mass.push(b[i]);
-                        }
-                    }
-                } else {
-                    a_pers = obj.querySelectorAll('a');
-                    for (i = 0; i < a_pers.length; i++) {
-                        if (/info\.php\?id=\d+/.test(a_pers[i].href)) {
-                            mass.push(a_pers[i]);
-                        }
-                    }
-                }
+            this.spanContainer = general.doc.createElement('span');
+            this.spanContainer.setAttribute('style', 'margin-left: 10px;');
+            this.setButton('islz', '[Z]');
+            this.setButton('islg', '[G]');
+            this.setButton('online', '[Online]');
+            this.setButton('resetFilter', '[Сброс]');
+            li.insertBefore(this.spanContainer, li.lastElementChild);
+            if (this.spanContainer.previousElementSibling.nodeName === 'BR') {
+                li.removeChild(this.spanContainer.previousElementSibling);
+            }
 
-                return mass;
-            };
+            var trs = table.querySelectorAll('tr'),
+                _this = this;
 
-            /**
-             * @method setMyinfo устанавливает информацию о набитом HP и т.д.
-             * @param   {int}   count   количество персонажей, сделавших ход
-             */
-            this.setMyinfo = function (count) {
-                // если здоровье меньше максимального, то меняем цвет
-                var color = this.myPers.hp[1] === this.myPers.hp[2] ?
-                            '#008000' : '#b84906',
-                    str = '<span style="font-weight: bold; font-style: ' +
-                        'italic; color: #0000FF;">HP:</span> <span style=' +
-                        '"color: ' + color + ';">' + this.myPers.hp[1] +
-                        '</span>/<span style="color: #008000;font-weight: ' +
-                        'bold;">' + this.myPers.hp[2] + '</span><span style=' +
-                        '"margin-left: 20px;">урон: ' + this.myPers.damage[1] +
-                        '(<span style="font-weight: bold; color: #FF0000;">' +
-                        this.myPers.damage[2] + '</span>)</span><span style=' +
-                        '"margin-left: 20px;">видимость: <span style=' +
-                        '"font-weight: bold;">' + this.myPers.visib +
-                        '</span></span><span style="margin-left: 20px; ' +
-                        'font-weight: bold;"><span style="color: #FF0000;">' +
-                        this.leftPers.length + '</span> / <span style=' +
-                        '"color: #0000FF;">' + this.rightPers.length +
-                        '</span></span>';
+            general.$('resetFilter').addEventListener('click', function () {
+                _this.setFilter(trs, 'reset', null);
+            }, false);
 
-                if (count) {
-                    str += '<span style="margin-left: 20px;">Сделали ход: ' +
-                        count + '/' + (this.leftPers.length +
-                            this.rightPers.length) + '</span>';
-                }
+            general.$('islZ').addEventListener('click', function () {
+                _this.setFilter(trs, 'island', 'Z');
+            }, false);
 
-                this.td_info.innerHTML = str;
-            };
+            general.$('islG').addEventListener('click', function () {
+                _this.setFilter(trs, 'island', 'G');
+            }, false);
 
-            /**
-             * @method getDataFighters заносит данные о персонаже в массив
-             * @param   {HTMLLinkElement}   linkPers    ссылка на песонажа
-             */
-            this.getDataFighters  = function (linkPers) {
-                var a = linkPers.parentNode.querySelectorAll('a'),
-                    info = linkPers.parentNode.textContent,
-                    obj = {},
-                    // названия вооружения и амуниции
-                    li = [],
-                    i;
+            general.$('online').addEventListener('click', function () {
+                _this.setFilter(trs, 'online', null);
+            }, false);
 
-                for (i = 0; i < a.length; i++) {
-                    if (/\/item\.php\?item_id=/.test(a[i].href)) {
-                        li.push(a[i].innerHTML);
-                    }
-                }
+            var dataSt = general.getData(3);
+            if (dataSt[0] === '1') {
+                general.$('islZ').click();
+            } else if (dataSt[0] === '2') {
+                general.$('islG').click();
+            }
 
-                // если пок, то будет не ссылка на перса, а <b> с именем пока
-                obj.name = a.firstElementChild ? a.firstElementChild.innerHTML.
-                    replace(/&amp;/, '&') : a.innerHTML;
-                obj.lvl = a.nextSibling.textContent;
-                obj.hp = /HP: \d+\/\d+/.test(info) ?
-                        (/HP: (\d+)\/(\d+)/.exec(info)) : '';
-                obj.dist = /расстояние: \d+/.test(info) ?
-                        (/расстояние: (\d+)/.exec(info)[1]) : '';
-                obj.visib = /видимость: \d+%/.test(info) ?
-                        (/видимость: (\d+%)/.exec(info)[1]) : '';
-                obj.power = /мощность: \d+/.test(info) ?
-                        (/мощность: (\d+)/.exec(info)[1]) : '';
-
-                obj.weapon = '';    // оружие (для списка выбора врагов)
-                obj.allWeapon = ''; // оружие и амуниция
-                if (li.length) {
-                    obj.weapon = li[0];
-                    for (i = 0; i < li.length; i++) {
-                        obj.allWeapon += '<li>' + li[i];
-                    }
-                }
-
-                this.allFighters.push(obj);
-
-                // в бою и это мой перс, то запоминаем его
-                if (!general.viewMode &&
-                        linkPers.href.indexOf(general.myID) !== -1) {
-                    this.myPers = obj;
-                    this.myPers.damage = /урон: (\d+) \((\d+)\)/.exec(info);
-                }
-            };
-
-            /**
-             * @method setNameInChat
-             * @param   {String}    nik
-             */
-            this.setNameInChat = function (nik) {
-                return function () {
-                    var _this = this;
-                    _this.inp_text.value += nik + ': ';
-                    _this.inp_text.focus();
-                };
-            };
-
-            /**
-             * @method setEnvelope расставляет конвертики и номера бойцов
-             * @param   {Boolean}   side
-             */
-            this.setEnvelope = function (side) {
-                var a_pers = !side ? this.leftPers : this.rightPers,
-                    _this = this,
-                    before,
-                    number,
-                    span,
-                    pok,
-                    name,
-                    env,
-                    i;
-
-                for (i = 0; i < a_pers.length; i++) {
-                    // если это пок, то будет не ссылка, а <b> с именем пока
-                    pok = a_pers[i].nodeName === 'B';
-                    name = pok ? a_pers[i].innerHTML :
-                            a_pers[i].firstElementChild.innerHTML;
-                    this.getDataFighters(a_pers[i]);
-                    // конвертики и номера покам не нужны
-                    if (pok) {
-                        continue;
-                    }
-
-                    number = '';
-                    if (this.enemy) {
-                        number = general.viewMode ? '' :
-                                (this.enemy[name] ?
-                                        (' <span style="font-weight: bold;">' +
-                                        this.enemy[name] + '.</span> ') : '');
-                    }
-
-                    env = ' <img src="' + general.imgPath + 'advBattleAll/' +
-                        'envelope.gif" style="width: 15px; cursor: pointer;" ' +
-                        'alt="Написать"> ';
-                    span = general.doc.createElement('span');
-                    span.innerHTML = !side ? number + env : env + number;
-                    before = !side ? a_pers[i].nextElementSibling : a_pers[i];
-                    a_pers[i].parentNode.insertBefore(span, before);
-
-                    span.querySelector('img').addEventListener('click',
-                            _this.setNameInChat(name), false);
-                }
-            };
+            if (dataSt[1]) {
+                general.$('online').click();
+            }
         };
+    };
+
+    /**
+     * @class AdvBattleAll
+     * @constructor
+     */
+    var AdvBattleAll = function () {
+        /**
+         * @method init
+         */
+        this.init = function () {
+            if (!general.st) {
+                alert('Ваш браузер не поддерживает технологию localStorage.' +
+                    '\nMyRequiеm рекомендует вам установить один из\n' +
+                    'ниже перечисленных браузеров или удалите скрипт\n' +
+                    'AdditionForNavigationBar\n\nFireFox 4+\nOpera 11+\n' +
+                    'Chrome 12+');
+
+                return;
+            }
+
+            alert('test');
+        };
+    };
 
 
     general = new General();

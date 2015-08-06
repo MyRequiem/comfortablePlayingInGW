@@ -20,52 +20,52 @@
 (function () {
     'use strict';
 
-        /**
-         * @class AdsFilter
-         * @constructor
-         */
+    /**
+     * @class AdsFilter
+     * @constructor
+     */
     var AdsFilter = function () {
-            /**
-             * @property root
-             * @type {Object}
-             */
-            this.root = this.getRoot();
-            /**
-             * @property doc
-             * @type {Object}
-             */
-            this.doc = this.root.document;
-            /**
-             * @property st
-             * @type {Object}
-             */
-            this.st = this.root.localStorage;
-            /**
-             * @property STNAME
-             * @type {String}
-             */
-            this.STNAME = 'adsFilter';
-            /**
-             * @property stl
-             * @type {String}
-             */
-            this.stl = 'cursor: pointer; margin-right: 3px; ';
-            /**
-             * @property styleNormal
-             * @type {String}
-             */
-            this.styleNormal = this.stl + 'color: #808080';
-            /**
-             * @property styleBold
-             * @type {String}
-             */
-            this.styleBold =  this.stl + 'color: #990000; font-weight: bold;';
-            /**
-             * @property spanContainer
-             * @type {HTMLElement|null}
-             */
-            this.spanContainer = null;
-        };
+        /**
+         * @property root
+         * @type {Object}
+         */
+        this.root = this.getRoot();
+        /**
+         * @property doc
+         * @type {Object}
+         */
+        this.doc = this.root.document;
+        /**
+         * @property st
+         * @type {Object}
+         */
+        this.st = this.root.localStorage;
+        /**
+         * @property STNAME
+         * @type {String}
+         */
+        this.STNAME = 'adsFilter';
+        /**
+         * @property stl
+         * @type {String}
+         */
+        this.stl = 'cursor: pointer; margin-right: 3px; ';
+        /**
+         * @property styleNormal
+         * @type {String}
+         */
+        this.styleNormal = this.stl + 'color: #808080';
+        /**
+         * @property styleBold
+         * @type {String}
+         */
+        this.styleBold =  this.stl + 'color: #990000; font-weight: bold;';
+        /**
+         * @property spanContainer
+         * @type {HTMLElement|null}
+         */
+        this.spanContainer = null;
+    };
 
     /**
      * @lends AdsFilter.prototype

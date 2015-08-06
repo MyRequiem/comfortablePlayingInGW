@@ -19,48 +19,48 @@
 (function () {
     'use strict';
 
-        /**
-         * @class AdditionForNavigationBar
-         * @constructor
-         */
+    /**
+     * @class AdditionForNavigationBar
+     * @constructor
+     */
     var AdditionForNavigationBar = function () {
-            /**
-             * @property root
-             * @type {Object}
-             */
-            this.root = this.getRoot();
-            /**
-             * @property doc
-             * @type {Object}
-             */
-            this.doc = this.root.document;
-            /**
-             * @property st
-             * @type {Object}
-             */
-            this.st = this.root.localStorage;
-            /**
-             * @property STNAME
-             * @type {String}
-             */
-            this.STNAME = 'dditionForNavigationBar';
-            /**
-             * @property DESIGN_VERSION
-             * @type {String}
-             */
-            this.DESIGN_VERSION = /(^|;) ?version=([^;]*)(;|$)/.
-                    exec(this.doc.cookie);
-            /**
-             * @pooperty navigPanel
-             * @type {HTMLElement|null}
-             */
-            this.navigPanel = null;
-            /**
-             * @property divMain
-             * @type {HTMLDivElement|null}
-             */
-            this.divMain = null;
-        };
+        /**
+         * @property root
+         * @type {Object}
+         */
+        this.root = this.getRoot();
+        /**
+         * @property doc
+         * @type {Object}
+         */
+        this.doc = this.root.document;
+        /**
+         * @property st
+         * @type {Object}
+         */
+        this.st = this.root.localStorage;
+        /**
+         * @property STNAME
+         * @type {String}
+         */
+        this.STNAME = 'dditionForNavigationBar';
+        /**
+         * @property DESIGN_VERSION
+         * @type {String}
+         */
+        this.DESIGN_VERSION = /(^|;) ?version=([^;]*)(;|$)/.
+                exec(this.doc.cookie);
+        /**
+         * @pooperty navigPanel
+         * @type {HTMLElement|null}
+         */
+        this.navigPanel = null;
+        /**
+         * @property divMain
+         * @type {HTMLDivElement|null}
+         */
+        this.divMain = null;
+    };
 
     /**
      * @lends AdditionForNavigationBar.prototype

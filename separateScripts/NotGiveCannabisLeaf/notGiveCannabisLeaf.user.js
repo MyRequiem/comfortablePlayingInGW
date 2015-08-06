@@ -22,17 +22,17 @@
      * @constructor
      */
     var NotGiveCannabisLeaf = function () {
-            /**
-             * @property root
-             * @type {Object}
-             */
-            this.root = this.getRoot();
-            /**
-             * @property doc
-             * @type {Object}
-             */
-            this.doc = this.root.document;
-        };
+        /**
+         * @property root
+         * @type {Object}
+         */
+        this.root = this.getRoot();
+        /**
+         * @property doc
+         * @type {Object}
+         */
+        this.doc = this.root.document;
+    };
 
     /**
      * @lends NotGiveCannabisLeaf.prototype
