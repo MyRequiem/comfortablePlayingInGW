@@ -89,7 +89,12 @@
          * @property viewMode
          * @type {Boolean}
          */
-        //this.viewMode = /\/warlog\.php/.test(this.loc);
+        this.viewMode = /\/warlog\.php/.test(this.loc);
+        /**
+         * @property nojs
+         * @type {Boolean}
+         */
+        this.nojs = /\/b0\/b\.php/.test(this.loc);
         /**
          * @property mainDomain
          * @type {Boolean}
@@ -473,11 +478,11 @@
                     'значения менее 3 секунд.</span><br>Таймаут обновления ' +
                     'данных в бою: <input id="refreshBattle" type="text" ' +
                     'maxlength="3" style="width: 30px;" value="' +
-                    (general.getData(3)[0] || '0') + '" disabled /> сек (0 - ' +
+                    (general.getData(4)[0] || '0') + '" disabled /> сек (0 - ' +
                     'настройки игры по умолчанию)<br>Таймаут обновления ' +
                     'заявки при входе в нее: <input id="refreshAppl" type="' +
                     'text" maxlength="3" style="width: 30px;" value="' +
-                    (general.getData(3)[1] || '0') + '" disabled /> сек (0 - ' +
+                    (general.getData(4)[1] || '0') + '" disabled /> сек (0 - ' +
                     'настройки игры по умолчанию)', '3']],
 
             'Доска объявлений': [
@@ -552,11 +557,11 @@
         this.setSettingsForAdvBattleAll = function () {
             var _this = this,
                 ind = _this.id === 'refreshBattle' ? 0 : 1,
-                data = general.getData(3);
+                data = general.getData(4);
 
             data[ind] = new CheckInputText().init(_this, 3) ?
                     _this.value : '';
-            general.setData(data, 3);
+            general.setData(data, 4);
         };
 
         /**
@@ -1050,20 +1055,208 @@
      */
     var AdvBattleAll = function () {
         /**
+         * @property inpTextChat
+         * @type {HTMLInputElement|null}
+         */
+        this.inpTextChat = null;
+        /**
+         * @property markStrokeR
+         * @type {HTMLDivElement|null}
+         */
+        this.markStrokeR = null;
+        /**
+         * @property markStrokeL
+         * @type {HTMLDivElement|null}
+         */
+        this.markStrokeL = null;
+        /**
+         * @property markStrokeD
+         * @type {HTMLDivElement|null}
+         */
+        this.markStrokeD = null;
+        /**
+         * @property markStrokeGr
+         * @type {HTMLDivElement|null}
+         */
+        this.markStrokeGr = null;
+        /**
+         * @property markStrokeW
+         * @type {HTMLDivElement|null}
+         */
+        this.markStrokeW = null;
+        /**
+         * @property myInfoTopPanel
+         * @type {HTMLTableCellElement|null}
+         */
+        this.myInfoTopPanel = null;
+        /**
+         * @property tooltip
+         * @type {HTMLDivElement|null}
+         */
+        this.tooltip = null;
+        /**
+         * @property intervalUpdateInpTextChat
+         * @type {int|null}
+         */
+        this.intervalUpdateInpTextChat = null;
+
+        /**
+         * @method start
+         */
+        this.start = function () {
+            alert('');
+        };
+
+        /**
+         * @method setChatInterface
+         */
+        this.setChatInterface = function () {
+
+        };
+
+        /**
+         * @method changeMakebf
+         */
+        this.changeMakebf = function () {
+            general.root.makebf = function () {
+                general.$('bf').innerHTML = !general.root.waitforturn ?
+                        general.root.bf1 :
+                        (general.root.bf2 + general.root.bf3);
+                general.$('bfndl').innerHTML = general.root.bfndl;
+                this.start();
+            };
+        };
+
+        /**
+         * @method tryStart
+         */
+        this.tryStart = function () {
+            if (general.viewMode || general.nojs) {
+                if (general.nojs) {
+                    this.setInterfaceChat();
+                }
+
+                this.start();
+                return;
+            }
+
+            this.inpTextChat = general.doc.querySelector('input[name="oldm"]');
+            // основное поле боя
+            var bf = general.$('bf');
+
+            if (this.inpTextChat && bf &&
+                    !(/Загружаются данные/.test(bf.innerHTML))) {
+                this.changeMakebf();
+                this.setInterfaceChat();
+                this.start();
+            } else {
+                // в JS версии боя ждем загрузки фрейма с данными
+                general.root.setTimeout(this.tryStart, 100);
+            }
+        };
+
+        /**
+         * @method createMarkStroke
+         * @return  {HTMLElement}
+         */
+        this.createMarkStroke = function () {
+            var div = general.doc.createElement('div');
+            div.setAttribute('style', 'display: none; position: absolute; ' +
+                'border-radius: 5px; background: #0000FF; width: 7px; ' +
+                'height: 7px; top: 0; left: 0;');
+            general.doc.body.appendChild(div);
+            return div;
+        };
+
+        /**
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.' +
-                    '\nMyRequiеm рекомендует вам установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'AdditionForNavigationBar\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
+            // обновление страницы, когда висим в заявке
+            var refreshAppl = general.getData(4)[1];
+            if (/(\/wargroup|\/warlist)\.php/.test(general.loc)) {
+                if (general.doc.querySelector('b>font[color="#990000"]')) {
+                    general.root.setTimeout(function () {
+                        general.doc.querySelector('a[href*="&r="]').click();
+                    }, (+refreshAppl) * 1000);
+                }
 
                 return;
             }
 
-            alert('test');
+            if (general.viewMode) {
+                this.inpTextChat = general.doc.
+                    querySelector('input[name="msg"]');
+            } else if (general.nojs) {
+                this.inpTextChat = general.doc.
+                    querySelector('input[name="newmessage"]');
+            }
+
+            // в бою
+            if (!general.viewMode) {
+                // отметки генератора ходов
+                this.markStrokeR = this.createMarkStroke();   //правая
+                this.markStrokeL = this.createMarkStroke();   //левая
+                this.markStrokeD = this.createMarkStroke();   //отход
+                this.markStrokeGr = this.createMarkStroke();  //грена
+                this.markStrokeW = this.createMarkStroke();   //подходим
+
+                // ячейка для вывода информации своего перса
+                var tdTop = general.doc.querySelector('td[class="txt"]' +
+                        '[width="50%"][align="right"]');
+                tdTop.setAttribute('width', '30%');
+                tdTop.previousElementSibling.setAttribute('width', '30%');
+                this.myInfoTopPanel = general.doc.createElement('td');
+                this.myInfoTopPanel.setAttribute('width', '40%');
+                this.myInfoTopPanel.setAttribute('style',
+                        'text-align: center;');
+                tdTop.parentNode.insertBefore(this.myInfoTopPanel, tdTop);
+            }
+
+            // tooltip с информацией о бойцах при наведении на них мыши
+            this.tooltip = general.doc.createElement('div');
+            this.tooltip.setAttribute('id', 'div_tooltip');
+            this.tooltip.setAttribute('style', 'display: none; position: ' +
+                'absolute; font-size: 8pt; background-color: #F5FFF5; ' +
+                'padding: 3px; border: 1px solid #339933; border-radius: 7px;');
+            general.doc.body.appendChild(this.tooltip);
+            // на всякий случай, если останется виден
+            this.tooltip.addEventListener('click', function () {
+                var _this = this;
+                _this.style.display = 'none';
+            }, false);
+
+
+            this.tryStart();
+
+            // в НЕ JS-версии боя делаем полный лог
+            if (general.nojs) {
+                var linkFullLog = general.doc.
+                        querySelector('br+a[href*="/warlog.php?bid="]');
+
+                if (linkFullLog) {
+                    var url = 'http://www.ganjawars.ru/b0/btk.php?bid=' +
+                        (/\?bid=(\d+)/.exec(linkFullLog.href)[1]) +
+                        '&turn=-1&lines=-1';
+
+                    // удаляем все что после таблицы с логом
+                    var parnt = linkFullLog.parentNode;
+                    while (parnt.lastChild.nodeName !== 'TABLE') {
+                        parnt.removeChild(parnt.lastChild);
+                    }
+
+                    var ajax = new AjaxQuery();
+                    ajax.init(url, 'GET', null, true,  function (xhr) {
+                        var span = general.doc.createElement('span');
+                        span.innerHTML = xhr.responseText;
+                        general.doc.querySelector('tr>td>div[style=' +
+                            '"font-size:8pt"]').innerHTML =
+                            span.querySelector('#log').innerHTML;
+                    }, function () {
+                        general.root.console.log('Error XHR to: ' + url);
+                    });
+                }
+            }
         };
     };
 
