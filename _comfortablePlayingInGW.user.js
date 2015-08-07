@@ -7,6 +7,7 @@
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js
 // @include         http://www.ganjawars.ru/*
 // @include         http://quest.ganjawars.ru/*
+// @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
 // @version         1.00-050815-dev
@@ -78,7 +79,8 @@
          * @property STORAGENAME
          * @type {String}
          */
-        this.STORAGENAME = '_comfortablePlayingInGW';
+        this.STORAGENAME = (this.myID ? this.myID[2] : '') +
+                '_comfortablePlayingInGW';
         /**
          * @property imgPath
          * @type {String}
@@ -1060,31 +1062,6 @@
          */
         this.inpTextChat = null;
         /**
-         * @property markStrokeR
-         * @type {HTMLDivElement|null}
-         */
-        this.markStrokeR = null;
-        /**
-         * @property markStrokeL
-         * @type {HTMLDivElement|null}
-         */
-        this.markStrokeL = null;
-        /**
-         * @property markStrokeD
-         * @type {HTMLDivElement|null}
-         */
-        this.markStrokeD = null;
-        /**
-         * @property markStrokeGr
-         * @type {HTMLDivElement|null}
-         */
-        this.markStrokeGr = null;
-        /**
-         * @property markStrokeW
-         * @type {HTMLDivElement|null}
-         */
-        this.markStrokeW = null;
-        /**
          * @property myInfoTopPanel
          * @type {HTMLTableCellElement|null}
          */
@@ -1099,6 +1076,34 @@
          * @type {int|null}
          */
         this.intervalUpdateInpTextChat = null;
+        /**
+         * @property sayMove
+         * @type {HTMLInputElement|null}
+         */
+        this.sayMoveButton = null;
+
+        /**
+         * @method getBattleField
+         * @return  {HTMLElement}
+         */
+        this.getBattleField = function () {
+            if (general.nojs) {
+                return general.doc.querySelector('tr>td[valign="top"]' +
+                    '[class="txt"]>div[align="center"]');
+            }
+
+            return general.$('bf');
+        };
+
+        /**
+         * @method clearMarkStroke
+         */
+        this.clearMarkStroke = function () {
+            var i;
+            for (i = 0; i < 5; i++) {
+                general.$('markStroke' + i).style.display = 'none';
+            }
+        };
 
         /**
          * @method start
@@ -1108,22 +1113,193 @@
         };
 
         /**
+         * @metod getRandom1to3
+         * @return  {int}
+         */
+        this.getRandom1to3 = function () {
+            return (Math.round((Math.random() * 1000)) % 3) + 1;
+        };
+
+        /**
+         * @metod sayMove
+         */
+        this.sayMove = function () {
+            var dataSt = general.getData(4);
+            dataSt[11] = '';    // номер в кого стреляем
+            dataSt[12] = '';    // направление левой руки
+            dataSt[13] = '';    // направление правой руки
+            dataSt[14] = '';    // куда отходим
+            dataSt[15] = '';    // кидаем грену или нет
+            dataSt[16] = '';    // подходим или нет
+
+            // куда отходим
+            var def = general.doc.querySelector('input[type="radio"]' +
+                    '[name="defence"]:checked');
+            dataSt[14] = def ? (/\d/.exec(def.id)[0]) : this.getRandom1to3();
+
+            // подходим или нет
+            dataSt[16] = general.doc.querySelector('input[type="checkbox"]' +
+                    '[name="walk"]:checked') ? '1' : '';
+
+            // номер противника
+            var enemyList = general.$('euids').querySelectorAll('option'),
+                enemyNumber = '',
+                i;
+
+            for (i = 0; i < enemyList.length; i++) {
+                if (enemyList[i].selected) {
+                    enemyNumber = /^(\d+)\./.exec(enemyList[i].innerHTML)[1];
+                    break;
+                }
+            }
+            dataSt[11] = enemyNumber;
+
+            // кнопка отправки сообщения в чат
+            var writeOnChatButton = general.doc.querySelector('input' +
+                    '[type="submit"][value="Написать"]'),
+                str = '~';
+
+            // граната
+            if (general.doc.querySelector('input[type="checkbox"]' +
+                    '[name="use_grenade"]:checked')) {
+                str += general.doc.querySelector('label[for="bagaboom"]').
+                    innerHTML.replace(/: бросить/, '');
+                dataSt[15] = '1';
+                general.setData(dataSt, 4);
+                this.inpTextChat.value = str + ' в ' + enemyNumber;
+                writeOnChatButton.click();
+                return;
+            }
+
+            var leftAttack = general.doc.querySelector('input[type="radio"]' +
+                '[name^="left_attack"]:checked'),
+                rightAttack = general.doc.querySelector('input[type="radio"]' +
+                    '[name^="right_attack"]:checked');
+
+            if (!leftAttack && !rightAttack) {
+                alert('Не выбрано направление стрельбы');
+                return;
+            }
+
+            dataSt[12] = leftAttack ? (/\d/.exec(leftAttack.id)[0]) : '';
+            dataSt[13] = rightAttack ? (/\d/.exec(rightAttack.id)[0]) : '';
+
+            general.setData(dataSt, 4);
+            this.inpTextChat.value = str;
+            writeOnChatButton.click();
+        };
+
+
+        /**
+         * @method start
+         */
+        this.start = function () {
+            general.root.console.log(general.root.makebf);
+        };
+
+        /**
          * @method setChatInterface
          */
         this.setChatInterface = function () {
+            var sayOnlyMyCommand = general.doc.createElement('input');
+            sayOnlyMyCommand.setAttribute('type', 'checkbox');
+            sayOnlyMyCommand.setAttribute('style', 'margin-right: 10px;');
+            sayOnlyMyCommand.setAttribute('title', 'Сказать своей команде');
+            this.inpTextChat.parentNode.insertBefore(sayOnlyMyCommand,
+                    this.inpTextChat);
 
+            var _this = this;
+            sayOnlyMyCommand.addEventListener('click', function () {
+                var dataSt = general.getData(4),
+                    chatMessage = _this.inpTextChat.value,
+                    thisChk = this;
+
+                if (thisChk.checked) {
+                    dataSt[10] = '1';
+                    if (!(/^(~|\*|@)/.test(chatMessage))) {
+                        _this.inpTextChat.value = '~' + chatMessage;
+                    }
+
+                    // костыль после отправки сообщения в чат
+                    if (!general.nojs) {
+                        _this.intervalUpdateInpTextChat = general.root.
+                            setInterval(function () {
+                                if (!_this.inpTextChat.value) {
+                                    _this.inpTextChat.value = '~';
+                                }
+                            }, 1000);
+                    }
+                } else {
+                    dataSt[10] = '';
+                    _this.inpTextChat.value = _this.inpTextChat.value.
+                        replace(/^(~|\*|@)+/, '');
+
+                    if (_this.intervalUpdateInpTextChat) {
+                        general.root.clearInterval(_this.
+                            intervalUpdateInpTextChat);
+                    }
+                }
+
+                general.setData(dataSt, 4);
+                _this.inpTextChat.focus();
+            }, false);
+
+            if (general.getData(4)[10]) {
+                sayOnlyMyCommand.click();
+            }
+
+            // если отмечен чекбокс, символ '~' стереть будет нельзя
+            this.inpTextChat.addEventListener('input', function () {
+                var thisInp = this;
+                if (sayOnlyMyCommand.checked && !thisInp.value) {
+                    thisInp.value = '~';
+                }
+            }, false);
+
+            // кнопа "Сказать ход"
+            this.sayMoveButton = general.doc.createElement('input');
+            this.sayMoveButton.type = 'button';
+            this.sayMoveButton.value = 'Сказать ход';
+            this.sayMoveButton.setAttribute('style', 'display: none; ' +
+                    'background-color: #D0EED0; margin-right: 10px;');
+            this.sayMoveButton.addEventListener('click', this.sayMove, false);
+            sayOnlyMyCommand.parentNode.insertBefore(this.sayMoveButton,
+                    sayOnlyMyCommand);
+
+            // добавляем кнопку "Обновить"
+            var buttonUpdate = general.doc.createElement('input');
+            buttonUpdate.type = 'button';
+            buttonUpdate.value = 'Обновить';
+            buttonUpdate.setAttribute('style', 'background-color: #D0EED0;');
+
+            if (!general.nojs) {
+                buttonUpdate.setAttribute('onclick',
+                        ['javascript', ':', 'void(updatedata())'].join(''));
+            } else {
+                buttonUpdate.addEventListener('click', function () {
+                    general.root.location.reload();
+                }, false);
+            }
+
+            this.inpTextChat.parentNode.appendChild(buttonUpdate);
         };
 
         /**
          * @method changeMakebf
          */
         this.changeMakebf = function () {
+            var _this = this;
             general.root.makebf = function () {
+                /** @namespace general.root.waitforturn */
+                /** @namespace general.root.bf1 */
+                /** @namespace general.root.bf2 */
+                /** @namespace general.root.bf3 */
+                /** @namespace general.root.bfndl */
                 general.$('bf').innerHTML = !general.root.waitforturn ?
                         general.root.bf1 :
                         (general.root.bf2 + general.root.bf3);
                 general.$('bfndl').innerHTML = general.root.bfndl;
-                this.start();
+                _this.start();
             };
         };
 
@@ -1133,7 +1309,7 @@
         this.tryStart = function () {
             if (general.viewMode || general.nojs) {
                 if (general.nojs) {
-                    this.setInterfaceChat();
+                    this.setChatInterface();
                 }
 
                 this.start();
@@ -1142,12 +1318,12 @@
 
             this.inpTextChat = general.doc.querySelector('input[name="oldm"]');
             // основное поле боя
-            var bf = general.$('bf');
+            var bf = this.getBattleField();
 
             if (this.inpTextChat && bf &&
                     !(/Загружаются данные/.test(bf.innerHTML))) {
                 this.changeMakebf();
-                this.setInterfaceChat();
+                this.setChatInterface();
                 this.start();
             } else {
                 // в JS версии боя ждем загрузки фрейма с данными
@@ -1156,26 +1332,34 @@
         };
 
         /**
-         * @method createMarkStroke
-         * @return  {HTMLElement}
+         * @method createMarkStroke создает метки для генератора ходов
          */
         this.createMarkStroke = function () {
-            var div = general.doc.createElement('div');
-            div.setAttribute('style', 'display: none; position: absolute; ' +
-                'border-radius: 5px; background: #0000FF; width: 7px; ' +
-                'height: 7px; top: 0; left: 0;');
-            general.doc.body.appendChild(div);
-            return div;
+            var div, i;
+            // правая, левая, отход, грена, подходим
+            for (i = 0; i < 5; i++) {
+                div = general.doc.createElement('div');
+                div.setAttribute('id', 'markStroke' + i);
+                div.setAttribute('style', 'display: none; position: ' +
+                    'absolute; border-radius: 5px; background: #0000FF; ' +
+                    'width: 7px; height: 7px; top: 0; left: 0;');
+                general.doc.body.appendChild(div);
+            }
         };
 
         /**
          * @method init
          */
         this.init = function () {
+            if (general.root.self !== general.root.top) {
+                return;
+            }
+
             // обновление страницы, когда висим в заявке
             var refreshAppl = general.getData(4)[1];
             if (/(\/wargroup|\/warlist)\.php/.test(general.loc)) {
-                if (general.doc.querySelector('b>font[color="#990000"]')) {
+                if (general.doc.querySelector('b>font[color="#990000"]') &&
+                        refreshAppl) {
                     general.root.setTimeout(function () {
                         general.doc.querySelector('a[href*="&r="]').click();
                     }, (+refreshAppl) * 1000);
@@ -1187,6 +1371,10 @@
             if (general.viewMode) {
                 this.inpTextChat = general.doc.
                     querySelector('input[name="msg"]');
+                // бой закончился
+                if (!this.inpTextChat) {
+                    return;
+                }
             } else if (general.nojs) {
                 this.inpTextChat = general.doc.
                     querySelector('input[name="newmessage"]');
@@ -1194,12 +1382,7 @@
 
             // в бою
             if (!general.viewMode) {
-                // отметки генератора ходов
-                this.markStrokeR = this.createMarkStroke();   //правая
-                this.markStrokeL = this.createMarkStroke();   //левая
-                this.markStrokeD = this.createMarkStroke();   //отход
-                this.markStrokeGr = this.createMarkStroke();  //грена
-                this.markStrokeW = this.createMarkStroke();   //подходим
+                this.createMarkStroke();
 
                 // ячейка для вывода информации своего перса
                 var tdTop = general.doc.querySelector('td[class="txt"]' +
