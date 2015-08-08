@@ -1092,10 +1092,12 @@
          */
         this.leftRightCommands = [];
         /**
-         * @property allFighters массив объектов всех бойцов на поле
-         * @type {Array}
+         * @property allFighters
+         * @type {Object}
          */
-        this.allFighters = [];
+        // объекты всех бойцов на поле
+        // {"name": {"hp": x, ...}, "name": {...}, ... }
+        this.allFighters = {};
         /**
          * @property leftPers
          * @type {Array|null}
@@ -1275,7 +1277,6 @@
             var prnt = persLink.parentNode,
                 objPers = {};
 
-            objPers.name = persLink.textContent.replace(/&amp;/, '&');
             objPers.lvl = persLink.nextSibling.textContent;
             var allText = prnt.textContent;
             objPers.hp = /HP: \d+\/\d+/.test(allText) ?
@@ -1303,7 +1304,8 @@
                 }
             }
 
-            this.allFighters.push(objPers);
+            var name = persLink.textContent.replace(/&amp;/, '&');
+            this.allFighters[name] = objPers;
 
             // в бою и если это мой перс, то запоминаем его
             if (!general.viewMode &&
@@ -1368,6 +1370,38 @@
         };
 
         /**
+         * @method setMyInfo
+         * @param   {int}   count   количество персонажей сделавших ход
+         */
+        this.setMyInfo = function (count) {
+            // если здоровье меньше максимального, то меняем цвет
+            var color = this.myPers.hp[1] === this.myPers.hp[2] ?
+                        '#008000' : '#B84906',
+                str = '<span style="font-weight: bold; font-style: italic; ' +
+                    'color: #0000FF;">HP:</span> <span style="color: ' +
+                    color + ';">' + this.myPers.hp[1] + '</span>/' +
+                    '<span style="color: #008000; font-weight: bold;">' +
+                    this.myPers.hp[2] + '</span><span style="margin-left: ' +
+                    '20px;">урон: ' + this.myPers.damage[1] +
+                    '(<span style="font-weight: bold; color: #FF0000;">' +
+                    this.myPers.damage[2] + '</span>)</span><span ' +
+                    'style="margin-left: 20px;">видимость: <span ' +
+                    'style="font-weight: bold;">' + this.myPers.visib +
+                    '</span></span><span style="margin-left: 20px; ' +
+                    'font-weight: bold;"><span style="color: #FF0000;">' +
+                    this.leftPers.length + '</span> / <span style="color: ' +
+                    '#0000FF;">' + this.rightPers.length + '</span></span>';
+
+            if (count) {
+                str += '<span style="margin-left: 20px;">Сделали ход: ' +
+                    count + '/' +
+                    (this.leftPers.length + this.rightPers.length) + '</span>';
+            }
+
+            this.myInfoTopPanel.innerHTML = str;
+        };
+
+        /**
          * @method start
          */
         this.start = function () {
@@ -1393,7 +1427,7 @@
                     for (i = 0; i < options.length; i++) {
                         tmp = /^(\d+)\. (.+)\[\d+\]/.exec(options[i].innerHTML);
                         if (tmp) {
-                            this.enemies[tmp[2]] = tmp[1];
+                            this.enemies[tmp[2].replace(/&amp;/, '&')] = tmp[1];
                         }
                     }
 
@@ -1426,8 +1460,14 @@
             // расстановка конвертиков, номера бойца и сбор дополнительной
             // информации (если они еще не были установлены)
             if (this.leftPers[0].nextElementSibling.nodeName !== 'SPAN') {
-                this.allFighters.length = 0;
+                this.allFighters = {};
                 this.setEnvelope();
+            }
+
+            // в бою
+            if (!general.viewMode) {
+                // в бою установим свои данные вверху
+                this.setMyInfo(0);
             }
         };
 

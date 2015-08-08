@@ -1120,10 +1120,12 @@
          */
         this.leftRightCommands = [];
         /**
-         * @property allFighters массив объектов всех бойцов на поле
-         * @type {Array}
+         * @property allFighters
+         * @type {Object}
          */
-        this.allFighters = [];
+        // объекты всех бойцов на поле
+        // {"name": {"hp": x, ...}, "name": {...}, ... }
+        this.allFighters = {};
         /**
          * @property leftPers
          * @type {Array|null}
@@ -1303,7 +1305,6 @@
             var prnt = persLink.parentNode,
                 objPers = {};
 
-            objPers.name = persLink.textContent.replace(/&amp;amp;/, '&amp;');
             objPers.lvl = persLink.nextSibling.textContent;
             var allText = prnt.textContent;
             objPers.hp = /HP: \d+\/\d+/.test(allText) ?
@@ -1331,7 +1332,8 @@
                 }
             }
 
-            this.allFighters.push(objPers);
+            var name = persLink.textContent.replace(/&amp;amp;/, '&amp;');
+            this.allFighters[name] = objPers;
 
             // в бою и если это мой перс, то запоминаем его
             if (!general.viewMode &amp;&amp;
@@ -1396,6 +1398,38 @@
         };
 
         /**
+         * @method setMyInfo
+         * @param   {int}   count   количество персонажей сделавших ход
+         */
+        this.setMyInfo = function (count) {
+            // если здоровье меньше максимального, то меняем цвет
+            var color = this.myPers.hp[1] === this.myPers.hp[2] ?
+                        '#008000' : '#B84906',
+                str = '&lt;span style="font-weight: bold; font-style: italic; ' +
+                    'color: #0000FF;">HP:&lt;/span> &lt;span style="color: ' +
+                    color + ';">' + this.myPers.hp[1] + '&lt;/span>/' +
+                    '&lt;span style="color: #008000; font-weight: bold;">' +
+                    this.myPers.hp[2] + '&lt;/span>&lt;span style="margin-left: ' +
+                    '20px;">урон: ' + this.myPers.damage[1] +
+                    '(&lt;span style="font-weight: bold; color: #FF0000;">' +
+                    this.myPers.damage[2] + '&lt;/span>)&lt;/span>&lt;span ' +
+                    'style="margin-left: 20px;">видимость: &lt;span ' +
+                    'style="font-weight: bold;">' + this.myPers.visib +
+                    '&lt;/span>&lt;/span>&lt;span style="margin-left: 20px; ' +
+                    'font-weight: bold;">&lt;span style="color: #FF0000;">' +
+                    this.leftPers.length + '&lt;/span> / &lt;span style="color: ' +
+                    '#0000FF;">' + this.rightPers.length + '&lt;/span>&lt;/span>';
+
+            if (count) {
+                str += '&lt;span style="margin-left: 20px;">Сделали ход: ' +
+                    count + '/' +
+                    (this.leftPers.length + this.rightPers.length) + '&lt;/span>';
+            }
+
+            this.myInfoTopPanel.innerHTML = str;
+        };
+
+        /**
          * @method start
          */
         this.start = function () {
@@ -1421,7 +1455,7 @@
                     for (i = 0; i &lt; options.length; i++) {
                         tmp = /^(\d+)\. (.+)\[\d+\]/.exec(options[i].innerHTML);
                         if (tmp) {
-                            this.enemies[tmp[2]] = tmp[1];
+                            this.enemies[tmp[2].replace(/&amp;amp;/, '&amp;')] = tmp[1];
                         }
                     }
 
@@ -1454,8 +1488,14 @@
             // расстановка конвертиков, номера бойца и сбор дополнительной
             // информации (если они еще не были установлены)
             if (this.leftPers[0].nextElementSibling.nodeName !== 'SPAN') {
-                this.allFighters.length = 0;
+                this.allFighters = {};
                 this.setEnvelope();
+            }
+
+            // в бою
+            if (!general.viewMode) {
+                // в бою установим свои данные вверху
+                this.setMyInfo(0);
             }
         };
 
@@ -1791,13 +1831,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="general.root.bf1.html">bf1</a></li><li><a href="general.root.bf2.html">bf2</a></li><li><a href="general.root.bf3.html">bf3</a></li><li><a href="general.root.bfndl.html">bfndl</a></li><li><a href="general.root.waitforturn.html">waitforturn</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#ajaxQuery">ajaxQuery</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#changeMakebf">changeMakebf</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#checkScriptUpdate">checkScriptUpdate</a></li><li><a href="global.html#clearFields">clearFields</a></li><li><a href="global.html#clearMarkStroke">clearMarkStroke</a></li><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createMarkStroke%25D1%2581%25D0%25BE%25D0%25B7%25D0%25B4%25D0%25B0%25D0%25B5%25D1%2582%25D0%25BC%25D0%25B5%25D1%2582%25D0%25BA%25D0%25B8%25D0%25B4%25D0%25BB%25D1%258F%25D0%25B3%25D0%25B5%25D0%25BD%25D0%25B5%25D1%2580%25D0%25B0%25D1%2582%25D0%25BE%25D1%2580%25D0%25B0%25D1%2585%25D0%25BE%25D0%25B4%25D0%25BE%25D0%25B2">createMarkStroke создает метки для генератора ходов</a></li><li><a href="global.html#createRequestObject">createRequestObject</a></li><li><a href="global.html#getBattleField">getBattleField</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataFighters">getDataFighters</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getLeftRightCommands">getLeftRightCommands</a></li><li><a href="global.html#getPers">getPers</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#setButton">setButton</a></li><li><a href="global.html#setChatInterface">setChatInterface</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setEnvelope">setEnvelope</a></li><li><a href="global.html#setFilter">setFilter</a></li><li><a href="global.html#setNameInChat">setNameInChat</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setSettingsForAdvBattleAll">setSettingsForAdvBattleAll</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#tryStart">tryStart</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="general.root.bf1.html">bf1</a></li><li><a href="general.root.bf2.html">bf2</a></li><li><a href="general.root.bf3.html">bf3</a></li><li><a href="general.root.bfndl.html">bfndl</a></li><li><a href="general.root.waitforturn.html">waitforturn</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#ajaxQuery">ajaxQuery</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#changeMakebf">changeMakebf</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#checkScriptUpdate">checkScriptUpdate</a></li><li><a href="global.html#clearFields">clearFields</a></li><li><a href="global.html#clearMarkStroke">clearMarkStroke</a></li><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createMarkStroke%25D1%2581%25D0%25BE%25D0%25B7%25D0%25B4%25D0%25B0%25D0%25B5%25D1%2582%25D0%25BC%25D0%25B5%25D1%2582%25D0%25BA%25D0%25B8%25D0%25B4%25D0%25BB%25D1%258F%25D0%25B3%25D0%25B5%25D0%25BD%25D0%25B5%25D1%2580%25D0%25B0%25D1%2582%25D0%25BE%25D1%2580%25D0%25B0%25D1%2585%25D0%25BE%25D0%25B4%25D0%25BE%25D0%25B2">createMarkStroke создает метки для генератора ходов</a></li><li><a href="global.html#createRequestObject">createRequestObject</a></li><li><a href="global.html#getBattleField">getBattleField</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataFighters">getDataFighters</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getLeftRightCommands">getLeftRightCommands</a></li><li><a href="global.html#getPers">getPers</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#setButton">setButton</a></li><li><a href="global.html#setChatInterface">setChatInterface</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setEnvelope">setEnvelope</a></li><li><a href="global.html#setFilter">setFilter</a></li><li><a href="global.html#setMyInfo">setMyInfo</a></li><li><a href="global.html#setNameInChat">setNameInChat</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setSettingsForAdvBattleAll">setSettingsForAdvBattleAll</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#tryStart">tryStart</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Sat Aug 08 2015 16:04:59 GMT+0300 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Sun Aug 09 2015 02:31:46 GMT+0300 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

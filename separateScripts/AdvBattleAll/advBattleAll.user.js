@@ -254,10 +254,12 @@
          */
         this.leftRightCommands = [];
         /**
-         * @property allFighters массив объектов всех бойцов на поле
-         * @type {Array}
+         * @property allFighters
+         * @type {Object}
          */
-        this.allFighters = [];
+        // объекты всех бойцов на поле
+        // {"name": {"hp": x, ...}, "name": {...}, ... }
+        this.allFighters = {};
         /**
          * @property leftPers
          * @type {Array|null}
@@ -437,7 +439,6 @@
             var prnt = persLink.parentNode,
                 objPers = {};
 
-            objPers.name = persLink.textContent.replace(/&amp;/, '&');
             objPers.lvl = persLink.nextSibling.textContent;
             var allText = prnt.textContent;
             objPers.hp = /HP: \d+\/\d+/.test(allText) ?
@@ -465,7 +466,8 @@
                 }
             }
 
-            this.allFighters.push(objPers);
+            var name = persLink.textContent.replace(/&amp;/, '&');
+            this.allFighters[name] = objPers;
 
             // в бою и если это мой перс, то запоминаем его
             if (!general.viewMode &&
@@ -530,6 +532,133 @@
         };
 
         /**
+         * @method setMyInfo
+         * @param   {int}   count   количество персонажей сделавших ход
+         */
+        this.setMyInfo = function (count) {
+            // если здоровье меньше максимального, то меняем цвет
+            var color = this.myPers.hp[1] === this.myPers.hp[2] ?
+                        '#008000' : '#B84906',
+                str = '<span style="font-weight: bold; font-style: italic; ' +
+                    'color: #0000FF;">HP:</span> <span style="color: ' +
+                    color + ';">' + this.myPers.hp[1] + '</span>/' +
+                    '<span style="color: #008000; font-weight: bold;">' +
+                    this.myPers.hp[2] + '</span><span style="margin-left: ' +
+                    '20px;">урон: ' + this.myPers.damage[1] +
+                    '(<span style="font-weight: bold; color: #FF0000;">' +
+                    this.myPers.damage[2] + '</span>)</span><span ' +
+                    'style="margin-left: 20px;">видимость: <span ' +
+                    'style="font-weight: bold;">' + this.myPers.visib +
+                    '</span></span><span style="margin-left: 20px; ' +
+                    'font-weight: bold;"><span style="color: #FF0000;">' +
+                    this.leftPers.length + '</span> / <span style="color: ' +
+                    '#0000FF;">' + this.rightPers.length + '</span></span>';
+
+            if (count) {
+                str += '<span style="margin-left: 20px;">Сделали ход: ' +
+                    count + '/' +
+                    (this.leftPers.length + this.rightPers.length) + '</span>';
+            }
+
+            this.myInfoTopPanel.innerHTML = str;
+        };
+
+        /**
+         * @method sortEnemyList
+         */
+        this.sortEnemyList = function () {
+            var _this = this;
+            // если кнопка уже нажата (выделена жирным)
+            if (/bold/.test(_this.getAttribute('style'))) {
+                return;
+            }
+
+            var id = +(/\d/.exec(_this.id)[0]),
+                i;
+            // выделяем жирным на что нажали, остальные обычным шрифтом
+            _this.setAttribute('style', 'font-weight: bold;');
+            for (i = 0; i < 6; i++) {
+                if (i !== id) {
+                    general.$('s' + i).setAttribute('style',
+                            'cursor: pointer;');
+                }
+            }
+
+            // записываем данные в хранилище
+            var dataSt = general.getData();
+            dataSt[2] = id.toString();
+            general.setData(dataSt);
+
+            // сортируем список по возрастающей
+            var reg = /(\d+)\. \[(\d+)\][^\d]*(\d+)!? \((\d+)%\) \[(\d+) \/ (\d+)\]/,
+                select = general.$('euids'),
+                countOpt = select.options.length,
+                buff,
+                opts,
+                rez1,
+                rez2,
+                j;
+
+            for (i = 0; i < countOpt - 1; i++) {
+                for (j = 0; j < countOpt - 1; j++) {
+                    opts = select.options;
+                    rez1 = reg.exec(opts[j].innerHTML);
+                    rez2 = reg.exec(opts[j + 1].innerHTML);
+                    if (rez1 && rez2) {
+                        rez1 = +rez1[id + 1];
+                        rez2 = +rez2[id + 1];
+                        if (rez1 > rez2) {
+                            buff = select.removeChild(opts[j + 1]);
+                            select.insertBefore(buff, opts[j]);
+                        }
+                    }
+                }
+            }
+
+            // выбираем первого противника в списке
+            select.options[0].selected = true;
+        };
+
+        /**
+         * @method setSortListEnemy
+         */
+        this.setSortListEnemy = function () {
+            var walk = general.$('walk'),
+                target = general.$('euids').parentNode.parentNode.parentNode,
+                tr;
+
+            // если есть чекбокс "Подойти ближе"
+            if (walk) {
+                walk.parentNode.insertBefore(general.doc.createElement('br'),
+                        walk);
+            } else {
+                tr = general.doc.createElement('tr');
+                tr.innerHTML = '<td colspan="2" style="padding-bottom:5px;">' +
+                    '<br></td>';
+                target.parentNode.insertBefore(tr, target);
+            }
+
+            var spanSortButtons = general.doc.createElement('span');
+            spanSortButtons.setAttribute('style', 'font-size: 8pt; ' +
+                    'margin-left: 20px;');
+            spanSortButtons.innerHTML = '<span id="s0">[номер]</span> ' +
+                '<span id="s1">[лвл]</span> <span id="s2">[дальность]</span> ' +
+                '<span id="s3">[видимость]</span> <span id="s4">[HP ост.]' +
+                '</span> <span id="s5">[HP всего]</span>';
+
+            target = walk ? walk.parentNode : tr.firstElementChild;
+            target.appendChild(spanSortButtons);
+
+            var button, i;
+            for (i = 0; i < 6; i++) {
+                button = general.$('s' + i);
+                button.addEventListener('click', this.sortEnemyList, false);
+            }
+
+            general.$('s' + (general.getData()[2] || '0')).click();
+        };
+
+        /**
          * @method start
          */
         this.start = function () {
@@ -555,7 +684,7 @@
                     for (i = 0; i < options.length; i++) {
                         tmp = /^(\d+)\. (.+)\[\d+\]/.exec(options[i].innerHTML);
                         if (tmp) {
-                            this.enemies[tmp[2]] = tmp[1];
+                            this.enemies[tmp[2].replace(/&amp;/, '&')] = tmp[1];
                         }
                     }
 
@@ -588,45 +717,49 @@
             // расстановка конвертиков, номера бойца и сбор дополнительной
             // информации (если они еще не были установлены)
             if (this.leftPers[0].nextElementSibling.nodeName !== 'SPAN') {
-                this.allFighters.length = 0;
+                this.allFighters = {};
                 this.setEnvelope();
             }
 
-            // if (!viewMode) {
-            //     // в бою установим свои данные вверху
-            //     setMyinfo();
-            //
-            //     // расширяем данные в списке выбора
-            //     if (select && opt) {
-            //         flag_adv = false;
-            //         for (l = 0; l < opt.length; l++) {
-            //             // если до цели не достаем, ставим '!' после дальности
-            //             flag = /#ffe0e0/.test(opt[l].getAttribute('style')) ?
-            //                     '!' : '';
-            //
-            //             for (j = 0; j < allFighters.length; j++) {
-            //                 fighter = allFighters[j];
-            //                 if (opt[l].innerHTML.indexOf(fighter.name) !== -1) {
-            //                     opt[l].innerHTML = enemy[fighter.name] + '. ' +
-            //                         fighter.lvl +  ' - ' + fighter.dist + flag +
-            //                         ' (' + fighter.visib + ') [' + fighter.hp[1] +
-            //                         ' / ' + fighter.hp[2] +  '] ' + fighter.name +
-            //                         ': ' + fighter.weapon + ' &nbsp;';
-            //
-            //                     if (!flag_adv) {
-            //                         flag_adv = true;
-            //                     }
-            //
-            //                     break;
-            //                 }
-            //             }
-            //         }
-            //
-            //         // сортируем список выбора, если противников больше 2
-            //         // и список выбора расширен
-            //         if (opt.length > 2 && flag_adv) {
-            //             setSortListEnemy(opt);
-            //         }
+            // в бою
+            if (!general.viewMode) {
+                // в бою установим свои данные вверху
+                this.setMyInfo(0);
+
+                // расширяем данные в списке выбора
+                var enemyName, tmpObj;
+                if (selectEnemies) {
+                    for (i = 0; i < options.length; i++) {
+                        enemyName = /^\d+\. ([^\[]+)\[/.
+                            exec(options[i].innerHTML);
+
+                        if (!enemyName) {
+                            continue;
+                        }
+
+                        enemyName = enemyName[1].replace(/&amp;/, '&');
+                        tmpObj = this.allFighters[enemyName];
+
+                        if (!tmpObj) {
+                            continue;
+                        }
+
+                        options[i].innerHTML = this.enemies[enemyName] + '. ' +
+                            tmpObj.lvl + ' - ' + tmpObj.dist +
+                            // если до цели не достаем, ставим '!'
+                            (/#ffe0e0/.test(options[i].getAttribute('style')) ?
+                                    '!' : '') +
+                            ' (' + tmpObj.visib + ') [' + tmpObj.hp[1] +
+                            ' / ' + tmpObj.hp[2] +  '] ' + enemyName +
+                            ': ' + tmpObj.weapon + ' &nbsp;';
+                    }
+
+                    // сортируем список выбора
+                    this.setSortListEnemy(options);
+                }
+
+
+
             //
             //         // установка генератора ходов
             //         setGenerator();
@@ -641,7 +774,7 @@
             //             tm1 = root.setInterval(refreshBttl, refreshBattle * 1000);
             //         }
             //     }
-            // }
+            }
             //
             // // изменяем расположение бойцов, ставим тултипы и т.д.
             // changeLocationFighters();
@@ -908,7 +1041,7 @@
         };
     };
 
-    // general.myID = '2095458';
+    general.myID = '2095458';
     // general.nojs = true;
     // general.viewMode = true;
 

@@ -10,7 +10,7 @@ NEWSCRIPTNAME=$(echo ${SCRIPTNAME} | cut -d _ -f 2)
     rm -rf out/
     cp ${PROJECTPATH}${SCRIPTNAME} ${NEWSCRIPTNAME}
     {
-        ./jsdoc comfortablePlayingInGW.user.js && rm ${NEWSCRIPTNAME}
+        ./jsdoc --verbose comfortablePlayingInGW.user.js && rm ${NEWSCRIPTNAME}
     } || exit
     cp -r out/ ${PROJECTPATH}
 )
