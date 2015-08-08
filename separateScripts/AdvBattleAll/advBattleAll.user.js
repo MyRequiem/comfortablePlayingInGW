@@ -403,7 +403,7 @@
         this.getBattleField = function () {
             if (general.nojs) {
                 return general.doc.querySelector('tr>td[valign="top"]' +
-                        '[class="txt"]>div[align="center"]');
+                    '[class="txt"]>div[align="center"]');
             }
 
             return general.$('bf');

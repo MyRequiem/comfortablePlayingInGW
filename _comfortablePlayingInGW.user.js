@@ -1081,36 +1081,42 @@
          * @type {HTMLInputElement|null}
          */
         this.sayMoveButton = null;
-
         /**
-         * @method getBattleField
-         * @return  {HTMLElement}
+         * @property enemies данные из списка выбора врагов (имя --> номер)
+         * @type {Object|null}
          */
-        this.getBattleField = function () {
-            if (general.nojs) {
-                return general.doc.querySelector('tr>td[valign="top"]' +
-                    '[class="txt"]>div[align="center"]');
-            }
-
-            return general.$('bf');
-        };
-
+        this.enemies = null;
         /**
-         * @method clearMarkStroke
+         * @property leftRightCommands
+         * @type {Array}
          */
-        this.clearMarkStroke = function () {
-            var i;
-            for (i = 0; i < 5; i++) {
-                general.$('markStroke' + i).style.display = 'none';
-            }
-        };
-
+        this.leftRightCommands = [];
         /**
-         * @method start
+         * @property allFighters массив объектов всех бойцов на поле
+         * @type {Array}
          */
-        this.start = function () {
-            alert('');
-        };
+        this.allFighters = [];
+        /**
+         * @property leftPers
+         * @type {Array|null}
+         */
+        this.leftPers = null;
+        /**
+         * @property rightPers
+         * @type {Array|null}
+         */
+        this.rightPers = null;
+        /**
+         * @property myPers
+         * @type {Object|null}
+         */
+        this.myPers = null;
+        /**
+         * @property imgPath
+         * @type {String}
+         */
+        this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
+            'comfortablePlayingInGW/master/imgs/AdvBattleAll/';
 
         /**
          * @metod getRandom1to3
@@ -1189,12 +1195,240 @@
             writeOnChatButton.click();
         };
 
+        /**
+         * @method clearMarkStroke
+         */
+        this.clearMarkStroke = function () {
+            var i;
+            for (i = 0; i < 5; i++) {
+                general.$('markStroke' + i).style.display = 'none';
+            }
+        };
+
+        /**
+         * @method getLeftRightCommands
+         */
+        this.getLeftRightCommands = function () {
+            if (this.leftRightCommands.length) {
+                return;
+            }
+
+            if (general.nojs || general.viewMode) {
+                var str = general.nojs ? '[class="txt"]' : '[width="15%"]';
+                this.leftRightCommands.push(general.doc.
+                        querySelector('tr>td[valign="top"]' + str +
+                            ':first-child'));
+                this.leftRightCommands.push(general.doc.
+                        querySelector('tr>td[valign="top"]' + str +
+                            ':last-child'));
+                return;
+            }
+
+            // в JS версии боя ищем DIV'ы с бойцами явно,
+            // т.к.они меняются местами по ID
+            this.leftRightCommands.push(general.doc.querySelector('#listleft,' +
+                        '#listright'));
+            this.leftRightCommands[1] =
+                this.leftRightCommands[0].id === 'listleft' ?
+                        general.doc.querySelector('#listright') :
+                            general.doc.querySelector('#listleft');
+        };
+
+        /**
+         * @method getBattleField
+         * @return  {HTMLElement}
+         */
+        this.getBattleField = function () {
+            if (general.nojs) {
+                return general.doc.querySelector('tr>td[valign="top"]' +
+                    '[class="txt"]>div[align="center"]');
+            }
+
+            return general.$('bf');
+        };
+
+        /**
+         * @method getPers
+         * @param   {HTMLElement}   obj
+         * @return  {NodeList}
+         */
+        this.getPers = function (obj) {
+            var pers = obj.querySelectorAll('a[href*="/info.php?id="]');
+            // поки
+            if (!pers.length) {
+                pers = [];
+                var divs = obj.querySelectorAll('div'),
+                    i;
+                for (i = 0; i < divs.length; i++) {
+                    pers.push(divs[i].querySelector('b'));
+                }
+            }
+
+            return pers;
+        };
+
+        /**
+         * @method getDataFighters
+         * @param   {HTMLLinkElement}   persLink
+         */
+        this.getDataFighters = function (persLink) {
+            var prnt = persLink.parentNode,
+                objPers = {};
+
+            objPers.name = persLink.textContent.replace(/&amp;/, '&');
+            objPers.lvl = persLink.nextSibling.textContent;
+            var allText = prnt.textContent;
+            objPers.hp = /HP: \d+\/\d+/.test(allText) ?
+                    (/HP: (\d+)\/(\d+)/.exec(allText)) : '';
+            objPers.dist = /расстояние: \d+/.test(allText) ?
+                    (/расстояние: (\d+)/.exec(allText)[1]) : '';
+            objPers.visib = /видимость: \d+%/.test(allText) ?
+                    (/видимость: (\d+%)/.exec(allText)[1]) : '';
+            objPers.power = /мощность: \d+/.test(allText) ?
+                    (/мощность: (\d+)/.exec(allText)[1]) : '';
+
+            // оружие (для заполнения списка выбора врагов)
+            objPers.weapon = '';
+            // оружие и амуниция
+            objPers.allWeapon = '';
+            var allAmmunition = prnt.querySelectorAll('a[href*=' +
+                    '"/item.php?item_id="]'),
+                i;
+
+            // у поков ссылок на амуницию нет
+            if (allAmmunition.length) {
+                objPers.weapon = allAmmunition[0].innerHTML;
+                for (i = 0; i < allAmmunition.length; i++) {
+                    objPers.allWeapon += '<li>' + allAmmunition[i].innerHTML;
+                }
+            }
+
+            this.allFighters.push(objPers);
+
+            // в бою и если это мой перс, то запоминаем его
+            if (!general.viewMode &&
+                    persLink.href.indexOf('?id=' + general.myID) !== -1) {
+                this.myPers = objPers;
+                this.myPers.damage = /урон: (\d+) \((\d+)\)/.exec(allText);
+            }
+        };
+
+        /**
+         * @method setNameInChat
+         */
+        this.setNameInChat = function (persName) {
+            var _this = this;
+            return function () {
+                _this.inpTextChat.value += persName + ': ';
+                _this.inpTextChat.focus();
+            };
+        };
+
+        /**
+         * @method setEnvelope
+         */
+        this.setEnvelope = function () {
+            var mass = [this.leftPers, this.rightPers],
+                number,
+                before,
+                name,
+                span,
+                env,
+                j,
+                i;
+
+            for (i = 0; i < 2; i++) {
+                for (j = 0; j < mass[i].length; j++) {
+                    name = mass[i][j].textContent;
+                    this.getDataFighters(mass[i][j]);
+                    // конвертики и номера покам не нужны
+                    if (mass[i][j].nodeName === 'B') {
+                        continue;
+                    }
+
+                    number = '';
+                    // в режиме наблюдения номера бойцов не нужны
+                    if (this.enemies && !general.viewMode) {
+                        number = this.enemies[name] ?
+                                ' <span style="font-weight: bold;">' +
+                                    this.enemies[name] + '.</span> ' : '';
+                    }
+
+                    env = ' <img src="' + this.imgPath + 'envelope.gif" ' +
+                        'style="width: 15px; cursor: pointer;"> ';
+
+                    span = general.doc.createElement('span');
+                    span.innerHTML = !i ? number + env : env + number;
+                    before = !i ? mass[i][j].nextElementSibling : mass[i][j];
+                    mass[i][j].parentNode.insertBefore(span, before);
+                    span.querySelector('img').addEventListener('click',
+                            this.setNameInChat(name), false);
+                }
+            }
+        };
 
         /**
          * @method start
          */
         this.start = function () {
-            general.root.console.log(general.root.makebf);
+            // сразу скрываем тултип (на всякий случай, если остался)
+            this.tooltip.style.display = 'none';
+
+            var selectEnemies = general.$('euids'),
+                dataSt = general.getData(4),
+                options,
+                i;
+
+            // в бою
+            if (!general.viewMode) {
+                // очищаем индикаторы ходов
+                this.clearMarkStroke();
+
+                // если есть список выбора врагов (ход не сделан)
+                if (selectEnemies) {
+                    var tmp;
+                    // обнуляем хэш из выпадающего списка врагов (имя --> номер)
+                    this.enemies = {};
+                    options = selectEnemies.querySelectorAll('option');
+                    for (i = 0; i < options.length; i++) {
+                        tmp = /^(\d+)\. (.+)\[\d+\]/.exec(options[i].innerHTML);
+                        if (tmp) {
+                            this.enemies[tmp[2]] = tmp[1];
+                        }
+                    }
+
+                    if (general.nojs) {
+                        dataSt[17] = JSON.stringify(this.enemies);
+                        general.setData(dataSt, 4);
+                    }
+                // НЕ JS-версия, ход сделан
+                } else if (general.nojs) {
+                    this.enemies = dataSt[17] ? JSON.parse(dataSt[17]) : null;
+                    // нет записи в хранилище
+                    if (!this.enemies) {
+                        return;
+                    }
+                } else if (!this.enemies) {
+                    return;
+                }
+
+            } else {    // в режиме наблюдения за боем
+                dataSt[17] = '';    // удаляем данные из списка врагов
+                general.setData(dataSt, 4);
+            }
+
+            this.getLeftRightCommands();
+
+            // ссылки на персов слева и справа
+            this.leftPers = this.getPers(this.leftRightCommands[0]);
+            this.rightPers = this.getPers(this.leftRightCommands[1]);
+
+            // расстановка конвертиков, номера бойца и сбор дополнительной
+            // информации (если они еще не были установлены)
+            if (this.leftPers[0].nextElementSibling.nodeName !== 'SPAN') {
+                this.allFighters.length = 0;
+                this.setEnvelope();
+            }
         };
 
         /**
@@ -1220,7 +1454,7 @@
                         _this.inpTextChat.value = '~' + chatMessage;
                     }
 
-                    // костыль после отправки сообщения в чат
+                    // костыль после отправки сообщения в чат в JS-версии
                     if (!general.nojs) {
                         _this.intervalUpdateInpTextChat = general.root.
                             setInterval(function () {
@@ -1408,7 +1642,6 @@
                 var _this = this;
                 _this.style.display = 'none';
             }, false);
-
 
             this.tryStart();
 
