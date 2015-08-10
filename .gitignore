@@ -1,2 +1,9 @@
+# WebStorm, PhpStorm
 .idea/
+
+# Vim
+*.swp
+*.swo
+*.netrwhist
+tags
 
