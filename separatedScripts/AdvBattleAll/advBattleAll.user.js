@@ -9,7 +9,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         3.0-060815
+// @version         3.0-110815
 // @author          MyRequiem
 // ==/UserScript==
 
@@ -20,15 +20,41 @@
     nomen: true, regexp: true, continue: true
 */
 
+/* localStorage data
+    # настройки
+    # основные данные скрипта
+    [0]  - метод сортировки списка врагов ('', 1 - 5)
+    [1]  - случайный ход или запоминать ход ('', 1, 2)
+    [2]  - дублировать противника или нет
+    # последний сделаный ход (если включено "запомнить ход")
+    [3]  - левая
+    [4]  - правая
+    [5]  - куда отходим
+    [6]  - кидаем грену или нет
+    [7]  - подходим или нет
+    [8] - чекбокс <Сказать своей команде>
+    # запоминаем ход в хранилище перед тем как сказать ход
+    [9] - номер в кого стреляем
+    [10] - направление левой руки
+    [11] - направление правой руки
+    [12] - куда отходим
+    [13] - кидаем грену или нет
+    [14] - подходим или нет
+    [15] - данные из списка выбора врагов (хэш: имя --> номер)
+*/
+
 (function () {
     'use strict';
 
     //=============НАСТРОЙКИ====================
-        // обновление заявки после входа в нее (в секундах)
-        // 0 - таймаут обновления игровой по умолчанию (20 сек)
-    var refreshAppl = 0;
-        // обновление страницы после того, как сделали ход (в секундах)
-        // refreshBattle = 0;
+        /* НЕ СТАВИТЬ ЗНАЧЕНИЯ МЕНЕЕ 3 СЕКУНД !!!
+
+        обновление заявки после входа в нее (в секундах)
+        0 - таймаут обновления игровой по умолчанию (20 сек) */
+    var refreshAppl = 0,
+        /* обновление страницы после того, как сделали ход (в секундах)
+        0 - таймаут по умолчанию, который выставлен в настройках персонажа */
+        refreshBattle = 0;
     //=============КОНЕЦ НАСТРОЕК===============
 
     /**
@@ -153,14 +179,10 @@
         /**
          * @method ajaxQuery
          * @param   {String}        url
-         * @param   {String}        rmethod
-         * @param   {String|null}   param
-         * @param   {Boolean}       async
          * @param   {Function}      onsuccess
          * @param   {Function}      onfailure
          */
-        this.init = function (url, rmethod, param, async, onsuccess,
-                onfailure) {
+        this.init = function (url, onsuccess, onfailure) {
             var xmlHttpRequest = this.createRequestObject();
 
             if (!xmlHttpRequest) {
@@ -168,46 +190,30 @@
                 return;
             }
 
-            xmlHttpRequest.open(rmethod, url, async);
+            xmlHttpRequest.open('GET', url, true);
+            xmlHttpRequest.send(null);
 
-            if (rmethod === 'POST') {
-                xmlHttpRequest.setRequestHeader('Content-Type',
-                    'application/x-www-form-urlencoded');
-            }
+            var timeout = general.root.setTimeout(function () {
+                xmlHttpRequest.abort();
+            }, 10000);
 
-            xmlHttpRequest.send(param);
+            xmlHttpRequest.onreadystatechange = function () {
+                if (xmlHttpRequest.readyState !== 4) {
+                    return;
+                }
 
-            if (async) {
-                var timeout = general.root.setTimeout(function () {
-                    xmlHttpRequest.abort();
-                }, 10000);
-
-                xmlHttpRequest.onreadystatechange = function () {
-                    if (xmlHttpRequest.readyState !== 4) {
-                        return;
-                    }
-
-                    clearTimeout(timeout);
-                    if (xmlHttpRequest.readyState === 4 &&
-                            xmlHttpRequest.status === 200 && onsuccess) {
-                        onsuccess(xmlHttpRequest);
-                    } else {
-                        if (xmlHttpRequest.readyState === 4 &&
-                                xmlHttpRequest.status !== 200 &&
-                                    onfailure) {
-                            onfailure(xmlHttpRequest);
-                        }
-                    }
-                };
-            } else {
-                if (xmlHttpRequest.status === 200 && onsuccess) {
+                clearTimeout(timeout);
+                if (xmlHttpRequest.readyState === 4 &&
+                        xmlHttpRequest.status === 200 && onsuccess) {
                     onsuccess(xmlHttpRequest);
                 } else {
-                    if (xmlHttpRequest.status !== 200 && onfailure) {
+                    if (xmlHttpRequest.readyState === 4 &&
+                            xmlHttpRequest.status !== 200 &&
+                                onfailure) {
                         onfailure(xmlHttpRequest);
                     }
                 }
-            }
+            };
         };
     };
 
@@ -304,6 +310,16 @@
          */
         this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
             'comfortablePlayingInGW/master/imgs/AdvBattleAll/';
+        /**
+         * @property tmRefreshBattle
+         * @type {int}
+         */
+        this.tmRefreshBattle = 0;
+        /**
+         * @property graphTable
+         * @type {HTMLTableElement|null}
+         */
+        this.graphTable = null;
 
         /**
          * @metod getRandom1to3
@@ -318,12 +334,12 @@
          */
         this.clearSavedStrokeAfterSay = function () {
             var dataSt = general.getData();
+            dataSt[9] = '';
+            dataSt[10] = '';
             dataSt[11] = '';
             dataSt[12] = '';
             dataSt[13] = '';
             dataSt[14] = '';
-            dataSt[15] = '';
-            dataSt[16] = '';
             general.setData(dataSt);
         };
 
@@ -338,10 +354,10 @@
                     '[name="defence"]:checked'),
                 dataSt = general.getData();
 
-            dataSt[14] = def ? (/\d/.exec(def.id)[0]) : _this.getRandom1to3();
+            dataSt[12] = def ? (/\d/.exec(def.id)[0]) : _this.getRandom1to3();
 
             // подходим или нет
-            dataSt[16] = general.doc.querySelector('input[type="checkbox"]' +
+            dataSt[14] = general.doc.querySelector('input[type="checkbox"]' +
                     '[name="walk"]:checked') ? '1' : '';
 
             // номер противника
@@ -356,7 +372,7 @@
                     break;
                 }
             }
-            dataSt[11] = enemy[1];
+            dataSt[9] = enemy[1];
 
             // кнопка отправки сообщения в чат
             var writeOnChatButton = general.doc.querySelector('input' +
@@ -368,7 +384,7 @@
                     '[name="use_grenade"]:checked')) {
                 str += general.doc.querySelector('label[for="bagaboom"]').
                     innerHTML.replace(/: бросить/, '');
-                dataSt[15] = '1';
+                dataSt[13] = '1';
                 general.setData(dataSt);
                 _this.inpTextChat.value = str + ' в ' + enemy[1] +
                     ' [' + enemy[2] + ' ]';
@@ -386,18 +402,18 @@
                 return;
             }
 
-            dataSt[12] = leftAttack ? (/\d/.exec(leftAttack.id)[0]) : '';
-            dataSt[13] = rightAttack ? (/\d/.exec(rightAttack.id)[0]) : '';
+            dataSt[10] = leftAttack ? (/\d/.exec(leftAttack.id)[0]) : '';
+            dataSt[11] = rightAttack ? (/\d/.exec(rightAttack.id)[0]) : '';
 
             general.setData(dataSt);
             str += enemy[1] + ' [' + enemy[2] + '] ';
-            if (dataSt[13]) {
-                str += dataSt[13] === '1' ? 'ле' :
-                        dataSt[13] === '2' ? 'ц' : 'пр';
+            if (dataSt[11]) {
+                str += dataSt[11] === '1' ? 'ле' :
+                        dataSt[11] === '2' ? 'ц' : 'пр';
             }
             if (dataSt[12]) {
-                str += dataSt[12] === '1' ? ' ле' :
-                        dataSt[12] === '2' ? ' ц' : ' пр';
+                str += dataSt[10] === '1' ? ' ле' :
+                        dataSt[10] === '2' ? ' ц' : ' пр';
             }
 
             _this.inpTextChat.value = str;
@@ -518,6 +534,7 @@
             if (!general.viewMode &&
                     persLink.href.indexOf('?id=' + general.myID) !== -1) {
                 this.myPers = objPers;
+                this.myPers.name = name;
                 this.myPers.damage = /урон: (\d+) \((\d+)\)/.exec(allText);
             }
         };
@@ -631,7 +648,7 @@
 
             // записываем данные в хранилище
             var dataSt = general.getData();
-            dataSt[2] = id.toString();
+            dataSt[0] = id.toString();
             general.setData(dataSt);
 
             // сортируем список по возрастающей
@@ -700,7 +717,7 @@
                 button.addEventListener('click', this.sortEnemyList, false);
             }
 
-            general.$('s' + (general.getData()[2] || '0')).click();
+            general.$('s' + (general.getData()[0] || '0')).click();
         };
 
         /**
@@ -736,15 +753,15 @@
 
             switch (markId) {
             case '0':
-                elem = general.$('right_attack' + (x || dataSt[13]));
+                elem = general.$('right_attack' + (x || dataSt[11]));
                 break;
 
             case '1':
-                elem = general.$('left_attack' + (y || dataSt[12]));
+                elem = general.$('left_attack' + (y || dataSt[10]));
                 break;
 
             case '2':
-                elem = general.$('defence' + (z || dataSt[14]));
+                elem = general.$('defence' + (z || dataSt[12]));
                 break;
 
             case '3':
@@ -781,9 +798,9 @@
 
             // если в хранилище есть запись в кого стреляли
             // (сказали ход), то устанавливаем именно его
-            if (dataSt[11]) {
+            if (dataSt[9]) {
                 var options = general.$('euids').querySelectorAll('option'),
-                    reg = new RegExp('^' + dataSt[11] + '\\.'),
+                    reg = new RegExp('^' + dataSt[9] + '\\.'),
                     i;
 
                 for (i = 0; i < options.length; i++) {
@@ -794,7 +811,7 @@
                 }
 
                 // если грена
-                if (dataSt[15]) {
+                if (dataSt[13]) {
                     this.setMarkStroke('3', false);
                 } else {
                     this.setMarkStroke('0', false);
@@ -804,7 +821,7 @@
                 // куда отходим
                 this.setMarkStroke('2', false);
                 // подходим или нет
-                if (dataSt[16]) {
+                if (dataSt[14]) {
                     this.setMarkStroke('4', false);
                 }
 
@@ -813,7 +830,7 @@
             }
 
             // устанавливаем последний сохраненный ход
-            if (dataSt[3] === '2') {
+            if (dataSt[1] === '2') {
                 alert('lastSavedStroke');
                 // data = st.getItem('adv_battle_' + myId).split('|');
                 // elem = _$('left_attack' + data[3]);
@@ -895,11 +912,11 @@
                     chkRememberStroke.checked = false;
                     goButton.setAttribute('href',
                             ['javascript', ':', 'void(fight())'].join(''));
-                    dataSt[3] = '1';
+                    dataSt[1] = '1';
                     general.setData(dataSt);
                     _this.setStroke();
                 } else {
-                    dataSt[3] = '';
+                    dataSt[1] = '';
                     general.setData(dataSt);
                     _this.clearMarkStroke();
                 }
@@ -914,13 +931,13 @@
                     chkRandomStroke.checked = false;
                     goButton.setAttribute('href',
                             ['javascript', ':', 'void(fight_mod())'].join(''));
-                    dataSt[3] = '2';
+                    dataSt[1] = '2';
                     general.setData(dataSt);
                     _this.setStroke();
                 } else {
                     goButton.setAttribute('href',
                             ['javascript', ':', 'void(fight())'].join(''));
-                    dataSt[3] = '';
+                    dataSt[1] = '';
                     general.setData(dataSt);
                     _this.clearMarkStroke();
                 }
@@ -930,7 +947,7 @@
                 var dataSt = general.getData(),
                     thischk = this;
 
-                dataSt[4] = thischk.checked ? '1' : '';
+                dataSt[2] = thischk.checked ? '1' : '';
                 general.setData(dataSt);
             }, false);
 
@@ -947,18 +964,395 @@
             // setHandlerSubmit();
 
             var dataSt = general.getData();
-            if (dataSt[4]) {
+            if (dataSt[2]) {
                 chkNoDuplicateTarget.click();
             }
 
             // если сказали ход, то будет запись в хранилище
-            if (dataSt[11]) {
+            if (dataSt[9]) {
                 this.setStroke();
-            } else if (dataSt[3] === '1') {
+            } else if (dataSt[1] === '1') {
                 chkRandomStroke.click();
-            } else if (dataSt[3] === '2') {
+            } else if (dataSt[1] === '2') {
                 chkRememberStroke.click();
             }
+        };
+
+        /**
+         * @method refreshBtl
+         */
+        this.refreshBtl = function () {
+            var updateButton = general.$('updateBattleField');
+            if (updateButton) {
+                updateButton.click();
+            }
+        };
+
+        /**
+         * @method changeSelectEnemies
+         */
+        this.changeSelectEnemies = function () {
+            var select = general.$('euids'),
+                span = general.$('spanCheckRange'),
+                i;
+
+            for (i = 0; i < select.options.length; i++) {
+                if (select.options[i].selected) {
+                    span.setAttribute('style', /!/.
+                        test(select.options[i].innerHTML) ?
+                                'color: #FF0000;' : '');
+                    break;
+                }
+            }
+        };
+
+        /**
+         * @method clickImageFighters
+         * @param   {Object}   opt
+         * @param   {Object}    _this
+         */
+        this.clickImageFighters = function (opt, _this) {
+            return function () {
+                opt.selected = true;
+                _this.changeSelectEnemies();
+            };
+        };
+
+        /**
+         * @method showTooltip
+         * @param   {String}    ttl
+         * @param   {Object}    _this
+         */
+        this.showTooltip = function (ttl, _this) {
+            return function () {
+                var bf = _this.getBattleField(),
+                    getPos = new GetPos(),
+                    obj;
+
+                // относительно чего будем выравнивать тултип
+                if (general.viewMode) {
+                    obj = {
+                        x: _this.leftRightCommands[0].
+                            nextElementSibling.lastElementChild,
+                        y: 14
+                    };
+                } else if (general.nojs &&
+                        (/Ждём ход противника/.test(bf.innerHTML))) {
+                    obj = {x: bf, y: 0};
+                } else {
+                    obj = {x: _this.inpTextChat, y: 20};
+                }
+
+                _this.tooltip.innerHTML = ttl;
+                _this.tooltip.style.top = getPos.init(obj.x).y - obj.y;
+                _this.tooltip.style.left = getPos.init(this).x - 50;
+                _this.tooltip.style.display = '';
+            };
+        };
+
+        /**
+         * @method hideTooltip
+         * @param   {Object}    _this
+         */
+        this.hideTooltip = function (_this) {
+            return function () {
+                _this.tooltip.style.display = 'none';
+            };
+        };
+
+        /**
+         * @method setTooltipsFighters
+         * @param   {HTMLTableElement}  table
+         */
+        this.setTooltipsFighters = function (table) {
+            var selectEnemy = general.$('euids'),
+                _this = this;
+            // помещаем "Противник:" (слева от селекта) в span
+            // если не достаем до выбранного противника,
+            // то эта надпись будет красной
+            if (selectEnemy) {
+                selectEnemy.parentNode.removeChild(selectEnemy.previousSibling);
+                var spanCheckRange = general.doc.createElement('span');
+                spanCheckRange.setAttribute('id', 'spanCheckRange');
+                spanCheckRange.innerHTML = 'Противник: ';
+                selectEnemy.parentNode.insertBefore(spanCheckRange, selectEnemy);
+                selectEnemy.addEventListener('change', function () {
+                    _this.changeSelectEnemies();
+                }, false);
+                this.changeSelectEnemies();
+            }
+
+            var options = selectEnemy ?
+                    selectEnemy.querySelectorAll('option') : false,
+                img = table.querySelectorAll('img'),
+                txtOptions,
+                ttlName,
+                visib,
+                pers,
+                name,
+                ttl,
+                i,
+                j;
+
+            for (i = 0; i < img.length; i++) {
+                ttl = img[i].getAttribute('title');
+                if (!ttl || !(/(.*) \[\d+/.test(ttl))) {
+                    continue;
+                }
+
+                ttlName = /(.*) \[\d+/.exec(ttl)[1].replace(/&amp;/, '&');
+                // если есть список выбора врага (ход не сделан)
+                if (options) {
+                    // opt = false;
+                    for (j = 0; j < options.length; j++) {
+                        txtOptions = options[j].innerHTML.replace(/&amp;/, '&');
+                        if (txtOptions.indexOf(ttlName) !== -1) {
+                            // кликаем по картинке, выбираем цель
+                            img[i].setAttribute('style', 'cursor: pointer;');
+                            img[i].addEventListener('click',
+                                    this.clickImageFighters(options[j], this),
+                                        false);
+                            break;
+                        }
+                    }
+                }
+
+                for (name in this.allFighters) {
+                    if (this.allFighters.hasOwnProperty(name) &&
+                            name === ttlName) {
+                        pers = this.allFighters[name];
+                        ttl = '<span style="font-weight: bold;">' +
+                            (general.viewMode ? '' : this.enemies[name] ?
+                                    this.enemies[name] + '. ' : '') +
+                            '<span style="color: #0000FF;">' + pers.lvl +
+                            '</span>' + name + ' [' + pers.hp[1] + '/' +
+                            pers.hp[2] + ']</span><div style="color: ' +
+                            '#b85006; margin-left: 15px;">Видимость: ' +
+                            pers.visib + '<br><span style="color: #000000;">' +
+                            'Мощность: ' + pers.power + '</span></div><div>' +
+                            pers.allWeapon + '</div>';
+
+                        // прозрачность перса в зависимости от его видимости
+                        visib = +(/\d+/.exec(pers.visib)[0]);
+                        visib = (visib / 100).toFixed(1);
+                        if (visib < 0.3) {
+                            visib = 0.3;
+                        }
+
+                        img[i].setAttribute('style',
+                            img[i].getAttribute('style') + 'opacity: ' +
+                                visib + ';');
+                        break;
+                    }
+                }
+
+                // показываем тултип
+                img[i].addEventListener('mouseover',
+                    this.showTooltip(ttl, this), false);
+                // скрываем тултип
+                img[i].addEventListener('mouseout',
+                        this.hideTooltip(this), false);
+
+                // удаляем оригинальный title
+                img[i].removeAttribute('title');
+            }
+        };
+
+        /**
+         * @method isEven
+         * @param   {int}   x
+         */
+        this.isEven = function (x) {
+            return x % 2 === 0;
+        };
+
+        /**
+         * @method changeLocationFighters
+         */
+        this.changeLocationFighters = function () {
+            var table;
+            if (!general.viewMode) {
+                var bf = this.getBattleField();
+                // если ход сделан, то вставляем сохраненную таблицу в JS-версии
+                if (/Ждём ход противника/i.test(bf.innerHTML)) {
+                    if (this.graphTable && !general.nojs) {
+                        var target = bf.querySelector('a').parentNode;
+                        target.appendChild(general.doc.createElement('br'));
+                        target.appendChild(general.doc.createElement('br'));
+                        target.appendChild(this.graphTable);
+                        target.appendChild(general.doc.createElement('br'));
+                        this.setTooltipsFighters(this.graphTable);
+                        return;
+                    }
+
+                    if (general.nojs) {
+                        table = bf.previousElementSibling.
+                                    previousElementSibling;
+                    }
+                } else {    // ход не сделан
+                    if (general.nojs) {
+                        table = bf.querySelector('table').
+                            nextElementSibling.nextElementSibling;
+                    } else {
+                        table = bf.querySelector('div>table:last-child');
+                    }
+                }
+            } else {
+                table = this.leftRightCommands[0].nextElementSibling.
+                    lastElementChild.previousElementSibling;
+            }
+
+            table.setAttribute('style', 'border-collapse: collapse;');
+            table.setAttribute('background', this.imgPath + 'battleField.gif');
+
+            // вставим пустую строку после таблицы
+            // (в НЕ JS-версии уже есть)
+            if (!general.viewMode && !general.nojs) {   // JS-версия
+                table.parentNode.appendChild(general.doc.createElement('br'));
+            } else if (general.viewMode) {
+                table.parentNode.insertBefore(general.doc.createElement('br'),
+                    table.nextElementSibling);
+            }
+
+            var reg = /\/(left|right)_.*\.gif/,
+                td = table.querySelectorAll('td'),
+                leftDC = -1,
+                rightDC = -1,
+                divBattleField,
+                diffCommand,
+                trNumbers,
+                tdNumber,
+                cloneTd,
+                myInd,
+                even,
+                divL,
+                divR,
+                flag,
+                img,
+                DC,
+                i,
+                j;
+
+            for (i = 0; i < td.length; i++) {
+                td[i].setAttribute('style', 'border: 1px dotted #FFFFFF; ' +
+                        'vertical-align: center;');
+                // если в "TD" нет картинки перса
+                if (!td[i].querySelector('img').getAttribute('title')) {
+                    continue;
+                }
+
+                cloneTd = td[i].cloneNode(true);
+                td[i].innerHTML = '';
+                img = cloneTd.querySelectorAll('img');
+
+                // узнаем есть ли в ячейке бойцы из разных команд
+                diffCommand = false;
+                for (j = 0; j < img.length - 1; j++) {
+                    // берем из атрибута srs 'left' или 'right'
+                    if (reg.exec(img[j].src)[1] !==
+                            reg.exec(img[j + 1].src)[1]) {
+                        diffCommand = true;
+                        break;
+                    }
+                }
+
+                flag = false;
+                for (j = 0; j < img.length; j++) {
+                    // ячейка где находится мой перс
+                    if (!general.viewMode && img[j].getAttribute('title').
+                            indexOf(this.myPers.name) !== -1) {
+                        myInd = -1 * i;
+                    }
+
+                    // крайний левый и крайний правый персонаж от центра
+                    if (reg.exec(img[j].src)[1] === 'left') {
+                        leftDC = i;
+                    } else if (rightDC === -1) {
+                        rightDC = i;
+                    }
+
+                    divBattleField = general.doc.createElement('div');
+                    divBattleField.setAttribute('style', 'padding: 2px;');
+
+                    if (!diffCommand) {
+                        td[i].appendChild(divBattleField);
+                        td[i].lastElementChild.appendChild(img[j].
+                            cloneNode(true));
+                    } else {
+                        if (!flag) {
+                            divL = general.doc.createElement('div');
+                            divL.setAttribute('style',
+                                    'display: inline-block;');
+                            td[i].appendChild(divL);
+                            divR = general.doc.createElement('div');
+                            divR.setAttribute('style',
+                                    'display: inline-block;');
+                            td[i].appendChild(divR);
+                            flag = true;
+                        }
+
+                        divBattleField.appendChild(img[j].cloneNode(true));
+                        if (reg.exec(img[j].src)[1] === 'left') {
+                            td[i].firstElementChild.appendChild(divBattleField);
+                        } else {
+                            td[i].lastElementChild.appendChild(divBattleField);
+                        }
+                    }
+                }
+            }
+
+            DC = Math.abs(leftDC - rightDC);
+            even = this.isEven(DC);
+            DC = even ? (leftDC + DC / 2) : (leftDC + Math.floor(DC / 2));
+
+            // если нет изображения моего перса на поле боя (бывает такой глюк)
+            // будем отсчитывать от динамического центра
+            if (isNaN(myInd)) {
+                myInd = -1 * DC;
+            }
+
+            // расставляем дальность и ДЦ
+            trNumbers = general.doc.createElement('tr');
+            table.firstElementChild.insertBefore(trNumbers,
+                    table.firstElementChild.firstElementChild);
+
+            for (i = 0; i < td.length; i++) {
+                tdNumber = general.doc.createElement('td');
+                trNumbers.appendChild(tdNumber);
+
+                tdNumber.innerHTML = Math.abs(myInd);
+                // если индекс нулевой (там где я стою) то цвет синий
+                if (myInd) {
+                    tdNumber.setAttribute('style',
+                        'text-align: center; font-size: 7pt; border: 1px ' +
+                        'dotted #FFFFFF;');
+                } else {
+                    tdNumber.setAttribute('style', 'text-align: center; ' +
+                        'font-size: 8pt; color :#0000FF; font-weight: bold; ' +
+                        'border: 1px dotted #FFFFFF;');
+                }
+
+                myInd++;
+
+                if (i !== DC) {
+                    continue;
+                }
+
+                tdNumber.setAttribute('style', 'text-align: center; ' +
+                    'font-size: 8pt; color: #FF0000; font-weight: bold; ' +
+                    'border: 1px dotted #FFFFFF;');
+
+                if (!even) {
+                    DC++;
+                    even = true;
+                }
+            }
+
+            if (!general.viewMode && !general.nojs) {
+                this.graphTable = table.cloneNode(true);
+            }
+
+            this.setTooltipsFighters(table);
         };
 
         /**
@@ -980,6 +1374,10 @@
 
                 // если есть список выбора врагов (ход не сделан)
                 if (selectEnemies) {
+                    if (this.tmRefreshBattle) {
+                        general.root.clearTimeout(this.tmRefreshBattle);
+                    }
+
                     var tmp;
                     // обнуляем хэш из выпадающего списка врагов (имя --> номер)
                     this.enemies = {};
@@ -992,12 +1390,12 @@
                     }
 
                     if (general.nojs) {
-                        dataSt[17] = JSON.stringify(this.enemies);
+                        dataSt[15] = JSON.stringify(this.enemies);
                         general.setData(dataSt);
                     }
                 // НЕ JS-версия, ход сделан
                 } else if (general.nojs) {
-                    this.enemies = dataSt[17] ? JSON.parse(dataSt[17]) : null;
+                    this.enemies = dataSt[15] ? JSON.parse(dataSt[15]) : null;
                     // нет записи в хранилище
                     if (!this.enemies) {
                         return;
@@ -1007,7 +1405,7 @@
                 }
 
             } else {    // в режиме наблюдения за боем
-                dataSt[17] = '';    // удаляем данные из списка врагов
+                dataSt[15] = '';    // удаляем данные из списка врагов
                 general.setData(dataSt);
             }
 
@@ -1069,23 +1467,25 @@
                     // прячем кнопку "Сказать ход"
                     this.sayMoveButton.style.display = 'none';
                     // обновляем данные в бою
-                    //if (general.getData()[0] && !tm1) {
-                    //    tm1 = root.setInterval(refreshBttl, refreshBattle * 1000);
-                    //}
+                    if (refreshBattle && !this.tmRefreshBattle) {
+                        this.tmRefreshBattle = general.root.
+                            setInterval(this.refreshBtl,
+                                    (+refreshBattle) * 1000);
+                    }
                 }
             }
 
             this.clearSavedStrokeAfterSay();
 
-            // // изменяем расположение бойцов, ставим тултипы и т.д.
-            // changeLocationFighters();
+            // изменяем расположение бойцов, ставим тултипы и т.д.
+            this.changeLocationFighters();
             //
             // // в JS-версии боя подсвечиваем персонажей, которые уже сделали ход
             // // в обоих весиях боя устанавливаем вверху количество персонажей,
             // // сделавших ход
             // if (!viewMode && !tm) {
             //     setColorFighters();
-            //     tm = root.setInterval(setColorFighters, 3000);
+            //     tm = general.root.setInterval(setColorFighters, 3000);
             // }
         };
 
@@ -1107,7 +1507,7 @@
                     thisChk = this;
 
                 if (thisChk.checked) {
-                    dataSt[10] = '1';
+                    dataSt[8] = '1';
                     if (!(/^(~|\*|@)/.test(chatMessage))) {
                         _this.inpTextChat.value = '~' + chatMessage;
                     }
@@ -1122,7 +1522,7 @@
                             }, 1000);
                     }
                 } else {
-                    dataSt[10] = '';
+                    dataSt[8] = '';
                     _this.inpTextChat.value = _this.inpTextChat.value.
                         replace(/^(~|\*|@)+/, '');
 
@@ -1136,7 +1536,7 @@
                 _this.inpTextChat.focus();
             }, false);
 
-            if (general.getData()[10]) {
+            if (general.getData()[8]) {
                 sayOnlyMyCommand.click();
             }
 
@@ -1162,6 +1562,7 @@
 
             // добавляем кнопку "Обновить"
             var buttonUpdate = general.doc.createElement('input');
+            buttonUpdate.setAttribute('id', 'updateBattleField');
             buttonUpdate.type = 'button';
             buttonUpdate.value = 'Обновить';
             buttonUpdate.setAttribute('style', 'background-color: #D0EED0;');
@@ -1331,7 +1732,7 @@
                     }
 
                     var ajax = new AjaxQuery();
-                    ajax.init(url, 'GET', null, true,  function (xhr) {
+                    ajax.init(url,  function (xhr) {
                         var span = general.doc.createElement('span');
                         span.innerHTML = xhr.responseText;
                         general.doc.querySelector('tr>td>div[style=' +
