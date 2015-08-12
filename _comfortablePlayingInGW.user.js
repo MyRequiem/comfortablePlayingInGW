@@ -853,7 +853,6 @@
                     _this.divMain.style.display = 'none';
                 }, false);
 
-
             // обработчик кнопы добавления ссылки
             general.$('set_link').addEventListener('click', function () {
                 var name = general.$('lname').value,
@@ -2544,7 +2543,6 @@
             }
         };
     };
-
 
     general = new General();
     if (!general.checkMainData()) {

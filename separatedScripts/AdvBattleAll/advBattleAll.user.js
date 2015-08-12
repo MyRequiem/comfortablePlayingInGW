@@ -9,7 +9,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         3.0-110815
+// @version         3.0-120815
 // @author          MyRequiem
 // ==/UserScript==
 
@@ -51,10 +51,10 @@
 
         обновление заявки после входа в нее (в секундах)
         0 - таймаут обновления игровой по умолчанию (20 сек) */
-    var refreshAppl = 0,
+    var refreshAppl = 3,
         /* обновление страницы после того, как сделали ход (в секундах)
         0 - таймаут по умолчанию, который выставлен в настройках персонажа */
-        refreshBattle = 0;
+        refreshBattle = 3;
     //=============КОНЕЦ НАСТРОЕК===============
 
     /**
@@ -86,7 +86,7 @@
          * @property myID
          * @type {String}
          */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie);
+        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
         /**
          * @property STNAME
          * @type {String}
@@ -315,6 +315,11 @@
          * @type {int}
          */
         this.tmRefreshBattle = 0;
+        /**
+         * @property tmHighlightPers
+         * @type {int}
+         */
+        this.tmHighlightPers = 0;
         /**
          * @property graphTable
          * @type {HTMLTableElement|null}
@@ -723,11 +728,11 @@
         /**
          * @method setMarkStroke
          * @param   {String}    markId
+         * @param   {String}    data
          * @param   {Boolean}   rnd
          */
-        this.setMarkStroke = function (markId, rnd) {
-            var dataSt = general.getData(),
-                elem,
+        this.setMarkStroke = function (markId, data, rnd) {
+            var elem,
                 x,
                 y,
                 z;
@@ -753,15 +758,15 @@
 
             switch (markId) {
             case '0':
-                elem = general.$('right_attack' + (x || dataSt[11]));
+                elem = general.$('right_attack' + (x || data));
                 break;
 
             case '1':
-                elem = general.$('left_attack' + (y || dataSt[10]));
+                elem = general.$('left_attack' + (y || data));
                 break;
 
             case '2':
-                elem = general.$('defence' + (z || dataSt[12]));
+                elem = general.$('defence' + (z || data));
                 break;
 
             case '3':
@@ -812,17 +817,17 @@
 
                 // если грена
                 if (dataSt[13]) {
-                    this.setMarkStroke('3', false);
+                    this.setMarkStroke('3', '', false);
                 } else {
-                    this.setMarkStroke('0', false);
-                    this.setMarkStroke('1', false);
+                    this.setMarkStroke('0', dataSt[11], false);
+                    this.setMarkStroke('1', dataSt[10], false);
                 }
 
                 // куда отходим
-                this.setMarkStroke('2', false);
+                this.setMarkStroke('2', dataSt[12], false);
                 // подходим или нет
                 if (dataSt[14]) {
-                    this.setMarkStroke('4', false);
+                    this.setMarkStroke('4', '', false);
                 }
 
                 this.clearSavedStrokeAfterSay();
@@ -831,41 +836,89 @@
 
             // устанавливаем последний сохраненный ход
             if (dataSt[1] === '2') {
-                alert('lastSavedStroke');
-                // data = st.getItem('adv_battle_' + myId).split('|');
-                // elem = _$('left_attack' + data[3]);
-                // if (elem) {
-                //     this.setMarkStroke(checkDivL, elem);
-                // }
-                //
-                // elem = _$('right_attack' + data[4]);
-                // if (elem && (data[6] === '0' || !_$('bagaboom'))) {
-                //     this.setMarkStroke(checkDivR, elem);
-                // }
-                //
-                // this.setMarkStroke(checkDivD, _$('defence' + data[5]));
-                //
-                // elem = _$('bagaboom');
-                // if (elem && data[6] === '1') {
-                //     this.setMarkStroke(checkDivGr, elem);
-                // }
-                //
-                // elem = _$('walk');
-                // if (elem && data[7] === '1') {
-                //     this.setMarkStroke(checkDivW, elem);
-                // }
+                if (general.$('left_attack' + dataSt[3])) {
+                    this.setMarkStroke('1', dataSt[3], false);
+                }
+
+                if (general.$('right_attack' + dataSt[4]) &&
+                        (!dataSt[6] || !general.$('bagaboom'))) {
+                    this.setMarkStroke('0', dataSt[4], false);
+                }
+
+                if (general.$('defence' + dataSt[5])) {
+                    this.setMarkStroke('2', dataSt[5], false);
+                }
+
+                if (general.$('bagaboom') && dataSt[6]) {
+                    this.setMarkStroke('3', '', false);
+                }
+
+                if (general.$('walk') && dataSt[7]) {
+                    this.setMarkStroke('4', '', false);
+                }
             } else {    // случайный ход
                 // если есть граната - отмечаем чекбокс
                 if (general.$('bagaboom')) {
-                    this.setMarkStroke('3', false);
+                    this.setMarkStroke('3', '', false);
                 }
 
                 // куда уходим
-                this.setMarkStroke('2', true);
+                this.setMarkStroke('2', '', true);
                 // правая, левая
-                this.setMarkStroke('0', true);
-                this.setMarkStroke('1', true);
+                this.setMarkStroke('0', '', true);
+                this.setMarkStroke('1', '', true);
             }
+        };
+        /**
+         * @method setHandlerSubmit
+         */
+        this.setHandlerSubmit = function () {
+            var s = general.doc.createElement('script');
+            s.innerHTML = "function fight_mod() {" +
+                    "var dataSt = localStorage.getItem('" + general.STNAME +
+                                    "').split('|')," +
+                    "elem;" +
+
+                    "dataSt[3] = '';" +
+                    "dataSt[4] = '';" +
+                    "dataSt[5] = '';" +
+                    "dataSt[6] = '';" +
+                    "dataSt[7] = '';" +
+
+                    // левая рука
+                    "if (elem = document.querySelector('input[type=\"radio\"]" +
+                            "[id^=\"left_attack\"]:checked')) {" +
+                        "dataSt[3] = /left_attack(\\d)/.exec(elem.id)[1];" +
+                    "}" +
+
+                    // правая рука
+                    "if (elem = document.querySelector('input[type=\"radio\"]" +
+                            "[id^=\"right_attack\"]:checked')) {" +
+                        "dataSt[4] = /right_attack(\\d)/.exec(elem.id)[1];" +
+                    "}" +
+
+                    // куда отходим
+                    "if (elem = document.querySelector('input[type=\"radio\"]" +
+                            "[id^=\"defence\"]:checked')) {" +
+                        "dataSt[5] = /defence(\\d)/.exec(elem.id)[1];" +
+                    "}" +
+
+                    // граната
+                    "if (elem = document." +
+                            "querySelector('#bagaboom:checked')) {" +
+                        "dataSt[6] = '1';" +
+                    "}" +
+
+                    // подходим или нет
+                    "if (elem = document.querySelector('#walk:checked')) {" +
+                        "dataSt[7] = '1';" +
+                    "}" +
+
+                    "localStorage.setItem('" + general.STNAME +
+                        "', dataSt.join('|'));" +
+                    "fight();" +
+                "}";
+            general.doc.body.appendChild(s);
         };
 
         /**
@@ -961,7 +1014,7 @@
             // установим свой обработчик нажатия кнопки "Сделать ход"
             // fight_mod(); (если флажок "запомнить ход" установлен, то
             // будет запоминаться  последний ход)
-            // setHandlerSubmit();
+            this.setHandlerSubmit();
 
             var dataSt = general.getData();
             if (dataSt[2]) {
@@ -1356,6 +1409,67 @@
         };
 
         /**
+         * @method setCountStroke
+         * @param   {object}    obj
+         */
+        this.setCountStroke = function (obj) {
+                // персы, которые сделали ход (зеленые)
+            var greenPersLinks = obj.
+                    querySelectorAll('a[href*="/info.php?id="]' +
+                            '[style*="#008800"]');
+
+            // нет персонажей, сделавших ход
+            if (!greenPersLinks.length) {
+                return;
+            }
+
+            // JS-версия
+            var persLinkInBattle, i;
+            if (!general.nojs) {
+                for (i = 0; i < greenPersLinks.length; i++) {
+                    persLinkInBattle = general.doc.
+                        querySelector('a[href="' + greenPersLinks[i].href +
+                                '"]');
+                    if (persLinkInBattle) {
+                        persLinkInBattle.style.color = '#008800';
+                    }
+                }
+            }
+
+            this.setMyInfo(greenPersLinks.length);
+        };
+
+        /**
+         * @method setColorFighters
+         * @param   {Object}    _this
+         */
+        this.setColorFighters = function (_this) {
+            return function () {
+                // ход не сделан, ничего не делаем
+                if (!(/Ждём ход противника/i.
+                        test(_this.getBattleField().innerHTML))) {
+                    return;
+                }
+
+                if (general.nojs) {
+                    _this.setCountStroke(general.doc);
+                    return;
+                }
+
+                var url = general.loc.replace('btl.php', 'b.php'),
+                    ajax = new AjaxQuery();
+
+                ajax.init(url, function (xhr) {
+                    var span = general.doc.createElement('span');
+                    span.innerHTML = xhr.responseText;
+                    _this.setCountStroke(span);
+                }, function () {
+                    general.root.console.log('Error XHR to: ' + url);
+                });
+            };
+        };
+
+        /**
          * @method start
          */
         this.start = function () {
@@ -1476,17 +1590,17 @@
             }
 
             this.clearSavedStrokeAfterSay();
-
             // изменяем расположение бойцов, ставим тултипы и т.д.
             this.changeLocationFighters();
-            //
-            // // в JS-версии боя подсвечиваем персонажей, которые уже сделали ход
-            // // в обоих весиях боя устанавливаем вверху количество персонажей,
-            // // сделавших ход
-            // if (!viewMode && !tm) {
-            //     setColorFighters();
-            //     tm = general.root.setInterval(setColorFighters, 3000);
-            // }
+
+            // в JS-версии боя подсвечиваем персонажей, которые уже
+            // сделали ход. В ОБОИХ весиях боя устанавливаем вверху
+            // количество персонажей, сделавших ход
+            if (!general.viewMode && !this.tmHighlightPers) {
+                this.setColorFighters(this);
+                this.tmHighlightPers = general.root.
+                    setInterval(this.setColorFighters(this), 3000);
+            }
         };
 
         /**
@@ -1746,7 +1860,7 @@
         };
     };
 
-    general.myID = '2095458';
+    // general.myID = '2095458';
     // general.nojs = true;
     // general.viewMode = true;
 
