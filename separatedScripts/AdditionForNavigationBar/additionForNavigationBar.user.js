@@ -1,12 +1,15 @@
 // ==UserScript==
 // @name            Addition For Navigation Bar
-// @namespace       using namespace std;
+// @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     Добавляет возможность установить дополнительные ссылки в панель навигации.
+// @id              comfortablePlayingInGW@MyRequiem
+// @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdditionForNavigationBar/additionForNavigationBar.meta.js
+// @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdditionForNavigationBar/additionForNavigationBar.user.js
 // @include         http://www.ganjawars.ru/*
-// @license         MIT
 // @grant           none
+// @license         MIT
 // @version         2.0-050815
-// @author          MyRequiem
+// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow: true */
