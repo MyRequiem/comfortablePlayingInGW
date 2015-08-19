@@ -7,4 +7,13 @@
 В JS-версии боя подсвечивает зеленым цветом тех персонажей, которые уже сделали
 ход. В обоих версиях выводит количество персонажей, сделавших ход. Таймаут
 обновления заявки после входа в нее и таймаут обновления данных в бою.
+<br>
+<br>
+![AdvBattleAll](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/AdvBattleAll/screen1.png)
+<br>
+<br>
+![AdvBattleAll](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/AdvBattleAll/screen2.png)
+<br>
+<br>
+![AdvBattleAll](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/AdvBattleAll/screen3.png)
 
