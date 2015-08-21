@@ -8,12 +8,13 @@
 ход. В обоих версиях выводит количество персонажей, сделавших ход. Таймаут
 обновления заявки после входа в нее и таймаут обновления данных в бою.
 <br>
+* [Установить](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js)
+* [Скачать zip-архив](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js.zip)
+<br>
 <br>
 ![AdvBattleAll](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/AdvBattleAll/screen1.png)
 <br>
-<br>
 ![AdvBattleAll](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/AdvBattleAll/screen2.png)
-<br>
 <br>
 ![AdvBattleAll](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/AdvBattleAll/screen3.png)
 
