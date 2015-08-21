@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-180815-dev
+// @version         1.00-210815-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,12 +58,12 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-180815-dev';
+        this.version = '1.00-210815-dev';
         /**
          * @property stString
          * @type {String}
          */
-        this.stString = this.version + '@|||@@|@|||||||||||||||||';
+        this.stString = this.version + '@||||@@|@|||||||||||||||||@|';
         /**
          * @property myID
          * @type {String}
@@ -461,7 +461,17 @@
                     'NotGiveCannabisLeaf/on.gif" />', '0'],
                 ['Дополнение для панели навигации',
                     'Добавляет возможность установить дополнительные ссылки ' +
-                    'в панель навигации.', '1']],
+                    'в панель навигации.', '1'],
+                ['Подсветка персонажей из ЧС', 'Подсвечивает ссылки на ' +
+                    'персонажей, входящих в черный список на всех страницах ' +
+                    'игры. Делает неактивной ссылку принятия боя c ' +
+                    'персонажем из черного списка в одиночных боях.<br><br>' +
+                    '&nbsp;&nbsp;<a target="_blank" href=' +
+                    '"http://www.ganjawars.ru/home.friends.php">Запомнить ' +
+                    'черный список</a> (скрипт должен быть включен)<br>' +
+                    '<input type="checkbox" id="blockBLOne2One" disabled> ' +
+                    'блокировать ссылку принятия боя с персонажем из ЧС в ' +
+                    'одиночных заявках', '4']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -640,6 +650,16 @@
             general.$('refreshAppl').
                 addEventListener('input',
                         this.setSettingsForAdvBattleAll, false);
+
+            // чекбокс настроек подсветки персонажей из черного списка
+            // (блокировать или нет ссылку принятия боя в одиночках)
+            var chkBL = general.$('blockBLOne2One');
+            chkBL.checked = general.getData(5)[1] === '1';
+            chkBL.addEventListener('click', function () {
+                var stData = general.getData(5);
+                stData[1] = general.$('blockBLOne2One').checked ? '1' : '';
+                general.setData(stData, 5);
+            }, false);
         };
     };
 
@@ -2612,6 +2632,141 @@
         };
     };
 
+    /**
+     * @class BlacklistHighlighting
+     * @constructor
+     */
+    var BlacklistHighlighting = function () {
+        /**
+         * @property blTable
+         * @type {HTMLTableElement|null}
+         */
+        this.blTable = null;
+
+        /**
+         * @method rememberClick
+         * @param   {Object}    _this
+         */
+        this.rememberClick = function (_this) {
+            var a = _this.blTable.querySelectorAll('a[href*="/info.php?id="]'),
+                stData = general.getData(5),
+                mass,
+                i;
+
+            //в ЧС никого нет
+            if (!a.length) {
+                stData[0] = '';
+                general.setData(stData, 5);
+                alert('Ваш ЧС пуст. Сначала нужно добавить персонажей.');
+                return;
+            }
+
+            mass = [];
+            for (i = 0; i < a.length; i++) {
+                mass.push(/info\.php\?id=(\d+)/.exec(a[i].href)[1]);
+            }
+
+            stData[0] = mass.join(',');
+            general.setData(stData, 5);
+            _this.setHighlighting();
+        };
+
+        /**
+         * @method clearClick
+         * @param   {Object}    _this
+         */
+        this.clearClick = function (_this) {
+            var stData = general.getData(5);
+
+            if (stData[0]) {
+                stData[0] = '';
+                general.setData(stData, 5);
+                _this.setHighlighting();
+            } else {
+                alert('В памяти скрипта нет ЧС');
+            }
+        };
+
+        /**
+         * @method setHighlighting
+         */
+        this.setHighlighting = function () {
+            var a = general.doc.querySelectorAll('a[href*="/info.php?id="]'),
+                stData = general.getData(5),
+                link,
+                id,
+                i;
+
+            for (i = 0; i < a.length; i++) {
+                a[i].style.background = '';
+                id = /\?id=(\d+)$/.exec(a[i].href);
+                if (id && stData[0].indexOf(id[1]) !== -1) {
+                    a[i].style.background = '#B6B5B5';
+                    // блокировка ссылки принятия боя в одиночных заявках
+                    if (stData[1] && (/Подтверждаете бой с/.
+                            test(a[i].parentNode.innerHTML))) {
+                        link = a[i].parentNode.parentNode.parentNode.
+                            nextElementSibling.querySelector('a');
+                        link.setAttribute('style', 'text-decoration: ' +
+                            'line-through; color: #808080;');
+                        link.href = '#';
+                    }
+                }
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            if (/home\.friends\.php/.test(general.loc)) {
+                this.blTable = general.doc.querySelectorAll('table' +
+                        '[border="0"][cellspacing="0"][cellpadding="3"]' +
+                        '[class="wb"][align="center"][width="100%"]');
+
+                if (!this.blTable[1]) {
+                    return;
+                }
+
+                this.blTable = this.blTable[1];
+                var buttonStyle = 'margin-left: 5px; border: solid 1px; ' +
+                    'border-radius: 3px; background: #D0EED0; cursor: pointer;',
+                    butRemember = general.doc.createElement('input'),
+                    butClear = general.doc.createElement('input'),
+                    _this = this;
+
+                butRemember.type = 'button';
+                butRemember.value = 'Запомнить ЧС';
+                butRemember.setAttribute('style', buttonStyle);
+                butRemember.addEventListener('click', function () {
+                    _this.rememberClick(_this);
+                }, false);
+
+                butClear.title = 'Забыть';
+                butClear.type = 'button';
+                butClear.value = 'X';
+                butClear.setAttribute('style', buttonStyle);
+                butClear.addEventListener('click', function () {
+                    _this.clearClick(_this);
+                }, false);
+
+                var target = this.blTable.querySelector('td');
+                target.appendChild(butRemember);
+                target.appendChild(butClear);
+            }
+
+            if (general.getData(5)[0]) {
+                if (/www\.ganjawars\.ru\/b0\//.test(general.loc)) {
+                    general.root.setInterval(this.setHighlighting, 1000);
+                } else if (/\/usertransfers\.php/.test(general.loc)) {
+                    general.root.setTimeout(this.setHighlighting, 300);
+                } else {
+                    this.setHighlighting();
+                }
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -2636,6 +2791,15 @@
     // перс не залогинен
     if (general.doc.querySelector('a[href*="/regform.php"]')) {
         return;
+    }
+
+
+    if (initScript[4]) {
+        try {
+            new BlacklistHighlighting().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
     }
 
     // везде кроме боев
