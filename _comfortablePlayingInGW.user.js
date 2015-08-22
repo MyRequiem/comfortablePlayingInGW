@@ -2767,6 +2767,58 @@
         };
     };
 
+    /**
+     * @class AutLinksOnChat
+     * @constructor
+     */
+    var AutLinksOnChat = function () {
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var chat = general.doc.querySelector('td[class="wb"]' +
+                    '[valign="top"][style="font-size:8pt"]');
+
+            if (chat) {
+                var fonts = chat.querySelectorAll('font'),
+                    name,
+                    i;
+
+                for (i = 0; i < fonts.length; i++) {
+                    if (!fonts[i].firstElementChild) {
+                        name = fonts[i].innerHTML;
+                        fonts[i].innerHTML = '<a target="_blank" ' +
+                            'style="font-size: 8pt; text-decoration: none; ' +
+                            'color: #990000;" href="http://www.ganjawars.ru' +
+                            '/search.php?key=' + name + '">' + name + '</a>';
+                    }
+                }
+            }
+        };
+    };
+
+    /**
+     * @class AutRefreshLink
+     * @constructor
+     */
+    var AutRefreshLink = function () {
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var target = general.doc.querySelector('td>a[href*="?itemslist="]'),
+                refresh = general.doc.querySelector('div>a[href*="/walk"]');
+
+            if (target && refresh) {
+                refresh = refresh.cloneNode(true);
+                refresh.setAttribute('style', 'margin-left: 5px;');
+                target.parentNode.
+                    insertBefore(refresh, target.nextElementSibling);
+            }
+
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -2774,7 +2826,18 @@
 
     // аут + прибрежка
     if (/\/quest\.ganjawars\.ru/.test(general.loc)) {
-        alert('test');
+        try {
+            new AutRefreshLink().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
+
+        try {
+            new AutLinksOnChat().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
+
         return;
     }
 
@@ -2792,7 +2855,6 @@
     if (general.doc.querySelector('a[href*="/regform.php"]')) {
         return;
     }
-
 
     if (initScript[4]) {
         try {
