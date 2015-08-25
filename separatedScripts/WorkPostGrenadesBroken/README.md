@@ -5,5 +5,5 @@
 * [Скачать zip-архив](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.user.js.zip)
 <br>
 <br>
-![AdditionForNavigationBar](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/WorkPostGrenadesBroken/screen.png)
+![WorkPostGrenadesBroken](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/WorkPostGrenadesBroken/screen.png)
 
