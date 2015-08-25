@@ -63,7 +63,7 @@
          * @property stString
          * @type {String}
          */
-        this.stString = this.version + '@|||||@@|@|||||||||||||||||@|@|||||||';
+        this.stString = this.version + '@||||||@@|@|||||||||||||||||@|@|||||||';
         /**
          * @property myID
          * @type {String}
@@ -577,7 +577,10 @@
                     '"Пора работать": &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                     '&nbsp;&nbsp;&nbsp;' + this.getSelectSound('soundWork') +
                     ' <input type="button" id="listenSoundWork" value="»" ' +
-                    'disabled>', '5']],
+                    'disabled>', '5'],
+                ['Ресурсы и бонусы', 'Создает ссылки "Ресурсы" и "Бонусы" ' +
+                    'вверху страницы. При клике выводятся соответствующие ' +
+                    'данные.', '6']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -3210,6 +3213,11 @@
          */
         this.init = function () {
             var topPanel = new GetTopPanel().init();
+
+            if (!topPanel) {
+                return;
+            }
+
             topPanel.appendChild(general.doc.createTextNode(' | '));
             topPanel.appendChild(this.wpgbContainer);
 
@@ -3218,6 +3226,121 @@
             general.root.setInterval(function () {
                 _this.startWorkPostGrenadesBroken(_this);
             }, new GetRandom().init(30, 60) * 1000);
+        };
+    };
+
+    /**
+     * @class ResourcesAndBonuses
+     * @constructor
+     */
+    var ResourcesAndBonuses = function () {
+        /**
+         * @property divResult
+         * @type {HTMLElement}
+         */
+        this.divResult = general.doc.createElement('div');
+
+        /**
+         * @method fillData
+         * @param   {string}    data
+         */
+        this.fillData = function (data) {
+            this.divResult.innerHTML = data + '<div style="margin-top: 5px;">' +
+                '<img id="divres_close" src="' + general.imgPath + 'close.gif' +
+                '" /></div>';
+
+            var _this = this;
+            this.divResult.querySelector('#divres_close').
+                addEventListener('click', function () {
+                    _this.divResult.style.visibility = 'hidden';
+                }, false);
+        };
+
+        /**
+         * @method showData
+         * @param   {Object}    _this
+         */
+        this.showData = function (_this) {
+            var pos = new GetPos().init(_this);
+
+            this.divResult.style.left = pos.x;
+            this.divResult.style.top = pos.y + 25;
+            this.divResult.style.visibility = 'visible';
+            this.divResult.innerHTML = '<img src="' + general.imgPath +
+                'preloader.gif' + '">';
+
+            var url = 'http://www.ganjawars.ru/info.php?id=' + general.myID,
+                idElem = _this.id,
+                ths = this;
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = xml.responseText;
+                var tables = spanContent.querySelectorAll('td[class="wb"]' +
+                        '[bgcolor="#f0fff0"][align="center"][valign="top"]'),
+                    data;
+
+                if (!tables.length) {   // новый стиль оформления страницы инфы
+                    tables = spanContent.querySelectorAll('td[class=' +
+                            '"greenbrightbg"][align="center"][valign="top"]');
+                }
+
+                data = idElem === 'res' ?
+                        tables[0].innerHTML : tables[2].innerHTML;
+
+                if (/Ресурсов в наличии нет/i.test(data)) {
+                    data = '<span style="color: #0000FF;">Ресурсов в наличии ' +
+                        'нет</span>';
+                }
+
+                ths.fillData(data);
+            }, function () {
+                ths.fillData('<span style="color: #FF0000;">' +
+                    'Ошибка ответа сервера...</span>');
+            });
+        };
+
+        /**
+         * @method createButton
+         * @param   {String}    value
+         * @param   {String}    id
+         * @return  {HTMLElement}
+         */
+        this.createButton = function (value, id) {
+            var span = general.doc.createElement('span'),
+                _this = this;
+
+            span.innerHTML = value;
+            span.id = id;
+            span.setAttribute('style', 'cursor: pointer;');
+            span.addEventListener('click', function () {
+                var ths = this;
+                _this.showData(ths);
+            }, false);
+            return span;
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var topPanel = new GetTopPanel().init();
+
+            if (!topPanel) {
+                return;
+            }
+
+            this.divResult.setAttribute('style', 'visibility: hidden; ' +
+                    'position: absolute; padding: 3px; background-color: ' +
+                    '#E7FFE7; border: solid 1px #339933; border-radius:5px; ' +
+                    'top:0; left:0; box-shadow: 5px 6px 6px ' +
+                    'rgba(122,122,122,0.5);');
+            general.doc.body.appendChild(this.divResult);
+
+            topPanel.appendChild(general.doc.createTextNode(' | '));
+            topPanel.appendChild(this.createButton('Ресурсы', 'res'));
+            topPanel.appendChild(general.doc.createTextNode(' | '));
+            topPanel.appendChild(this.createButton('Бонусы', 'bonus'));
         };
     };
 
@@ -3293,6 +3416,14 @@
         if (initScript[5]) {
             try {
                 new WorkPostGrenadesBroken().init();
+            } catch (e) {
+                general.cons.log(e);
+            }
+        }
+
+        if (initScript[6]) {
+            try {
+                new ResourcesAndBonuses().init();
             } catch (e) {
                 general.cons.log(e);
             }
