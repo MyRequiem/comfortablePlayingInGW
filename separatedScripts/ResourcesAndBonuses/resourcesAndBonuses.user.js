@@ -196,7 +196,7 @@
         this.showData = function (_this) {
             var pos = new GetPos().init(_this);
 
-            this.divResult.style.left = pos.x - 50;
+            this.divResult.style.left = pos.x;
             this.divResult.style.top = pos.y + 25;
             this.divResult.style.visibility = 'visible';
             this.divResult.innerHTML = '<img src="' + this.imgPath +
@@ -257,10 +257,12 @@
          * @method init
          */
         this.init = function () {
+
             this.divResult.setAttribute('style', 'visibility: hidden; ' +
                     'position: absolute; padding: 3px; background-color: ' +
                     '#E7FFE7; border: solid 1px #339933; border-radius:5px; ' +
-                    'top:0; left:0;');
+                    'top:0; left:0; box-shadow: 5px 6px 6px ' +
+                    'rgba(122,122,122,0.5);');
             general.doc.body.appendChild(this.divResult);
 
             var topPanel = new GetTopPanel().init();

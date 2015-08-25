@@ -4,5 +4,7 @@
 * [Скачать zip-архив](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ResourcesAndBonuses/resourcesAndBonuses.user.js.zip)
 <br>
 <br>
-![ResourcesAndBonuses](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/ResourcesAndBonuses/screen.png)
+![ResourcesAndBonuses](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/ResourcesAndBonuses/screen1.png)
+<br>
+![ResourcesAndBonuses](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/ResourcesAndBonuses/screen2.png)
 
