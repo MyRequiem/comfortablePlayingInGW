@@ -26,15 +26,15 @@
     'use strict';
 
     // ======================= НАСТРОЙКИ ===========================
-        // звук при получени почты либо посылки (0 - без звука)
+        // звук при получени почты/посылки (0 - без звука)
     var soundSms = 10,
         // звук при окончании работы (0 - без звука)
         soundWork = 15,
-        // показывать время работы
+        // отображать время работы
         showWorkTime = 1,
         // отображать почту/посылки
         showSms = 1,
-        // показывать отсутствие гранаты на поясе
+        // отображать отсутствие гранаты на поясе
         showGrenade = 1,
         // отображать слом
         showBroken = 1;
@@ -245,12 +245,12 @@
             'comfortablePlayingInGW/master/imgs/WorkPostGrenadesBroken/';
         /**
          * @property redFactory
-         * @type {}
+         * @type {String}
          */
         this.redFactory = this.imgPath + 'redFactory.gif';
         /**
          * @property blueFactory
-         * @type {}
+         * @type {String}
          */
         this.blueFactory = this.imgPath + 'blueFactory.gif';
         /**
@@ -372,7 +372,6 @@
                 if (!linkObj) {
                     return;
                 }
-                linkObj = linkObj.href;
 
                 // поиск ссылок на экипировку
                 var items = spanContent.
@@ -391,10 +390,6 @@
                     time = 1;
                 }
 
-                // проверка на сломанные вещи в рюкзаке
-                var testBroken = spanContent.querySelector('a[href=' +
-                        '"/workshop.php"][style$="#990000;"]');
-
                 // проверка на наличие грены
                 var testGrenades = false;
                 if (items && items.length) {
@@ -410,22 +405,25 @@
                     }
                 }
 
-                var ttl = '" title="Объект #' + (/object\.php\?id=(\d+)/.
-                                exec(linkObj)[1]) + '" alt="GW объект"></a>]';
+                var ttl = '" title="Объект #' +
+                    (/object\.php\?id=(\d+)/.exec(linkObj.href)[1]) +
+                    '" alt="GW объект" /></a>]';
 
                 if (time) {
                     if (showWorkTime) {
-                        _this.wpgbContainer.innerHTML = '[<span style="color: ' +
-                            '#0000FF">' + time + '</span> мин <a href="' +
-                            linkObj + '"><img src="' + _this.blueFactory + ttl;
+                        _this.wpgbContainer.innerHTML = '[<span style=' +
+                            '"color: #0000FF">' + time + '</span> мин ' +
+                            '<a href="' + linkObj.href + '"><img src="' +
+                            _this.blueFactory + ttl;
                     }
 
                     stData[1] = '';
                     general.setData(stData);
                 } else {
                     if (showWorkTime) {
-                        _this.wpgbContainer.innerHTML = '[<a href="' + linkObj +
-                            '"><img src="' + _this.redFactory + '"' + ttl;
+                        _this.wpgbContainer.innerHTML = '[<a href="' +
+                            linkObj.href + '"><img src="' + _this.redFactory +
+                            ttl;
                     }
 
                     if (!stData[1]) {
@@ -435,8 +433,11 @@
                     }
                 }
 
+                var testBroken = spanContent.querySelector('a[href=' +
+                    '"/workshop.php"][style$="#990000;"]') || false;
                 _this.wpgbContainer.innerHTML += _this.addContent(testSms,
                     testGrenades, testBroken);
+
             });
         };
 
@@ -467,7 +468,7 @@
             topPanel.appendChild(general.doc.createTextNode(' | '));
             topPanel.appendChild(this.wpgbContainer);
 
-            this.startWorkPostGrenadesBroken();
+            this.startWorkPostGrenadesBroken(null);
             var _this = this;
             general.root.setInterval(function () {
                 _this.startWorkPostGrenadesBroken(_this);

@@ -10,6 +10,6 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-210815-dev
+// @version         1.00-250815-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==

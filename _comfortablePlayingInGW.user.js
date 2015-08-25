@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-210815-dev
+// @version         1.00-250815-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,12 +58,12 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-210815-dev';
+        this.version = '1.00-250815-dev';
         /**
          * @property stString
          * @type {String}
          */
-        this.stString = this.version + '@||||@@|@|||||||||||||||||@|';
+        this.stString = this.version + '@|||||@@|@|||||||||||||||||@|@|||||||';
         /**
          * @property myID
          * @type {String}
@@ -292,6 +292,52 @@
     };
 
     /**
+     * @class PlaySound
+     * @constructor
+     */
+    var PlaySound = function () {
+        /**
+         * @method init
+         * @param   {int|String}    sound
+         */
+        this.init = function (sound) {
+            if (!sound || sound === '0') {
+                return;
+            }
+
+            var fl = general.$('_flashcontent');
+            if (!fl) {
+                fl = general.doc.createElement('div');
+                fl.id = '_flashcontent';
+                general.doc.body.appendChild(fl);
+            }
+
+            fl.innerHTML = '<embed ' +
+                'flashvars="soundPath=http://www.ganjawars.ru/sounds/' + sound +
+                '.mp3" allowscriptaccess="always" quality="high" height="1" ' +
+                'width="1" src="http://images.ganjawars.ru/i/play.swf" ' +
+                'type="application/x-shockwave-flash" pluginspage=' +
+                '"http://www.macromedia.com/go/getflashplayer" />';
+        };
+    };
+
+    /**
+     * @class GetRandom
+     * @constructor
+     */
+    var GetRandom = function () {
+        /**
+         * @method init
+         * @param   {int}   a
+         * @param   {int}   b
+         * @return  {int}
+         */
+        this.init = function (a, b) {
+            return Math.round(a + (b - a) * Math.random());
+        };
+    };
+
+    /**
      * @class GetTopPanel
      * @constructor
      */
@@ -447,6 +493,47 @@
      */
     var ShowMainSettings = function () {
         /**
+         * @method getSelectSound
+         * @param   {String}    id
+         * @return  {String}
+         */
+        this.getSelectSound = function (id) {
+            return '<select id="' + id + '" disabled>' +
+                '<option value="0">Без звука</option>' +
+                '<option value="1">Перезарядка</option>' +
+                '<option value="2">Выстрел дробовика</option>' +
+                '<option value="3">Открытие двери</option>' +
+                '<option value="4">Взрыв бочки</option>' +
+                '<option value="5">Выстрел BFG</option>' +
+                '<option value="6">Радио-зуммер</option>' +
+                '<option value="7">Подтверждение цели</option>' +
+                '<option value="8">Ion Cannon Ready!</option>' +
+                '<option value="9">Select target!</option>' +
+                '<option value="10">Звук тревоги</option>' +
+                '<option value="11">I`m alive!</option>' +
+                '<option value="12">Орки смеются</option>' +
+                '<option value="13">Unholy Armor</option>' +
+                '<option value="14">We`ve been attacked!</option>' +
+                '<option value="15">Кот мяукает</option>' +
+                '<option value="16">Кот мяукает #2</option>' +
+                '<option value="17">Take cover!</option>' +
+                '<option value="18">Stupid!</option>' +
+                '<option value="19">Hello!</option>' +
+                '<option value="20">hehehehe!</option>' +
+                '<option value="21">Chimes</option>' +
+                '<option value="22">Ding</option>' +
+                '<option value="23">Ошибка</option>' +
+                '<option value="24">Отказ оборудования</option>' +
+                '<option value="25">А, вот эти ребята</option>' +
+                '<option value="26">Не-не-не-не!</option>' +
+                '<option value="27">нет, Девид Блейн, нет!</option>' +
+                '<option value="28">Я делаю особую магию</option>' +
+                '<option value="29">Prepare for battle!</option>' +
+                '<option value="30">Pick up your weapons</option>' +
+                '</select>';
+        };
+
+        /**
          * @property infoScripts
          * @type {Object}
          */
@@ -471,7 +558,26 @@
                     'черный список</a> (скрипт должен быть включен)<br>' +
                     '<input type="checkbox" id="blockBLOne2One" disabled> ' +
                     'блокировать ссылку принятия боя с персонажем из ЧС в ' +
-                    'одиночных заявках', '4']],
+                    'одиночных заявках', '4'],
+                ['Работа, письмо, посылка, граната, слом', 'Окончание ' +
+                    'работы, осталось времени работать, почта, посылка, ' +
+                    'присутствие гранаты на поясе, проверка сломанных вещей. ' +
+                    'На все события оповещения звуковые и визуальные.<br><b>' +
+                    'P.S.</b> Гранатомет в руках расценивается как ' +
+                    'присутствие гранаты.<br><br><input type="checkbox" ' +
+                    'id="showwork" disabled /> отображать время работы<br>' +
+                    '<input type="checkbox" id="showsms" disabled /> ' +
+                    'отображать получение почты/посылки<br><input ' +
+                    'type="checkbox" id="showbroken" disabled /> отображать ' +
+                    'наличие сломанных предметов<br><input type="checkbox" ' +
+                    'id="showgren" disabled /> отображать отсутствие гранаты ' +
+                    'на поясе<br>Звук при получении почты: ' +
+                    this.getSelectSound('soundSms') + ' <input type="button" ' +
+                    'id="listenSoundSms" value="»" disabled><br>Звук ' +
+                    '"Пора работать": &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                    '&nbsp;&nbsp;&nbsp;' + this.getSelectSound('soundWork') +
+                    ' <input type="button" id="listenSoundWork" value="»" ' +
+                    'disabled>', '5']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -577,6 +683,14 @@
         };
 
         /**
+         * @method testSound
+         */
+        this.testSound = function () {
+            var _this = this;
+            new PlaySound().init(_this.previousElementSibling.value);
+        };
+
+        /**
          * @method init
          */
         this.init = function () {
@@ -659,6 +773,64 @@
                 var stData = general.getData(5);
                 stData[1] = general.$('blockBLOne2One').checked ? '1' : '';
                 general.setData(stData, 5);
+            }, false);
+
+            // работа, слом, грена, почта/посылка
+            // кнопки прослушать звук
+            general.$('listenSoundSms').
+                addEventListener('click', this.testSound, false);
+            general.$('listenSoundWork').
+                addEventListener('click', this.testSound, false);
+            // установка списка выбора звуков sms и "Пора работать"
+            general.$('soundSms').value = general.getData(6)[6] || '0';
+            general.$('soundWork').value = general.getData(6)[7] || '0';
+            // обработчики списков выбора звука
+            general.$('soundSms').addEventListener('change', function () {
+                var tmp = general.getData(6),
+                    _this = this;
+
+                tmp[6] = _this.value === '0' ? '' : _this.value;
+                general.setData(tmp, 6);
+            }, false);
+            general.$('soundWork').addEventListener('change', function () {
+                var tmp = general.getData(6),
+                    _this = this;
+
+                tmp[7] = _this.value === '0' ? '' : _this.value;
+                general.setData(tmp, 6);
+            }, false);
+            // чекбоксы настроек
+            general.$('showwork').checked = general.getData(6)[2];
+            general.$('showwork').addEventListener('click', function () {
+                var tmp = general.getData(6),
+                    _this = this;
+
+                tmp[2] = _this.checked ? '1' : '';
+                general.setData(tmp, 6);
+            }, false);
+            general.$('showsms').checked = general.getData(6)[3];
+            general.$('showsms').addEventListener('click', function () {
+                var tmp = general.getData(6),
+                    _this = this;
+
+                tmp[3] = _this.checked ? '1' : '';
+                general.setData(tmp, 6);
+            }, false);
+            general.$('showbroken').checked = general.getData(6)[4];
+            general.$('showbroken').addEventListener('click', function () {
+                var tmp = general.getData(6),
+                    _this = this;
+
+                    tmp[4] = _this.checked ? '1' : '';
+                general.setData(tmp, 6);
+            }, false);
+            general.$('showgren').checked = general.getData(6)[5];
+            general.$('showgren').addEventListener('click', function () {
+                var tmp = general.getData(6),
+                    _this = this;
+
+                tmp[5] = _this.checked ? '1' : '';
+                general.setData(tmp, 6);
             }, false);
         };
     };
@@ -2819,6 +2991,236 @@
         };
     };
 
+    /**
+     * @class WorkPostGrenadesBroken
+     * @constructor
+     */
+    var WorkPostGrenadesBroken = function () {
+        /**
+         * @property wpgbContainer
+         * @type {HTMLElement}
+         */
+        this.wpgbContainer = general.doc.createElement('span');
+        /**
+         * @property redFactory
+         * @type {String}
+         */
+        this.redFactory = general.imgPath + 'WorkPostGrenadesBroken/' +
+                'redFactory.gif';
+        /**
+         * @property blueFactory
+         * @type {String}
+         */
+        this.blueFactory = general.imgPath + 'WorkPostGrenadesBroken/' +
+                'blueFactory.gif';
+        /**
+         * @property grenades
+         * @type {Array}
+         */
+        this.grenades = [
+            // гос
+            'rgd5', 'grenade_f1', 'rgd2', 'lightst', 'lights', 'rkg3', 'mdn',
+            'rgd2m', 'rgo', 'm84', 'rgn', 'emp_ir', 'fg3l', 'l83a1', 'emp_s',
+            'm67', 'm3', 'hg78', 'hg84', 'fg6', 'anm14', 'm34ph', 'fg7',
+            'fg8bd',
+            //синдовые
+            'lightss', 'lightsm', 'rgd2s', 'grenade_dg1', 'fg5', 'molotov',
+            'hellsbreath', 'napalm', 'ghtb', 'me85',
+            //ржавка
+            'old_rgd5',
+            //гранатометы
+            /* гос */
+            'rpg', 'ptrk', 'glauncher', 'grg', 'paw20', 'rpgu', 'grom2',
+            'ags30', 'gm94', 'gl06', 'gmg', 'balkan', 'rg6', 'im202',
+            /* арт */
+            'milkor', 'mk47'
+        ];
+
+        /**
+         * @method addContent
+         * @param   {Array}     sms
+         * @param   {Boolean}   gren
+         * @param   {Boolean}   broken
+         * @return  {String}
+         */
+        this.addContent = function (sms, gren, broken) {
+            var host = ' [<a href="http://www.ganjawars.ru/',
+                stData = general.getData(6),
+                str = '';
+
+            if (sms[0] && stData[3]) {    // письмо
+                str += host + 'sms.php"><img src="http://www.ganjawars.ru/i/' +
+                    'sms.gif" title="' + sms[0].getAttribute('title') +
+                    '" alt="Вам письмо"></a>]';
+            }
+
+            if (sms[1] && stData[3]) {    // посылка
+                str += host + 'items.php"><img src="http://www.ganjawars.ru/' +
+                    'i/woodbox.gif" title="Пришла посылка!" ' +
+                    'alt="посылка"></a>]';
+            }
+
+            if (!gren && stData[5]) { // граната
+                str += host + 'items.php"><span style="color: #FF0000; ' +
+                    'font-weight: bold;">Грена</span></a>]';
+            }
+
+            if (broken && stData[4]) { // слом
+                str += host + 'workshop.php"><span style="color: #FF0000; ' +
+                    'font-weight: bold;">Слом</span></a>]';
+            }
+
+            return str;
+        };
+
+        /**
+         * @method startWorkPostGrenadesBroken
+         * @param   {Object}    _this
+         */
+        this.startWorkPostGrenadesBroken = function (_this) {
+            var ajaxQuery = new AjaxQuery(),
+                url = 'http://www.ganjawars.ru/me/';
+
+            _this = _this || this;
+            ajaxQuery.init(url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = xml.responseText;
+                _this.wpgbContainer.innerHTML = '';
+                // персонаж в пути
+                if (/Вы находитесь в пути/.test(spanContent.innerHTML)) {
+                    _this.wpgbContainer.innerHTML = '<span style="color: ' +
+                            '#0000FF;">[в пути]</span>';
+                    return;
+                }
+
+                // персонаж в бою
+                if (/Идёт бой/.test(spanContent.
+                        querySelector('title').innerHTML)) {
+                    _this.wpgbContainer.innerHTML = '<span style="color: ' +
+                        '#0000FF;">[бой]</span>';
+                    return;
+                }
+
+                // проверка на новое письмо и/или посылку
+                var testSms = [
+                    spanContent.querySelector('a>img[src$="/i/sms.gif"]'),
+                    spanContent.querySelector('a>img[src$="/i/woodbox.gif"]')
+                ];
+
+                var stData = general.getData(6),
+                    playSound = new PlaySound();
+
+                if ((testSms[0] || testSms[1]) && !stData[0]) {
+                    stData[0] = '1';
+                    playSound.init(stData[6]);
+                    general.setData(stData, 6);
+                } else if (!testSms[0] && !testSms[1] && stData[0]) {
+                    stData[0] = '';
+                    general.setData(stData, 6);
+                }
+
+                // ищем ссылку на объект где работаем/работали
+                var linkObj = spanContent.
+                        querySelector('td[align="center"][style="font-size:' +
+                            '8pt"][bgcolor="#e9ffe9"]');
+
+                // видимо что-то случилось
+                if (!linkObj) {
+                    return;
+                }
+
+                var content = linkObj.innerHTML;
+                linkObj = linkObj.querySelector('a[href^="/object.php?id="]');
+                if (!linkObj) {
+                    return;
+                }
+
+                // поиск ссылок на экипировку
+                var items = spanContent.
+                        querySelector('td[valign="bottom"][bgcolor="#e9ffe9"]');
+                items = items ? items.querySelectorAll('a') : false;
+
+                // время до окончания работы
+                var time;
+                if (/[Вы сможете устроиться на|осталось][^\d]*\d+ минут/i.
+                        test(content)) {
+                    time = +(/(\d+) минут/i.exec(content)[1]);
+                    time = !time ? 1 : time;
+                } else if (/Последний раз вы работали/i.test(content)) {
+                    time = 0;
+                } else if (/Вы работаете на/i.test(content)) {
+                    time = 1;
+                }
+
+                // проверка на наличие грены
+                var testGrenades = false;
+                if (items && items.length) {
+                    var itemId, i;
+                    for (i = 0; i < items.length; i++) {
+                        itemId = /\/item\.php\?item_id=(.*)$/.
+                            exec(items[i].href);
+                        if (itemId &&
+                                _this.grenades.indexOf(itemId[1]) !== -1) {
+                            testGrenades = true;
+                            break;
+                        }
+                    }
+                }
+
+                var ttl = '" title="Объект #' +
+                    (/object\.php\?id=(\d+)/.exec(linkObj.href)[1]) +
+                    '" alt="GW объект" /></a>]';
+
+                if (time) {
+                    if (stData[2]) {
+                        _this.wpgbContainer.innerHTML = '[<span style=' +
+                            '"color: #0000FF">' + time + '</span> мин ' +
+                            '<a href="' + linkObj.href + '"><img src="' +
+                            _this.blueFactory + ttl;
+                    }
+
+                    stData[1] = '';
+                    general.setData(stData, 6);
+                } else {
+                    if (stData[2]) {
+                        _this.wpgbContainer.innerHTML = '[<a href="' +
+                            linkObj.href + '"><img src="' + _this.redFactory +
+                            ttl;
+                    }
+
+                    if (!stData[1]) {
+                        stData[1] = '1';
+                        playSound.init(stData[7]);
+                        general.setData(stData, 6);
+                    }
+                }
+
+                var testBroken = spanContent.querySelector('a[href=' +
+                    '"/workshop.php"][style$="#990000;"]') || false;
+                _this.wpgbContainer.innerHTML += _this.addContent(testSms,
+                    testGrenades, testBroken);
+
+            }, function () {
+                general.cons.log('Error XHR to "http://www.ganjawars.ru/me/"');
+            });
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var topPanel = new GetTopPanel().init();
+            topPanel.appendChild(general.doc.createTextNode(' | '));
+            topPanel.appendChild(this.wpgbContainer);
+
+            this.startWorkPostGrenadesBroken(null);
+            var _this = this;
+            general.root.setInterval(function () {
+                _this.startWorkPostGrenadesBroken(_this);
+            }, new GetRandom().init(30, 60) * 1000);
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -2883,6 +3285,14 @@
         if (initScript[1]) {
             try {
                 new AdditionForNavigationBar().init();
+            } catch (e) {
+                general.cons.log(e);
+            }
+        }
+
+        if (initScript[5]) {
+            try {
+                new WorkPostGrenadesBroken().init();
             } catch (e) {
                 general.cons.log(e);
             }
