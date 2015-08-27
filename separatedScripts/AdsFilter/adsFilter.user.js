@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            AdsFilter
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     Фильтр онлайн/оффлайн и по островам на странице поиска аренды/продажи.
+// @description     Фильтр онлайн/оффлайн и по островам на страницах поиска продажи/покупки/аренды.
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdsFilter/adsFilter.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdsFilter/adsFilter.user.js

@@ -99,9 +99,10 @@ comfortablePlayingInGW/master/separatedScripts/'
         self.dwnldZip = raw + self.zipName
         r.write("""{0}
 <br>
-Version: {1}
-* [Установить]({2})
-* [Скачать zip-архив]({3})
+<br>
+Версия: {1}
+<br>
+[[Установить]]({2}) [[Скачать zip-архив]]({3})
 <br>
 <br>
 """.format(self.descr, self.ver, self.dwnld, self.dwnldZip))
@@ -139,6 +140,7 @@ Version: {1}
 ![ChromeLogo]({1}imgs/chromeLogo.png)
 ![YandexLogo]({1}imgs/yandexLogo.png)
 <br>
+<br>
 Version: {0}
 * [Установить]({1}_comfortablePlayingInGW.user.js)
 * [Скачать zip-архив]({1}_comfortablePlayingInGW.user.js.zip)
@@ -161,18 +163,20 @@ Version: {0}
 ![Screen3]({1}imgs/screen3.png)
 <br>
 <br>
+
 #### Модули отдельными скриптами
-<br>
+
 """.format(self.ver, raw, tree))
 
         CreateServiceFiles.__listScript.sort(key=SortKey('dirName'))
         for s in CreateServiceFiles.__listScript:
-            r.write("""#####{0}
-Version: {1}
-* [Установить]({2})
-* [Скачать zip-архив]({3})
-* [Описание]({4})
+            r.write("""**{0}**
 <br>
+Версия: {1}
+<br>
+[[Установить]]({2}) [[Скачать zip-архив]]({3}) [[Описание]]({4})
+<br>
+
 """.format(s.dirName, s.ver, s.dwnld, s.dwnldZip, tree + s.dirName))
 
         r.close()
