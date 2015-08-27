@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name            Ads Filter
+// @name            AdsFilter
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     Фильтр онлайн/оффлайн и по островам на странице поиска аренды/продажи.
 // @id              comfortablePlayingInGW@MyRequiem

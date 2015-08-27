@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name            Blacklist Highlighting
+// @name            BlacklistHighlighting
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     На страницах игры подсвечивает ники персонажей, которые занесены в черный список. Делает неактивной ссылку принятия боя в одиночках (опционально).
 // @id              comfortablePlayingInGW@MyRequiem

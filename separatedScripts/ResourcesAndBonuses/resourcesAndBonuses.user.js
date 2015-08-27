@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name            Resources And Bonuses.user.js
+// @name            ResourcesAndBonuses
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     Создает ссылки "Ресурсы" и "Бонусы" вверху страницы. При клике выводятся соответствующие данные.
 // @id              comfortablePlayingInGW@MyRequiem

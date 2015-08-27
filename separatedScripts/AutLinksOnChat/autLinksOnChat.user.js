@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name            Aut Links On Chat
+// @name            AutLinksOnChat
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     В чате аута и прибрежки делает все ники ссылками на персонажей.
 // @id              comfortablePlayingInGW@MyRequiem

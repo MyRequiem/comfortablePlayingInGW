@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name            Comfortable Playing In GW
+// @name            ComfortablePlayingInGW
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     Веселые плюшки для ganjawars.ru
 // @id              comfortablePlayingInGW@MyRequiem

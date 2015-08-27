@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name            Not Give Cannabis Leaf
+// @name            NotGiveCannabisLeaf
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     На страницах игры заменяет логотип "звезда" на зеленый листик.
 // @id              comfortablePlayingInGW@MyRequiem

@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name            Aut Refresh Link
+// @name            AutRefreshLink
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     На ауте и в прибрежке добавляет кнопку "Обновить" под чатом.
 // @id              comfortablePlayingInGW@MyRequiem

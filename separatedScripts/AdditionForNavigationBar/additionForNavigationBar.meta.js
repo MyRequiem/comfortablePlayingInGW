@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name            Addition For Navigation Bar
+// @name            AdditionForNavigationBar
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     Добавляет возможность установить дополнительные ссылки в панель навигации.
 // @id              comfortablePlayingInGW@MyRequiem

@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name            Work Post Grenades Broken
+// @name            WorkPostGrenadesBroken
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     Окончание работы, осталось времени работать, пришла почта/посылка, нет гранаты, имеются сломанные вещи. На все события оповещения звуковые и визуальные.
 // @id              comfortablePlayingInGW@MyRequiem
