@@ -141,7 +141,10 @@ comfortablePlayingInGW/master/separatedScripts/'
 ![YandexLogo]({1}imgs/yandexLogo.png)
 <br>
 <br>
-Version: {0}
+Версия: {0}
+<br>
+Нашли ошибку? Пожалуйста, [сообщите](http://www.ganjawars.ru\
+/info.php?id=2095458)
 * [Установить]({1}_comfortablePlayingInGW.user.js)
 * [Скачать zip-архив]({1}_comfortablePlayingInGW.user.js.zip)
 * *Все скрипты отдельными файлами находятся в директории* \
