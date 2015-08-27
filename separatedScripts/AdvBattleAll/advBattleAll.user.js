@@ -539,7 +539,7 @@
             this.allFighters[name] = objPers;
 
             // в бою и если это мой перс, то запоминаем его
-            if (!general.viewMode &&
+            if (!general.viewMode && persLink.href &&
                     persLink.href.indexOf('?id=' + general.myID) !== -1) {
                 this.myPers = objPers;
                 this.myPers.name = name;
