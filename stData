@@ -9,6 +9,10 @@
     [1]  - AdditionForNavigationBar
     [2]  - AdsFilter
     [3]  - AdvBattleAll
+    [4]  - BlacklistHighlighting
+    [5]  - WorkPostGrenadesBroken
+    [6]  - ResourcesAndBonuses
+    [7]  - CritShotsLinksOnBattleLog
 
 # scripts data
 [2]  - AdditionForNavigationBar
@@ -55,4 +59,7 @@
     [5]  - отображать грену
     [6]  - звук при получении почты/посылки
     [7]  - звук "Пора работать"
+
+[7] - CritShotsLinksOnBattleLog
+    [0]  - показывать/не показывать критические выстрелы
 
