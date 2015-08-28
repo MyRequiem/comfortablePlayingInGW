@@ -11,7 +11,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         3.0-180815
+// @version         3.1-280815
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -368,12 +368,17 @@
             // номер противника
             var enemyList = general.$('euids').querySelectorAll('option'),
                 reg = /^(\d+)\. .*\[\d+ \/ \d+\] ([^:]+):/,
-                enemy = '',
+                enemy,
+                tmps,
                 i;
 
             for (i = 0; i < enemyList.length; i++) {
                 if (enemyList[i].selected) {
-                    enemy = reg.exec(enemyList[i].innerHTML);
+                    tmps = enemyList[i].innerHTML;
+                    // ecли пок то будет
+                    // 1. Electrode [Major][20] 182 HP - 13!
+                    enemy = reg.exec(tmps) || (/^(\d+)\. ([^\s]+)/.exec(tmps));
+
                     break;
                 }
             }
@@ -392,7 +397,7 @@
                 dataSt[13] = '1';
                 general.setData(dataSt);
                 _this.inpTextChat.value = str + ' в ' + enemy[1] +
-                    ' [' + enemy[2] + ' ]';
+                    ' [' + enemy[2] + ']';
                 writeOnChatButton.click();
                 return;
             }
@@ -411,17 +416,17 @@
             dataSt[11] = rightAttack ? (/\d/.exec(rightAttack.id)[0]) : '';
 
             general.setData(dataSt);
-            str += enemy[1] + ' [' + enemy[2] + '] ';
+            str += enemy[1];
             if (dataSt[11]) {
                 str += dataSt[11] === '1' ? ' ле' :
                         dataSt[11] === '2' ? ' ц' : ' пр';
             }
             if (dataSt[10]) {
-                str += dataSt[10] === '1' ? 'ле' :
-                        dataSt[10] === '2' ? 'ц' : 'пр';
+                str += dataSt[10] === '1' ? ' ле' :
+                        dataSt[10] === '2' ? ' ц' : ' пр';
             }
 
-            _this.inpTextChat.value = str;
+            _this.inpTextChat.value = str + ' [' + enemy[2] + ']';
             writeOnChatButton.click();
         };
 

@@ -1387,12 +1387,17 @@
             // номер противника
             var enemyList = general.$('euids').querySelectorAll('option'),
                 reg = /^(\d+)\. .*\[\d+ \/ \d+\] ([^:]+):/,
-                enemy = '',
+                enemy,
+                tmps,
                 i;
 
             for (i = 0; i < enemyList.length; i++) {
                 if (enemyList[i].selected) {
-                    enemy = reg.exec(enemyList[i].innerHTML);
+                    tmps = enemyList[i].innerHTML;
+                    // ecли пок то будет
+                    // 1. Electrode [Major][20] 182 HP - 13!
+                    enemy = reg.exec(tmps) || (/^(\d+)\. ([^\s]+)/.exec(tmps));
+
                     break;
                 }
             }
@@ -1411,7 +1416,7 @@
                 dataSt[15] = '1';
                 general.setData(dataSt, 4);
                 _this.inpTextChat.value = str + ' в ' + enemy[1] +
-                    ' [' + enemy[2] + ' ]';
+                    ' [' + enemy[2] + ']';
                 writeOnChatButton.click();
                 return;
             }
@@ -1430,17 +1435,17 @@
             dataSt[13] = rightAttack ? (/\d/.exec(rightAttack.id)[0]) : '';
 
             general.setData(dataSt, 4);
-            str += enemy[1] + ' [' + enemy[2] + '] ';
+            str += enemy[1];
             if (dataSt[13]) {
-                str += dataSt[13] === '1' ? 'ле' :
-                        dataSt[13] === '2' ? 'ц' : 'пр';
+                str += dataSt[13] === '1' ? ' ле' :
+                        dataSt[13] === '2' ? ' ц' : ' пр';
             }
             if (dataSt[12]) {
                 str += dataSt[12] === '1' ? ' ле' :
                         dataSt[12] === '2' ? ' ц' : ' пр';
             }
 
-            _this.inpTextChat.value = str;
+            _this.inpTextChat.value = str + ' [' + enemy[2] + ']';
             writeOnChatButton.click();
         };
 
