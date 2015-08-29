@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-280815-dev
+// @version         1.00-290815-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,13 +58,13 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-280815-dev';
+        this.version = '1.00-290815-dev';
         /**
          * @property stString
          * @type {String}
          */
-        this.stString = this.version + '@|||||||@@|@|||||||||||||||||@|@' +
-            '|||||||@';
+        this.stString = this.version + '@||||||||@@|@|||||||||||||||||@|@' +
+            '|||||||@@||';
         /**
          * @property myID
          * @type {String}
@@ -581,7 +581,16 @@
                     'disabled>', '5'],
                 ['Ресурсы и бонусы', 'Создает ссылки "Ресурсы" и "Бонусы" ' +
                     'вверху страницы. При клике выводятся соответствующие ' +
-                    'данные.', '6']],
+                    'данные.', '6'],
+                ['Удаление личных сообщений', 'Добавляет сылку "Удалить ' +
+                    'отмеченные" вверху страниц входящих и исходящих ' +
+                    'сообщений. Отметка синдикатных рассылок и сообщений от ' +
+                    'робота.<br><br><input id="syndmail" type="checkbox" ' +
+                    'disabled /> отмечать синдовые рассылки<br>' +
+                    '<input id="robotmail" type="checkbox" disabled /> ' +
+                    'отмечать рассылки от робота<br>' +
+                    '<input id="importantmail" type="checkbox" disabled /> ' +
+                    'НЕ отмечать письма с пометкой "важное"', '8']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -614,9 +623,9 @@
                     'показывать критические выстрелы', '7']],
 
             'Доска объявлений': [
-                ['Фильтр поиска аренды/продажи', 'Фильтр онлайн/оффлайн и по ' +
-                    'островам на странице поиска аренды/продажи предметов.',
-                    '2']],
+                ['Фильтр поиска продажи/покупки/аренды', 'Фильтр ' +
+                    'онлайн/оффлайн и по островам на страницах поиска ' +
+                    'продажи/покупки/аренды предметов.', '2']],
 
             'Ферма': []
         };
@@ -701,6 +710,18 @@
         };
 
         /**
+         * @method modifyData
+         * @param   {int}       ind
+         * @param   {int}       ind1
+         * @param   {String}    val
+         */
+        this.modifyData = function (ind, ind1, val) {
+            var tmp = general.getData(ind);
+            tmp[ind1] = val;
+            general.setData(tmp, ind);
+        };
+
+        /**
          * @method init
          */
         this.init = function () {
@@ -775,14 +796,14 @@
                 addEventListener('input',
                         this.setSettingsForAdvBattleAll, false);
 
+            var _this = this;
             // чекбокс настроек подсветки персонажей из черного списка
             // (блокировать или нет ссылку принятия боя в одиночках)
             var chkBL = general.$('blockBLOne2One');
             chkBL.checked = general.getData(5)[1] === '1';
             chkBL.addEventListener('click', function () {
-                var stData = general.getData(5);
-                stData[1] = general.$('blockBLOne2One').checked ? '1' : '';
-                general.setData(stData, 5);
+                var chkbl = this;
+                _this.modifyData(5, 1, chkbl.checked ? '1' : '');
             }, false);
 
             // работа, слом, грена, почта/посылка
@@ -796,63 +817,59 @@
             general.$('soundWork').value = general.getData(6)[7] || '0';
             // обработчики списков выбора звука
             general.$('soundSms').addEventListener('change', function () {
-                var tmp = general.getData(6),
-                    _this = this;
-
-                tmp[6] = _this.value === '0' ? '' : _this.value;
-                general.setData(tmp, 6);
+                var selSound = this;
+                _this.modifyData(6, 6, selSound.value === '0' ?
+                        '' : selSound.value);
             }, false);
             general.$('soundWork').addEventListener('change', function () {
-                var tmp = general.getData(6),
-                    _this = this;
-
-                tmp[7] = _this.value === '0' ? '' : _this.value;
-                general.setData(tmp, 6);
+                var selSound = this;
+                _this.modifyData(6, 7, selSound.value === '0' ?
+                        '' : selSound.value);
             }, false);
             // чекбоксы настроек
             general.$('showwork').checked = general.getData(6)[2];
             general.$('showwork').addEventListener('click', function () {
-                var tmp = general.getData(6),
-                    _this = this;
-
-                tmp[2] = _this.checked ? '1' : '';
-                general.setData(tmp, 6);
+                var showwork = this;
+                _this.modifyData(6, 2, showwork.checked ? '1' : '');
             }, false);
             general.$('showsms').checked = general.getData(6)[3];
             general.$('showsms').addEventListener('click', function () {
-                var tmp = general.getData(6),
-                    _this = this;
-
-                tmp[3] = _this.checked ? '1' : '';
-                general.setData(tmp, 6);
+                var showsms = this;
+                _this.modifyData(6, 3, showsms.checked ? '1' : '');
             }, false);
             general.$('showbroken').checked = general.getData(6)[4];
             general.$('showbroken').addEventListener('click', function () {
-                var tmp = general.getData(6),
-                    _this = this;
-
-                tmp[4] = _this.checked ? '1' : '';
-                general.setData(tmp, 6);
+                var showbroken = this;
+                _this.modifyData(6, 4, showbroken.checked ? '1' : '');
             }, false);
             general.$('showgren').checked = general.getData(6)[5];
             general.$('showgren').addEventListener('click', function () {
-                var tmp = general.getData(6),
-                    _this = this;
-
-                tmp[5] = _this.checked ? '1' : '';
-                general.setData(tmp, 6);
+                var showgren = this;
+                _this.modifyData(6, 5, showgren.checked ? '1' : '');
             }, false);
 
             // ссылки в логе боя, критические выстрелы
             general.$('showcrits').checked = general.getData(7)[0];
             general.$('showcrits').addEventListener('click', function () {
-                var _this = this;
+                var showcrits = this;
+                general.setData(showcrits.checked ? '1' : '', 7);
+            }, false);
 
-                if (_this.checked) {
-                    general.setData('1', 7);
-                } else {
-                    general.setData('', 7);
-                }
+            // удаление личных сообщений
+            general.$('syndmail').checked = general.getData(8)[0];
+            general.$('robotmail').checked = general.getData(8)[1];
+            general.$('importantmail').checked = general.getData(8)[2];
+            general.$('syndmail').addEventListener('click', function () {
+                var syndmail = this;
+                _this.modifyData(8, 0, syndmail.checked ? '1' : '');
+            }, false);
+            general.$('robotmail').addEventListener('click', function () {
+                var robotmail = this;
+                _this.modifyData(8, 1, robotmail.checked ? '1' : '');
+            }, false);
+            general.$('importantmail').addEventListener('click', function () {
+                var importantmail = this;
+                _this.modifyData(8, 2, importantmail.checked ? '1' : '');
             }, false);
         };
     };
@@ -3634,6 +3651,87 @@
         };
     };
 
+    /**
+     * @class DeleteSms
+     * @constructor
+     */
+    var DeleteSms = function () {
+        /**
+         * @method testSubject
+         * @param   {HTMLInputElement}  chk
+         * @param   {Object}            reg
+         * @return  {Boolean}
+         */
+        this.testSubject = function (chk, reg) {
+            return reg.test(chk.parentNode.nextElementSibling.innerHTML);
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var target = general.doc.querySelector('center>nobr>a:last-child' +
+                        '[href="/sms.php?page=2"]'),
+                del = general.doc.querySelector('input[class="mainbutton"]' +
+                    '[type="submit"][value="Удалить отмеченные"]'),
+                smsChk = general.doc.
+                    querySelectorAll('input[type="checkbox"][name^="kill"]');
+
+            if (!target || !del) {
+                return;
+            }
+
+            target = target.parentNode;
+            // кнопка удаления
+            var delButton = general.doc.createElement('span');
+            delButton.innerHTML = 'Удалить отмеченные';
+            delButton.setAttribute('style', 'cursor: pointer; ' +
+                    'text-decoration: underline;');
+            delButton.addEventListener('click', function () {
+                del.click();
+            }, false);
+
+            target.appendChild(general.doc.createTextNode(' | '));
+            target.appendChild(delButton);
+
+            // кнопка "Отметить все"
+            var markAll = general.doc.createElement('span');
+            markAll.setAttribute('style', 'margin-left: 5px; ' +
+                    'cursor: pointer; color: #990000');
+            markAll.setAttribute('title', 'Отметить все');
+            markAll.innerHTML = '[+]';
+            target.appendChild(markAll);
+            var _this = this;
+            markAll.addEventListener('click', function () {
+                var but = this,
+                    s = ['[+]', '[&minus;]', 'Отметить все',
+                            'Снять все отметки'],
+                    on = but.innerHTML === s[0];
+
+                but.innerHTML = on ? s[1] : s[0];
+                but.title = on ? s[3] : s[2];
+
+                var i;
+                for (i = 0; i < smsChk.length; i++) {
+                    smsChk[i].checked = !(!on || (general.getData(8)[2] &&
+                    _this.testSubject(smsChk[i], /\[важное\]/)));
+                }
+            }, false);
+
+            // отмечаем нужное
+            var stData = general.getData(8),
+                i;
+            for (i = 0; i < smsChk.length; i++) {
+                if ((stData[0] &&
+                        this.testSubject(smsChk[i], /<b>#\d+<\/b>/)) ||
+                            (stData[1] && smsChk[i].parentNode.parentNode.
+                                querySelector('a[href="/info.php?id=1"]'))) {
+                    smsChk[i].checked = true;
+                }
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -3724,6 +3822,16 @@
                     (/\?(stage=2\&item_id=|buy=)/.test(general.loc))) {
                 try {
                     new AdsFilter().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
+
+        if (/\/sms\.php/.test(general.loc)) {
+            if (initScript[8]) {
+                try {
+                    new DeleteSms().init();
                 } catch (e) {
                     general.cons.log(e);
                 }

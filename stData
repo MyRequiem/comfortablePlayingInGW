@@ -1,10 +1,10 @@
 
 # The structure localStorage
 
-[0] - script version
+[0]  - script version
 
 # checkboxes initScript
-[1] - initScript
+[1]  - initScript
     [0]  - NotGiveCannabisLeaf
     [1]  - AdditionForNavigationBar
     [2]  - AdsFilter
@@ -13,6 +13,7 @@
     [5]  - WorkPostGrenadesBroken
     [6]  - ResourcesAndBonuses
     [7]  - CritShotsLinksOnBattleLog
+    [8]  - DeleteSms
 
 # scripts data
 [2]  - AdditionForNavigationBar
@@ -46,11 +47,11 @@
     [16] - подходим или нет
     [17] - данные из списка выбора врагов (хэш: имя --> номер)
 
-[5] - BlacklistHighlighting
+[5]  - BlacklistHighlighting
     [0]  - ID персов из ЧС ('id1,id2,...')
     [1]  - блокировать ссылку принятия боя в одиночках ('', 1)
 
-[6] - WorkPostGrenadesBroken
+[6]  - WorkPostGrenadesBroken
     [0]  - звук при получении почты/посылки (проигран или нет)
     [1]  - звук по окончании работы (проигран или нет)
     [2]  - отображать время работы
@@ -60,6 +61,10 @@
     [6]  - звук при получении почты/посылки
     [7]  - звук "Пора работать"
 
-[7] - CritShotsLinksOnBattleLog
+[7]  - CritShotsLinksOnBattleLog
     [0]  - показывать/не показывать критические выстрелы
+[8]  - DeleteSms
+    [0]  - отмечать синдовые рассылки
+    [1]  - отмечать рассылки от робота
+    [2]  - НЕ отмечать письма с пометкой "важное" при нажатии на [+] (Отметить все)
 
