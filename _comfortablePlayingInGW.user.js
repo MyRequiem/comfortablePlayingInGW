@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-290815-dev
+// @version         1.00-300815-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -20,6 +20,10 @@
     browser: true, todo: true, passfail: true, devel: true, regexp: true
     plusplus: true, continue: true, vars: true, nomen: true
 */
+
+/** TODO:
+ *  - сохранение настроек перед чисткой браузера
+ */
 
 (function () {
     'use strict';
@@ -58,13 +62,13 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-290815-dev';
+        this.version = '1.00-300815-dev';
         /**
          * @property stString
          * @type {String}
          */
-        this.stString = this.version + '@||||||||@@|@|||||||||||||||||@|@' +
-            '|||||||@@||';
+        this.stString = this.version + '@||||||||||@@|@|||||||||||||||||@|@' +
+            '|||||||@@||@|||||';
         /**
          * @property myID
          * @type {String}
@@ -627,7 +631,19 @@
                     'онлайн/оффлайн и по островам на страницах поиска ' +
                     'продажи/покупки/аренды предметов.', '2']],
 
-            'Ферма': []
+            'Ферма': [
+                ['Производственный опыт и прибыль', 'Отображение ' +
+                    'производственного опыта и прибыли в Гб за один час для ' +
+                    'каждого растения.', '9'],
+                ['Таймер', 'Таймер для фермы. Звуковое оповещение когда ' +
+                    'пора полить/собрать.<br><br>' +
+                    this.getSelectSound('farmtm_snd') +
+                    '<input id="listenFarmtimer_sound" type="button" ' +
+                    'value="»" disabled /> - звук когда пора поливать/' +
+                    'собирать (0 - без звука)<br>' +
+                    '<input id="farmtmSndIntrvl" type="text" maxlength="3" ' +
+                    'style="width: 40px;" disabled /> - интервал повторения ' +
+                    'звука в секундах (0 - не повторять)', '10']]
         };
 
         /**
@@ -870,6 +886,23 @@
             general.$('importantmail').addEventListener('click', function () {
                 var importantmail = this;
                 _this.modifyData(8, 2, importantmail.checked ? '1' : '');
+            }, false);
+
+            // FarmTimer
+            general.$('listenFarmtimer_sound').
+                addEventListener('click', this.testSound, false);
+            general.$('farmtm_snd').value = general.getData(9)[4] || '0';
+            general.$('farmtm_snd').addEventListener('change', function () {
+                var selSound = this;
+                _this.modifyData(9, 4, selSound.value === '0' ?
+                        '' : selSound.value);
+            }, false);
+            general.$('farmtmSndIntrvl').value = general.getData(9)[5] || '0';
+            general.$('farmtmSndIntrvl').addEventListener('input', function () {
+                var inp = this;
+                if (new CheckInputText().init(inp, 0)) {
+                    _this.modifyData(9, 5, inp.value);
+                }
             }, false);
         };
     };
@@ -3732,6 +3765,288 @@
         };
     };
 
+    /**
+     * @class FarmExperience
+     * @constructor
+     */
+    var FarmExperience = function () {
+        /**
+         * @method calculateFarm
+         * @param   {int}       p1
+         * @param   {int}       p2
+         * @param   {int}       time
+         * @param   {Number}    exp
+         * @return  {string}
+         */
+        this.calculateFarm = function (p1, p2, time, exp) {
+            var money = ((p2 - p1) / time * 60).toFixed(2),
+                experience = (exp / time * 60).toFixed(3);
+
+            return ' <span style="color: #FF0000;">[$' + money + ']</span>' +
+                    '<span style="color: #0000FF;">[' + experience + ']</span>';
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            //если в постройках или не на пустрой грядке
+            if ((/section=items/.test(general.root.location.href)) ||
+                    !(/Грядка пустая/.test(general.doc.body.innerHTML))) {
+                return;
+            }
+
+            var firsPage = /<font color="?#006600"?>\s?<b>Укроп<\/b>/.
+                test(general.doc.body.innerHTML),
+                prices1 = general.doc.querySelectorAll('label>font' +
+                        '[color="#006600"]>b:last-child'),
+                prices2 = general.doc.querySelectorAll('li>font' +
+                        '[color="#990000"]>b:first-child'),
+                time = general.doc.querySelectorAll('form[action$=' +
+                        '"/ferma.php"]>li:nth-child(' +
+                            (firsPage ? 'odd' : 'even') + ')'),
+                span,
+                i;
+
+            for (i = 0; i < prices1.length; i++) {
+                span = general.doc.createElement('span');
+                span.setAttribute('style', 'font-size: 9px;');
+                span.innerHTML = this.calculateFarm(+(/\$(\d+)/.
+                            exec(prices1[i].innerHTML)[1]),
+                    +(/\$(\d+)/.exec(prices2[i].innerHTML)[1]),
+                    +(/созревания:\s(\d+)/.exec(time[i].innerHTML)[1]),
+                    parseFloat(/(\d+\.?\d*) опыта/.
+                        exec(time[i].nextElementSibling.innerHTML)[1]));
+
+                prices1[i].parentNode.appendChild(span);
+            }
+        };
+    };
+
+    /**
+     * @class FarmTimer
+     * @constructor
+     */
+    var FarmTimer = function () {
+        /**
+         * @property farmLink
+         * @type {HTMLLinkElement|null}
+         */
+        this.farmLink = null;
+        /**
+         * @property checkInterval
+         * @type {int|null}
+         */
+        this.checkInterval = null;
+
+        /**
+         * @method setRedLink
+         * @param   {String}    str
+         */
+        this.setRedLink = function (str) {
+            this.farmLink.setAttribute('style', 'color: #FF0000; ' +
+                    'font-weight: bold; text-decoration: none;');
+            this.farmLink.innerHTML = '[' + str + ']';
+        };
+
+        /**
+         * @method checkState
+         */
+        this.checkState = function () {
+            if (!(/bold/.test(this.farmLink.getAttribute('style')))) {
+                if (this.checkInterval) {
+                    general.root.clearInterval(this.checkInterval);
+                }
+
+                return;
+            }
+
+            var stData = general.getData(9);
+            if (!stData[0]) {
+                this.farmLink.innerHTML = '';
+                return;
+            }
+
+            var timeNow = new Date().getTime(),
+                time = +stData[0];
+
+            if (timeNow <= time) {
+                this.farmLink.setAttribute('style', 'color: #0000FF; ' +
+                        'text-decoration: none;');
+                stData[3] = '';
+                general.setData(stData, 9);
+                this.showTimer(+((time - timeNow) / 1000).toFixed(0));
+            }
+        };
+
+        /**
+         * @method setReminder
+         */
+        this.setReminder = function () {
+            var stData = general.getData(9);
+            if (!stData[0]) {
+                this.farmLink.innerHTML = '';
+                return;
+            }
+
+            this.setRedLink(stData[1]);
+
+            var _this = this;
+            this.checkInterval = general.root.setInterval(function () {
+                _this.checkState();
+            }, 2000);
+
+            if (!stData[4]) {
+                return;
+            }
+
+            var timeNow = new Date().getTime();
+            if (timeNow < +stData[0]) {
+                return;
+            }
+
+            var soundTime = +stData[2],
+                intrvl = stData[5] ? +stData[5] * 1000 : 0,
+                random = new GetRandom();
+
+            // пора проигрывать звук
+            if (timeNow - soundTime >= intrvl) {
+                // в настройках указано не повторять звук
+                if (!intrvl) {
+                    // если звук еще не был проигран
+                    if (!stData[3]) {
+                        stData[3] = '1';
+                        general.setData(stData, 9);
+                        new PlaySound().init(stData[4]);
+                    }
+
+                    return;
+                }
+
+                stData[2] = timeNow;
+                general.setData(stData, 9);
+                general.root.setTimeout(function () {
+                    _this.setReminder();
+                }, intrvl + random.init(1000, 10000));
+
+                new PlaySound().init(stData[4]);
+            } else if (intrvl) {
+                general.root.setTimeout(function () {
+                    _this.setReminder();
+                }, intrvl - (timeNow - soundTime) + random.init(1000, 10000));
+            }
+        };
+
+        /**
+         * @method showTimer
+         * @param   {int}   sec
+         */
+        this.showTimer = function (sec) {
+            var min,
+                s,
+                h;
+
+            if (!sec) {
+                this.setReminder();
+                return;
+            }
+
+            s = sec;
+            h = Math.floor(s / 3600);
+            s = s - h * 3600;
+            min = Math.floor(s / 60);
+            s = s - min * 60;
+
+            this.farmLink.innerHTML = '[' + (h < 10 ? '0' + h : h) + ':' +
+                (min < 10 ? '0' + min : min) + ':' +
+                (s < 10 ? '0' + s : s) + ']';
+
+            sec -= 1;
+            if (sec > -1) {
+                var _this = this;
+                general.root.setTimeout(function () {
+                    _this.showTimer(sec);
+                }, 1000);
+            } else {
+                general.root.setTimeout(this.setReminder,
+                                new GetRandom().init(1000, 3000));
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            /** localStorage:
+             * [0] - время полива/сбора
+             * [1] - действие (Полить|Собрать)
+             * [2] - время последнего проигрывания звука
+             * [3] - звук проигран?
+             */
+            var stData = general.getData(9),
+                timeNow = new Date().getTime();
+
+            // на ферме запоминаем данные, выходим
+            if (/\/ferma\.php/.test(general.loc)) {
+                // не на своей ферме
+                if ((/id=\d+/.test(general.loc)) &&
+                        (/id=(\d+)/.exec(general.loc)[1]) !== general.myID) {
+                    return;
+                }
+
+                var actionStr = /Ближайшее действие:.*[собрать|полить].*\(.*\)/.
+                        exec(general.doc.querySelector('td[width="400"]' +
+                                '[valign="top"]').innerHTML);
+
+                if (!actionStr) {
+                    stData[0] = '';
+                    general.setData(stData, 9);
+                    return;
+                }
+
+                var aStr = actionStr[0];
+                var action = /собрать/.test(aStr) ? 'Собрать' : 'Полить';
+
+                if (/уже пора/.test(aStr)) {
+                    general.setData([timeNow, action, timeNow, '1'], 9);
+                    return;
+                }
+
+                var timeLeft = +(/через (\d+) мин/.exec(aStr)[1]);
+                general.setData([timeNow + timeLeft * 60 * 1000,
+                        action, timeNow, ''], 9);
+
+                return;
+            }
+
+            var topPanel = new GetTopPanel().init();
+            if (!topPanel || !stData[0]) {
+                return;
+            }
+
+            this.farmLink = general.doc.createElement('a');
+            this.farmLink.setAttribute('style', 'color: #0000FF; ' +
+                    'text-decoration: none;');
+            this.farmLink.href = 'http://www.ganjawars.ru/ferma.php?id=' +
+                general.myID;
+            this.farmLink.setAttribute('target', '_blank');
+            topPanel.appendChild(general.doc.createTextNode(' | '));
+            topPanel.appendChild(this.farmLink);
+
+            if (timeNow >= +stData[0]) {
+                this.setRedLink(stData[1]);
+                var _this = this;
+                general.root.setTimeout(function () {
+                    _this.showTimer(0);
+                }, new GetRandom().init(1000, 3000));
+
+                return;
+            }
+
+            this.showTimer(+((+stData[0] - timeNow) / 1000).toFixed(0));
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -3801,22 +4116,6 @@
             }
         }
 
-        if (initScript[5]) {
-            try {
-                new WorkPostGrenadesBroken().init();
-            } catch (e) {
-                general.cons.log(e);
-            }
-        }
-
-        if (initScript[6]) {
-            try {
-                new ResourcesAndBonuses().init();
-            } catch (e) {
-                general.cons.log(e);
-            }
-        }
-
         if (/\/market(-p)?\.php/.test(general.loc)) {
             if (initScript[2] &&
                     (/\?(stage=2\&item_id=|buy=)/.test(general.loc))) {
@@ -3835,6 +4134,40 @@
                 } catch (e) {
                     general.cons.log(e);
                 }
+            }
+        }
+
+        if (/\/ferma\.php/.test(general.loc)) {
+            if (initScript[9]) {
+                try {
+                    new FarmExperience().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
+
+        if (initScript[10]) {
+            try {
+                new FarmTimer().init();
+            } catch (e) {
+                general.cons.log(e);
+            }
+        }
+
+        if (initScript[6]) {
+            try {
+                new ResourcesAndBonuses().init();
+            } catch (e) {
+                general.cons.log(e);
+            }
+        }
+
+        if (initScript[5]) {
+            try {
+                new WorkPostGrenadesBroken().init();
+            } catch (e) {
+                general.cons.log(e);
             }
         }
     }
