@@ -67,8 +67,8 @@
          * @property stString
          * @type {String}
          */
-        this.stString = this.version + '@||||||||||||@@|@|||||||||||||||||@|@' +
-            '|||||||@@||@|||||@|||';
+        this.stString = this.version + '@||||||||||||' +
+            '@@|@|||||||||||||||||@|@|||||||@@||@|||||@|||';
         /**
          * @property myID
          * @type {String}
@@ -539,6 +539,20 @@
         };
 
         /**
+         * @method getGitHubLink
+         * @param   {String}    scriptName
+         * @return  {String}
+         */
+        this.getGitHubLink = function (scriptName) {
+            var gitHubPage = 'https://github.com/MyRequiem/' +
+                'comfortablePlayingInGW/tree/master/separatedScripts/';
+
+            return '<br><a target="_blank" href="' + gitHubPage +
+                scriptName[0].toUpperCase() + scriptName.substr(1) +
+                '" style="color: #0000FF;">' + scriptName + '.user.js</a>';
+        };
+
+        /**
          * @property infoScripts
          * @type {Object}
          */
@@ -550,10 +564,12 @@
                     'ru/i/gon.gif" /> &nbsp;&nbsp;на зеленый листик &nbsp;' +
                     '&nbsp;<img style="box-shadow: 2px 3px 3px ' +
                     'rgba(122,122,122,0.5);" src="' + general.imgPath +
-                    'NotGiveCannabisLeaf/on.gif" />', '0'],
+                    'NotGiveCannabisLeaf/on.gif" />' +
+                    this.getGitHubLink('notGiveCannabisLeaf'), '0'],
                 ['Дополнение для панели навигации',
                     'Добавляет возможность установить дополнительные ссылки ' +
-                    'в панель навигации.', '1'],
+                    'в панель навигации.' +
+                    this.getGitHubLink('additionForNavigationBar'), '1'],
                 ['Подсветка персонажей из ЧС', 'Подсвечивает ссылки на ' +
                     'персонажей, входящих в черный список на всех страницах ' +
                     'игры. Делает неактивной ссылку принятия боя c ' +
@@ -563,7 +579,8 @@
                     'черный список</a> (скрипт должен быть включен)<br>' +
                     '<input type="checkbox" id="blockBLOne2One" disabled> ' +
                     'блокировать ссылку принятия боя с персонажем из ЧС в ' +
-                    'одиночных заявках', '4'],
+                    'одиночных заявках' +
+                    this.getGitHubLink('blacklistHighlighting'), '4'],
                 ['Работа, письмо, посылка, граната, слом', 'Окончание ' +
                     'работы, осталось времени работать, почта, посылка, ' +
                     'присутствие гранаты на поясе, проверка сломанных вещей. ' +
@@ -582,10 +599,11 @@
                     '"Пора работать": &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                     '&nbsp;&nbsp;&nbsp;' + this.getSelectSound('soundWork') +
                     ' <input type="button" id="listenSoundWork" value="»" ' +
-                    'disabled>', '5'],
+                    'disabled>' +
+                    this.getGitHubLink('workPostGrenadesBroken'), '5'],
                 ['Ресурсы и бонусы', 'Создает ссылки "Ресурсы" и "Бонусы" ' +
                     'вверху страницы. При клике выводятся соответствующие ' +
-                    'данные.', '6'],
+                    'данные.' + this.getGitHubLink('resourcesAndBonuses'), '6'],
                 ['Удаление личных сообщений', 'Добавляет сылку "Удалить ' +
                     'отмеченные" вверху страниц входящих и исходящих ' +
                     'сообщений. Отметка синдикатных рассылок и сообщений от ' +
@@ -594,7 +612,8 @@
                     '<input id="robotmail" type="checkbox" disabled /> ' +
                     'отмечать рассылки от робота<br>' +
                     '<input id="importantmail" type="checkbox" disabled /> ' +
-                    'НЕ отмечать письма с пометкой "важное"', '8'],
+                    'НЕ отмечать письма с пометкой "важное"' +
+                    this.getGitHubLink('deleteSms'), '8'],
                 ['Таймер для выполнения квестов NPC', 'На главной странице ' +
                     'выводит время, оставшееся до взятия квеста и сcылку на ' +
                     'NPC, у которого в последний раз брали квест. Звуковое ' +
@@ -602,7 +621,7 @@
                     'о них для каждого острова.<br>Звук "Пора делать ' +
                     'квест": ' + this.getSelectSound('soundTimerNPC') +
                     ' <input type="button" id="playSoundTimerNPC" value="»" ' +
-                    'disabled />', '12']],
+                    'disabled />' + this.getGitHubLink('timeNpc'), '12']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -626,23 +645,27 @@
                     'заявки при входе в нее: <input id="refreshAppl" type="' +
                     'text" maxlength="3" style="width: 30px;" value="' +
                     (general.getData(4)[1] || '0') + '" disabled /> сек (0 - ' +
-                    'настройки игры по умолчанию)', '3'],
+                    'настройки игры по умолчанию)' +
+                    this.getGitHubLink('advBattleAll'), '3'],
                 ['Ссылки в логе боя, критические выстрелы', 'В бою и на ' +
                     'страницax логов боев делает все ники персонажей ' +
                     'ссылками. Показывает критические выстрелы вашего ' +
                     'персонажа и их общее количество (опционально).<br><br>' +
                     '<input type="checkbox" id="showcrits" disabled /> ' +
-                    'показывать критические выстрелы', '7']],
+                    'показывать критические выстрелы' +
+                    this.getGitHubLink('critShotsLinksOnBattleLog'), '7']],
 
             'Доска объявлений': [
                 ['Фильтр поиска продажи/покупки/аренды', 'Фильтр ' +
                     'онлайн/оффлайн и по островам на страницах поиска ' +
-                    'продажи/покупки/аренды предметов.', '2']],
+                    'продажи/покупки/аренды предметов.' +
+                    this.getGitHubLink('adsFilter'), '2']],
 
             'Ферма': [
                 ['Производственный опыт и прибыль', 'Отображение ' +
                     'производственного опыта и прибыли в Гб за один час для ' +
-                    'каждого растения.', '9'],
+                    'каждого растения.' +
+                    this.getGitHubLink('farmExperience'), '9'],
                 ['Таймер', 'Таймер для фермы. Звуковое оповещение когда ' +
                     'пора полить/собрать.<br><br>' +
                     this.getSelectSound('farmtm_snd') +
@@ -651,9 +674,11 @@
                     'собирать (0 - без звука)<br>' +
                     '<input id="farmtmSndIntrvl" type="text" maxlength="3" ' +
                     'style="width: 40px;" disabled /> - интервал повторения ' +
-                    'звука в секундах (0 - не повторять)', '10'],
+                    'звука в секундах (0 - не повторять)' +
+                    this.getGitHubLink('farmTimer'), '10'],
                 ['Удобные ссылки на ферме', 'Удобные ссылки для полива, ' +
-                    'сбора, вскапывания, посадки на ферме.', '11']]
+                    'сбора, вскапывания, посадки на ферме.' +
+                    this.getGitHubLink('comfortableLinksForFarm'), '11']]
         };
 
         /**
