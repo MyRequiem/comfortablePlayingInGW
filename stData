@@ -17,6 +17,7 @@
     [9]  - FarmExperience
     [10] - FarmTimer
     [11] - ComfortableLinksForFarm
+    [12] - TimeNpc
 
 # scripts data
 [2]  - AdditionForNavigationBar
@@ -77,4 +78,9 @@
     [3]  - звук проигран?
     [4]  - номер звука когда пора поливать/собирать
     [5]  - интервал повторения звука
+[10] - TimeNpc
+    [0]  - звук вкл/выкл
+    [1]  - ID NPC, у которого последний раз брали квест
+    [2]  - время
+    [3]  - номер звука
 
