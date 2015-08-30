@@ -3844,9 +3844,10 @@
          * @param   {String}    str
          */
         this.setRedLink = function (str) {
+            var action = str === '2' ? 'Собрать' : 'Полить';
             this.farmLink.setAttribute('style', 'color: #FF0000; ' +
                     'font-weight: bold; text-decoration: none;');
-            this.farmLink.innerHTML = '[' + str + ']';
+            this.farmLink.innerHTML = '[' + action + ']';
         };
 
         /**
@@ -4005,16 +4006,17 @@
                 }
 
                 var aStr = actionStr[0];
-                var action = /собрать/.test(aStr) ? 'Собрать' : 'Полить';
+                var action = /собрать/.test(aStr) ? '2' : '1';
 
                 if (/уже пора/.test(aStr)) {
-                    general.setData([timeNow, action, timeNow, '1'], 9);
+                    general.setData([timeNow, action, timeNow, '1',
+                                stData[4], stData[5]], 9);
                     return;
                 }
 
                 var timeLeft = +(/через (\d+) мин/.exec(aStr)[1]);
                 general.setData([timeNow + timeLeft * 60 * 1000,
-                        action, timeNow, ''], 9);
+                        action, timeNow, '', stData[4], stData[5]], 9);
 
                 return;
             }

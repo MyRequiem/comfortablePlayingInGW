@@ -11,7 +11,7 @@
 // @exclude         http://www.ganjawars.ru/index.php*
 // @grant           none
 // @license         MIT
-// @version         2.00-290815
+// @version         2.00-300815
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -201,9 +201,10 @@
          * @param   {String}    str
          */
         this.setRedLink = function (str) {
+            var action = str === '2' ? 'Собрать' : 'Полить';
             this.farmLink.setAttribute('style', 'color: #FF0000; ' +
                     'font-weight: bold; text-decoration: none;');
-            this.farmLink.innerHTML = '[' + str + ']';
+            this.farmLink.innerHTML = '[' + action + ']';
         };
 
         /**
@@ -372,7 +373,7 @@
                 }
 
                 var aStr = actionStr[0];
-                var action = /собрать/.test(aStr) ? 'Собрать' : 'Полить';
+                var action = /собрать/.test(aStr) ? '2' : '1';
 
                 if (/уже пора/.test(aStr)) {
                     general.setData([timeNow, action, timeNow, '1']);
