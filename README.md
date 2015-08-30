@@ -7,7 +7,7 @@
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
 <br>
 <br>
-Версия: 1.00-300815-dev
+Версия: 1.00-290815-dev
 <br>
 Нашли ошибку? Пожалуйста, [сообщите](http://www.ganjawars.ru/info.php?id=2095458)
 * [Установить](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js)
@@ -73,6 +73,13 @@
 Версия: 2.00-210815
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BlacklistHighlighting/blacklistHighlighting.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BlacklistHighlighting/blacklistHighlighting.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BlacklistHighlighting)
+<br>
+
+**ComfortableLinksForFarm**
+<br>
+Версия: 2.00-300815
+<br>
+[[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ComfortableLinksForFarm/comfortableLinksForFarm.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ComfortableLinksForFarm/comfortableLinksForFarm.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ComfortableLinksForFarm)
 <br>
 
 **CritShotsLinksOnBattleLog**

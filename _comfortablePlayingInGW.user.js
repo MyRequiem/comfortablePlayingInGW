@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-300815-dev
+// @version         1.00-290815-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -62,12 +62,12 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-300815-dev';
+        this.version = '1.00-290815-dev';
         /**
          * @property stString
          * @type {String}
          */
-        this.stString = this.version + '@||||||||||@@|@|||||||||||||||||@|@' +
+        this.stString = this.version + '@|||||||||||@@|@|||||||||||||||||@|@' +
             '|||||||@@||@|||||';
         /**
          * @property myID
@@ -643,7 +643,9 @@
                     'собирать (0 - без звука)<br>' +
                     '<input id="farmtmSndIntrvl" type="text" maxlength="3" ' +
                     'style="width: 40px;" disabled /> - интервал повторения ' +
-                    'звука в секундах (0 - не повторять)', '10']]
+                    'звука в секундах (0 - не повторять)', '10'],
+                ['Удобные ссылки на ферме', 'Удобные ссылки для полива, ' +
+                    'сбора, вскапывания, посадки на ферме.', '11']]
         };
 
         /**
@@ -4071,6 +4073,69 @@
         return;
     }
 
+    /**
+     * @class ComfortableLinksForFarm
+     * @constructor
+     */
+    var ComfortableLinksForFarm = function () {
+        /**
+         * @method setLink
+         * @param   {HTMLLinkElement}   a
+         * @param   {String|null}       txt
+         */
+        this.setLink = function (a, txt) {
+            var target = general.doc.
+                    querySelector('center>b>font[color="#990000"]').parentNode;
+
+            if (txt && (/\(через \d+/.test(a.parentNode.innerHTML))) {
+                return;
+            }
+
+            var link = a.cloneNode(true);
+
+            if (!txt) {
+                a.setAttribute('style', 'display: none;');
+            } else {
+                link.innerHTML = txt;
+            }
+
+            link.setAttribute('style', 'margin-left: 10px;');
+            target.appendChild(link);
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+                // ссылка Собрать, Вскопать, Полить
+            var a1 = general.doc.querySelector('td[bgcolor="#f0fff0"]>a' +
+                    '[href^="/ferma.php?"]'),
+                // ссылка ближайшее действие
+                a2 = general.doc.querySelector('td[bgcolor="#e0eee0"]>a' +
+                        '[href^="/ferma.php?"]'),
+                // кнопка посадить
+                but = general.doc.querySelector('input[value="Посадить"]'),
+                // клетка, на которой находимся
+                pos = general.doc.querySelector('img[src$="ru/i/point2.gif"]');
+
+            if (a1) {
+                this.setLink(a1, null);
+            } else if (a2) {
+                this.setLink(a2, 'Далее');
+            }
+
+            pos = but && pos ? new GetPos().init(pos.parentNode) : null;
+            if (pos) {
+                but.setAttribute('style', 'position: absolute; ' +
+                        'background: #F4F3F1; border-radius: 7px; ' +
+                        'width: 62px; height: 17px; ' +
+                        'top: ' + (pos.y + 15) + 'px; left: ' + (pos.x - 9) +
+                        'px;');
+                but.focus();
+            }
+        };
+    };
+
     initScript = general.getInitScript();
     // везде
     if (initScript[0]) {
@@ -4143,6 +4208,14 @@
             if (initScript[9]) {
                 try {
                     new FarmExperience().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[11]) {
+                try {
+                    new ComfortableLinksForFarm().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
