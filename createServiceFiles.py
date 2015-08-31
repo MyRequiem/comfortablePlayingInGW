@@ -149,6 +149,8 @@ comfortablePlayingInGW/master/separatedScripts/'
 * [Скачать zip-архив]({1}_comfortablePlayingInGW.user.js.zip)
 * *Все скрипты отдельными файлами находятся в директории* \
 [./separatedScripts]({2})
+* [Как устанавливать скрипты](http://gwscripts.ucoz.net/index/\
+how_to_install/0-31)
 <br>
 <br>
 *Кликаем на листик, открываются настройки*:

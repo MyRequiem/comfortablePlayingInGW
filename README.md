@@ -13,6 +13,7 @@
 * [Установить](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js)
 * [Скачать zip-архив](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js.zip)
 * *Все скрипты отдельными файлами находятся в директории* [./separatedScripts](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/)
+* [Как устанавливать скрипты](http://gwscripts.ucoz.net/index/how_to_install/0-31)
 <br>
 <br>
 *Кликаем на листик, открываются настройки*:
