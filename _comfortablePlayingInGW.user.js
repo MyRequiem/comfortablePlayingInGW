@@ -90,8 +90,7 @@
          * @property imgPath
          * @type {String}
          */
-        this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
-            'comfortablePlayingInGW/master/imgs/';
+        this.imgPath = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/imgs/';
         /**
          * @property viewMode
          * @type {Boolean}
@@ -254,12 +253,8 @@
                 var link = general.doc.createElement('link');
                 link.setAttribute('type', 'image/x-icon');
                 link.setAttribute('rel', 'shortcut icon');
-                link.setAttribute('href',
-                        /** TODO исправить images_for_scripts
-                         * на imagesForScripts
-                         */
-                        'http://gwscripts.ucoz.net/images_for_scripts/' +
-                        'notgivecannabisleaf/favicon.ico');
+                link.setAttribute('href', general.imgPath +
+                        'NotGiveCannabisLeaf/favicon.ico');
                 head.appendChild(link);
             }
         };
@@ -653,7 +648,7 @@
                     'персонажа и их общее количество (опционально).<br><br>' +
                     '<input type="checkbox" id="showcrits" disabled /> ' +
                     'показывать критические выстрелы' +
-                    this.getGitHubLink('critShotsLinksOnBattleLog'), '7']],
+                    this.getGitHubLink('critShotsAndLinksBtlLog'), '7']],
 
             'Доска объявлений': [
                 ['Фильтр поиска продажи/покупки/аренды', 'Фильтр ' +
@@ -3470,10 +3465,10 @@
     };
 
     /**
-     * @class CritShotsLinksOnBattleLog
+     * @class CritShotsAndLinksBtlLog
      * @constructor
      */
-    var CritShotsLinksOnBattleLog = function () {
+    var CritShotsAndLinksBtlLog = function () {
         /**
          * @property showCritShots
          * @type {String}
@@ -4997,7 +4992,7 @@
         if (/(\/b0\/|\/warlog\.php)/.test(general.loc)) {
             if (initScript[7]) {
                 try {
-                    new CritShotsLinksOnBattleLog().init();
+                    new CritShotsAndLinksBtlLog().init();
                 } catch (e) {
                     general.cons.log(e);
                 }

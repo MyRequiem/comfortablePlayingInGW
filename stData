@@ -12,7 +12,7 @@
     [4]  - BlacklistHighlighting
     [5]  - WorkPostGrenadesBroken
     [6]  - ResourcesAndBonuses
-    [7]  - CritShotsLinksOnBattleLog
+    [7]  - CritShotsAndLinksBtlLog
     [8]  - DeleteSms
     [9]  - FarmExperience
     [10] - FarmTimer
@@ -66,7 +66,7 @@
     [6]  - звук при получении почты/посылки
     [7]  - звук "Пора работать"
 
-[7]  - CritShotsLinksOnBattleLog
+[7]  - CritShotsAndLinksBtlLog
     [0]  - показывать/не показывать критические выстрелы
 
 [8]  - DeleteSms

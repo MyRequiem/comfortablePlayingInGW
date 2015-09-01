@@ -71,6 +71,12 @@
          */
         this.DESIGN_VERSION = /(^|;) ?version=([^;]*)(;|$)/.
                 exec(this.doc.cookie);
+        /**
+         * @property imgPath
+         * @type {String}
+         */
+        this.imgPath = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
+            'imgs/WorkPostGrenadesBroken/';
     };
 
     /**
@@ -238,21 +244,15 @@
          */
         this.wpgbContainer = general.doc.createElement('span');
         /**
-         * @property imgPath
-         * @type {String}
-         */
-        this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
-            'comfortablePlayingInGW/master/imgs/WorkPostGrenadesBroken/';
-        /**
          * @property redFactory
          * @type {String}
          */
-        this.redFactory = this.imgPath + 'redFactory.gif';
+        this.redFactory = general.imgPath + 'redFactory.gif';
         /**
          * @property blueFactory
          * @type {String}
          */
-        this.blueFactory = this.imgPath + 'blueFactory.gif';
+        this.blueFactory = general.imgPath + 'blueFactory.gif';
         /**
          * @property grenades
          * @type {Array}

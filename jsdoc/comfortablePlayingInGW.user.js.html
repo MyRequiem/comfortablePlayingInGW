@@ -27,7 +27,7 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>// ==UserScript==
-// @name            Comfortable Playing In GW
+// @name            ComfortablePlayingInGW
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     Веселые плюшки для ganjawars.ru
 // @id              comfortablePlayingInGW@MyRequiem
@@ -38,7 +38,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-180815-dev
+// @version         1.00-010915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -48,6 +48,10 @@
     browser: true, todo: true, passfail: true, devel: true, regexp: true
     plusplus: true, continue: true, vars: true, nomen: true
 */
+
+/** TODO:
+ *  - сохранение настроек перед чисткой браузера
+ */
 
 (function () {
     'use strict';
@@ -86,12 +90,13 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-180815-dev';
+        this.version = '1.00-010915-dev';
         /**
          * @property stString
          * @type {String}
          */
-        this.stString = this.version + '@|||@@|@|||||||||||||||||';
+        this.stString = this.version + '@|||||||||||||' +
+            '@@|@|||||||||||||||||@|@|||||||@@||@|||||@|||@';
         /**
          * @property myID
          * @type {String}
@@ -113,8 +118,7 @@
          * @property imgPath
          * @type {String}
          */
-        this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
-            'comfortablePlayingInGW/master/imgs/';
+        this.imgPath = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/imgs/';
         /**
          * @property viewMode
          * @type {Boolean}
@@ -277,12 +281,8 @@
                 var link = general.doc.createElement('link');
                 link.setAttribute('type', 'image/x-icon');
                 link.setAttribute('rel', 'shortcut icon');
-                link.setAttribute('href',
-                        /** TODO исправить images_for_scripts
-                         * на imagesForScripts
-                         */
-                        'http://gwscripts.ucoz.net/images_for_scripts/' +
-                        'notgivecannabisleaf/favicon.ico');
+                link.setAttribute('href', general.imgPath +
+                        'NotGiveCannabisLeaf/favicon.ico');
                 head.appendChild(link);
             }
         };
@@ -316,6 +316,52 @@
             if (!(/\/news\.php\?set=1/.test(general.loc))) {
                 this.changeIcons();
             }
+        };
+    };
+
+    /**
+     * @class PlaySound
+     * @constructor
+     */
+    var PlaySound = function () {
+        /**
+         * @method init
+         * @param   {int|String}    sound
+         */
+        this.init = function (sound) {
+            if (!sound || sound === '0') {
+                return;
+            }
+
+            var fl = general.$('_flashcontent');
+            if (!fl) {
+                fl = general.doc.createElement('div');
+                fl.id = '_flashcontent';
+                general.doc.body.appendChild(fl);
+            }
+
+            fl.innerHTML = '&lt;embed ' +
+                'flashvars="soundPath=http://www.ganjawars.ru/sounds/' + sound +
+                '.mp3" allowscriptaccess="always" quality="high" height="1" ' +
+                'width="1" src="http://images.ganjawars.ru/i/play.swf" ' +
+                'type="application/x-shockwave-flash" pluginspage=' +
+                '"http://www.macromedia.com/go/getflashplayer" />';
+        };
+    };
+
+    /**
+     * @class GetRandom
+     * @constructor
+     */
+    var GetRandom = function () {
+        /**
+         * @method init
+         * @param   {int}   a
+         * @param   {int}   b
+         * @return  {int}
+         */
+        this.init = function (a, b) {
+            return Math.round(a + (b - a) * Math.random());
         };
     };
 
@@ -475,6 +521,61 @@
      */
     var ShowMainSettings = function () {
         /**
+         * @method getSelectSound
+         * @param   {String}    id
+         * @return  {String}
+         */
+        this.getSelectSound = function (id) {
+            return '&lt;select id="' + id + '" disabled>' +
+                '&lt;option value="0">Без звука&lt;/option>' +
+                '&lt;option value="1">Перезарядка&lt;/option>' +
+                '&lt;option value="2">Выстрел дробовика&lt;/option>' +
+                '&lt;option value="3">Открытие двери&lt;/option>' +
+                '&lt;option value="4">Взрыв бочки&lt;/option>' +
+                '&lt;option value="5">Выстрел BFG&lt;/option>' +
+                '&lt;option value="6">Радио-зуммер&lt;/option>' +
+                '&lt;option value="7">Подтверждение цели&lt;/option>' +
+                '&lt;option value="8">Ion Cannon Ready!&lt;/option>' +
+                '&lt;option value="9">Select target!&lt;/option>' +
+                '&lt;option value="10">Звук тревоги&lt;/option>' +
+                '&lt;option value="11">I`m alive!&lt;/option>' +
+                '&lt;option value="12">Орки смеются&lt;/option>' +
+                '&lt;option value="13">Unholy Armor&lt;/option>' +
+                '&lt;option value="14">We`ve been attacked!&lt;/option>' +
+                '&lt;option value="15">Кот мяукает&lt;/option>' +
+                '&lt;option value="16">Кот мяукает #2&lt;/option>' +
+                '&lt;option value="17">Take cover!&lt;/option>' +
+                '&lt;option value="18">Stupid!&lt;/option>' +
+                '&lt;option value="19">Hello!&lt;/option>' +
+                '&lt;option value="20">hehehehe!&lt;/option>' +
+                '&lt;option value="21">Chimes&lt;/option>' +
+                '&lt;option value="22">Ding&lt;/option>' +
+                '&lt;option value="23">Ошибка&lt;/option>' +
+                '&lt;option value="24">Отказ оборудования&lt;/option>' +
+                '&lt;option value="25">А, вот эти ребята&lt;/option>' +
+                '&lt;option value="26">Не-не-не-не!&lt;/option>' +
+                '&lt;option value="27">нет, Девид Блейн, нет!&lt;/option>' +
+                '&lt;option value="28">Я делаю особую магию&lt;/option>' +
+                '&lt;option value="29">Prepare for battle!&lt;/option>' +
+                '&lt;option value="30">Pick up your weapons&lt;/option>' +
+                '&lt;/select>';
+        };
+
+        /**
+         * @method getGitHubLink
+         * @param   {String}    scriptName
+         * @return  {String}
+         */
+        this.getGitHubLink = function (scriptName) {
+            var gitHubPage = 'https://github.com/MyRequiem/' +
+                'comfortablePlayingInGW/tree/master/separatedScripts/';
+
+            return '&lt;br>&lt;a target="_blank" href="' + gitHubPage +
+                scriptName[0].toUpperCase() + scriptName.substr(1) +
+                '" style="color: #0000FF;">' + scriptName + '.user.js&lt;/a>';
+        };
+
+        /**
          * @property infoScripts
          * @type {Object}
          */
@@ -486,10 +587,64 @@
                     'ru/i/gon.gif" /> &amp;nbsp;&amp;nbsp;на зеленый листик &amp;nbsp;' +
                     '&amp;nbsp;&lt;img style="box-shadow: 2px 3px 3px ' +
                     'rgba(122,122,122,0.5);" src="' + general.imgPath +
-                    'NotGiveCannabisLeaf/on.gif" />', '0'],
+                    'NotGiveCannabisLeaf/on.gif" />' +
+                    this.getGitHubLink('notGiveCannabisLeaf'), '0'],
                 ['Дополнение для панели навигации',
                     'Добавляет возможность установить дополнительные ссылки ' +
-                    'в панель навигации.', '1']],
+                    'в панель навигации.' +
+                    this.getGitHubLink('additionForNavigationBar'), '1'],
+                ['Подсветка персонажей из ЧС', 'Подсвечивает ссылки на ' +
+                    'персонажей, входящих в черный список на всех страницах ' +
+                    'игры. Делает неактивной ссылку принятия боя c ' +
+                    'персонажем из черного списка в одиночных боях.&lt;br>&lt;br>' +
+                    '&amp;nbsp;&amp;nbsp;&lt;a target="_blank" href=' +
+                    '"http://www.ganjawars.ru/home.friends.php">Запомнить ' +
+                    'черный список&lt;/a> (скрипт должен быть включен)&lt;br>' +
+                    '&lt;input type="checkbox" id="blockBLOne2One" disabled> ' +
+                    'блокировать ссылку принятия боя с персонажем из ЧС в ' +
+                    'одиночных заявках' +
+                    this.getGitHubLink('blacklistHighlighting'), '4'],
+                ['Работа, письмо, посылка, граната, слом', 'Окончание ' +
+                    'работы, осталось времени работать, почта, посылка, ' +
+                    'присутствие гранаты на поясе, проверка сломанных вещей. ' +
+                    'На все события оповещения звуковые и визуальные.&lt;br>&lt;b>' +
+                    'P.S.&lt;/b> Гранатомет в руках расценивается как ' +
+                    'присутствие гранаты.&lt;br>&lt;br>&lt;input type="checkbox" ' +
+                    'id="showwork" disabled /> отображать время работы&lt;br>' +
+                    '&lt;input type="checkbox" id="showsms" disabled /> ' +
+                    'отображать получение почты/посылки&lt;br>&lt;input ' +
+                    'type="checkbox" id="showbroken" disabled /> отображать ' +
+                    'наличие сломанных предметов&lt;br>&lt;input type="checkbox" ' +
+                    'id="showgren" disabled /> отображать отсутствие гранаты ' +
+                    'на поясе&lt;br>Звук при получении почты: ' +
+                    this.getSelectSound('soundSms') + ' &lt;input type="button" ' +
+                    'id="listenSoundSms" value="»" disabled>&lt;br>Звук ' +
+                    '"Пора работать": &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;' +
+                    '&amp;nbsp;&amp;nbsp;&amp;nbsp;' + this.getSelectSound('soundWork') +
+                    ' &lt;input type="button" id="listenSoundWork" value="»" ' +
+                    'disabled>' +
+                    this.getGitHubLink('workPostGrenadesBroken'), '5'],
+                ['Ресурсы и бонусы', 'Создает ссылки "Ресурсы" и "Бонусы" ' +
+                    'вверху страницы. При клике выводятся соответствующие ' +
+                    'данные.' + this.getGitHubLink('resourcesAndBonuses'), '6'],
+                ['Удаление личных сообщений', 'Добавляет сылку "Удалить ' +
+                    'отмеченные" вверху страниц входящих и исходящих ' +
+                    'сообщений. Отметка синдикатных рассылок и сообщений от ' +
+                    'робота.&lt;br>&lt;br>&lt;input id="syndmail" type="checkbox" ' +
+                    'disabled /> отмечать синдовые рассылки&lt;br>' +
+                    '&lt;input id="robotmail" type="checkbox" disabled /> ' +
+                    'отмечать рассылки от робота&lt;br>' +
+                    '&lt;input id="importantmail" type="checkbox" disabled /> ' +
+                    'НЕ отмечать письма с пометкой "важное"' +
+                    this.getGitHubLink('deleteSms'), '8'],
+                ['Таймер для выполнения квестов NPC', 'На главной странице ' +
+                    'выводит время, оставшееся до взятия квеста и сcылку на ' +
+                    'NPC, у которого в последний раз брали квест. Звуковое ' +
+                    'оповещение. Умеет выводить список NPC с информацией ' +
+                    'о них для каждого острова.&lt;br>Звук "Пора делать ' +
+                    'квест": ' + this.getSelectSound('soundTimerNPC') +
+                    ' &lt;input type="button" id="playSoundTimerNPC" value="»" ' +
+                    'disabled />' + this.getGitHubLink('timeNpc'), '12']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -513,14 +668,46 @@
                     'заявки при входе в нее: &lt;input id="refreshAppl" type="' +
                     'text" maxlength="3" style="width: 30px;" value="' +
                     (general.getData(4)[1] || '0') + '" disabled /> сек (0 - ' +
-                    'настройки игры по умолчанию)', '3']],
+                    'настройки игры по умолчанию)' +
+                    this.getGitHubLink('advBattleAll'), '3'],
+                ['Ссылки в логе боя, критические выстрелы', 'В бою и на ' +
+                    'страницax логов боев делает все ники персонажей ' +
+                    'ссылками. Показывает критические выстрелы вашего ' +
+                    'персонажа и их общее количество (опционально).&lt;br>&lt;br>' +
+                    '&lt;input type="checkbox" id="showcrits" disabled /> ' +
+                    'показывать критические выстрелы' +
+                    this.getGitHubLink('critShotsAndLinksBtlLog'), '7']],
 
             'Доска объявлений': [
-                ['Фильтр поиска аренды/продажи', 'Фильтр онлайн/оффлайн и по ' +
-                    'островам на странице поиска аренды/продажи предметов.',
-                    '2']],
+                ['Фильтр поиска продажи/покупки/аренды', 'Фильтр ' +
+                    'онлайн/оффлайн и по островам на страницах поиска ' +
+                    'продажи/покупки/аренды предметов.' +
+                    this.getGitHubLink('adsFilter'), '2']],
 
-            'Ферма': []
+            'Ферма': [
+                ['Производственный опыт и прибыль', 'Отображение ' +
+                    'производственного опыта и прибыли в Гб за один час для ' +
+                    'каждого растения.' +
+                    this.getGitHubLink('farmExperience'), '9'],
+                ['Таймер', 'Таймер для фермы. Звуковое оповещение когда ' +
+                    'пора полить/собрать.&lt;br>&lt;br>' +
+                    this.getSelectSound('farmtm_snd') +
+                    '&lt;input id="listenFarmtimer_sound" type="button" ' +
+                    'value="»" disabled /> - звук когда пора поливать/' +
+                    'собирать (0 - без звука)&lt;br>' +
+                    '&lt;input id="farmtmSndIntrvl" type="text" maxlength="3" ' +
+                    'style="width: 40px;" disabled /> - интервал повторения ' +
+                    'звука в секундах (0 - не повторять)' +
+                    this.getGitHubLink('farmTimer'), '10'],
+                ['Удобные ссылки на ферме', 'Удобные ссылки для полива, ' +
+                    'сбора, вскапывания, посадки на ферме.' +
+                    this.getGitHubLink('comfortableLinksForFarm'), '11'],
+                ['Все растения на одной странице', 'На ферме добавляет ' +
+                    'выпадающий список для выбора и посадки любого растения. ' +
+                    'Для каждого растения присутствует изображение, ' +
+                    'производственный опыт и прибыль (общие и в 1 час), ' +
+                    'цена, время созревания в минутах и часах.' +
+                    this.getGitHubLink('allPlantsOnFarm'), '13']]
         };
 
         /**
@@ -568,7 +755,7 @@
          */
         this.checkScriptUpdate = function () {
             var url = 'http://www.ganjawars.ru/object-messages.php?' +
-                'id=117721&amp;tid=88232514&amp;fid=117721&amp;page_id=last';
+                'id=117721&amp;tid=88232637&amp;fid=117721&amp;page_id=last';
             new AjaxQuery().init(url, 'GET', null, true, function (xml) {
                 var v = /version: ([^&lt;]+)&lt;\/td>/.exec(xml.responseText);
                 if (v) {
@@ -592,6 +779,26 @@
             data[ind] = new CheckInputText().init(_this, 3) ?
                     _this.value : '';
             general.setData(data, 4);
+        };
+
+        /**
+         * @method testSound
+         */
+        this.testSound = function () {
+            var _this = this;
+            new PlaySound().init(_this.previousElementSibling.value);
+        };
+
+        /**
+         * @method modifyData
+         * @param   {int}       ind
+         * @param   {int}       ind1
+         * @param   {String}    val
+         */
+        this.modifyData = function (ind, ind1, val) {
+            var tmp = general.getData(ind);
+            tmp[ind1] = val;
+            general.setData(tmp, ind);
         };
 
         /**
@@ -668,6 +875,109 @@
             general.$('refreshAppl').
                 addEventListener('input',
                         this.setSettingsForAdvBattleAll, false);
+
+            var _this = this;
+            // чекбокс настроек подсветки персонажей из черного списка
+            // (блокировать или нет ссылку принятия боя в одиночках)
+            var chkBL = general.$('blockBLOne2One');
+            chkBL.checked = general.getData(5)[1] === '1';
+            chkBL.addEventListener('click', function () {
+                var chkbl = this;
+                _this.modifyData(5, 1, chkbl.checked ? '1' : '');
+            }, false);
+
+            // работа, слом, грена, почта/посылка
+            // кнопки прослушать звук
+            general.$('listenSoundSms').
+                addEventListener('click', this.testSound, false);
+            general.$('listenSoundWork').
+                addEventListener('click', this.testSound, false);
+            // установка списка выбора звуков sms и "Пора работать"
+            general.$('soundSms').value = general.getData(6)[6] || '0';
+            general.$('soundWork').value = general.getData(6)[7] || '0';
+            // обработчики списков выбора звука
+            general.$('soundSms').addEventListener('change', function () {
+                var selSound = this;
+                _this.modifyData(6, 6, selSound.value === '0' ?
+                        '' : selSound.value);
+            }, false);
+            general.$('soundWork').addEventListener('change', function () {
+                var selSound = this;
+                _this.modifyData(6, 7, selSound.value === '0' ?
+                        '' : selSound.value);
+            }, false);
+            // чекбоксы настроек
+            general.$('showwork').checked = general.getData(6)[2];
+            general.$('showwork').addEventListener('click', function () {
+                var showwork = this;
+                _this.modifyData(6, 2, showwork.checked ? '1' : '');
+            }, false);
+            general.$('showsms').checked = general.getData(6)[3];
+            general.$('showsms').addEventListener('click', function () {
+                var showsms = this;
+                _this.modifyData(6, 3, showsms.checked ? '1' : '');
+            }, false);
+            general.$('showbroken').checked = general.getData(6)[4];
+            general.$('showbroken').addEventListener('click', function () {
+                var showbroken = this;
+                _this.modifyData(6, 4, showbroken.checked ? '1' : '');
+            }, false);
+            general.$('showgren').checked = general.getData(6)[5];
+            general.$('showgren').addEventListener('click', function () {
+                var showgren = this;
+                _this.modifyData(6, 5, showgren.checked ? '1' : '');
+            }, false);
+
+            // ссылки в логе боя, критические выстрелы
+            general.$('showcrits').checked = general.getData(7)[0];
+            general.$('showcrits').addEventListener('click', function () {
+                var showcrits = this;
+                general.setData(showcrits.checked ? '1' : '', 7);
+            }, false);
+
+            // удаление личных сообщений
+            general.$('syndmail').checked = general.getData(8)[0];
+            general.$('robotmail').checked = general.getData(8)[1];
+            general.$('importantmail').checked = general.getData(8)[2];
+            general.$('syndmail').addEventListener('click', function () {
+                var syndmail = this;
+                _this.modifyData(8, 0, syndmail.checked ? '1' : '');
+            }, false);
+            general.$('robotmail').addEventListener('click', function () {
+                var robotmail = this;
+                _this.modifyData(8, 1, robotmail.checked ? '1' : '');
+            }, false);
+            general.$('importantmail').addEventListener('click', function () {
+                var importantmail = this;
+                _this.modifyData(8, 2, importantmail.checked ? '1' : '');
+            }, false);
+
+            // FarmTimer
+            general.$('listenFarmtimer_sound').
+                addEventListener('click', this.testSound, false);
+            general.$('farmtm_snd').value = general.getData(9)[4] || '0';
+            general.$('farmtm_snd').addEventListener('change', function () {
+                var selSound = this;
+                _this.modifyData(9, 4, selSound.value === '0' ?
+                        '' : selSound.value);
+            }, false);
+            general.$('farmtmSndIntrvl').value = general.getData(9)[5] || '0';
+            general.$('farmtmSndIntrvl').addEventListener('input', function () {
+                var inp = this;
+                if (new CheckInputText().init(inp, 0)) {
+                    _this.modifyData(9, 5, inp.value);
+                }
+            }, false);
+
+            // TimeNpc
+            general.$('playSoundTimerNPC').
+                addEventListener('click', this.testSound, false);
+            general.$('soundTimerNPC').value = general.getData(10)[3] || '0';
+            general.$('soundTimerNPC').addEventListener('change', function () {
+                var soundNPC = this;
+                _this.modifyData(10, 3, soundNPC.value === '0' ?
+                        '' : soundNPC.value);
+            }, false);
         };
     };
 
@@ -1201,12 +1511,17 @@
             // номер противника
             var enemyList = general.$('euids').querySelectorAll('option'),
                 reg = /^(\d+)\. .*\[\d+ \/ \d+\] ([^:]+):/,
-                enemy = '',
+                enemy,
+                tmps,
                 i;
 
             for (i = 0; i &lt; enemyList.length; i++) {
                 if (enemyList[i].selected) {
-                    enemy = reg.exec(enemyList[i].innerHTML);
+                    tmps = enemyList[i].innerHTML;
+                    // ecли пок то будет
+                    // 1. Electrode [Major][20] 182 HP - 13!
+                    enemy = reg.exec(tmps) || (/^(\d+)\. ([^\s]+)/.exec(tmps));
+
                     break;
                 }
             }
@@ -1225,7 +1540,7 @@
                 dataSt[15] = '1';
                 general.setData(dataSt, 4);
                 _this.inpTextChat.value = str + ' в ' + enemy[1] +
-                    ' [' + enemy[2] + ' ]';
+                    ' [' + enemy[2] + ']';
                 writeOnChatButton.click();
                 return;
             }
@@ -1244,17 +1559,17 @@
             dataSt[13] = rightAttack ? (/\d/.exec(rightAttack.id)[0]) : '';
 
             general.setData(dataSt, 4);
-            str += enemy[1] + ' [' + enemy[2] + '] ';
+            str += enemy[1];
             if (dataSt[13]) {
-                str += dataSt[13] === '1' ? 'ле' :
-                        dataSt[13] === '2' ? 'ц' : 'пр';
+                str += dataSt[13] === '1' ? ' ле' :
+                        dataSt[13] === '2' ? ' ц' : ' пр';
             }
             if (dataSt[12]) {
                 str += dataSt[12] === '1' ? ' ле' :
                         dataSt[12] === '2' ? ' ц' : ' пр';
             }
 
-            _this.inpTextChat.value = str;
+            _this.inpTextChat.value = str + ' [' + enemy[2] + ']';
             writeOnChatButton.click();
         };
 
@@ -1372,7 +1687,7 @@
             this.allFighters[name] = objPers;
 
             // в бою и если это мой перс, то запоминаем его
-            if (!general.viewMode &amp;&amp;
+            if (!general.viewMode &amp;&amp; persLink.href &amp;&amp;
                     persLink.href.indexOf('?id=' + general.myID) !== -1) {
                 this.myPers = objPers;
                 this.myPers.name = name;
@@ -2640,6 +2955,1174 @@
         };
     };
 
+    /**
+     * @class BlacklistHighlighting
+     * @constructor
+     */
+    var BlacklistHighlighting = function () {
+        /**
+         * @property blTable
+         * @type {HTMLTableElement|null}
+         */
+        this.blTable = null;
+
+        /**
+         * @method rememberClick
+         * @param   {Object}    _this
+         */
+        this.rememberClick = function (_this) {
+            var a = _this.blTable.querySelectorAll('a[href*="/info.php?id="]'),
+                stData = general.getData(5),
+                mass,
+                i;
+
+            //в ЧС никого нет
+            if (!a.length) {
+                stData[0] = '';
+                general.setData(stData, 5);
+                alert('Ваш ЧС пуст. Сначала нужно добавить персонажей.');
+                return;
+            }
+
+            mass = [];
+            for (i = 0; i &lt; a.length; i++) {
+                mass.push(/info\.php\?id=(\d+)/.exec(a[i].href)[1]);
+            }
+
+            stData[0] = mass.join(',');
+            general.setData(stData, 5);
+            _this.setHighlighting();
+        };
+
+        /**
+         * @method clearClick
+         * @param   {Object}    _this
+         */
+        this.clearClick = function (_this) {
+            var stData = general.getData(5);
+
+            if (stData[0]) {
+                stData[0] = '';
+                general.setData(stData, 5);
+                _this.setHighlighting();
+            } else {
+                alert('В памяти скрипта нет ЧС');
+            }
+        };
+
+        /**
+         * @method setHighlighting
+         */
+        this.setHighlighting = function () {
+            var a = general.doc.querySelectorAll('a[href*="/info.php?id="]'),
+                stData = general.getData(5),
+                link,
+                id,
+                i;
+
+            for (i = 0; i &lt; a.length; i++) {
+                a[i].style.background = '';
+                id = /\?id=(\d+)$/.exec(a[i].href);
+                if (id &amp;&amp; stData[0].indexOf(id[1]) !== -1) {
+                    a[i].style.background = '#B6B5B5';
+                    // блокировка ссылки принятия боя в одиночных заявках
+                    if (stData[1] &amp;&amp; (/Подтверждаете бой с/.
+                            test(a[i].parentNode.innerHTML))) {
+                        link = a[i].parentNode.parentNode.parentNode.
+                            nextElementSibling.querySelector('a');
+                        link.setAttribute('style', 'text-decoration: ' +
+                            'line-through; color: #808080;');
+                        link.href = '#';
+                    }
+                }
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            if (/home\.friends\.php/.test(general.loc)) {
+                this.blTable = general.doc.querySelectorAll('table' +
+                        '[border="0"][cellspacing="0"][cellpadding="3"]' +
+                        '[class="wb"][align="center"][width="100%"]');
+
+                if (!this.blTable[1]) {
+                    return;
+                }
+
+                this.blTable = this.blTable[1];
+                var buttonStyle = 'margin-left: 5px; border: solid 1px; ' +
+                    'border-radius: 3px; background: #D0EED0; cursor: pointer;',
+                    butRemember = general.doc.createElement('input'),
+                    butClear = general.doc.createElement('input'),
+                    _this = this;
+
+                butRemember.type = 'button';
+                butRemember.value = 'Запомнить ЧС';
+                butRemember.setAttribute('style', buttonStyle);
+                butRemember.addEventListener('click', function () {
+                    _this.rememberClick(_this);
+                }, false);
+
+                butClear.title = 'Забыть';
+                butClear.type = 'button';
+                butClear.value = 'X';
+                butClear.setAttribute('style', buttonStyle);
+                butClear.addEventListener('click', function () {
+                    _this.clearClick(_this);
+                }, false);
+
+                var target = this.blTable.querySelector('td');
+                target.appendChild(butRemember);
+                target.appendChild(butClear);
+            }
+
+            if (general.getData(5)[0]) {
+                if (/www\.ganjawars\.ru\/b0\//.test(general.loc)) {
+                    general.root.setInterval(this.setHighlighting, 1000);
+                } else if (/\/usertransfers\.php/.test(general.loc)) {
+                    general.root.setTimeout(this.setHighlighting, 300);
+                } else {
+                    this.setHighlighting();
+                }
+            }
+        };
+    };
+
+    /**
+     * @class AutLinksOnChat
+     * @constructor
+     */
+    var AutLinksOnChat = function () {
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var chat = general.doc.querySelector('td[class="wb"]' +
+                    '[valign="top"][style="font-size:8pt"]');
+
+            if (chat) {
+                var fonts = chat.querySelectorAll('font'),
+                    name,
+                    i;
+
+                for (i = 0; i &lt; fonts.length; i++) {
+                    if (!fonts[i].firstElementChild) {
+                        name = fonts[i].innerHTML;
+                        fonts[i].innerHTML = '&lt;a target="_blank" ' +
+                            'style="font-size: 8pt; text-decoration: none; ' +
+                            'color: #990000;" href="http://www.ganjawars.ru' +
+                            '/search.php?key=' + name + '">' + name + '&lt;/a>';
+                    }
+                }
+            }
+        };
+    };
+
+    /**
+     * @class AutRefreshLink
+     * @constructor
+     */
+    var AutRefreshLink = function () {
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var target = general.doc.querySelector('td>a[href*="?itemslist="]'),
+                refresh = general.doc.querySelector('div>a[href*="/walk"]');
+
+            if (target &amp;&amp; refresh) {
+                refresh = refresh.cloneNode(true);
+                refresh.setAttribute('style', 'margin-left: 5px;');
+                target.parentNode.
+                    insertBefore(refresh, target.nextElementSibling);
+            }
+
+        };
+    };
+
+    /**
+     * @class WorkPostGrenadesBroken
+     * @constructor
+     */
+    var WorkPostGrenadesBroken = function () {
+        /**
+         * @property wpgbContainer
+         * @type {HTMLElement}
+         */
+        this.wpgbContainer = general.doc.createElement('span');
+        /**
+         * @property redFactory
+         * @type {String}
+         */
+        this.redFactory = general.imgPath + 'WorkPostGrenadesBroken/' +
+                'redFactory.gif';
+        /**
+         * @property blueFactory
+         * @type {String}
+         */
+        this.blueFactory = general.imgPath + 'WorkPostGrenadesBroken/' +
+                'blueFactory.gif';
+        /**
+         * @property grenades
+         * @type {Array}
+         */
+        this.grenades = [
+            // гос
+            'rgd5', 'grenade_f1', 'rgd2', 'lightst', 'lights', 'rkg3', 'mdn',
+            'rgd2m', 'rgo', 'm84', 'rgn', 'emp_ir', 'fg3l', 'l83a1', 'emp_s',
+            'm67', 'm3', 'hg78', 'hg84', 'fg6', 'anm14', 'm34ph', 'fg7',
+            'fg8bd',
+            //синдовые
+            'lightss', 'lightsm', 'rgd2s', 'grenade_dg1', 'fg5', 'molotov',
+            'hellsbreath', 'napalm', 'ghtb', 'me85',
+            //ржавка
+            'old_rgd5',
+            //гранатометы
+            /* гос */
+            'rpg', 'ptrk', 'glauncher', 'grg', 'paw20', 'rpgu', 'grom2',
+            'ags30', 'gm94', 'gl06', 'gmg', 'balkan', 'rg6', 'im202',
+            /* арт */
+            'milkor', 'mk47'
+        ];
+
+        /**
+         * @method addContent
+         * @param   {Array}     sms
+         * @param   {Boolean}   gren
+         * @param   {Boolean}   broken
+         * @return  {String}
+         */
+        this.addContent = function (sms, gren, broken) {
+            var host = ' [&lt;a href="http://www.ganjawars.ru/',
+                stData = general.getData(6),
+                str = '';
+
+            if (sms[0] &amp;&amp; stData[3]) {    // письмо
+                str += host + 'sms.php">&lt;img src="http://www.ganjawars.ru/i/' +
+                    'sms.gif" title="' + sms[0].getAttribute('title') +
+                    '" alt="Вам письмо">&lt;/a>]';
+            }
+
+            if (sms[1] &amp;&amp; stData[3]) {    // посылка
+                str += host + 'items.php">&lt;img src="http://www.ganjawars.ru/' +
+                    'i/woodbox.gif" title="Пришла посылка!" ' +
+                    'alt="посылка">&lt;/a>]';
+            }
+
+            if (!gren &amp;&amp; stData[5]) { // граната
+                str += host + 'items.php">&lt;span style="color: #FF0000; ' +
+                    'font-weight: bold;">Грена&lt;/span>&lt;/a>]';
+            }
+
+            if (broken &amp;&amp; stData[4]) { // слом
+                str += host + 'workshop.php">&lt;span style="color: #FF0000; ' +
+                    'font-weight: bold;">Слом&lt;/span>&lt;/a>]';
+            }
+
+            return str;
+        };
+
+        /**
+         * @method startWorkPostGrenadesBroken
+         * @param   {Object}    _this
+         */
+        this.startWorkPostGrenadesBroken = function (_this) {
+            var ajaxQuery = new AjaxQuery(),
+                url = 'http://www.ganjawars.ru/me/';
+
+            _this = _this || this;
+            ajaxQuery.init(url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = xml.responseText;
+                _this.wpgbContainer.innerHTML = '';
+                // персонаж в пути
+                if (/Вы находитесь в пути/.test(spanContent.innerHTML)) {
+                    _this.wpgbContainer.innerHTML = '&lt;span style="color: ' +
+                            '#0000FF;">[в пути]&lt;/span>';
+                    return;
+                }
+
+                // персонаж в бою
+                if (/Идёт бой/.test(spanContent.
+                        querySelector('title').innerHTML)) {
+                    _this.wpgbContainer.innerHTML = '&lt;span style="color: ' +
+                        '#0000FF;">[бой]&lt;/span>';
+                    return;
+                }
+
+                // проверка на новое письмо и/или посылку
+                var testSms = [
+                    spanContent.querySelector('a>img[src$="/i/sms.gif"]'),
+                    spanContent.querySelector('a>img[src$="/i/woodbox.gif"]')
+                ];
+
+                var stData = general.getData(6),
+                    playSound = new PlaySound();
+
+                if ((testSms[0] || testSms[1]) &amp;&amp; !stData[0]) {
+                    stData[0] = '1';
+                    playSound.init(stData[6]);
+                    general.setData(stData, 6);
+                } else if (!testSms[0] &amp;&amp; !testSms[1] &amp;&amp; stData[0]) {
+                    stData[0] = '';
+                    general.setData(stData, 6);
+                }
+
+                // ищем ссылку на объект где работаем/работали
+                var linkObj = spanContent.
+                        querySelector('td[align="center"][style="font-size:' +
+                            '8pt"][bgcolor="#e9ffe9"]');
+
+                // видимо что-то случилось
+                if (!linkObj) {
+                    return;
+                }
+
+                var content = linkObj.innerHTML;
+                linkObj = linkObj.querySelector('a[href^="/object.php?id="]');
+                if (!linkObj) {
+                    return;
+                }
+
+                // поиск ссылок на экипировку
+                var items = spanContent.
+                        querySelector('td[valign="bottom"][bgcolor="#e9ffe9"]');
+                items = items ? items.querySelectorAll('a') : false;
+
+                // время до окончания работы
+                var time;
+                if (/[Вы сможете устроиться на|осталось][^\d]*\d+ минут/i.
+                        test(content)) {
+                    time = +(/(\d+) минут/i.exec(content)[1]);
+                    time = !time ? 1 : time;
+                } else if (/Последний раз вы работали/i.test(content)) {
+                    time = 0;
+                } else if (/Вы работаете на/i.test(content)) {
+                    time = 1;
+                }
+
+                // проверка на наличие грены
+                var testGrenades = false;
+                if (items &amp;&amp; items.length) {
+                    var itemId, i;
+                    for (i = 0; i &lt; items.length; i++) {
+                        itemId = /\/item\.php\?item_id=(.*)$/.
+                            exec(items[i].href);
+                        if (itemId &amp;&amp;
+                                _this.grenades.indexOf(itemId[1]) !== -1) {
+                            testGrenades = true;
+                            break;
+                        }
+                    }
+                }
+
+                var ttl = '" title="Объект #' +
+                    (/object\.php\?id=(\d+)/.exec(linkObj.href)[1]) +
+                    '" alt="GW объект" />&lt;/a>]';
+
+                if (time) {
+                    if (stData[2]) {
+                        _this.wpgbContainer.innerHTML = '[&lt;span style=' +
+                            '"color: #0000FF">' + time + '&lt;/span> мин ' +
+                            '&lt;a href="' + linkObj.href + '">&lt;img src="' +
+                            _this.blueFactory + ttl;
+                    }
+
+                    stData[1] = '';
+                    general.setData(stData, 6);
+                } else {
+                    if (stData[2]) {
+                        _this.wpgbContainer.innerHTML = '[&lt;a href="' +
+                            linkObj.href + '">&lt;img src="' + _this.redFactory +
+                            ttl;
+                    }
+
+                    if (!stData[1]) {
+                        stData[1] = '1';
+                        playSound.init(stData[7]);
+                        general.setData(stData, 6);
+                    }
+                }
+
+                var testBroken = spanContent.querySelector('a[href=' +
+                    '"/workshop.php"][style$="#990000;"]') || false;
+                _this.wpgbContainer.innerHTML += _this.addContent(testSms,
+                    testGrenades, testBroken);
+
+            }, function () {
+                general.cons.log('Error XHR to "http://www.ganjawars.ru/me/"');
+            });
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var topPanel = new GetTopPanel().init();
+
+            if (!topPanel) {
+                return;
+            }
+
+            topPanel.appendChild(general.doc.createTextNode(' | '));
+            topPanel.appendChild(this.wpgbContainer);
+
+            this.startWorkPostGrenadesBroken(null);
+            var _this = this;
+            general.root.setInterval(function () {
+                _this.startWorkPostGrenadesBroken(_this);
+            }, new GetRandom().init(30, 60) * 1000);
+        };
+    };
+
+    /**
+     * @class ResourcesAndBonuses
+     * @constructor
+     */
+    var ResourcesAndBonuses = function () {
+        /**
+         * @property divResult
+         * @type {HTMLElement}
+         */
+        this.divResult = general.doc.createElement('div');
+
+        /**
+         * @method fillData
+         * @param   {string}    data
+         */
+        this.fillData = function (data) {
+            this.divResult.innerHTML = data + '&lt;div style="margin-top: 5px;">' +
+                '&lt;img id="divres_close" src="' + general.imgPath + 'close.gif' +
+                '" />&lt;/div>';
+
+            var _this = this;
+            this.divResult.querySelector('#divres_close').
+                addEventListener('click', function () {
+                    _this.divResult.style.visibility = 'hidden';
+                }, false);
+        };
+
+        /**
+         * @method showData
+         * @param   {Object}    _this
+         */
+        this.showData = function (_this) {
+            var pos = new GetPos().init(_this);
+
+            this.divResult.style.left = pos.x;
+            this.divResult.style.top = pos.y + 25;
+            this.divResult.style.visibility = 'visible';
+            this.divResult.innerHTML = '&lt;img src="' + general.imgPath +
+                'preloader.gif' + '">';
+
+            var url = 'http://www.ganjawars.ru/info.php?id=' + general.myID,
+                idElem = _this.id,
+                ths = this;
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = xml.responseText;
+                var tables = spanContent.querySelectorAll('td[class="wb"]' +
+                        '[bgcolor="#f0fff0"][align="center"][valign="top"]'),
+                    data;
+
+                if (!tables.length) {   // новый стиль оформления страницы инфы
+                    tables = spanContent.querySelectorAll('td[class=' +
+                            '"greenbrightbg"][align="center"][valign="top"]');
+                }
+
+                data = idElem === 'res' ?
+                        tables[0].innerHTML : tables[2].innerHTML;
+
+                if (/Ресурсов в наличии нет/i.test(data)) {
+                    data = '&lt;span style="color: #0000FF;">Ресурсов в наличии ' +
+                        'нет&lt;/span>';
+                }
+
+                ths.fillData(data);
+            }, function () {
+                ths.fillData('&lt;span style="color: #FF0000;">' +
+                    'Ошибка ответа сервера...&lt;/span>');
+            });
+        };
+
+        /**
+         * @method createButton
+         * @param   {String}    value
+         * @param   {String}    id
+         * @return  {HTMLElement}
+         */
+        this.createButton = function (value, id) {
+            var span = general.doc.createElement('span'),
+                _this = this;
+
+            span.innerHTML = value;
+            span.id = id;
+            span.setAttribute('style', 'cursor: pointer;');
+            span.addEventListener('click', function () {
+                var ths = this;
+                _this.showData(ths);
+            }, false);
+            return span;
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var topPanel = new GetTopPanel().init();
+
+            if (!topPanel) {
+                return;
+            }
+
+            this.divResult.setAttribute('style', 'visibility: hidden; ' +
+                    'position: absolute; padding: 3px; background-color: ' +
+                    '#E7FFE7; border: solid 1px #339933; border-radius:5px; ' +
+                    'top:0; left:0; box-shadow: 5px 6px 6px ' +
+                    'rgba(122,122,122,0.5);');
+            general.doc.body.appendChild(this.divResult);
+
+            topPanel.appendChild(general.doc.createTextNode(' | '));
+            topPanel.appendChild(this.createButton('Ресурсы', 'res'));
+            topPanel.appendChild(general.doc.createTextNode(' | '));
+            topPanel.appendChild(this.createButton('Бонусы', 'bonus'));
+        };
+    };
+
+    /**
+     * @class CritShotsAndLinksBtlLog
+     * @constructor
+     */
+    var CritShotsAndLinksBtlLog = function () {
+        /**
+         * @property showCritShots
+         * @type {String}
+         */
+        this.showCritShots = general.getData(7)[0];
+
+        /**
+         * @class
+         * @constructor
+         */
+        this.CriticalShots = function () {
+            /**
+             * @property groin
+             * @type {int}
+             */
+            this.groin = 0;     //пах
+            /**
+             * @property neck
+             * @type {int}
+             */
+            this.neck = 0;      //шея
+            /**
+             * @property ear
+             * @type {int}
+             */
+            this.ear = 0;       //ухо
+            /**
+             * @property temple
+             * @type {int}
+             */
+            this.temple = 0;    //висок
+
+            /**
+             * @method getAllCrits
+             * @return  {int}
+             */
+            this.getAllCrits = function () {
+                return this.groin + this.neck + this.ear + this.temple;
+            };
+        };
+
+        /**
+         * @method getCrits
+         * @param   {NodeList}  b
+         * @return  {Object|null}
+         */
+        this.getCrits = function (b) {
+            var criticalShots = new this.CriticalShots(),
+                myNik = general.doc.querySelector('a[href$="/info.php?id=' +
+                    general.myID + '"]>b'),
+                linkStyle,
+                nik,
+                font,
+                str,
+                node;
+
+            var i;
+            for (i = 0; i &lt; b.length; i++) {
+                // если это урон (-XX), 'vs', пок с '['
+                if ((/^\-\d+|vs|\[|,/.test(b[i].innerHTML)) ||
+                        (/может взять предметы/.test(b[i].innerHTML))) {
+                    continue;
+                }
+
+                // делаем ссылки на персов, если ссылка еще не установлена
+                if (!b[i].querySelector('a:first-child')) {
+                    linkStyle = 'text-decoration: none; font-weight: 700; ' +
+                        'font-size: ' + (general.viewMode ? '12px;' : '11px;');
+
+                    // Победа за ...
+                    font = b[i].parentNode;
+                    if (font.nodeName === 'FONT') {
+                        linkStyle += ' color: ' + font.color + ';';
+                    }
+
+                    // если это окрашенный ник, то внутри будет &lt;font>
+                    font = b[i].querySelector('font:first-child');
+                    if (font) {
+                        linkStyle += ' color: ' + font.color + ';';
+                        nik = font.innerHTML;
+                    } else {
+                        nik = b[i].innerHTML;
+                    }
+
+                    b[i].innerHTML = '&lt;a target="_blank" style="' + linkStyle +
+                        '"  href="http://www.ganjawars.ru/search.php?key=' +
+                        nik + '">' + nik + '&lt;/a>';
+                }
+
+                // наш ник не найден или в настройках не установлен checkbox
+                // "показывать критические выстрелы" или это не наш ник
+                if (!myNik || !this.showCritShots ||
+                        b[i].innerHTML.indexOf(myNik.innerHTML) === -1) {
+                    continue;
+                }
+
+                // проверяем и считаем криты
+                if (b[i].previousSibling &amp;&amp; b[i].previousSibling.nodeValue &amp;&amp;
+                        (/\d+:\d+, #\d+ :/.
+                             test(b[i].previousSibling.nodeValue))) {
+
+                    // получаем запись своего хода
+                    str = '';
+                    node = b[i];
+                    while (node.nodeName !== 'BR') {
+                        if (node.nextSibling &amp;&amp; node.nextSibling.nodeValue) {
+                            str += node.nextSibling.nodeValue;
+                        }
+
+                        node = node.nextSibling;
+                    }
+
+                    // считаем криты
+                    if (/в пах/.test(str)) {
+                        if (/\d+ в пах/.test(str)) {
+                            criticalShots.groin += (+(/(\d+) в пах/.
+                                        exec(str)[1]));
+                        } else {
+                            criticalShots.groin++;
+                        }
+                    }
+
+                    if (/в шею/.test(str)) {
+                        if (/\d+ в шею/.test(str)) {
+                            criticalShots.neck += (+(/(\d+) в шею/.
+                                        exec(str)[1]));
+                        } else {
+                            criticalShots.neck++;
+                        }
+                    }
+
+                    if (/в ухо/.test(str)) {
+                        if (/\d+ в ухо/.test(str)) {
+                            criticalShots.ear += (+(/(\d+) в ухо/.
+                                        exec(str)[1]));
+                        } else {
+                            criticalShots.ear++;
+                        }
+                    }
+
+                    if (/в висок/.test(str)) {
+                        if (/\d+ в висок/.test(str)) {
+                            criticalShots.temple += (+(/(\d+) в висок/.
+                                        exec(str)[1]));
+                        } else {
+                            criticalShots.temple++;
+                        }
+                    }
+                }
+            }
+
+            return this.showCritShots ? criticalShots : null;
+        };
+
+        /**
+         * @method showCrits
+         * @param   {Object}    result
+         */
+        this.showCrits = function (result) {
+            if (result &amp;&amp; result.getAllCrits()) {
+                general.$('count_all_crits').innerHTML = result.getAllCrits();
+                general.$('crits_groin').innerHTML = result.groin;
+                general.$('crits_neck').innerHTML = result.neck;
+                general.$('crits_ear').innerHTML = result.ear;
+                general.$('crits_temple').innerHTML = result.temple;
+            }
+        };
+
+        /**
+         * @method change_updatechatlines
+         */
+        this.change_updatechatlines = function () {
+            var _this = this;
+
+            general.root.updatechatlines = function () {
+                /** @namespace general.root.frames.bsrc */
+                var logDiv = general.root.frames.bsrc.document.
+                        querySelector('#log'),
+                    battleLog;
+
+                if (logDiv &amp;&amp; logDiv.childNodes.length) {
+                    battleLog = general.doc.querySelector('#log');
+                    battleLog.innerHTML = logDiv.innerHTML +
+                        battleLog.innerHTML;
+                    logDiv.innerHTML = '';
+                    _this.showCrits(_this.getCrits(general.doc.
+                            querySelector('#log').querySelectorAll('b')));
+                }
+            };
+        };
+
+        /**
+         * @method setDataDiv
+         * @param   {Object}    target
+         * @param   {Boolean}   mode
+         */
+        this.setDataDiv = function (target, mode) {
+            if (this.showCritShots) {
+                var d = general.doc.createElement('div');
+                d.innerHTML = '&lt;span style="color: #008000; font-weight: ' +
+                    'bold;">Криты:&lt;/span> &lt;span id="count_all_crits" ' +
+                    'style="color: #FF0000; font-weight: bold;">0&lt;/span> ' +
+                    '[ &lt;span style="text-decoration: underline;">в пах:' +
+                    '&lt;/span> &lt;span id="crits_groin" style="color: ' +
+                    '#FF0000;">0&lt;/span> &lt;span style="text-decoration: ' +
+                    'underline;">в шею:&lt;/span> &lt;span id="crits_neck" ' +
+                    'style="color: #FF0000;">0&lt;/span> &lt;span style=' +
+                    '"text-decoration: underline;">в ухо:&lt;/span> ' +
+                    '&lt;span id="crits_ear" style="color: #FF0000;">0&lt;/span> ' +
+                    '&lt;span style="text-decoration: underline;">в висок:' +
+                    '&lt;/span> &lt;span id="crits_temple" style="color: ' +
+                    '#FF0000;">0&lt;/span> ]';
+                target.appendChild(d);
+
+                if (!mode) {    // в бою
+                    target.appendChild(general.doc.createElement('br'));
+                }
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var chat = general.doc.querySelector('form[name="battlechat"]'),
+                _this = this,
+                log;
+
+            if (!general.viewMode &amp;&amp; !general.nojs) {   // в JS-версии боя
+                // ждем загрузки данных на странице
+                var lPers = general.$('listleft');
+                log = general.$('log');
+                if (!lPers || (/загружаются данные/i.test(lPers.innerHTML)) ||
+                        !log || !chat) {
+                    general.root.setTimeout(_this.init, 200);
+                    return;
+                }
+
+                this.setDataDiv(chat.parentNode, false);
+                // изменяем функцию обновления чата на странице
+                this.change_updatechatlines();
+            } else if (general.nojs) {  // в НЕ JS-версии боя
+                this.setDataDiv(chat.parentNode, false);
+                log = general.doc.querySelector('td[class="txt"]>' +
+                    'div[style="font-size:8pt"]');
+                general.root.setTimeout(function () {
+                    _this.showCrits(_this.getCrits(log.querySelectorAll('b')));
+                }, 2000);
+            } else if (general.viewMode) {  // режим наблюдения за боем
+                var center = general.doc.querySelector('td[valign="top"]' +
+                        '[width="70%"]>center');
+                center.appendChild(general.doc.createElement('br'));
+                center.appendChild(general.doc.createElement('br'));
+                this.setDataDiv(center, true);
+                this.showCrits(this.getCrits(general.doc.
+                        querySelector('td>span[class="txt"]').
+                    querySelectorAll('b')));
+            }
+        };
+    };
+
+    /**
+     * @class DeleteSms
+     * @constructor
+     */
+    var DeleteSms = function () {
+        /**
+         * @method testSubject
+         * @param   {HTMLInputElement}  chk
+         * @param   {Object}            reg
+         * @return  {Boolean}
+         */
+        this.testSubject = function (chk, reg) {
+            return reg.test(chk.parentNode.nextElementSibling.innerHTML);
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var target = general.doc.querySelector('center>nobr>a:last-child' +
+                        '[href="/sms.php?page=2"]'),
+                del = general.doc.querySelector('input[class="mainbutton"]' +
+                    '[type="submit"][value="Удалить отмеченные"]'),
+                smsChk = general.doc.
+                    querySelectorAll('input[type="checkbox"][name^="kill"]');
+
+            if (!target || !del) {
+                return;
+            }
+
+            target = target.parentNode;
+            // кнопка удаления
+            var delButton = general.doc.createElement('span');
+            delButton.innerHTML = 'Удалить отмеченные';
+            delButton.setAttribute('style', 'cursor: pointer; ' +
+                    'text-decoration: underline;');
+            delButton.addEventListener('click', function () {
+                del.click();
+            }, false);
+
+            target.appendChild(general.doc.createTextNode(' | '));
+            target.appendChild(delButton);
+
+            // кнопка "Отметить все"
+            var markAll = general.doc.createElement('span');
+            markAll.setAttribute('style', 'margin-left: 5px; ' +
+                    'cursor: pointer; color: #990000');
+            markAll.setAttribute('title', 'Отметить все');
+            markAll.innerHTML = '[+]';
+            target.appendChild(markAll);
+            var _this = this;
+            markAll.addEventListener('click', function () {
+                var but = this,
+                    s = ['[+]', '[&amp;minus;]', 'Отметить все',
+                            'Снять все отметки'],
+                    on = but.innerHTML === s[0];
+
+                but.innerHTML = on ? s[1] : s[0];
+                but.title = on ? s[3] : s[2];
+
+                var i;
+                for (i = 0; i &lt; smsChk.length; i++) {
+                    smsChk[i].checked = !(!on || (general.getData(8)[2] &amp;&amp;
+                    _this.testSubject(smsChk[i], /\[важное\]/)));
+                }
+            }, false);
+
+            // отмечаем нужное
+            var stData = general.getData(8),
+                i;
+            for (i = 0; i &lt; smsChk.length; i++) {
+                if ((stData[0] &amp;&amp;
+                        this.testSubject(smsChk[i], /&lt;b>#\d+&lt;\/b>/)) ||
+                            (stData[1] &amp;&amp; smsChk[i].parentNode.parentNode.
+                                querySelector('a[href="/info.php?id=1"]'))) {
+                    smsChk[i].checked = true;
+                }
+            }
+        };
+    };
+
+    /**
+     * @class FarmExperience
+     * @constructor
+     */
+    var FarmExperience = function () {
+        /**
+         * @method calculateFarm
+         * @param   {int}       p1
+         * @param   {int}       p2
+         * @param   {int}       time
+         * @param   {Number}    exp
+         * @return  {string}
+         */
+        this.calculateFarm = function (p1, p2, time, exp) {
+            var money = ((p2 - p1) / time * 60).toFixed(2),
+                experience = (exp / time * 60).toFixed(3);
+
+            return ' &lt;span style="color: #FF0000;">[$' + money + ']&lt;/span>' +
+                    '&lt;span style="color: #0000FF;">[' + experience + ']&lt;/span>';
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            //если в постройках или не на пустрой грядке
+            if ((/section=items/.test(general.root.location.href)) ||
+                    !(/Грядка пустая/.test(general.doc.body.innerHTML))) {
+                return;
+            }
+
+            var firsPage = /&lt;font color="?#006600"?>\s?&lt;b>Укроп&lt;\/b>/.
+                test(general.doc.body.innerHTML),
+                prices1 = general.doc.querySelectorAll('label>font' +
+                        '[color="#006600"]>b:last-child'),
+                prices2 = general.doc.querySelectorAll('li>font' +
+                        '[color="#990000"]>b:first-child'),
+                time = general.doc.querySelectorAll('form[action$=' +
+                        '"/ferma.php"]>li:nth-child(' +
+                            (firsPage ? 'odd' : 'even') + ')'),
+                span,
+                i;
+
+            for (i = 0; i &lt; prices1.length; i++) {
+                span = general.doc.createElement('span');
+                span.setAttribute('style', 'font-size: 9px;');
+                span.innerHTML = this.calculateFarm(+(/\$(\d+)/.
+                            exec(prices1[i].innerHTML)[1]),
+                    +(/\$(\d+)/.exec(prices2[i].innerHTML)[1]),
+                    +(/созревания:\s(\d+)/.exec(time[i].innerHTML)[1]),
+                    parseFloat(/(\d+\.?\d*) опыта/.
+                        exec(time[i].nextElementSibling.innerHTML)[1]));
+
+                prices1[i].parentNode.appendChild(span);
+            }
+        };
+    };
+
+    /**
+     * @class FarmTimer
+     * @constructor
+     */
+    var FarmTimer = function () {
+        /**
+         * @property farmLink
+         * @type {HTMLLinkElement|null}
+         */
+        this.farmLink = null;
+        /**
+         * @property checkInterval
+         * @type {int|null}
+         */
+        this.checkInterval = null;
+
+        /**
+         * @method setRedLink
+         * @param   {String}    str
+         */
+        this.setRedLink = function (str) {
+            var action = str === '2' ? 'Собрать' : 'Полить';
+            this.farmLink.setAttribute('style', 'color: #FF0000; ' +
+                    'font-weight: bold; text-decoration: none;');
+            this.farmLink.innerHTML = '[' + action + ']';
+        };
+
+        /**
+         * @method checkState
+         */
+        this.checkState = function () {
+            if (!(/bold/.test(this.farmLink.getAttribute('style')))) {
+                if (this.checkInterval) {
+                    general.root.clearInterval(this.checkInterval);
+                }
+
+                return;
+            }
+
+            var stData = general.getData(9);
+            if (!stData[0]) {
+                this.farmLink.innerHTML = '';
+                return;
+            }
+
+            var timeNow = new Date().getTime(),
+                time = +stData[0];
+
+            if (timeNow &lt;= time) {
+                this.farmLink.setAttribute('style', 'color: #0000FF; ' +
+                        'text-decoration: none;');
+                stData[3] = '';
+                general.setData(stData, 9);
+                this.showTimer(+((time - timeNow) / 1000).toFixed(0));
+            }
+        };
+
+        /**
+         * @method setReminder
+         */
+        this.setReminder = function () {
+            var stData = general.getData(9);
+            if (!stData[0]) {
+                this.farmLink.innerHTML = '';
+                return;
+            }
+
+            this.setRedLink(stData[1]);
+
+            var _this = this;
+            this.checkInterval = general.root.setInterval(function () {
+                _this.checkState();
+            }, 2000);
+
+            if (!stData[4]) {
+                return;
+            }
+
+            var timeNow = new Date().getTime();
+            if (timeNow &lt; +stData[0]) {
+                return;
+            }
+
+            var soundTime = +stData[2],
+                intrvl = stData[5] ? +stData[5] * 1000 : 0,
+                random = new GetRandom();
+
+            // пора проигрывать звук
+            if (timeNow - soundTime >= intrvl) {
+                // в настройках указано не повторять звук
+                if (!intrvl) {
+                    // если звук еще не был проигран
+                    if (!stData[3]) {
+                        stData[3] = '1';
+                        general.setData(stData, 9);
+                        new PlaySound().init(stData[4]);
+                    }
+
+                    return;
+                }
+
+                stData[2] = timeNow;
+                general.setData(stData, 9);
+                general.root.setTimeout(function () {
+                    _this.setReminder();
+                }, intrvl + random.init(1000, 10000));
+
+                new PlaySound().init(stData[4]);
+            } else if (intrvl) {
+                general.root.setTimeout(function () {
+                    _this.setReminder();
+                }, intrvl - (timeNow - soundTime) + random.init(1000, 10000));
+            }
+        };
+
+        /**
+         * @method showTimer
+         * @param   {int}   sec
+         */
+        this.showTimer = function (sec) {
+            var min,
+                s,
+                h;
+
+            if (!sec) {
+                this.setReminder();
+                return;
+            }
+
+            s = sec;
+            h = Math.floor(s / 3600);
+            s = s - h * 3600;
+            min = Math.floor(s / 60);
+            s = s - min * 60;
+
+            this.farmLink.innerHTML = '[' + (h &lt; 10 ? '0' + h : h) + ':' +
+                (min &lt; 10 ? '0' + min : min) + ':' +
+                (s &lt; 10 ? '0' + s : s) + ']';
+
+            sec -= 1;
+            if (sec > -1) {
+                var _this = this;
+                general.root.setTimeout(function () {
+                    _this.showTimer(sec);
+                }, 1000);
+            } else {
+                general.root.setTimeout(this.setReminder,
+                                new GetRandom().init(1000, 3000));
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            /** localStorage:
+             * [0] - время полива/сбора
+             * [1] - действие (Полить|Собрать)
+             * [2] - время последнего проигрывания звука
+             * [3] - звук проигран?
+             */
+            var stData = general.getData(9),
+                timeNow = new Date().getTime();
+
+            // на ферме запоминаем данные, выходим
+            if (/\/ferma\.php/.test(general.loc)) {
+                // не на своей ферме
+                if ((/id=\d+/.test(general.loc)) &amp;&amp;
+                        (/id=(\d+)/.exec(general.loc)[1]) !== general.myID) {
+                    return;
+                }
+
+                var actionStr = /Ближайшее действие:.*[собрать|полить].*\(.*\)/.
+                        exec(general.doc.querySelector('td[width="400"]' +
+                                '[valign="top"]').innerHTML);
+
+                if (!actionStr) {
+                    stData[0] = '';
+                    general.setData(stData, 9);
+                    return;
+                }
+
+                var aStr = actionStr[0];
+                var action = /собрать/.test(aStr) ? '2' : '1';
+
+                if (/уже пора/.test(aStr)) {
+                    general.setData([timeNow, action, timeNow, '1',
+                                stData[4], stData[5]], 9);
+                    return;
+                }
+
+                var timeLeft = +(/через (\d+) мин/.exec(aStr)[1]);
+                general.setData([timeNow + timeLeft * 60 * 1000,
+                        action, timeNow, '', stData[4], stData[5]], 9);
+
+                return;
+            }
+
+            var topPanel = new GetTopPanel().init();
+            if (!topPanel || !stData[0]) {
+                return;
+            }
+
+            this.farmLink = general.doc.createElement('a');
+            this.farmLink.setAttribute('style', 'color: #0000FF; ' +
+                    'text-decoration: none;');
+            this.farmLink.href = 'http://www.ganjawars.ru/ferma.php?id=' +
+                general.myID;
+            this.farmLink.setAttribute('target', '_blank');
+            topPanel.appendChild(general.doc.createTextNode(' | '));
+            topPanel.appendChild(this.farmLink);
+
+            if (timeNow >= +stData[0]) {
+                this.setRedLink(stData[1]);
+                var _this = this;
+                general.root.setTimeout(function () {
+                    _this.showTimer(0);
+                }, new GetRandom().init(1000, 3000));
+
+                return;
+            }
+
+            this.showTimer(+((+stData[0] - timeNow) / 1000).toFixed(0));
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -2647,9 +4130,751 @@
 
     // аут + прибрежка
     if (/\/quest\.ganjawars\.ru/.test(general.loc)) {
-        alert('test');
+        try {
+            new AutRefreshLink().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
+
+        try {
+            new AutLinksOnChat().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
+
         return;
     }
+
+    /**
+     * @class ComfortableLinksForFarm
+     * @constructor
+     */
+    var ComfortableLinksForFarm = function () {
+        /**
+         * @method setLink
+         * @param   {HTMLLinkElement}   a
+         * @param   {String|null}       txt
+         */
+        this.setLink = function (a, txt) {
+            var target = general.doc.
+                    querySelector('center>b>font[color="#990000"]').parentNode;
+
+            if (txt &amp;&amp; (/\(через \d+/.test(a.parentNode.innerHTML))) {
+                return;
+            }
+
+            var link = a.cloneNode(true);
+
+            if (!txt) {
+                a.setAttribute('style', 'display: none;');
+            } else {
+                link.innerHTML = txt;
+            }
+
+            link.setAttribute('style', 'margin-left: 10px;');
+            target.appendChild(link);
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+                // ссылка Собрать, Вскопать, Полить
+            var a1 = general.doc.querySelector('td[bgcolor="#f0fff0"]>a' +
+                    '[href^="/ferma.php?"]'),
+                // ссылка ближайшее действие
+                a2 = general.doc.querySelector('td[bgcolor="#e0eee0"]>a' +
+                        '[href^="/ferma.php?"]'),
+                // кнопка посадить
+                but = general.doc.querySelector('input[value="Посадить"]'),
+                // клетка, на которой находимся
+                pos = general.doc.querySelector('img[src$="ru/i/point2.gif"]');
+
+            if (a1) {
+                this.setLink(a1, null);
+            } else if (a2) {
+                this.setLink(a2, 'Далее');
+            }
+
+            pos = but &amp;&amp; pos ? new GetPos().init(pos.parentNode) : null;
+            if (pos) {
+                but.setAttribute('style', 'position: absolute; ' +
+                        'background: #F4F3F1; border-radius: 7px; ' +
+                        'width: 62px; height: 17px; ' +
+                        'top: ' + (pos.y + 15) + 'px; left: ' + (pos.x - 9) +
+                        'px;');
+                but.focus();
+            }
+        };
+    };
+
+    /**
+     * @class TimeNpc
+     * @constructor
+     */
+    var TimeNpc = function () {
+        /**
+         * @property imgPath
+         * @type {String}
+         */
+        this.imgPath = general.imgPath + 'TimeNpc/';
+        /**
+         * @property npc
+         * @type {Object}
+         */
+        this.npc = {
+            g: ['2', '3', '6', '8', '10', '12'],
+            z: ['1', '4', '5', '7', '9', '11'],
+            p: ['16', '17', '18', '19', '20']
+        };
+        /**
+         * @property tm
+         * @type {int}
+         */
+        this.tm = 700;
+        /**
+         * @property regStr
+         * @type {String}
+         */
+        this.regStr = 'Спасибо|Замечательно|Как скажешь|Благодарю за|' +
+            'Опыт добавлен|Время для ответа вышло';
+
+        /**
+         * @method clearNPCData
+         */
+        this.clearNPCData = function () {
+            general.$('dataNPC').innerHTML = '';
+        };
+
+        /**
+         * @method setCloseButton
+         */
+        this.setCloseButton = function () {
+            general.$('dataNPC').innerHTML += '&lt;tr>&lt;td colspan="3" ' +
+                'style="text-align: right;">&lt;img id="npsDataClose" ' +
+                'style="cursor: pointer; padding-top: 5px;" src="' +
+                general.imgPath + 'close.gif" title="Очистить данные NPC" ' +
+                'alt="Очистить данные NPC" />&lt;/td>&lt;/tr>';
+
+            general.$('npsDataClose').
+                addEventListener('click', this.clearNPCData, false);
+            general.$('imgSoundNPC').removeAttribute('checkscan');
+        };
+
+        /**
+         * @method  scanNPC
+         * @param   {int}       ind
+         * @param   {Array}     npcs
+         */
+        this.scanNPC = function (ind, npcs) {
+            if (!ind) {
+                if (general.$('imgSoundNPC').getAttribute('checkscan')) {
+                    return;
+                }
+
+                this.clearNPCData();
+                general.$('imgSoundNPC').setAttribute('checkscan', 'yes');
+            }
+
+            var url = 'http://www.ganjawars.ru/npc.php?id=' + npcs[ind],
+                _this = this,
+                tr,
+                td;
+
+            tr = general.doc.createElement('tr');
+            td = general.doc.createElement('td');
+            td.setAttribute('style', 'text-align: center;');
+            td.setAttribute('colspan', '3');
+            td.innerHTML = '&lt;img src="' + general.imgPath + 'preloader.gif" ' +
+                'title="Загрузка..." alt="Загрузка..." />';
+            tr.appendChild(td);
+            general.$('dataNPC').appendChild(tr);
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = xml.responseText;
+                if (/Вы находитесь в пути/.test(spanContent.innerHTML)) {
+                    general.$('dataNPC').lastElementChild.innerHTML = '&lt;td ' +
+                        'style="color: #990000">Вы в пути. Данные NPC не ' +
+                        'доступны.&lt;/td>';
+                    _this.setCloseButton();
+                    return;
+                }
+
+                var syndLink = spanContent.
+                        querySelector('td[class="wb"][colspan="3"]' +
+                            '[bgcolor="#f0fff0"]').
+                                querySelector('a[href*="/syndicate.php?id="]'),
+                    nameNPC = spanContent.querySelector('td[class="wb"]' +
+                        '[align="left" ][width="100%"]>b').innerHTML;
+
+                general.$('dataNPC').lastElementChild.innerHTML = '&lt;td>' +
+                    '&lt;a target="_blank" href="' + syndLink.href +
+                    '">&lt;img src="http://images.ganjawars.ru/img/synds/' +
+                    (/\?id=(\d+)/.exec(syndLink.href)[1]) + '.gif" />' +
+                    '&lt;/a>&lt;/td>&lt;td>&lt;a target="_blank" href="' + url +
+                    '" style="font-size: 8pt;">' + nameNPC + '&lt;/a>&lt;/td>' +
+                    '&lt;td style="font-size: 8pt;">' +
+                    syndLink.nextSibling.nodeValue.replace(/^\s*/, '') +
+                    '&lt;/td>';
+
+                ind++;
+                if (npcs[ind]) {
+                    general.root.setTimeout(function () {
+                        _this.scanNPC(ind, npcs);
+                    }, _this.tm);
+                    return;
+                }
+
+                _this.setCloseButton();
+            }, function () {
+                general.root.setTimeout(function () {
+                    if (!ind) {
+                        general.$('imgSoundNPC').removeAttribute('checkscan');
+                    }
+                    _this.scanNPC(ind, npcs);
+                }, _this.tm);
+            });
+        };
+
+        /**
+         * @method getTimeNow
+         * @return  {int}
+         */
+        this.getTimeNow = function () {
+            return new Date().getTime();
+        };
+
+        /**
+         * @method goQuest
+         */
+        this.goQuest = function () {
+            var stData = general.getData(10);
+            general.$('timerNPC').innerHTML = '&lt;a href="/npc.php?id=' +
+                stData[1] + '" style="color: #1C9C03; font-weight: bold;">' +
+                'Взять квест&lt;/a>';
+
+            if (stData[0]) {
+                new PlaySound().init(stData[3]);
+            }
+        };
+
+        /**
+         * @method showTimerNPC
+         * @param   {int}   sec
+        */
+        this.showTimerNPC = function (sec) {
+            var min,
+                s,
+                h;
+
+            s = sec;
+            h = Math.floor(s / 3600);
+            s = s - h * 3600;
+            min = Math.floor(s / 60);
+            s = s - min * 60;
+
+            h = h &lt; 10 ? '0' + h : h;
+            min = min &lt; 10 ? '0' + min : min;
+            s = s &lt; 10 ? '0' + s : s;
+            general.$('spanTimer').innerHTML = h + ':' + min + ':' + s;
+
+            sec -= 1;
+            var _this = this;
+            if (sec > -1) {
+                general.root.setTimeout(function () {
+                    _this.showTimerNPC(sec);
+                }, 1000);
+            } else {
+                this.goQuest();
+            }
+        };
+
+        /**
+         * @method rememberTime
+         * @param   {HTMLElement}  td
+         */
+        this.rememberTime = function (td) {
+            var tableResponseNPC = td.querySelector('table'),
+                responseNPC = tableResponseNPC.innerHTML;
+
+            tableResponseNPC.innerHTML = '&lt;tr style="text-align: center;">' +
+                '&lt;td>&lt;img src="' + general.imgPath + 'preloader.gif" />' +
+                '&lt;/td>&lt;/tr>';
+
+            var url = 'http://www.ganjawars.ru/npc.php?id=' +
+                    general.getData(10)[1] + '&amp;talk=1',
+                _this = this;
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var time = /\[подождите (\d+) мин/.exec(xml.responseText);
+
+                if (time) {
+                    var stData = general.getData(10);
+                    stData[2] = +time[1] * 60 * 1000 + _this.getTimeNow();
+                    general.setData(stData, 10);
+                }
+
+                tableResponseNPC.innerHTML = responseNPC;
+            }, function () {
+                tableResponseNPC.innerHTML = responseNPC;
+            });
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            if (!general.st) {
+                alert('Ваш браузер не поддерживает технологию localStorage.' +
+                    '\nMyRequiеm рекомендует вам установить один из\n' +
+                    'ниже перечисленных браузеров или удалите скрипт\n' +
+                    'TimeNpc\n\nFireFox 4+\nOpera 11+\n' +
+                    'Chrome 12+');
+
+                return;
+            }
+
+            /**
+             * localStorage
+             * [0] - звук вкл/выкл
+             * [1] - ID NPC, у которого последний раз брали квест
+             * [2] - время
+             */
+
+            var stData = general.getData(10);
+
+            if (/www\.ganjawars\.ru\/me\//.test(general.loc)) {
+                var mainDiv = general.doc.createElement('div'),
+                    target = general.doc.querySelector('td[rowspan="2"]' +
+                        '[valign="top"][bgcolor="#e9ffe9"]>' +
+                        'a[href$="/home.friends.php"]').previousElementSibling,
+                    onoff = stData[0] ? 'On' : 'Off';
+
+                mainDiv.setAttribute('style', 'font-size: 8pt; ' +
+                        'padding-left: 16px;');
+                target.parentNode.insertBefore(mainDiv, target);
+                mainDiv.innerHTML = '&lt;span id="buttonNPC_Z" style="cursor: ' +
+                    'pointer;">[Z]&lt;/span>&lt;span id="buttonNPC_G" style="' +
+                    'cursor: pointer;">[G]&lt;/span>&lt;span id="buttonNPC_P" ' +
+                    'style="cursor: pointer;">[P]&lt;/span> &lt;img ' +
+                    'id="imgSoundNPC" src="' + this.imgPath + 'sound' + onoff +
+                    '.png" style="cursor: pointer; vertical-align: middle;" ' +
+                    'title="Sound  ' + onoff + '" alt="Sound ' + onoff +
+                    '"  />&lt;span id="timerNPC" style="margin-left: 5px;">' +
+                    '&lt;/span>&lt;table id="dataNPC" style="width: 100%">&lt;/table>';
+
+                var _this = this;
+                general.$('imgSoundNPC').addEventListener('click', function () {
+                    var data = general.getData(10),
+                        d = data[0],
+                        s = d ? 'Sound Off' : 'Sound On',
+                        img = this;
+
+                    img.src = _this.imgPath +
+                            (d ? 'soundOff.png' : 'soundOn.png');
+                    img.setAttribute('title', s);
+                    img.setAttribute('alt', s);
+                    data[0] = d ? '' : '1';
+                    general.setData(data, 10);
+                }, false);
+
+                general.$('buttonNPC_Z').addEventListener('click', function () {
+                    _this.scanNPC(0, _this.npc.z);
+                }, false);
+                general.$('buttonNPC_G').addEventListener('click', function () {
+                    _this.scanNPC(0, _this.npc.g);
+                }, false);
+                general.$('buttonNPC_P').addEventListener('click', function () {
+                    _this.scanNPC(0, _this.npc.p);
+                }, false);
+
+                if (!stData[2]) {   // время не установлено
+                    general.$('timerNPC').innerHTML = '&lt;a href="' +
+                        (!stData[1] ? '#' : '/npc.php?id=' + stData[1]) +
+                        '" style="color: #8C7B02; font-size: 8pt;">' +
+                        'Поговорите с NPC&lt;/a>';
+                } else {
+                    if (this.getTimeNow() >= stData[2]) {   // пора делать квест
+                        this.goQuest();
+                    } else {    // ждем
+                        general.$('timerNPC').innerHTML = '&lt;a href="' +
+                            '/npc.php?id=' + stData[1] + '" style="color: ' +
+                            'red; font-size: 8pt;">NPC&lt;/a>: ' +
+                            '[&lt;span id="spanTimer">&lt;/span>]';
+                        var sec = Math.
+                                ceil((+stData[2] - this.getTimeNow()) / 1000);
+                        this.showTimerNPC(sec);
+                    }
+                }
+
+                return;
+            }
+
+            var talkNPC = general.doc.
+                    querySelector('td[class="wb"][valign="top"]'),
+                talk = /\?id=(\d+)&amp;talk=1/.exec(general.loc);
+
+            // если id у NPC больше 20, то это не наш NPC
+            if (talkNPC &amp;&amp; talk &amp;&amp; +talk[1] &lt; 21) {
+
+                stData[1] = talk[1];
+                // говорим с NPC, но время квеста еще не пришло
+                var timer = (/\[подождите (\d+) мин/.exec(talkNPC.innerHTML));
+                if (timer) {
+                    stData[2] = +timer[1] * 60 * 1000 + this.getTimeNow();
+                    general.setData(stData, 10);
+                    return;
+                }
+
+                // если берем или отказываемся от квеста,
+                // то стираем время из хранилища
+                if (/Ваш ответ:/.test(talkNPC.innerHTML)) {
+                    stData[2] = '';
+                    general.setData(stData, 10);
+                    return;
+                }
+
+                // квест выполнен/провален/отказ...
+                // смотрим время до следующего квеста
+                if (new RegExp(this.regStr).test(talkNPC.innerHTML)) {
+                    this.rememberTime(talkNPC);
+                }
+            }
+        };
+    };
+
+    /**
+     * @class AllPlantsOnFarm
+     * @constructor
+     */
+    var AllPlantsOnFarm = function () {
+        /**
+         * @property tm
+         * @type {int}
+         */
+        this.tm = 700;
+        /**
+         * @property canPlant
+         * @type {Boolean}
+         */
+        this.canPlant = true;
+        /**
+         * @property target
+         * @type {Boolean}
+         */
+        this.target = false;
+        /**
+         * @property plant
+         * @type {Object}
+         */
+        this.plant = {
+            'ukrop': {name: 'Укроп', price: 5, time: 12, bonus: 6, exp: 0.007,
+                id: 0},
+            'opyata': {name: 'Странные опята', price: 10, time: 376, bonus: 40,
+                exp: 0.204, id: 1},
+            'tulips': {name: 'Тюльпаны', price: 20, time: 67, bonus: 26,
+                exp: 0.04, id: 2},
+            'mak': {name: 'Полевой мак', price: 12, time: 27, bonus: 15,
+                exp: 0.02, id: 3},
+            'muhomor': {name: 'Мухомор', price: 150, time: 150, bonus: 165,
+                exp: 0.098, id: 4},
+            'podsolnuh': {name: 'Подсолнух', price: 50, time: 126, bonus: 62,
+                exp: 0.082, id: 5},
+            'kaktus': {name: 'Коричневый кактус', price: 160, time: 376,
+                bonus: 197, exp: 0.245, id: 6},
+            'geran': {name: 'Герань', price: 10, time: 57, bonus: 17,
+                exp: 0.048, id: 7},
+            'tabak': {name: 'Веселый табак', price: 20, time: 150, bonus: 37,
+                exp: 0.114, id: 8},
+            'korica': {name: 'Корица забористая', price: 16, time: 68,
+                bonus: 25, exp: 0.057, id: 9},
+            'hren': {name: 'Хрен', price: 210, time: 300, bonus: 244,
+                exp: 0.229, id: 10},
+            'baklajan': {name: 'Баклажан', price: 150, time: 226, bonus: 176,
+                exp: 0.171, id: 11},
+            'chai': {name: 'Зеленый чай', price: 50, time: 90, bonus: 63,
+                exp: 0.087, id: 12},
+            'aloe': {name: 'Алоэ', price: 120, time: 45, bonus: 127,
+                exp: 0.044, id: 13},
+            'ogurets': {name: 'Огурцы', price: 350, time: 68, bonus: 360,
+                exp: 0.065, id: 14},
+            'klubnika': {name: 'Клубника', price: 100, time: 450, bonus: 159,
+                exp: 0.392, id: 15},
+            'malina': {name: 'Малина', price: 190, time: 90, bonus: 203,
+                exp: 0.087, id: 16},
+            'shalfei': {name: 'Задумчивый шалфей&amp;nbsp;', price: 800, time: 715,
+                bonus: 885, exp: 0.566, id: 17},
+            'mint': {name: 'Мята', price: 50, time: 34, bonus: 56, exp: 0.037,
+                id: 18},
+            'kokos': {name: 'Кокосовая пальма', price: 200, time: 176,
+                bonus: 226, exp: 0.171, id: 19},
+            'vinograd': {name: 'Виноград', price: 140, time: 90, bonus: 155,
+                exp: 0.098, id: 20},
+            'tabak2': {name: 'Жевательный табак', price: 170, time: 29,
+                bonus: 175, exp: 0.031, id: 21},
+            'whitemush': {name: 'Белые грибы', price: 120, time: 126,
+                bonus: 138, exp: 0.122, id: 22},
+            'kapusta': {name: 'Капуста', price: 150, time: 79, bonus: 164,
+                exp: 0.095, id: 23},
+            'kust': {name: 'Хвойный куст', price: 600, time: 350, bonus: 657,
+                exp: 0.381, id: 24},
+            'kabachok': {name: 'Кабачок', price: 140, time: 95, bonus: 155,
+                exp: 0.102, id: 25},
+            'kukuruza': {name: 'Кукуруза', price: 170, time: 68, bonus: 182,
+                exp: 0.082, id: 26},
+            'jahntak': {name: 'Джантак', price: 130, time: 164, bonus: 157,
+                exp: 0.177, id: 27},
+            'kaktusi': {name: 'Кактусы пушистые ', price: 1100, time: 634,
+                bonus: 1194, exp: 0.626, id: 28},
+            'perets': {name: 'Красный перец', price: 180, time: 51, bonus: 191,
+                exp: 0.073, id: 29},
+            'petrushka': {name: 'Петрушка курчавая ', price: 145, time: 29,
+                bonus: 151, exp: 0.041, id: 30},
+            'tomat': {name: 'Говорящий томат', price: 500, time: 276,
+                bonus: 554, exp: 0.359, id: 31},
+            'arbuz': {name: 'Арбуз', price: 100, time: 45, bonus: 111,
+                exp: 0.071, id: 32},
+            'hmel': {name: 'Душистый хмель', price: 130, time: 23, bonus: 135,
+                exp: 0.035, id: 33},
+            'bambuk': {name: 'Ростки Бамбука', price: 10, time: 17, bonus: 14,
+                exp: 0.029, id: 34},
+            'tikva': {name: 'Тыква', price: 200, time: 57, bonus: 214,
+                exp: 0.095, id: 35},
+            'shishki': {name: 'Еловые шишки', price: 250, time: 45, bonus: 262,
+                exp: 0.082, id: 36},
+            'dinya': {name: 'Дыня', price: 120, time: 88, bonus: 141,
+                exp: 0.143, id: 37},
+            'podsolnuh2': {name: 'Подсолнух-мутант', price: 200, time: 50,
+                bonus: 213, exp: 0.087, id: 38},
+            'poganka': {name: 'Бледная поганка', price: 1500, time: 338,
+                bonus: 1604, exp: 0.694, id: 39}
+        };
+
+        /**
+         * @method getHourTime
+         * @param   {int}   min
+         * @return  {String}
+         */
+        this.getHourTime = function (min) {
+            if (min &lt; 60) {
+                return '';
+            }
+
+            var h = Math.floor(min / 60);
+            return '(' + h + ' ч ' + (min - h * 60) + ' мин)';
+        };
+        /**
+         * @method calculatePerHour
+         * @param   {int}   val1
+         * @param   {int}   val2
+         * @param   {int}   fix
+         * @return  {String}
+         */
+        this.calculatePerHour = function (val1, val2, fix) {
+            return (60 * val2 / val1).toFixed(fix);
+        };
+
+        /**
+         * @method getCoord
+         * @return  {Object}
+         */
+        this.getCoord = function () {
+            return {x: /(\?|&amp;)x=(\d)/.exec(general.loc)[2],
+                        y: /(\?|&amp;)y=(\d)/.exec(general.loc)[2]};
+        };
+
+        /**
+         * @method setPlantData
+         */
+        this.setPlantData = function () {
+            var cont = general.$('checkBoxContainer'),
+                val = general.$('selPlant').value,
+                id = 'btn_' + val,
+                pl = this.plant[val],
+                str = '';
+
+            cont.innerHTML = '';
+            if (val !== '0') {
+                var i;
+                for (i = 3; i &lt; 7; i++) {
+                    str += '&lt;img src="http://images.ganjawars.ru/' +
+                        'img/ferma/' + val + i + '.png" />';
+                }
+
+                var stData = general.getData(11),
+                    disbld = (!stData[0] || this.plant[val].id >= +stData[0]) ?
+                                ' disabled' : '',
+                    style = !this.canPlant ? ' style="display: none;"' : '',
+                    coord = this.getCoord();
+
+                str += ' &lt;a href="/ferma.php?x=' + coord.x + '&amp;y=' + coord.y +
+                    '&amp;page_id=' + Math.floor(pl.id / 4) + '"' + style + '>' +
+                    '[Перейти]&lt;/a>&lt;br>&lt;input type="radio" name="plant_id" ' +
+                    'value="' + val + '" id="' + id + '"' + style + disbld +
+                    ' /> &lt;label for="' + id + '">&lt;b style="color: #006600;">' +
+                    pl.name + ', ' + pl.price + '$&lt;/b>&lt;/label> ' +
+                    '&lt;br>&lt;li>Время созревания: &lt;b style="color: #990000;">' +
+                    pl.time + ' мин&lt;/b> ' + this.getHourTime(pl.time) +
+                    '&lt;li>Премия за урожай: &lt;b style="color: #990000;">' +
+                    pl.bonus + '$&lt;/b> (&lt;span style="color: #0000FF;">' +
+                    this.calculatePerHour(pl.time, pl.bonus - pl.price, 2) +
+                    '$&lt;/span> в час)&lt;li>Производственный опыт: ' +
+                    '&lt;b style="color: #990000;">' + pl.exp + '&lt;/b> (' +
+                    '&lt;span style="color: #0000FF;">' +
+                    this.calculatePerHour(pl.time, pl.exp, 3) +
+                    '&lt;/span> в час)';
+
+                cont.innerHTML = str;
+            }
+        };
+
+        /**
+         * @method createSelectList
+         * @return  {HTMLElement}
+         */
+        this.createSelectList = function () {
+            var sel = general.doc.createElement('select'),
+                stData = general.getData(11),
+                block = '',
+                str = '',
+                val;
+
+            for (val in this.plant) {
+                if (this.plant.hasOwnProperty(val)) {
+                    // есть возможность сажать и данных в хранилище
+                    // нет или это недоступное растение
+                    if (this.canPlant &amp;&amp;
+                            (!stData[0] || this.plant[val].id >= +stData[0])) {
+                        block = ' style="background-color: #FADADA"';
+                    }
+
+                    str += '&lt;option value="' + val + '"' + block + '>' +
+                        this.plant[val].name + '&lt;/option>';
+                }
+            }
+
+            sel.id = 'selPlant';
+            sel.innerHTML = '&lt;option value="0"> &lt;/option>' + str;
+            var _this = this;
+            sel.addEventListener('change', function () {
+                _this.setPlantData();
+            }, false);
+
+            return sel;
+        };
+
+        /**
+         * @method checkAvailability
+         * @param   {int}   ind
+         */
+        this.checkAvailability = function (ind) {
+            general.$('counter').innerHTML = ind + 1;
+            var coord = this.getCoord(),
+                url = 'http://www.ganjawars.ru/ferma.php?' +
+                    'x=' + coord.x + '&amp;y=' + coord.y + '&amp;page_id=' + ind,
+                _this = this;
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var disabled = /value=('|")?([^\s'"]+)('|")? ([^>]+) disabled/.
+                        exec(xml.responseText);
+
+                if (disabled) {
+                    general.setData([_this.plant[disabled[2]].id], 11);
+                    _this.setMainPanel();
+                    return;
+                }
+
+                ind++;
+                if (ind > 9) {
+                    // доступны все растения
+                    general.setData([Number.MAX_VALUE], 11);
+                    _this.setMainPanel();
+                    return;
+                }
+
+                general.root.setTimeout(function () {
+                    _this.checkAvailability(ind);
+                }, _this.tm);
+            }, function () {
+                general.root.setTimeout(function () {
+                    _this.checkAvailability(ind);
+                }, _this.tm);
+            });
+        };
+
+        /**
+         * @method setMainPanel
+         */
+        this.setMainPanel = function () {
+            // основной контейнер
+            var div = this.target.querySelector('#allPlantContainer');
+            if (!div) {
+                div = general.doc.createElement('div');
+                div.id = 'allPlantContainer';
+                this.target.appendChild(div);
+            }
+
+            div.innerHTML = this.canPlant ? '' : '&lt;br>';
+            div.appendChild(this.createSelectList());
+
+            // кнопа "Что могу посадить?"
+            var butCheckPlant = general.doc.createElement('input');
+            butCheckPlant.type = 'button';
+            butCheckPlant.value = 'Что могу посадить?';
+            butCheckPlant.setAttribute('style', this.canPlant ?
+                    'margin-left: 5px;' : 'display: none;');
+            var _this = this;
+            butCheckPlant.addEventListener('click', function () {
+                div.querySelector('#preloader').style.display = '';
+                general.setData([], 11);
+                _this.checkAvailability(0);
+            }, false);
+            div.appendChild(butCheckPlant);
+
+            var span = general.doc.createElement('span');
+            span.id = 'preloader';
+            span.innerHTML = '&lt;img src="' + general.imgPath +
+                'preloader.gif" style="margin: 0 5px 0 10px;" />' +
+                '(&lt;span id="counter">&lt;/span>)';
+            span.style.display = 'none';
+            div.appendChild(span);
+
+            var chkContainer = general.doc.createElement('div');
+            chkContainer.id = 'checkBoxContainer';
+            div.appendChild(chkContainer);
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            if (!general.st) {
+                alert('Ваш браузер не поддерживает технологию localStorage.' +
+                    '\nMyRequiеm рекомендует вам установить один из\n' +
+                    'ниже перечисленных браузеров или удалите скрипт\n' +
+                    'AllPlantsOnFarm\n\nFireFox 4+\nOpera 11+\n' +
+                    'Chrome 12+');
+            }
+
+            var farmId = /(\?|&amp;)id=(\d+)/.exec(general.loc),
+                capcha = general.doc.querySelector('input[type="text"]' +
+                        '[name="fermacode"]');
+
+            this.target = general.doc.
+                    querySelector('form[action="/ferma.php"]') ||
+                        general.doc.
+                            querySelector('td[width="400"][valign="top"]');
+
+            // нет капчи, не в постройках, на своей ферме
+            if (!capcha &amp;&amp; !(/section=items/.test(general.loc)) &amp;&amp;
+                    !(farmId &amp;&amp; farmId[2] !== general.myID) &amp;&amp; this.target) {
+                this.canPlant = this.target.nodeName === 'FORM';
+                this.setMainPanel();
+            }
+        };
+    };
+
 
     initScript = general.getInitScript();
     // везде
@@ -2664,6 +4889,14 @@
     // перс не залогинен
     if (general.doc.querySelector('a[href*="/regform.php"]')) {
         return;
+    }
+
+    if (initScript[4]) {
+        try {
+            new BlacklistHighlighting().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
     }
 
     // везде кроме боев
@@ -2700,16 +4933,97 @@
                 }
             }
         }
+
+        if (/\/sms\.php/.test(general.loc)) {
+            if (initScript[8]) {
+                try {
+                    new DeleteSms().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
+
+        if (/\/ferma\.php/.test(general.loc)) {
+            if (initScript[9]) {
+                try {
+                    new FarmExperience().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[11]) {
+                try {
+                    new ComfortableLinksForFarm().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[13]) {
+                try {
+                    new AllPlantsOnFarm().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
+
+        if (initScript[10]) {
+            try {
+                new FarmTimer().init();
+            } catch (e) {
+                general.cons.log(e);
+            }
+        }
+
+        if (initScript[6]) {
+            try {
+                new ResourcesAndBonuses().init();
+            } catch (e) {
+                general.cons.log(e);
+            }
+        }
+
+        if (initScript[5]) {
+            try {
+                new WorkPostGrenadesBroken().init();
+            } catch (e) {
+                general.cons.log(e);
+            }
+        }
+
+        if (/www\.ganjawars\.ru\/me\/|\/npc\.php\?id=/.test(general.loc)) {
+            if (initScript[12]) {
+                try {
+                    new TimeNpc().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
     }
 
     // бои
     if (/(\/b0\/|\/wargroup\.php|\/warlist\.php|\/warlog\.php)/.
             test(general.loc)) {
+
         if (initScript[3]) {
             try {
                 new AdvBattleAll().init();
             } catch (e) {
                 general.cons.log(e);
+            }
+        }
+
+        if (/(\/b0\/|\/warlog\.php)/.test(general.loc)) {
+            if (initScript[7]) {
+                try {
+                    new CritShotsAndLinksBtlLog().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
             }
         }
     }
@@ -2726,13 +5040,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="general.root.bf1.html">bf1</a></li><li><a href="general.root.bf2.html">bf2</a></li><li><a href="general.root.bf3.html">bf3</a></li><li><a href="general.root.bfndl.html">bfndl</a></li><li><a href="general.root.waitforturn.html">waitforturn</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#ajaxQuery">ajaxQuery</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#changeLocationFighters">changeLocationFighters</a></li><li><a href="global.html#changeMakebf">changeMakebf</a></li><li><a href="global.html#changeSelectEnemies">changeSelectEnemies</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#checkScriptUpdate">checkScriptUpdate</a></li><li><a href="global.html#clearFields">clearFields</a></li><li><a href="global.html#clearMarkStroke">clearMarkStroke</a></li><li><a href="global.html#clearSavedStrokeAfterSay">clearSavedStrokeAfterSay</a></li><li><a href="global.html#clickImageFighters">clickImageFighters</a></li><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createRequestObject">createRequestObject</a></li><li><a href="global.html#getBattleField">getBattleField</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataFighters">getDataFighters</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getLeftRightCommands">getLeftRightCommands</a></li><li><a href="global.html#getPers">getPers</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#hideTooltip">hideTooltip</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#isEven">isEven</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#setButton">setButton</a></li><li><a href="global.html#setChatInterface">setChatInterface</a></li><li><a href="global.html#setColorFighters">setColorFighters</a></li><li><a href="global.html#setCountStroke">setCountStroke</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setEnvelope">setEnvelope</a></li><li><a href="global.html#setFilter">setFilter</a></li><li><a href="global.html#setGenerator">setGenerator</a></li><li><a href="global.html#setHandlerSubmit">setHandlerSubmit</a></li><li><a href="global.html#setMarkStroke">setMarkStroke</a></li><li><a href="global.html#setMyInfo">setMyInfo</a></li><li><a href="global.html#setNameInChat">setNameInChat</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setSettingsForAdvBattleAll">setSettingsForAdvBattleAll</a></li><li><a href="global.html#setSortListEnemy">setSortListEnemy</a></li><li><a href="global.html#setStroke">setStroke</a></li><li><a href="global.html#setTooltipsFighters">setTooltipsFighters</a></li><li><a href="global.html#setWalk">setWalk</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li><li><a href="global.html#showTooltip">showTooltip</a></li><li><a href="global.html#sortEnemyList">sortEnemyList</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#tryStart">tryStart</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="-_anonymous_-CritShotsAndLinksBtlLog_CriticalShots.html">CriticalShots</a></li></ul><h3>Namespaces</h3><ul><li><a href="general.root.bf1.html">bf1</a></li><li><a href="general.root.bf2.html">bf2</a></li><li><a href="general.root.bf3.html">bf3</a></li><li><a href="general.root.bfndl.html">bfndl</a></li><li><a href="general.root.frames.bsrc.html">bsrc</a></li><li><a href="general.root.waitforturn.html">waitforturn</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#addContent">addContent</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#ajaxQuery">ajaxQuery</a></li><li><a href="global.html#calculateFarm">calculateFarm</a></li><li><a href="global.html#calculatePerHour">calculatePerHour</a></li><li><a href="global.html#change_updatechatlines">change_updatechatlines</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#changeLocationFighters">changeLocationFighters</a></li><li><a href="global.html#changeMakebf">changeMakebf</a></li><li><a href="global.html#changeSelectEnemies">changeSelectEnemies</a></li><li><a href="global.html#checkAvailability">checkAvailability</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#checkScriptUpdate">checkScriptUpdate</a></li><li><a href="global.html#checkState">checkState</a></li><li><a href="global.html#clearClick">clearClick</a></li><li><a href="global.html#clearFields">clearFields</a></li><li><a href="global.html#clearMarkStroke">clearMarkStroke</a></li><li><a href="global.html#clearNPCData">clearNPCData</a></li><li><a href="global.html#clearSavedStrokeAfterSay">clearSavedStrokeAfterSay</a></li><li><a href="global.html#clickImageFighters">clickImageFighters</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createRequestObject">createRequestObject</a></li><li><a href="global.html#createSelectList">createSelectList</a></li><li><a href="global.html#fillData">fillData</a></li><li><a href="global.html#getAllCrits">getAllCrits</a></li><li><a href="global.html#getBattleField">getBattleField</a></li><li><a href="global.html#getCoord">getCoord</a></li><li><a href="global.html#getCrits">getCrits</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataFighters">getDataFighters</a></li><li><a href="global.html#getGitHubLink">getGitHubLink</a></li><li><a href="global.html#getHourTime">getHourTime</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getLeftRightCommands">getLeftRightCommands</a></li><li><a href="global.html#getPers">getPers</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#getSelectSound">getSelectSound</a></li><li><a href="global.html#getTimeNow">getTimeNow</a></li><li><a href="global.html#goQuest">goQuest</a></li><li><a href="global.html#hideTooltip">hideTooltip</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#isEven">isEven</a></li><li><a href="global.html#modifyData">modifyData</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#rememberClick">rememberClick</a></li><li><a href="global.html#rememberTime">rememberTime</a></li><li><a href="global.html#scanNPC">scanNPC</a></li><li><a href="global.html#setButton">setButton</a></li><li><a href="global.html#setChatInterface">setChatInterface</a></li><li><a href="global.html#setCloseButton">setCloseButton</a></li><li><a href="global.html#setColorFighters">setColorFighters</a></li><li><a href="global.html#setCountStroke">setCountStroke</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setDataDiv">setDataDiv</a></li><li><a href="global.html#setEnvelope">setEnvelope</a></li><li><a href="global.html#setFilter">setFilter</a></li><li><a href="global.html#setGenerator">setGenerator</a></li><li><a href="global.html#setHandlerSubmit">setHandlerSubmit</a></li><li><a href="global.html#setHighlighting">setHighlighting</a></li><li><a href="global.html#setLink">setLink</a></li><li><a href="global.html#setMainPanel">setMainPanel</a></li><li><a href="global.html#setMarkStroke">setMarkStroke</a></li><li><a href="global.html#setMyInfo">setMyInfo</a></li><li><a href="global.html#setNameInChat">setNameInChat</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setPlantData">setPlantData</a></li><li><a href="global.html#setRedLink">setRedLink</a></li><li><a href="global.html#setReminder">setReminder</a></li><li><a href="global.html#setSettingsForAdvBattleAll">setSettingsForAdvBattleAll</a></li><li><a href="global.html#setSortListEnemy">setSortListEnemy</a></li><li><a href="global.html#setStroke">setStroke</a></li><li><a href="global.html#setTooltipsFighters">setTooltipsFighters</a></li><li><a href="global.html#setWalk">setWalk</a></li><li><a href="global.html#showCrits">showCrits</a></li><li><a href="global.html#showData">showData</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li><li><a href="global.html#showTimer">showTimer</a></li><li><a href="global.html#showTimerNPC">showTimerNPC</a></li><li><a href="global.html#showTooltip">showTooltip</a></li><li><a href="global.html#sortEnemyList">sortEnemyList</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startWorkPostGrenadesBroken">startWorkPostGrenadesBroken</a></li><li><a href="global.html#testSound">testSound</a></li><li><a href="global.html#testSubject">testSubject</a></li><li><a href="global.html#tryStart">tryStart</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Tue Aug 18 2015 19:21:08 GMT+0300 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Tue Sep 01 2015 17:35:25 GMT+0300 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

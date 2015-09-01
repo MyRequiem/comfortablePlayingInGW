@@ -78,8 +78,8 @@
          * @method  changeIcons
          */
         changeIcons: function () {
-            var imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
-                    'comfortablePlayingInGW/master/imgs/NotGiveCannabisLeaf/',
+            var imgPath = 'http://gwscripts.ucoz.net/' +
+                    'comfortablePlayingInGW/imgs/NotGiveCannabisLeaf/',
                 imgOn = imgPath + 'on.gif',
                 imgOff = imgPath + 'off.gif',
                 imgs = this.doc.querySelectorAll('img'),

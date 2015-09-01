@@ -165,8 +165,7 @@
          * @property imgPath
          * @type {String}
          */
-        this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
-            'comfortablePlayingInGW/master/imgs/';
+        this.imgPath = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/imgs/';
         /**
          * @property divResult
          * @type {HTMLElement}

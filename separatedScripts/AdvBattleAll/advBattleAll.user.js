@@ -103,6 +103,12 @@
          * @type {Boolean}
          */
         this.nojs = /\/b0\/b\.php/.test(this.loc);
+        /**
+         * @property imgPath
+         * @type {String}
+         */
+        this.imgPath = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
+            'imgs/AdvBattleAll/';
     };
 
     /**
@@ -305,12 +311,6 @@
          * @type {Object|null}
          */
         this.myPers = null;
-        /**
-         * @property imgPath
-         * @type {String}
-         */
-        this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
-            'comfortablePlayingInGW/master/imgs/AdvBattleAll/';
         /**
          * @property tmRefreshBattle
          * @type {int}
@@ -593,7 +593,7 @@
                                     this.enemies[name] + '.</span> ' : '';
                     }
 
-                    env = ' <img src="' + this.imgPath + 'envelope.gif" ' +
+                    env = ' <img src="' + general.imgPath + 'envelope.gif" ' +
                         'style="width: 15px; cursor: pointer;"> ';
 
                     span = general.doc.createElement('span');
@@ -1230,7 +1230,8 @@
             }
 
             table.setAttribute('style', 'border-collapse: collapse;');
-            table.setAttribute('background', this.imgPath + 'battleField.gif');
+            table.setAttribute('background', general.imgPath +
+                    'battleField.gif');
 
             // вставим пустую строку после таблицы
             // (в НЕ JS-версии уже есть)
