@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         1.11-020915
+// @version         1.12-030915
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -334,8 +334,10 @@
          * @return  {Object}
          */
         this.getCoord = function () {
-            return {x: /(\?|&)x=(\d)/.exec(general.loc)[2],
-                        y: /(\?|&)y=(\d)/.exec(general.loc)[2]};
+            var _x = /(\?|&)x=(\d)/.exec(general.loc),
+                _y = /(\?|&)y=(\d)/.exec(general.loc);
+
+            return {x: _x ? _x[2] : '0', y: _y ? _y[2] : '0'};
         };
 
         /**
