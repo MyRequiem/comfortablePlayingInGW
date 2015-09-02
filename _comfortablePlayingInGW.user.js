@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-010915-dev
+// @version         1.00-020915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -62,13 +62,13 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-010915-dev';
+        this.version = '1.00-020915-dev';
         /**
          * @property stString
          * @type {String}
          */
         this.stString = this.version + '@|||||||||||||' +
-            '@@|@|||||||||||||||||@|@|||||||@@||@|||||@|||@';
+            '@@|@|||||||||||||||||@|@|||||||@@||@|||||@|||@|||||';
         /**
          * @property myID
          * @type {String}
@@ -674,11 +674,16 @@
                 ['Удобные ссылки на ферме', 'Удобные ссылки для полива, ' +
                     'сбора, вскапывания, посадки на ферме.' +
                     this.getGitHubLink('comfortableLinksForFarm'), '11'],
-                ['Все растения на одной странице', 'На ферме добавляет ' +
-                    'выпадающий список для выбора и посадки любого растения. ' +
-                    'Для каждого растения присутствует изображение, ' +
+                ['Все растения на одной странице, счетчики', 'На ферме ' +
+                    'добавляет выпадающий список для выбора и посадки любого ' +
+                    'растения. Для каждого растения присутствует изображение, ' +
                     'производственный опыт и прибыль (общие и в 1 час), ' +
-                    'цена, время созревания в минутах и часах.' +
+                    'цена, время созревания в минутах и часах. Счетчики ' +
+                    'Гб и производственного опыта.<br><br>' +
+                    '<input id="showGbFarmCounter" type="checkbox" ' +
+                    'disabled /> показывать счетчик Гб<br>' +
+                    '<input id="showExpFarmCounter" type="checkbox" ' +
+                    'disabled /> показывать счетчик производственног опыта' +
                     this.getGitHubLink('allPlantsOnFarm'), '13']]
         };
 
@@ -950,6 +955,56 @@
                 _this.modifyData(10, 3, soundNPC.value === '0' ?
                         '' : soundNPC.value);
             }, false);
+
+            // AllPlantsOnFarm
+            general.$('showGbFarmCounter').checked = general.getData(11)[4];
+            general.$('showExpFarmCounter').checked = general.getData(11)[5];
+            general.$('showGbFarmCounter').
+                addEventListener('click', function () {
+                    var showGbFarmCounter = this;
+                    _this.modifyData(11, 4, showGbFarmCounter.checked ?
+                            '1' : '');
+                }, false);
+            general.$('showExpFarmCounter').
+                addEventListener('click', function () {
+                    var showExpFarmCounter = this;
+                    _this.modifyData(11, 5, showExpFarmCounter.checked ?
+                            '1' : '');
+                }, false);
+        };
+    };
+
+    /**
+     * @class SetPoints
+     * @constructor
+     */
+    var SetPoints = function () {
+        /**
+         * @method init
+         * @param   {String|int}   num
+         * @param   {String}        separator
+         * @param   {Boolean}       flagSign
+         * @return  {String}
+         */
+        this.init = function (num, separator, flagSign) {
+            var x = +num,
+                sign = (x > 0 && flagSign) ? '+' : '',
+                i;
+
+            if (isNaN(x)) {
+                return 'NaN';
+            }
+
+            x = x.toString().split('').reverse();
+            for (i = 2; i < x.length; i += 3) {
+                if (x[i] === '-' || !x[i + 1] || x[i + 1] === '-') {
+                    break;
+                }
+
+                x[i] = separator + x[i];
+            }
+
+            return sign + x.reverse().join('');
         };
     };
 
@@ -4745,14 +4800,16 @@
             var coord = this.getCoord(),
                 url = 'http://www.ganjawars.ru/ferma.php?' +
                     'x=' + coord.x + '&y=' + coord.y + '&page_id=' + ind,
-                _this = this;
+                _this = this,
+                stData = general.getData(11);
 
             new AjaxQuery().init(url, 'GET', null, true, function (xml) {
                 var disabled = /value=('|")?([^\s'"]+)('|")? ([^>]+) disabled/.
                         exec(xml.responseText);
 
                 if (disabled) {
-                    general.setData([_this.plant[disabled[2]].id], 11);
+                    stData[0] = _this.plant[disabled[2]].id;
+                    general.setData(stData, 11);
                     _this.setMainPanel();
                     return;
                 }
@@ -4760,7 +4817,8 @@
                 ind++;
                 if (ind > 9) {
                     // доступны все растения
-                    general.setData([Number.MAX_VALUE], 11);
+                    stData[0] = Number.MAX_VALUE;
+                    general.setData(stData, 11);
                     _this.setMainPanel();
                     return;
                 }
@@ -4799,7 +4857,6 @@
             var _this = this;
             butCheckPlant.addEventListener('click', function () {
                 div.querySelector('#preloader').style.display = '';
-                general.setData([], 11);
                 _this.checkAvailability(0);
             }, false);
             div.appendChild(butCheckPlant);
@@ -4817,6 +4874,95 @@
             div.appendChild(chkContainer);
         };
 
+        /**
+         * @method clearCounter
+         * @param   {String}    gb
+         * @param   {String}    exp
+         */
+        this.clearCounter = function (gb, exp) {
+            var stData = general.getData(11);
+
+            stData[1] = new Date().getTime();
+            stData[2] = gb;
+            stData[3] = exp;
+            general.setData(stData, 11);
+        };
+
+        /**
+         * @method setCounter
+         */
+        this.setCounter = function () {
+            var table = general.doc.querySelector('table[cellpadding="3"]' +
+                    '[cellspacing="0"][border="0"][align="center"]'),
+                prod = /получен опыт (\d+(\.\d+)?) ед/.exec(table.innerHTML);
+
+            // опыт виден (на пустой вскопанной клетке)
+            if (prod) {
+                var gb = /Счет:\s?<b>\$([^<]+)<\/b>/.
+                        exec(table.innerHTML)[1].replace(/,/g, ''),
+                    exp = prod[1],
+                    stData = general.getData(11);
+
+                // время сброса не установлено
+                if (!stData[1]) {
+                    this.clearCounter(gb, exp);
+                }
+
+                var t = new Date(+stData[1]),
+                    day = t.getDate(),
+                    time = day < 10 ? '0' + day : day;
+
+                time += '.';
+                var month = t.getMonth() + 1;
+                time += month < 10 ? '0' + month : month;
+                time += '.';
+                var year = /20(\d+)/.exec(t.getFullYear().toString())[1];
+                time += year + ' ';
+                var hours = t.getHours();
+                time += hours < 10 ? '0' + hours : hours;
+                time += ':';
+                var min = t.getMinutes();
+                time += min < 10 ? '0' + min : min;
+
+                var setPoint = new SetPoints().init,
+                    diffGb = +gb - (+stData[2]),
+                    diffExp = (+exp - (+stData[3])).toFixed(3).split('.');
+
+                var str = '';
+                if (stData[4]) {
+                    str += '<b>Счет</b>: <span style="margin-right: 10px; ' +
+                        'color: #' + (diffGb < 0 ? '0000FF' : 'FF0000') +
+                        ';"> ' + setPoint(diffGb, '\'', true) + '$</span>';
+                }
+
+                if (stData[5]) {
+                    str += '<b>Производ</b>: <span ' +
+                        'style="margin-right: 10px; color: #FF0000;"> +' +
+                        setPoint(diffExp[0], '\'', false) +
+                        (diffExp[1] ? ',' + diffExp[1] : '') + '</span>';
+                }
+
+                str += '<span style="font-size: 7pt;">' +
+                        '<span id="clearFarmCounter" style="cursor: pointer; ' +
+                        'color: #008000; text-decoration: underline;">Сброс' +
+                        '</span> <span style="color: #0000FF;">(' + time +
+                        ')</span>';
+
+                var divCounters = general.doc.createElement('div');
+                divCounters.setAttribute('style', 'font-size: 8pt;');
+                divCounters.innerHTML = str;
+                table.querySelector('td[bgcolor="#f0fff0"]').
+                    appendChild(divCounters);
+
+                var _this = this;
+                general.$('clearFarmCounter').
+                    addEventListener('click', function () {
+                        _this.clearCounter(gb, exp);
+                        divCounters.innerHTML = '';
+                        _this.setCounter();
+                    }, false);
+            }
+        };
         /**
          * @method init
          */
@@ -4841,6 +4987,12 @@
             // нет капчи, не в постройках, на своей ферме
             if (!capcha && !(/section=items/.test(general.loc)) &&
                     !(farmId && farmId[2] !== general.myID) && this.target) {
+
+                var stData = general.getData(11);
+                if (stData[4] || stData[5]) {
+                    this.setCounter();
+                }
+
                 this.canPlant = this.target.nodeName === 'FORM';
                 this.setMainPanel();
             }
