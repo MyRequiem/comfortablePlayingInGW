@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         1.10-020915
+// @version         1.11-020915
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -585,7 +585,7 @@
                 general.$('clearFarmCounter').
                     addEventListener('click', function () {
                         _this.clearCounter(gb, exp);
-                        divCounters.innerHTML = '';
+                        divCounters.parentNode.removeChild(divCounters);
                         _this.setCounter();
                     }, false);
             }

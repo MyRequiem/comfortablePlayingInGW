@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.01-020915-dev
+// @version         1.02-020915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -62,7 +62,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-020915-dev';
+        this.version = '1.02-020915-dev';
         /**
          * @property stString
          * @type {String}
@@ -4909,6 +4909,7 @@
                     this.clearCounter(gb, exp);
                 }
 
+                // установка счетчиков
                 var t = new Date(+stData[1]),
                     day = t.getDate(),
                     time = day < 10 ? '0' + day : day;
@@ -4955,15 +4956,17 @@
                 table.querySelector('td[bgcolor="#f0fff0"]').
                     appendChild(divCounters);
 
+                // кнопа сброса счетчиков
                 var _this = this;
                 general.$('clearFarmCounter').
                     addEventListener('click', function () {
                         _this.clearCounter(gb, exp);
-                        divCounters.innerHTML = '';
+                        divCounters.parentNode.removeChild(divCounters);
                         _this.setCounter();
                     }, false);
             }
         };
+
         /**
          * @method init
          */
