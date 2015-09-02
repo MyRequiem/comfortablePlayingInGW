@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-020915-dev
+// @version         1.01-020915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -62,7 +62,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-020915-dev';
+        this.version = '1.01-020915-dev';
         /**
          * @property stString
          * @type {String}
@@ -3050,7 +3050,8 @@
             for (i = 0; i < a.length; i++) {
                 a[i].style.background = '';
                 id = /\?id=(\d+)$/.exec(a[i].href);
-                if (id && stData[0].indexOf(id[1]) !== -1) {
+                id = id && id[1].length > 3 ? id[1] : null;
+                if (id && stData[0].indexOf(id) !== -1) {
                     a[i].style.background = '#B6B5B5';
                     // блокировка ссылки принятия боя в одиночных заявках
                     if (stData[1] && (/Подтверждаете бой с/.
