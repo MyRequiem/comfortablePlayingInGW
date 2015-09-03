@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         1.12-030915
+// @version         1.20-030915
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -307,17 +307,23 @@
 
         /**
          * @method getHourTime
-         * @param   {int}   min
+         * @param   {int}       min
+         * @param   {Boolean}   mode
          * @return  {String}
          */
-        this.getHourTime = function (min) {
+        this.getHourTime = function (min, mode) {
             if (min < 60) {
                 return '';
             }
 
-            var h = Math.floor(min / 60);
-            return '(' + h + ' ч ' + (min - h * 60) + ' мин)';
+            var h = Math.floor(min / 60),
+                m = min - h * 60;
+
+            m = m < 10 ? '0' + m : m;
+            return mode ? '(' + h + ' ч ' + m + ' мин)' :
+                            '[' + h + ':' + m + ']';
         };
+
         /**
          * @method calculatePerHour
          * @param   {int}   val1
@@ -371,7 +377,7 @@
                     ' /> <label for="' + id + '"><b style="color: #006600;">' +
                     pl.name + ', ' + pl.price + '$</b></label> ' +
                     '<br><li>Время созревания: <b style="color: #990000;">' +
-                    pl.time + ' мин</b> ' + this.getHourTime(pl.time) +
+                    pl.time + ' мин</b> ' + this.getHourTime(pl.time, true) +
                     '<li>Премия за урожай: <b style="color: #990000;">' +
                     pl.bonus + '$</b> (<span style="color: #0000FF;">' +
                     this.calculatePerHour(pl.time, pl.bonus - pl.price, 2) +
@@ -620,8 +626,37 @@
 
                 this.canPlant = this.target.nodeName === 'FORM';
 
-                if (showGb || showExp) {
+                // счетчики Гб и производа
+                if (this.canPlant && (showGb || showExp)) {
                     this.setCounter();
+                }
+
+                // перевод дохрена минут в чч:мм
+                if (!this.canPlant) {
+                    var tbl = general.doc.querySelector('table[width="100%"]' +
+                            '[cellpadding="4"][cellspacing="2"][border="0"]');
+
+                    if (tbl) {
+                        var tds = tbl.querySelectorAll('td'),
+                            span,
+                            min,
+                            i;
+
+
+                        for (i = 1; i < tds.length; i++) {
+                            min = /(через|осталось) (\d+) мин/.
+                                exec(tds[i].innerHTML);
+
+                            min = min && +min[2] > 59 ? +min[2] : null;
+                            if (min) {
+                                span = general.doc.createElement('span');
+                                span.setAttribute('style', 'color: #0000FF; ' +
+                                        'font-size: 7pt; margin-left: 2px;');
+                                span.innerHTML = this.getHourTime(min, false);
+                                tds[i].appendChild(span);
+                            }
+                        }
+                    }
                 }
 
                 this.setMainPanel();
