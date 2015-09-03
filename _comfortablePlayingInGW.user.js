@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.02-030915-dev
+// @version         1.03-030915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -62,12 +62,12 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.02-030915-dev';
+        this.version = '1.03-030915-dev';
         /**
          * @property stString
          * @type {String}
          */
-        this.stString = this.version + '@|||||||||||||||' +
+        this.stString = this.version + '@||||||||||||||||' +
             '@@|@|||||||||||||||||@|@|||||||@@||@|||||@|||@|||||@';
         /**
          * @property myID
@@ -621,7 +621,10 @@
                     'disabled />' + this.getGitHubLink('timeNpc'), '12'],
                 ['Упаковка одинаковых предметов в инвентаре', 'Упаковка ' +
                     'одинаковых предметов в инвентаре.' +
-                    this.getGitHubLink('inventoryPlus'), '15']],
+                    this.getGitHubLink('inventoryPlus'), '15'],
+                ['Счетчик боев', 'Показывает общее количество боев, побед и ' +
+                    'поражений за текущие сутки на страницax протоколов ' +
+                    'боев.' + this.getGitHubLink('countBattles'), '16']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -5902,6 +5905,167 @@
         };
     };
 
+    /**
+     * @class CountBattles
+     * @constructor
+     */
+    var CountBattles = function () {
+        /**
+         * @property rez
+         * @type {Object}
+         */
+        this.rez = {win: 0, draw: 0, loss: 0, btls: []};
+        /**
+         * @property divContainer
+         * @type {HTMLDivElement|null}
+         */
+        this.divContainer = null;
+        /**
+         * @property reg
+         * @type {Object|null}
+         */
+        this.reg = null;
+        /**
+         * @property persId
+         * @type {String}
+         */
+        this.persId = /\?id=(\d+)/.exec(general.loc)[1];
+        /**
+         * @property tm
+         * @type {int}
+         */
+        this.tm = 700;
+
+        /**
+         * @method getBattles
+         * @param   {Object}    obj
+         * @return  {Boolean}
+         */
+        this.getBattles = function (obj) {
+            var btlLogs = obj.querySelectorAll('nobr>a[href*=' +
+                    '"/warlog.php?bid="]>font[color="green"]'),
+                i;
+
+            for (i = 0; i < btlLogs.length; i++) {
+                if (this.reg.test(btlLogs[i].innerHTML)) {
+                    this.rez.btls.push(btlLogs[i].parentNode.parentNode.
+                            nextElementSibling);
+                } else {
+                    return false;
+                }
+            }
+
+            return btlLogs.length ? true : false;
+        };
+
+        /**
+         * @method showRezult
+         */
+        this.showReault = function () {
+            var i, b;
+
+            for (i = 0; i < this.rez.btls.length; i++) {
+                b = this.rez.btls[i].querySelector('a>b');
+                if (b) {
+                    switch (b.parentNode.getAttribute('style')) {
+                    case 'color:red':
+                        this.rez.win++;
+                        break;
+                    case 'color:blue':
+                        this.rez.loss++;
+                        break;
+                    default:
+                        this.rez.draw++;
+                        break;
+                    }
+                }
+            }
+
+            this.divContainer.innerHTML = 'Проведено боев за текущие ' +
+                'сутки: <span style="font-weight: bold;">' +
+                this.rez.btls.length + ' (<span style="color: #FF0000;">' +
+                this.rez.win + '</span>/<span style="color: #0000FF;">' +
+                this.rez.loss + '</span>/<span style="color :#008000;">' +
+                this.rez.draw + '</span>)</span>';
+        };
+
+        /**
+         * @method startCountBattles
+         * @param   {int}   ind
+         */
+        this.startCountBattles = function (ind) {
+            if (!ind) {
+                if (this.getBattles(general.doc)) {
+                    this.divContainer.innerHTML = '<span style="margin-left: ' +
+                        '100px;">Загрузка <img src="' + general.imgPath +
+                        'preloader.gif" alt="Загрузка" ' +
+                        'title="Загрузка"></span>';
+                    ind++;
+                    this.startCountBattles(ind);
+                } else {
+                    this.showReault();
+                }
+            } else {
+                var url = 'http://www.ganjawars.ru/info.warstats.php?id=' +
+                    this.persId + '&page_id=' + ind,
+                    _this = this;
+
+                new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                    var span = general.doc.createElement('span');
+                    span.innerHTML = xml.responseText;
+                    // если перс в это время зашел в заявку/бой, то просто
+                    // перезагрузим страницу
+                    if (/игрок находится в бою/.test(span.innerHTML)) {
+                        general.root.location.reload();
+                        return;
+                    }
+
+                    if (_this.getBattles(span)) {
+                        ind++;
+                        general.root.setTimeout(function () {
+                            _this.startCountBattles(ind);
+                        }, _this.tm);
+                    } else {
+                        _this.showReault();
+                    }
+                }, function () {
+                    general.root.setTimeout(function () {
+                        _this.startCountBattles(ind);
+                    }, _this.tm);
+                });
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var target = general.doc.querySelector('center+br+br'),
+                inBattle = /игрок находится в бою/.
+                    test(general.doc.body.innerHTML),
+                pageId = /page_id=(\d+)/.exec(general.loc);
+
+            // если перс НЕ в заявке/бою и мы на первой странице протоколов
+            if (target && !inBattle && !(pageId && pageId[1] !== '0') &&
+                    !(/\(0 всего\)/.test(general.doc.body.innerHTML))) {
+                this.divContainer = general.doc.createElement('div');
+                this.divContainer.setAttribute('style', 'margin-left: 10px;');
+                target.parentNode.insertBefore(this.divContainer, target);
+
+                var date = new Date(),
+                    year = /20(\d+)/.exec(' ' + date.getFullYear())[1],
+                    month = date.getMonth() + 1,
+                    day = date.getDate();
+
+                month = month < 10 ? '0' + month : month;
+                day = day < 10 ? '0' + day : day;
+                this.reg  = new RegExp(day + '\\.' + month + '\\.' + year);
+
+                this.startCountBattles(0);
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -6064,6 +6228,16 @@
             if (initScript[15]) {
                 try {
                     new InventoryPlus().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
+
+        if (/\/info.warstats\.php\?id=/.test(general.loc)) {
+            if (initScript[16]) {
+                try {
+                    new CountBattles().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
