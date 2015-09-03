@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.01-030915-dev
+// @version         1.02-030915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -62,12 +62,12 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-030915-dev';
+        this.version = '1.02-030915-dev';
         /**
          * @property stString
          * @type {String}
          */
-        this.stString = this.version + '@||||||||||||||' +
+        this.stString = this.version + '@|||||||||||||||' +
             '@@|@|||||||||||||||||@|@|||||||@@||@|||||@|||@|||||@';
         /**
          * @property myID
@@ -618,7 +618,10 @@
                     'о них для каждого острова.<br>Звук "Пора делать ' +
                     'квест": ' + this.getSelectSound('soundTimerNPC') +
                     ' <input type="button" id="playSoundTimerNPC" value="»" ' +
-                    'disabled />' + this.getGitHubLink('timeNpc'), '12']],
+                    'disabled />' + this.getGitHubLink('timeNpc'), '12'],
+                ['Упаковка одинаковых предметов в инвентаре', 'Упаковка ' +
+                    'одинаковых предметов в инвентаре.' +
+                    this.getGitHubLink('inventoryPlus'), '15']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -4153,28 +4156,6 @@
         };
     };
 
-    general = new General();
-    if (!general.checkMainData()) {
-        return;
-    }
-
-    // аут + прибрежка
-    if (/\/quest\.ganjawars\.ru/.test(general.loc)) {
-        try {
-            new AutRefreshLink().init();
-        } catch (e) {
-            general.cons.log(e);
-        }
-
-        try {
-            new AutLinksOnChat().init();
-        } catch (e) {
-            general.cons.log(e);
-        }
-
-        return;
-    }
-
     /**
      * @class ComfortableLinksForFarm
      * @constructor
@@ -5013,11 +4994,6 @@
      */
     var GwMenu = function () {
         /**
-         * @property scriptVersion
-         * @type {String}
-         */
-        this.scriptVersion = 'v. 2.10-030915';
-        /**
          * @property imgPath
          * @type {String}
          */
@@ -5299,10 +5275,7 @@
                         'http://www.ganjawiki.ru/', 0, 1],
                     ['Выход из игры', '/logout.php', 'red', 1],
                     ['<td colspan="2"><input type="checkbox" id="showt" ' +
-                        'title="Показывать всегда" />' +
-                        '<span style="margin-left: 20px; font-size: 7pt; ' +
-                        'color: #585858">' + this.scriptVersion +
-                        '</span></td>', 'gw_menu']
+                        'title="Показывать всегда" />', 'gw_menu']
                 ]},
                 {divm: 0, lines: [
                     ['Все ресурсы', '/stats.php', '#935805'],
@@ -5729,8 +5702,230 @@
         };
     };
 
+    /**
+     * @class InventoryPlus
+     * @constructor
+     */
+    var InventoryPlus = function () {
+        /**
+         * @method openCloseItem
+         * @param   {String}    id
+         */
+        this.openCloseItem = function (id) {
+            return function () {
+                var tb = general.doc.querySelector('#tr_' + id),
+                    _this = this;
+
+                if (tb.style.display === '') {
+                    tb.style.display = 'none';
+                    _this.innerHTML = _this.innerHTML.replace('-', '+');
+                } else {
+                    tb.style.display = '';
+                    _this.innerHTML = _this.innerHTML.replace('+', '-');
+                }
+            };
+        };
+
+        /**
+         * @method compareLines
+         * @param   {Object}        line
+         * @param   {Array}         linesObj
+         * @return  {Object|null}
+         */
+        this.compareLines = function (line, linesObj) {
+            var i;
+
+            line.link = line.line_1.querySelector('font[color="#990000"]').
+                parentNode.parentNode;
+            line.id = /id=(.*)$/.exec(line.link)[1];
+            for (i = 0; i < linesObj.length; i++) {
+                if (linesObj[i].line.id === line.id) {
+                    return linesObj[i];
+                }
+            }
+
+            return null;
+        };
+
+        /**
+         * @method startInventoryPlus
+         */
+        this.startInventoryPlus = function () {
+            // ищем таблицу с инвентарем
+            var tbody = general.doc.querySelectorAll('table[border="0"]' +
+                    '[cellspacing="1"][cellpadding="5"][align="center"]' +
+                    '[width="700"]');
+
+            if (tbody[2]) {
+                // новое оформление экипировки
+                tbody = tbody[2].firstElementChild;
+            } else {
+                // старое оформление экипировки
+                tbody = general.doc.querySelector('table[border="0"]' +
+                        '[cellspacing="1"][cellpadding="3"][align="center"]' +
+                        '[width="700"]>tbody');
+            }
+
+            if (!tbody.firstElementChild) {
+                return;
+            }
+
+            var node = tbody.firstElementChild.nextElementSibling;
+            if (/предметов нет/.test(node.innerHTML)) {
+                return;
+            }
+
+            var allLines = [], // все узлы <tr> из инвентаря
+                next,
+                i;
+
+            while (node) {
+                i = allLines.length;
+                allLines[i] = {'line_1': node.cloneNode(true), 'line_2': 0};
+                next = node.nextSibling;
+                if (next.nodeType === 1) {
+                    allLines[i].line_2 = next.cloneNode(true);
+                    node = next.nextElementSibling;
+                } else {
+                    node = node.nextElementSibling;
+                }
+            }
+
+            // удаляем все предметы из инвентаря
+            var title = tbody.firstElementChild.cloneNode(true);
+            tbody.innerHTML = '';
+            tbody.appendChild(title);
+
+            // массив "уникальных" вещей (каждая вешь по одной и количество)
+            var linesObj = [],
+                obj;
+
+            for (i = 0; i < allLines.length; i++) {
+                obj = this.compareLines(allLines[i], linesObj);
+                if (!obj) {
+                    linesObj[linesObj.length] = {line: allLines[i], count: 1};
+                } else {
+                    obj.count++;
+                }
+            }
+
+            // вставляем вещи обратно в инвентарь
+            var tblTarget,
+                trHide,
+                divn,
+                id,
+                td,
+                j;
+
+            for (i = 0; i < linesObj.length; i++) {
+                tbody.appendChild(linesObj[i].line.line_1);
+                if (linesObj[i].line.line_2) {
+                    tbody.appendChild(linesObj[i].line.line_2);
+                }
+
+                // показываем количество только если оно больше 1
+                if (linesObj[i].count !== 1) {
+                    id = linesObj[i].line.id;
+                    // вставим скрытые вещи
+                    trHide = general.doc.createElement('tr');
+                    trHide.id = 'tr_' + id;
+                    trHide.setAttribute('style', 'display: none');
+                    td = general.doc.createElement('td');
+                    td.setAttribute('colspan', '2');
+                    tblTarget = general.doc.createElement('table');
+                    tblTarget.setAttribute('style',
+                            'width: 100%; margin-left: 30px;');
+                    td.appendChild(tblTarget);
+                    trHide.appendChild(td);
+                    tbody.appendChild(trHide);
+
+                    for (j = 0; j < allLines.length; j++) {
+                        if (allLines[j].id === id &&
+                                linesObj[i].line.line_1.innerHTML !==
+                                allLines[j].line_1.innerHTML) {
+                            allLines[j].line_1.firstElementChild.
+                                setAttribute('width', '400px');
+                            tblTarget.appendChild(allLines[j].line_1);
+                            if (allLines[j].line_2) {
+                                tblTarget.appendChild(allLines[j].line_2);
+                            }
+                        }
+                    }
+
+                    //показываем количество и кнопу раскрытия списка
+                    divn = general.doc.createElement('div');
+                    divn.setAttribute('style', 'color: #606060; ' +
+                            'margin-right: 300px; margin-left: 10px; ' +
+                            'font-weight: bold; cursor: pointer;');
+                    divn.innerHTML = '[' + linesObj[i].count + '+]';
+                    divn.addEventListener('click',
+                            this.openCloseItem(id), false);
+                    linesObj[i].line.link.parentNode.appendChild(divn);
+                }
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            // костыль для хрома
+            if (/Chrome/i.test(general.root.navigator.appVersion)) {
+                var scrpt = general.doc.createElement('script');
+                scrpt.innerHTML =  'function postdo_mod(url) {' +
+                    'new Ajax.Updater("itemsbody", url, ' +
+                    '{asynchronous: true, onComplete: dumb, onSuccess: ' +
+                    'function() {location.reload();}, method: "post"}); ' +
+                    'return false;}';
+                general.doc.body.insertBefore(scrpt,
+                        general.doc.body.querySelectorAll('script')[0]);
+
+                // изменим все ссылки на странице, использующие в
+                // атрибуте onclick функцию 'postdo' на 'postdo_mod'
+                var a = general.doc.
+                            querySelectorAll('a[onclick^="return postdo"]'),
+                    i;
+
+                for (i = 0; i < a.length; i++) {
+                    a[i].setAttribute('onclick', a[i].getAttribute('onclick').
+                            replace('postdo', 'postdo_mod'));
+                }
+            } else {
+                general.root.dumb = function () {
+                    var _this = this;
+                    general.root.setTimeout(_this.startInventoryPlus, 100);
+                };
+            }
+
+            this.startInventoryPlus();
+
+        };
+    };
+
+    general = new General();
+    if (!general.checkMainData()) {
+        return;
+    }
+
+    // аут + прибрежка
+    if (/\/quest\.ganjawars\.ru/.test(general.loc)) {
+        try {
+            new AutRefreshLink().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
+
+        try {
+            new AutLinksOnChat().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
+
+        return;
+    }
+
     initScript = general.getInitScript();
-    // везде
+    // везде на www.ganjawars.ru
     if (initScript[0]) {
         try {
             new NotGiveCannabisLeaf().init();
@@ -5847,7 +6042,7 @@
             }
         }
 
-        if (/www\.ganjawars\.ru\/me\/|\/npc\.php\?id=/.test(general.loc)) {
+        if (/\/me\/|\/npc\.php\?id=/.test(general.loc)) {
             if (initScript[12]) {
                 try {
                     new TimeNpc().init();
@@ -5862,6 +6057,16 @@
                 new GwMenu().init();
             } catch (e) {
                 general.cons.log(e);
+            }
+        }
+
+        if (/\/items\.php/.test(general.loc)) {
+            if (initScript[15]) {
+                try {
+                    new InventoryPlus().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
             }
         }
     }
