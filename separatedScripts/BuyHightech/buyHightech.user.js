@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            BuyHightech
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     В HighTech магазине добавляет ссылки "Продать" и "Купить" для каждого предмета, при нажатии на которые, выводится форма подачи объявления на ДО для данного предмета.
+// @description     В HighTech магазине добавляет ссылки "Продать" и "Купить" для каждого предмета. При клике открывается страница с формой подачи объявления для данного предмета.
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BuyHightech/buyHightech.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BuyHightech/buyHightech.user.js
