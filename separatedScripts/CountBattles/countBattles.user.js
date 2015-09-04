@@ -59,15 +59,6 @@
         getRoot: function () {
             var rt = typeof unsafeWindow;
             return rt !== 'undefined' ? unsafeWindow : window;
-        },
-
-        /**
-         * @method $
-         * @param   {string}    id
-         * @return  {HTMLElement|null}
-         */
-        $: function (id) {
-            return this.doc.querySelector('#' + id);
         }
     };
 
