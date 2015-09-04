@@ -147,7 +147,7 @@
             var i;
             for (i = 0; i < b.length; i++) {
                 // если это урон (-XX), 'vs', пок с '['
-                if ((/^\-\d+|vs|\[|,/.test(b[i].innerHTML)) ||
+                if ((/^\-\d+$|vs|\[|,/.test(b[i].innerHTML)) ||
                         (/может взять предметы/.test(b[i].innerHTML))) {
                     continue;
                 }
