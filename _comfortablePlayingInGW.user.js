@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.04-030915-dev
+// @version         1.00-040915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -62,13 +62,126 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.04-030915-dev';
+        this.version = '1.00-040915-dev';
         /**
          * @property stString
          * @type {String}
          */
-        this.stString = this.version + '@||||||||||||||||' +
-            '@@|@|||||||||||||||||@|@|||||||@@||@|||||@|||@|||||@';
+        this.stString = this.version +  // [0] - script version
+                    /*
+                    [1]  - initScript
+                        [0]  - NotGiveCannabisLeaf
+                        [1]  - AdditionForNavigationBar
+                        [2]  - AdsFilter
+                        [3]  - AdvBattleAll
+                        [4]  - BlacklistHighlighting
+                        [5]  - WorkPostGrenadesBroken
+                        [6]  - ResourcesAndBonuses
+                        [7]  - CritShotsAndLinksBtlLog
+                        [8]  - DeleteSms
+                        [9]  - FarmExperience
+                        [10] - FarmTimer
+                        [11] - ComfortableLinksForFarm
+                        [12] - TimeNpc
+                        [13] - AllPlantsOnFarm
+                        [14] - GwMenu
+                        [15] - InventoryPlus
+                        [16] - CountBattles
+                        [17] - GbCounter */
+                        '@|||||||||||||||||' +
+                    /*
+                    [2]  - AdditionForNavigationBar
+                        [0] - '{"linkName": ["href", "style"], ...}' */
+                        '@' +
+                    /*
+                    [3]  - AdsFilter
+                        [0] - остров (нет,Z,G: '', 1, 2)
+                        [1] - фильтр по онлайну */
+                        '@|' +
+                    /*
+                    [4]  - AdvBattleAll
+                        # настройки
+                        [0]  - таймаут обновления данных в бою
+                        [1]  - таймаут обновления страницы, когда висим в заявке
+                        # основные данные скрипта
+                        [2]  - метод сортировки списка врагов ('', 1 - 5)
+                        [3]  - случайный ход или запоминать ход ('', 1, 2)
+                        [4]  - дублировать противника или нет
+                        # последний сделаный ход (если включено "запомнить ход")
+                        [5]  - левая
+                        [6]  - правая
+                        [7]  - куда отходим
+                        [8]  - кидаем грену или нет
+                        [9]  - подходим или нет
+                        [10] - чекбокс <Сказать своей команде>
+                        # запоминаем ход в хранилище перед тем как сказать ход
+                        [11] - номер в кого стреляем
+                        [12] - направление левой руки
+                        [13] - направление правой руки
+                        [14] - куда отходим
+                        [15] - кидаем грену или нет
+                        [16] - подходим или нет
+                        [17] - список выбора врагов (хэш: имя --> номер) */
+                        '@|||||||||||||||||' +
+                    /*
+                    [5]  - BlacklistHighlighting
+                        [0]  - ID персов из ЧС ('id1,id2,...')
+                        [1]  - блокировать ссылку принятия боя в одиночках? */
+                        '@|' +
+                    /*
+                    [6]  - WorkPostGrenadesBroken
+                        [0]  - звук при получении почты/посылки (проигран или нет)
+                        [1]  - звук по окончании работы (проигран или нет)
+                        [2]  - отображать время работы
+                        [3]  - отображать почту/посылку
+                        [4]  - отображать слом
+                        [5]  - отображать грену
+                        [6]  - звук при получении почты/посылки
+                        [7]  - звук "Пора работать" */
+                        '@|||||||' +
+                    /*
+                    [7]  - CritShotsAndLinksBtlLog
+                        [0]  - показывать/не показывать критические выстрелы */
+                        '@' +
+                    /*
+                    [8]  - DeleteSms
+                        [0]  - отмечать синдовые рассылки
+                        [1]  - отмечать рассылки от робота
+                        [2]  - НЕ отмечать письма с пометкой "важное" */
+                        '@||' +
+                    /*
+                    [9]  - FarmTimer
+                        [0]  - время полива/сбора
+                        [1]  - действие (Полить|Собрать)
+                        [2]  - время последнего проигрывания звука
+                        [3]  - звук проигран?
+                        [4]  - номер звука когда пора поливать/собирать
+                        [5]  - интервал повторения звука */
+                        '@|||||' +
+                    /*
+                    [10] - TimeNpc
+                        [0]  - звук вкл/выкл
+                        [1]  - ID NPC, у которого последний раз брали квест
+                        [2]  - время
+                        [3]  - номер звука */
+                        '@|||' +
+                    /*
+                    [11] - AllPlantsOnFarm
+                        [0]  - номер первого недоступного растения
+                        [1]  - время сброса счетчика
+                        [2]  - количество гб
+                        [3]  - количество производа
+                        [4]  - показывать счетчик ГБ?
+                        [5]  - показывать счетчик производа? */
+                        '@|||||' +
+                    /*
+                    [12] - GwMenu
+                        [0] - чекбокс "Показывать всегда" */
+                        '@' +
+                    /*
+                    [13] - GbCounter
+                        [0] - количество Гб */
+                        '@';
         /**
          * @property myID
          * @type {String}
@@ -624,7 +737,10 @@
                     this.getGitHubLink('inventoryPlus'), '15'],
                 ['Счетчик боев', 'Показывает общее количество боев, побед и ' +
                     'поражений за текущие сутки на страницax протоколов ' +
-                    'боев.' + this.getGitHubLink('countBattles'), '16']],
+                    'боев.' + this.getGitHubLink('countBattles'), '16'],
+                ['Счетчик Гб', 'Показывает измененние количества Гб на ' +
+                    'главной странице персонажа.' +
+                    this.getGitHubLink('gbCounter'), '17']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -6102,6 +6218,82 @@
         };
     };
 
+    /**
+     * @class GbCounter
+     * @constructor
+     */
+    var GbCounter = function () {
+        /**
+         * @property
+         * @type {HTMLElement|null}
+         */
+        this.spanCountGB = null;
+        /**
+         * @property countGbNow
+         * @type {int}
+         */
+        this.countGbNow = 0;
+
+        /**
+         * @method resetGBCounter
+         */
+        this.resetGBCounter = function () {
+            general.setData([this.countGbNow.toString()], 13);
+            this.setGBCounter();
+        };
+
+        /**
+         *  @method setGBCounter
+         */
+        this.setGBCounter = function () {
+            var countGbOld = general.getData(13)[0];
+            if (!countGbOld) {
+                this.resetGBCounter();
+                return;
+            }
+
+            var diff = this.countGbNow - (+countGbOld);
+            this.spanCountGB.innerHTML = '[' +
+                new SetPoints().init(diff, '.', true) + ']';
+            this.spanCountGB.style.color = diff >= 0 ?
+                    '#FF0000' : '#0000FF';
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            if (!general.st) {
+                alert('Ваш браузер не поддерживает технологию localStorage.' +
+                    '\nMyRequiеm рекомендует вам установить один из\n' +
+                    'ниже перечисленных браузеров или удалите скрипт\n' +
+                    'GbCounter\n\nFireFox 4+\nOpera 11+\n' +
+                    'Chrome 12+');
+
+                return;
+            }
+
+            var divGB = general.doc.querySelector('td>b>div[id="cdiv"]');
+            if (divGB) {
+                this.countGbNow = +divGB.innerHTML.replace(/,/g, '');
+                this.spanCountGB = general.doc.createElement('span');
+                this.spanCountGB.setAttribute('style', 'margin-left: 5px; ' +
+                        'font-weight: normal; font-size: 7pt; ' +
+                        'cursor: pointer;');
+                divGB.appendChild(this.spanCountGB);
+
+                this.setGBCounter();
+
+                var _this = this;
+                this.spanCountGB.addEventListener('click', function () {
+                    if (confirm('Сбросить счетчик?')) {
+                        _this.resetGBCounter();
+                    }
+                }, false);
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -6248,6 +6440,16 @@
                     new TimeNpc().init();
                 } catch (e) {
                     general.cons.log(e);
+                }
+            }
+
+            if (/\/me\//.test(general.loc)) {
+                if (initScript[17]) {
+                    try {
+                        new GbCounter().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
                 }
             }
         }
