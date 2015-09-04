@@ -24,13 +24,6 @@
 ![Screen2](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/screen2.png)
 <br>
 <br>
-Чекбокс - *вкл/выкл модуль*
-<br>
-[+] - *просмотр описания модуля*
-<br>
-![Screen3](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/screen3.png)
-<br>
-<br>
 
 #### Модули отдельными скриптами
 
