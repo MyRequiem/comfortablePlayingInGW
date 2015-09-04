@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.02-040915-dev
+// @version         1.03-040915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -62,7 +62,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.02-040915-dev';
+        this.version = '1.03-040915-dev';
         /**
          * @property stString
          * @type {String}
@@ -3719,7 +3719,7 @@
             var i;
             for (i = 0; i < b.length; i++) {
                 // если это урон (-XX), 'vs', пок с '['
-                if ((/^\-\d+|vs|\[|,/.test(b[i].innerHTML)) ||
+                if ((/^\-\d+$|vs|\[|,/.test(b[i].innerHTML)) ||
                         (/может взять предметы/.test(b[i].innerHTML))) {
                     continue;
                 }
