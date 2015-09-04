@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.01-040915-dev
+// @version         1.02-040915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -62,7 +62,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-040915-dev';
+        this.version = '1.02-040915-dev';
         /**
          * @property stString
          * @type {String}
@@ -88,8 +88,9 @@
                         [15] - InventoryPlus
                         [16] - CountBattles
                         [17] - GbCounter
-                        [18] - BonusInfo */
-                        '@||||||||||||||||||' +
+                        [18] - BonusInfo
+                        [19] - BuyHightech */
+                        '@|||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -783,7 +784,12 @@
                 ['Фильтр поиска продажи/покупки/аренды', 'Фильтр ' +
                     'онлайн/оффлайн и по островам на страницах поиска ' +
                     'продажи/покупки/аренды предметов.' +
-                    this.getGitHubLink('adsFilter'), '2']],
+                    this.getGitHubLink('adsFilter'), '2'],
+                ['Ссылки в HighTech магазине для подачи объявлений',  'В ' +
+                    'HighTech магазине добавляет ссылки "Продать" и "Купить" ' +
+                    'для каждого предмета, при нажатии на которые, выводится ' +
+                    'форма подачи объявления на ДО для данного предмета.' +
+                    this.getGitHubLink('buyHightech'), '19']],
 
             'Ферма': [
                 ['Производственный опыт и прибыль', 'Отображение ' +
@@ -6528,6 +6534,79 @@
         };
     };
 
+    /**
+     * @class BuyHightech
+     * @constructor
+     */
+    var BuyHightech = function () {
+        /**
+         * @method init
+         */
+        this.init = function () {
+            if (/\/shopc\.php/.test(general.loc)) {
+                var descrTd = general.doc.querySelectorAll('td[class$=' +
+                         '"lightbg"][valign="top"][align="left"]' +
+                             '[width="100%"]'),
+                    strength,
+                    price,
+                    id,
+                    i;
+
+                for (i = 0; i < descrTd.length; i++) {
+                    id = /id=(.+)$/.exec(descrTd[i].parentNode.
+                            querySelector('a').href)[1];
+                    price = /(\d+) EUN/.exec(descrTd[i].innerHTML)[1];
+                    strength = /Прочность:<\/b> (\d+)/i.
+                                    exec(descrTd[i].innerHTML)[1];
+
+                    descrTd[i].removeChild(descrTd[i].lastElementChild);
+                    descrTd[i].innerHTML += ' <span style="font-weight: ' +
+                        'bold; margin-left: 7px;"> Создать объявление: ' +
+                        '</span><a target="_blank" style="color: #0000FF;" ' +
+                        'href="http://www.ganjawars.ru/market-p.php?' +
+                        'stage=2&item_id=' + id + '&action_id=2&p=' + price +
+                        '&s=' + strength + '">[Купить]' + '</a> ' +
+                        '<a target="_blank" style="color: #990000;" href=' +
+                        '"http://www.ganjawars.ru/market-p.php?' +
+                        'stage=2&item_id=' + id + '&action_id=1&p=' + price +
+                        '&s=' + strength + '">[Продать]</a>';
+                }
+
+                return;
+            }
+
+            //на странице подачи объявлений
+            var param = /&p=(\d+)&s=(\d+)$/.exec(general.loc);
+            if (param) {
+                general.doc.querySelector('td[colspan="3"][class="wb"]').
+                    innerHTML += ' <span style="color: #990000;">' +
+                    '[Стоимость в магазине: ' + param[1] + ' EUN]</span>';
+
+                //остров любой
+                general.doc.querySelector('select[name="island"]').value = '-1';
+
+                var dur1 = general.doc.
+                            querySelector('input[name="durability1"]'),
+                    dur2 = general.doc.
+                            querySelector('input[name="durability2"]');
+
+                //если продаем, то прочность максимальная,
+                //если покупаем, то минимальная
+                if (/action_id=1/.test(general.loc)) {
+                    dur1.value = param[2];
+                    dur2.value = param[2];
+                } else {
+                    dur1.value = '0';
+                    dur2.value = '1';
+                }
+
+                // срок размещения 3 дня
+                general.doc.
+                    querySelector('select[name="date_len"]').value = '3';
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -6720,6 +6799,17 @@
             if (initScript[18]) {
                 try {
                     new BonusInfo().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
+
+        if (/\/shopc\.php|\/market-p\.php\?stage=2&item_id=/.
+                test(general.loc)) {
+            if (initScript[19]) {
+                try {
+                    new BuyHightech().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
