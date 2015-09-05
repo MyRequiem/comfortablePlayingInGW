@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/npc.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.01-300815
+// @version         2.02-050915
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -119,13 +119,18 @@
      */
     var AjaxQuery = function () {
         /**
-         * @method ajaxQuery
-         * @param   {String}        url
-         * @param   {Function}      onsuccess
-         * @param   {Function}      onfailure
-         */
+        * @method init
+        * @param   {String}        url
+        * @param   {Function}      onsuccess
+        * @param   {Function}      onfailure
+        */
         this.init = function (url, onsuccess, onfailure) {
             var xmlHttpRequest = new XMLHttpRequest();
+
+            if (!xmlHttpRequest) {
+                general.root.console.log('Error create xmlHttpRequest !!!');
+                return;
+            }
 
             xmlHttpRequest.open('GET', url, true);
             xmlHttpRequest.send(null);
@@ -135,19 +140,12 @@
             }, 10000);
 
             xmlHttpRequest.onreadystatechange = function () {
-                if (xmlHttpRequest.readyState !== 4) {
-                    return;
-                }
-
-                clearTimeout(timeout);
-                if (xmlHttpRequest.readyState === 4 &&
-                        xmlHttpRequest.status === 200 && onsuccess) {
-                    onsuccess(xmlHttpRequest);
-                } else {
-                    if (xmlHttpRequest.readyState === 4 &&
-                            xmlHttpRequest.status !== 200 &&
-                                onfailure) {
-                        onfailure(xmlHttpRequest);
+                if (xmlHttpRequest.readyState === 4) {
+                    clearTimeout(timeout);
+                    if (xmlHttpRequest.status === 200) {
+                        onsuccess(xmlHttpRequest);
+                    } else {
+                        onfailure();
                     }
                 }
             };

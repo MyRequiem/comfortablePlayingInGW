@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-050915-dev
+// @version         1.01-050915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -62,7 +62,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-050915-dev';
+        this.version = '1.01-050915-dev';
         /**
          * @property stString
          * @type {String}
@@ -502,7 +502,7 @@
      */
     var AjaxQuery = function () {
         /**
-         * @method ajaxQuery
+         * @method init
          * @param   {String}        url
          * @param   {String}        rmethod
          * @param   {String|null}   param
@@ -539,7 +539,7 @@
                         if (xmlHttpRequest.status === 200) {
                             onsuccess(xmlHttpRequest);
                         } else {
-                            onfailure(xmlHttpRequest);
+                            onfailure();
                         }
                     }
                 };
@@ -2716,7 +2716,7 @@
                     span.innerHTML = xhr.responseText;
                     _this.setCountStroke(span);
                 }, function () {
-                    general.root.console.log('Error XHR to: ' + url);
+                    general.cons.log('Error XHR to: ' + url);
                 });
             };
         };
@@ -3081,7 +3081,7 @@
                             '"font-size:8pt"]').innerHTML =
                             span.querySelector('#log').innerHTML;
                     }, function () {
-                        general.root.console.log('Error XHR to: ' + url);
+                        general.cons.log('Error XHR to: ' + url);
                     });
                 }
             }
@@ -3486,7 +3486,9 @@
                     testGrenades, testBroken);
 
             }, function () {
-                general.cons.log('Error XHR to "http://www.ganjawars.ru/me/"');
+                general.root.setTimeout(function () {
+                    _this.startWorkPostGrenadesBroken(_this);
+                }, 700);
             });
         };
 
