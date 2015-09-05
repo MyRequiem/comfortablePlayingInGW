@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.03-040915-dev
+// @version         1.00-050915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -62,7 +62,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.03-040915-dev';
+        this.version = '1.00-050915-dev';
         /**
          * @property stString
          * @type {String}
@@ -502,26 +502,6 @@
      */
     var AjaxQuery = function () {
         /**
-         * @method createRequestObject
-         * @return  {Object|null}
-         */
-        this.createRequestObject = function () {
-            try {
-                return new XMLHttpRequest();
-            } catch (e) {
-                try {
-                    return new ActiveXObject('Msxml2.XMLHTTP');
-                } catch (e1) {
-                    try {
-                        return new ActiveXObject('Microsoft.XMLHTTP');
-                    } catch (e2) {
-                        return null;
-                    }
-                }
-            }
-        };
-
-        /**
          * @method ajaxQuery
          * @param   {String}        url
          * @param   {String}        rmethod
@@ -532,7 +512,7 @@
          */
         this.init = function (url, rmethod, param, async, onsuccess,
                 onfailure) {
-            var xmlHttpRequest = this.createRequestObject();
+            var xmlHttpRequest = new XMLHttpRequest();
 
             if (!xmlHttpRequest) {
                 general.cons.log('Error create xmlHttpRequest !!!');
@@ -554,29 +534,20 @@
                 }, 10000);
 
                 xmlHttpRequest.onreadystatechange = function () {
-                    if (xmlHttpRequest.readyState !== 4) {
-                        return;
-                    }
-
-                    clearTimeout(timeout);
-                    if (xmlHttpRequest.readyState === 4 &&
-                            xmlHttpRequest.status === 200 && onsuccess) {
-                        onsuccess(xmlHttpRequest);
-                    } else {
-                        if (xmlHttpRequest.readyState === 4 &&
-                                xmlHttpRequest.status !== 200 &&
-                                    onfailure) {
+                    if (xmlHttpRequest.readyState === 4) {
+                        clearTimeout(timeout);
+                        if (xmlHttpRequest.status === 200) {
+                            onsuccess(xmlHttpRequest);
+                        } else {
                             onfailure(xmlHttpRequest);
                         }
                     }
                 };
             } else {
-                if (xmlHttpRequest.status === 200 && onsuccess) {
+                if (xmlHttpRequest.status === 200) {
                     onsuccess(xmlHttpRequest);
                 } else {
-                    if (xmlHttpRequest.status !== 200 && onfailure) {
-                        onfailure(xmlHttpRequest);
-                    }
+                    onfailure(xmlHttpRequest);
                 }
             }
         };

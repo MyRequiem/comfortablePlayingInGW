@@ -1,6 +1,9 @@
 # WebStorm, PhpStorm
 .idea/
 
+# python
+.ropeproject/
+
 # Vim
 *.swp
 *.swo
