@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.02-090915-dev
+// @version         1.03-090915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -62,7 +62,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.02-090915-dev';
+        this.version = '1.03-090915-dev';
         /**
          * @property stString
          * @type {String}
@@ -91,8 +91,9 @@
                         [18] - BonusInfo
                         [19] - BuyHightech
                         [20] - NewsAndInvit
-                        [21] - DoFilter */
-                        '@|||||||||||||||||||||' +
+                        [21] - DoFilter
+                        [22] - FilterResOnStat */
+                        '@||||||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -189,6 +190,10 @@
                     /*
                     [14] - NewsAndInvit
                         [0] - {'newsId': 0|1, ...} */
+                        '@' +
+                    /*
+                    [15] - FilterResOnStat
+                        [0] - список отображаемых ресурсов через запятую */
                         '@';
 
         /**
@@ -762,7 +767,7 @@
                     'показывать критические выстрелы' +
                     this.getGitHubLink('critShotsAndLinksBtlLog'), '7']],
 
-            'Доска объявлений': [
+            'Торговля': [
                 ['Фильтр поиска продажи/покупки/аренды', 'Фильтр ' +
                     'онлайн/оффлайн и по островам на страницах поиска ' +
                     'продажи/покупки/аренды предметов.' +
@@ -776,7 +781,15 @@
                     '<a target="_blank" href="http://www.ganjawars.ru' +
                     '/market.php">доске объявлений</a>. Поиск осуществляется ' +
                     'по мере ввода названия предмета.' +
-                    this.getGitHubLink('doFilter'), '21']],
+                    this.getGitHubLink('doFilter'), '21'],
+                ['Фильтр ресурсов на странице статистики', 'Фильтр ресурсов ' +
+                    'на <a target="_blank" href="http://www.ganjawars.ru/' +
+                    'stats.php">странице статистики</a><br><br>Введите ' +
+                    'названия ресурсов через запятую, которые будут ' +
+                    'отображаться на вышеуказанной странице. Например: ' +
+                    'Уран,Водоросли,Маковая соломка,Трава,Батареи<br>' +
+                    '<input id="filter_res" type="text" style="width: ' +
+                    '350px;"/>' + this.getGitHubLink('filterResOnStat'), '22']],
 
             'Ферма': [
                 ['Производственный опыт и прибыль', 'Отображение ' +
@@ -981,8 +994,7 @@
             var chkBL = general.$('blockBLOne2One');
             chkBL.checked = general.getData(5)[1] === '1';
             chkBL.addEventListener('click', function () {
-                var chkbl = this;
-                _this.modifyData(5, 1, chkbl.checked ? '1' : '');
+                _this.modifyData(5, 1, chkBL.checked ? '1' : '');
             }, false);
 
             // работа, слом, грена, почта/посылка
@@ -991,108 +1003,114 @@
                 addEventListener('click', this.testSound, false);
             general.$('listenSoundWork').
                 addEventListener('click', this.testSound, false);
+
             // установка списка выбора звуков sms и "Пора работать"
-            general.$('soundSms').value = general.getData(6)[6] || '0';
-            general.$('soundWork').value = general.getData(6)[7] || '0';
+            var soundSms = general.$('soundSms');
+            soundSms.value = general.getData(6)[6] || '0';
             // обработчики списков выбора звука
-            general.$('soundSms').addEventListener('change', function () {
-                var selSound = this;
-                _this.modifyData(6, 6, selSound.value === '0' ?
-                        '' : selSound.value);
+            soundSms.addEventListener('change', function () {
+                _this.modifyData(6, 6, soundSms.value === '0' ?
+                        '' : soundSms.value);
             }, false);
-            general.$('soundWork').addEventListener('change', function () {
-                var selSound = this;
-                _this.modifyData(6, 7, selSound.value === '0' ?
-                        '' : selSound.value);
+            var soundWork = general.$('soundWork');
+            soundWork.value = general.getData(6)[7] || '0';
+            soundWork.addEventListener('change', function () {
+                _this.modifyData(6, 7, soundWork.value === '0' ?
+                        '' : soundWork.value);
             }, false);
             // чекбоксы настроек
-            general.$('showwork').checked = general.getData(6)[2];
-            general.$('showwork').addEventListener('click', function () {
-                var showwork = this;
-                _this.modifyData(6, 2, showwork.checked ? '1' : '');
+            var showWork = general.$('showwork');
+            showWork.checked = general.getData(6)[2];
+            showWork.addEventListener('click', function () {
+                _this.modifyData(6, 2, showWork.checked ? '1' : '');
             }, false);
-            general.$('showsms').checked = general.getData(6)[3];
-            general.$('showsms').addEventListener('click', function () {
-                var showsms = this;
-                _this.modifyData(6, 3, showsms.checked ? '1' : '');
+            var showSms = general.$('showsms');
+            showSms.checked = general.getData(6)[3];
+            showSms.addEventListener('click', function () {
+                _this.modifyData(6, 3, showSms.checked ? '1' : '');
             }, false);
-            general.$('showbroken').checked = general.getData(6)[4];
-            general.$('showbroken').addEventListener('click', function () {
-                var showbroken = this;
-                _this.modifyData(6, 4, showbroken.checked ? '1' : '');
+            var showBroken = general.$('showbroken');
+            showBroken.checked = general.getData(6)[4];
+            showBroken.addEventListener('click', function () {
+                _this.modifyData(6, 4, showBroken.checked ? '1' : '');
             }, false);
-            general.$('showgren').checked = general.getData(6)[5];
-            general.$('showgren').addEventListener('click', function () {
-                var showgren = this;
-                _this.modifyData(6, 5, showgren.checked ? '1' : '');
+            var showGren = general.$('showgren');
+            showGren.checked = general.getData(6)[5];
+            showGren.addEventListener('click', function () {
+                _this.modifyData(6, 5, showGren.checked ? '1' : '');
             }, false);
 
             // ссылки в логе боя, критические выстрелы
-            general.$('showcrits').checked = general.getData(7)[0];
-            general.$('showcrits').addEventListener('click', function () {
-                var showcrits = this;
-                general.setData(showcrits.checked ? '1' : '', 7);
+            var showCrits = general.$('showcrits');
+            showCrits.checked = general.getData(7)[0];
+            showCrits.addEventListener('click', function () {
+                general.setData(showCrits.checked ? '1' : '', 7);
             }, false);
 
             // удаление личных сообщений
-            general.$('syndmail').checked = general.getData(8)[0];
-            general.$('robotmail').checked = general.getData(8)[1];
-            general.$('importantmail').checked = general.getData(8)[2];
-            general.$('syndmail').addEventListener('click', function () {
-                var syndmail = this;
-                _this.modifyData(8, 0, syndmail.checked ? '1' : '');
+            var syndMail = general.$('syndmail');
+            syndMail.checked = general.getData(8)[0];
+            syndMail.addEventListener('click', function () {
+                _this.modifyData(8, 0, syndMail.checked ? '1' : '');
             }, false);
-            general.$('robotmail').addEventListener('click', function () {
-                var robotmail = this;
-                _this.modifyData(8, 1, robotmail.checked ? '1' : '');
+            var robotMail = general.$('robotmail');
+            robotMail.checked = general.getData(8)[1];
+            robotMail.addEventListener('click', function () {
+                _this.modifyData(8, 1, robotMail.checked ? '1' : '');
             }, false);
-            general.$('importantmail').addEventListener('click', function () {
-                var importantmail = this;
-                _this.modifyData(8, 2, importantmail.checked ? '1' : '');
+            var importantMail = general.$('importantmail');
+            importantMail.checked = general.getData(8)[2];
+            importantMail.addEventListener('click', function () {
+                _this.modifyData(8, 2, importantMail.checked ? '1' : '');
             }, false);
 
             // FarmTimer
             general.$('listenFarmtimer_sound').
                 addEventListener('click', this.testSound, false);
-            general.$('farmtm_snd').value = general.getData(9)[4] || '0';
-            general.$('farmtm_snd').addEventListener('change', function () {
-                var selSound = this;
-                _this.modifyData(9, 4, selSound.value === '0' ?
-                        '' : selSound.value);
+            var farmTmSound = general.$('farmtm_snd');
+            farmTmSound.value = general.getData(9)[4] || '0';
+            farmTmSound.addEventListener('change', function () {
+                _this.modifyData(9, 4, farmTmSound.value === '0' ?
+                        '' : farmTmSound.value);
             }, false);
-            general.$('farmtmSndIntrvl').value = general.getData(9)[5] || '0';
-            general.$('farmtmSndIntrvl').addEventListener('input', function () {
-                var inp = this;
-                if (new CheckInputText().init(inp, 0)) {
-                    _this.modifyData(9, 5, inp.value);
+            var farmTmSoundInterval = general.$('farmtmSndIntrvl');
+            farmTmSoundInterval.value = general.getData(9)[5] || '0';
+            farmTmSoundInterval.addEventListener('input', function () {
+                if (new CheckInputText().init(farmTmSoundInterval, 0)) {
+                    _this.modifyData(9, 5, farmTmSoundInterval.value);
                 }
             }, false);
 
             // TimeNpc
             general.$('playSoundTimerNPC').
                 addEventListener('click', this.testSound, false);
-            general.$('soundTimerNPC').value = general.getData(10)[3] || '0';
-            general.$('soundTimerNPC').addEventListener('change', function () {
-                var soundNPC = this;
-                _this.modifyData(10, 3, soundNPC.value === '0' ?
-                        '' : soundNPC.value);
+            var soundTimerNPC = general.$('soundTimerNPC');
+            soundTimerNPC.value = general.getData(10)[3] || '0';
+            soundTimerNPC.addEventListener('change', function () {
+                _this.modifyData(10, 3, soundTimerNPC.value === '0' ?
+                        '' : soundTimerNPC.value);
             }, false);
 
             // AllPlantsOnFarm
-            general.$('showGbFarmCounter').checked = general.getData(11)[4];
-            general.$('showExpFarmCounter').checked = general.getData(11)[5];
-            general.$('showGbFarmCounter').
-                addEventListener('click', function () {
-                    var showGbFarmCounter = this;
-                    _this.modifyData(11, 4, showGbFarmCounter.checked ?
-                            '1' : '');
-                }, false);
-            general.$('showExpFarmCounter').
-                addEventListener('click', function () {
-                    var showExpFarmCounter = this;
-                    _this.modifyData(11, 5, showExpFarmCounter.checked ?
-                            '1' : '');
-                }, false);
+            var showGbFarmCounter = general.$('showGbFarmCounter');
+            showGbFarmCounter.checked = general.getData(11)[4];
+            showGbFarmCounter.addEventListener('click', function () {
+                _this.modifyData(11, 4, showGbFarmCounter.checked ?
+                        '1' : '');
+            }, false);
+            var showExpFarmCounter = general.$('showExpFarmCounter');
+            showExpFarmCounter.checked = general.getData(11)[5];
+            showExpFarmCounter.addEventListener('click', function () {
+                _this.modifyData(11, 5, showExpFarmCounter.checked ?
+                        '1' : '');
+            }, false);
+
+            // FilterResOnStat
+            var filtRes = general.$('filter_res');
+            filtRes.value = general.getData(15)[0];
+            filtRes.addEventListener('input', function () {
+                general.setData(filtRes.value, 15);
+            }, false);
         };
     };
 
@@ -6770,6 +6788,46 @@
         };
     };
 
+    /**
+     * @class FilterResOnStat
+     * @constructor
+     */
+    var FilterResOnStat = function () {
+        /**
+         * @method delSpaces
+         * @param   {String}    str
+         * @return  {String}
+         */
+        this.delSpaces = function (str) {
+            return str.replace(/^\s*/, '').replace(/\s*$/, '').
+                replace(/\s,/g, ',').replace(/,\s/g, ',').
+                replace(/&nbsp;/g, '').replace(/&amp;/g, '&');
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var tbl = general.doc.querySelector('table[border="0"]' +
+                    '[class="wb"]');
+
+            if (tbl) {
+                var res = this.delSpaces(general.getData(15)[0]).split(','),
+                    trs = tbl.querySelectorAll('tr'),
+                    nameRes,
+                    i;
+
+                for (i = 1; i < trs.length; i++) {
+                    nameRes = this.delSpaces(/[^\(]+/.exec(trs[i].
+                                    firstElementChild.innerHTML)[0]);
+                    if (res.indexOf(nameRes) === -1) {
+                        trs[i].style.display = 'none';
+                    }
+                }
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -6993,6 +7051,16 @@
             if (initScript[21]) {
                 try {
                     new DoFilter().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
+
+        if (/\/stats\.php$/.test(general.loc)) {
+            if (initScript[22]) {
+                try {
+                    new FilterResOnStat().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
