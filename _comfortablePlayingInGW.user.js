@@ -10,20 +10,16 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.03-090915-dev
+// @version         1.00-100915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
-/*global unsafeWindow: true , ActiveXObject: true */
+/*global unsafeWindow: true*/
 
 /*jslint
     browser: true, todo: true, passfail: true, devel: true, regexp: true
     plusplus: true, continue: true, vars: true, nomen: true
 */
-
-/** TODO:
- *  - сохранение настроек перед чисткой браузера
- */
 
 (function () {
     'use strict';
@@ -62,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.03-090915-dev';
+        this.version = '1.00-100915-dev';
         /**
          * @property stString
          * @type {String}
@@ -789,7 +785,8 @@
                     'отображаться на вышеуказанной странице. Например: ' +
                     'Уран,Водоросли,Маковая соломка,Трава,Батареи<br>' +
                     '<input id="filter_res" type="text" style="width: ' +
-                    '350px;"/>' + this.getGitHubLink('filterResOnStat'), '22']],
+                    '350px;" disabled />' +
+                    this.getGitHubLink('filterResOnStat'), '22']],
 
             'Ферма': [
                 ['Производственный опыт и прибыль', 'Отображение ' +
@@ -917,18 +914,33 @@
          * @method init
          */
         this.init = function () {
-            var str = '<div style="margin-bottom: 10px;"><a id="' +
+            var tdStyle = ' style="background-color: #E0FFE0;">',
+                str = '<div style="text-align: center;"><a id="' +
                     'linkNewVerScript" target="_blank" style="color: ' +
-                    '#008000; visibility: hidden;" href="https://raw.' +
+                    '#FF0000; visibility: hidden;" href="https://raw.' +
                     'githubusercontent.com/MyRequiem/comfortablePlayingInGW/' +
                     'master/_comfortablePlayingInGW.user.js">Доступна новая ' +
                     'версия</a> <span id="refreshVer"></span></div><table ' +
                     'style="width: 100%; box-shadow: 8px 10px 7px ' +
-                    'rgba(122,122,122,0.5);">',
+                    'rgba(122,122,122,0.5);"><tr><td ' + tdStyle +
+                    '<img id="imgSaveSettings" title="Сохранить/Восстановить ' +
+                    'настройки" src="http://images.ganjawars.ru/i/home/' +
+                    'ganjafile.gif" style="cursor: pointer;" />' +
+                    '<div id="divSaveSettings" style="display: none;"><br>' +
+                    'Сохранить строку настроек (&lt;Ctrl-A&gt; - выделить ' +
+                    'всю строку, &lt;Ctrl-C&gt; - копировать):<br>' +
+                    '<input id="inpExportSettings" type="text" ' +
+                    'style="width: 97%;" /><br><br>Восстановление настроек. ' +
+                    'Введите ранее сохраненную строку и нажмите ' +
+                    '"Восстановить":<br><input id="inpImportSettings" ' +
+                    'type="text" style="width: 97%;" /><br>' +
+                    '<input id="butRestoreSettings" type="button" ' +
+                    'value="Восстановить" /><input id="butClearSettings" ' +
+                    'type="button" value="Сбросить настройки" ' +
+                    'style="margin-left: 10px;" /></div></td></tr>',
                 groupStyle = ' style="background-color: #D0EED0; text-align: ' +
                     'center; color: #990000;"><b>',
                 spanStyle = ' style="cursor: pointer;">',
-                tdStyle = ' style="background-color: #E0FFE0;">',
                 hiddenDivStyle = ' style="display: none; padding-left: 50px; ' +
                     'background-color: #E7E7E7">',
                 prop,
@@ -979,6 +991,38 @@
                     chk.click();
                 }
             }
+
+            // открытие/закрытие панели сохранения настроек, обработчики
+            // текстовых полей, кнопки импорта настроек
+            general.$('imgSaveSettings').addEventListener('click', function () {
+                var divSaveSettings = general.$('divSaveSettings'),
+                    displ = divSaveSettings.style.display;
+
+                if (displ) {
+                    general.$('inpExportSettings').value = general.root.
+                        localStorage.getItem(general.STORAGENAME);
+                }
+                divSaveSettings.style.display = displ ? '' : 'none';
+            }, false);
+
+            general.$('butRestoreSettings').addEventListener('click',
+                function () {
+                    var val = general.$('inpImportSettings').value;
+                    if (!val) {
+                        alert('Введите строку настроек');
+                        return;
+                    }
+
+                    general.root.localStorage.setItem(general.STORAGENAME, val);
+                    general.root.location.reload();
+                }, false);
+
+            general.$('butClearSettings').addEventListener('click', function () {
+                if (confirm('Вы уверены ???')) {
+                    general.root.localStorage.removeItem(general.STORAGENAME);
+                    general.root.location.reload();
+                }
+            }, false);
 
             // обработчики текстовых полей модуля дополнений для боев
             general.$('refreshBattle').
