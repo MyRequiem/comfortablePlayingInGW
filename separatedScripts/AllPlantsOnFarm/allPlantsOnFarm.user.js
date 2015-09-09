@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         1.21-050915
+// @version         1.22-090915
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -602,6 +602,8 @@
                     'ниже перечисленных браузеров или удалите скрипт\n' +
                     'AllPlantsOnFarm\n\nFireFox 4+\nOpera 11+\n' +
                     'Chrome 12+');
+
+                return;
             }
 
             var farmId = /(\?|&)id=(\d+)/.exec(general.loc),

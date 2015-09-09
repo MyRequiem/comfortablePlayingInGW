@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.01-050915-dev
+// @version         1.00-090915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -62,7 +62,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-050915-dev';
+        this.version = '1.00-090915-dev';
         /**
          * @property stString
          * @type {String}
@@ -89,8 +89,9 @@
                         [16] - CountBattles
                         [17] - GbCounter
                         [18] - BonusInfo
-                        [19] - BuyHightech */
-                        '@|||||||||||||||||||' +
+                        [19] - BuyHightech
+                        [20] - NewsAndInvit */
+                        '@||||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -183,7 +184,12 @@
                     /*
                     [13] - GbCounter
                         [0] - количество Гб */
+                        '@' +
+                    /*
+                    [14] - NewsAndInvit
+                        [0] - {'newsId': 0|1, ...} */
                         '@';
+
         /**
          * @property myID
          * @type {String}
@@ -717,7 +723,11 @@
                 ['Информация о бонусах', 'На странице информации персонажа ' +
                     'делает названия бонусов кликабельными. При нажатии ' +
                     'выводится описание бонуса.' +
-                    this.getGitHubLink('bonusInfo'), '18']],
+                    this.getGitHubLink('bonusInfo'), '18'],
+                ['Новости и приглашения в синдикаты', 'Выделение и мигание ' +
+                    'приглашений в синдикаты, новых и не прочитанных ' +
+                    'новостей на главной странице персонажа.' +
+                    this.getGitHubLink('newsAndInvit'), '20']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -4539,23 +4549,6 @@
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.' +
-                    '\nMyRequiеm рекомендует вам установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'TimeNpc\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
-
-                return;
-            }
-
-            /**
-             * localStorage
-             * [0] - звук вкл/выкл
-             * [1] - ID NPC, у которого последний раз брали квест
-             * [2] - время
-             */
-
             var stData = general.getData(10);
 
             if (/www\.ganjawars\.ru\/me\//.test(general.loc)) {
@@ -5065,14 +5058,6 @@
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.' +
-                    '\nMyRequiеm рекомендует вам установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'AllPlantsOnFarm\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
-            }
-
             var farmId = /(\?|&)id=(\d+)/.exec(general.loc),
                 capcha = general.doc.querySelector('input[type="text"]' +
                         '[name="fermacode"]');
@@ -5811,16 +5796,6 @@
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.' +
-                    '\nMyRequiеm рекомендует вам установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'ScriptName\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
-
-                return;
-            }
-
             // ссылка в главном меню игры
             var mainLink = general.doc.querySelector('a[href$="/sites.php"]');
             if (mainLink) {
@@ -6247,16 +6222,6 @@
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.' +
-                    '\nMyRequiеm рекомендует вам установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'GbCounter\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
-
-                return;
-            }
-
             var divGB = general.doc.querySelector('td>b>div[id="cdiv"]');
             if (divGB) {
                 this.countGbNow = +divGB.innerHTML.replace(/,/g, '');
@@ -6580,6 +6545,95 @@
         };
     };
 
+    /**
+     * @class NewsAndInvit
+     * @constructor
+     */
+    var NewsAndInvit = function () {
+        /**
+         * @method isForumPage
+         * @return   {Boolean}
+         */
+        this.isForumPage = function () {
+            return (/fid=1&tid=\d+/.test(general.loc));
+        };
+
+        /**
+         * @method blink
+         * @param   {Object}    link
+         */
+        this.blink = function (link) {
+            link.style.color = '#FF0000';
+            general.root.setInterval(function () {
+                link.style.color = link.style.color ? '' : '#FF0000';
+            }, 700);
+        };
+
+        /**
+         * @method getNewsId
+         * @param    {String}   link
+         * @return   {String}
+         */
+        this.getNewsId = function (link) {
+            return (/&tid=(\d+)/.exec(link))[1];
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var stData = general.getData(14)[0];
+            stData = stData ? JSON.parse(stData) : null;
+
+            var newsId;
+            // на форуме новостей
+            if (this.isForumPage() && stData) {
+                newsId = this.getNewsId(general.loc);
+                if (stData[newsId] === '0') {
+                    stData[newsId] = '1';
+                    general.setData(JSON.stringify(stData), 14);
+                }
+
+                return;
+            }
+
+            // на главной
+            // приглосы
+            var invit = general.doc.querySelector('a[href*="/me/?nb=synd"]');
+            if (invit) {
+                invit.setAttribute('style', 'color: #FF0000; ' +
+                        'font-weight: bold;');
+            }
+
+            // новости
+            var newsLinks = general.doc.querySelectorAll('nobr>' +
+                    'a[href*="/messages.php?fid=1&tid="]'),
+                newData = {},
+                i;
+
+            for (i = 0; i < newsLinks.length; i++) {
+                newsId = this.getNewsId(newsLinks[i].href);
+                // storage пустой... записываем все темы как прочитанные
+                if (!stData) {
+                    newData[newsId] = '1';
+                    continue;
+                }
+
+                if (!stData[newsId]) {
+                    stData[newsId] = '0';
+                }
+
+                if (stData[newsId] === '0') {
+                    this.blink(newsLinks[i]);
+                }
+
+                newData[newsId] = stData[newsId];
+            }
+
+            general.setData(JSON.stringify(newData), 14);
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -6783,6 +6837,16 @@
             if (initScript[19]) {
                 try {
                     new BuyHightech().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
+
+        if (/\/me\/|\/messages\.php\?fid=1&tid=/.test(general.loc)) {
+            if (initScript[20]) {
+                try {
+                    new NewsAndInvit().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
