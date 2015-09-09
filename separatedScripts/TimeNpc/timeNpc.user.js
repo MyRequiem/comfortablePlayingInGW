@@ -119,11 +119,11 @@
      */
     var AjaxQuery = function () {
         /**
-        * @method init
-        * @param   {String}        url
-        * @param   {Function}      onsuccess
-        * @param   {Function}      onfailure
-        */
+         * @method init
+         * @param   {String}        url
+         * @param   {Function}      onsuccess
+         * @param   {Function}      onfailure
+         */
         this.init = function (url, onsuccess, onfailure) {
             var xmlHttpRequest = new XMLHttpRequest();
 
@@ -336,7 +336,7 @@
         /**
          * @method showTimerNPC
          * @param   {int}   sec
-        */
+         */
         this.showTimerNPC = function (sec) {
             var min,
                 s,

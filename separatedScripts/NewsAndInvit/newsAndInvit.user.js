@@ -56,30 +56,30 @@
     };
 
     /**
-    * @lends General.prototype
-    */
+     * @lends General.prototype
+     */
     General.prototype = {
         /**
-        * @method getRoot
-        * @return  {Object}
-        */
+         * @method getRoot
+         * @return  {Object}
+         */
         getRoot: function () {
             var rt = typeof unsafeWindow;
             return rt !== 'undefined' ? unsafeWindow : window;
         },
 
         /**
-        * @method setData
-        * @param   {String}     data
-        */
+         * @method setData
+         * @param   {String}    data
+         */
         setData: function (data) {
             this.st.setItem(this.STORAGENAME, data);
         },
 
         /**
-        * @method getData
-        * @return  {Array|null}
-        */
+         * @method getData
+         * @return  {Array|null}
+         */
         getData: function () {
             var stData = this.st.getItem(this.STORAGENAME);
             return stData ? stData.split('|') : null;

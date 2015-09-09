@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.01-090915-dev
+// @version         1.02-090915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -62,7 +62,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-090915-dev';
+        this.version = '1.02-090915-dev';
         /**
          * @property stString
          * @type {String}
@@ -90,8 +90,9 @@
                         [17] - GbCounter
                         [18] - BonusInfo
                         [19] - BuyHightech
-                        [20] - NewsAndInvit */
-                        '@||||||||||||||||||||' +
+                        [20] - NewsAndInvit
+                        [21] - DoFilter */
+                        '@|||||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -309,7 +310,7 @@
 
         /**
          * @method $
-         * @param   {string}    id
+         * @param   {String}    id
          * @return  {HTMLElement|null}
          */
         $: function (id) {
@@ -770,7 +771,12 @@
                     'HighTech магазине добавляет ссылки "Продать" и "Купить" ' +
                     'для каждого предмета, при нажатии на которые, выводится ' +
                     'форма подачи объявления на ДО для данного предмета.' +
-                    this.getGitHubLink('buyHightech'), '19']],
+                    this.getGitHubLink('buyHightech'), '19'],
+                ['Быстрый поиск на ДО', 'Быстрый поиск предметов на ' +
+                    '<a target="_blank" href="http://www.ganjawars.ru' +
+                    '/market.php">доске объявлений</a>. Поиск осуществляется ' +
+                    'по мере ввода названия предмета.' +
+                    this.getGitHubLink('doFilter'), '21']],
 
             'Ферма': [
                 ['Производственный опыт и прибыль', 'Отображение ' +
@@ -3536,7 +3542,7 @@
 
         /**
          * @method fillData
-         * @param   {string}    data
+         * @param   {String}    data
          */
         this.fillData = function (data) {
             this.divResult.innerHTML = data + '<div style="margin-top: 5px;">' +
@@ -3996,7 +4002,7 @@
          * @param   {int}       p2
          * @param   {int}       time
          * @param   {Number}    exp
-         * @return  {string}
+         * @return  {String}
          */
         this.calculateFarm = function (p1, p2, time, exp) {
             var money = ((p2 - p1) / time * 60).toFixed(2),
@@ -4486,7 +4492,7 @@
         /**
          * @method showTimerNPC
          * @param   {int}   sec
-        */
+         */
         this.showTimerNPC = function (sec) {
             var min,
                 s,
@@ -6637,6 +6643,133 @@
         };
     };
 
+    /**
+     * @class DoFilter
+     * @constructor
+     */
+    var DoFilter = function () {
+        /**
+         * @property selects
+         * @type {HTMLSelectElement}
+         */
+        this.selects = general.doc.querySelectorAll('select[name="item_id"]');
+
+        /**
+         * @method setHrefItem
+         * @param   {HTMLSelectElement}     sel
+         */
+        this.setHrefItem = function (sel) {
+            var a = sel.nextElementSibling,
+                itemId = sel.value;
+
+            if (itemId !== '#') {
+                a.href = 'http://www.ganjawars.ru/item.php?item_id=' + itemId;
+                a.setAttribute('target', '_blank');
+            } else {
+                a.href = itemId;
+                a.removeAttribute('target');
+            }
+        };
+
+        /**
+         * @method selectChange
+         * @param   {HTMLSelectElement}     sel
+         */
+        this.selectChange = function (sel) {
+            var _this = this;
+
+            return function () {
+                _this.setHrefItem(sel);
+            };
+        };
+
+        /**
+         * @method findItem
+         * @param   {Object}  inp
+         */
+        this.findItem = function (inp) {
+            var i, j;
+            for (i = 0; i < this.selects.length; i++) {
+                // если текстовое поле пустое(стерто BackSpase'ом),
+                // то вернем списки в начальное состояние
+                if (!inp.value) {
+                    this.selects[i].options[1].selected = true;
+                    this.setHrefItem(this.selects[i]);
+                    continue;
+                }
+
+                // выбираем самый первый пустой option
+                this.selects[i].value = '#';
+                // прокручиваем весь список и ищем совпадения
+                for (j = 0; j < this.selects[i].options.length; j++) {
+                    if (this.selects[i].options[j].innerHTML.toLowerCase().
+                            indexOf(inp.value.toLowerCase()) !== -1) {
+                        this.selects[i].options[j].selected = true;
+                    }
+                }
+
+                this.setHrefItem(this.selects[i]);
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var target = general.doc.querySelector('table+br+center');
+
+            if (!this.selects.length || !this.selects[0].options || !target) {
+                return;
+            }
+
+            var opt, a, i;
+            for (i = 0; i < this.selects.length; i++) {
+                //одинаковая длина у всех списков
+                this.selects[i].setAttribute('style', 'width: 210px;');
+
+                //добавим пустой елемент в select
+                opt = general.doc.createElement('option');
+                opt.innerHTML = '&nbsp';
+                opt.setAttribute('value', '#');
+                this.selects[i].insertBefore(opt,
+                        this.selects[i].firstElementChild);
+                //выделен первый option (не пустой)
+                this.selects[i].options[1].selected = true;
+
+                //добавим ссылки на предметы после селектов
+                a = general.doc.createElement('a');
+                a.innerHTML = '[?]';
+                a.setAttribute('title', 'Страница описания предмета');
+                a.setAttribute('style', 'margin-left: 2px; color: #808080; ' +
+                        'text-decoration: none;');
+                this.selects[i].parentNode.appendChild(a);
+
+                //обработчик 'onchange' при изменении списка выбора
+                this.selects[i].addEventListener('change',
+                        this.selectChange(this.selects[i]), false);
+
+                //устанавливаем атрибут href ссылки
+                this.setHrefItem(this.selects[i]);
+            }
+
+            //вставляем текстовое поле ввода
+            var divSearch = general.doc.createElement('div');
+            divSearch.innerHTML = '<span style="color: #008000; ' +
+                'font-weight: bold;">Быстрый поиск:</span> <input ' +
+                'id="txtFilter" type="text" size="40" style="margin-bottom: ' +
+                '10px;">';
+            target.insertBefore(divSearch, target.firstChild);
+
+            var textField = general.doc.querySelector('#txtFilter'),
+                _this = this;
+
+            textField.addEventListener('input', function () {
+                _this.findItem(textField);
+            }, false);
+            textField.focus();
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -6850,6 +6983,16 @@
             if (initScript[20]) {
                 try {
                     new NewsAndInvit().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
+
+        if (/\/market(\-p)?.php/.test(general.loc)) {
+            if (initScript[21]) {
+                try {
+                    new DoFilter().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
