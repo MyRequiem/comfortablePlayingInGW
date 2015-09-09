@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-090915-dev
+// @version         1.01-090915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -62,7 +62,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-090915-dev';
+        this.version = '1.01-090915-dev';
         /**
          * @property stString
          * @type {String}
@@ -6607,30 +6607,33 @@
 
             // новости
             var newsLinks = general.doc.querySelectorAll('nobr>' +
-                    'a[href*="/messages.php?fid=1&tid="]'),
-                newData = {},
-                i;
+                    'a[href*="/messages.php?fid=1&tid="]');
 
-            for (i = 0; i < newsLinks.length; i++) {
-                newsId = this.getNewsId(newsLinks[i].href);
-                // storage пустой... записываем все темы как прочитанные
-                if (!stData) {
-                    newData[newsId] = '1';
-                    continue;
+            if (newsLinks.length) {
+                var newData = {},
+                    i;
+
+                for (i = 0; i < newsLinks.length; i++) {
+                    newsId = this.getNewsId(newsLinks[i].href);
+                    // storage пустой... записываем все темы как прочитанные
+                    if (!stData) {
+                        newData[newsId] = '1';
+                        continue;
+                    }
+
+                    if (!stData[newsId]) {
+                        stData[newsId] = '0';
+                    }
+
+                    if (stData[newsId] === '0') {
+                        this.blink(newsLinks[i]);
+                    }
+
+                    newData[newsId] = stData[newsId];
                 }
 
-                if (!stData[newsId]) {
-                    stData[newsId] = '0';
-                }
-
-                if (stData[newsId] === '0') {
-                    this.blink(newsLinks[i]);
-                }
-
-                newData[newsId] = stData[newsId];
+                general.setData(JSON.stringify(newData), 14);
             }
-
-            general.setData(JSON.stringify(newData), 14);
         };
     };
 

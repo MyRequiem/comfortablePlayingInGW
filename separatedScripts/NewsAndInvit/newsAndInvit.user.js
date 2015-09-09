@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/messages.php?fid=1&tid=*
 // @grant           none
 // @license         MIT
-// @version         2.00-090915
+// @version         2.01-090915
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -159,30 +159,33 @@
 
             // новости
             var newsLinks = general.doc.querySelectorAll('nobr>' +
-                    'a[href*="/messages.php?fid=1&tid="]'),
-                newData = {},
-                i;
+                    'a[href*="/messages.php?fid=1&tid="]');
 
-            for (i = 0; i < newsLinks.length; i++) {
-                newsId = this.getNewsId(newsLinks[i].href);
-                // storage пустой... записываем все темы как прочитанные
-                if (!stData) {
-                    newData[newsId] = '1';
-                    continue;
+            if (newsLinks.length) {
+                var newData = {},
+                    i;
+
+                for (i = 0; i < newsLinks.length; i++) {
+                    newsId = this.getNewsId(newsLinks[i].href);
+                    // storage пустой... записываем все темы как прочитанные
+                    if (!stData) {
+                        newData[newsId] = '1';
+                        continue;
+                    }
+
+                    if (!stData[newsId]) {
+                        stData[newsId] = '0';
+                    }
+
+                    if (stData[newsId] === '0') {
+                        this.blink(newsLinks[i]);
+                    }
+
+                    newData[newsId] = stData[newsId];
                 }
 
-                if (!stData[newsId]) {
-                    stData[newsId] = '0';
-                }
-
-                if (stData[newsId] === '0') {
-                    this.blink(newsLinks[i]);
-                }
-
-                newData[newsId] = stData[newsId];
+                general.setData(JSON.stringify(newData));
             }
-
-            general.setData(JSON.stringify(newData));
         };
     };
 
