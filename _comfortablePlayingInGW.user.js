@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-100915-dev
+// @version         1.01-100915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-100915-dev';
+        this.version = '1.01-100915-dev';
         /**
          * @property stString
          * @type {String}
@@ -88,8 +88,9 @@
                         [19] - BuyHightech
                         [20] - NewsAndInvit
                         [21] - DoFilter
-                        [22] - FilterResOnStat */
-                        '@||||||||||||||||||||||' +
+                        [22] - FilterResOnStat
+                        [23] - FilterWarlist1to1 */
+                        '@|||||||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -190,6 +191,10 @@
                     /*
                     [15] - FilterResOnStat
                         [0] - список отображаемых ресурсов через запятую */
+                        '@' +
+                    /*
+                     [16] - FilterWarlist1to1
+                        [0] - название оружия */
                         '@';
 
         /**
@@ -761,7 +766,14 @@
                     'персонажа и их общее количество (опционально).<br><br>' +
                     '<input type="checkbox" id="showcrits" disabled /> ' +
                     'показывать критические выстрелы' +
-                    this.getGitHubLink('critShotsAndLinksBtlLog'), '7']],
+                    this.getGitHubLink('critShotsAndLinksBtlLog'), '7'],
+                ['Фильтр по оружию в одиночных заявках', 'Фильтр по оружию в ' +
+                    'одиночых заявках. Фильтр по уровням и типу оружия, ' +
+                    'встроенный в игре, переносится вверх страницы. Все ' +
+                    'настройки находятся на <a target="_blank" ' +
+                    'href="http://www.ganjawars.ru/warlist.php?war=armed">' +
+                    'странице одиночных заявок</a>' +
+                    this.getGitHubLink('filterWarlist1to1'), '23']],
 
             'Торговля': [
                 ['Фильтр поиска продажи/покупки/аренды', 'Фильтр ' +
@@ -6872,6 +6884,107 @@
         };
     };
 
+    /**
+     * @class FilterWarlist1to1
+     * @constructor
+     */
+    var FilterWarlist1to1 = function () {
+        /**
+         * @property table
+         * @type {HTMLTableElement}
+         */
+        this.table = general.doc.querySelector('table[cellpadding="5"]');
+
+        /**
+         * @method sortWeapon
+         */
+        this.sortWeapon = function () {
+            var weapon = general.$('w_name').value.toLowerCase(),
+                tr = this.table.querySelectorAll('tr'),
+                text,
+                i;
+
+            for (i = 0; i < tr.length; i++) {
+                if (tr[i].firstElementChild &&
+                        (/<b>[^\[]*\[\d+\]/.test(tr[i].innerHTML))) {
+                    tr[i].style.display = '';
+                    if (weapon) {
+                        text = tr[i].firstElementChild.nextElementSibling.
+                            innerHTML.toLowerCase();
+                        if (text.indexOf(weapon) === -1) {
+                            tr[i].style.display = 'none';
+                        }
+                    }
+                }
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var filtForm = general.doc.
+                    querySelector('form[action="/warlist.php"]');
+
+            if (filtForm && this.table) {
+                filtForm = filtForm.cloneNode(false);
+                filtForm.setAttribute('style', 'display: inline-block; ' +
+                        'margin: 0 10px 0 10px;');
+
+                var hidden1 = general.
+                        doc.querySelector('input[name="levelset"]').
+                            cloneNode(false),
+                    hidden2 = general.doc.
+                        querySelector('input[name="war"]').cloneNode(false),
+                    s_lmin = general.doc.
+                        querySelector('select[name="s_lmin"]').cloneNode(true),
+                    s_lmax = general.doc.
+                        querySelector('select[name="s_lmax"]').cloneNode(true),
+                    s_ltype = general.doc.
+                        querySelector('select[name="s_ltype"]').cloneNode(true);
+
+                filtForm.appendChild(hidden1);
+                filtForm.appendChild(hidden2);
+                filtForm.appendChild(general.doc.createTextNode('от '));
+                filtForm.appendChild(s_lmin);
+                filtForm.appendChild(general.doc.createTextNode(' до '));
+                filtForm.appendChild(s_lmax);
+                filtForm.appendChild(general.doc.createTextNode(' тип '));
+                filtForm.appendChild(s_ltype);
+                var subm = general.doc.createElement('input');
+                subm.type = 'submit';
+                subm.value = '»';
+                filtForm.appendChild(subm);
+
+                var target = general.$('updatetimer').
+                                parentNode.firstElementChild;
+                target.parentNode.insertBefore(filtForm, target.nextSibling);
+
+                s_lmin.setAttribute('style', 'width: 40px;');
+                s_lmax.setAttribute('style', 'width: 40px;');
+
+                var span = general.doc.createElement('span');
+                span.innerHTML = 'Название: <input type="text" id="w_name" ' +
+                    'style="width: 150px;" value="' + general.getData(16)[0] +
+                    '" />';
+                target.parentNode.insertBefore(span, filtForm.nextSibling);
+
+                var _this = this;
+                general.$('w_name').addEventListener('input', function () {
+                    var weapName = this;
+                    general.setData(weapName.value, 16);
+                    _this.sortWeapon();
+                }, false);
+
+                //удаляем нижнюю форму
+                this.table.firstElementChild.
+                    removeChild(this.table.firstElementChild.lastElementChild);
+
+                this.sortWeapon();
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -7128,6 +7241,16 @@
             if (initScript[7]) {
                 try {
                     new CritShotsAndLinksBtlLog().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
+
+        if (/\/warlist\.php/.test(general.loc)) {
+            if (initScript[23]) {
+                try {
+                    new FilterWarlist1to1().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
