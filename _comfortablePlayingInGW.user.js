@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.02-100915-dev
+// @version         1.03-100915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.02-100915-dev';
+        this.version = '1.03-100915-dev';
         /**
          * @property stString
          * @type {String}
@@ -90,8 +90,9 @@
                         [21] - DoFilter
                         [22] - FilterResOnStat
                         [23] - FilterWarlist1to1
-                        [24] - FixSkills */
-                        '@||||||||||||||||||||||||' +
+                        [24] - FixSkills
+                        [25] - FuckTheFarm */
+                        '@|||||||||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -833,7 +834,10 @@
                     'disabled /> показывать счетчик Гб<br>' +
                     '<input id="showExpFarmCounter" type="checkbox" ' +
                     'disabled /> показывать счетчик производственног опыта' +
-                    this.getGitHubLink('allPlantsOnFarm'), '13']]
+                    this.getGitHubLink('allPlantsOnFarm'), '13'],
+                ['Играем без фермы', 'Убирает ссылку на ферму на главной ' +
+                    'странице и на странице информации персонажа.' +
+                    this.getGitHubLink('fuckTheFarm'), '25']]
         };
 
         /**
@@ -932,29 +936,39 @@
          */
         this.init = function () {
             var tdStyle = ' style="background-color: #E0FFE0;">',
-                str = '<div style="text-align: center;"><a id="' +
-                    'linkNewVerScript" target="_blank" style="color: ' +
-                    '#FF0000; visibility: hidden;" href="https://raw.' +
-                    'githubusercontent.com/MyRequiem/comfortablePlayingInGW/' +
-                    'master/_comfortablePlayingInGW.user.js">Доступна новая ' +
-                    'версия</a> <span id="refreshVer"></span></div><table ' +
-                    'style="width: 100%; box-shadow: 8px 10px 7px ' +
+                str = '<table style="width: 100%; box-shadow: 8px 10px 7px ' +
                     'rgba(122,122,122,0.5);"><tr><td ' + tdStyle +
+                    '<table style="width: 100%"><tr><td style="width: 3%;">' +
                     '<img id="imgSaveSettings" title="Сохранить/Восстановить ' +
                     'настройки" src="http://images.ganjawars.ru/i/home/' +
-                    'ganjafile.gif" style="cursor: pointer;" />' +
-                    '<div id="divSaveSettings" style="display: none;"><br>' +
-                    'Сохранить строку настроек (&lt;Ctrl-A&gt; - выделить ' +
-                    'всю строку, &lt;Ctrl-C&gt; - копировать):<br>' +
-                    '<input id="inpExportSettings" type="text" ' +
-                    'style="width: 97%;" /><br><br>Восстановление настроек. ' +
-                    'Введите ранее сохраненную строку и нажмите ' +
-                    '"Восстановить":<br><input id="inpImportSettings" ' +
-                    'type="text" style="width: 97%;" /><br>' +
-                    '<input id="butRestoreSettings" type="button" ' +
-                    'value="Восстановить" /><input id="butClearSettings" ' +
-                    'type="button" value="Сбросить настройки" ' +
-                    'style="margin-left: 10px;" /></div></td></tr>',
+                    'ganjafile.gif" style="cursor: pointer;" /></td>' +
+                    '<td style="font-size: 8pt; text-align: center;">' +
+                    '<a id="linkNewVerScript" target="_blank" ' +
+                    'style="color: #FF0000; visibility: hidden;" ' +
+                    'href="https://raw.githubusercontent.com/MyRequiem/' +
+                    'comfortablePlayingInGW/master/_comfortablePlayingInGW.' +
+                    'user.js">Доступна новая версия</a> ' +
+                    '<span id="refreshVer"></span></td>' +
+                    '<td style="font-size: 7pt; width: 35%; text-align: ' +
+                    'right;"><a target="_blank" style="opacity: 0.5; ' +
+                    'text-decoration: none; font-size: 7pt;" ' +
+                    'href="http://www.ganjawars.ru/info.php?id=2095458">' +
+                    '<span style="color: #F90332;">developed by</span> ' +
+                    '<span style="color: #014305; font-weight: 700;">' +
+                    'MyRequiem©</span></a> ' + general.version + '</td>' +
+                    '</tr><tr id="trSaveSettings" style="display: none;">' +
+                    '<td colspan="3"><br>Сохранить строку настроек ' +
+                    '(&lt;Ctrl-A&gt; - выделить всю строку, &lt;Ctrl-C&gt; - ' +
+                    'копировать):<br><input id="inpExportSettings" ' +
+                    'type="text" style="width: 97%;" /><br><br>' +
+                    'Восстановление настроек. Введите ранее сохраненную ' +
+                    'строку и нажмите "Восстановить":<br><input ' +
+                    'id="inpImportSettings" type="text" style="width: ' +
+                    '97%;" /><br><input id="butRestoreSettings" ' +
+                    'type="button" value="Восстановить" /><input ' +
+                    'id="butClearSettings" type="button" value="Сбросить ' +
+                    'настройки" style="margin-left: 10px;" />' +
+                    '</td></tr></table></td></tr>',
                 groupStyle = ' style="background-color: #D0EED0; text-align: ' +
                     'center; color: #990000;"><b>',
                 spanStyle = ' style="cursor: pointer;">',
@@ -1012,14 +1026,14 @@
             // открытие/закрытие панели сохранения настроек, обработчики
             // текстовых полей, кнопки импорта настроек
             general.$('imgSaveSettings').addEventListener('click', function () {
-                var divSaveSettings = general.$('divSaveSettings'),
-                    displ = divSaveSettings.style.display;
+                var trSaveSettings = general.$('trSaveSettings'),
+                    displ = trSaveSettings.style.display;
 
                 if (displ) {
                     general.$('inpExportSettings').value = general.root.
                         localStorage.getItem(general.STORAGENAME);
                 }
-                divSaveSettings.style.display = displ ? '' : 'none';
+                trSaveSettings.style.display = displ ? '' : 'none';
             }, false);
 
             general.$('butRestoreSettings').addEventListener('click',
@@ -7074,6 +7088,35 @@
         };
     };
 
+    /**
+     * @class FuckTheFarm
+     * @constructor
+     */
+    var FuckTheFarm = function () {
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var link;
+
+            if (/\/me\//.test(general.loc)) {
+                link = general.doc.querySelector('[src$="images.ganjawars.' +
+                        'ru/i/home/farm.gif"]').parentNode;
+                var lparent = link.parentNode;
+                lparent.removeChild(link.previousElementSibling);
+                lparent.removeChild(link.nextElementSibling);
+                lparent.removeChild(link);
+                return;
+            }
+
+            link = general.doc.querySelector('a[href*="/info.ach.php?id="]+' +
+                    'a[href*="/info.ach.php?id="]').nextSibling;
+            while (link.nextSibling) {
+                link.parentNode.removeChild(link.nextSibling);
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -7317,6 +7360,14 @@
             if (initScript[24]) {
                 try {
                     new FixSkills().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[25]) {
+                try {
+                    new FuckTheFarm().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
