@@ -197,7 +197,7 @@
 
 **LinksToHighTech**
 <br>
-Версия: 2.00-120915
+Версия: 1.00-120915
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/LinksToHighTech/linksToHighTech.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/LinksToHighTech/linksToHighTech.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/LinksToHighTech)
 <br>
