@@ -11,7 +11,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         3.11-050915
+// @version         3.20-120915
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -1710,8 +1710,8 @@
 
             // обновление страницы, когда висим в заявке
             if (/(\/wargroup|\/warlist)\.php/.test(general.loc)) {
-                if (refreshAppl > 2 &&
-                        general.doc.querySelector('b>font[color="#990000"]')) {
+                if (refreshAppl > 2 && general.doc.
+                        querySelector('center>b>font[color="#990000"]')) {
                     general.root.setTimeout(function () {
                         general.doc.querySelector('a[href*="&r="]').click();
                     }, refreshAppl * 1000);

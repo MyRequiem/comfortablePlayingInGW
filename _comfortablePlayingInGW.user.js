@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.03-120915-dev
+// @version         1.04-120915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.03-120915-dev';
+        this.version = '1.04-120915-dev';
         /**
          * @property stString
          * @type {String}
@@ -3179,8 +3179,8 @@
             // обновление страницы, когда висим в заявке
             if (/(\/wargroup|\/warlist)\.php/.test(general.loc)) {
                 var refreshAppl = general.getData(4)[1];
-                if (general.doc.querySelector('b>font[color="#990000"]') &&
-                        refreshAppl) {
+                if (refreshAppl && general.doc.
+                        querySelector('center>b>font[color="#990000"]')) {
                     general.root.setTimeout(function () {
                         general.doc.querySelector('a[href*="&r="]').click();
                     }, (+refreshAppl) * 1000);
