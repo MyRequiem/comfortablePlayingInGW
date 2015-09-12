@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-120915-dev
+// @version         1.01-120915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-120915-dev';
+        this.version = '1.01-120915-dev';
         /**
          * @property stString
          * @type {String}
@@ -92,8 +92,9 @@
                         [23] - FilterWarlist1to1
                         [24] - FixSkills
                         [25] - FuckTheFarm
-                        [26] - HistorySms */
-                        '@||||||||||||||||||||||||||' +
+                        [26] - HistorySms
+                        [27] - LinksToHighTech */
+                        '@|||||||||||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -777,7 +778,11 @@
                 ['Информация о бонусах', 'На странице информации персонажа ' +
                     'делает названия бонусов кликабельными. При нажатии ' +
                     'выводится описание бонуса.' +
-                    this.getGitHubLink('bonusInfo'), '18'],
+                    this.getGitHubLink('bonusInfo') +
+                    '<span style="margin-left: 15px;">идея: ' +
+                    '<a href="http://www.ganjawars.ru/info.php?id=1845550" ' +
+                    'style="font-weight: bold;" target="_blank">signed' +
+                    '</a></span>', '18'],
                 ['Новости и приглашения в синдикаты', 'Выделение и мигание ' +
                     'приглашений в синдикаты, новых и не прочитанных ' +
                     'новостей на главной странице персонажа.' +
@@ -855,7 +860,15 @@
                     'Уран,Водоросли,Маковая соломка,Трава,Батареи<br>' +
                     '<input id="filter_res" type="text" style="width: ' +
                     '350px;" disabled />' +
-                    this.getGitHubLink('filterResOnStat'), '22']],
+                    this.getGitHubLink('filterResOnStat'), '22'],
+                ['Ссылки на High-tech вооружение в государственном магазине',
+                    'В государственном магазине рядом со ссылками на типы ' +
+                    'вооружения добавляет ссылки на вооружение High-tech' +
+                    this.getGitHubLink('linksToHighTech') +
+                    '<span style="margin-left: 15px;">идея: ' +
+                    '<a href="http://www.ganjawars.ru/info.php?id=436429" ' +
+                    'style="font-weight: bold;" target="_blank">Buger_man' +
+                    '</a></span>', '27']],
 
             'Ферма': [
                 ['Производственный опыт и прибыль', 'Отображение ' +
@@ -7444,6 +7457,49 @@
         };
     };
 
+    /**
+     * @class LinksToHighTech
+     * @constructor
+     */
+    var LinksToHighTech = function () {
+        /**
+         * @property highTechItems
+         * @type {Object}
+         */
+        this.highTechItems = {
+            'htGroup': ['auto', 'heavy', 'sniper', 'ppguns', 'shotguns',
+                    'grl', 'armour', 'helmets', 'boots', 'masks', 'wear',
+                    'phones', 'drugs', 'transport'],
+            'sniper': 'snipe',
+            'phones': 'misc'
+        };
+
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var links = general.doc.
+                    querySelector('td[valign="top"][width="200"]').
+                        querySelectorAll('a[href*="/shop.php?shop=shop_"]'),
+                group,
+                i;
+
+            for (i = 0; i < links.length; i++) {
+                if (links[i].innerHTML) {
+                    group = /\?shop=shop_(.*)$/.exec(links[i].href)[1];
+                    if (this.highTechItems.htGroup.indexOf(group) !== -1) {
+                        links[i].parentNode.innerHTML = '<a ' +
+                            'href="/shopc.php?shop=shop_' +
+                            (this.highTechItems[group] || group) +
+                            '_c" style="color: #AC4311; margin-right: 5px;">' +
+                            '[Ht]</a>' + links[i].parentNode.innerHTML;
+                    }
+                }
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -7647,6 +7703,16 @@
             if (initScript[19]) {
                 try {
                     new BuyHightech().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
+
+        if (/\/shop\.php\?shop=shop_/.test(general.loc)) {
+            if (initScript[27]) {
+                try {
+                    new LinksToHighTech().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
