@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/sms-read.php?type=*
 // @grant           none
 // @license         MIT
-// @version         2.00-110915
+// @version         2.01-110915
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -320,8 +320,14 @@
                             ofSyndLink: ''
                         });
 
-                        if (allCountSms === _this.sms.length) {
+                        if ((allCountSms === _this.sms.length) ||
+                                // последняя ссылка на странице,
+                                // но ссылок меньше 30 => больше страниц нет
+                                // (по 30 сообщений на одной странице)
+                                (i === linksSms.length - 1 &&
+                                    linksSms.length < 30)) {
                             _this.nextAjaxQuery(outbox);
+
                             return;
                         }
                     }

@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-110915-dev
+// @version         1.00-120915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-110915-dev';
+        this.version = '1.00-120915-dev';
         /**
          * @property stString
          * @type {String}
@@ -7336,8 +7336,14 @@
                             ofSyndLink: ''
                         });
 
-                        if (allCountSms === _this.sms.length) {
+                        if ((allCountSms === _this.sms.length) ||
+                                // последняя ссылка на странице,
+                                // но ссылок меньше 30 => больше страниц нет
+                                // (по 30 сообщений на одной странице)
+                                (i === linksSms.length - 1 &&
+                                    linksSms.length < 30)) {
                             _this.nextAjaxQuery(outbox);
+
                             return;
                         }
                     }
