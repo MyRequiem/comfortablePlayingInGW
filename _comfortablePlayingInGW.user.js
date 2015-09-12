@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.02-120915-dev
+// @version         1.03-120915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.02-120915-dev';
+        this.version = '1.03-120915-dev';
         /**
          * @property stString
          * @type {String}
@@ -7710,7 +7710,7 @@
             }
         }
 
-        if (/\/shop\.php\?shop=shop_/.test(general.loc)) {
+        if (/\/shop\.php/.test(general.loc)) {
             if (initScript[27]) {
                 try {
                     new LinksToHighTech().init();
