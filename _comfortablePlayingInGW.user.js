@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.04-120915-dev
+// @version         1.00-130915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.04-120915-dev';
+        this.version = '1.00-130915-dev';
         /**
          * @property stString
          * @type {String}
@@ -93,8 +93,9 @@
                         [24] - FixSkills
                         [25] - FuckTheFarm
                         [26] - HistorySms
-                        [27] - LinksToHighTech */
-                        '@|||||||||||||||||||||||||||' +
+                        [27] - LinksToHighTech
+                        [28] - GameMania */
+                        '@||||||||||||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -796,7 +797,12 @@
                     'для вывода предыдущей переписки с персонажем. Так же ' +
                     '"умеет" выводить ссылки на тексты сообщений, доступные ' +
                     'для официальных синдикатов в хронологическом порядке.' +
-                    this.getGitHubLink('historySms'), '26']],
+                    this.getGitHubLink('historySms'), '26'],
+                ['Результативность игры в рулетку, покер, тотализатор',
+                    'Анализ результативности игры в рулетку, тотализатор, ' +
+                    'покер и заработанных денег в боях на странице ' +
+                    'информации персонажа.' +
+                    this.getGitHubLink('gameMania'), '28']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -1260,7 +1266,7 @@
     var SetPoints = function () {
         /**
          * @method init
-         * @param   {String|int}   num
+         * @param   {String|int}    num
          * @param   {String}        separator
          * @param   {Boolean}       flagSign
          * @return  {String}
@@ -7501,6 +7507,108 @@
         };
     };
 
+    /**
+     * @class GameMania
+     * @constructor
+     */
+    var GameMania = function () {
+        /**
+         * @property target
+         * @type {HTMLTableCellElement}
+         */
+        this.target = general.doc.querySelector('a[href*="/info.ach.php?id="]' +
+                '+br+a[href*="/ferma.php?id="]').parentNode.nextElementSibling;
+        /**
+         * @property total
+         * @type {int}
+         */
+        this.total = 0;
+
+        /**
+         * @method calc
+         * @param   {Object}    reg1
+         * @param   {Object}    reg2
+         * @return  {int}
+         */
+        this.calc = function (reg1, reg2) {
+            var spent = reg1.test(this.target.innerHTML) ?
+                        +reg1.exec(this.target.innerHTML)[1].
+                            replace(/,/g, '') : 0,
+                prize = reg2.test(this.target.innerHTML) ?
+                        +reg2.exec(this.target.innerHTML)[1].
+                            replace(/,/g, '') : 0,
+                rez = prize - spent;
+
+            if (!rez) {
+                return 0;
+            }
+
+            this.total += rez;
+            return rez;
+        };
+
+        /**
+         * @method getStrGameRez
+         * @param   {int}       rez
+         * @param   {String}    game
+         * @param   {Boolean}   ttl
+         * @return  {String}
+         */
+        this.getStrGameRez = function (rez, game, ttl) {
+            return '<tr><td style="' +
+                (!ttl ? 'color: #008000' : 'font-weight: bold') + ';">' +
+                game + ':</td>' + '<td style="color: #' +
+                (rez < 0 ? '0000FF' : 'FF0000') + ';">$' +
+                new SetPoints().init(rez, ',') + '</td></tr>';
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var roul = this.calc(/Потрачено в казино: <b>\$([^<]*)/i,
+                    /Выигрыш в казино: <b>\$([^<]*)/i),
+                tot = this.calc(/Потрачено в тотализаторе: <b>\$([^<]*)/i,
+                    /Выигрыш в тотализаторе: <b>\$([^<]*)/i),
+                poker = this.calc(/Потрачено на покер:\s?<b>[^\$]*\$([^<]*)/i,
+                    /Получено с покера:\s?<b>[^\$]*\$([^<]*)/i),
+                fight = /Выигрыш в боях/i.test(this.target.innerHTML);
+
+            if (roul || tot || poker || fight) {
+                if (fight) {
+                    this.total += +(/Выигрыш в боях: <b>\$([^<]*)/i.
+                            exec(this.target.innerHTML)[1].replace(/,/g, ''));
+                }
+
+                var str = '<hr><table>';
+                if (roul) {
+                    str += this.getStrGameRez(roul, 'Рулетка', false);
+                }
+
+                if (tot) {
+                    str += this.getStrGameRez(tot, 'Тотализатор', false);
+                }
+
+                if (poker) {
+                    str += this.getStrGameRez(poker, 'Покер', false);
+                }
+
+                str += this.getStrGameRez(this.total, 'Всего', true);
+
+                if (fight) {
+                    str += '<tr><td colspan="2" style="font-size: 10px;">' +
+                        '(с учетом выигрыша в боях)</td></tr>';
+                }
+
+                str += '</table>';
+
+                var div = general.doc.createElement('div');
+                div.innerHTML = str;
+                this.target.appendChild(div);
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -7771,6 +7879,14 @@
                 if (initScript[18]) {
                     try {
                         new BonusInfo().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[28]) {
+                    try {
+                        new GameMania().init();
                     } catch (e) {
                         general.cons.log(e);
                     }
