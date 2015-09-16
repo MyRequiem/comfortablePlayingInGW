@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-130915-dev
+// @version         1.00-160915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-130915-dev';
+        this.version = '1.00-160915-dev';
         /**
          * @property stString
          * @type {String}
@@ -94,8 +94,9 @@
                         [25] - FuckTheFarm
                         [26] - HistorySms
                         [27] - LinksToHighTech
-                        [28] - GameMania */
-                        '@||||||||||||||||||||||||||||' +
+                        [28] - GameMania
+                        [29] - GosEnergoAtomFilter */
+                        '@|||||||||||||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -200,6 +201,12 @@
                     /*
                      [16] - FilterWarlist1to1
                         [0] - название оружия */
+                        '@' +
+                    /*
+                     [17] - GosEnergoAtomFilter
+                        [0] - остров ('' - любой, 'Z', 'G')
+                        [1] - тип объекта ('' - любой, '1' - эски, '2' - уранки)
+                        [2] - синдикат ('', '0' - ничейки, 'xxx' - ID синда) */
                         '@';
 
         /**
@@ -841,7 +848,13 @@
                     'настройки находятся на <a target="_blank" ' +
                     'href="http://www.ganjawars.ru/warlist.php?war=armed">' +
                     'странице одиночных заявок</a>' +
-                    this.getGitHubLink('filterWarlist1to1'), '23']],
+                    this.getGitHubLink('filterWarlist1to1'), '23'],
+                ['Контроль Уранa и ЭC', 'Сортировка объектов по типу, ' +
+                    'островам и контролирующим синдикатам на странице ' +
+                    '<a target="_blank" href="http://www.ganjawars.ru/' +
+                    'info.realty.php?id=2">ГосЭнегоАтом</a>. Выводит онлайны ' +
+                    'и уровни контролирующего синдиката и его союза.' +
+                    this.getGitHubLink('gosEnergoAtomFilter'), '29']],
 
             'Торговля': [
                 ['Фильтр поиска продажи/покупки/аренды', 'Фильтр ' +
@@ -7609,6 +7622,334 @@
         };
     };
 
+    /**
+     * @class GosEnergoAtomFilter
+     * @constructor
+     */
+    var GosEnergoAtomFilter = function () {
+        /**
+         * @property divRezult
+         * @type {HTMLDivElement}
+         */
+        this.divRezult = general.doc.createElement('div');
+        /**
+         * @property trs
+         * @type {Array}
+         */
+        this.trs = null;
+        /**
+         * @property strRez
+         * @type {String}
+         */
+        this.strRez = '';
+
+        /**
+         * @method parseSyndPage
+         * @param   {Object}    obj
+         * @return  {Array}
+         */
+        this.parseSyndPage = function (obj) {
+            var nameAndLvl = obj.querySelector('td[class="wb"][align="left"]' +
+                        '[width="100%"]'),
+                mass = [];
+
+            mass[0] = nameAndLvl.firstElementChild.innerHTML;
+            mass[1] = /^(\d+)/.exec(obj.querySelector('td[colspan="5"]' +
+                        '[class="wb"][bgcolor="#d0eed0"]' +
+                        '[align="center"]>b').innerHTML)[1];
+            mass[2] = /(\d+) LVL/.exec(nameAndLvl.innerHTML)[1];
+
+            return mass;
+        };
+
+        /**
+         * @method saveSyndData
+         * @param   {Object}    span
+         * @param   {String}    url
+         */
+        this.saveSyndData = function (span, url) {
+            var syndData = this.parseSyndPage(span);
+            this.strRez += '<table><tr><td style="color: #FF0000;">(' +
+                syndData[1] + ')</td><td><a target="_blank" href="' + url +
+                '" style="color: #0000FF;">' + syndData[0] + '</a></td>' +
+                '<td style="color: #008000;">[' + syndData[2] +
+                ']</td></tr></table>';
+        };
+
+        /**
+         * @method showRezult
+         */
+        this.showRezult = function () {
+            var imgclose = general.doc.createElement('img');
+
+            imgclose.src = general.imgPath + 'close.gif';
+            imgclose.setAttribute('style', 'cursor: pointer; ' +
+                    'margin: 0px 0px 3px 3px');
+            this.divRezult.innerHTML = this.strRez;
+            this.divRezult.appendChild(imgclose);
+
+            var _this = this;
+            imgclose.addEventListener('click', function () {
+                _this.divRezult.style.visibility = 'hidden';
+            }, false);
+        };
+
+        /**
+         * @method getOnline
+         * @param   {String|null}   url
+         * @param   {Object}        img
+         */
+        this.getOnline = function (url, img) {
+            if (!url) {
+                var pos = new GetPos().init(img.parentNode.nextElementSibling);
+                this.divRezult.style.left = pos.x + 20;
+                this.divRezult.style.top = pos.y;
+                this.divRezult.innerHTML = '<img style="margin: 3px 3px ' +
+                    '3px 3px" src="' + general.imgPath + 'preloader.gif" />';
+                this.divRezult.style.visibility = 'visible';
+
+                this.strRez = '';
+                url = img.parentNode.querySelector('a').href + '&page=online';
+            }
+
+            var _this = this;
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span'),
+                    linkUnion;
+
+                spanContent.innerHTML = xml.responseText;
+
+                if (/online$/.test(url)) {
+                    _this.saveSyndData(spanContent, url);
+                    url = url.replace(/online/g, 'politics');
+                    general.root.setTimeout(function () {
+                        _this.getOnline(url, img);
+                    }, 700);
+                } else if (/politics/.test(url)) {
+                    linkUnion = spanContent.querySelector('td[class="wb"]' +
+                        '[style="padding:10px;"]>' +
+                        'a[href*="/syndicate.php?id="]');
+                    if (linkUnion) {
+                        general.root.setTimeout(function () {
+                            _this.getOnline(linkUnion + '&page=online&union=1',
+                                    img);
+                        }, 700);
+                        return;
+                    }
+
+                    _this.showRezult();
+                } else {
+                    _this.saveSyndData(spanContent, url);
+                    _this.showRezult();
+                }
+            }, function () {
+                _this.getOnline(url, img);
+            });
+        };
+
+        /**
+         * @method preGetOnline
+         * @param   {HTMLImageElement}  img
+         * @return  {Function}
+         */
+        this.preGetOnline = function (img) {
+            var _this = this;
+            return function () {
+                _this.getOnline(null, img);
+            };
+        };
+
+        /**
+         * @method setImgGetData
+         */
+        this.setImgGetData = function () {
+            var first, img, i;
+            for (i = 1; i < this.trs.length; i++) {
+                first = this.trs[i].firstElementChild;
+                if (/\/img\/synds\/\d+.gif/.test(first.innerHTML)) {
+                    img = general.doc.createElement('img');
+                    img.src = 'http://images.ganjawars.ru/i/home/wlog.gif';
+                    img.setAttribute('style', 'cursor: pointer; ' +
+                            'margin-left: 3px');
+                    first.appendChild(img);
+                    img.addEventListener('click',
+                            this.preGetOnline(img), false);
+                }
+            }
+        };
+
+        /**
+         * @method sortGosEnergoAtomBySynd
+         */
+        this.sortGosEnergoAtomBySynd = function () {
+            var prnt = this.trs[0].parentNode,
+                objs = {},
+                syndID,
+                i;
+
+            for (i = 1; i < this.trs.length; i++) {
+                syndID = /\/syndicate\.php\?id=(\d+)/.
+                    exec(this.trs[i].innerHTML);
+                syndID = syndID ? syndID[1] : 0;
+                if (!objs[syndID]) {
+                    objs[syndID] = [];
+                }
+
+                objs[syndID].push(this.trs[i].cloneNode(true));
+                prnt.removeChild(this.trs[i]);
+            }
+
+            var synd, opt;
+            for (synd in objs) {
+                if (objs.hasOwnProperty(synd)) {
+                    for (i = 0; i < objs[synd].length; i++) {
+                        prnt.appendChild(objs[synd][i]);
+                    }
+
+                    opt = general.doc.createElement('option');
+                    opt.value = synd;
+                    opt.innerHTML = +synd ? '#' + synd : 'Ничейки';
+                    general.$('selectSynd').appendChild(opt);
+                }
+            }
+
+            this.getTrsTable();
+            this.setImgGetData();
+        };
+
+        /**
+         * @method resetGosEnergoAtom
+         */
+        this.resetGosEnergoAtom = function () {
+            var i;
+
+            for (i = 1; i < this.trs.length; i++) {
+                this.trs[i].style.display = '';
+            }
+        };
+
+        /**
+         * @method sortGosEnergoAtom
+         */
+        this.sortGosEnergoAtom = function () {
+            var stData = general.getData(17),
+                val1 = stData[0],
+                val2 = stData[1],
+                val3 = stData[2],
+                i;
+
+            this.resetGosEnergoAtom();
+            if (!val1 && !val2 && !val3) {
+                return;
+            }
+
+            if (val2) {
+                val2 = val2 === '1' ? 'Электростанция' : 'Урановый рудник';
+            }
+
+            for (i = 1; i < this.trs.length; i++) {
+                if (val1 && this.trs[i].innerHTML.
+                        indexOf('[' + val1 + ']') === -1) {
+                    this.trs[i].style.display = 'none';
+                }
+
+                if (val2 && this.trs[i].innerHTML.indexOf(val2) === -1) {
+                    this.trs[i].style.display = 'none';
+                }
+
+                if (val3) {
+                    if ((val3 === '0' &&
+                        (/\/syndicate\.php\?id=\d+/.
+                            test(this.trs[i].innerHTML))) ||
+                                (+val3 && this.trs[i].innerHTML.
+                                    indexOf('/img/synds/' + val3 +
+                                        '.gif') === -1)) {
+                        this.trs[i].style.display = 'none';
+                    }
+                }
+            }
+        };
+
+        /**
+         * @method selectChangeHandler
+         * @param    {Object}   sel
+         */
+        this.selectChangeHandler = function (sel) {
+            var stData = general.getData(17),
+                stInd = sel.id === 'selectIsland' ? 0 :
+                            (sel.id === 'selectObject' ? 1 : 2),
+                val = sel.value;
+
+            stData[stInd] = stInd !== 2 ? (val === '0' ? '' : val) :
+                    (val === 'all' ? '' : val);
+            general.setData(stData, 17);
+            this.sortGosEnergoAtom();
+        };
+
+        /**
+         * @method getTrsTable
+         * @return  {Array}
+         */
+        this.getTrsTable = function () {
+            this.trs = general.doc.querySelector('table[border="0"]' +
+                    '[cellpadding="3"][cellspacing="0"][class="wb"]' +
+                    '[bgcolor="#ffffff"][align="center"]').
+                        querySelectorAll('tr');
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var divSort = general.doc.createElement('div');
+            divSort.setAttribute('style', 'position: absolute; top: 100px; ' +
+                    'left: 20px;');
+            divSort.innerHTML = '<table><tr><td>Остров:</td>' +
+                '<td><select id="selectIsland"><option value="0">Все</option>' +
+                '<option value="Z">[Z]</option><option value="G">[G]</option>' +
+                '<option value="S">[S]</option></select></td></tr>' +
+                '<tr><td>Объект:</td><td><select id="selectObject" ' +
+                'style="margin-top: 5px;"><option value="0">Все</option>' +
+                '<option value="1">ЭС</option><option value="2">Уран</option>' +
+                '</select></td></tr><tr><td>Синдикат:</td><td>' +
+                '<select id="selectSynd" style="margin-top: 5px;">' +
+                '<option value="all">Все</option></select></td></tr></table>';
+            general.doc.body.appendChild(divSort);
+
+            this.divRezult.setAttribute('style', 'position: absolute; ' +
+                    'visibility: hidden; border: solid 1px #339933; ' +
+                    'border-radius: 5px; background-color: #D0EED0; ' +
+                    'top:0; left:0;');
+            general.doc.body.appendChild(this.divRezult);
+
+            var stData = general.getData(17),
+                _this = this;
+
+            var isl = general.$('selectIsland');
+            isl.addEventListener('change', function () {
+                _this.selectChangeHandler(this);
+            }, false);
+
+            var obj = general.$('selectObject');
+            obj.addEventListener('change', function () {
+                _this.selectChangeHandler(this);
+            }, false);
+
+            var synd = general.$('selectSynd');
+            synd.addEventListener('change', function () {
+                _this.selectChangeHandler(this);
+            }, false);
+
+            this.getTrsTable();
+            this.sortGosEnergoAtomBySynd();
+
+            isl.value = stData[0] || '0';
+            obj.value = stData[1] || '0';
+            synd.value = stData[2] || 'all';
+            this.sortGosEnergoAtom();
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -7890,6 +8231,16 @@
                     } catch (e) {
                         general.cons.log(e);
                     }
+                }
+            }
+        }
+
+        if (/\/info\.realty\.php\?id=2$/.test(general.loc)) {
+            if (initScript[29]) {
+                try {
+                    new GosEnergoAtomFilter().init();
+                } catch (e) {
+                    general.cons.log(e);
                 }
             }
         }
