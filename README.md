@@ -7,7 +7,7 @@
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
 <br>
 <br>
-Версия: 1.00-180915-dev
+Версия: 1.01-180915-dev
 <br>
 Нашли ошибку? Пожалуйста, [сообщите](http://www.ganjawars.ru/info.php?id=2095458)
 * [Установить](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js)
@@ -200,6 +200,13 @@
 Версия: 2.02-110915
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/HistorySms/historySms.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/HistorySms/historySms.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/HistorySms)
+<br>
+
+**HousHealth**
+<br>
+Версия: 2.00-180915
+<br>
+[[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/HousHealth/housHealth.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/HousHealth/housHealth.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/HousHealth)
 <br>
 
 **InventoryPlus**

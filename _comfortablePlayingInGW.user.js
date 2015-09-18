@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-180915-dev
+// @version         1.01-180915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-180915-dev';
+        this.version = '1.01-180915-dev';
         /**
          * @property stString
          * @type {String}
@@ -96,8 +96,9 @@
                         [27] - LinksToHighTech
                         [28] - GameMania
                         [29] - GosEnergoAtomFilter
-                        [30] - SortSyndOnline */
-                        '@||||||||||||||||||||||||||||||' +
+                        [30] - SortSyndOnline
+                        [31] - HousHealth */
+                        '@|||||||||||||||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -214,7 +215,11 @@
                         [0] - сортировать по боям
                         [1] - показывать онлайн союза
                         [2] - сортировать вместе с союзом */
-                        '@||';
+                        '@||' +
+                    /*
+                     [19] - HousHealth
+                        [0] - вышел из боя */
+                        '@';
 
         /**
          * @property myID
@@ -861,7 +866,11 @@
                     '<a target="_blank" href="http://www.ganjawars.ru/' +
                     'info.realty.php?id=2">ГосЭнегоАтом</a>. Выводит онлайны ' +
                     'и уровни контролирующего синдиката и его союза.' +
-                    this.getGitHubLink('gosEnergoAtomFilter'), '29']],
+                    this.getGitHubLink('gosEnergoAtomFilter'), '29'],
+                ['Проверка сектора после боя', 'Выводит сообщение после боя, ' +
+                    'если персонаж находится не в секторе со своим домом и ' +
+                    'его здоровье менее 80%.' +
+                    this.getGitHubLink('housHealth'), '31']],
 
             'Синдикаты': [
                 ['Сортировка на странице онлайна синдиката', 'Сортировка ' +
@@ -8156,6 +8165,80 @@
         };
     };
 
+    /**
+     * @class HousHealth
+     * @constructor
+     */
+    var HousHealth = function () {
+        /**
+         * @method showSector
+         * @param   {String}    url
+         * @param   {string}    sector
+         */
+        this.showSector = function (url, sector) {
+            var _this = this;
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = xml.responseText;
+
+                if (!sector) {    // ищем сектор перса
+                    sector = spanContent.querySelector('b+' +
+                                'a[href*="/map.php?s"]').innerHTML;
+                    general.root.setTimeout(function () {
+                        // на недвижимость перса
+                        _this.showSector('http://www.ganjawars.ru/' +
+                            'info.realty.php?id=' + general.myID, sector);
+                    }, 700);
+                } else {
+                    var table = spanContent.querySelector('table[class="wb"]' +
+                        '[align="center"]');
+
+                    if (table) {
+                        var trs = table.querySelectorAll('tr'),
+                            node,
+                            i;
+
+                        for (i = 1; i < trs.length; i++) {
+                            node = trs[i].firstElementChild;
+                            if (/Частный дом/.test(node.innerHTML) &&
+                                    node.nextElementSibling.innerHTML.
+                                        indexOf(sector) !== -1) {
+                                return;
+                            }
+                        }
+                    }
+
+                    alert('Вы находитесь не в секторе с домиком !');
+                }
+            }, function () {
+                general.root.setTimeout(function () {
+                    _this.showSector(url, sector);
+                }, 700);
+            });
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            if (/b0/.test(general.loc)) {
+                general.setData('1', 19);
+                return;
+            }
+
+            if (general.getData(19)[0]) {
+                general.setData('', 19);
+
+                // если здоровье менее 80%
+                if (general.doc.querySelector('#hpheader>font')) {
+                    this.showSector('http://www.ganjawars.ru/info.php?id=' +
+                            general.myID, null);
+                }
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -8478,6 +8561,14 @@
             if (initScript[7]) {
                 try {
                     new CritShotsAndLinksBtlLog().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[31]) {
+                try {
+                    new HousHealth().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
