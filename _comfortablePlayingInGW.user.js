@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.01-180915-dev
+// @version         1.00-190915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-180915-dev';
+        this.version = '1.00-190915-dev';
         /**
          * @property stString
          * @type {String}
@@ -8059,8 +8059,8 @@
 
                 if (/politics/.test(url)) {
                     var unionLink = spanContent.
-                        querySelector('td>br:first-child+b+' +
-                            'a[href*="/syndicate.php?id="]');
+                            querySelector('td>br:first-child+b+' +
+                                'a[href*="/syndicate.php?id="]');
                     if (unionLink) {
                         general.root.setTimeout(function () {
                             _this.getUnionOnline(unionLink + '&page=online');
@@ -8070,8 +8070,10 @@
                     }
                 } else {
                     var trs = _this.getTrs(spanContent);
-                    if (trs.length > 1) {
-                        _this.prnt.appendChild(_this.createTitle('Союз'));
+                    if (trs.length) {
+                        _this.prnt.appendChild(_this.createTitle('<a target=' +
+                            '"_blank" href="' + url + '">Союз</a>'));
+
                         var i;
                         for (i = 0; i < trs.length; i++) {
                             _this.prnt.appendChild(trs[i]);
