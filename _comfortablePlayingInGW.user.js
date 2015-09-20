@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.01-190915-dev
+// @version         1.00-200915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-190915-dev';
+        this.version = '1.00-200915-dev';
         /**
          * @property stString
          * @type {String}
@@ -89,7 +89,7 @@
                         [20] - NewsAndInvit
                         [21] - DoFilter
                         [22] - FilterResOnStat
-                        [23] - FilterWarlist1to1
+                        [23] - FilterWarlistOne2One
                         [24] - FixSkills
                         [25] - FuckTheFarm
                         [26] - HistorySms
@@ -202,7 +202,7 @@
                         [0] - список отображаемых ресурсов через запятую */
                         '@' +
                     /*
-                     [16] - FilterWarlist1to1
+                     [16] - FilterWarlistOne2One
                         [0] - название оружия */
                         '@' +
                     /*
@@ -868,7 +868,7 @@
                     'настройки находятся на <a target="_blank" ' +
                     'href="http://www.ganjawars.ru/warlist.php?war=armed">' +
                     'странице одиночных заявок</a>' +
-                    this.getGitHubLink('filterWarlist1to1'), '23'],
+                    this.getGitHubLink('filterWarlistOne2One'), '23'],
                 ['Контроль Уранa и ЭC', 'Сортировка объектов по типу, ' +
                     'островам и контролирующим синдикатам на странице ' +
                     '<a target="_blank" href="http://www.ganjawars.ru/' +
@@ -7058,10 +7058,10 @@
     };
 
     /**
-     * @class FilterWarlist1to1
+     * @class FilterWarlistOne2One
      * @constructor
      */
-    var FilterWarlist1to1 = function () {
+    var FilterWarlistOne2One = function () {
         /**
          * @property table
          * @type {HTMLTableElement}
@@ -8871,7 +8871,7 @@
         if (/\/warlist\.php/.test(general.loc)) {
             if (initScript[23]) {
                 try {
-                    new FilterWarlist1to1().init();
+                    new FilterWarlistOne2One().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
