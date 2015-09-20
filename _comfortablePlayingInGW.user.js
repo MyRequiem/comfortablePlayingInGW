@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-200915-dev
+// @version         1.01-200915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-200915-dev';
+        this.version = '1.01-200915-dev';
         /**
          * @property stString
          * @type {String}
@@ -98,8 +98,9 @@
                         [29] - GosEnergoAtomFilter
                         [30] - SortSyndOnline
                         [31] - HousHealth
-                        [32] - SortSyndWars */
-                        '@||||||||||||||||||||||||||||||||' +
+                        [32] - SortSyndWars
+                        [33] - LinksInOne2One */
+                        '@|||||||||||||||||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -869,6 +870,10 @@
                     'href="http://www.ganjawars.ru/warlist.php?war=armed">' +
                     'странице одиночных заявок</a>' +
                     this.getGitHubLink('filterWarlistOne2One'), '23'],
+                ['Ссылки на странице одиночных заявок', 'На странице ' +
+                    'заявок одиночных боев делает ники вызывающих на бой ' +
+                    'персонажей ссылками на них.' +
+                    this.getGitHubLink('linksInOne2One'), '33'],
                 ['Контроль Уранa и ЭC', 'Сортировка объектов по типу, ' +
                     'островам и контролирующим синдикатам на странице ' +
                     '<a target="_blank" href="http://www.ganjawars.ru/' +
@@ -8532,6 +8537,38 @@
         };
     };
 
+    /**
+     * @class LinksInOne2One
+     * @constructor
+     */
+    var LinksInOne2One = function () {
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var table = general.doc.querySelector('td[class="txt"]>' +
+                    'table[border="0"][cellpadding="5"][cellspacing="1"]');
+
+            if (table) {
+                var trs = table.querySelectorAll('tr'),
+                    last,
+                    name,
+                    i;
+
+                for (i = 0; i < trs.length; i++) {
+                    last = trs[i].lastElementChild;
+                    name = /вызван (.*)( \[\d+\])/.exec(last.innerHTML);
+                    if (name) {
+                        last.innerHTML = 'вызван <a target="_blank" ' +
+                            'href="http://www.ganjawars.ru/search.php?key=' +
+                            name[1] + '" style="text-decoration: none; ' +
+                            'font-weight: bold;">' + name[1] + '</a>' + name[2];
+                    }
+                }
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -8872,6 +8909,14 @@
             if (initScript[23]) {
                 try {
                     new FilterWarlistOne2One().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[33]) {
+                try {
+                    new LinksInOne2One().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
