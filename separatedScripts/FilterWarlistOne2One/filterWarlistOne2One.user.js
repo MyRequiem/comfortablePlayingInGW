@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name            FilterWarlist1to1
+// @name            FilterWarlistOne2One
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     Фильтр по оружию в одиночках. Фильтр по уровням и типу оружия, встроенный в игре, переносится вверх страницы.
 // @id              comfortablePlayingInGW@MyRequiem
-// @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FilterWarlist1to1/filterWarlist1to1.meta.js
-// @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FilterWarlist1to1/filterWarlist1to1.user.js
+// @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FilterWarlistOne2One/filterWarlistOne2One.meta.js
+// @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FilterWarlistOne2One/filterWarlistOne2One.user.js
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
@@ -46,7 +46,7 @@
          * @property STORAGENAME
          * @type {String}
          */
-        this.STORAGENAME = 'filterWarlist1to1';
+        this.STORAGENAME = 'filterWarlistOne2One';
     };
 
     /**
@@ -98,10 +98,10 @@
     var general = new General();
 
     /**
-     * @class FilterWarlist1to1
+     * @class FilterWarlistOne2One
      * @constructor
      */
-    var FilterWarlist1to1 = function () {
+    var FilterWarlistOne2One = function () {
         /**
          * @property table
          * @type {HTMLTableElement}
@@ -140,7 +140,7 @@
                 alert('Ваш браузер не поддерживает технологию localStorage.\n' +
                     'MyRequiеm рекомендует вам скачать и установить один из\n' +
                     'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'FilterWarlist1to1:\n\nFireFox 4+\nOpera 11+\nChrome 12+');
+                    'FilterWarlistOne2One:\n\nFireFox 4+\nOpera 11+\nChrome 12+');
 
                 return;
             }
@@ -207,7 +207,7 @@
         };
     };
 
-    new FilterWarlist1to1().init();
+    new FilterWarlistOne2One().init();
 
 }());
 
