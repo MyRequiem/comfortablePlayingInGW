@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.01-200915-dev
+// @version         1.00-210915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-200915-dev';
+        this.version = '1.00-210915-dev';
         /**
          * @property stString
          * @type {String}
@@ -8569,6 +8569,66 @@
         };
     };
 
+    /**
+     * @class MoveArrowOnAut
+     * @constructor
+     */
+    var MoveArrowOnAut = function () {
+        /**
+         * @method moveArrow
+         * @param    {Object}   e
+         */
+        this.moveArrow = function (e) {
+            var ev = e || general.root.event,
+                _this = this,
+                move = _this.href;
+
+            switch (ev.keyCode) {
+            // W,w,Ц,ц - вверх
+            case 87:
+            case 119:
+            case 1062:
+            case 1094:
+                move = move.replace('wy=0', 'wy=-1');
+                break;
+            // S,s,Ы,ы - вниз
+            case 83:
+            case 115:
+            case 1067:
+            case 1099:
+                move = move.replace('wy=0', 'wy=1');
+                break;
+            // A,a,Ф,ф - лево
+            case 65:
+            case 97:
+            case 1060:
+            case 1092:
+                move = move.replace('wx=0', 'wx=-1');
+                break;
+            // D,d,В,в - право
+            case 68:
+            case 100:
+            case 1042:
+            case 1074:
+                move = move.replace('wx=0', 'wx=1');
+                break;
+            default:
+                return;
+            }
+
+            general.root.location = move;
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var a = general.doc.querySelector('a[href*="&wx=0&wy=0&"]');
+            a.addEventListener('keypress', this.moveArrow, false);
+            a.focus();
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -8584,6 +8644,12 @@
 
         try {
             new AutLinksOnChat().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
+
+        try {
+            new MoveArrowOnAut().init();
         } catch (e) {
             general.cons.log(e);
         }
@@ -8914,11 +8980,13 @@
                 }
             }
 
-            if (initScript[33]) {
-                try {
-                    new LinksInOne2One().init();
-                } catch (e) {
-                    general.cons.log(e);
+            if (/\?war=armed/.test(general.loc)) {
+                if (initScript[33]) {
+                    try {
+                        new LinksInOne2One().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
                 }
             }
         }
