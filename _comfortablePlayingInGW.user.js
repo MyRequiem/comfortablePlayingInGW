@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-220915-dev
+// @version         1.01-220915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-220915-dev';
+        this.version = '1.01-220915-dev';
         /**
          * @property stString
          * @type {String}
@@ -1393,7 +1393,7 @@
     var GetPos = function () {
         /**
          * @method init
-         * @param   {HTMLElement}   obj
+         * @param   {Object}   obj
          * @return  {Object}
          */
         this.init = function (obj) {
@@ -2612,7 +2612,7 @@
                 if (general.viewMode) {
                     obj = {
                         x: _this.leftRightCommands[0].
-                            nextElementSibling.lastElementChild,
+                                nextElementSibling.lastElementChild,
                         y: 14
                     };
                 } else if (general.nojs &&
@@ -3278,8 +3278,11 @@
             // обновление страницы, когда висим в заявке
             if (/(\/wargroup|\/warlist)\.php/.test(general.loc)) {
                 var refreshAppl = general.getData(4)[1];
-                if (refreshAppl && general.doc.
-                        querySelector('center>b>font[color="#990000"]')) {
+                if (refreshAppl && (general.doc.
+                        querySelector('center>b>font[color="#990000"]') ||
+                            general.doc.querySelector('td[width="70%"]>b>' +
+                                    'font[color="#990000"]'))) {
+
                     general.root.setTimeout(function () {
                         general.doc.querySelector('a[href*="&r="]').click();
                     }, (+refreshAppl) * 1000);
