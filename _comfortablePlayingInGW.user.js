@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-210915-dev
+// @version         1.00-220915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-210915-dev';
+        this.version = '1.00-220915-dev';
         /**
          * @property stString
          * @type {String}
@@ -8576,47 +8576,75 @@
     var MoveArrowOnAut = function () {
         /**
          * @method moveArrow
-         * @param    {Object}   e
+         * @param   {Object}    e
          */
         this.moveArrow = function (e) {
-            var ev = e || general.root.event,
-                _this = this,
-                move = _this.href;
+            var makeMove = function (reg1, reg2, rev) {
+                    var a = general.doc.querySelectorAll('a'),
+                        allMoveLinks = [],
+                        emptyCell,
+                        i;
 
+                    for (i = 0; i < a.length; i++) {
+                        emptyCell = a[i].querySelector('img[src*="/t.gif"]');
+                        if (emptyCell && (/\?w=\-?\d+\&wx=\-?\d+\&wy=\-?\d+\&/.
+                                test(a[i].href))) {
+                            allMoveLinks.push(a[i]);
+                        }
+                    }
+
+                    allMoveLinks.sort(function (a, b) {
+                        var x = +(reg1.exec(a.href)[1]),
+                            x1 = +(reg2.exec(b.href)[1]),
+                            rez;
+
+                        if (x > x1) {
+                            rez = rev ? -1 : 1;
+                        } else if (x < x1) {
+                            rez = rev ? 1 : -1;
+                        } else {
+                            rez = 0;
+                        }
+
+                        return rez;
+                    });
+
+                    general.root.location = allMoveLinks[0].href;
+                };
+
+            var ev = e || general.root.event;
             switch (ev.keyCode) {
             // W,w,Ц,ц - вверх
             case 87:
             case 119:
             case 1062:
             case 1094:
-                move = move.replace('wy=0', 'wy=-1');
+                makeMove(/&wy=(\-?\d+)/, /&wy=(\-?\d+)/, false);
                 break;
             // S,s,Ы,ы - вниз
             case 83:
             case 115:
             case 1067:
             case 1099:
-                move = move.replace('wy=0', 'wy=1');
+                makeMove(/&wy=(\-?\d+)/, /&wy=(\-?\d+)/, true);
                 break;
             // A,a,Ф,ф - лево
             case 65:
             case 97:
             case 1060:
             case 1092:
-                move = move.replace('wx=0', 'wx=-1');
+                makeMove(/&wx=(\-?\d+)/, /&wx=(\-?\d+)/, false);
                 break;
             // D,d,В,в - право
             case 68:
             case 100:
             case 1042:
             case 1074:
-                move = move.replace('wx=0', 'wx=1');
+                makeMove(/&wx=(\-?\d+)/, /&wx=(\-?\d+)/, true);
                 break;
             default:
                 return;
             }
-
-            general.root.location = move;
         };
 
         /**
