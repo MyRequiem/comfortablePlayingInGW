@@ -6462,7 +6462,7 @@
      */
     var GbCounter = function () {
         /**
-         * @property
+         * @property spanCountGB
          * @type {HTMLElement|null}
          */
         this.spanCountGB = null;
