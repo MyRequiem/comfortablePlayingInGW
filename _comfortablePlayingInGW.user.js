@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-230915-dev
+// @version         1.01-230915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-230915-dev';
+        this.version = '1.01-230915-dev';
         /**
          * @property stString
          * @type {String}
@@ -100,8 +100,9 @@
                         [31] - HousHealth
                         [32] - SortSyndWars
                         [33] - LinksInOne2One
-                        [34] - One2OneCallerInfo */
-                        '@||||||||||||||||||||||||||||||||||' +
+                        [34] - One2OneCallerInfo
+                        [35] - MinBetAtRoulette */
+                        '@|||||||||||||||||||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -829,7 +830,13 @@
                     'Анализ результативности игры в рулетку, тотализатор, ' +
                     'покер и заработанных денег в боях на странице ' +
                     'информации персонажа.' +
-                    this.getGitHubLink('gameMania'), '28']],
+                    this.getGitHubLink('gameMania'), '28'],
+                ['Минимальные ставки в рулетке', 'Показывает числа, на ' +
+                    'которые поставлено меньше всего Гб в данный момент на ' +
+                    'странице <a target="_blank" href="http://www.ganjawars.' +
+                    'ru/roulette.php">рулетки</a>. Количество выводимых ' +
+                    'чисел определяется пользователем.' +
+                    this.getGitHubLink('minBetAtRoulette'), '35']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -8807,6 +8814,145 @@
         };
     };
 
+    /**
+     * @class MinBetAtRoulette
+     * @constructor
+     */
+    var MinBetAtRoulette = function () {
+        /**
+         * @method calculateBets
+         */
+        this.calculateBets = function () {
+            var url = 'http://www.ganjawars.ru/rouinfo.php?id=0',
+                _this = this;
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span'),
+                    divRez = general.$('resultBets');
+
+                spanContent.innerHTML = xml.responseText;
+
+                //если нет ни одной ставки
+                if (/Доход казино: <b>0\$<\/b>/.test(spanContent.innerHTML)) {
+                    divRez.innerHTML = '<span style="color: #FF0000;">' +
+                        'Ставок пока нет</span>';
+                    return;
+                }
+
+                var trs = spanContent.querySelector('center+table+br+' +
+                        'center+table[border="0"][cellpadding="5"]' +
+                        '[cellspacing="1"][align="center"]').
+                            querySelectorAll('tr'),
+                    bets = [],
+                    i;
+
+                for (i = 0; i < 36; i++) {
+                    bets[i] = [i, 0];
+                }
+
+                var num, rate;
+                for (i = 0; i < trs.length; i++) {
+                    num = /Число (\d+)/.exec(trs[i].innerHTML);
+                    if (num) {
+                        num = +num[1];
+                        rate = +trs[i].firstElementChild.innerHTML.
+                            replace(/\$/, '').replace(/,/g, '');
+                        bets[num - 1][1] += rate;
+                    }
+                }
+
+                bets.sort(function (a, b) {
+                    var rez;
+
+                    if (a[1] > b[1]) {
+                        rez = 1;
+                    } else if (a[1] < b[1]) {
+                        rez = -1;
+                    } else {
+                        rez = 0;
+                    }
+
+                    return rez;
+                });
+
+                var str = '<table style="border: #339933 solid 1px; ' +
+                    'width: 100%"><tr style="font-weight: bold; ' +
+                    'text-align: center;"><td>Число</td><td>Ставка</td></tr>',
+                    count = +general.$('inptext').value,
+                    j;
+
+                for (i = 0, j = 0; i < 36; i++) {
+                    if (j === count) {
+                        break;
+                    }
+
+                    if (general.$('chknull').checked || bets[i][1]) {
+                        str += '<tr style="text-align: center;">' +
+                            '<td style="color: #0000FF;">' + (bets[i][0] + 1) +
+                            '</td><td style="color: #FF0000;">$' + bets[i][1] +
+                            '</td></tr>';
+
+                        j++;
+                    }
+                }
+
+                divRez.innerHTML = str + '</table>';
+            }, function () {
+                general.root.setTimeout(function () {
+                    _this.calculateBets();
+                }, 700);
+            });
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var target = general.doc.querySelector('table+br+' +
+                    'table[width="100%"][cellspacing="0"][cellpadding="0"]');
+
+            target = target ? target.
+                querySelector('td[valign="top"]+td') : false;
+
+            if (target) {
+                target.innerHTML += '<div style="background: #D0EED0; ' +
+                    'margin-top: 5px; padding: 5px; text-align: center;">' +
+                    '<span style="color: #0000FF">Показать минимальные ставки' +
+                    '</span><br>Вывести <input type="text" id="inptext" ' +
+                    'value="5" maxlength="2" style="width: 30px"> чисел ' +
+                    '<input type="button" id="butb" value=">>" /><br>' +
+                    '<input type=checkbox id="chknull" checked /> ' +
+                    '<label for="chknull">Числа, на которые еще не ставили' +
+                    '</label></div><div id="resultBets" style="visibility: ' +
+                    'hidden; text-align: center; background-color:#D0EED0; ' +
+                    'padding: 5px;"></div>';
+
+                var _this = this;
+                general.$('butb').addEventListener('click', function () {
+                    var count = +general.$('inptext').value;
+                    if (isNaN(count) || (count < 1)  || (count > 36)) {
+                        alert('Введите число от 1 до 36');
+                        return;
+                    }
+
+                    var divb = general.$('resultBets');
+                    divb.style.visibility = 'visible';
+                    divb.innerHTML = '<img src="' + general.imgPath +
+                        'preloader.gif" />';
+
+                    _this.calculateBets();
+                }, false);
+
+                general.$('inptext').addEventListener('keypress', function (e) {
+                    var ev = e || general.root.event;
+                    if (ev.keyCode === 13) {
+                        general.$('butb').click();
+                    }
+                }, false);
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -9112,6 +9258,16 @@
             if (initScript[30]) {
                 try {
                     new SortSyndOnline().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
+
+        if (/\/roulette\.php$/.test(general.loc)) {
+            if (initScript[35]) {
+                try {
+                    new MinBetAtRoulette().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
