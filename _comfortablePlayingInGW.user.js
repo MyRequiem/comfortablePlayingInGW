@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.01-220915-dev
+// @version         1.00-230915-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-220915-dev';
+        this.version = '1.00-230915-dev';
         /**
          * @property stString
          * @type {String}
@@ -99,8 +99,9 @@
                         [30] - SortSyndOnline
                         [31] - HousHealth
                         [32] - SortSyndWars
-                        [33] - LinksInOne2One */
-                        '@|||||||||||||||||||||||||||||||||' +
+                        [33] - LinksInOne2One
+                        [34] - One2OneCallerInfo */
+                        '@||||||||||||||||||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -228,7 +229,11 @@
                         [1] - тип объекта ('' - все, 1 - ЭС, 2 - Уран, 3 - проч)
                         [2] - номер синдиката
                         [3] - '', '1' - чекбокс "Куда я могу зайти" */
-                        '@|||';
+                        '@|||' +
+                    /*
+                     [21] - One2OneCallerInfo
+                        [0] - звук при вызове */
+                        '@';
 
         /**
          * @property myID
@@ -706,7 +711,8 @@
                 '<option value="28">Я делаю особую магию</option>' +
                 '<option value="29">Prepare for battle!</option>' +
                 '<option value="30">Pick up your weapons</option>' +
-                '</select>';
+                '</select> <input type="button" id="l' + id + '" ' +
+                'value="»" disabled>';
         };
 
         /**
@@ -767,12 +773,9 @@
                     'наличие сломанных предметов<br><input type="checkbox" ' +
                     'id="showgren" disabled /> отображать отсутствие гранаты ' +
                     'на поясе<br>Звук при получении почты: ' +
-                    this.getSelectSound('soundSms') + ' <input type="button" ' +
-                    'id="listenSoundSms" value="»" disabled><br>Звук ' +
+                    this.getSelectSound('soundSms') + '<br>Звук ' +
                     '"Пора работать": &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                     '&nbsp;&nbsp;&nbsp;' + this.getSelectSound('soundWork') +
-                    ' <input type="button" id="listenSoundWork" value="»" ' +
-                    'disabled>' +
                     this.getGitHubLink('workPostGrenadesBroken'), '5'],
                 ['Ресурсы и бонусы', 'Создает ссылки "Ресурсы" и "Бонусы" ' +
                     'вверху страницы. При клике выводятся соответствующие ' +
@@ -793,8 +796,7 @@
                     'оповещение. Умеет выводить список NPC с информацией ' +
                     'о них для каждого острова.<br>Звук "Пора делать ' +
                     'квест": ' + this.getSelectSound('soundTimerNPC') +
-                    ' <input type="button" id="playSoundTimerNPC" value="»" ' +
-                    'disabled />' + this.getGitHubLink('timeNpc'), '12'],
+                    this.getGitHubLink('timeNpc'), '12'],
                 ['Упаковка одинаковых предметов в инвентаре', 'Упаковка ' +
                     'одинаковых предметов в инвентаре.' +
                     this.getGitHubLink('inventoryPlus'), '15'],
@@ -874,6 +876,13 @@
                     'заявок одиночных боев делает ники вызывающих на бой ' +
                     'персонажей ссылками на них.' +
                     this.getGitHubLink('linksInOne2One'), '33'],
+                ['Информация о вызывающем Вас на бой персонаже в одиночных ' +
+                    'боях', 'Выводит информацию о  вызывающем Вас на бой ' +
+                    'персонаже в одиночных боях (HP, дальность оружия, ' +
+                    'умения, ссылки-изображения на экипировку, бонусы). ' +
+                    'Звуковое оповещение при вызове.<br><br>Звук при вызове: ' +
+                    this.getSelectSound('soundOne2One') +
+                    this.getGitHubLink('one2OneCallerInfo'), '34'],
                 ['Контроль Уранa и ЭC', 'Сортировка объектов по типу, ' +
                     'островам и контролирующим синдикатам на странице ' +
                     '<a target="_blank" href="http://www.ganjawars.ru/' +
@@ -949,10 +958,8 @@
                     this.getGitHubLink('farmExperience'), '9'],
                 ['Таймер', 'Таймер для фермы. Звуковое оповещение когда ' +
                     'пора полить/собрать.<br><br>' +
-                    this.getSelectSound('farmtm_snd') +
-                    '<input id="listenFarmtimer_sound" type="button" ' +
-                    'value="»" disabled /> - звук когда пора поливать/' +
-                    'собирать (0 - без звука)<br>' +
+                    this.getSelectSound('farmTmSound') + ' - звук когда пора ' +
+                    'поливать/собирать (0 - без звука)<br>' +
                     '<input id="farmtmSndIntrvl" type="text" maxlength="3" ' +
                     'style="width: 40px;" disabled /> - интервал повторения ' +
                     'звука в секундах (0 - не повторять)' +
@@ -1210,9 +1217,9 @@
 
             // работа, слом, грена, почта/посылка
             // кнопки прослушать звук
-            general.$('listenSoundSms').
+            general.$('lsoundSms').
                 addEventListener('click', this.testSound, false);
-            general.$('listenSoundWork').
+            general.$('lsoundWork').
                 addEventListener('click', this.testSound, false);
 
             // установка списка выбора звуков sms и "Пора работать"
@@ -1276,9 +1283,9 @@
             }, false);
 
             // FarmTimer
-            general.$('listenFarmtimer_sound').
+            general.$('lfarmTmSound').
                 addEventListener('click', this.testSound, false);
-            var farmTmSound = general.$('farmtm_snd');
+            var farmTmSound = general.$('farmTmSound');
             farmTmSound.value = general.getData(9)[4] || '0';
             farmTmSound.addEventListener('change', function () {
                 _this.modifyData(9, 4, farmTmSound.value === '0' ?
@@ -1293,7 +1300,7 @@
             }, false);
 
             // TimeNpc
-            general.$('playSoundTimerNPC').
+            general.$('lsoundTimerNPC').
                 addEventListener('click', this.testSound, false);
             var soundTimerNPC = general.$('soundTimerNPC');
             soundTimerNPC.value = general.getData(10)[3] || '0';
@@ -1349,6 +1356,16 @@
             if (general.getData(18)[2]) {
                 sortMainAndUnion.click();
             }
+
+            // One2OneCallerInfo
+            general.$('lsoundOne2One').
+                addEventListener('click', this.testSound, false);
+            var soundOne2One = general.$('soundOne2One');
+            soundOne2One.value = general.getData(21)[0] || '0';
+            soundOne2One.addEventListener('change', function () {
+                _this.modifyData(21, 0, soundOne2One.value === '0' ?
+                        '' : soundOne2One.value);
+            }, false);
         };
     };
 
@@ -8660,6 +8677,136 @@
         };
     };
 
+    /**
+     * @class One2OneCallerInfo
+     * @constructor
+     */
+    var One2OneCallerInfo = function () {
+        /**
+         * @property weapon
+         * @type {Node|null}
+         */
+        this.weapon = null;
+        /**
+         * @property twoHand
+         * @type {Boolean}
+         */
+        this.twoHand = false;
+
+        /**
+         * @method getRange
+         * @param   {int}       ind
+         * @param   {string}    str
+         */
+        this.getRange = function (ind, str) {
+            var _this = this,
+                a = _this.weapon.querySelectorAll('a'),
+                url = a[ind].href;
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                if (/Дальность стрельбы: \d+ ходов/i.test(xml.responseText)) {
+                    str += (/Дальность стрельбы: (\d+) ходов/i.
+                            exec(xml.responseText))[1];
+                } else {
+                    str += '<span style="color: #FF0000; font-weight: ' +
+                        'normal;">не найдена</span>';
+                }
+
+                if (!_this.twoHand || ind || (a[1].href === url)) {
+                    _this.weapon.innerHTML += '<span style="color: #0000FF; ' +
+                        'font-weight: bold;">' + str + '</span>';
+                } else {
+                    str += ', ';
+                    general.root.setTimeout(function () {
+                        _this.getRange(1, str);
+                    }, 700);
+                }
+            }, function () {
+                general.root.setTimeout(function () {
+                    _this.getRange(ind, str);
+                }, 700);
+            });
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var called = general.doc.
+                    querySelector('hr+b>a[href*="/info.php?id="]');
+
+            if (!called) {
+                return;
+            }
+
+            general.doc.title = 'БОЙ !!!';
+            new PlaySound().init(general.getData(21)[0]);
+
+            var url = called.href,
+                _this = this;
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span'),
+                    spanHp = general.doc.createElement('span');
+
+                spanContent.innerHTML = xml.responseText;
+                // здоровье
+                spanHp.innerHTML = /\[(\d+) \/ (\d+)\]/.exec(spanContent.
+                        querySelector('td[style="padding-top:3px;"]').
+                            innerHTML)[0];
+                spanHp.
+                    setAttribute('style', 'color: #990000; margin-left: 5px;');
+                called.parentNode.appendChild(spanHp);
+
+                // узел td со ссылками и изображениями на оружие
+                _this.weapon = spanContent.querySelector('table' +
+                        '[style="margin-right:1px;"]').parentNode;
+                _this.weapon.firstElementChild.removeAttribute('align');
+                _this.weapon.removeAttribute('rowspan');
+                _this.weapon.setAttribute('style', 'padding-left: 30px;');
+                var target = general.doc.
+                        querySelector('td[class="txt"]>hr').parentNode;
+                target.parentNode.appendChild(_this.weapon);
+
+                // раскрашиваем умелку
+                var li = target.querySelectorAll('li'),
+                    i;
+
+                for (i = 0; i < li.length; i++) {
+                    if (/\(\d+\)/.test(li[i].innerHTML)) {
+                        li[i].innerHTML = li[i].innerHTML.replace(/(\(\d+\))/,
+                            '<span style="color: #00C000; ' +
+                                'font-weight: bold;">$1</span>');
+                        _this.twoHand = i === 1;
+                    }
+                }
+
+                // узел td со списком умелок
+                var skills = spanContent.
+                    querySelectorAll('td[align="right"][valign="top"]')[4];
+                skills.setAttribute('style', 'padding-bottom: 10px;');
+                skills.removeAttribute('class');
+                var tr = general.doc.createElement('tr');
+                target = target.parentNode.parentNode;
+                target.insertBefore(tr, target.lastElementChild);
+                tr.appendChild(skills);
+
+                // узел td со списком бонусов
+                var bonuses = spanContent.
+                        querySelectorAll('td[align="center"][valign="top"]')[2];
+                bonuses.removeAttribute('class');
+                tr.appendChild(bonuses);
+
+                // дальность оружия
+                general.root.setTimeout(function () {
+                    _this.getRange(0, 'Дальность оружия: ');
+                }, 700);
+            }, function () {
+                general.cons.log('Error xhr on One2OneCallerInfo');
+            });
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -9006,6 +9153,14 @@
             if (initScript[23]) {
                 try {
                     new FilterWarlistOne2One().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[34]) {
+                try {
+                    new One2OneCallerInfo().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
