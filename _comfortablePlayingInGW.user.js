@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-041015-dev
+// @version         1.00-061015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-041015-dev';
+        this.version = '1.00-061015-dev';
         /**
          * @property stString
          * @type {String}
@@ -102,8 +102,9 @@
                         [33] - LinksInOne2One
                         [34] - One2OneCallerInfo
                         [35] - MinBetAtRoulette
-                        [36] - NotesForFriends */
-                        '@||||||||||||||||||||||||||||||||||||' +
+                        [36] - NotesForFriends
+                        [37] - PortsAndTerminals */
+                        '@|||||||||||||||||||||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -884,7 +885,10 @@
                     '<span style="margin-left: 15px;">идея: ' +
                     '<a href="http://www.ganjawars.ru/info.php?id=993979" ' +
                     'style="font-weight: bold;" target="_blank">ЧупакаЪра' +
-                    '</a></span>', '36']],
+                    '</a></span>', '36'],
+                ['Порты и терминалы', 'Показывает на карте местонахождение ' +
+                    'терминалов и портов.' +
+                    this.getGitHubLink('portsAndTerminals'), '37']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -9335,6 +9339,64 @@
         };
     };
 
+    /**
+     * @class PortsAndTerminals
+     * @constructor
+     */
+    var PortsAndTerminals = function () {
+        /**
+         * @property sectors
+         * @type {Array}
+         */
+        this.sectors = ['50&sy=47|', '47&sy=49|', '49&sy=49|1', '51&sy=49|1',
+            '53&sy=49|1', '48&sy=50|1', '50&sy=50|1', '52&sy=50|2',
+            '49&sy=51|1', '53&sy=51|1', '47&sy=52|', '50&sy=52|1',
+            '48&sy=53|1', '49&sy=53|', '53&sy=53|', '152&sy=148|',
+            '149&sy=149|', '152&sy=149|1', '150&sy=150|1', '151&sy=150|',
+            '149&sy=152|', '151&sy=152|2'];
+        /**
+         * @property imgPath
+         * @type {String}
+         */
+        this.imgPath = general.imgPath + 'PortsAndTerminals/';
+
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var cells = general.doc.
+                    querySelectorAll('a[href*="/map.php?sx="]>img'),
+                mySector,
+                coord,
+                tmp,
+                j,
+                i;
+
+            for (i = 0; i < cells.length; i++) {
+                coord = /\d+&sy=\d+/.exec(cells[i].parentNode.href)[0];
+                for (j = 0; j < this.sectors.length; j++) {
+                    tmp = this.sectors[j].split('|');
+                    if (coord === tmp[0]) {
+                        mySector = cells[i].parentNode.parentNode.
+                            getAttribute('class') === 'wbr';
+
+                        if (!tmp[1]) {
+                            cells[i].src = this.imgPath + (mySector ?
+                                    'anchorS.png' : 'anchor.png');
+                        } else if (tmp[1] === '1') {
+                            cells[i].src = this.imgPath + (mySector ?
+                                    'coinsS.png' : 'coins.png');
+                        } else {
+                            cells[i].src = this.imgPath + (mySector ?
+                                    'bothS.png' : 'both.png');
+                        }
+                    }
+                }
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -9660,6 +9722,16 @@
             if (initScript[36]) {
                 try {
                     new NotesForFriends().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
+
+        if (/\/map.php/.test(general.loc)) {
+            if (initScript[37]) {
+                try {
+                    new PortsAndTerminals().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
