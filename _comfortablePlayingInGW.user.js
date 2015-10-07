@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-061015-dev
+// @version         1.00-071015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-061015-dev';
+        this.version = '1.00-071015-dev';
         /**
          * @property stString
          * @type {String}
@@ -103,8 +103,9 @@
                         [34] - One2OneCallerInfo
                         [35] - MinBetAtRoulette
                         [36] - NotesForFriends
-                        [37] - PortsAndTerminals */
-                        '@|||||||||||||||||||||||||||||||||||||' +
+                        [37] - PortsAndTerminals
+                        [38] - RangeWeapon */
+                        '@||||||||||||||||||||||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -888,7 +889,10 @@
                     '</a></span>', '36'],
                 ['Порты и терминалы', 'Показывает на карте местонахождение ' +
                     'терминалов и портов.' +
-                    this.getGitHubLink('portsAndTerminals'), '37']],
+                    this.getGitHubLink('portsAndTerminals'), '37'],
+                ['Дальность оружия', 'Добавляет дальность оружия на странице ' +
+                    'информации любого персонажа.' +
+                    this.getGitHubLink('rangeWeapon'), '38']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -9397,6 +9401,112 @@
         };
     };
 
+    /**
+     * @class RangeWeapon
+     * @constructor
+     */
+    var RangeWeapon = function () {
+        /**
+         * @property equipment
+         * @type {HTMLTableElement}
+         */
+        this.equipment = general.doc.querySelector('td[colspan="2"]>' +
+                'table[border="0"][cellspacing="0"][cellpadding="0"]');
+        /**
+         * @property weapon
+         * @type {Array|null}
+         */
+        this.weapon = null;
+        /**
+         * @property range
+         * @type {Array}
+         */
+        this.range = [];
+
+        /**
+         * @method setRange
+         * @param   {Object}    target
+         * @param   {int}       ind
+         */
+        this.setRange = function (target, ind) {
+            var targt = target[ind].nodeName === 'B' ?
+                            target[ind] : target[ind].parentNode;
+            targt.innerHTML += '<span style="color: #0000FF; ' +
+                    'margin-left: 5px; font-weight: bold;">[' +
+                    this.range[ind] + ']</span>';
+        };
+
+        /**
+         * @method showRange
+         */
+        this.showRange = function () {
+            var a  = this.equipment.
+                        querySelectorAll('a[style*="font-weight:bold;"]'),
+                b = this.equipment.querySelectorAll('b'),
+                target = a.length ? a : b,
+                i;
+
+            for (i = 0; i < this.range.length; i++) {
+                this.setRange(target, i);
+            }
+        };
+
+        /**
+         * @method getRange
+         * @param   {int}   ind
+         */
+        this.getRange = function (ind) {
+            var url = this.weapon[ind].parentNode.href,
+                _this = this;
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var reg = /Дальность стрельбы: (\d+) ход/i;
+
+                _this.range.push(reg.test(xml.responseText) ?
+                                    reg.exec(xml.responseText)[1] : '-');
+
+                ind++;
+                if (_this.weapon[ind] &&
+                        // в правой и левой руке разное оружие
+                        _this.weapon[ind - 1].src !== _this.weapon[ind].src) {
+                    general.root.setTimeout(function () {
+                        _this.getRange(ind);
+                    }, 700);
+                } else {
+                    if (_this.weapon[ind]) {
+                        _this.range.push(_this.range[0]);
+                    }
+                    _this.showRange();
+                }
+
+            }, function () {
+                general.root.setTimeout(function () {
+                    _this.getRange(ind);
+                }, 700);
+            });
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            if (this.equipment &&
+                    (/(Левая|Правая) рука/.test(this.equipment.innerHTML))) {
+                this.weapon = this.equipment.
+                        querySelectorAll('a[href*="/item.php?item_id="]>img');
+
+                var txt = this.equipment.innerHTML;
+                if (/Левая/.test(txt) && (/Правая/.test(txt))) {
+                    this.weapon = [this.weapon[0], this.weapon[1]];
+                } else {
+                    this.weapon = [this.weapon[0]];
+                }
+
+                this.getRange(0);
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -9681,6 +9791,14 @@
                 if (initScript[28]) {
                     try {
                         new GameMania().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[38]) {
+                    try {
+                        new RangeWeapon().init();
                     } catch (e) {
                         general.cons.log(e);
                     }
