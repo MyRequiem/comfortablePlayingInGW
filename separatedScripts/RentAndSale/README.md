@@ -8,7 +8,7 @@
 <br>
 ![RentAndSale](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/RentAndSale/screen1.png)
 <br>
-![RentAndSale](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/RentAndSale/screen3.png)
-<br>
 ![RentAndSale](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/RentAndSale/screen2.png)
+<br>
+![RentAndSale](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/RentAndSale/screen3.png)
 <br>
