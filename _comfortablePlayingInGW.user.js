@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-071015-dev
+// @version         1.01-071015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-071015-dev';
+        this.version = '1.01-071015-dev';
         /**
          * @property stString
          * @type {String}
@@ -104,8 +104,9 @@
                         [35] - MinBetAtRoulette
                         [36] - NotesForFriends
                         [37] - PortsAndTerminals
-                        [38] - RangeWeapon */
-                        '@||||||||||||||||||||||||||||||||||||||' +
+                        [38] - RangeWeapon
+                        [39] - RentAndSale */
+                        '@|||||||||||||||||||||||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -1012,7 +1013,13 @@
                     '<span style="margin-left: 15px;">идея: ' +
                     '<a href="http://www.ganjawars.ru/info.php?id=436429" ' +
                     'style="font-weight: bold;" target="_blank">Buger_man' +
-                    '</a></span>', '27']],
+                    '</a></span>', '27'],
+                ['Форма аренды и продажи', 'При передаче предмета в аренду ' +
+                    'форма передачи выделяется голубым цветом. Если предмет ' +
+                    'продается или передается в постоянное пользование, то ' +
+                    'красным. Если указана нулевая цена, выводится сообщение ' +
+                    'с подтверждением продолжения операции.' +
+                    this.getGitHubLink('rentAndSale'), '39']],
 
             'Ферма': [
                 ['Производственный опыт и прибыль', 'Отображение ' +
@@ -9507,6 +9514,50 @@
         };
     };
 
+    /**
+     * @class RentAndSale
+     * @constructor
+     */
+    var RentAndSale = function () {
+        /**
+         * @method changeColor
+         */
+        this.changeColor = function () {
+            var td = general.doc.querySelector('input[name="sendtype"]').
+                        parentNode,
+                _this = this,
+                color = _this.id === 'donotsend' ? '#E0EEE0' :
+                            _this.id === 'send1' ? '#FB8F8F' : '#95CCF6';
+
+            td.style.background = color;
+            td.previousElementSibling.style.background = color;
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var radio = general.doc.querySelectorAll('input[name="sendtype"]');
+
+            if (radio.length) {
+                var scrpt = general.doc.createElement('script');
+                scrpt.innerHTML = 'function checkPrice(){if(document.' +
+                        'getElementById("for_money_id").value=="0"){' +
+                        'if(!confirm("Указана цена 0 Гб !!! Продолжить?"))' +
+                        'return false;}return true;}';
+                general.doc.querySelector('head').appendChild(scrpt);
+
+                general.doc.querySelector('form[action="/home.senditem.php"]').
+                    setAttribute('onsubmit', 'return checkPrice();');
+
+                var i;
+                for (i = 0; i < radio.length; i++) {
+                    radio[i].addEventListener('click', this.changeColor, false);
+                }
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -9850,6 +9901,16 @@
             if (initScript[37]) {
                 try {
                     new PortsAndTerminals().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
+
+        if (/\/home\.senditem\.php/.test(general.loc)) {
+            if (initScript[39]) {
+                try {
+                    new RentAndSale().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
