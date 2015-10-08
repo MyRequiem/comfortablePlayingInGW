@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.01-071015-dev
+// @version         1.00-081015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-071015-dev';
+        this.version = '1.00-081015-dev';
         /**
          * @property stString
          * @type {String}
@@ -105,8 +105,9 @@
                         [36] - NotesForFriends
                         [37] - PortsAndTerminals
                         [38] - RangeWeapon
-                        [39] - RentAndSale */
-                        '@|||||||||||||||||||||||||||||||||||||||' +
+                        [39] - RentAndSale
+                        [40] - ScanKarma */
+                        '@||||||||||||||||||||||||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -243,7 +244,11 @@
                      [22] - NotesForFriends
                         [0] - отображать/не отображать на главной странице
                         [1] - ID жалобы */
-                        '@|';
+                        '@|' +
+                    /*
+                     [23] - ScanKarma
+                        [0] - текущая карма 'xx/xx' */
+                        '@';
 
         /**
          * @property myID
@@ -893,7 +898,10 @@
                     this.getGitHubLink('portsAndTerminals'), '37'],
                 ['Дальность оружия', 'Добавляет дальность оружия на странице ' +
                     'информации любого персонажа.' +
-                    this.getGitHubLink('rangeWeapon'), '38']],
+                    this.getGitHubLink('rangeWeapon'), '38'],
+                ['Изменение Вашей кармы', 'При изменении Вашей кармы выводит ' +
+                    'сообщение на странице информации персонажа.' +
+                    this.getGitHubLink('scanKarma'), '40']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -9558,6 +9566,68 @@
         };
     };
 
+    /**
+     * @class ScanKarma
+     * @constructor
+     */
+    var ScanKarma = function () {
+        /**
+         * @method init
+         */
+        this.init = function () {
+            if (/\?id=(\d+)/.exec(general.loc)[1] === general.myID) {
+                var nowKarma = /Карма:\s\d+\.?\d*\s\((\d+\/\d+)\)/i.
+                        exec(general.doc.body.textContent);
+
+                if (nowKarma) {
+                    nowKarma = nowKarma[1];
+                    if (!general.getData(23)[0]) {
+                        general.setData(nowKarma, 23);
+                        return;
+                    }
+
+                    var oldKarma = general.getData(23)[0];
+                    if (nowKarma === oldKarma) {
+                        return;
+                    }
+
+                    general.setData(nowKarma, 23);
+
+                    oldKarma = oldKarma.split('/');
+                    oldKarma[0] = +oldKarma[0];
+                    oldKarma[1] = +oldKarma[1];
+
+                    nowKarma = nowKarma.split('/');
+                    nowKarma[0] = +nowKarma[0];
+                    nowKarma[1] = +nowKarma[1];
+
+                    var str = 'Ваша карма была изменена \n\n';
+                    if (nowKarma[0] > oldKarma[0]) {
+                        str += 'Отрицательная карма увеличилась на ' +
+                            (nowKarma[0] - oldKarma[0]) + ' (' + oldKarma[0] +
+                            ' ---> ' + nowKarma[0] + ')\n';
+                    } else if (nowKarma[0] < oldKarma[0]) {
+                        str += 'Отрицательная карма уменьшилась на ' +
+                            (oldKarma[0] - nowKarma[0]) + ' (' + oldKarma[0] +
+                            ' ---> ' + nowKarma[0] + ')\n';
+                    }
+
+                    if (nowKarma[1] > oldKarma[1]) {
+                        str += 'Положительная карма увеличилась на ' +
+                            (nowKarma[1] - oldKarma[1]) +  ' (' + oldKarma[1] +
+                            ' ---> ' + nowKarma[1] + ')';
+                    } else if (nowKarma[1] < oldKarma[1]) {
+                        str += 'Положительная карма уменьшилась на ' +
+                            (oldKarma[1] - nowKarma[1]) +  ' (' + oldKarma[1] +
+                            ' ---> ' + nowKarma[1] + ')';
+                    }
+
+                    alert(str);
+                }
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -9850,6 +9920,14 @@
                 if (initScript[38]) {
                     try {
                         new RangeWeapon().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[40]) {
+                    try {
+                        new ScanKarma().init();
                     } catch (e) {
                         general.cons.log(e);
                     }
