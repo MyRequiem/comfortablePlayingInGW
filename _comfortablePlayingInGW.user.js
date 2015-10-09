@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-081015-dev
+// @version         1.00-091015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-081015-dev';
+        this.version = '1.00-091015-dev';
         /**
          * @property stString
          * @type {String}
@@ -716,16 +716,16 @@
     };
 
     /**
-     * @class ShowMainSettings
+     * @class GetSelectSound
      * @constructor
      */
-    var ShowMainSettings = function () {
+    var GetSelectSound = function () {
         /**
-         * @method getSelectSound
+         * @method init
          * @param   {String}    id
          * @return  {String}
          */
-        this.getSelectSound = function (id) {
+        this.init = function (id) {
             return '<select id="' + id + '" disabled>' +
                 '<option value="0">Без звука</option>' +
                 '<option value="1">Перезарядка</option>' +
@@ -761,7 +761,13 @@
                 '</select> <input type="button" id="l' + id + '" ' +
                 'value="»" disabled>';
         };
+    };
 
+    /**
+     * @class ShowMainSettings
+     * @constructor
+     */
+    var ShowMainSettings = function () {
         /**
          * @method getGitHubLink
          * @param   {String}    scriptName
@@ -775,6 +781,12 @@
                 scriptName[0].toUpperCase() + scriptName.substr(1) +
                 '" style="color: #0000FF;">' + scriptName + '.user.js</a>';
         };
+
+        /**
+         * @property getSelectSound
+         * @type {Function}
+         */
+        this.getSelectSound = new GetSelectSound().init;
 
         /**
          * @property infoScripts
