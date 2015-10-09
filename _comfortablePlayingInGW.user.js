@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-091015-dev
+// @version         1.01-091015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-091015-dev';
+        this.version = '1.01-091015-dev';
         /**
          * @property stString
          * @type {String}
@@ -106,8 +106,9 @@
                         [37] - PortsAndTerminals
                         [38] - RangeWeapon
                         [39] - RentAndSale
-                        [40] - ScanKarma */
-                        '@||||||||||||||||||||||||||||||||||||||||' +
+                        [40] - ScanKarma
+                        [41] - ScanPers */
+                        '@|||||||||||||||||||||||||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -248,7 +249,19 @@
                     /*
                      [23] - ScanKarma
                         [0] - текущая карма 'xx/xx' */
-                        '@';
+                        '@' +
+                    /*
+                     [24] - ScanPers
+                        [0] - ник перса
+                        [1] - id синда
+                        [2] - чекбокс звук
+                        [3] - чекбокс сообщение
+                        [4] - id звука при входе
+                        [5] - id звука при выходе
+                        [6] - id перса
+                        [7] - звук(сообщение) проигран или нет
+                        [8] - интервал сканирования (сек, не менее 20) */
+                        '@||||||||';
 
         /**
          * @property myID
@@ -913,7 +926,11 @@
                     this.getGitHubLink('rangeWeapon'), '38'],
                 ['Изменение Вашей кармы', 'При изменении Вашей кармы выводит ' +
                     'сообщение на странице информации персонажа.' +
-                    this.getGitHubLink('scanKarma'), '40']],
+                    this.getGitHubLink('scanKarma'), '40'],
+                ['Извещения о входе персонажа в игру', 'Выдает сообщение ' +
+                    'и/или звуковой сигнал при появлении (или выходе) в ' +
+                    'онлайне определенного персонажа.' +
+                    this.getGitHubLink('scanPers'), '41']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -9640,6 +9657,361 @@
         };
     };
 
+    /**
+     * @class ScanPers
+     * @constructor
+     */
+    var ScanPers = function () {
+        /**
+         * @method showSettings
+         */
+        this.showSettings = function () {
+            var settings = general.$('settingsWin'),
+                pos = new GetPos().init(this);
+
+            settings.style.top = pos.y + 28;
+            settings.style.left = pos.x - 120;
+            settings.style.visibility = settings.style.visibility === 'hidden' ?
+                    'visible' : 'hidden';
+        };
+
+        /**
+         * @method listenSound
+         */
+        this.listenSound = function () {
+            var _this = this;
+            new PlaySound().init(_this.previousElementSibling.value);
+        };
+
+        /**
+         * @method changeSelect
+         */
+        this.changeSelect = function () {
+            var _this = this,
+                ind = _this.id === 'scan_sel1' ? 4 : 5,
+                stData = general.getData(24);
+
+            stData[ind] = _this.value !== '0' ? _this.value : '';
+            general.setData(stData, 24);
+        };
+
+        /**
+         * @method showHideLink
+         */
+        this.showHideLink = function () {
+            var stData = general.getData(24),
+                persId = stData[6],
+                tdLink = general.$('td_link'),
+                butReset = general.$('scan_reset'),
+                butCheckNow = general.$('scan_checknow'),
+                butSave = general.$('scan_save');
+
+            if (persId) {
+                tdLink.innerHTML = '<a target="_blank" style="color: ' +
+                    '#008000;" href="http://www.ganjawars.ru/info.php?id=' +
+                    persId + '">' + stData[0] + '</a>';
+                tdLink.style.display = '';
+                butReset.disabled = false;
+                butCheckNow.disabled = false;
+                butSave.disabled = true;
+            } else {
+                tdLink.style.display = 'none';
+                butReset.disabled = true;
+                butCheckNow.disabled = true;
+                butSave.disabled = false;
+            }
+        };
+
+        /**
+         * @method showHidePreloader
+         */
+        this.showHidePreloader = function () {
+            var preloader = general.$('img_load');
+            preloader.style.display = preloader.style.display === 'none' ?
+                    '' : 'none';
+        };
+
+        /**
+         * @method saveData
+         */
+        this.saveData = function () {
+            var persNik = general.$('scan_nik').value;
+            if (!persNik) {
+                alert('Введите ник персонажа');
+                return;
+            }
+
+            var syndId = general.$('scan_synd_id').value;
+            if (!syndId || isNaN(syndId) || +syndId < 0) {
+                alert('Не верно введен номер синдиката');
+                return;
+            }
+
+            this.showHidePreloader();
+            var url = 'http://www.ganjawars.ru/search.php?key=' +
+                    new UrlEncode().init(persNik),
+                _this = this;
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = xml.responseText;
+
+                if (/Персонаж с таким именем не найден/.
+                        test(spanContent.innerHTML)) {
+                    _this.showHidePreloader();
+                    alert('Персонаж с именем ' + persNik + ' не найден');
+                    return;
+                }
+
+                // новое и старое оформление страницы персонажа
+                var target = spanContent.querySelector('table+br+table' +
+                    '[width="700"]') || spanContent.querySelector('table+br+' +
+                        'table[width="600"][cellpadding="1"][align="center"]');
+                if (!target.querySelector('a[href*="/syndicate.php?id=' +
+                        syndId + '"]')) {
+                    _this.showHidePreloader();
+                    alert('Персонаж ' + persNik + ' не состоит в синдикате #' +
+                        syndId + ',\nили его список синдикатов скрыт. Если ' +
+                        'список скрыт, то введите номер основного синдиката.');
+                    return;
+                }
+
+                var stData = general.getData(24);
+                stData[0] = persNik;
+                stData[1] = syndId;
+                stData[6] = /\?id=(\d+)/.exec(target.querySelector('a[href*=' +
+                    '"/usertransfers.php?id="]').href)[1];
+                stData[7] = '';
+
+                var interval = general.$('scan_interval').value;
+                interval = interval && !isNaN(interval) && +interval > 19 ?
+                        interval : '60';
+                stData[8] = interval;
+                general.$('scan_interval').value = interval;
+                general.setData(stData, 24);
+
+                general.$('scan_save').disabled = true;
+                _this.showHideLink();
+                _this.showHidePreloader();
+
+                general.root.setTimeout(function () {_this.scan(false); }, 700);
+            }, function () {
+                general.root.setTimeout(function () {_this.saveData(); }, 700);
+            });
+        };
+
+        /**
+         * @method scan
+         * @param   {Boolean}   now
+         */
+        this.scan = function (now) {
+            var stData = general.getData(24);
+            if (!stData[0]) {
+                return;
+            }
+
+            var url = 'http://www.ganjawars.ru/syndicate.php?id=' + stData[1] +
+                    '&page=online',
+                persNik = stData[0],
+                persId = stData[6],
+                _this = this;
+
+            this.showHidePreloader();
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = xml.responseText;
+
+                var online = spanContent.querySelector('center+br+table').
+                    querySelector('a[href*="/info.php?id=' + persId + '"]');
+
+                _this.showHidePreloader();
+                if (now) { //нажали кнопу "Узнать сейчас"
+                    var str = online ? ' в игре' : ' не в игре';
+                    alert('Персонаж ' + persNik + str);
+                    return;
+                }
+
+                var playSound = new PlaySound().init;
+
+                // в игре
+                if (online && !stData[7]) {
+                    stData[7] = '1';
+                    general.setData(stData, 24);
+                    playSound(stData[4]);
+
+                    if (stData[3]) {
+                        alert('Персонаж ' + persNik + ' в игре');
+                    }
+                }
+
+                // вышел
+                if (!online && stData[7]) {
+                    stData[7] = '';
+                    general.setData(stData, 24);
+                    playSound(stData[5]);
+
+                    if (stData[3]) {
+                        alert('Персонаж ' + persNik + ' вышел из игры');
+                    }
+                }
+            }, function () {
+                general.root.setTimeout(function () {_this.scan(now); }, 700);
+            });
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var stData = general.getData(24);
+
+            //на login или index
+            if (general.doc.querySelector('a[href*="/regform.php"]')) {
+                stData[7] = '';
+                general.setData(stData, 24);
+                return;
+            }
+
+            var topPanel = new GetTopPanel().init();
+            if (!topPanel) {
+                return;
+            }
+
+            var settingsBut = general.doc.createElement('span');
+            settingsBut.setAttribute('style', 'cursor: pointer;');
+            settingsBut.innerHTML = 'ScanPers';
+            topPanel.appendChild(general.doc.createTextNode(' | '));
+            topPanel.appendChild(settingsBut);
+            settingsBut.addEventListener('click', this.showSettings, false);
+
+            var settingsWin = general.doc.createElement('div'),
+                brd = 'border: solid 1px #339933;';
+
+            settingsWin.setAttribute('id', 'settingsWin');
+            settingsWin.setAttribute('style', 'visibility: hidden; ' +
+                    'position: absolute; padding: 5px; ' + brd +
+                    ' background: #D7F4D8;');
+
+            var getSelectSound = new GetSelectSound().init;
+            settingsWin.innerHTML = '<table><tr><td>Ник персонажа:</td><td>' +
+                '<input id="scan_nik" type="text" value="" style="' + brd +
+                '"></td><tr><td>Номер синдиката:</td><td><input ' +
+                'id="scan_synd_id" type="text" size="5" maxlength="6" ' +
+                'value="" style="' + brd + '"> <span style="font-size: 11px;' +
+                '">(без #)</span></td><tr><td>Интервал сканирования:</td><td>' +
+                '<input id="scan_interval" type="text" size="4" ' +
+                'maxlength="3" value="' + (stData[8] || "60") + '" style="' +
+                brd + '" /> сек (не менее 20)</td></tr><tr><td colspan="2" ' +
+                'style="padding-top: 10px;"><input id="scan_chksound" type=' +
+                '"checkbox" style="margin: 0;"><label for="scan_chksound"> ' +
+                'Проигрывать звук при:</label></td><tr><td colspan="2">входе ' +
+                '&nbsp;&nbsp;&nbsp;' + getSelectSound('scan_sel1') +
+                '<br>выходе ' + getSelectSound('scan_sel2') + '</td><tr>' +
+                '<td colspan="2" style="padding-top: 10px;"><input ' +
+                'id="scan_chkallert" type="checkbox" style="margin: 0;">' +
+                '<label for="scan_chkallert"> Выдавать сообщение' +
+                '</label><img id="img_load" style="margin-left: 30px; ' +
+                'display: none;" src="' + general.imgPath + 'preloader.gif">' +
+                '</td><tr><td colspan="2" style="padding-top: 10px; ' +
+                'text-align: center;"><input type="button" id="scan_save" ' +
+                'value="Принять"> <input type="button" id="scan_reset" ' +
+                'value="Сброс"> <input type="button" id="scan_checknow" ' +
+                'value="Узнать сейчас"></td><tr><td id="td_link" colspan="2" ' +
+                'style="padding-top: 10px; text-align: center; display: ' +
+                'none;"></td></table>';
+            general.doc.body.appendChild(settingsWin);
+
+            // ник перса и синд
+            var inpPersNik = general.$('scan_nik'),
+                inpSyndId = general.$('scan_synd_id');
+
+            if (stData[0]) {
+                inpPersNik.value = stData[0];
+                inpSyndId.value = stData[1];
+            }
+
+            // чекбокс звук
+            var chkSound = general.$('scan_chksound'),
+                sel1 = general.$('scan_sel1'),
+                sel2 = general.$('scan_sel2'),
+                listen1 = general.$('lscan_sel1'),
+                listen2 = general.$('lscan_sel2');
+
+            chkSound.addEventListener('click', function () {
+                var data = general.getData(24),
+                    _this = this;
+
+                sel1.disabled = !_this.checked;
+                sel2.disabled = !_this.checked;
+                listen1.disabled = !_this.checked;
+                listen2.disabled = !_this.checked;
+                data[2] = _this.checked ? '1' : '';
+                general.setData(data, 24);
+            }, false);
+
+            if (stData[2]) {
+                chkSound.click();
+            }
+
+            // списки выбора звуков
+            sel1.value = stData[4] || '0';
+            sel2.value = stData[5] || '0';
+            sel1.addEventListener('change', this.changeSelect, false);
+            sel2.addEventListener('change', this.changeSelect, false);
+
+            // кнопки проигрывания звука
+            listen1.addEventListener('click', this.listenSound, false);
+            listen2.addEventListener('click', this.listenSound, false);
+
+            //чекбокс сообщение
+            var chkAllert = general.$('scan_chkallert');
+            chkAllert.addEventListener('click', function () {
+                var data = general.getData(24),
+                    _this = this;
+
+                data[3] = _this.checked ? '1' : '';
+                general.setData(data, 24);
+            }, false);
+
+            chkAllert.checked = stData[3];
+
+            // кнопка сброса
+            var _this = this;
+            general.$('scan_reset').addEventListener('click', function () {
+                if (confirm('Сбросить данные?')) {
+                    var data = general.getData(24);
+                    data[0] = '';
+                    data[1] = '';
+                    data[6] = '';
+                    data[7] = '';
+                    data[8] = '';
+                    general.setData(data, 24);
+                    inpPersNik.value = '';
+                    inpSyndId.value = '';
+                    _this.showHideLink();
+                }
+            }, false);
+
+            // кнопка сохранения данных
+            general.$('scan_save').addEventListener('click', function () {
+                _this.saveData();
+            }, false);
+
+            // кнопка "Узнать сейчас"
+            general.$('scan_checknow').addEventListener('click', function () {
+                _this.scan(true);
+            }, false);
+
+            this.showHideLink();
+            if (stData[8]) {
+                general.root.setInterval(function () {
+                    _this.scan(false);
+                }, +stData[8] * 1000);
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -9673,6 +10045,14 @@
     if (initScript[0]) {
         try {
             new NotGiveCannabisLeaf().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
+    }
+
+    if (initScript[41]) {
+        try {
+            new ScanPers().init();
         } catch (e) {
             general.cons.log(e);
         }
