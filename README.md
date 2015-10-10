@@ -7,7 +7,7 @@
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
 <br>
 <br>
-Версия: 1.01-091015-dev
+Версия: 1.00-101015-dev
 <br>
 Нашли ошибку? Пожалуйста, [сообщите](http://www.ganjawars.ru/info.php?id=2095458)
 * [Установить](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js)
@@ -29,7 +29,7 @@
 
 **AdditionForNavigationBar**
 <br>
-Версия: 2.00-050815
+Версия: 2.01-101015
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdditionForNavigationBar/additionForNavigationBar.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdditionForNavigationBar/additionForNavigationBar.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdditionForNavigationBar)
 <br>
@@ -134,7 +134,7 @@
 
 **FarmTimer**
 <br>
-Версия: 2.01-300815
+Версия: 2.02-101015
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FarmTimer/farmTimer.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FarmTimer/farmTimer.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FarmTimer)
 <br>
@@ -295,7 +295,7 @@
 
 **ResourcesAndBonuses**
 <br>
-Версия: 2.02-050915
+Версия: 2.03-101015
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ResourcesAndBonuses/resourcesAndBonuses.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ResourcesAndBonuses/resourcesAndBonuses.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ResourcesAndBonuses)
 <br>
@@ -309,7 +309,7 @@
 
 **ScanPers**
 <br>
-Версия: 2.00-091015
+Версия: 2.01-101015
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanPers/scanPers.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanPers/scanPers.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ScanPers)
 <br>
@@ -337,7 +337,7 @@
 
 **WorkPostGrenadesBroken**
 <br>
-Версия: 2.02-050915
+Версия: 2.03-101015
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/WorkPostGrenadesBroken)
 <br>

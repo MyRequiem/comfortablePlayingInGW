@@ -1,7 +1,7 @@
 Добавляет возможность установить дополнительные ссылки в панель навигации.
 <br>
 <br>
-Версия: 2.00-050815
+Версия: 2.01-101015
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdditionForNavigationBar/additionForNavigationBar.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdditionForNavigationBar/additionForNavigationBar.user.js.zip)
 <br>

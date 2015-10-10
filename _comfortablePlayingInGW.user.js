@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.01-091015-dev
+// @version         1.00-101015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-091015-dev';
+        this.version = '1.00-101015-dev';
         /**
          * @property stString
          * @type {String}
@@ -620,7 +620,8 @@
                         'div:first-child nobr:first-child');
             }
 
-            return general.doc.querySelector('td.txt nobr:first-child');
+            return general.doc.
+                querySelector('td.txt[align="left"] nobr:first-child');
         };
     };
 

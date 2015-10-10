@@ -11,7 +11,7 @@
 // @exclude         http://www.ganjawars.ru/index.php*
 // @grant           none
 // @license         MIT
-// @version         2.02-050915
+// @version         2.03-101015
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -46,7 +46,7 @@
          * @type {String}
          */
         this.DESIGN_VERSION = /(^|;) ?version=([^;]*)(;|$)/.
-                exec(this.doc.cookie);
+                exec(this.doc.cookie)[2];
     };
 
     /**
@@ -120,7 +120,8 @@
                         'div:first-child nobr:first-child');
             }
 
-            return general.doc.querySelector('td.txt nobr:first-child');
+            return general.doc.
+                querySelector('td.txt[align="left"] nobr:first-child');
         };
     };
 
