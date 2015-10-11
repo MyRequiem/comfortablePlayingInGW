@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.01-101015-dev
+// @version         1.00-111015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-101015-dev';
+        this.version = '1.00-111015-dev';
         /**
          * @property stString
          * @type {String}
@@ -108,9 +108,10 @@
                         [39] - RentAndSale
                         [40] - ScanKarma
                         [41] - ScanPers
-                        [42] - ShowInitMessOnForum*/
+                        [42] - ShowInitMessOnForum
+                        [43] - SearchUser */
                         '@||||||||||||||||||||||||||||||||||||||||' +
-                        '||' +
+                        '|||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -933,7 +934,9 @@
                 ['Извещения о входе персонажа в игру', 'Выдает сообщение ' +
                     'и/или звуковой сигнал при появлении (или выходе) в ' +
                     'онлайне определенного персонажа.' +
-                    this.getGitHubLink('scanPers'), '41']],
+                    this.getGitHubLink('scanPers'), '41'],
+                ['Поиск персонажа', 'Добавляет форму поиска персонажа.' +
+                    this.getGitHubLink('searchUser'), '43']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -10146,6 +10149,38 @@
         };
     };
 
+    /**
+     * @class SearchUser
+     * @constructor
+     */
+    var SearchUser = function () {
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var topPanel = new GetTopPanel().init();
+            if (topPanel) {
+                var td = general.doc.createElement('td');
+                td.setAttribute('style', 'width: 130px;');
+                td.innerHTML = '<form name="fsearch" id="fsearch" ' +
+                    'method="GET" action="/search.php"><input type="text" ' +
+                    'id="skey" name="key" value="" style="width: 130px;"' +
+                    'title="Введите ник и нажмите Enter" /></form>';
+                topPanel = topPanel.parentNode.parentNode;
+                topPanel = general.DESIGN_VERSION === 'v2' ?
+                        topPanel.parentNode : topPanel;
+                topPanel.appendChild(td);
+
+                general.$('skey').addEventListener('keypress', function (e) {
+                    var ev = e || general.root.event;
+                    if (ev.keyCode === 13) {
+                        general.$('fsearch').submit();
+                    }
+                }, false);
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -10529,6 +10564,14 @@
                 } catch (e) {
                     general.cons.log(e);
                 }
+            }
+        }
+
+        if (initScript[43]) {
+            try {
+                new SearchUser().init();
+            } catch (e) {
+                general.cons.log(e);
             }
         }
     }
