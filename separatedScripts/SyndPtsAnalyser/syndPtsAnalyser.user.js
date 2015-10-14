@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.00-141015
+// @version         2.01-141015
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -433,10 +433,10 @@
             case 'chip':
                 ind = 1;
                 break;
-            case 'sign':
+            case 'rank':
                 ind = 2;
                 break;
-            case 'rank':
+            case 'sign':
                 ind = 3;
                 break;
             default:
@@ -629,7 +629,7 @@
                     general.$('goPTS').disabled = true;
 
                     _this.pers = [];
-                    // гранаты, чипы, знаки, звания
+                    // гранаты, чипы, звания, знаки
                     _this.summ = [0, 0, 0, 0, 0];
                     _this.all = 0;
                     _this.control = 0;

@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.01-141015-dev
+// @version         1.02-141015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-141015-dev';
+        this.version = '1.02-141015-dev';
         /**
          * @property stString
          * @type {String}
@@ -10662,10 +10662,10 @@
             case 'chip':
                 ind = 1;
                 break;
-            case 'sign':
+            case 'rank':
                 ind = 2;
                 break;
-            case 'rank':
+            case 'sign':
                 ind = 3;
                 break;
             default:
@@ -10858,7 +10858,7 @@
                     general.$('goPTS').disabled = true;
 
                     _this.pers = [];
-                    // гранаты, чипы, знаки, звания
+                    // гранаты, чипы, звания, знаки
                     _this.summ = [0, 0, 0, 0, 0];
                     _this.all = 0;
                     _this.control = 0;
