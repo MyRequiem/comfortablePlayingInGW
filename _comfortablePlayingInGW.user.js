@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-141015-dev
+// @version         1.01-141015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-141015-dev';
+        this.version = '1.01-141015-dev';
         /**
          * @property stString
          * @type {String}
@@ -111,7 +111,7 @@
                         [42] - ShowInitMessOnForum
                         [43] - SearchUser
                         [44] - SkillCounters
-                        [45] - SyndPtsAnalizer */
+                        [45] -  SyndPtsAnalyser*/
                         '@||||||||||||||||||||||||||||||||||||||||' +
                         '|||||' +
                     /*
@@ -1075,7 +1075,7 @@
                 ['Анализ расхода PTS', 'Анализ расхода PTS синдиката. ' +
                     'Сортировка данных по купленным гранатам, чипам, ' +
                     'выданным званиям и знакам, общему количеству PTS.' +
-                    this.getGitHubLink('syndPtsAnalizer'), '45']],
+                    this.getGitHubLink('syndPtsAnalyser'), '45']],
 
             'Форум': [
                 ['Отображение сообщения, на которое отвечают', 'В ответе на ' +
@@ -10406,10 +10406,10 @@
     };
 
     /**
-     * @class SyndPtsAnalizer
+     * @class SyndPtsAnalyser
      * @constructor
      */
-    var SyndPtsAnalizer = function () {
+    var SyndPtsAnalyser = function () {
         /**
          * @property syndId
          * @type {String}
@@ -10464,7 +10464,7 @@
          * @property imgPath
          * @type {String}
          */
-        this.imgPath = general.imgPath + 'SyndPtsAnalizer/';
+        this.imgPath = general.imgPath + 'SyndPtsAnalyser/';
 
         /**
          * @method getStrDateNow
@@ -11222,7 +11222,7 @@
 
             if (initScript[45]) {
                 try {
-                    new SyndPtsAnalizer().init();
+                    new SyndPtsAnalyser().init();
                 } catch (e) {
                     general.cons.log(e);
                 }

@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name            SyndPtsAnalizer
+// @name            SyndPtsAnalyser
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     Анализ расхода PTS синдиката. Сортировка данных по купленным гранатам, чипам, выданным званиям и знакам, общему количеству PTS.
 // @id              comfortablePlayingInGW@MyRequiem
-// @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndPtsAnalizer/syndPtsAnalizer.meta.js
-// @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndPtsAnalizer/syndPtsAnalizer.user.js
+// @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndPtsAnalyser/syndPtsAnalyser.meta.js
+// @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndPtsAnalyser/syndPtsAnalyser.user.js
 // @include         http://www.ganjawars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
@@ -177,10 +177,10 @@
     };
 
     /**
-     * @class SyndPtsAnalizer
+     * @class SyndPtsAnalyser
      * @constructor
      */
-    var SyndPtsAnalizer = function () {
+    var SyndPtsAnalyser = function () {
         /**
          * @property syndId
          * @type {String}
@@ -235,7 +235,7 @@
          * @property imgPath
          * @type {String}
          */
-        this.imgPath = general.imgPath + 'SyndPtsAnalizer/';
+        this.imgPath = general.imgPath + 'SyndPtsAnalyser/';
 
         /**
          * @method getStrDateNow
@@ -639,7 +639,7 @@
         };
     };
 
-    new SyndPtsAnalizer().init();
+    new SyndPtsAnalyser().init();
 
 }());
 
