@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.02-141015-dev
+// @version         1.00-151015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.02-141015-dev';
+        this.version = '1.00-151015-dev';
         /**
          * @property stString
          * @type {String}
@@ -443,6 +443,26 @@
     };
 
     var general, initScript;
+
+    /**
+     * @class GetStrDateNow
+     * @constructor
+     */
+    var GetStrDateNow = function () {
+        /**
+         * @method init
+         * @return  {String}
+         */
+        this.init = function () {
+            var date = new Date(),
+                month = date.getMonth() + 1,
+                day = date.getDate();
+
+            return (day < 10 ? '0' + day : day) +  '.' +
+                        (month < 10 ? '0' + month : month) + '.' +
+                            (/20(\d+)/.exec(date.getFullYear().toString())[1]);
+        };
+    };
 
     /**
      * @class GetTimestamp
@@ -10467,20 +10487,6 @@
         this.imgPath = general.imgPath + 'SyndPtsAnalyser/';
 
         /**
-         * @method getStrDateNow
-         * @return  {String}
-         */
-        this.getStrDateNow = function () {
-            var date = new Date(),
-                month = date.getMonth() + 1,
-                day = date.getDate();
-
-            return (day < 10 ? '0' + day : day) +  '.' +
-                        (month < 10 ? '0' + month : month) + '.' +
-                            (/20(\d+)/.exec(date.getFullYear().toString())[1]);
-        };
-
-        /**
          * @method getLastDate
          * @param   {String}    url
          */
@@ -10816,13 +10822,14 @@
 
                 _this.mainTable.setAttribute('class', 'wb');
                 _this.mainTable.removeAttribute('style');
-                var dateNow = _this.getStrDateNow();
+
+                var getStrDateNow = new GetStrDateNow().init;
                 _this.mainTable.innerHTML = '<tr><td>' +
                     'Введите даты в формате дд.мм.гг<br>' +
                     'с: <input id="inpDateFrom" type="text" maxlength="8" ' +
                     'value="" style="width: 70px;" disabled> до: ' +
                     '<input id="inpDateTo" type="text" maxlength="8" value="' +
-                    dateNow  + '" style="width: 70px;" disabled> ' +
+                    getStrDateNow()  + '" style="width: 70px;" disabled> ' +
                     '<input type="button" id="goPTS" value=">>" disabled>' +
                     '<span id="ptsPreloader" style="margin-left: 10px;">' +
                     '<img src="' + general.imgPath + 'preloader.gif" />' +
@@ -10841,14 +10848,14 @@
                     _this.from = getTimestamp(general.$('inpDateFrom').value);
                     _this.to = getTimestamp(general.$('inpDateTo').value);
 
-                    var now = _this.getStrDateNow();
+                    var dateStrNow = getStrDateNow();
                     if (!_this.from || !_this.to ||
                             _this.from < getTimestamp(_this.lastDate) ||
-                                _this.to > getTimestamp(now) ||
+                                _this.to > getTimestamp(dateStrNow) ||
                                     _this.from > _this.to) {
                         alert('Не верно введена дата !!!\n' +
                             'Первая запись в протоколе: ' + _this.lastDate +
-                            '\nСегодня: ' + now);
+                            '\nСегодня: ' + dateStrNow);
                         return;
                     }
 
