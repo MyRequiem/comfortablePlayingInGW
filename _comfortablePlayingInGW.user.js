@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.01-151015-dev
+// @version         1.00-161015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-151015-dev';
+        this.version = '1.00-161015-dev';
         /**
          * @property stString
          * @type {String}
@@ -1093,10 +1093,10 @@
                     '<a href="http://www.ganjawars.ru/info.php?id=198825" ' +
                     'style="font-weight: bold;" target="_blank">VSOP_juDGe' +
                     '</a></span>', '30'],
-                ['Анализ активности синдиката', 'Анализ активности синдиката.' +
-                    'Рейтинг нападающих, баланс Гб и PTS контролируемой ' +
-                    'недвижимости, кто и сколько взял/положил Гб на счет ' +
-                    'синдиката, изменения состава.' +
+                ['Анализ активности синдиката', 'Анализ активности ' +
+                    'синдиката. Рейтинг нападающих, баланс Гб и PTS ' +
+                    'контролируемой недвижимости, кто и сколько взял/положил ' +
+                    'Гб на счет синдиката, изменения состава.' +
                     this.getGitHubLink('syndAnalyser'), '46'],
                 ['Анализ расхода PTS', 'Анализ расхода PTS синдиката. ' +
                     'Сортировка данных по купленным гранатам, чипам, ' +
@@ -4099,21 +4099,19 @@
         this.init = function () {
             var topPanel = new GetTopPanel().init();
 
-            if (!topPanel) {
-                return;
+            if (topPanel) {
+                this.divResult.setAttribute('style', 'visibility: hidden; ' +
+                        'position: absolute; padding: 3px; background-color: ' +
+                        '#E7FFE7; border: solid 1px #339933; ' +
+                        'border-radius:5px; top:0; left:0; box-shadow: ' +
+                        '5px 6px 6px rgba(122,122,122,0.5);');
+                general.doc.body.appendChild(this.divResult);
+
+                topPanel.appendChild(general.doc.createTextNode(' | '));
+                topPanel.appendChild(this.createButton('Ресурсы', 'res'));
+                topPanel.appendChild(general.doc.createTextNode(' | '));
+                topPanel.appendChild(this.createButton('Бонусы', 'bonus'));
             }
-
-            this.divResult.setAttribute('style', 'visibility: hidden; ' +
-                    'position: absolute; padding: 3px; background-color: ' +
-                    '#E7FFE7; border: solid 1px #339933; border-radius:5px; ' +
-                    'top:0; left:0; box-shadow: 5px 6px 6px ' +
-                    'rgba(122,122,122,0.5);');
-            general.doc.body.appendChild(this.divResult);
-
-            topPanel.appendChild(general.doc.createTextNode(' | '));
-            topPanel.appendChild(this.createButton('Ресурсы', 'res'));
-            topPanel.appendChild(general.doc.createTextNode(' | '));
-            topPanel.appendChild(this.createButton('Бонусы', 'bonus'));
         };
     };
 
