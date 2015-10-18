@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.01-181015-dev
+// @version         1.02-181015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-181015-dev';
+        this.version = '1.02-181015-dev';
         /**
          * @property stString
          * @type {String}
@@ -6184,6 +6184,8 @@
                 ], prnt: 'pay_grenades_1', arrow: 'smokegr', offsetY: -30},
                 {divm: 0, lines: [
                     ['EMP-IR', '/market.php?buy=1&item_id=emp_ir'],
+                    ['EMP-IRS', '/market.php?buy=1&item_id=emp_irs'],
+                    ['EMP-A', '/market.php?buy=1&item_id=emp_a'],
                     ['EMP-S', '/market.php?buy=1&item_id=emp_s']
                 ], prnt: 'pay_grenades_1', arrow: 'em_gr'},
                 {divm: 0, lines: [

@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru*
 // @grant           none
 // @license         MIT
-// @version         2.10-030915
+// @version         2.20-181015
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -690,6 +690,8 @@
                 ], prnt: 'pay_grenades_1', arrow: 'smokegr', offsetY: -30},
                 {divm: 0, lines: [
                     ['EMP-IR', '/market.php?buy=1&item_id=emp_ir'],
+                    ['EMP-IRS', '/market.php?buy=1&item_id=emp_irs'],
+                    ['EMP-A', '/market.php?buy=1&item_id=emp_a'],
                     ['EMP-S', '/market.php?buy=1&item_id=emp_s']
                 ], prnt: 'pay_grenades_1', arrow: 'em_gr'},
                 {divm: 0, lines: [
