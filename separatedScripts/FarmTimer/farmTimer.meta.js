@@ -6,11 +6,8 @@
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FarmTimer/farmTimer.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FarmTimer/farmTimer.user.js
 // @include         http://www.ganjawars.ru/*
-// @exclude         http://www.ganjawars.ru/b0/*
-// @exclude         http://www.ganjawars.ru/login.php*
-// @exclude         http://www.ganjawars.ru/index.php*
 // @grant           none
 // @license         MIT
-// @version         2.02-101015
+// @version         2.03-161015
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==

@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-161015-dev
+// @version         1.00-181015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-161015-dev';
+        this.version = '1.00-181015-dev';
         /**
          * @property stString
          * @type {String}
@@ -112,9 +112,10 @@
                         [43] - SearchUser
                         [44] - SkillCounters
                         [45] - SyndPtsAnalyser
-                        [46] - SyndAnalyser */
+                        [46] - SyndAnalyser
+                        [47] - ShowMyAchievements */
                         '@||||||||||||||||||||||||||||||||||||||||' +
-                        '||||||' +
+                        '|||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -281,7 +282,11 @@
                         [8] - снайперки
                         [9] - синдикатный уровень
                         [10] - время последнего сброса */
-                        '@||||||||||';
+                        '@||||||||||' +
+                    /*
+                     [26] - ShowMyAchievements
+                        [0] - номера ачивок '1,14,35...' */
+                        '@';
 
         /**
          * @property myID
@@ -1005,7 +1010,18 @@
                     this.getGitHubLink('searchUser'), '43'],
                 ['Счетчики опыта и умений', 'Счетчики опыта и умений на ' +
                     'главной странице персонажа.' +
-                    this.getGitHubLink('skillCounters'), '44']],
+                    this.getGitHubLink('skillCounters'), '44'],
+                ['Быстрый просмотр Ваших достижений', 'Добавляет ссылку ' +
+                    '"Достижения" в верхней части страниц игры при нажатии ' +
+                    'на которую выводятся Ваши ачивки, но только те, ' +
+                    'которые были отмечены на <a target="_blank" ' +
+                    'href="http://www.ganjawars.ru/info.ach.php?id=' +
+                    general.myID + '">странице достижений</a>.' +
+                    this.getGitHubLink('showMyAchievements') +
+                    '<span style="margin-left: 15px;">идея: ' +
+                    '<a href="http://www.ganjawars.ru/info.php?id=134292" ' +
+                    'style="font-weight: bold;" target="_blank">Горыныч' +
+                    '</a></span>', '47']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -11467,6 +11483,167 @@
         };
     };
 
+    /**
+     * @class ShowMyAchievements
+     * @constructor
+     */
+    var ShowMyAchievements = function () {
+        /**
+         * @property divResult
+         * @type {HTMLElement|null}
+         */
+        this.divResult = null;
+
+        /**
+         * @method addCloseButton
+         */
+        this.addCloseButton = function () {
+            this.divResult.innerHTML += '<div style="margin-top: 5px;">' +
+                '<img id="closemyachiev" src="' + general.imgPath +
+                'close.gif"></img></div>';
+
+            var _this = this;
+            general.$('closemyachiev').addEventListener('click', function () {
+                _this.divResult.style.visibility = 'hidden';
+            }, false);
+        };
+
+        /**
+         * @method getAchievNow
+         * @param   {Object}    obj
+         */
+        this.getAchievNow = function (obj) {
+            return obj.querySelectorAll('td[bgcolor="#ffffff"]>' +
+                    'font[color="#336633"]');
+        };
+
+        /**
+         * @method showData
+         * @param   {Object}    ths
+         */
+        this.showData = function (ths) {
+            var pos = new GetPos().init(ths);
+            this.divResult.style.left = pos.x;
+            this.divResult.style.top = pos.y + 25;
+            this.divResult.style.visibility = 'visible';
+            this.divResult.innerHTML = '<img src="' + general.imgPath +
+                'preloader.gif' + '">';
+
+            var stData = general.getData(26),
+                url = 'http://www.ganjawars.ru/info.ach.php?id=' + general.myID;
+
+            if (!stData[0]) {
+                this.divResult.innerHTML = 'Не выбрано ни одной ачивки на ' +
+                    '<a target="_blank" href="' + url + '">этой</a> странице.';
+                this.addCloseButton();
+            } else {
+                var _this = this;
+                new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                    var spanContent = general.doc.createElement('span');
+                    spanContent.innerHTML = xml.responseText;
+
+                    var achievNow = _this.getAchievNow(spanContent),
+                        str = '<table>',
+                        i;
+
+                    for (i = 0; i < achievNow.length; i++) {
+                        if (new RegExp('(^|,)' + i + '(,|$)').test(stData[0])) {
+                            str += '<tr>' + achievNow[i].parentNode.parentNode.
+                                innerHTML + '</tr>';
+                        }
+                    }
+
+                    _this.divResult.innerHTML = str + '</table>';
+                    _this.addCloseButton();
+                }, function () {
+                    _this.divResult.innerHTML = '<span style="color: ' +
+                        '#FF0000;">Ошибка ответа сервера...</span>';
+                    _this.addCloseButton();
+                });
+            }
+        };
+
+        /**
+         * @method setChkHandler
+         */
+        this.setChkHandler = function () {
+            var chks = general.doc.querySelectorAll('input[id^="achiev"]'),
+                str = '',
+                i;
+
+            for (i = 0; i < chks.length; i++) {
+                if (chks[i].checked) {
+                    str += (/\d+/.exec(chks[i].id)[0]) + ',';
+                }
+            }
+
+            general.setData([str.replace(/,$/, '')], 26);
+        };
+
+        /**
+         * @method setCheckboxes
+         */
+        this.setCheckboxes = function () {
+            var achievNow = this.getAchievNow(general.doc),
+                stData = general.getData(26),
+                target,
+                prnt,
+                chk,
+                i;
+
+            for (i = 0; i < achievNow.length; i++) {
+                chk = general.doc.createElement('input');
+                chk.type = 'checkbox';
+                chk.id = 'achiev' + i;
+                chk.checked = new RegExp('(^|,)' + i + '(,|$)').test(stData[0]);
+
+                prnt = achievNow[i].parentNode;
+                target = prnt.firstChild.nodeType === 3 ?
+                            prnt.firstChild : prnt.firstChild.nextSibling;
+
+                prnt.insertBefore(chk, target);
+                chk.addEventListener('click', this.setChkHandler, false);
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var topPanel = new GetTopPanel().init();
+
+            if (topPanel) {
+                this.divResult = general.doc.createElement('div');
+                this.divResult.setAttribute('style', 'visibility: hidden; ' +
+                        'position: absolute; padding: 3px; background-color: ' +
+                        '#E7FFE7; border: solid 1px #339933; ' +
+                        'max-width: 300px; border-radius:5px; top:0; left:0; ' +
+                        'box-shadow: 5px 6px 6px rgba(122,122,122,0.5);');
+                general.doc.body.appendChild(this.divResult);
+
+                var span = general.doc.createElement('span');
+                span.innerHTML = 'Достижения';
+                span.id = 'spanAchievements';
+                span.setAttribute('style', 'cursor: pointer;');
+
+                var _this = this;
+                span.addEventListener('click', function () {
+                    _this.showData(this);
+                }, false);
+
+                topPanel.appendChild(general.doc.createTextNode(' | '));
+                topPanel.appendChild(span);
+
+
+                // на странице своих ачивок
+                if (general.loc.
+                        indexOf('/info.ach.php?id=' + general.myID) !== -1) {
+                    this.setCheckboxes();
+                }
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -11618,6 +11795,14 @@
         if (initScript[6]) {
             try {
                 new ResourcesAndBonuses().init();
+            } catch (e) {
+                general.cons.log(e);
+            }
+        }
+
+        if (initScript[47]) {
+            try {
+                new ShowMyAchievements().init();
             } catch (e) {
                 general.cons.log(e);
             }
