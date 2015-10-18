@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.00-181015-dev
+// @version         1.01-181015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-181015-dev';
+        this.version = '1.01-181015-dev';
         /**
          * @property stString
          * @type {String}
@@ -113,9 +113,10 @@
                         [44] - SkillCounters
                         [45] - SyndPtsAnalyser
                         [46] - SyndAnalyser
-                        [47] - ShowMyAchievements */
+                        [47] - ShowMyAchievements
+                        [48] - SyndPersInfo */
                         '@||||||||||||||||||||||||||||||||||||||||' +
-                        '|||||||' +
+                        '||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -1117,7 +1118,11 @@
                 ['Анализ расхода PTS', 'Анализ расхода PTS синдиката. ' +
                     'Сортировка данных по купленным гранатам, чипам, ' +
                     'выданным званиям и знакам, общему количеству PTS.' +
-                    this.getGitHubLink('syndPtsAnalyser'), '45']],
+                    this.getGitHubLink('syndPtsAnalyser'), '45'],
+                ['Информация о бойцах синдиката', 'На страницах онлайна и ' +
+                    'состава синдиката выводит остров, боевой и синдикатный ' +
+                    'уровни бойцов, процент выздоровления.' +
+                    this.getGitHubLink('syndPersInfo'), '48']],
 
             'Форум': [
                 ['Отображение сообщения, на которое отвечают', 'В ответе на ' +
@@ -11644,6 +11649,120 @@
         };
     };
 
+    /**
+     * @class SyndPersInfo
+     * @constructor
+     */
+    var SyndPersInfo = function () {
+        /**
+         * @property trs
+         * @type {Array|null}
+         */
+        this.trs = null;
+
+        /**
+         * @method nextPers
+         * @param   {int}       ind
+         * @param   {Boolean}   timeout
+         */
+        this.nextPers = function (ind, timeout) {
+            var tm = timeout ? 1500 : 0,
+                _this = this;
+
+            if (this.trs[ind + 1]) {
+                general.root.setTimeout(function () {
+                    _this.getPersInfo(ind + 1);
+                }, tm);
+            }
+        };
+
+        /**
+         * @method getPersInfo
+         * @param   {int}   ind
+         */
+        this.getPersInfo = function (ind) {
+            var persLink = this.trs[ind].
+                    querySelector('a[href*="/info.php?id="]');
+
+            if (!persLink) {
+                this.nextPers(ind, false);
+                return;
+            }
+
+            var target = this.trs[ind].querySelectorAll('td')[3],
+                url = persLink.href,
+                _this = this;
+
+            target.innerHTML = '';
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var str = xml.responseText;
+                if (/Технический персонаж<\/font> \d+ \(\d+\)/.
+                        test(str)) {
+                    target.innerHTML = '[Тех]';
+                    _this.nextPers(ind, true);
+                    return;
+                }
+
+                var area = /Район:<\/b> <a[^>]+>(\[(Z|G|P|S)\])/.exec(str);
+                area = area ? area[1] : '[Аут]';
+
+                var lvlF = /Боевой:.+<font color="?#99000"?><b>(\d+)/.
+                        exec(str)[1];
+                lvlF = ' <span style="color: #FF0000;">[' +
+                    (+lvlF < 10 ? '0' + lvlF : lvlF) + ']</span> ';
+
+                var lvlS = /<b>Основной синдикат:<\/b> #\d+[^\[]+\[\s?<b>(\d+)/.
+                        exec(str);
+                lvlS = '<span style="color: #0000FF;">[' +
+                    (!lvlS ? 'Без основы' : (+lvlS[1] < 10 ?
+                             '0' + lvlS[1] : lvlS[1])) + ']</span> ';
+
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = str;
+
+                var hp = spanContent.querySelector('#namespan') ||
+                        spanContent.querySelector('span[style="padding-left:' +
+                            '10px;padding-right:13px;"]');
+
+                hp = /\[(-?)(\d+)\s\/\s(\d+)\]/.exec(hp.nextSibling.nodeValue);
+                hp = hp[1] ? '<span style="color: #FF0000;">[Кильнули]</span>' :
+                        '[' + Math.round(+hp[2] * 100 / +hp[3]) + '%]';
+
+                target.innerHTML = area + lvlF + lvlS + hp;
+                _this.nextPers(ind, true);
+            }, function () {
+                general.root.setTimeout(function () {
+                    _this.getPersInfo(ind);
+                }, 1000);
+            });
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            this.trs = general.doc.querySelector('br+center+br+table').
+                    querySelectorAll('tr');
+
+            if (this.trs.length > 1) {
+                var link = general.doc.createElement('a');
+                link.setAttribute('style', 'cursor: pointer; ' +
+                        'text-decoration: underline;');
+                link.innerHTML = 'Инфо';
+                var target = general.doc.querySelector('br+center>' +
+                        'a[style*="bold;"]').nextElementSibling;
+                target.parentNode.insertBefore(link, target);
+                target.parentNode.
+                    insertBefore(general.doc.createTextNode(' | '), target);
+
+                var _this = this;
+                link.addEventListener('click', function () {
+                    _this.getPersInfo(1);
+                }, false);
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -12015,6 +12134,15 @@
             if (initScript[46]) {
                 try {
                     new SyndAnalyser().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (/&page=online$|&page=members$/.test(general.loc) &&
+                    initScript[48]) {
+                try {
+                    new SyndPersInfo().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
