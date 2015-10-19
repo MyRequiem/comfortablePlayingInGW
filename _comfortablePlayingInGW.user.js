@@ -10,7 +10,7 @@
 // @include         http://localhost/GW/*
 // @grant           none
 // @license         MIT
-// @version         1.02-181015-dev
+// @version         1.00-191015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.02-181015-dev';
+        this.version = '1.00-191015-dev';
         /**
          * @property stString
          * @type {String}
@@ -114,9 +114,10 @@
                         [45] - SyndPtsAnalyser
                         [46] - SyndAnalyser
                         [47] - ShowMyAchievements
-                        [48] - SyndPersInfo */
+                        [48] - SyndPersInfo
+                        [49] - SyndOnlineOnMainPage */
                         '@||||||||||||||||||||||||||||||||||||||||' +
-                        '||||||||' +
+                        '|||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -1122,7 +1123,15 @@
                 ['Информация о бойцах синдиката', 'На страницах онлайна и ' +
                     'состава синдиката выводит остров, боевой и синдикатный ' +
                     'уровни бойцов, процент выздоровления.' +
-                    this.getGitHubLink('syndPersInfo'), '48']],
+                    this.getGitHubLink('syndPersInfo'), '48'],
+                ['Онлайн основного синдиката и союза на главной странице',
+                    'На главной странице персонажа добавляет ссылки на его ' +
+                    'основной синдикат и союз (если есть), при нажатии на ' +
+                    'которые выводится онлайн синдиката со ссылками отправки ' +
+                    'сообщения каждому бойцу. Если персонаж в бою, то ссылка ' +
+                    'красного цвета. Так же добавляются конвертики для ' +
+                    'отправки сообщений в разделах "Мои друзья" и "Гости".' +
+                    this.getGitHubLink('syndOnlineOnMainPage'), '49']],
 
             'Форум': [
                 ['Отображение сообщения, на которое отвечают', 'В ответе на ' +
@@ -11765,6 +11774,173 @@
         };
     };
 
+    /**
+     * @class SyndOnlineOnMainPage
+     * @constructor
+     */
+    var SyndOnlineOnMainPage = function () {
+        /**
+         * @property syndUnion
+         * @type {HTMLElement|null}
+         */
+        this.syndUnion = null;
+        /**
+         * @property syndMain
+         * @type {HTMLElement|null}
+         */
+        this.syndMain = null;
+
+        /**
+         * @method setSms
+         */
+        this.setSms = function () {
+            var nobrs = general.$('friendsbody').querySelectorAll('nobr');
+            if (nobrs.length) {
+                var pLink, i;
+                for (i = 0; i < nobrs.length; i++) {
+                    pLink = nobrs[i].querySelector('a[href*="/info.php?id="]');
+                    if (pLink) {
+                        nobrs[i].innerHTML += '<a target="_blank" ' +
+                            'href="/sms-create.php?mailto=' +
+                            pLink.firstElementChild.innerHTML + '"><img ' +
+                            'src="http://images.ganjawars.ru/i/sms.gif" /></a>';
+                    }
+                }
+
+                return false;
+            }
+        };
+
+        /**
+         * @method getOnline
+         * @param   {Boolean}   type
+         */
+        this.getOnline = function (type) {
+            var target = general.$('friendsbody');
+            if (!target.querySelector('div')) {
+                target.innerHTML = '<div></div>' + (this.syndUnion ?
+                        '<hr style="color: #C3C3C3;" /><div></div>' : '');
+            }
+
+            target = type ? target.lastElementChild : target.firstElementChild;
+            target.innerHTML = '<img src="' + general.imgPath +
+                'preloader.gif" />';
+
+            var url = (type ? this.syndUnion.href : this.syndMain.href) +
+                    '&page=online',
+                _this = this;
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = xml.responseText;
+
+                target.innerHTML = '<a href="' + url + '">' +
+                    '<img src="http://images.ganjawars.ru/img/synds/' +
+                    (/\?id=(\d+)/.exec(url)[1]) + '.gif" /></a> (' +
+                    (/<b>(\d+) бойцов онлайн<\/b>/.
+                        exec(spanContent.innerHTML)[1]) + ')<br>';
+
+                var trs = spanContent.querySelector('br+center+br+table').
+                        querySelectorAll('tr');
+                if (trs.length > 1) {
+                    var nobr, pers, syndImg, war, i;
+                    for (i = 1; i < trs.length; i++) {
+                        syndImg = trs[i].querySelector('a[href*=' +
+                            '"/syndicate.php?id="]');
+                        pers = trs[i].querySelector('a[href*="/info.php?id="]');
+                        war = trs[i].
+                            querySelector('a[href*="/warlog.php?bid="]');
+
+                        nobr = general.doc.createElement('nobr');
+                        if (syndImg) {
+                            nobr.appendChild(syndImg);
+                        }
+
+                        if (war) {
+                            pers.setAttribute('style', 'color: #FF0000;');
+                        }
+
+                        nobr.appendChild(pers);
+                        nobr.innerHTML += ' <a target="_blank" ' +
+                            'href="http://www.ganjawars.ru/sms-create.php?' +
+                            'mailto=' + pers.firstElementChild.innerHTML +
+                            '"><img src="http://images.ganjawars.ru/i/' +
+                            'sms.gif" /></a>';
+
+                        target.appendChild(nobr);
+                        target.innerHTML += i < trs.length - 1 ? ',' : '';
+                    }
+                }
+            }, function () {
+                general.root.setTimeout(function () {
+                    _this.getOnline(type);
+                }, 1000);
+            });
+        };
+
+        /**
+         * @method createLink
+         * @param   {String}    name
+         * @param   {Boolean}   type
+         * @return  {HTMLElement}
+         */
+        this.createLink = function (name, type) {
+            var link = general.doc.createElement('a');
+            link.setAttribute('style', 'text-decoration: underline; ' +
+                    'cursor: pointer;');
+            link.innerHTML = name;
+            var _this = this;
+            link.addEventListener('click', function () {
+                _this.getOnline(type);
+            }, false);
+
+            return link;
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            // гости, друзья - ставим конвертики для отправки письма
+            var friends = general.doc.querySelector('a[onclick*="setfriends"]'),
+                guests = general.doc.querySelector('a[onclick*="setvisitor"]');
+
+            friends.addEventListener('click', this.setSms, false);
+            guests.addEventListener('click', this.setSms, false);
+            friends.click();
+
+            // основной синдикат
+            this.syndMain = general.doc.
+                    querySelector('span>b+nobr>a[href*="/syndicate.php?id="]');
+
+            if (this.syndMain) {
+                var b = general.doc.createElement('b');
+                b.appendChild(general.doc.createTextNode(' / '));
+                b.appendChild(this.createLink('Основа', false));
+                guests.parentNode.parentNode.appendChild(b);
+
+                var url = this.syndMain.href + '&page=politics',
+                    _this = this;
+
+                new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                    var spanContent = general.doc.createElement('span');
+                    spanContent.innerHTML = xml.responseText;
+
+                    _this.syndUnion = spanContent.
+                        querySelector('td>br:first-child+b+' +
+                            'a[href*="/syndicate.php?id="]');
+
+                    if (_this.syndUnion) {
+                        b.appendChild(general.doc.createTextNode(' '));
+                        b.appendChild(_this.createLink('Союз', true));
+                    }
+                }, function () {
+                    general.cons.log('Error request to: ' + url);
+                });
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -11958,6 +12134,14 @@
                 if (initScript[44]) {
                     try {
                         new SkillCounters().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[49]) {
+                    try {
+                        new SyndOnlineOnMainPage().init();
                     } catch (e) {
                         general.cons.log(e);
                     }
