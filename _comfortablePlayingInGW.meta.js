@@ -7,9 +7,9 @@
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js
 // @include         http://www.ganjawars.ru/*
 // @include         http://quest.ganjawars.ru/*
-// @include         http://localhost/GW/*
+// @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.00-191015-dev
+// @version         1.01-191015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==

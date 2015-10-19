@@ -7,10 +7,10 @@
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js
 // @include         http://www.ganjawars.ru/*
 // @include         http://quest.ganjawars.ru/*
-// @include         http://localhost/GW/*
+// @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.00-191015-dev
+// @version         1.01-191015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-191015-dev';
+        this.version = '1.01-191015-dev';
         /**
          * @property stString
          * @type {String}
@@ -11941,6 +11941,19 @@
         };
     };
 
+    /**
+     * @class SoundGraph
+     * @constructor
+     */
+    var SoundGraph = function () {
+        /**
+         * @method init
+         */
+        this.init = function () {
+            new PlaySound().init(4);
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -11962,6 +11975,17 @@
 
         try {
             new MoveArrowOnAut().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
+
+        return;
+    }
+
+    // графические бои
+    if (/\/bfield0\.ganjawars\.ru\/go\.php\?bid=*/.test(general.loc)) {
+        try {
+            new SoundGraph().init();
         } catch (e) {
             general.cons.log(e);
         }
