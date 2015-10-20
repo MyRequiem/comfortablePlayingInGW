@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.01-191015-dev
+// @version         1.00-201015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-191015-dev';
+        this.version = '1.00-201015-dev';
         /**
          * @property stString
          * @type {String}
@@ -115,9 +115,10 @@
                         [46] - SyndAnalyser
                         [47] - ShowMyAchievements
                         [48] - SyndPersInfo
-                        [49] - SyndOnlineOnMainPage */
+                        [49] - SyndOnlineOnMainPage
+                        [50] - TimeKarma */
                         '@||||||||||||||||||||||||||||||||||||||||' +
-                        '|||||||||' +
+                        '||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -288,6 +289,10 @@
                     /*
                      [26] - ShowMyAchievements
                         [0] - номера ачивок '1,14,35...' */
+                        '@' +
+                    /*
+                     [27] - TimeKarma
+                        [0] - время, когда выставили карму */
                         '@';
 
         /**
@@ -1023,7 +1028,11 @@
                     '<span style="margin-left: 15px;">идея: ' +
                     '<a href="http://www.ganjawars.ru/info.php?id=134292" ' +
                     'style="font-weight: bold;" target="_blank">Горыныч' +
-                    '</a></span>', '47']],
+                    '</a></span>', '47'],
+                ['Время до возможности выставить карму', 'На странице ' +
+                    'информации персонажа показывает динамический счетчик ' +
+                    'времени до возможности поставить карму.' +
+                    this.getGitHubLink('timeKarma'), '50']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -11650,7 +11659,6 @@
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(span);
 
-
                 // на странице своих ачивок
                 if (general.loc.
                         indexOf('/info.ach.php?id=' + general.myID) !== -1) {
@@ -11951,6 +11959,74 @@
          */
         this.init = function () {
             new PlaySound().init(4);
+        };
+    };
+
+    /**
+     * @class TimeKarma
+     * @constructor
+     */
+    var TimeKarma = function () {
+        /**
+         * @method formatTime
+         * @param   {int}   sec
+         */
+        this.formatTime = function (sec) {
+            var m = Math.floor(sec / 60),
+                s = sec % 60;
+
+            if (!m && !s) {
+                general.$('spanKarmaTimer').innerHTML = '&nbsp';
+                general.setData('', 27);
+                return;
+            }
+
+            m = m < 10 ? '0' + m : m;
+            s = s < 10 ? '0' + s : s;
+            general.$('karmaTimer').innerHTML = m + ':' + s;
+
+            var _this = this;
+            general.root.setTimeout(function () {
+                _this.formatTime(sec - 1);
+            }, 1000);
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            // поставили карму, запоминаем время
+            if (/vote/.test(general.loc) &&
+                    (/Спасибо, Ваше мнение учтено/.
+                        test(general.doc.body.innerHTML))) {
+                general.setData(new Date().getTime().toString(), 27);
+                return;
+            }
+
+            var time = +general.getData(27)[0];
+            if (time) {
+                var difference = new Date().getTime() - time;
+                if (general.doc.querySelector('a[href*="/info.vote.php?id="]' +
+                        '[title^="Отправить Ваш голос"]') ||
+                            difference > 1800000) {
+                    general.setData('', 27);
+                    return;
+                }
+
+                var span = general.doc.createElement('span');
+                span.setAttribute('id', 'spanKarmaTimer');
+                span.setAttribute('style', 'margin-left: 5px; color: #07A703;');
+                span.innerHTML = '» Вы сможете выставить карму через ' +
+                    '<span id="karmaTimer" style="color: #056802"></span>';
+
+                var target = general.doc.
+                        querySelector('td[colspan="3"]>table[width="100%"]'),
+                    prnt = target.parentNode;
+
+                prnt.removeChild(target.nextElementSibling);
+                prnt.insertBefore(span, target.nextElementSibling);
+                this.formatTime(+((1800000 - difference) / 1000).toFixed(0));
+            }
         };
     };
 
@@ -12404,6 +12480,16 @@
                 new SearchUser().init();
             } catch (e) {
                 general.cons.log(e);
+            }
+        }
+
+        if (/\/info\.php\?id=|\/info\.vote\.php\?id=/.test(general.loc)) {
+            if (initScript[50]) {
+                try {
+                    new TimeKarma().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
             }
         }
     }
