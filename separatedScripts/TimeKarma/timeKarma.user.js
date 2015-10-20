@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/info.vote.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.00-201015
+// @version         2.01-201015
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -78,17 +78,10 @@
 
         /**
          * @method getData
-         * @return  {Array}
+         * @return  {String}
          */
         getData: function () {
-            var stData = this.st.getItem(this.STORAGENAME);
-            if (stData) {
-                return stData.split('|');
-            }
-
-            stData = '';
-            this.setData(stData);
-            return stData;
+            return this.st.getItem(this.STORAGENAME) || '';
         },
 
         /**
