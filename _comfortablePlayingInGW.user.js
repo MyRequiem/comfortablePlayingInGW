@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.00-201015-dev
+// @version         1.00-211015-dev
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-201015-dev';
+        this.version = '1.00-211015-dev';
         /**
          * @property stString
          * @type {String}
@@ -116,9 +116,10 @@
                         [47] - ShowMyAchievements
                         [48] - SyndPersInfo
                         [49] - SyndOnlineOnMainPage
-                        [50] - TimeKarma */
+                        [50] - TimeKarma
+                        [51] - ImgPokemonsOnBattle */
                         '@||||||||||||||||||||||||||||||||||||||||' +
-                        '||||||||||' +
+                        '|||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -1103,7 +1104,15 @@
                     'заявкам, в которые может зайти Ваш персонаж. ' +
                     'Вывод общего количества боев и боев по синдикатам. ' +
                     'Все настройки находятся на вышеуказанной странице.' +
-                    this.getGitHubLink('sortSyndWars'), '32']],
+                    this.getGitHubLink('sortSyndWars'), '32'],
+                ['Изображения покемонов', 'В боях с покемонами и в режиме ' +
+                    'наблюдения за боем (Ejection Point, Overlord Point, ' +
+                    'прибрежная зона) показывает изображения для каждого ' +
+                    'пока.' + this.getGitHubLink('imgPokemonsOnBattle') +
+                    '<span style="margin-left: 15px;">идея: ' +
+                    '<a href="http://www.ganjawars.ru/info.php?id=436429" ' +
+                    'style="font-weight: bold;" target="_blank">Buger_man</a>' +
+                    '</span>', '51']],
 
             'Синдикаты': [
                 ['Сортировка на странице онлайна синдиката', 'Сортировка ' +
@@ -12030,6 +12039,74 @@
         };
     };
 
+    /**
+     * @class ImgPokemonsOnBattle
+     * @constructor
+     */
+    var ImgPokemonsOnBattle = function () {
+        /**
+         * @method deleteImagePoks
+         */
+        this.deleteImagePoks = function () {
+            var divs = general.doc.querySelectorAll('div[name="imagepokemon"]'),
+                i;
+
+            for (i = 0; i < divs.length; i++) {
+                divs[i].parentNode.removeChild(divs[i]);
+            }
+        };
+
+        /**
+         * @method showImagePoks
+         */
+        this.showImagePoks = function () {
+            var enemies = general.doc.
+                    querySelectorAll('div[style*="font-size:8pt;"]>' +
+                        'b:first-child'),
+                getPos = new GetPos().init,
+                imgPath = 'http://www.gw-rent.h19.ru/pokemon/',
+                ext = '.png',
+                name,
+                txt,
+                pos,
+                div,
+                i;
+
+            for (i = 0; i < enemies.length; i++) {
+                txt = enemies[i].innerHTML;
+                name = /(^[^\s]+)\s/.exec(txt);
+                if (name && (/\[/.test(txt))) {
+                    pos = getPos(enemies[i].parentNode);
+                    div = general.doc.createElement('div');
+                    general.doc.body.appendChild(div);
+                    div.setAttribute('style', 'position: absolute;');
+                    div.setAttribute('name', 'imagepokemon');
+                    div.style.left = pos.x > 200 ? pos.x - 70 : pos.x + 130;
+                    div.style.top = pos.y;
+                    div.innerHTML = '<img src="' + imgPath + name[1] + ext +
+                        '" style="width: 70px; height: 80px;" ' +
+                        'title="' + name[1] + '" alt="' + name[1] + '" />';
+                }
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            this.showImagePoks();
+
+            // JS-версия боя
+            if (!general.viewMode && !general.nojs) {
+                var _this = this;
+                general.root.setInterval(function () {
+                    _this.deleteImagePoks();
+                    _this.showImagePoks();
+                }, 1000);
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -12518,6 +12595,14 @@
             if (initScript[31]) {
                 try {
                     new HousHealth().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[51]) {
+                try {
+                    new ImgPokemonsOnBattle().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
