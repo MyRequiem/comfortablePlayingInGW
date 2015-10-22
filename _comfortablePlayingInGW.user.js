@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.00-211015-dev
+// @version         1.00-221015-b
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-211015-dev';
+        this.version = '1.00-221015-b';
         /**
          * @property stString
          * @type {String}
@@ -117,9 +117,10 @@
                         [48] - SyndPersInfo
                         [49] - SyndOnlineOnMainPage
                         [50] - TimeKarma
-                        [51] - ImgPokemonsOnBattle */
+                        [51] - ImgPokemonsOnBattle
+                        [52] - SoundSyndBattle */
                         '@||||||||||||||||||||||||||||||||||||||||' +
-                        '|||||||||||' +
+                        '||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -294,7 +295,14 @@
                     /*
                      [27] - TimeKarma
                         [0] - время, когда выставили карму */
-                        '@';
+                        '@' +
+                    /*
+                     [28] - SoundSyndBattle
+                        [0] - время до боя, когда будет проигран второй звук
+                        [1] - звук №1
+                        [2] - звук №2
+                        [3] - флаги проигрывани звука ('', '1', '2') */
+                        '@|||';
 
         /**
          * @property myID
@@ -1069,6 +1077,18 @@
                 ['Счетчик боев', 'Показывает общее количество боев, побед и ' +
                     'поражений за текущие сутки на страницax протоколов ' +
                     'боев.' + this.getGitHubLink('countBattles'), '16'],
+                ['Счетчик времени до начала синдикатного боя', 'Динамический ' +
+                    'счетчик времени до начала синдикатного боя, звуковое ' +
+                    'оповещение.<br><br><input id="timeSyndSoundLimit" ' +
+                    'type="text" value="' + (general.getData(28)[0] || '90') +
+                    '" maxlength="3" style="width: 35px;" /> - время до боя ' +
+                    '(сек), когда будет проигран второй звук ' +
+                    '<span style="color: #FF0000;">(не менее 15)</span><br>' +
+                    this.getSelectSound('syndSoundBattle1') + ' - звук, если ' +
+                    'осталось более <span name="sptssl"></span> сек<br>' +
+                    this.getSelectSound('syndSoundBattle2') + ' - звук, если ' +
+                    'осталось менее <span name="sptssl"></span> сек' +
+                    this.getGitHubLink('soundSyndBattle'), '52'],
                 ['Фильтр по оружию в одиночных заявках', 'Фильтр по оружию в ' +
                     'одиночых заявках. Фильтр по уровням и типу оружия, ' +
                     'встроенный в игре, переносится вверх страницы. Все ' +
@@ -1451,7 +1471,9 @@
                 addEventListener('input',
                         this.setSettingsForAdvBattleAll, false);
 
-            var _this = this;
+            var checkInputText = new CheckInputText().init,
+                _this = this;
+
             // чекбокс настроек подсветки персонажей из черного списка
             // (блокировать или нет ссылку принятия боя в одиночках)
             var chkBL = general.$('blockBLOne2One');
@@ -1539,9 +1561,8 @@
             var farmTmSoundInterval = general.$('farmtmSndIntrvl');
             farmTmSoundInterval.value = general.getData(9)[5] || '0';
             farmTmSoundInterval.addEventListener('input', function () {
-                if (new CheckInputText().init(farmTmSoundInterval, 0)) {
-                    _this.modifyData(9, 5, farmTmSoundInterval.value);
-                }
+                _this.modifyData(9, 5, checkInputText(farmTmSoundInterval, 0) ?
+                        farmTmSoundInterval.value : '60');
             }, false);
 
             // TimeNpc
@@ -1611,6 +1632,38 @@
                 _this.modifyData(21, 0, soundOne2One.value === '0' ?
                         '' : soundOne2One.value);
             }, false);
+
+            // SoundSyndBattle
+            if (!general.getData(28)[0]) {
+                this.modifyData(28, 0, '90');
+            }
+            var timeSyndSoundLimit = general.$('timeSyndSoundLimit'),
+                sptssl = general.doc.querySelectorAll('span[name="sptssl"]');
+            sptssl[0].innerHTML = general.getData(28)[0];
+            sptssl[1].innerHTML = general.getData(28)[0];
+            timeSyndSoundLimit.addEventListener('input', function () {
+                _this.modifyData(28, 0, checkInputText(timeSyndSoundLimit, 15) ?
+                        timeSyndSoundLimit.value : '90');
+                sptssl[0].innerHTML = general.getData(28)[0];
+                sptssl[1].innerHTML = general.getData(28)[0];
+            }, false);
+
+            var syndSoundBattle1 = general.$('syndSoundBattle1'),
+                syndSoundBattle2 = general.$('syndSoundBattle2');
+            syndSoundBattle1.value = general.getData(28)[1] || '0';
+            syndSoundBattle1.addEventListener('change', function () {
+                _this.modifyData(28, 1, syndSoundBattle1.value === '0' ?
+                        '' : syndSoundBattle1.value);
+            }, false);
+            syndSoundBattle2.value = general.getData(28)[2] || '0';
+            syndSoundBattle2.addEventListener('change', function () {
+                _this.modifyData(28, 2, syndSoundBattle2.value === '0' ?
+                        '' : syndSoundBattle2.value);
+            }, false);
+            general.$('lsyndSoundBattle1').
+                addEventListener('click', this.testSound, false);
+            general.$('lsyndSoundBattle2').
+                addEventListener('click', this.testSound, false);
         };
     };
 
@@ -12107,6 +12160,120 @@
         };
     };
 
+    /**
+     * @class SoundSyndBattle
+     * @constructor
+     */
+    var SoundSyndBattle = function () {
+        /**
+         * @property redLink
+         * @type {HTMLElement|null}
+         */
+        this.redLink = null;
+
+        /**
+         * @method setTimer
+         * @param   {int}   sec
+         */
+        this.setTimer = function (sec) {
+            var m = Math.floor(sec / 60),
+                s = sec % 60;
+
+            m = m < 10 ? '0' + m : m;
+            s = s < 10 ? '0' + s : s;
+            this.redLink.innerHTML = this.redLink.innerHTML.
+                replace(/\d+\:\d+/, m + ':' + s);
+
+            var _this = this;
+            s = sec - 1;
+            if (s > -1) {
+                general.root.setTimeout(function () {
+                    _this.setTimer(s);
+                }, 1000);
+            }
+        };
+
+        /**
+         * @method syndAlert
+         * @param   {String}    dataCheck
+         * @param   {String}    data
+         * @param   {int}       sound
+         * @param   {int}       tm
+         */
+        this.syndAlert = function (dataCheck, data, sound, tm) {
+            general.root.setTimeout(function () {
+                var stData = general.getData(28);
+                if (stData[3] === dataCheck) {
+                    stData[3] = data;
+                    general.setData(stData, 28);
+                    new PlaySound().init(sound);
+                }
+            }, tm);
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var stData = general.getData(28);
+
+            //на login или index
+            if (general.doc.querySelector('a[href*="/regform.php"]')) {
+                stData[3] = '';
+                general.setData(stData, 28);
+                return;
+            }
+
+            if (!general.doc.querySelector('a[href*="/me/"]' +
+                        '[title^="Наличность"]')) {
+                return;
+            }
+
+            this.redLink = general.doc.querySelector('a[style*="color:red;"]' +
+                    '[title^="Ваш синдикат в нападении"]');
+
+            if (!this.redLink) {
+                stData[3] = '';
+                general.setData(stData, 28);
+                return;
+            }
+
+            // для нового оформления игры
+            if (/\[(\d+)\:(\d+)\]/.
+                    test(this.redLink.nextElementSibling.innerHTML)) {
+                this.redLink = this.redLink.nextElementSibling;
+            }
+
+            var time = /\[(\d+)\:(\d+)\]/.exec(this.redLink.innerHTML),
+                timeLimit = +stData[0],
+                sound1 = +stData[1],
+                sound2 = +stData[2];
+
+            if (time && timeLimit > 14) {
+                var t = +time[1] * 60 + (+time[2]);
+                this.redLink.href = '/wargroup.php?war=attacks';
+                this.setTimer(t);
+
+                var getRandom = new GetRandom().init;
+                if (!stData[3]) {
+                    if (t > timeLimit) {
+                        this.syndAlert('', '1', sound1, getRandom(0, 3000));
+                        this.syndAlert('1', '2', sound2,
+                                (t - timeLimit) * 1000 + getRandom(0, 3000));
+                    } else {
+                        this.syndAlert('', '2', sound2, getRandom(0, 3000));
+                    }
+                } else if (t > timeLimit && stData[3] === '2') {
+                    this.syndAlert('2', '1', sound1, getRandom(0, 3000));
+                    this.syndAlert('1', '2', sound2,
+                            (t - timeLimit) * 1000 + getRandom(0, 3000));
+                } else if (t <= timeLimit && stData[3] === '1') {
+                    this.syndAlert('1', '2', sound2, getRandom(0, 3000));
+                }
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -12159,6 +12326,14 @@
     if (initScript[41]) {
         try {
             new ScanPers().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
+    }
+
+    if (initScript[52]) {
+        try {
+            new SoundSyndBattle().init();
         } catch (e) {
             general.cons.log(e);
         }
