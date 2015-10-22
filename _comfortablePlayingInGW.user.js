@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.00-221015-b
+// @version         1.01-221015-b
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-221015-b';
+        this.version = '1.01-221015-b';
         /**
          * @property stString
          * @type {String}
@@ -12127,8 +12127,9 @@
 
             for (i = 0; i < enemies.length; i++) {
                 txt = enemies[i].innerHTML;
-                name = /(^[^\s]+)\s/.exec(txt);
-                if (name && (/\[/.test(txt))) {
+                name = txt === 'Боец ОМОН' ?
+                        ['', 'omon']  : /(^[^\s]+)\s/.exec(txt);
+                if (name && (name[1] === 'omon' || (/\[/.test(txt)))) {
                     pos = getPos(enemies[i].parentNode);
                     div = general.doc.createElement('div');
                     general.doc.body.appendChild(div);

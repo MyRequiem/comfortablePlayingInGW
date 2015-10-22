@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/warlog.php*
 // @grant           none
 // @license         MIT
-// @version         2.00-211015
+// @version         2.10-221015
 // @author          MyRequiem, идея Buger_man
 // ==/UserScript==
 
@@ -131,8 +131,9 @@
 
             for (i = 0; i < enemies.length; i++) {
                 txt = enemies[i].innerHTML;
-                name = /(^[^\s]+)\s/.exec(txt);
-                if (name && (/\[/.test(txt))) {
+                name = txt === 'Боец ОМОН' ?
+                        ['', 'omon']  : /(^[^\s]+)\s/.exec(txt);
+                if (name && (name[1] === 'omon' || (/\[/.test(txt)))) {
                     pos = getPos(enemies[i].parentNode);
                     div = general.doc.createElement('div');
                     general.doc.body.appendChild(div);
