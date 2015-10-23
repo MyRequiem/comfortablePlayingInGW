@@ -11,7 +11,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         3.30-220915
+// @version         3.31-231015
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -1686,7 +1686,10 @@
                 this.start();
             } else {
                 // в JS версии боя ждем загрузки фрейма с данными
-                general.root.setTimeout(this.tryStart, 100);
+                var _this = this;
+                general.root.setTimeout(function () {
+                    _this.tryStart();
+                }, 100);
             }
         };
 
