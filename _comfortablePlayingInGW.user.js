@@ -6654,7 +6654,7 @@
          * @method showRezult
          */
         this.showReault = function () {
-            var i, b;
+            var i, b, stl;
 
             for (i = 0; i < this.rez.btls.length; i++) {
                 b = this.rez.btls[i].querySelector('a>b');
