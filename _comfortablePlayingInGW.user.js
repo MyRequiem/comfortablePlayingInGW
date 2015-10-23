@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.02-231015-b
+// @version         1.03-231015-b
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.02-231015-b';
+        this.version = '1.03-231015-b';
         /**
          * @property stString
          * @type {String}
@@ -5859,7 +5859,7 @@
             var _this = this;
 
             arrow.addEventListener('mouseover', function () {
-                arrow.style.boxShadow = '3px 3px 3px inset';
+                arrow.style.boxShadow = '1px 1px 1px inset';
                 _this.fOver(div, arrow, offset);
             }, false);
 
@@ -5869,7 +5869,7 @@
             }, false);
 
             div.addEventListener('mouseover', function () {
-                arrow.style.boxShadow = '3px 3px 3px inset';
+                arrow.style.boxShadow = '1px 1px 1px inset';
                 _this.fOver(div, arrow, offset);
             }, false);
 

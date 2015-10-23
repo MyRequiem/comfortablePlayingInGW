@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru*
 // @grant           none
 // @license         MIT
-// @version         2.20-181015
+// @version         2.21-231015
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -278,7 +278,7 @@
             var _this = this;
 
             arrow.addEventListener('mouseover', function () {
-                arrow.style.boxShadow = '3px 3px 3px inset';
+                arrow.style.boxShadow = '1px 1px 1px inset';
                 _this.fOver(div, arrow, offset);
             }, false);
 
@@ -288,7 +288,7 @@
             }, false);
 
             div.addEventListener('mouseover', function () {
-                arrow.style.boxShadow = '3px 3px 3px inset';
+                arrow.style.boxShadow = '1px 1px 1px inset';
                 _this.fOver(div, arrow, offset);
             }, false);
 
