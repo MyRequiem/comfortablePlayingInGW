@@ -1,7 +1,7 @@
 Фильтр онлайн/оффлайн и по островам на страницах поиска продажи/покупки/аренды.
 <br>
 <br>
-Версия: 2.00-050815
+Версия: 2.10-241015
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdsFilter/adsFilter.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdsFilter/adsFilter.user.js.zip)
 <br>

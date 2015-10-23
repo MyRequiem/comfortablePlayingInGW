@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/market.php?buy=*
 // @grant           none
 // @license         MIT
-// @version         2.00-050815
+// @version         2.10-241015
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -182,7 +182,9 @@
                 }
 
                 for (i = 3; i < trs.length; i++) {
-                    if (trs[i].querySelector('a[style*="#999999"]')) {
+                    if (trs[i].querySelector('a[style*="#999999"]') ||
+                            trs[i].querySelector('a[style*=' +
+                                '"rgb(153, 153, 153)"]')) {
                         trs[i].style.display = 'none';
                     }
                 }

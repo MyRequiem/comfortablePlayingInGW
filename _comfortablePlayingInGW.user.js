@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.05-231015-b
+// @version         1.00-241015-b
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.05-231015-b';
+        this.version = '1.00-241015-b';
         /**
          * @property stString
          * @type {String}
@@ -2038,7 +2038,9 @@
                 }
 
                 for (i = 3; i < trs.length; i++) {
-                    if (trs[i].querySelector('a[style*="#999999"]')) {
+                    if (trs[i].querySelector('a[style*="#999999"]') ||
+                            trs[i].querySelector('a[style*=' +
+                                '"rgb(153, 153, 153)"]')) {
                         trs[i].style.display = 'none';
                     }
                 }
