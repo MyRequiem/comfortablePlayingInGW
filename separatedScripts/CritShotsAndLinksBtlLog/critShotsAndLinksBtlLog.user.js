@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/warlog.php*
 // @grant           none
 // @license         MIT
-// @version         2.31-010915
+// @version         2.32-231015
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -322,7 +322,9 @@
                 log = general.$('log');
                 if (!lPers || (/загружаются данные/i.test(lPers.innerHTML)) ||
                         !log || !chat) {
-                    general.root.setTimeout(_this.init, 200);
+                    general.root.setTimeout(function () {
+                        _this.init();
+                    }, 200);
                     return;
                 }
 

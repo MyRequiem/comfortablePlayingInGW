@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.00-231015-b
+// @version         1.01-231015-b
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-231015-b';
+        this.version = '1.01-231015-b';
         /**
          * @property stString
          * @type {String}
@@ -4458,7 +4458,9 @@
                 log = general.$('log');
                 if (!lPers || (/загружаются данные/i.test(lPers.innerHTML)) ||
                         !log || !chat) {
-                    general.root.setTimeout(_this.init, 200);
+                    general.root.setTimeout(function () {
+                        _this.init();
+                    }, 200);
                     return;
                 }
 
