@@ -9,6 +9,6 @@
 // @include         http://www.ganjawars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.00-041015
+// @version         2.10-231015
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458] (идея: ЧупакаЪра)
 // ==/UserScript==

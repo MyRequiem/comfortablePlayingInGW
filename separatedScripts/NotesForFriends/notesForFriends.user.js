@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.00-041015
+// @version         2.10-231015
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458] (идея: ЧупакаЪра)
 // ==/UserScript==
 
@@ -362,7 +362,7 @@
                 _this.divTooltip.style.left = ev.pageX - 50;
                 _this.divTooltip.style.top = ev.pageY - 30;
                 _this.divTooltip.innerHTML = _this.
-                    getPersNote(/\d+/.exec(id)[0]) || '-------';
+                    getPersNote('p' + (/\d+/.exec(id)[0])) || '-------';
                 _this.divTooltip.style.display = '';
             }, false);
         };
@@ -372,8 +372,9 @@
          * @param   {Object}    ths
          */
         this.checkKeyCode = function (ths) {
-            return function () {
-                if (general.root.event.keyCode === 13) {
+            return function (e) {
+                var ev = e || general.root.event;
+                if (ev.keyCode === 13) {
                     ths.saveData(this);
                 }
             };
@@ -411,12 +412,12 @@
                     persId + '" style="cursor: pointer;">[?]</span> ' +
                     '<img id="edit_' + persId + '" src="http://images.' +
                     'ganjawars.ru/i/home/wlog.gif" style="cursor: pointer;"' +
-                    'title="Изменить заметку"/><br><input type="text" id="' +
-                    persId + '" value="' + this.getPersNote(persId) +
+                    'title="Изменить заметку"/><br><input type="text" id="p' +
+                    persId + '" value="' + this.getPersNote('p' + persId) +
                     '" style="width: 250px; margin-top: 3px; display: none;" ' +
                     'title="Введите заметку и нажмите Enter" />';
 
-                inpText = general.$(persId);
+                inpText = general.$('p' + persId);
                 if (/Err/.test(inpText.value)) {
                     inpText.disabled = true;
                 } else {
@@ -425,7 +426,8 @@
                 }
 
                 general.$('edit_' + persId).
-                    addEventListener('click', this.notesClick(persId), false);
+                    addEventListener('click',
+                        this.notesClick('p' + persId), false);
 
                 this.addEvent('info_' + persId, 'mouseover');
                 this.addEvent('info_' + persId, 'mouseout');
