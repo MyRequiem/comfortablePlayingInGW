@@ -35,10 +35,10 @@
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js
 // @include         http://www.ganjawars.ru/*
 // @include         http://quest.ganjawars.ru/*
-// @include         http://localhost/GW/*
+// @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.00-071015-dev
+// @version         1.00-241015-b
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -86,7 +86,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-071015-dev';
+        this.version = '1.00-241015-b';
         /**
          * @property stString
          * @type {String}
@@ -132,8 +132,23 @@
                         [35] - MinBetAtRoulette
                         [36] - NotesForFriends
                         [37] - PortsAndTerminals
-                        [38] - RangeWeapon */
-                        '@||||||||||||||||||||||||||||||||||||||' +
+                        [38] - RangeWeapon
+                        [39] - RentAndSale
+                        [40] - ScanKarma
+                        [41] - ScanPers
+                        [42] - ShowInitMessOnForum
+                        [43] - SearchUser
+                        [44] - SkillCounters
+                        [45] - SyndPtsAnalyser
+                        [46] - SyndAnalyser
+                        [47] - ShowMyAchievements
+                        [48] - SyndPersInfo
+                        [49] - SyndOnlineOnMainPage
+                        [50] - TimeKarma
+                        [51] - ImgPokemonsOnBattle
+                        [52] - SoundSyndBattle */
+                        '@||||||||||||||||||||||||||||||||||||||||' +
+                        '||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -270,7 +285,52 @@
                      [22] - NotesForFriends
                         [0] - отображать/не отображать на главной странице
                         [1] - ID жалобы */
-                        '@|';
+                        '@|' +
+                    /*
+                     [23] - ScanKarma
+                        [0] - текущая карма 'xx/xx' */
+                        '@' +
+                    /*
+                     [24] - ScanPers
+                        [0] - ник перса
+                        [1] - id синда
+                        [2] - чекбокс звук
+                        [3] - чекбокс сообщение
+                        [4] - id звука при входе
+                        [5] - id звука при выходе
+                        [6] - id перса
+                        [7] - звук(сообщение) проигран или нет
+                        [8] - интервал сканирования (сек, не менее 20) */
+                        '@||||||||' +
+                    /*
+                     [25] - SkillCounters
+                        [0] - боевой
+                        [1] - эконом
+                        [2] - производ
+                        [3] - пистолеты
+                        [4] - гранаты
+                        [5] - автоматы
+                        [6] - пулеметы
+                        [7] - дробовики
+                        [8] - снайперки
+                        [9] - синдикатный уровень
+                        [10] - время последнего сброса */
+                        '@||||||||||' +
+                    /*
+                     [26] - ShowMyAchievements
+                        [0] - номера ачивок '1,14,35...' */
+                        '@' +
+                    /*
+                     [27] - TimeKarma
+                        [0] - время, когда выставили карму */
+                        '@' +
+                    /*
+                     [28] - SoundSyndBattle
+                        [0] - время до боя, когда будет проигран второй звук
+                        [1] - звук №1
+                        [2] - звук №2
+                        [3] - флаги проигрывани звука ('', '1', '2') */
+                        '@|||';
 
         /**
          * @property myID
@@ -433,6 +493,55 @@
     };
 
     var general, initScript;
+
+    /**
+     * @class GetStrDateNow
+     * @constructor
+     */
+    var GetStrDateNow = function () {
+        /**
+         * @method init
+         * @return  {String}
+         */
+        this.init = function () {
+            var date = new Date(),
+                month = date.getMonth() + 1,
+                day = date.getDate();
+
+            return (day &lt; 10 ? '0' + day : day) +  '.' +
+                        (month &lt; 10 ? '0' + month : month) + '.' +
+                            (/20(\d+)/.exec(date.getFullYear().toString())[1]);
+        };
+    };
+
+    /**
+     * @class GetTimestamp
+     * @constructor
+     */
+    var GetTimestamp = function () {
+        /**
+         * @method init
+         * @param   {String}    val
+         * @return  {int}
+         */
+        this.init = function (val) {
+            var date = /(\d\d)\.(\d\d)\.(\d\d)/.exec(val);
+
+            if (!date) {
+                return 0;
+            }
+
+            var d = +date[1],
+                m = +date[2],
+                y = +date[3];
+
+            if (!d || d > 31 || !m || m > 12 || !y || y &lt; 9 || y > 20) {
+                return 0;
+            }
+
+            return new Date(2000 + y, m - 1, d).getTime();
+        };
+    };
 
     /**
      * @class UrlEncode
@@ -629,7 +738,8 @@
                         'div:first-child nobr:first-child');
             }
 
-            return general.doc.querySelector('td.txt nobr:first-child');
+            return general.doc.
+                querySelector('td.txt[align="left"] nobr:first-child');
         };
     };
 
@@ -738,16 +848,16 @@
     };
 
     /**
-     * @class ShowMainSettings
+     * @class GetSelectSound
      * @constructor
      */
-    var ShowMainSettings = function () {
+    var GetSelectSound = function () {
         /**
-         * @method getSelectSound
+         * @method init
          * @param   {String}    id
          * @return  {String}
          */
-        this.getSelectSound = function (id) {
+        this.init = function (id) {
             return '&lt;select id="' + id + '" disabled>' +
                 '&lt;option value="0">Без звука&lt;/option>' +
                 '&lt;option value="1">Перезарядка&lt;/option>' +
@@ -783,6 +893,18 @@
                 '&lt;/select> &lt;input type="button" id="l' + id + '" ' +
                 'value="»" disabled>';
         };
+    };
+
+    /**
+     * @class ShowMainSettings
+     * @constructor
+     */
+    var ShowMainSettings = function () {
+        /**
+         * @property getSelectSound
+         * @type {Function}
+         */
+        this.getSelectSound = new GetSelectSound().init;
 
         /**
          * @method getGitHubLink
@@ -920,7 +1042,34 @@
                     this.getGitHubLink('portsAndTerminals'), '37'],
                 ['Дальность оружия', 'Добавляет дальность оружия на странице ' +
                     'информации любого персонажа.' +
-                    this.getGitHubLink('rangeWeapon'), '38']],
+                    this.getGitHubLink('rangeWeapon'), '38'],
+                ['Изменение Вашей кармы', 'При изменении Вашей кармы выводит ' +
+                    'сообщение на странице информации персонажа.' +
+                    this.getGitHubLink('scanKarma'), '40'],
+                ['Извещения о входе персонажа в игру', 'Выдает сообщение ' +
+                    'и/или звуковой сигнал при появлении (или выходе) в ' +
+                    'онлайне определенного персонажа.' +
+                    this.getGitHubLink('scanPers'), '41'],
+                ['Поиск персонажа', 'Добавляет форму поиска персонажа.' +
+                    this.getGitHubLink('searchUser'), '43'],
+                ['Счетчики опыта и умений', 'Счетчики опыта и умений на ' +
+                    'главной странице персонажа.' +
+                    this.getGitHubLink('skillCounters'), '44'],
+                ['Быстрый просмотр Ваших достижений', 'Добавляет ссылку ' +
+                    '"Достижения" в верхней части страниц игры при нажатии ' +
+                    'на которую выводятся Ваши ачивки, но только те, ' +
+                    'которые были отмечены на &lt;a target="_blank" ' +
+                    'href="http://www.ganjawars.ru/info.ach.php?id=' +
+                    general.myID + '">странице достижений&lt;/a>.' +
+                    this.getGitHubLink('showMyAchievements') +
+                    '&lt;span style="margin-left: 15px;">идея: ' +
+                    '&lt;a href="http://www.ganjawars.ru/info.php?id=134292" ' +
+                    'style="font-weight: bold;" target="_blank">Горыныч' +
+                    '&lt;/a>&lt;/span>', '47'],
+                ['Время до возможности выставить карму', 'На странице ' +
+                    'информации персонажа показывает динамический счетчик ' +
+                    'времени до возможности поставить карму.' +
+                    this.getGitHubLink('timeKarma'), '50']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
@@ -956,6 +1105,18 @@
                 ['Счетчик боев', 'Показывает общее количество боев, побед и ' +
                     'поражений за текущие сутки на страницax протоколов ' +
                     'боев.' + this.getGitHubLink('countBattles'), '16'],
+                ['Счетчик времени до начала синдикатного боя', 'Динамический ' +
+                    'счетчик времени до начала синдикатного боя, звуковое ' +
+                    'оповещение.&lt;br>&lt;br>&lt;input id="timeSyndSoundLimit" ' +
+                    'type="text" value="' + (general.getData(28)[0] || '90') +
+                    '" maxlength="3" style="width: 35px;" /> - время до боя ' +
+                    '(сек), когда будет проигран второй звук ' +
+                    '&lt;span style="color: #FF0000;">(не менее 15)&lt;/span>&lt;br>' +
+                    this.getSelectSound('syndSoundBattle1') + ' - звук, если ' +
+                    'осталось более &lt;span name="sptssl">&lt;/span> сек&lt;br>' +
+                    this.getSelectSound('syndSoundBattle2') + ' - звук, если ' +
+                    'осталось менее &lt;span name="sptssl">&lt;/span> сек' +
+                    this.getGitHubLink('soundSyndBattle'), '52'],
                 ['Фильтр по оружию в одиночных заявках', 'Фильтр по оружию в ' +
                     'одиночых заявках. Фильтр по уровням и типу оружия, ' +
                     'встроенный в игре, переносится вверх страницы. Все ' +
@@ -991,7 +1152,15 @@
                     'заявкам, в которые может зайти Ваш персонаж. ' +
                     'Вывод общего количества боев и боев по синдикатам. ' +
                     'Все настройки находятся на вышеуказанной странице.' +
-                    this.getGitHubLink('sortSyndWars'), '32']],
+                    this.getGitHubLink('sortSyndWars'), '32'],
+                ['Изображения покемонов', 'В боях с покемонами и в режиме ' +
+                    'наблюдения за боем (Ejection Point, Overlord Point, ' +
+                    'прибрежная зона) показывает изображения для каждого ' +
+                    'пока.' + this.getGitHubLink('imgPokemonsOnBattle') +
+                    '&lt;span style="margin-left: 15px;">идея: ' +
+                    '&lt;a href="http://www.ganjawars.ru/info.php?id=436429" ' +
+                    'style="font-weight: bold;" target="_blank">Buger_man&lt;/a>' +
+                    '&lt;/span>', '51']],
 
             'Синдикаты': [
                 ['Сортировка на странице онлайна синдиката', 'Сортировка ' +
@@ -1007,7 +1176,34 @@
                     'style="font-weight: bold;" target="_blank">z0man&lt;/a>, ' +
                     '&lt;a href="http://www.ganjawars.ru/info.php?id=198825" ' +
                     'style="font-weight: bold;" target="_blank">VSOP_juDGe' +
-                    '&lt;/a>&lt;/span>', '30']],
+                    '&lt;/a>&lt;/span>', '30'],
+                ['Анализ активности синдиката', 'Анализ активности ' +
+                    'синдиката. Рейтинг нападающих, баланс Гб и PTS ' +
+                    'контролируемой недвижимости, кто и сколько взял/положил ' +
+                    'Гб на счет синдиката, изменения состава.' +
+                    this.getGitHubLink('syndAnalyser'), '46'],
+                ['Анализ расхода PTS', 'Анализ расхода PTS синдиката. ' +
+                    'Сортировка данных по купленным гранатам, чипам, ' +
+                    'выданным званиям и знакам, общему количеству PTS.' +
+                    this.getGitHubLink('syndPtsAnalyser'), '45'],
+                ['Информация о бойцах синдиката', 'На страницах онлайна и ' +
+                    'состава синдиката выводит остров, боевой и синдикатный ' +
+                    'уровни бойцов, процент выздоровления.' +
+                    this.getGitHubLink('syndPersInfo'), '48'],
+                ['Онлайн основного синдиката и союза на главной странице',
+                    'На главной странице персонажа добавляет ссылки на его ' +
+                    'основной синдикат и союз (если есть), при нажатии на ' +
+                    'которые выводится онлайн синдиката со ссылками отправки ' +
+                    'сообщения каждому бойцу. Если персонаж в бою, то ссылка ' +
+                    'красного цвета. Так же добавляются конвертики для ' +
+                    'отправки сообщений в разделах "Мои друзья" и "Гости".' +
+                    this.getGitHubLink('syndOnlineOnMainPage'), '49']],
+
+            'Форум': [
+                ['Отображение сообщения, на которое отвечают', 'В ответе на ' +
+                    'сообщение показывает то сообщение, на которое ' +
+                    'отвечают.' + this.getGitHubLink('showInitMessOnForum'),
+                    '42']],
 
             'Торговля': [
                 ['Фильтр поиска продажи/покупки/аренды', 'Фильтр ' +
@@ -1040,7 +1236,13 @@
                     '&lt;span style="margin-left: 15px;">идея: ' +
                     '&lt;a href="http://www.ganjawars.ru/info.php?id=436429" ' +
                     'style="font-weight: bold;" target="_blank">Buger_man' +
-                    '&lt;/a>&lt;/span>', '27']],
+                    '&lt;/a>&lt;/span>', '27'],
+                ['Форма аренды и продажи', 'При передаче предмета в аренду ' +
+                    'форма передачи выделяется голубым цветом. Если предмет ' +
+                    'продается или передается в постоянное пользование, то ' +
+                    'красным. Если указана нулевая цена, выводится сообщение ' +
+                    'с подтверждением продолжения операции.' +
+                    this.getGitHubLink('rentAndSale'), '39']],
 
             'Ферма': [
                 ['Производственный опыт и прибыль', 'Отображение ' +
@@ -1122,12 +1324,11 @@
                 'id=117721&amp;tid=88232637&amp;fid=117721&amp;page_id=last';
             new AjaxQuery().init(url, 'GET', null, true, function (xml) {
                 var v = /version: ([^&lt;]+)&lt;\/td>/.exec(xml.responseText);
-                if (v) {
-                    if (v[1] !== general.version) {
-                        general.$('linkNewVerScript').style.
-                            visibility = 'visible';
-                        general.$('refreshVer').innerHTML = '(' + v[1] + ')';
-                    }
+                if (!v || v[1] !== general.version) {
+                    general.$('linkNewVerScript').style.
+                        visibility = 'visible';
+                    general.$('refreshVer').innerHTML =  v ?
+                            '(' + v[1] + ')' : '';
                 }
             }, null);
         };
@@ -1297,7 +1498,9 @@
                 addEventListener('input',
                         this.setSettingsForAdvBattleAll, false);
 
-            var _this = this;
+            var checkInputText = new CheckInputText().init,
+                _this = this;
+
             // чекбокс настроек подсветки персонажей из черного списка
             // (блокировать или нет ссылку принятия боя в одиночках)
             var chkBL = general.$('blockBLOne2One');
@@ -1385,9 +1588,8 @@
             var farmTmSoundInterval = general.$('farmtmSndIntrvl');
             farmTmSoundInterval.value = general.getData(9)[5] || '0';
             farmTmSoundInterval.addEventListener('input', function () {
-                if (new CheckInputText().init(farmTmSoundInterval, 0)) {
-                    _this.modifyData(9, 5, farmTmSoundInterval.value);
-                }
+                _this.modifyData(9, 5, checkInputText(farmTmSoundInterval, 0) ?
+                        farmTmSoundInterval.value : '60');
             }, false);
 
             // TimeNpc
@@ -1457,6 +1659,38 @@
                 _this.modifyData(21, 0, soundOne2One.value === '0' ?
                         '' : soundOne2One.value);
             }, false);
+
+            // SoundSyndBattle
+            if (!general.getData(28)[0]) {
+                this.modifyData(28, 0, '90');
+            }
+            var timeSyndSoundLimit = general.$('timeSyndSoundLimit'),
+                sptssl = general.doc.querySelectorAll('span[name="sptssl"]');
+            sptssl[0].innerHTML = general.getData(28)[0];
+            sptssl[1].innerHTML = general.getData(28)[0];
+            timeSyndSoundLimit.addEventListener('input', function () {
+                _this.modifyData(28, 0, checkInputText(timeSyndSoundLimit, 15) ?
+                        timeSyndSoundLimit.value : '90');
+                sptssl[0].innerHTML = general.getData(28)[0];
+                sptssl[1].innerHTML = general.getData(28)[0];
+            }, false);
+
+            var syndSoundBattle1 = general.$('syndSoundBattle1'),
+                syndSoundBattle2 = general.$('syndSoundBattle2');
+            syndSoundBattle1.value = general.getData(28)[1] || '0';
+            syndSoundBattle1.addEventListener('change', function () {
+                _this.modifyData(28, 1, syndSoundBattle1.value === '0' ?
+                        '' : syndSoundBattle1.value);
+            }, false);
+            syndSoundBattle2.value = general.getData(28)[2] || '0';
+            syndSoundBattle2.addEventListener('change', function () {
+                _this.modifyData(28, 2, syndSoundBattle2.value === '0' ?
+                        '' : syndSoundBattle2.value);
+            }, false);
+            general.$('lsyndSoundBattle1').
+                addEventListener('click', this.testSound, false);
+            general.$('lsyndSoundBattle2').
+                addEventListener('click', this.testSound, false);
         };
     };
 
@@ -1832,7 +2066,9 @@
                 }
 
                 for (i = 3; i &lt; trs.length; i++) {
-                    if (trs[i].querySelector('a[style*="#999999"]')) {
+                    if (trs[i].querySelector('a[style*="#999999"]') ||
+                            trs[i].querySelector('a[style*=' +
+                                '"rgb(153, 153, 153)"]')) {
                         trs[i].style.display = 'none';
                     }
                 }
@@ -3371,7 +3607,10 @@
                 this.start();
             } else {
                 // в JS версии боя ждем загрузки фрейма с данными
-                general.root.setTimeout(this.tryStart, 100);
+                var _this = this;
+                general.root.setTimeout(function () {
+                    _this.tryStart();
+                }, 100);
             }
         };
 
@@ -3993,21 +4232,19 @@
         this.init = function () {
             var topPanel = new GetTopPanel().init();
 
-            if (!topPanel) {
-                return;
+            if (topPanel) {
+                this.divResult.setAttribute('style', 'visibility: hidden; ' +
+                        'position: absolute; padding: 3px; background-color: ' +
+                        '#E7FFE7; border: solid 1px #339933; ' +
+                        'border-radius:5px; top:0; left:0; box-shadow: ' +
+                        '5px 6px 6px rgba(122,122,122,0.5);');
+                general.doc.body.appendChild(this.divResult);
+
+                topPanel.appendChild(general.doc.createTextNode(' | '));
+                topPanel.appendChild(this.createButton('Ресурсы', 'res'));
+                topPanel.appendChild(general.doc.createTextNode(' | '));
+                topPanel.appendChild(this.createButton('Бонусы', 'bonus'));
             }
-
-            this.divResult.setAttribute('style', 'visibility: hidden; ' +
-                    'position: absolute; padding: 3px; background-color: ' +
-                    '#E7FFE7; border: solid 1px #339933; border-radius:5px; ' +
-                    'top:0; left:0; box-shadow: 5px 6px 6px ' +
-                    'rgba(122,122,122,0.5);');
-            general.doc.body.appendChild(this.divResult);
-
-            topPanel.appendChild(general.doc.createTextNode(' | '));
-            topPanel.appendChild(this.createButton('Ресурсы', 'res'));
-            topPanel.appendChild(general.doc.createTextNode(' | '));
-            topPanel.appendChild(this.createButton('Бонусы', 'bonus'));
         };
     };
 
@@ -4250,7 +4487,9 @@
                 log = general.$('log');
                 if (!lPers || (/загружаются данные/i.test(lPers.innerHTML)) ||
                         !log || !chat) {
-                    general.root.setTimeout(_this.init, 200);
+                    general.root.setTimeout(function () {
+                        _this.init();
+                    }, 200);
                     return;
                 }
 
@@ -5650,7 +5889,7 @@
             var _this = this;
 
             arrow.addEventListener('mouseover', function () {
-                arrow.style.boxShadow = '3px 3px 3px inset';
+                arrow.style.boxShadow = '1px 1px 1px inset';
                 _this.fOver(div, arrow, offset);
             }, false);
 
@@ -5660,7 +5899,7 @@
             }, false);
 
             div.addEventListener('mouseover', function () {
-                arrow.style.boxShadow = '3px 3px 3px inset';
+                arrow.style.boxShadow = '1px 1px 1px inset';
                 _this.fOver(div, arrow, offset);
             }, false);
 
@@ -6059,6 +6298,8 @@
                 ], prnt: 'pay_grenades_1', arrow: 'smokegr', offsetY: -30},
                 {divm: 0, lines: [
                     ['EMP-IR', '/market.php?buy=1&amp;item_id=emp_ir'],
+                    ['EMP-IRS', '/market.php?buy=1&amp;item_id=emp_irs'],
+                    ['EMP-A', '/market.php?buy=1&amp;item_id=emp_a'],
                     ['EMP-S', '/market.php?buy=1&amp;item_id=emp_s']
                 ], prnt: 'pay_grenades_1', arrow: 'em_gr'},
                 {divm: 0, lines: [
@@ -6443,21 +6684,18 @@
          * @method showRezult
          */
         this.showReault = function () {
-            var i, b;
+            var i, b, stl;
 
             for (i = 0; i &lt; this.rez.btls.length; i++) {
                 b = this.rez.btls[i].querySelector('a>b');
                 if (b) {
-                    switch (b.parentNode.getAttribute('style')) {
-                    case 'color:red':
+                    stl = b.parentNode.getAttribute('style');
+                    if (/red/.test(stl)) {
                         this.rez.win++;
-                        break;
-                    case 'color:blue':
+                    } else if (/blue/.test(stl)) {
                         this.rez.loss++;
-                        break;
-                    default:
+                    } else {
                         this.rez.draw++;
-                        break;
                     }
                 }
             }
@@ -9217,7 +9455,7 @@
                 _this.divTooltip.style.left = ev.pageX - 50;
                 _this.divTooltip.style.top = ev.pageY - 30;
                 _this.divTooltip.innerHTML = _this.
-                    getPersNote(/\d+/.exec(id)[0]) || '-------';
+                    getPersNote('p' + (/\d+/.exec(id)[0])) || '-------';
                 _this.divTooltip.style.display = '';
             }, false);
         };
@@ -9227,8 +9465,9 @@
          * @param   {Object}    ths
          */
         this.checkKeyCode = function (ths) {
-            return function () {
-                if (general.root.event.keyCode === 13) {
+            return function (e) {
+                var ev = e || general.root.event;
+                if (ev.keyCode === 13) {
                     ths.saveData(this);
                 }
             };
@@ -9266,12 +9505,12 @@
                     persId + '" style="cursor: pointer;">[?]&lt;/span> ' +
                     '&lt;img id="edit_' + persId + '" src="http://images.' +
                     'ganjawars.ru/i/home/wlog.gif" style="cursor: pointer;"' +
-                    'title="Изменить заметку"/>&lt;br>&lt;input type="text" id="' +
-                    persId + '" value="' + this.getPersNote(persId) +
+                    'title="Изменить заметку"/>&lt;br>&lt;input type="text" id="p' +
+                    persId + '" value="' + this.getPersNote('p' + persId) +
                     '" style="width: 250px; margin-top: 3px; display: none;" ' +
                     'title="Введите заметку и нажмите Enter" />';
 
-                inpText = general.$(persId);
+                inpText = general.$('p' + persId);
                 if (/Err/.test(inpText.value)) {
                     inpText.disabled = true;
                 } else {
@@ -9280,7 +9519,8 @@
                 }
 
                 general.$('edit_' + persId).
-                    addEventListener('click', this.notesClick(persId), false);
+                    addEventListener('click',
+                        this.notesClick('p' + persId), false);
 
                 this.addEvent('info_' + persId, 'mouseover');
                 this.addEvent('info_' + persId, 'mouseout');
@@ -9391,7 +9631,6 @@
          * @type {String}
          */
         this.imgPath = general.imgPath + 'PortsAndTerminals/';
-
 
         /**
          * @method init
@@ -9535,6 +9774,2540 @@
         };
     };
 
+    /**
+     * @class RentAndSale
+     * @constructor
+     */
+    var RentAndSale = function () {
+        /**
+         * @method changeColor
+         */
+        this.changeColor = function () {
+            var td = general.doc.querySelector('input[name="sendtype"]').
+                        parentNode,
+                _this = this,
+                color = _this.id === 'donotsend' ? '#E0EEE0' :
+                            _this.id === 'send1' ? '#FB8F8F' : '#95CCF6';
+
+            td.style.background = color;
+            td.previousElementSibling.style.background = color;
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var radio = general.doc.querySelectorAll('input[name="sendtype"]');
+
+            if (radio.length) {
+                var scrpt = general.doc.createElement('script');
+                scrpt.innerHTML = 'function checkPrice(){if(document.' +
+                        'getElementById("for_money_id").value=="0"){' +
+                        'if(!confirm("Указана цена 0 Гб !!! Продолжить?"))' +
+                        'return false;}return true;}';
+                general.doc.querySelector('head').appendChild(scrpt);
+
+                general.doc.querySelector('form[action="/home.senditem.php"]').
+                    setAttribute('onsubmit', 'return checkPrice();');
+
+                var i;
+                for (i = 0; i &lt; radio.length; i++) {
+                    radio[i].addEventListener('click', this.changeColor, false);
+                }
+            }
+        };
+    };
+
+    /**
+     * @class ScanKarma
+     * @constructor
+     */
+    var ScanKarma = function () {
+        /**
+         * @method init
+         */
+        this.init = function () {
+            if (/\?id=(\d+)/.exec(general.loc)[1] === general.myID) {
+                var nowKarma = /Карма:\s\d+\.?\d*\s\((\d+\/\d+)\)/i.
+                        exec(general.doc.body.textContent);
+
+                if (nowKarma) {
+                    nowKarma = nowKarma[1];
+                    if (!general.getData(23)[0]) {
+                        general.setData(nowKarma, 23);
+                        return;
+                    }
+
+                    var oldKarma = general.getData(23)[0];
+                    if (nowKarma === oldKarma) {
+                        return;
+                    }
+
+                    general.setData(nowKarma, 23);
+
+                    oldKarma = oldKarma.split('/');
+                    oldKarma[0] = +oldKarma[0];
+                    oldKarma[1] = +oldKarma[1];
+
+                    nowKarma = nowKarma.split('/');
+                    nowKarma[0] = +nowKarma[0];
+                    nowKarma[1] = +nowKarma[1];
+
+                    var str = 'Ваша карма была изменена \n\n';
+                    if (nowKarma[0] > oldKarma[0]) {
+                        str += 'Отрицательная карма увеличилась на ' +
+                            (nowKarma[0] - oldKarma[0]) + ' (' + oldKarma[0] +
+                            ' ---> ' + nowKarma[0] + ')\n';
+                    } else if (nowKarma[0] &lt; oldKarma[0]) {
+                        str += 'Отрицательная карма уменьшилась на ' +
+                            (oldKarma[0] - nowKarma[0]) + ' (' + oldKarma[0] +
+                            ' ---> ' + nowKarma[0] + ')\n';
+                    }
+
+                    if (nowKarma[1] > oldKarma[1]) {
+                        str += 'Положительная карма увеличилась на ' +
+                            (nowKarma[1] - oldKarma[1]) +  ' (' + oldKarma[1] +
+                            ' ---> ' + nowKarma[1] + ')';
+                    } else if (nowKarma[1] &lt; oldKarma[1]) {
+                        str += 'Положительная карма уменьшилась на ' +
+                            (oldKarma[1] - nowKarma[1]) +  ' (' + oldKarma[1] +
+                            ' ---> ' + nowKarma[1] + ')';
+                    }
+
+                    alert(str);
+                }
+            }
+        };
+    };
+
+    /**
+     * @class ScanPers
+     * @constructor
+     */
+    var ScanPers = function () {
+        /**
+         * @method showSettings
+         */
+        this.showSettings = function () {
+            var settings = general.$('settingsWin'),
+                pos = new GetPos().init(this);
+
+            settings.style.top = pos.y + 28;
+            settings.style.left = pos.x - 120;
+            settings.style.visibility = settings.style.visibility === 'hidden' ?
+                    'visible' : 'hidden';
+        };
+
+        /**
+         * @method listenSound
+         */
+        this.listenSound = function () {
+            var _this = this;
+            new PlaySound().init(_this.previousElementSibling.value);
+        };
+
+        /**
+         * @method changeSelect
+         */
+        this.changeSelect = function () {
+            var _this = this,
+                ind = _this.id === 'scan_sel1' ? 4 : 5,
+                stData = general.getData(24);
+
+            stData[ind] = _this.value !== '0' ? _this.value : '';
+            general.setData(stData, 24);
+        };
+
+        /**
+         * @method showHideLink
+         */
+        this.showHideLink = function () {
+            var stData = general.getData(24),
+                persId = stData[6],
+                tdLink = general.$('td_link'),
+                butReset = general.$('scan_reset'),
+                butCheckNow = general.$('scan_checknow'),
+                butSave = general.$('scan_save');
+
+            if (persId) {
+                tdLink.innerHTML = '&lt;a target="_blank" style="color: ' +
+                    '#008000;" href="http://www.ganjawars.ru/info.php?id=' +
+                    persId + '">' + stData[0] + '&lt;/a>';
+                tdLink.style.display = '';
+                butReset.disabled = false;
+                butCheckNow.disabled = false;
+                butSave.disabled = true;
+            } else {
+                tdLink.style.display = 'none';
+                butReset.disabled = true;
+                butCheckNow.disabled = true;
+                butSave.disabled = false;
+            }
+        };
+
+        /**
+         * @method showHidePreloader
+         */
+        this.showHidePreloader = function () {
+            var preloader = general.$('img_load');
+            preloader.style.display = preloader.style.display === 'none' ?
+                    '' : 'none';
+        };
+
+        /**
+         * @method saveData
+         */
+        this.saveData = function () {
+            var persNik = general.$('scan_nik').value;
+            if (!persNik) {
+                alert('Введите ник персонажа');
+                return;
+            }
+
+            var syndId = general.$('scan_synd_id').value;
+            if (!syndId || isNaN(syndId) || +syndId &lt; 0) {
+                alert('Не верно введен номер синдиката');
+                return;
+            }
+
+            this.showHidePreloader();
+            var url = 'http://www.ganjawars.ru/search.php?key=' +
+                    new UrlEncode().init(persNik),
+                _this = this;
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = xml.responseText;
+
+                if (/Персонаж с таким именем не найден/.
+                        test(spanContent.innerHTML)) {
+                    _this.showHidePreloader();
+                    alert('Персонаж с именем ' + persNik + ' не найден');
+                    return;
+                }
+
+                // новое и старое оформление страницы персонажа
+                var target = spanContent.querySelector('table+br+table' +
+                    '[width="700"]') || spanContent.querySelector('table+br+' +
+                        'table[width="600"][cellpadding="1"][align="center"]');
+                if (!target.querySelector('a[href*="/syndicate.php?id=' +
+                        syndId + '"]')) {
+                    _this.showHidePreloader();
+                    alert('Персонаж ' + persNik + ' не состоит в синдикате #' +
+                        syndId + ',\nили его список синдикатов скрыт. Если ' +
+                        'список скрыт, то введите номер основного синдиката.');
+                    return;
+                }
+
+                var stData = general.getData(24);
+                stData[0] = persNik;
+                stData[1] = syndId;
+                stData[6] = /\?id=(\d+)/.exec(target.querySelector('a[href*=' +
+                    '"/usertransfers.php?id="]').href)[1];
+                stData[7] = '';
+
+                var interval = general.$('scan_interval').value;
+                interval = interval &amp;&amp; !isNaN(interval) &amp;&amp; +interval > 19 ?
+                        interval : '60';
+                stData[8] = interval;
+                general.$('scan_interval').value = interval;
+                general.setData(stData, 24);
+
+                general.$('scan_save').disabled = true;
+                _this.showHideLink();
+                _this.showHidePreloader();
+
+                general.root.setTimeout(function () {_this.scan(false); }, 700);
+            }, function () {
+                general.root.setTimeout(function () {_this.saveData(); }, 700);
+            });
+        };
+
+        /**
+         * @method scan
+         * @param   {Boolean}   now
+         */
+        this.scan = function (now) {
+            var stData = general.getData(24);
+            if (!stData[0]) {
+                return;
+            }
+
+            var url = 'http://www.ganjawars.ru/syndicate.php?id=' + stData[1] +
+                    '&amp;page=online',
+                persNik = stData[0],
+                persId = stData[6],
+                _this = this;
+
+            this.showHidePreloader();
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = xml.responseText;
+
+                var online = spanContent.querySelector('center+br+table').
+                    querySelector('a[href*="/info.php?id=' + persId + '"]');
+
+                _this.showHidePreloader();
+                if (now) { //нажали кнопу "Узнать сейчас"
+                    var str = online ? ' в игре' : ' не в игре';
+                    alert('Персонаж ' + persNik + str);
+                    return;
+                }
+
+                var playSound = new PlaySound().init;
+
+                // в игре
+                if (online &amp;&amp; !stData[7]) {
+                    stData[7] = '1';
+                    general.setData(stData, 24);
+                    playSound(stData[4]);
+
+                    if (stData[3]) {
+                        alert('Персонаж ' + persNik + ' в игре');
+                    }
+                }
+
+                // вышел
+                if (!online &amp;&amp; stData[7]) {
+                    stData[7] = '';
+                    general.setData(stData, 24);
+                    playSound(stData[5]);
+
+                    if (stData[3]) {
+                        alert('Персонаж ' + persNik + ' вышел из игры');
+                    }
+                }
+            }, function () {
+                general.root.setTimeout(function () {_this.scan(now); }, 700);
+            });
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var stData = general.getData(24);
+
+            //на login или index
+            if (general.doc.querySelector('a[href*="/regform.php"]')) {
+                stData[7] = '';
+                general.setData(stData, 24);
+                return;
+            }
+
+            var topPanel = new GetTopPanel().init();
+            if (!topPanel) {
+                return;
+            }
+
+            var settingsBut = general.doc.createElement('span');
+            settingsBut.setAttribute('style', 'cursor: pointer;');
+            settingsBut.innerHTML = 'ScanPers';
+            topPanel.appendChild(general.doc.createTextNode(' | '));
+            topPanel.appendChild(settingsBut);
+            settingsBut.addEventListener('click', this.showSettings, false);
+
+            var settingsWin = general.doc.createElement('div'),
+                brd = 'border: solid 1px #339933;';
+
+            settingsWin.setAttribute('id', 'settingsWin');
+            settingsWin.setAttribute('style', 'visibility: hidden; ' +
+                    'position: absolute; padding: 5px; ' + brd +
+                    ' background: #D7F4D8;');
+
+            var getSelectSound = new GetSelectSound().init;
+            settingsWin.innerHTML = '&lt;table>&lt;tr>&lt;td>Ник персонажа:&lt;/td>&lt;td>' +
+                '&lt;input id="scan_nik" type="text" value="" style="' + brd +
+                '">&lt;/td>&lt;tr>&lt;td>Номер синдиката:&lt;/td>&lt;td>&lt;input ' +
+                'id="scan_synd_id" type="text" size="5" maxlength="6" ' +
+                'value="" style="' + brd + '"> &lt;span style="font-size: 11px;' +
+                '">(без #)&lt;/span>&lt;/td>&lt;tr>&lt;td>Интервал сканирования:&lt;/td>&lt;td>' +
+                '&lt;input id="scan_interval" type="text" size="4" ' +
+                'maxlength="3" value="' + (stData[8] || "60") + '" style="' +
+                brd + '" /> сек (не менее 20)&lt;/td>&lt;/tr>&lt;tr>&lt;td colspan="2" ' +
+                'style="padding-top: 10px;">&lt;input id="scan_chksound" type=' +
+                '"checkbox" style="margin: 0;">&lt;label for="scan_chksound"> ' +
+                'Проигрывать звук при:&lt;/label>&lt;/td>&lt;tr>&lt;td colspan="2">входе ' +
+                '&amp;nbsp;&amp;nbsp;&amp;nbsp;' + getSelectSound('scan_sel1') +
+                '&lt;br>выходе ' + getSelectSound('scan_sel2') + '&lt;/td>&lt;tr>' +
+                '&lt;td colspan="2" style="padding-top: 10px;">&lt;input ' +
+                'id="scan_chkallert" type="checkbox" style="margin: 0;">' +
+                '&lt;label for="scan_chkallert"> Выдавать сообщение' +
+                '&lt;/label>&lt;img id="img_load" style="margin-left: 30px; ' +
+                'display: none;" src="' + general.imgPath + 'preloader.gif">' +
+                '&lt;/td>&lt;tr>&lt;td colspan="2" style="padding-top: 10px; ' +
+                'text-align: center;">&lt;input type="button" id="scan_save" ' +
+                'value="Принять"> &lt;input type="button" id="scan_reset" ' +
+                'value="Сброс"> &lt;input type="button" id="scan_checknow" ' +
+                'value="Узнать сейчас">&lt;/td>&lt;tr>&lt;td id="td_link" colspan="2" ' +
+                'style="padding-top: 10px; text-align: center; display: ' +
+                'none;">&lt;/td>&lt;/table>';
+            general.doc.body.appendChild(settingsWin);
+
+            // ник перса и синд
+            var inpPersNik = general.$('scan_nik'),
+                inpSyndId = general.$('scan_synd_id');
+
+            if (stData[0]) {
+                inpPersNik.value = stData[0];
+                inpSyndId.value = stData[1];
+            }
+
+            // чекбокс звук
+            var chkSound = general.$('scan_chksound'),
+                sel1 = general.$('scan_sel1'),
+                sel2 = general.$('scan_sel2'),
+                listen1 = general.$('lscan_sel1'),
+                listen2 = general.$('lscan_sel2');
+
+            chkSound.addEventListener('click', function () {
+                var data = general.getData(24),
+                    _this = this;
+
+                sel1.disabled = !_this.checked;
+                sel2.disabled = !_this.checked;
+                listen1.disabled = !_this.checked;
+                listen2.disabled = !_this.checked;
+                data[2] = _this.checked ? '1' : '';
+                general.setData(data, 24);
+            }, false);
+
+            if (stData[2]) {
+                chkSound.click();
+            }
+
+            // списки выбора звуков
+            sel1.value = stData[4] || '0';
+            sel2.value = stData[5] || '0';
+            sel1.addEventListener('change', this.changeSelect, false);
+            sel2.addEventListener('change', this.changeSelect, false);
+
+            // кнопки проигрывания звука
+            listen1.addEventListener('click', this.listenSound, false);
+            listen2.addEventListener('click', this.listenSound, false);
+
+            //чекбокс сообщение
+            var chkAllert = general.$('scan_chkallert');
+            chkAllert.addEventListener('click', function () {
+                var data = general.getData(24),
+                    _this = this;
+
+                data[3] = _this.checked ? '1' : '';
+                general.setData(data, 24);
+            }, false);
+
+            chkAllert.checked = stData[3];
+
+            // кнопка сброса
+            var _this = this;
+            general.$('scan_reset').addEventListener('click', function () {
+                if (confirm('Сбросить данные?')) {
+                    var data = general.getData(24);
+                    data[0] = '';
+                    data[1] = '';
+                    data[6] = '';
+                    data[7] = '';
+                    data[8] = '';
+                    general.setData(data, 24);
+                    inpPersNik.value = '';
+                    inpSyndId.value = '';
+                    _this.showHideLink();
+                }
+            }, false);
+
+            // кнопка сохранения данных
+            general.$('scan_save').addEventListener('click', function () {
+                _this.saveData();
+            }, false);
+
+            // кнопка "Узнать сейчас"
+            general.$('scan_checknow').addEventListener('click', function () {
+                _this.scan(true);
+            }, false);
+
+            this.showHideLink();
+            if (stData[8]) {
+                general.root.setInterval(function () {
+                    _this.scan(false);
+                }, +stData[8] * 1000);
+            }
+        };
+    };
+
+    /**
+     * @class ShowInitMessOnForum
+     * @constructor
+     */
+    var ShowInitMessOnForum = function () {
+        /**
+         * @property pageNum
+         * @type {int}
+         */
+        this.pageNum = 0;
+        /**
+         * @property messages
+         * @type {Array|null}
+         */
+        this.messages = null;
+
+        /**
+         * @method getMessagesOnPages
+         * @param   {Object}    obj
+         * @return  {NodeList}
+         */
+        this.getMessagesOnPages = function (obj) {
+            return obj.querySelectorAll('td>table[cellpadding="5"]' +
+                    '[cellspacing="0"][border="0"]');
+        };
+
+        /**
+         * @method insertMess
+         * @param   {Element}  target
+         * @param   {Element}  last
+         */
+        this.insertMess = function (target, last) {
+            target = target.querySelector('tr');
+            target.firstElementChild.
+                setAttribute('style', 'padding-left: 20px;');
+
+            var author = last.parentNode.previousElementSibling.
+                    querySelector('b').innerHTML,
+                lastLink = last.previousElementSibling.querySelector('a').href,
+                tr = last.querySelector('tr:last-child').cloneNode(true);
+
+            tr.firstElementChild.setAttribute('style', 'border: 1px dashed ' +
+                '#339933; background: #C2EDC1;');
+            tr.firstElementChild.innerHTML = author + '&amp;nbsp;&amp;nbsp;&amp;nbsp;' +
+                '&lt;a href="' + lastLink + '">[&amp;#8593;]&lt;/a>&lt;br>' +
+                tr.firstElementChild.innerHTML;
+            target.parentNode.insertBefore(tr, target);
+        };
+
+        /**
+         * @method parseMessages
+         * @param   {int}   ind
+         */
+        this.parseMessages = function (ind) {
+            if (!this.messages[ind]) {
+                return;
+            }
+
+            var r = /^&lt;tbody>&lt;tr>&lt;td>\s*\+?\s*(\d+)(,\D+|\.\D+|\)|\s|:|\+\D+)/,
+                numReply = r.exec(this.messages[ind].innerHTML);
+
+            numReply = numReply ? +numReply[1] : 0;
+
+            // нет номера/номер === 0 или число > текущего сообщения
+            if (numReply &lt; 1 || numReply >= this.pageNum * 20 + ind + 1) {
+                ind++;
+                this.parseMessages(ind);
+                return;
+            }
+
+            // порядковый номер сообщения на странице, на которое отвечаем
+            var sequenceNum = numReply &lt; 21 ? numReply - 1 :
+                    numReply % 20 !== 0 ? numReply % 20 - 1 : 19,
+                // страница, где находится сообщение, на которое отвечаем
+                // (на каждой странице 20 сообщений)
+                pageReply = Math.floor((numReply - 1) / 20);
+
+            // если сообщение, на которое отвечаем,
+            // находится на текущей странице
+            if (pageReply === this.pageNum) {
+                this.insertMess(this.messages[ind], this.messages[sequenceNum]);
+                ind++;
+                this.parseMessages(ind);
+            } else {
+                var url = general.loc.replace(/&amp;page_id=\d+(#\d+)?#?/g, '') +
+                        '&amp;page_id=' + pageReply,
+                    _this = this;
+
+                new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                    var spanContent = general.doc.createElement('span');
+                    spanContent.innerHTML = xml.responseText;
+
+                    var mess = _this.getMessagesOnPages(spanContent);
+                    _this.insertMess(_this.messages[ind], mess[sequenceNum]);
+                    ind++;
+                    general.root.setTimeout(function () {
+                        _this.parseMessages(ind);
+                    }, 700);
+                }, function () {
+                    general.root.setTimeout(function () {
+                        _this.parseMessages(ind);
+                    }, 700);
+                });
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            if (/&amp;page_id=\d+/.exec(general.loc)) {
+                this.pageNum = +(/&amp;page_id=(\d+)/.exec(general.loc)[1]);
+            } else if (/page_id=last/.test(general.loc)) {
+                var num = general.doc.querySelector('td[style="cursor:' +
+                        'pointer;"][class="greenlightbg"]');
+                if (num) {
+                    this.pageNum = +num.firstElementChild.innerHTML;
+                }
+            }
+
+            this.messages = this.getMessagesOnPages(general.doc);
+            this.parseMessages(0);
+        };
+    };
+
+    /**
+     * @class SearchUser
+     * @constructor
+     */
+    var SearchUser = function () {
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var topPanel = new GetTopPanel().init();
+            if (topPanel) {
+                var td = general.doc.createElement('td');
+                td.setAttribute('style', 'width: 130px;');
+                td.innerHTML = '&lt;form name="fsearch" id="fsearch" ' +
+                    'method="GET" action="/search.php">&lt;input type="text" ' +
+                    'id="skey" name="key" value="" style="width: 130px;"' +
+                    'title="Введите ник и нажмите Enter" />&lt;/form>';
+                topPanel = topPanel.parentNode.parentNode;
+                topPanel = general.DESIGN_VERSION === 'v2' ?
+                        topPanel.parentNode : topPanel;
+                topPanel.appendChild(td);
+
+                general.$('skey').addEventListener('keypress', function (e) {
+                    var ev = e || general.root.event;
+                    if (ev.keyCode === 13) {
+                        general.$('fsearch').submit();
+                    }
+                }, false);
+            }
+        };
+    };
+
+    /**
+     * @class SkillCounters
+     * @constructor
+     */
+    var SkillCounters = function () {
+        /**
+         * @property counters
+         * @type {Array}
+         */
+        this.counters = general.doc.querySelectorAll('td[valign="top"]' +
+                '[bgcolor="#e9ffe9"]>table[border="0"] tr>td+td>nobr');
+        /**
+         * @property ids
+         * @type {Array}
+         */
+        this.ids = ['cFighting', 'cEconomic', 'cProduction', 'cGuns',
+            'cGrenades', 'cAuto', 'cHeavy', 'cShotguns', 'cSnipers'];
+        /**
+         * @property dataNow
+         * @type {Array|null}
+         */
+        this.dataNow = null;
+
+        /**
+         * @method getHtime
+         * @param   {int}   time
+         * @return  {String}
+         */
+        this.getHtime = function (time) {
+            var date = new Date(time),
+                day = date.getDate(),
+                str = '';
+
+            str  += day &lt; 10 ? '0' + day : day;
+            str += '.';
+            var month = date.getMonth() + 1;
+            str += month &lt; 10 ? '0' + month : month;
+            str += '.';
+            var year = /20(\d+)/.exec(date.getFullYear().toString())[1];
+            str += year + ' ' + (/(\d+:\d+):\d+/.exec(date.toString())[1]);
+
+            return str;
+        };
+
+        /**
+         * @method getValue
+         * @param   {Element}   obj
+         * @param   {int}       fix
+         * @return  {String}
+         */
+        this.getValue = function (obj, fix) {
+            return parseFloat(/\((\d+.?\d*)\)/.
+                    exec(obj.innerHTML)[1]).toFixed(fix);
+        };
+
+        /**
+         * @method getDataNow
+         * @param   {Boolean}   loadPage
+         */
+        this.getDataNow = function (loadPage) {
+            var i;
+            this.dataNow = [];
+            for (i = 0; i &lt; this.counters.length; i++) {
+                this.dataNow.
+                    push(this.getValue(this.counters[i], i &lt; 3 ? 0 : 2));
+
+                if (loadPage) {
+                    this.counters[i].parentNode.parentNode.lastElementChild.
+                        innerHTML = '&lt;span id="' + this.ids[i] +
+                        '" style="color: #FF0000; font-size: 9px;">&lt;/span>';
+                }
+            }
+
+            var syndExp = general.doc.querySelector('span>b+nobr+nobr');
+            if (syndExp &amp;&amp; loadPage) {
+                syndExp.innerHTML += '&lt;span id="cSyndExp" ' +
+                    'style="color: #FF0000; font-size: 9px;">&lt;/span> ' +
+                    '&lt;span id="syndLeftToLevel" style="font-size: 8px; ' +
+                    'color: #696156">&lt;/span>';
+            }
+
+            this.dataNow.push(syndExp ? this.getValue(syndExp, 0) : '');
+            this.dataNow.push(new Date().getTime());
+        };
+
+        /**
+         * @method setLeftToLevel
+         * @param   {int}   val
+         */
+        this.setLeftToLevel = function (val) {
+            var syndLevels = [5, 15, 37, 76, 143, 249, 412, 655, 1007, 1505,
+                2199, 3149, 4433, 6146, 8407, 11362, 15192, 20113, 26394,
+                34353, 44377, 56931, 72568, 91947, 115853, 145214, 181127,
+                224882, 277996, 342247, 419713, 512821, 624395, 757716, 916591,
+                1105426, 1329313, 1594124, 1906627, 2274598, 2723523, 3293658,
+                4046236, 5077268, 6541333, 8693509, 11964817, 17100771,
+                25421016, 40000000];
+
+            var i;
+            for (i = 0; i &lt; syndLevels.length; i++) {
+                if (val &lt; syndLevels[i]) {
+                    general.$('syndLeftToLevel').innerHTML = '[+' +
+                        (syndLevels[i] - val) + ']';
+                    break;
+                }
+            }
+        };
+
+        /**
+         * @method setCounters
+         */
+        this.setCounters = function () {
+            var stData = general.getData(25),
+                i;
+
+            for (i = 0; i &lt; this.counters.length; i++) {
+                general.$(this.ids[i]).innerHTML = '[' +
+                    ((parseFloat(this.dataNow[i]) - parseFloat(stData[i])).
+                        toFixed(i &lt; 3 ? 0 : 2)) + ']';
+            }
+
+            // синдовый уровень
+            if (this.dataNow[9]) {
+                // основной синдикат есть, а прошлого значения синдового нет
+                if (!stData[9]) {
+                    stData[9] = this.dataNow[9];
+                    general.setData(stData, 25);
+                }
+
+                general.$('cSyndExp').innerHTML = '[' +
+                    (+this.dataNow[9] - (+stData[9])) + ']';
+                this.setLeftToLevel(+this.dataNow[9]);
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            this.getDataNow(true);
+            var stData = general.getData(25);
+
+            if (!stData[0]) {
+                stData = this.dataNow;
+                general.setData(stData, 25);
+            }
+
+            // кнопа сброса счетчиков
+            var tr = general.doc.createElement('tr');
+            tr.innerHTML = '&lt;td>&lt;/td>&lt;td colspan="2" style="font-weight: ' +
+                'bold; font-size: 9px;">&lt;span id="resetCounters" ' +
+                'style="cursor: pointer; color: #008000; text-decoration: ' +
+                'underline;">Сбросить счетчики&lt;/span>&lt;br>' +
+                '&lt;span id="timeLastReset" style="cursor: default; color: ' +
+                '#0000FF;">(' + this.getHtime(+stData[10]) + ')&lt;/span>&lt;/td>';
+            general.$('cSnipers').parentNode.parentNode.parentNode.
+                appendChild(tr);
+
+            var _this = this;
+            general.$('resetCounters').addEventListener('click', function () {
+                if (confirm('Сбросить счетчики?')) {
+                    _this.getDataNow(false);
+                    general.setData(_this.dataNow, 25);
+                    general.$('timeLastReset').innerHTML = _this.
+                        getHtime(_this.dataNow[10]);
+                    _this.setCounters();
+                }
+            }, false);
+
+            this.setCounters();
+        };
+    };
+
+    /**
+     * @class SyndPtsAnalyser
+     * @constructor
+     */
+    var SyndPtsAnalyser = function () {
+        /**
+         * @property syndId
+         * @type {String}
+         */
+        this.syndId = /\?id=(\d+)/.exec(general.loc)[1];
+        /**
+         * @property tm
+         * @type {int}
+         */
+        this.tm = 700;
+        /**
+         * @property mainTable
+         * @type {Element}
+         */
+        this.mainTable = general.doc.querySelector('center+br+table');
+        /**
+         * @property lastDate
+         * @type {String}
+         */
+        this.lastDate = '';
+        /**
+         * @property pers
+         * @type {Array|null}
+         */
+        this.pers = null;
+        /**
+         * @property from
+         * @type {int}
+         */
+        this.from = 0;
+        /**
+         * @property to
+         * @type {int}
+         */
+        this.to = 0;
+        /**
+         * @property summ
+         * @type {Array|null}
+         */
+        this.summ = null;
+        /**
+         * @property all
+         * @type {int}
+         */
+        this.all = 0;
+        /**
+         * @property control
+         * @type {int}
+         */
+        this.control = 0;
+        /**
+         * @property imgPath
+         * @type {String}
+         */
+        this.imgPath = general.imgPath + 'SyndPtsAnalyser/';
+
+        /**
+         * @method getLastDate
+         * @param   {String}    url
+         */
+        this.getLastDate = function (url) {
+            var _url = url || 'http://www.ganjawars.ru/syndicate.log.php?id=' +
+                    this.syndId + '&amp;ptslog=1&amp;page_id=100500',
+                _this = this;
+
+            new AjaxQuery().init(_url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = xml.responseText;
+
+                var counter = general.$('analizePTSCounter');
+                if (!url) {
+                    general.root.setTimeout(function () {
+                        counter.innerHTML = '2/1';
+                        _this.getLastDate(spanContent.
+                            querySelector('br+center>b>a:last-child').href);
+                    }, _this.tm);
+                } else {
+                    counter.innerHTML = '2/2';
+                    var fonts = spanContent.
+                            querySelectorAll('nobr>font[color="green"]');
+                    _this.lastDate = /\d+.\d+.\d+/.
+                            exec(fonts[fonts.length - 1].innerHTML)[0];
+
+                    var inpFrom = general.$('inpDateFrom');
+                    inpFrom.value = _this.lastDate;
+                    inpFrom.disabled = false;
+                    general.$('inpDateTo').disabled = false;
+                    general.$('goPTS').disabled = false;
+                    general.$('ptsPreloader').style.display = 'none';
+                }
+            }, function () {
+                var preloader = general.$('ptsPreloader');
+                preloader.style.display = 'none';
+                preloader.parentNode.innerHTML += '&lt;br>&lt;span style="color: ' +
+                    '#FF0000;">Ошибка ответа сервера...&lt;/span>';
+            });
+        };
+
+        /**
+         * @method enterPress
+         * @param   {Object}    e
+         */
+        this.enterPress = function (e) {
+            var ev = e || general.root.event;
+            if (ev.keyCode === 13) {
+                general.$('goPTS').click();
+            }
+        };
+
+        /**
+         * @method showRezult
+         * @param   {String}    id
+         */
+        this.showRezult = function (id) {
+            this.mainTable.removeAttribute('class');
+            this.mainTable.setAttribute('style', 'border-collapse: ' +
+                    'collapse; background: #D0EED0;');
+
+            var str = '&lt;tr style="font-weight: bold;">&lt;td class="wb1">' +
+                    'Персонаж&lt;/td>&lt;td class="wb1">&lt;img id="gren" ' +
+                    'style="cursor: pointer; margin: 2px;" src="' +
+                    this.imgPath + 'gren.png" title="Покупка гранат" ' +
+                    'alt="Гранаты">&lt;/td>&lt;td class="wb1">&lt;img id="chip" ' +
+                    'style="cursor: pointer; margin: 2px;" src="' +
+                    this.imgPath + 'chip.png" title="Покупка чипов" ' +
+                    'alt="Чипы">&lt;/td>&lt;td class="wb1">&lt;img id="rank" ' +
+                    'style="cursor: pointer; margin: 2px;" src="' +
+                    this.imgPath + 'rank.png" title="Выдача званий" ' +
+                    'alt="Звания">&lt;/td>&lt;td class="wb1">&lt;img id="sign" ' +
+                    'style="cursor: pointer; margin: 2px;" ' +
+                    'src="http://images.ganjawars.ru/img/synds/' + this.syndId +
+                    '.gif" title="Выдача знаков" alt="Знаки">&lt;/td>' +
+                    '&lt;td class="wb1">&lt;span id="all" style="color: #008000; ' +
+                    'cursor: pointer;">Всего&lt;/span>&lt;/td>&lt;/tr>',
+                setPoints = new SetPoints().init;
+
+            var i;
+            for (i = 0; i &lt; this.pers.length; i++) {
+                str += '&lt;tr>&lt;td class="wb2">&lt;a target="_blank" ' +
+                    'href="http://www.ganjawars.ru/search.php?key=' +
+                    this.pers[i].name + '" style="text-decoration: none; ' +
+                    'font-weight: bold; color: #004400;">' +
+                    this.pers[i].name + '&lt;/td>&lt;td class="wb1">' +
+                    setPoints(this.pers[i].gren, '\'', false) +
+                    '&lt;/td>&lt;td class="wb1">' +
+                    setPoints(this.pers[i].chip, '\'', false) + '&lt;/td>' +
+                    '&lt;td class="wb1">' +
+                    setPoints(this.pers[i].rank, '\'', false) + '&lt;/td>' +
+                    '&lt;td class="wb1">' +
+                    setPoints(this.pers[i].sign, '\'', false) + '&lt;/td>' +
+                    '&lt;td class="wb1" style="color: #008000;">' +
+                    setPoints(this.pers[i].all, '\'', false) + '&lt;/td>&lt;/tr>';
+            }
+
+            str += '&lt;tr style="font-weight: bold;">&lt;td class="wb1" ' +
+                'style="color: #0000FF;">Всего&lt;/td>&lt;td class="wb1" ' +
+                'style="color: #0000FF;">' +
+                setPoints(this.summ[0], '\'', false) + '&lt;/td>' +
+                '&lt;td class="wb1" style="color: #0000FF;">' +
+                setPoints(this.summ[1], '\'', false) +
+                '&lt;/td>&lt;td class="wb1" style="color: #0000FF;">' +
+                setPoints(this.summ[2], '\'', false) +
+                '&lt;/td>&lt;td class="wb1" style="color: #0000FF;">' +
+                setPoints(this.summ[3], '\'', false) +
+                '&lt;/td>&lt;td class="wb1" style="color: #FF0000;">' +
+                setPoints(this.all, '\'', false) +
+                '&lt;/td>&lt;/tr>&lt;tr>&lt;td class="wb1" colspan="6">&lt;b>Начислено за ' +
+                'контроль&lt;/b>: &lt;span style="color: #FF0000;">' +
+                new SetPoints().init(this.control, '\'', false) +
+                '&lt;/span> &lt;b>PTS&lt;/b>&lt;/td>&lt;/tr>';
+            this.mainTable.innerHTML = str;
+
+            var titleSort = general.$(id);
+            titleSort.parentNode.style.background = '#A0EEA0';
+
+            general.$('gren').
+                addEventListener('click', this.titleClick('gren'), false);
+            general.$('chip').
+                addEventListener('click', this.titleClick('chip'), false);
+            general.$('rank').
+                addEventListener('click', this.titleClick('rank'), false);
+            general.$('sign').
+                addEventListener('click', this.titleClick('sign'), false);
+            general.$('all').
+                addEventListener('click', this.titleClick('all'), false);
+        };
+
+        /**
+         * @method titleClick
+         * @param   {String}    id
+         */
+        this.titleClick = function (id) {
+            var _this = this;
+            return function () {
+                _this.sortPers(id);
+            };
+        };
+
+        /**
+         * @method sortPers
+         * @param   {String}    prop
+         */
+        this.sortPers = function (prop) {
+            this.pers.sort(function (a, b) {
+                var ret;
+
+                if (a[prop] &lt; b[prop]) {
+                    ret = 1;
+                } else if (a[prop] > b[prop]) {
+                    ret = -1;
+                } else {
+                    ret = 0;
+                }
+
+                return ret;
+            });
+
+            this.showRezult(prop);
+        };
+
+        /**
+         * @method addData
+         * @param   {Object}    pers
+         * @param   {String}    prop
+         * @param   {int}       val
+         */
+        this.addData = function (pers, prop, val) {
+            pers[prop] += val;
+            pers.all += val;
+
+            var ind;
+            switch (prop) {
+            case 'gren':
+                ind = 0;
+                break;
+            case 'chip':
+                ind = 1;
+                break;
+            case 'rank':
+                ind = 2;
+                break;
+            case 'sign':
+                ind = 3;
+                break;
+            default:
+                break;
+            }
+
+            this.summ[ind] += val;
+            this.all += val;
+        };
+
+        /**
+         * @method parsePTSProtocols
+         * @param   {int}   ind
+         */
+        this.parsePTSProtocols = function (ind) {
+            general.$('analizePTSCounter').innerHTML = ind;
+            var url = 'http://www.ganjawars.ru/syndicate.log.php?id=' +
+                    this.syndId + '&amp;ptslog=1&amp;page_id=' + ind,
+                _this = this;
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = xml.responseText;
+
+                var lines = spanContent.
+                        querySelectorAll('nobr>font[color="green"]');
+
+                if (!lines.length) {
+                    _this.sortPers('all');
+                    return;
+                }
+
+                var getTimestamp = new GetTimestamp().init,
+                    pers,
+                    time,
+                    rez,
+                    str,
+                    i;
+
+                for (i = 0; i &lt; lines.length; i++) {
+                    time = getTimestamp(lines[i].innerHTML);
+                    if (time > _this.to) {
+                        continue;
+                    }
+
+                    if (time &lt; _this.from) {
+                        _this.sortPers('all');
+                        return;
+                    }
+
+                    str = lines[i].parentNode.nextElementSibling.innerHTML;
+
+                    rez = /(.*) купил.* за (\d+) PTS/.exec(str);
+                    if (rez) {
+                        pers = _this.getPers(rez[1]);
+                        _this.addData(pers, /чип/i.test(str) ? 'chip' : 'gren',
+                            +rez[2]);
+                        continue;
+                    }
+
+                    rez = /выдал значок персонажу (.*) \((\d+) PTS/.exec(str);
+                    if (rez) {
+                        pers = _this.getPers(rez[1]);
+                        _this.addData(pers, 'sign', +rez[2]);
+                        continue;
+                    }
+
+                    rez = /Продлено звание для (.*) за (\d+) PTS/.exec(str);
+                    if (rez) {
+                        pers = _this.getPers(rez[1]);
+                        _this.addData(pers, 'rank', +rez[2]);
+                        continue;
+                    }
+
+                    rez = /выдал звание .* персонажу (.*) \((\d+) PT/.exec(str);
+                    if (rez) {
+                        pers = _this.getPers(rez[1]);
+                        _this.addData(pers, 'rank', +rez[2]);
+                        continue;
+                    }
+
+                    rez = /Начислено \$.* и (\d+) PTS за контроль/.exec(str);
+                    if (rez) {
+                        _this.control += +rez[1];
+                    }
+                }
+
+                general.root.setTimeout(function () {
+                    ind++;
+                    _this.parsePTSProtocols(ind);
+                }, _this.tm);
+            }, function () {
+                general.root.setTimeout(function () {
+                    _this.parsePTSProtocols(ind);
+                }, _this.tm);
+            });
+        };
+
+        /**
+         * @method getPers
+         * @param   {String}    nik
+         * @return  {Object}
+         */
+        this.getPers = function (nik) {
+            var i;
+            for (i = 0; i &lt; this.pers.length; i++) {
+                if (this.pers[i].name === nik) {
+                    return this.pers[i];
+                }
+            }
+
+            var pers = {name: nik, gren: 0, chip: 0, sign: 0, rank: 0, all: 0};
+            this.pers.push(pers);
+
+            return pers;
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var target = general.doc.
+                    querySelector('td[colspan="3"]>a[href*="&amp;ptslog=1"]').
+                        parentNode;
+
+            //css-ботва
+            var style = general.doc.createElement('style');
+            style.innerHTML = '.wb1 {text-align:center; padding-left:3px; ' +
+                'border: 1px #339933 solid;} .wb2 {padding-left:3px; ' +
+                'padding-right:3px; border: 1px #339933 solid;}';
+            general.doc.querySelector('head').appendChild(style);
+
+            if (target.lastElementChild.nodeName === 'BR') {
+                target.removeChild(target.lastElementChild);
+            }
+
+            var butShowPTSAnalizePanel = general.doc.createElement('a');
+            butShowPTSAnalizePanel.innerHTML = 'Анализ PTS';
+            butShowPTSAnalizePanel.setAttribute('style', 'cursor: pointer');
+            target.appendChild(general.doc.createTextNode(' | '));
+            target.appendChild(butShowPTSAnalizePanel);
+
+            var _this = this;
+            butShowPTSAnalizePanel.addEventListener('click', function () {
+                if (general.$('inpDateFrom')) {
+                    return;
+                }
+
+                _this.mainTable.setAttribute('class', 'wb');
+                _this.mainTable.removeAttribute('style');
+
+                var getStrDateNow = new GetStrDateNow().init;
+                _this.mainTable.innerHTML = '&lt;tr>&lt;td>' +
+                    'Введите даты в формате дд.мм.гг&lt;br>' +
+                    'с: &lt;input id="inpDateFrom" type="text" maxlength="8" ' +
+                    'value="" style="width: 70px;" disabled> до: ' +
+                    '&lt;input id="inpDateTo" type="text" maxlength="8" value="' +
+                    getStrDateNow()  + '" style="width: 70px;" disabled> ' +
+                    '&lt;input type="button" id="goPTS" value=">>" disabled>' +
+                    '&lt;span id="ptsPreloader" style="margin-left: 10px;">' +
+                    '&lt;img src="' + general.imgPath + 'preloader.gif" />' +
+                    '&lt;span id="analizePTSCounter" style="color: #0000FF; ' +
+                    'margin-left: 10px;">2/0&lt;/span>&lt;/span>&lt;/td>&lt;/tr>';
+
+                _this.getLastDate('');
+
+                general.$('inpDateFrom').
+                    addEventListener('keypress', _this.enterPress, false);
+                general.$('inpDateTo').
+                    addEventListener('keypress', _this.enterPress, false);
+
+                var getTimestamp = new GetTimestamp().init;
+                general.$('goPTS').addEventListener('click', function () {
+                    _this.from = getTimestamp(general.$('inpDateFrom').value);
+                    _this.to = getTimestamp(general.$('inpDateTo').value);
+
+                    var dateStrNow = getStrDateNow();
+                    if (!_this.from || !_this.to ||
+                            _this.from &lt; getTimestamp(_this.lastDate) ||
+                                _this.to > getTimestamp(dateStrNow) ||
+                                    _this.from > _this.to) {
+                        alert('Не верно введена дата !!!\n' +
+                            'Первая запись в протоколе: ' + _this.lastDate +
+                            '\nСегодня: ' + dateStrNow);
+                        return;
+                    }
+
+                    general.$('ptsPreloader').style.display = '';
+                    general.$('inpDateFrom').disabled = true;
+                    general.$('inpDateTo').disabled = true;
+                    general.$('goPTS').disabled = true;
+
+                    _this.pers = [];
+                    // гранаты, чипы, звания, знаки
+                    _this.summ = [0, 0, 0, 0, 0];
+                    _this.all = 0;
+                    _this.control = 0;
+                    _this.parsePTSProtocols(0);
+                }, false);
+            }, false);
+        };
+    };
+
+    /**
+     * @class SyndAnalyser
+     * @constructor
+     */
+    var SyndAnalyser = function () {
+        /**
+         * @property syndId
+         * @type {String}
+         */
+        this.syndId = /\?id=(\d+)/.exec(general.loc)[1];
+        /**
+         * @property mainTable
+         * @type {Element}
+         */
+        this.mainTable = general.doc.querySelector('center+br+table');
+        /**
+         * @property tm
+         * @type {int}
+         */
+        this.tm = 700;
+        /**
+         * @property lastDate
+         * @type {String}
+         */
+        this.lastDate = '';
+        /**
+         * @property from
+         * @type {int}
+         */
+        this.from = 0;
+        /**
+         * @property to
+         * @type {int}
+         */
+        this.to = 0;
+        /**
+         * @property mainData
+         * @type {Object|null}
+         */
+        this.mainData = null;
+
+        /**
+         * @class MainData
+         * @constructor
+         */
+        var MainData = function () {
+            /**
+             * @property pers
+             * @type {Array}
+             */
+            this.pers = [];
+            /**
+             * @property allProtect
+             * @type {int}
+             */
+            this.allProtect = 0;
+            /**
+             * @property allAttaks
+             * @type {int}
+             */
+            this.allAttaks = 0;
+            /**
+             * @property allTake
+             * @type {int}
+             */
+            this.allTake = 0;
+            /**
+             * @property allPut
+             * @type {int}
+             */
+            this.allPut = 0;
+            /**
+             * @property takenSynd
+             * @type {Array}
+             */
+            this.takenSynd = [];
+            /**
+             * @property dismissedSynd
+             * @type {Array}
+             */
+            this.dismissedSynd = [];
+            /**
+             * @property realEstate
+             * @type {Object}
+             */
+            this.realEstate = {
+                es: {mMoney: 0, pMoney: 0, mPTS: 0, pPTS: 0},
+                uran: {mMoney: 0, pMoney: 0, mPTS: 0, pPTS: 0},
+                bars: {mMoney: 0, pMoney: 0, mPTS: 0, pPTS: 0},
+                another: {mMoney: 0, pMoney: 0, mPTS: 0, pPTS: 0}
+            };
+        };
+
+        /**
+         * @method getLastDate
+         * @param   {String}    url
+         */
+        this.getLastDate = function (url) {
+            var _url = url || 'http://www.ganjawars.ru/syndicate.log.php?id=' +
+                    this.syndId + '&amp;page_id=100500',
+                _this = this;
+
+            new AjaxQuery().init(_url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = xml.responseText;
+
+                var counter = general.$('syndAnalyseCounter');
+                if (!url) {
+                    general.root.setTimeout(function () {
+                        counter.innerHTML = '2/1';
+                        _this.getLastDate(spanContent.
+                            querySelector('br+center>b>a:last-child').href);
+                    }, _this.tm);
+                } else {
+                    counter.innerHTML = '2/2';
+                    var fonts = spanContent.
+                            querySelectorAll('nobr>font[color="green"]');
+                    _this.lastDate = /\d+.\d+.\d+/.
+                            exec(fonts[fonts.length - 1].innerHTML)[0];
+
+                    var inpFrom = general.$('inpDateFrom');
+                    inpFrom.value = _this.lastDate;
+                    inpFrom.disabled = false;
+                    general.$('inpDateTo').disabled = false;
+                    general.$('goSAnalyse').disabled = false;
+                    general.$('syndAnalysePreloader').style.display = 'none';
+                }
+            }, function () {
+                var preloader = general.$('syndAnalysePreloader');
+                preloader.style.display = 'none';
+                preloader.parentNode.innerHTML += '&lt;br>&lt;span style="color: ' +
+                    '#FF0000;">Ошибка ответа сервера...&lt;/span>';
+            });
+        };
+
+        /**
+         * @method enterPress
+         * @param   {Object}    e
+         */
+        this.enterPress = function (e) {
+            var ev = e || general.root.event;
+            if (ev.keyCode === 13) {
+                general.$('goSAnalyse').click();
+            }
+        };
+
+        /**
+         * @method getPers
+         * @param   {Object}   link
+         * @return  {Object}
+         */
+        this.getPers = function (link) {
+            var i;
+            for (i = 0; i &lt; this.mainData.pers.length; i++) {
+                if (this.mainData.pers[i].link === link.href) {
+                    return this.mainData.pers[i];
+                }
+            }
+
+            var pers = {
+                link: link.href,
+                name: link.firstElementChild.innerHTML,
+                attaks: 0,
+                putMoney: 0,
+                takeMoney: 0
+            };
+
+            this.mainData.pers.push(pers);
+
+            return pers;
+        };
+
+        /**
+         * @method getTypeLine
+         * @param   {String}    str
+         * @return  {int|Object}
+         */
+        this.getTypeLine = function (str) {
+            if (/инициировал нападение/i.test(str) &amp;&amp;
+                    !(/контроль/i.test(str))) {
+                return 1;
+            }
+
+            if (/На контролируемый объект/i.test(str)) {
+                return 2;
+            }
+
+            if (/снято со счета/i.test(str)) {
+                return {takeOff: +(/\$(\d+)/.exec(str)[1])};
+            }
+
+            if (/переведено на счет/i.test(str)) {
+                return {takeOn: +(/\$(\d+)/.exec(str)[1])};
+            }
+
+            if (/на нападения на электростанции/i.test(str)) {
+                return 3;
+            }
+
+            if (/на нападения на рудники/i.test(str)) {
+                return 4;
+            }
+
+            if (/нападениях на остальную/i.test(str)) {
+                return 5;
+            }
+
+            if (/принят/i.test(str)) {
+                return 6;
+            }
+
+            if (/вышел/i.test(str)) {
+                return 7;
+            }
+
+            if (/в нападениях за контроль баров/i.test(str)) {
+                return 8;
+            }
+
+            if (/покинул синдикат/i.test(str)) {
+                return 9;
+            }
+
+            return 0;
+        };
+
+        /**
+         * @method getPersLink
+         * @param    {Element}  elem
+         * @return   {Element}
+         */
+        this.getPersLink = function (elem) {
+            return elem.parentNode.nextElementSibling.querySelector('a');
+        };
+
+        /**
+         * @method parseLine
+         * @param   {String}    str
+         * @param   {Object}    obj
+         */
+        this.parseLine = function (str, obj) {
+            var rez = /\$(\d+).*и (\d+).*\$(\d+).*и (\d+)/.exec(str);
+
+            if (rez) {
+                obj.mMoney += +rez[1].replace(/,/g, '');
+                obj.mPTS += +rez[2].replace(/,/g, '');
+                obj.pMoney += +rez[3].replace(/,/g, '');
+                obj.pPTS += +rez[4].replace(/,/g, '');
+            }
+        };
+
+        /**
+         * @method getRealEstateStr
+         * @param   {Object}    obj
+         * @param   {String}    name
+         * @param   {String}    title
+         * @param   {String}    str1
+         * @param   {String}    str2
+         * @param   {String}    str3
+         * @return  {String}    str
+         */
+        this.getRealEstateStr = function (obj, name, title, str1, str2, str3) {
+            var setPoints = new SetPoints().init;
+
+            return title + name + str3 +
+                str1 + 'Потрачено гб' + str2 + '$' +
+                setPoints(obj.mMoney, '\'', false) + str3 + str1 +
+                'Заработано гб' + str2 + '$' +
+                setPoints(obj.pMoney, '\'', false) + str3 +
+                str1 + '&lt;span style="font-weight: bold;">Итого:&lt;/span>' + str2 +
+                '&lt;span style="font-weight: bold;">$' +
+                setPoints(obj.pMoney - obj.mMoney, '\'', true) + '&lt;/span>' +
+                str3 + str1 + 'Потрачено PTS' + str2 +
+                setPoints(obj.mPTS, '\'', false) + str3 +
+                str1 + 'Заработано PTS' + str2 +
+                setPoints(obj.pPTS, '\'', false) + str3 + str1 +
+                '&lt;span style="font-weight: bold;">Итого:&lt;/span>' + str2 +
+                '&lt;span style="font-weight: bold;">' +
+                setPoints(obj.pPTS - obj.mPTS, '\'', true) + '&lt;/span>' +
+                str3;
+        };
+
+        /**
+         * @method showRezult
+         */
+        this.showRezult = function () {
+            this.sortPers();
+
+            var setPoints = new SetPoints().init,
+                main = this.mainData,
+                str1 = '&lt;tr>&lt;td class="wb">',
+                str2 = '&lt;/td>&lt;td class="wb">',
+                str3 = '&lt;/td>&lt;/tr>',
+                strTakeMoney = '',
+                strPutMoney = '',
+                strAttaks = '',
+                persLink,
+                pers,
+                val,
+                i;
+
+            for (i = 0; i &lt; main.pers.length; i++) {
+                pers = main.pers[i];
+                persLink = '&lt;a target="_blank" style="font-weight: bold; ' +
+                    'text-decoration: none; color: #004400;" ' +
+                    'href="' + pers.link + '">' + pers.name + '&lt;/a>';
+
+                if (pers.attaks) {
+                    val = setPoints(pers.attaks, '\'', false);
+                    strAttaks += str1 + persLink + str2 + val + str3;
+                }
+
+                if (pers.takeMoney) {
+                    val = '$' + setPoints(pers.takeMoney, '\'', false);
+                    strTakeMoney += str1 + persLink + str2 + val + str3;
+                }
+
+                if (pers.putMoney) {
+                    val = '$' + setPoints(pers.putMoney, '\'', false);
+                    strPutMoney += str1 + persLink + str2 + val + str3;
+                }
+            }
+
+            var str4 = '&lt;tr>&lt;td colspan="2" class="wb">&lt;a target="_blank" ' +
+                    'style="text-decoration: none; font-weight: bold; color: ' +
+                    '#004400;" href="http://www.ganjawars.ru/search.php?key=',
+                strDismissedSynd = '',
+                strTakenSynd = '';
+
+            for (i = 0; i &lt; main.dismissedSynd.length; i++) {
+                pers = main.dismissedSynd[i];
+                strDismissedSynd += str4 + pers + '">' + pers + '&lt;/a>' + str3;
+            }
+
+            for (i = 0; i &lt; main.takenSynd.length; i++) {
+                pers = main.takenSynd[i];
+                strTakenSynd += str4 + pers + '">' + pers + '&lt;/a>' + str3;
+            }
+
+            var title = '&lt;tr>&lt;td colspan="2" style="background: #D0EED0; ' +
+                'text-align: center; font-weight: bold;">',
+                r = main.realEstate;
+
+            this.mainTable.innerHTML = title + 'Нападающие [' +
+                'нападений: &lt;span style="color: #FF0000">' + main.allAttaks +
+                '&lt;/span>, защит: &lt;span style="color: #0000FF">' +
+                main.allProtect + '&lt;/span>, всего боев: &lt;span style="color: ' +
+                '#990000">' + (main.allAttaks + main.allProtect) + '&lt;/span>]' +
+                str3 + strAttaks +
+
+                this.getRealEstateStr(r.es, 'Электростанции',
+                        title, str1, str2, str3) +
+                this.getRealEstateStr(r.uran, 'Урановые рудники',
+                        title, str1, str2, str3) +
+                this.getRealEstateStr(r.bars, 'Бары',
+                        title, str1, str2, str3) +
+                this.getRealEstateStr(r.another, 'Другая недвижимость',
+                        title, str1, str2, str3) +
+
+                title + 'Счет синдиката [$&lt;span style="color: #990000">' +
+                setPoints(main.allPut - main.allTake, '\'', true) +
+                '&lt;/span>]' + str3 + str1 + '&lt;span style="font-weight: bold; ' +
+                'color: #FF0000;">Взяли со счета&lt;/span> (всего)' + str2 +
+                '&lt;span style="font-weight: bold;">$' +
+                setPoints(main.allTake, '\'', false) + '&lt;/span>' + str3 +
+                strTakeMoney + str1 + '&lt;span style="font-weight: bold; ' +
+                'color: #0000FF;">Положили на счет&lt;/span> (всего)' + str2 +
+                '&lt;span style="font-weight: bold;">$' +
+                setPoints(main.allPut, '\'', false) + '&lt;/span>' + str3 +
+                strPutMoney + title + 'Состав' + str3 + '&lt;tr>&lt;td colspan="2" ' +
+                'class="wb">&lt;span style="font-weight: bold; color: #FF0000;">' +
+                'Вышли из синдиката&lt;/span> (всего ' +
+                main.dismissedSynd.length + ')' + str3 + strDismissedSynd +
+                '&lt;tr>&lt;td colspan="2" class="wb">&lt;span style="font-weight: ' +
+                'bold; color: #0000FF;">Приняты в синдикат&lt;/span> (всего ' +
+                main.takenSynd.length + ')' + str3 + strTakenSynd;
+        };
+
+        /**
+         * @method sortPers
+         */
+        this.sortPers = function () {
+            this.mainData.pers.sort(function (a, b) {
+                var ret;
+
+                if (a.attaks &lt; b.attaks) {
+                    ret = 1;
+                } else if (a.attaks > b.attaks) {
+                    ret = -1;
+                } else {
+                    ret = 0;
+                }
+
+                return ret;
+            });
+        };
+
+        /**
+         * @method parseSyndProtocols
+         * @param   {int}   ind
+         */
+        this.parseSyndProtocols = function (ind) {
+            general.$('syndAnalyseCounter').innerHTML = ind;
+            var url = 'http://www.ganjawars.ru/syndicate.log.php?id=' +
+                    this.syndId + '&amp;page_id=' + ind,
+                _this = this;
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = xml.responseText;
+
+                var lines = spanContent.
+                        querySelectorAll('nobr>font[color="green"]');
+
+                if (!lines.length) {
+                    _this.showRezult();
+                    return;
+                }
+
+                var getTimestamp = new GetTimestamp().init,
+                    typeLine,
+                    take,
+                    pers,
+                    time,
+                    str,
+                    i;
+
+                for (i = 0; i &lt; lines.length; i++) {
+                    time = getTimestamp(lines[i].innerHTML);
+                    if (time > _this.to) {
+                        continue;
+                    }
+
+                    if (time &lt; _this.from) {
+                        _this.showRezult();
+                        return;
+                    }
+
+                    str = lines[i].parentNode.nextElementSibling.innerHTML;
+                    typeLine = _this.getTypeLine(str);
+
+                    if (!typeLine) {
+                        continue;
+                    }
+
+                    //перс положил или взял со счета
+                    take = typeLine.takeOff || typeLine.takeOn;
+                    if (take) {
+                        pers = _this.getPers(_this.getPersLink(lines[i]));
+                        if (typeLine.takeOff) {
+                            pers.takeMoney += take;
+                            _this.mainData.allTake += take;
+                        } else {
+                            pers.putMoney += take;
+                            _this.mainData.allPut += take;
+                        }
+
+                        continue;
+                    }
+
+                    str = str.replace(/,/g, '');
+                    switch (typeLine) {
+                    case 1:
+                        _this.getPers(_this.getPersLink(lines[i])).attaks++;
+                        _this.mainData.allAttaks++;
+                        break;
+                    case 2:
+                        _this.mainData.allProtect++;
+                        break;
+                    case 3:
+                        _this.parseLine(str, _this.mainData.realEstate.es);
+                        break;
+                    case 4:
+                        _this.parseLine(str, _this.mainData.realEstate.uran);
+                        break;
+                    case 5:
+                        _this.parseLine(str, _this.mainData.realEstate.another);
+                        break;
+                    case 6:
+                        _this.mainData.takenSynd.
+                            push(_this.getPersLink(lines[i]).
+                                    firstElementChild.innerHTML);
+                        break;
+                    case 7:
+                        _this.mainData.dismissedSynd.
+                            push(_this.getPersLink(lines[i]).
+                                    firstElementChild.innerHTML);
+                        break;
+                    case 8:
+                        _this.parseLine(str, _this.mainData.realEstate.bars);
+                        break;
+                    case 9:
+                        _this.mainData.dismissedSynd.
+                            push(/^(.*) покинул/.exec(str)[1]);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+
+                general.root.setTimeout(function () {
+                    ind++;
+                    _this.parseSyndProtocols(ind);
+                }, _this.tm);
+            }, function () {
+                general.root.setTimeout(function () {
+                    _this.parseSyndProtocols(ind);
+                }, _this.tm);
+            });
+
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var target = general.doc.
+                    querySelector('td[colspan="3"]>a[href*="&amp;ptslog=1"]').
+                        parentNode;
+
+            if (target.lastElementChild.nodeName === 'BR') {
+                target.removeChild(target.lastElementChild);
+            }
+
+            var butShowAnalysePanel = general.doc.createElement('a');
+            butShowAnalysePanel.innerHTML = 'Анализ активности';
+            butShowAnalysePanel.setAttribute('style', 'cursor: pointer');
+            target.appendChild(general.doc.createTextNode(' | '));
+            target.appendChild(butShowAnalysePanel);
+
+            var _this = this;
+            butShowAnalysePanel.addEventListener('click', function () {
+                if (general.$('inpDateFrom')) {
+                    return;
+                }
+
+                _this.mainTable.setAttribute('class', 'wb');
+                _this.mainTable.removeAttribute('style');
+
+                var getStrDateNow = new GetStrDateNow().init;
+                _this.mainTable.innerHTML = '&lt;tr>&lt;td>' +
+                    'Введите даты в формате дд.мм.гг&lt;br>' +
+                    'с: &lt;input id="inpDateFrom" type="text" maxlength="8" ' +
+                    'value="" style="width: 70px;" disabled> до: ' +
+                    '&lt;input id="inpDateTo" type="text" maxlength="8" value="' +
+                    getStrDateNow()  + '" style="width: 70px;" disabled> ' +
+                    '&lt;input type="button" id="goSAnalyse" value=">>" ' +
+                    'disabled>&lt;span id="syndAnalysePreloader" ' +
+                    'style="margin-left: 10px;">&lt;img src="' + general.imgPath +
+                    'preloader.gif" />&lt;span id="syndAnalyseCounter" ' +
+                    'style="color: #0000FF; margin-left: 10px;">2/0&lt;/span>' +
+                    '&lt;/span>&lt;/td>&lt;/tr>';
+
+                _this.getLastDate('');
+
+                general.$('inpDateFrom').
+                    addEventListener('keypress', _this.enterPress, false);
+                general.$('inpDateTo').
+                    addEventListener('keypress', _this.enterPress, false);
+
+                var getTimestamp = new GetTimestamp().init;
+                general.$('goSAnalyse').addEventListener('click', function () {
+                    _this.from = getTimestamp(general.$('inpDateFrom').value);
+                    _this.to = getTimestamp(general.$('inpDateTo').value);
+
+                    var dateStrNow = getStrDateNow();
+                    if (!_this.from || !_this.to ||
+                            _this.from &lt; getTimestamp(_this.lastDate) ||
+                                _this.to > getTimestamp(dateStrNow) ||
+                                    _this.from > _this.to) {
+                        alert('Не верно введена дата !!!\n' +
+                            'Первая запись в протоколе: ' + _this.lastDate +
+                            '\nСегодня: ' + dateStrNow);
+                        return;
+                    }
+
+                    general.$('syndAnalysePreloader').style.display = '';
+                    general.$('inpDateFrom').disabled = true;
+                    general.$('inpDateTo').disabled = true;
+                    general.$('goSAnalyse').disabled = true;
+
+                    _this.mainData = new MainData();
+                    _this.parseSyndProtocols(0);
+                }, false);
+            }, false);
+        };
+    };
+
+    /**
+     * @class ShowMyAchievements
+     * @constructor
+     */
+    var ShowMyAchievements = function () {
+        /**
+         * @property divResult
+         * @type {HTMLElement|null}
+         */
+        this.divResult = null;
+
+        /**
+         * @method addCloseButton
+         */
+        this.addCloseButton = function () {
+            this.divResult.innerHTML += '&lt;div style="margin-top: 5px;">' +
+                '&lt;img id="closemyachiev" src="' + general.imgPath +
+                'close.gif">&lt;/img>&lt;/div>';
+
+            var _this = this;
+            general.$('closemyachiev').addEventListener('click', function () {
+                _this.divResult.style.visibility = 'hidden';
+            }, false);
+        };
+
+        /**
+         * @method getAchievNow
+         * @param   {Object}    obj
+         */
+        this.getAchievNow = function (obj) {
+            return obj.querySelectorAll('td[bgcolor="#ffffff"]>' +
+                    'font[color="#336633"]');
+        };
+
+        /**
+         * @method showData
+         * @param   {Object}    ths
+         */
+        this.showData = function (ths) {
+            var pos = new GetPos().init(ths);
+            this.divResult.style.left = pos.x;
+            this.divResult.style.top = pos.y + 25;
+            this.divResult.style.visibility = 'visible';
+            this.divResult.innerHTML = '&lt;img src="' + general.imgPath +
+                'preloader.gif' + '">';
+
+            var stData = general.getData(26),
+                url = 'http://www.ganjawars.ru/info.ach.php?id=' + general.myID;
+
+            if (!stData[0]) {
+                this.divResult.innerHTML = 'Не выбрано ни одной ачивки на ' +
+                    '&lt;a target="_blank" href="' + url + '">этой&lt;/a> странице.';
+                this.addCloseButton();
+            } else {
+                var _this = this;
+                new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                    var spanContent = general.doc.createElement('span');
+                    spanContent.innerHTML = xml.responseText;
+
+                    var achievNow = _this.getAchievNow(spanContent),
+                        str = '&lt;table>',
+                        i;
+
+                    for (i = 0; i &lt; achievNow.length; i++) {
+                        if (new RegExp('(^|,)' + i + '(,|$)').test(stData[0])) {
+                            str += '&lt;tr>' + achievNow[i].parentNode.parentNode.
+                                innerHTML + '&lt;/tr>';
+                        }
+                    }
+
+                    _this.divResult.innerHTML = str + '&lt;/table>';
+                    _this.addCloseButton();
+                }, function () {
+                    _this.divResult.innerHTML = '&lt;span style="color: ' +
+                        '#FF0000;">Ошибка ответа сервера...&lt;/span>';
+                    _this.addCloseButton();
+                });
+            }
+        };
+
+        /**
+         * @method setChkHandler
+         */
+        this.setChkHandler = function () {
+            var chks = general.doc.querySelectorAll('input[id^="achiev"]'),
+                str = '',
+                i;
+
+            for (i = 0; i &lt; chks.length; i++) {
+                if (chks[i].checked) {
+                    str += (/\d+/.exec(chks[i].id)[0]) + ',';
+                }
+            }
+
+            general.setData([str.replace(/,$/, '')], 26);
+        };
+
+        /**
+         * @method setCheckboxes
+         */
+        this.setCheckboxes = function () {
+            var achievNow = this.getAchievNow(general.doc),
+                stData = general.getData(26),
+                target,
+                prnt,
+                chk,
+                i;
+
+            for (i = 0; i &lt; achievNow.length; i++) {
+                chk = general.doc.createElement('input');
+                chk.type = 'checkbox';
+                chk.id = 'achiev' + i;
+                chk.checked = new RegExp('(^|,)' + i + '(,|$)').test(stData[0]);
+
+                prnt = achievNow[i].parentNode;
+                target = prnt.firstChild.nodeType === 3 ?
+                            prnt.firstChild : prnt.firstChild.nextSibling;
+
+                prnt.insertBefore(chk, target);
+                chk.addEventListener('click', this.setChkHandler, false);
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var topPanel = new GetTopPanel().init();
+
+            if (topPanel) {
+                this.divResult = general.doc.createElement('div');
+                this.divResult.setAttribute('style', 'visibility: hidden; ' +
+                        'position: absolute; padding: 3px; background-color: ' +
+                        '#E7FFE7; border: solid 1px #339933; ' +
+                        'max-width: 300px; border-radius:5px; top:0; left:0; ' +
+                        'box-shadow: 5px 6px 6px rgba(122,122,122,0.5);');
+                general.doc.body.appendChild(this.divResult);
+
+                var span = general.doc.createElement('span');
+                span.innerHTML = 'Достижения';
+                span.id = 'spanAchievements';
+                span.setAttribute('style', 'cursor: pointer;');
+
+                var _this = this;
+                span.addEventListener('click', function () {
+                    _this.showData(this);
+                }, false);
+
+                topPanel.appendChild(general.doc.createTextNode(' | '));
+                topPanel.appendChild(span);
+
+                // на странице своих ачивок
+                if (general.loc.
+                        indexOf('/info.ach.php?id=' + general.myID) !== -1) {
+                    this.setCheckboxes();
+                }
+            }
+        };
+    };
+
+    /**
+     * @class SyndPersInfo
+     * @constructor
+     */
+    var SyndPersInfo = function () {
+        /**
+         * @property trs
+         * @type {Array|null}
+         */
+        this.trs = null;
+
+        /**
+         * @method nextPers
+         * @param   {int}       ind
+         * @param   {Boolean}   timeout
+         */
+        this.nextPers = function (ind, timeout) {
+            var tm = timeout ? 1500 : 0,
+                _this = this;
+
+            if (this.trs[ind + 1]) {
+                general.root.setTimeout(function () {
+                    _this.getPersInfo(ind + 1);
+                }, tm);
+            }
+        };
+
+        /**
+         * @method getPersInfo
+         * @param   {int}   ind
+         */
+        this.getPersInfo = function (ind) {
+            var persLink = this.trs[ind].
+                    querySelector('a[href*="/info.php?id="]');
+
+            if (!persLink) {
+                this.nextPers(ind, false);
+                return;
+            }
+
+            var target = this.trs[ind].querySelectorAll('td')[3],
+                url = persLink.href,
+                _this = this;
+
+            target.innerHTML = '';
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var str = xml.responseText;
+                if (/Технический персонаж&lt;\/font> \d+ \(\d+\)/.
+                        test(str)) {
+                    target.innerHTML = '[Тех]';
+                    _this.nextPers(ind, true);
+                    return;
+                }
+
+                var area = /Район:&lt;\/b> &lt;a[^>]+>(\[(Z|G|P|S)\])/.exec(str);
+                area = area ? area[1] : '[Аут]';
+
+                var lvlF = /Боевой:.+&lt;font color="?#99000"?>&lt;b>(\d+)/.
+                        exec(str)[1];
+                lvlF = ' &lt;span style="color: #FF0000;">[' +
+                    (+lvlF &lt; 10 ? '0' + lvlF : lvlF) + ']&lt;/span> ';
+
+                var lvlS = /&lt;b>Основной синдикат:&lt;\/b> #\d+[^\[]+\[\s?&lt;b>(\d+)/.
+                        exec(str);
+                lvlS = '&lt;span style="color: #0000FF;">[' +
+                    (!lvlS ? 'Без основы' : (+lvlS[1] &lt; 10 ?
+                             '0' + lvlS[1] : lvlS[1])) + ']&lt;/span> ';
+
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = str;
+
+                var hp = spanContent.querySelector('#namespan') ||
+                        spanContent.querySelector('span[style="padding-left:' +
+                            '10px;padding-right:13px;"]');
+
+                hp = /\[(-?)(\d+)\s\/\s(\d+)\]/.exec(hp.nextSibling.nodeValue);
+                hp = hp[1] ? '&lt;span style="color: #FF0000;">[Кильнули]&lt;/span>' :
+                        '[' + Math.round(+hp[2] * 100 / +hp[3]) + '%]';
+
+                target.innerHTML = area + lvlF + lvlS + hp;
+                _this.nextPers(ind, true);
+            }, function () {
+                general.root.setTimeout(function () {
+                    _this.getPersInfo(ind);
+                }, 1000);
+            });
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            this.trs = general.doc.querySelector('br+center+br+table').
+                    querySelectorAll('tr');
+
+            if (this.trs.length > 1) {
+                var link = general.doc.createElement('a');
+                link.setAttribute('style', 'cursor: pointer; ' +
+                        'text-decoration: underline;');
+                link.innerHTML = 'Инфо';
+                var target = general.doc.querySelector('br+center>' +
+                        'a[style*="bold;"]').nextElementSibling;
+                target.parentNode.insertBefore(link, target);
+                target.parentNode.
+                    insertBefore(general.doc.createTextNode(' | '), target);
+
+                var _this = this;
+                link.addEventListener('click', function () {
+                    _this.getPersInfo(1);
+                }, false);
+            }
+        };
+    };
+
+    /**
+     * @class SyndOnlineOnMainPage
+     * @constructor
+     */
+    var SyndOnlineOnMainPage = function () {
+        /**
+         * @property syndUnion
+         * @type {HTMLElement|null}
+         */
+        this.syndUnion = null;
+        /**
+         * @property syndMain
+         * @type {HTMLElement|null}
+         */
+        this.syndMain = null;
+
+        /**
+         * @method setSms
+         */
+        this.setSms = function () {
+            var nobrs = general.$('friendsbody').querySelectorAll('nobr');
+            if (nobrs.length) {
+                var pLink, i;
+                for (i = 0; i &lt; nobrs.length; i++) {
+                    pLink = nobrs[i].querySelector('a[href*="/info.php?id="]');
+                    if (pLink) {
+                        nobrs[i].innerHTML += '&lt;a target="_blank" ' +
+                            'href="/sms-create.php?mailto=' +
+                            pLink.firstElementChild.innerHTML + '">&lt;img ' +
+                            'src="http://images.ganjawars.ru/i/sms.gif" />&lt;/a>';
+                    }
+                }
+
+                return false;
+            }
+        };
+
+        /**
+         * @method getOnline
+         * @param   {Boolean}   type
+         */
+        this.getOnline = function (type) {
+            var target = general.$('friendsbody');
+            if (!target.querySelector('div')) {
+                target.innerHTML = '&lt;div>&lt;/div>' + (this.syndUnion ?
+                        '&lt;hr style="color: #C3C3C3;" />&lt;div>&lt;/div>' : '');
+            }
+
+            target = type ? target.lastElementChild : target.firstElementChild;
+            target.innerHTML = '&lt;img src="' + general.imgPath +
+                'preloader.gif" />';
+
+            var url = (type ? this.syndUnion.href : this.syndMain.href) +
+                    '&amp;page=online',
+                _this = this;
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = xml.responseText;
+
+                target.innerHTML = '&lt;a href="' + url + '">' +
+                    '&lt;img src="http://images.ganjawars.ru/img/synds/' +
+                    (/\?id=(\d+)/.exec(url)[1]) + '.gif" />&lt;/a> (' +
+                    (/&lt;b>(\d+) бойцов онлайн&lt;\/b>/.
+                        exec(spanContent.innerHTML)[1]) + ')&lt;br>';
+
+                var trs = spanContent.querySelector('br+center+br+table').
+                        querySelectorAll('tr');
+                if (trs.length > 1) {
+                    var nobr, pers, syndImg, war, i;
+                    for (i = 1; i &lt; trs.length; i++) {
+                        syndImg = trs[i].querySelector('a[href*=' +
+                            '"/syndicate.php?id="]');
+                        pers = trs[i].querySelector('a[href*="/info.php?id="]');
+                        war = trs[i].
+                            querySelector('a[href*="/warlog.php?bid="]');
+
+                        nobr = general.doc.createElement('nobr');
+                        if (syndImg) {
+                            nobr.appendChild(syndImg);
+                        }
+
+                        if (war) {
+                            pers.setAttribute('style', 'color: #FF0000;');
+                        }
+
+                        nobr.appendChild(pers);
+                        nobr.innerHTML += ' &lt;a target="_blank" ' +
+                            'href="http://www.ganjawars.ru/sms-create.php?' +
+                            'mailto=' + pers.firstElementChild.innerHTML +
+                            '">&lt;img src="http://images.ganjawars.ru/i/' +
+                            'sms.gif" />&lt;/a>';
+
+                        target.appendChild(nobr);
+                        target.innerHTML += i &lt; trs.length - 1 ? ',&lt;wbr>' : '';
+                    }
+                }
+            }, function () {
+                general.root.setTimeout(function () {
+                    _this.getOnline(type);
+                }, 1000);
+            });
+        };
+
+        /**
+         * @method createLink
+         * @param   {String}    name
+         * @param   {Boolean}   type
+         * @return  {HTMLElement}
+         */
+        this.createLink = function (name, type) {
+            var link = general.doc.createElement('a');
+            link.setAttribute('style', 'text-decoration: underline; ' +
+                    'cursor: pointer;');
+            link.innerHTML = name;
+            var _this = this;
+            link.addEventListener('click', function () {
+                _this.getOnline(type);
+            }, false);
+
+            return link;
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            // гости, друзья - ставим конвертики для отправки письма
+            var friends = general.doc.querySelector('a[onclick*="setfriends"]'),
+                guests = general.doc.querySelector('a[onclick*="setvisitor"]');
+
+            friends.addEventListener('click', this.setSms, false);
+            guests.addEventListener('click', this.setSms, false);
+            friends.click();
+
+            // основной синдикат
+            this.syndMain = general.doc.
+                    querySelector('span>b+nobr>a[href*="/syndicate.php?id="]');
+
+            if (this.syndMain) {
+                var b = general.doc.createElement('b');
+                b.appendChild(general.doc.createTextNode(' / '));
+                b.appendChild(this.createLink('Основа', false));
+                guests.parentNode.parentNode.appendChild(b);
+
+                var url = this.syndMain.href + '&amp;page=politics',
+                    _this = this;
+
+                new AjaxQuery().init(url, 'GET', null, true, function (xml) {
+                    var spanContent = general.doc.createElement('span');
+                    spanContent.innerHTML = xml.responseText;
+
+                    _this.syndUnion = spanContent.
+                        querySelector('td>br:first-child+b+' +
+                            'a[href*="/syndicate.php?id="]');
+
+                    if (_this.syndUnion) {
+                        b.appendChild(general.doc.createTextNode(' '));
+                        b.appendChild(_this.createLink('Союз', true));
+                    }
+                }, function () {
+                    general.cons.log('Error request to: ' + url);
+                });
+            }
+        };
+    };
+
+    /**
+     * @class SoundGraph
+     * @constructor
+     */
+    var SoundGraph = function () {
+        /**
+         * @method init
+         */
+        this.init = function () {
+            new PlaySound().init(4);
+        };
+    };
+
+    /**
+     * @class TimeKarma
+     * @constructor
+     */
+    var TimeKarma = function () {
+        /**
+         * @method formatTime
+         * @param   {int}   sec
+         */
+        this.formatTime = function (sec) {
+            var m = Math.floor(sec / 60),
+                s = sec % 60;
+
+            if (!m &amp;&amp; !s) {
+                general.$('spanKarmaTimer').innerHTML = '&amp;nbsp';
+                general.setData('', 27);
+                return;
+            }
+
+            m = m &lt; 10 ? '0' + m : m;
+            s = s &lt; 10 ? '0' + s : s;
+            general.$('karmaTimer').innerHTML = m + ':' + s;
+
+            var _this = this;
+            general.root.setTimeout(function () {
+                _this.formatTime(sec - 1);
+            }, 1000);
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            // поставили карму, запоминаем время
+            if (/vote/.test(general.loc) &amp;&amp;
+                    (/Спасибо, Ваше мнение учтено/.
+                        test(general.doc.body.innerHTML))) {
+                general.setData(new Date().getTime().toString(), 27);
+                return;
+            }
+
+            var time = +general.getData(27)[0];
+            if (time) {
+                var difference = new Date().getTime() - time;
+                if (general.doc.querySelector('a[href*="/info.vote.php?id="]' +
+                        '[title^="Отправить Ваш голос"]') ||
+                            difference > 1800000) {
+                    general.setData('', 27);
+                    return;
+                }
+
+                var span = general.doc.createElement('span');
+                span.setAttribute('id', 'spanKarmaTimer');
+                span.setAttribute('style', 'margin-left: 5px; color: #07A703;');
+                span.innerHTML = '» Вы сможете выставить карму через ' +
+                    '&lt;span id="karmaTimer" style="color: #056802">&lt;/span>';
+
+                var target = general.doc.
+                        querySelector('td[colspan="3"]>table[width="100%"]'),
+                    prnt = target.parentNode;
+
+                prnt.removeChild(target.nextElementSibling);
+                prnt.insertBefore(span, target.nextElementSibling);
+                this.formatTime(+((1800000 - difference) / 1000).toFixed(0));
+            }
+        };
+    };
+
+    /**
+     * @class ImgPokemonsOnBattle
+     * @constructor
+     */
+    var ImgPokemonsOnBattle = function () {
+        /**
+         * @method deleteImagePoks
+         */
+        this.deleteImagePoks = function () {
+            var divs = general.doc.querySelectorAll('div[name="imagepokemon"]'),
+                i;
+
+            for (i = 0; i &lt; divs.length; i++) {
+                divs[i].parentNode.removeChild(divs[i]);
+            }
+        };
+
+        /**
+         * @method showImagePoks
+         */
+        this.showImagePoks = function () {
+            var enemies = general.doc.
+                    querySelectorAll('div[style*="font-size:8pt;"]>' +
+                        'b:first-child'),
+                getPos = new GetPos().init,
+                imgPath = 'http://www.gw-rent.h19.ru/pokemon/',
+                ext = '.png',
+                name,
+                txt,
+                pos,
+                div,
+                i;
+
+            for (i = 0; i &lt; enemies.length; i++) {
+                txt = enemies[i].innerHTML;
+                name = txt === 'Боец ОМОН' ?
+                        ['', 'omon']  : /(^[^\s]+)\s/.exec(txt);
+                if (name &amp;&amp; (name[1] === 'omon' || (/\[/.test(txt)))) {
+                    pos = getPos(enemies[i].parentNode);
+                    div = general.doc.createElement('div');
+                    general.doc.body.appendChild(div);
+                    div.setAttribute('style', 'position: absolute;');
+                    div.setAttribute('name', 'imagepokemon');
+                    div.style.left = pos.x > 200 ? pos.x - 70 : pos.x + 130;
+                    div.style.top = pos.y;
+                    div.innerHTML = '&lt;img src="' + imgPath + name[1] + ext +
+                        '" style="width: 70px; height: 80px;" ' +
+                        'title="' + name[1] + '" alt="' + name[1] + '" />';
+                }
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            this.showImagePoks();
+
+            // JS-версия боя
+            if (!general.viewMode &amp;&amp; !general.nojs) {
+                var _this = this;
+                general.root.setInterval(function () {
+                    _this.deleteImagePoks();
+                    _this.showImagePoks();
+                }, 1000);
+            }
+        };
+    };
+
+    /**
+     * @class SoundSyndBattle
+     * @constructor
+     */
+    var SoundSyndBattle = function () {
+        /**
+         * @property redLink
+         * @type {HTMLElement|null}
+         */
+        this.redLink = null;
+
+        /**
+         * @method setTimer
+         * @param   {int}   sec
+         */
+        this.setTimer = function (sec) {
+            var m = Math.floor(sec / 60),
+                s = sec % 60;
+
+            m = m &lt; 10 ? '0' + m : m;
+            s = s &lt; 10 ? '0' + s : s;
+            this.redLink.innerHTML = this.redLink.innerHTML.
+                replace(/\d+\:\d+/, m + ':' + s);
+
+            var _this = this;
+            s = sec - 1;
+            if (s > -1) {
+                general.root.setTimeout(function () {
+                    _this.setTimer(s);
+                }, 1000);
+            }
+        };
+
+        /**
+         * @method syndAlert
+         * @param   {String}    dataCheck
+         * @param   {String}    data
+         * @param   {int}       sound
+         * @param   {int}       tm
+         */
+        this.syndAlert = function (dataCheck, data, sound, tm) {
+            general.root.setTimeout(function () {
+                var stData = general.getData(28);
+                if (stData[3] === dataCheck) {
+                    stData[3] = data;
+                    general.setData(stData, 28);
+                    new PlaySound().init(sound);
+                }
+            }, tm);
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var stData = general.getData(28);
+
+            //на login или index
+            if (general.doc.querySelector('a[href*="/regform.php"]')) {
+                stData[3] = '';
+                general.setData(stData, 28);
+                return;
+            }
+
+            if (!general.doc.querySelector('a[href*="/me/"]' +
+                        '[title^="Наличность"]')) {
+                return;
+            }
+
+            this.redLink = general.doc.querySelector('a[style*="color:red;"]' +
+                    '[title^="Ваш синдикат в нападении"]');
+
+            if (!this.redLink) {
+                stData[3] = '';
+                general.setData(stData, 28);
+                return;
+            }
+
+            // для нового оформления игры
+            if (/\[(\d+)\:(\d+)\]/.
+                    test(this.redLink.nextElementSibling.innerHTML)) {
+                this.redLink = this.redLink.nextElementSibling;
+            }
+
+            var time = /\[(\d+)\:(\d+)\]/.exec(this.redLink.innerHTML),
+                timeLimit = +stData[0],
+                sound1 = +stData[1],
+                sound2 = +stData[2];
+
+            if (time &amp;&amp; timeLimit > 14) {
+                var t = +time[1] * 60 + (+time[2]);
+                this.redLink.href = '/wargroup.php?war=attacks';
+                this.setTimer(t);
+
+                var getRandom = new GetRandom().init;
+                if (!stData[3]) {
+                    if (t > timeLimit) {
+                        this.syndAlert('', '1', sound1, getRandom(0, 3000));
+                        this.syndAlert('1', '2', sound2,
+                                (t - timeLimit) * 1000 + getRandom(0, 3000));
+                    } else {
+                        this.syndAlert('', '2', sound2, getRandom(0, 3000));
+                    }
+                } else if (t > timeLimit &amp;&amp; stData[3] === '2') {
+                    this.syndAlert('2', '1', sound1, getRandom(0, 3000));
+                    this.syndAlert('1', '2', sound2,
+                            (t - timeLimit) * 1000 + getRandom(0, 3000));
+                } else if (t &lt;= timeLimit &amp;&amp; stData[3] === '1') {
+                    this.syndAlert('1', '2', sound2, getRandom(0, 3000));
+                }
+            }
+        };
+    };
+
     general = new General();
     if (!general.checkMainData()) {
         return;
@@ -9563,11 +12336,38 @@
         return;
     }
 
+    // графические бои
+    if (/\/bfield0\.ganjawars\.ru\/go\.php\?bid=*/.test(general.loc)) {
+        try {
+            new SoundGraph().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
+
+        return;
+    }
+
     initScript = general.getInitScript();
     // везде на www.ganjawars.ru
     if (initScript[0]) {
         try {
             new NotGiveCannabisLeaf().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
+    }
+
+    if (initScript[41]) {
+        try {
+            new ScanPers().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
+    }
+
+    if (initScript[52]) {
+        try {
+            new SoundSyndBattle().init();
         } catch (e) {
             general.cons.log(e);
         }
@@ -9683,6 +12483,14 @@
             }
         }
 
+        if (initScript[47]) {
+            try {
+                new ShowMyAchievements().init();
+            } catch (e) {
+                general.cons.log(e);
+            }
+        }
+
         if (initScript[5]) {
             try {
                 new WorkPostGrenadesBroken().init();
@@ -9704,6 +12512,22 @@
                 if (initScript[17]) {
                     try {
                         new GbCounter().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[44]) {
+                    try {
+                        new SkillCounters().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[49]) {
+                    try {
+                        new SyndOnlineOnMainPage().init();
                     } catch (e) {
                         general.cons.log(e);
                     }
@@ -9764,6 +12588,16 @@
             if (initScript[20]) {
                 try {
                     new NewsAndInvit().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
+
+        if (/\/messages\.php/.test(general.loc)) {
+            if (initScript[42]) {
+                try {
+                    new ShowInitMessOnForum().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
@@ -9831,6 +12665,14 @@
                         general.cons.log(e);
                     }
                 }
+
+                if (initScript[40]) {
+                    try {
+                        new ScanKarma().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
             }
         }
 
@@ -9848,6 +12690,31 @@
             if (initScript[30]) {
                 try {
                     new SortSyndOnline().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[45]) {
+                try {
+                    new SyndPtsAnalyser().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[46]) {
+                try {
+                    new SyndAnalyser().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (/&amp;page=online$|&amp;page=members$/.test(general.loc) &amp;&amp;
+                    initScript[48]) {
+                try {
+                    new SyndPersInfo().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
@@ -9883,6 +12750,34 @@
                 }
             }
         }
+
+        if (/\/home\.senditem\.php/.test(general.loc)) {
+            if (initScript[39]) {
+                try {
+                    new RentAndSale().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
+
+        if (initScript[43]) {
+            try {
+                new SearchUser().init();
+            } catch (e) {
+                general.cons.log(e);
+            }
+        }
+
+        if (/\/info\.php\?id=|\/info\.vote\.php\?id=/.test(general.loc)) {
+            if (initScript[50]) {
+                try {
+                    new TimeKarma().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
     }
 
     // бои
@@ -9909,6 +12804,14 @@
             if (initScript[31]) {
                 try {
                     new HousHealth().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[51]) {
+                try {
+                    new ImgPokemonsOnBattle().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
@@ -9966,13 +12869,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="-_anonymous_-CritShotsAndLinksBtlLog_CriticalShots.html">CriticalShots</a></li></ul><h3>Namespaces</h3><ul><li><a href="general.root.bf1.html">bf1</a></li><li><a href="general.root.bf2.html">bf2</a></li><li><a href="general.root.bf3.html">bf3</a></li><li><a href="general.root.bfndl.html">bfndl</a></li><li><a href="general.root.frames.bsrc.html">bsrc</a></li><li><a href="general.root.waitforturn.html">waitforturn</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#addContent">addContent</a></li><li><a href="global.html#addEvent">addEvent</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#advSetBonusInfo">advSetBonusInfo</a></li><li><a href="global.html#blink">blink</a></li><li><a href="global.html#calc">calc</a></li><li><a href="global.html#calculateBets">calculateBets</a></li><li><a href="global.html#calculateFarm">calculateFarm</a></li><li><a href="global.html#calculatePerHour">calculatePerHour</a></li><li><a href="global.html#change_updatechatlines">change_updatechatlines</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#changeLocationFighters">changeLocationFighters</a></li><li><a href="global.html#changeMakebf">changeMakebf</a></li><li><a href="global.html#changeSelectEnemies">changeSelectEnemies</a></li><li><a href="global.html#checkAvailability">checkAvailability</a></li><li><a href="global.html#checkKeyCode">checkKeyCode</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#checkScriptUpdate">checkScriptUpdate</a></li><li><a href="global.html#checkState">checkState</a></li><li><a href="global.html#clearClick">clearClick</a></li><li><a href="global.html#clearCounter">clearCounter</a></li><li><a href="global.html#clearFields">clearFields</a></li><li><a href="global.html#clearMarkStroke">clearMarkStroke</a></li><li><a href="global.html#clearNPCData">clearNPCData</a></li><li><a href="global.html#clearSavedStrokeAfterSay">clearSavedStrokeAfterSay</a></li><li><a href="global.html#clickImageFighters">clickImageFighters</a></li><li><a href="global.html#compareLines">compareLines</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#createDivSms">createDivSms</a></li><li><a href="global.html#createGwMenuDiv">createGwMenuDiv</a></li><li><a href="global.html#createGWMenuItems">createGWMenuItems</a></li><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createSelectList">createSelectList</a></li><li><a href="global.html#createTitle">createTitle</a></li><li><a href="global.html#delSpaces">delSpaces</a></li><li><a href="global.html#fillData">fillData</a></li><li><a href="global.html#findItem">findItem</a></li><li><a href="global.html#findObj">findObj</a></li><li><a href="global.html#fixSkills">fixSkills</a></li><li><a href="global.html#fOut">fOut</a></li><li><a href="global.html#fOver">fOver</a></li><li><a href="global.html#getAllCrits">getAllCrits</a></li><li><a href="global.html#getBattleField">getBattleField</a></li><li><a href="global.html#getBattles">getBattles</a></li><li><a href="global.html#getCoord">getCoord</a></li><li><a href="global.html#getCrits">getCrits</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataFighters">getDataFighters</a></li><li><a href="global.html#getGitHubLink">getGitHubLink</a></li><li><a href="global.html#getHourTime">getHourTime</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getLeftRightCommands">getLeftRightCommands</a></li><li><a href="global.html#getLineMenu">getLineMenu</a></li><li><a href="global.html#getNewsId">getNewsId</a></li><li><a href="global.html#getOnline">getOnline</a></li><li><a href="global.html#getPers">getPers</a></li><li><a href="global.html#getPersNote">getPersNote</a></li><li><a href="global.html#getRange">getRange</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#getSelectSound">getSelectSound</a></li><li><a href="global.html#getStrGameRez">getStrGameRez</a></li><li><a href="global.html#getTimeNow">getTimeNow</a></li><li><a href="global.html#getTrs">getTrs</a></li><li><a href="global.html#getTrsTable">getTrsTable</a></li><li><a href="global.html#getUnionOnline">getUnionOnline</a></li><li><a href="global.html#goQuest">goQuest</a></li><li><a href="global.html#gwMenuInit">gwMenuInit</a></li><li><a href="global.html#hideTooltip">hideTooltip</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#isEven">isEven</a></li><li><a href="global.html#isForumPage">isForumPage</a></li><li><a href="global.html#modifyData">modifyData</a></li><li><a href="global.html#moveArrow">moveArrow</a></li><li><a href="global.html#nextAjaxQuery">nextAjaxQuery</a></li><li><a href="global.html#notesClick">notesClick</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#openCloseItem">openCloseItem</a></li><li><a href="global.html#parseSyndPage">parseSyndPage</a></li><li><a href="global.html#preGetOnline">preGetOnline</a></li><li><a href="global.html#rememberClick">rememberClick</a></li><li><a href="global.html#rememberTime">rememberTime</a></li><li><a href="global.html#resetGBCounter">resetGBCounter</a></li><li><a href="global.html#resetGosEnergoAtom">resetGosEnergoAtom</a></li><li><a href="global.html#saveData">saveData</a></li><li><a href="global.html#saveSyndData">saveSyndData</a></li><li><a href="global.html#scanNPC">scanNPC</a></li><li><a href="global.html#selectChange">selectChange</a></li><li><a href="global.html#selectChangeHandler">selectChangeHandler</a></li><li><a href="global.html#selectMode">selectMode</a></li><li><a href="global.html#setBonusInfo">setBonusInfo</a></li><li><a href="global.html#setButton">setButton</a></li><li><a href="global.html#setChatInterface">setChatInterface</a></li><li><a href="global.html#setCloseButton">setCloseButton</a></li><li><a href="global.html#setColorFighters">setColorFighters</a></li><li><a href="global.html#setCounter">setCounter</a></li><li><a href="global.html#setCountStroke">setCountStroke</a></li><li><a href="global.html#setCSSGwMenu">setCSSGwMenu</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setDataDiv">setDataDiv</a></li><li><a href="global.html#setEnvelope">setEnvelope</a></li><li><a href="global.html#setFilter">setFilter</a></li><li><a href="global.html#setFriendPage">setFriendPage</a></li><li><a href="global.html#setGBCounter">setGBCounter</a></li><li><a href="global.html#setGenerator">setGenerator</a></li><li><a href="global.html#setHandlersGWMenu">setHandlersGWMenu</a></li><li><a href="global.html#setHandlerSubmit">setHandlerSubmit</a></li><li><a href="global.html#setHighlighting">setHighlighting</a></li><li><a href="global.html#setHrefItem">setHrefItem</a></li><li><a href="global.html#setImgGetData">setImgGetData</a></li><li><a href="global.html#setLink">setLink</a></li><li><a href="global.html#setMainPage">setMainPage</a></li><li><a href="global.html#setMainPanel">setMainPanel</a></li><li><a href="global.html#setMarkStroke">setMarkStroke</a></li><li><a href="global.html#setMyInfo">setMyInfo</a></li><li><a href="global.html#setNameInChat">setNameInChat</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setPlantData">setPlantData</a></li><li><a href="global.html#setRange">setRange</a></li><li><a href="global.html#setRedLink">setRedLink</a></li><li><a href="global.html#setReminder">setReminder</a></li><li><a href="global.html#setSettingsForAdvBattleAll">setSettingsForAdvBattleAll</a></li><li><a href="global.html#setSettingsPanel">setSettingsPanel</a></li><li><a href="global.html#setSortListEnemy">setSortListEnemy</a></li><li><a href="global.html#setSortSyndWarData">setSortSyndWarData</a></li><li><a href="global.html#setStroke">setStroke</a></li><li><a href="global.html#setTooltipsFighters">setTooltipsFighters</a></li><li><a href="global.html#setWalk">setWalk</a></li><li><a href="global.html#showCrits">showCrits</a></li><li><a href="global.html#showData">showData</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li><li><a href="global.html#showHistory">showHistory</a></li><li><a href="global.html#showOfSyndLinks">showOfSyndLinks</a></li><li><a href="global.html#showRange">showRange</a></li><li><a href="global.html#showRezult">showRezult</a></li><li><a href="global.html#showSector">showSector</a></li><li><a href="global.html#showSms">showSms</a></li><li><a href="global.html#showSyndData">showSyndData</a></li><li><a href="global.html#showTimer">showTimer</a></li><li><a href="global.html#showTimerNPC">showTimerNPC</a></li><li><a href="global.html#showTooltip">showTooltip</a></li><li><a href="global.html#sortBattles">sortBattles</a></li><li><a href="global.html#sortEnemyList">sortEnemyList</a></li><li><a href="global.html#sortGosEnergoAtom">sortGosEnergoAtom</a></li><li><a href="global.html#sortGosEnergoAtomBySynd">sortGosEnergoAtomBySynd</a></li><li><a href="global.html#sortMess">sortMess</a></li><li><a href="global.html#sortSyndWars">sortSyndWars</a></li><li><a href="global.html#sortWeapon">sortWeapon</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startCountBattles">startCountBattles</a></li><li><a href="global.html#startInventoryPlus">startInventoryPlus</a></li><li><a href="global.html#startWorkPostGrenadesBroken">startWorkPostGrenadesBroken</a></li><li><a href="global.html#testSound">testSound</a></li><li><a href="global.html#testSubject">testSubject</a></li><li><a href="global.html#tryStart">tryStart</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="-_anonymous_-CritShotsAndLinksBtlLog_CriticalShots.html">CriticalShots</a></li><li><a href="-_anonymous_-SyndAnalyser-MainData.html">MainData</a></li></ul><h3>Namespaces</h3><ul><li><a href="general.root.bf1.html">bf1</a></li><li><a href="general.root.bf2.html">bf2</a></li><li><a href="general.root.bf3.html">bf3</a></li><li><a href="general.root.bfndl.html">bfndl</a></li><li><a href="general.root.frames.bsrc.html">bsrc</a></li><li><a href="general.root.waitforturn.html">waitforturn</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#addCloseButton">addCloseButton</a></li><li><a href="global.html#addContent">addContent</a></li><li><a href="global.html#addData">addData</a></li><li><a href="global.html#addEvent">addEvent</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#advSetBonusInfo">advSetBonusInfo</a></li><li><a href="global.html#blink">blink</a></li><li><a href="global.html#calc">calc</a></li><li><a href="global.html#calculateBets">calculateBets</a></li><li><a href="global.html#calculateFarm">calculateFarm</a></li><li><a href="global.html#calculatePerHour">calculatePerHour</a></li><li><a href="global.html#change_updatechatlines">change_updatechatlines</a></li><li><a href="global.html#changeColor">changeColor</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#changeLocationFighters">changeLocationFighters</a></li><li><a href="global.html#changeMakebf">changeMakebf</a></li><li><a href="global.html#changeSelect">changeSelect</a></li><li><a href="global.html#changeSelectEnemies">changeSelectEnemies</a></li><li><a href="global.html#checkAvailability">checkAvailability</a></li><li><a href="global.html#checkKeyCode">checkKeyCode</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#checkScriptUpdate">checkScriptUpdate</a></li><li><a href="global.html#checkState">checkState</a></li><li><a href="global.html#clearClick">clearClick</a></li><li><a href="global.html#clearCounter">clearCounter</a></li><li><a href="global.html#clearFields">clearFields</a></li><li><a href="global.html#clearMarkStroke">clearMarkStroke</a></li><li><a href="global.html#clearNPCData">clearNPCData</a></li><li><a href="global.html#clearSavedStrokeAfterSay">clearSavedStrokeAfterSay</a></li><li><a href="global.html#clickImageFighters">clickImageFighters</a></li><li><a href="global.html#compareLines">compareLines</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#createDivSms">createDivSms</a></li><li><a href="global.html#createGwMenuDiv">createGwMenuDiv</a></li><li><a href="global.html#createGWMenuItems">createGWMenuItems</a></li><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createSelectList">createSelectList</a></li><li><a href="global.html#createTitle">createTitle</a></li><li><a href="global.html#deleteImagePoks">deleteImagePoks</a></li><li><a href="global.html#delSpaces">delSpaces</a></li><li><a href="global.html#enterPress">enterPress</a></li><li><a href="global.html#fillData">fillData</a></li><li><a href="global.html#findItem">findItem</a></li><li><a href="global.html#findObj">findObj</a></li><li><a href="global.html#fixSkills">fixSkills</a></li><li><a href="global.html#formatTime">formatTime</a></li><li><a href="global.html#fOut">fOut</a></li><li><a href="global.html#fOver">fOver</a></li><li><a href="global.html#getAchievNow">getAchievNow</a></li><li><a href="global.html#getAllCrits">getAllCrits</a></li><li><a href="global.html#getBattleField">getBattleField</a></li><li><a href="global.html#getBattles">getBattles</a></li><li><a href="global.html#getCoord">getCoord</a></li><li><a href="global.html#getCrits">getCrits</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataFighters">getDataFighters</a></li><li><a href="global.html#getDataNow">getDataNow</a></li><li><a href="global.html#getGitHubLink">getGitHubLink</a></li><li><a href="global.html#getHourTime">getHourTime</a></li><li><a href="global.html#getHtime">getHtime</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getLastDate">getLastDate</a></li><li><a href="global.html#getLeftRightCommands">getLeftRightCommands</a></li><li><a href="global.html#getLineMenu">getLineMenu</a></li><li><a href="global.html#getMessagesOnPages">getMessagesOnPages</a></li><li><a href="global.html#getNewsId">getNewsId</a></li><li><a href="global.html#getOnline">getOnline</a></li><li><a href="global.html#getPers">getPers</a></li><li><a href="global.html#getPersInfo">getPersInfo</a></li><li><a href="global.html#getPersLink">getPersLink</a></li><li><a href="global.html#getPersNote">getPersNote</a></li><li><a href="global.html#getRange">getRange</a></li><li><a href="global.html#getRealEstateStr">getRealEstateStr</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#getStrGameRez">getStrGameRez</a></li><li><a href="global.html#getTimeNow">getTimeNow</a></li><li><a href="global.html#getTrs">getTrs</a></li><li><a href="global.html#getTrsTable">getTrsTable</a></li><li><a href="global.html#getTypeLine">getTypeLine</a></li><li><a href="global.html#getUnionOnline">getUnionOnline</a></li><li><a href="global.html#getValue">getValue</a></li><li><a href="global.html#goQuest">goQuest</a></li><li><a href="global.html#gwMenuInit">gwMenuInit</a></li><li><a href="global.html#hideTooltip">hideTooltip</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#insertMess">insertMess</a></li><li><a href="global.html#isEven">isEven</a></li><li><a href="global.html#isForumPage">isForumPage</a></li><li><a href="global.html#listenSound">listenSound</a></li><li><a href="global.html#modifyData">modifyData</a></li><li><a href="global.html#moveArrow">moveArrow</a></li><li><a href="global.html#nextAjaxQuery">nextAjaxQuery</a></li><li><a href="global.html#nextPers">nextPers</a></li><li><a href="global.html#notesClick">notesClick</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#openCloseItem">openCloseItem</a></li><li><a href="global.html#parseLine">parseLine</a></li><li><a href="global.html#parseMessages">parseMessages</a></li><li><a href="global.html#parsePTSProtocols">parsePTSProtocols</a></li><li><a href="global.html#parseSyndPage">parseSyndPage</a></li><li><a href="global.html#parseSyndProtocols">parseSyndProtocols</a></li><li><a href="global.html#preGetOnline">preGetOnline</a></li><li><a href="global.html#rememberClick">rememberClick</a></li><li><a href="global.html#rememberTime">rememberTime</a></li><li><a href="global.html#resetGBCounter">resetGBCounter</a></li><li><a href="global.html#resetGosEnergoAtom">resetGosEnergoAtom</a></li><li><a href="global.html#saveData">saveData</a></li><li><a href="global.html#saveSyndData">saveSyndData</a></li><li><a href="global.html#scan">scan</a></li><li><a href="global.html#scanNPC">scanNPC</a></li><li><a href="global.html#selectChange">selectChange</a></li><li><a href="global.html#selectChangeHandler">selectChangeHandler</a></li><li><a href="global.html#selectMode">selectMode</a></li><li><a href="global.html#setBonusInfo">setBonusInfo</a></li><li><a href="global.html#setButton">setButton</a></li><li><a href="global.html#setChatInterface">setChatInterface</a></li><li><a href="global.html#setCheckboxes">setCheckboxes</a></li><li><a href="global.html#setChkHandler">setChkHandler</a></li><li><a href="global.html#setCloseButton">setCloseButton</a></li><li><a href="global.html#setColorFighters">setColorFighters</a></li><li><a href="global.html#setCounter">setCounter</a></li><li><a href="global.html#setCounters">setCounters</a></li><li><a href="global.html#setCountStroke">setCountStroke</a></li><li><a href="global.html#setCSSGwMenu">setCSSGwMenu</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setDataDiv">setDataDiv</a></li><li><a href="global.html#setEnvelope">setEnvelope</a></li><li><a href="global.html#setFilter">setFilter</a></li><li><a href="global.html#setFriendPage">setFriendPage</a></li><li><a href="global.html#setGBCounter">setGBCounter</a></li><li><a href="global.html#setGenerator">setGenerator</a></li><li><a href="global.html#setHandlersGWMenu">setHandlersGWMenu</a></li><li><a href="global.html#setHandlerSubmit">setHandlerSubmit</a></li><li><a href="global.html#setHighlighting">setHighlighting</a></li><li><a href="global.html#setHrefItem">setHrefItem</a></li><li><a href="global.html#setImgGetData">setImgGetData</a></li><li><a href="global.html#setLeftToLevel">setLeftToLevel</a></li><li><a href="global.html#setLink">setLink</a></li><li><a href="global.html#setMainPage">setMainPage</a></li><li><a href="global.html#setMainPanel">setMainPanel</a></li><li><a href="global.html#setMarkStroke">setMarkStroke</a></li><li><a href="global.html#setMyInfo">setMyInfo</a></li><li><a href="global.html#setNameInChat">setNameInChat</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setPlantData">setPlantData</a></li><li><a href="global.html#setRange">setRange</a></li><li><a href="global.html#setRedLink">setRedLink</a></li><li><a href="global.html#setReminder">setReminder</a></li><li><a href="global.html#setSettingsForAdvBattleAll">setSettingsForAdvBattleAll</a></li><li><a href="global.html#setSettingsPanel">setSettingsPanel</a></li><li><a href="global.html#setSms">setSms</a></li><li><a href="global.html#setSortListEnemy">setSortListEnemy</a></li><li><a href="global.html#setSortSyndWarData">setSortSyndWarData</a></li><li><a href="global.html#setStroke">setStroke</a></li><li><a href="global.html#setTimer">setTimer</a></li><li><a href="global.html#setTooltipsFighters">setTooltipsFighters</a></li><li><a href="global.html#setWalk">setWalk</a></li><li><a href="global.html#showCrits">showCrits</a></li><li><a href="global.html#showData">showData</a></li><li><a href="global.html#showHideLink">showHideLink</a></li><li><a href="global.html#showHidePreloader">showHidePreloader</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li><li><a href="global.html#showHistory">showHistory</a></li><li><a href="global.html#showImagePoks">showImagePoks</a></li><li><a href="global.html#showOfSyndLinks">showOfSyndLinks</a></li><li><a href="global.html#showRange">showRange</a></li><li><a href="global.html#showRezult">showRezult</a></li><li><a href="global.html#showSector">showSector</a></li><li><a href="global.html#showSettings">showSettings</a></li><li><a href="global.html#showSms">showSms</a></li><li><a href="global.html#showSyndData">showSyndData</a></li><li><a href="global.html#showTimer">showTimer</a></li><li><a href="global.html#showTimerNPC">showTimerNPC</a></li><li><a href="global.html#showTooltip">showTooltip</a></li><li><a href="global.html#sortBattles">sortBattles</a></li><li><a href="global.html#sortEnemyList">sortEnemyList</a></li><li><a href="global.html#sortGosEnergoAtom">sortGosEnergoAtom</a></li><li><a href="global.html#sortGosEnergoAtomBySynd">sortGosEnergoAtomBySynd</a></li><li><a href="global.html#sortMess">sortMess</a></li><li><a href="global.html#sortPers">sortPers</a></li><li><a href="global.html#sortSyndWars">sortSyndWars</a></li><li><a href="global.html#sortWeapon">sortWeapon</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startCountBattles">startCountBattles</a></li><li><a href="global.html#startInventoryPlus">startInventoryPlus</a></li><li><a href="global.html#startWorkPostGrenadesBroken">startWorkPostGrenadesBroken</a></li><li><a href="global.html#syndAlert">syndAlert</a></li><li><a href="global.html#testSound">testSound</a></li><li><a href="global.html#testSubject">testSubject</a></li><li><a href="global.html#titleClick">titleClick</a></li><li><a href="global.html#tryStart">tryStart</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Wed Oct 07 2015 13:06:15 GMT+0300 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Sat Oct 24 2015 01:07:33 GMT+0300 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>
