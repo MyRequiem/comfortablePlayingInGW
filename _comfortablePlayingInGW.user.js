@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.01-231015-b
+// @version         1.02-231015-b
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-231015-b';
+        this.version = '1.02-231015-b';
         /**
          * @property stString
          * @type {String}
@@ -1296,12 +1296,11 @@
                 'id=117721&tid=88232637&fid=117721&page_id=last';
             new AjaxQuery().init(url, 'GET', null, true, function (xml) {
                 var v = /version: ([^<]+)<\/td>/.exec(xml.responseText);
-                if (v) {
-                    if (v[1] !== general.version) {
-                        general.$('linkNewVerScript').style.
-                            visibility = 'visible';
-                        general.$('refreshVer').innerHTML = '(' + v[1] + ')';
-                    }
+                if (!v || v[1] !== general.version) {
+                    general.$('linkNewVerScript').style.
+                        visibility = 'visible';
+                    general.$('refreshVer').innerHTML =  v ?
+                            '(' + v[1] + ')' : '';
                 }
             }, null);
         };
@@ -11943,7 +11942,7 @@
                             'sms.gif" /></a>';
 
                         target.appendChild(nobr);
-                        target.innerHTML += i < trs.length - 1 ? ',' : '';
+                        target.innerHTML += i < trs.length - 1 ? ',<wbr>' : '';
                     }
                 }
             }, function () {
