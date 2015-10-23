@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.04-231015-b
+// @version         1.05-231015-b
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.04-231015-b';
+        this.version = '1.05-231015-b';
         /**
          * @property stString
          * @type {String}
@@ -6659,16 +6659,13 @@
             for (i = 0; i < this.rez.btls.length; i++) {
                 b = this.rez.btls[i].querySelector('a>b');
                 if (b) {
-                    switch (b.parentNode.getAttribute('style')) {
-                    case 'color:red':
+                    stl = b.parentNode.getAttribute('style');
+                    if (/red/.test(stl)) {
                         this.rez.win++;
-                        break;
-                    case 'color:blue':
+                    } else if (/blue/.test(stl)) {
                         this.rez.loss++;
-                        break;
-                    default:
+                    } else {
                         this.rez.draw++;
-                        break;
                     }
                 }
             }

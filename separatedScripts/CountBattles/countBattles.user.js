@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/info.warstats.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.11-050915
+// @version         2.20-231015
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -160,21 +160,18 @@
          * @method showRezult
          */
         this.showReault = function () {
-            var i, b;
+            var i, b, stl;
 
             for (i = 0; i < this.rez.btls.length; i++) {
                 b = this.rez.btls[i].querySelector('a>b');
                 if (b) {
-                    switch (b.parentNode.getAttribute('style')) {
-                    case 'color:red':
+                    stl = b.parentNode.getAttribute('style');
+                    if (/red/.test(stl)) {
                         this.rez.win++;
-                        break;
-                    case 'color:blue':
+                    } else if (/blue/.test(stl)) {
                         this.rez.loss++;
-                        break;
-                    default:
+                    } else {
                         this.rez.draw++;
-                        break;
                     }
                 }
             }
