@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.02-241015-b
+// @version         1.03-241015-b
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.02-241015-b';
+        this.version = '1.03-241015-b';
         /**
          * @property stString
          * @type {String}
@@ -727,8 +727,10 @@
             var topPanel = new GetTopPanel().init();
 
             if (topPanel) {
-                var settingsButton = general.doc.createElement('a');
-                var target = topPanel.parentNode.nextElementSibling;
+                var settingsButton = general.doc.createElement('a'),
+                    target = topPanel.parentNode.nextElementSibling;
+
+                target = target.firstElementChild || target;
                 settingsButton.innerHTML = '<img src="' + general.imgPath +
                     'NotGiveCannabisLeaf/on.gif" whidth="15" height="15" ' +
                     'title="Настройки" alt="Настройки" />';
