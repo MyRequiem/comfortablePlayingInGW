@@ -9,8 +9,9 @@
 // @exclude         http://www.ganjawars.ru/b0/*
 // @exclude         http://www.ganjawars.ru/index.php*
 // @exclude         http://www.ganjawars.ru/login.php*
+// @exclude         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.03-101015
+// @version         2.10-241015
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==

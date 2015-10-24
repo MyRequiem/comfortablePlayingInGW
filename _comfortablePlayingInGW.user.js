@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.01-241015-b
+// @version         1.02-241015-b
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-241015-b';
+        this.version = '1.02-241015-b';
         /**
          * @property stString
          * @type {String}
@@ -4089,19 +4089,16 @@
          */
         this.init = function () {
             var topPanel = new GetTopPanel().init();
+            if (topPanel) {
+                topPanel.appendChild(general.doc.createTextNode(' | '));
+                topPanel.appendChild(this.wpgbContainer);
 
-            if (!topPanel) {
-                return;
+                this.startWorkPostGrenadesBroken(null);
+                var _this = this;
+                general.root.setInterval(function () {
+                    _this.startWorkPostGrenadesBroken(_this);
+                }, new GetRandom().init(30, 60) * 1000);
             }
-
-            topPanel.appendChild(general.doc.createTextNode(' | '));
-            topPanel.appendChild(this.wpgbContainer);
-
-            this.startWorkPostGrenadesBroken(null);
-            var _this = this;
-            general.root.setInterval(function () {
-                _this.startWorkPostGrenadesBroken(_this);
-            }, new GetRandom().init(30, 60) * 1000);
         };
     };
 
@@ -12461,7 +12458,7 @@
             }
         }
 
-        if (initScript[5]) {
+        if (!(/\/ferma\.php/.test(general.loc)) && initScript[5]) {
             try {
                 new WorkPostGrenadesBroken().init();
             } catch (e) {

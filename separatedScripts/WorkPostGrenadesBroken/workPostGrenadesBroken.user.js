@@ -9,9 +9,10 @@
 // @exclude         http://www.ganjawars.ru/b0/*
 // @exclude         http://www.ganjawars.ru/index.php*
 // @exclude         http://www.ganjawars.ru/login.php*
+// @exclude         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.03-101015
+// @version         2.10-241015
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -462,14 +463,16 @@
             }
 
             var topPanel = new GetTopPanel().init();
-            topPanel.appendChild(general.doc.createTextNode(' | '));
-            topPanel.appendChild(this.wpgbContainer);
+            if (topPanel) {
+                topPanel.appendChild(general.doc.createTextNode(' | '));
+                topPanel.appendChild(this.wpgbContainer);
 
-            this.startWorkPostGrenadesBroken(null);
-            var _this = this;
-            general.root.setInterval(function () {
-                _this.startWorkPostGrenadesBroken(_this);
-            }, new GetRandom().init(30, 60) * 1000);
+                this.startWorkPostGrenadesBroken(null);
+                var _this = this;
+                general.root.setInterval(function () {
+                    _this.startWorkPostGrenadesBroken(_this);
+                }, new GetRandom().init(30, 60) * 1000);
+            }
         };
     };
 
