@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.00-241015-b
+// @version         1.01-241015-b
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-241015-b';
+        this.version = '1.01-241015-b';
         /**
          * @property stString
          * @type {String}
@@ -1292,15 +1292,13 @@
          * @method checkScriptUpdate
          */
         this.checkScriptUpdate = function () {
-            var url = 'http://www.ganjawars.ru/object-messages.php?' +
-                'id=117721&tid=88232637&fid=117721&page_id=last';
+            var url = 'http://www.ganjawars.ru/info.php?id=2095458';
             new AjaxQuery().init(url, 'GET', null, true, function (xml) {
-                var v = /version: ([^<]+)<\/td>/.exec(xml.responseText);
-                if (!v || v[1] !== general.version) {
+                var ver = /cpingw:(\d+.\d+-\d+(-b)?)/.exec(xml.responseText)[1];
+                if (ver !== general.version) {
                     general.$('linkNewVerScript').style.
                         visibility = 'visible';
-                    general.$('refreshVer').innerHTML =  v ?
-                            '(' + v[1] + ')' : '';
+                    general.$('refreshVer').innerHTML = '(' + ver + ')';
                 }
             }, null);
         };
