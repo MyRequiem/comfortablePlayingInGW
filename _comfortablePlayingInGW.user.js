@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.00-251015-b
+// @version         1.01-251015-b
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-251015-b';
+        this.version = '1.01-251015-b';
         /**
          * @property stString
          * @type {String}
@@ -4823,30 +4823,28 @@
             }
 
             var topPanel = new GetTopPanel().init();
-            if (!topPanel || !stData[0]) {
-                return;
+            if (topPanel && stData[0]) {
+                this.farmLink = general.doc.createElement('a');
+                this.farmLink.setAttribute('style', 'color: #0000FF; ' +
+                        'text-decoration: none;');
+                this.farmLink.href = 'http://www.ganjawars.ru/ferma.php?id=' +
+                    general.myID;
+                this.farmLink.setAttribute('target', '_blank');
+                topPanel.appendChild(general.doc.createTextNode(' | '));
+                topPanel.appendChild(this.farmLink);
+
+                if (timeNow >= +stData[0]) {
+                    this.setRedLink(stData[1]);
+                    var _this = this;
+                    general.root.setTimeout(function () {
+                        _this.showTimer(0);
+                    }, new GetRandom().init(1000, 3000));
+
+                    return;
+                }
+
+                this.showTimer(+((+stData[0] - timeNow) / 1000).toFixed(0));
             }
-
-            this.farmLink = general.doc.createElement('a');
-            this.farmLink.setAttribute('style', 'color: #0000FF; ' +
-                    'text-decoration: none;');
-            this.farmLink.href = 'http://www.ganjawars.ru/ferma.php?id=' +
-                general.myID;
-            this.farmLink.setAttribute('target', '_blank');
-            topPanel.appendChild(general.doc.createTextNode(' | '));
-            topPanel.appendChild(this.farmLink);
-
-            if (timeNow >= +stData[0]) {
-                this.setRedLink(stData[1]);
-                var _this = this;
-                general.root.setTimeout(function () {
-                    _this.showTimer(0);
-                }, new GetRandom().init(1000, 3000));
-
-                return;
-            }
-
-            this.showTimer(+((+stData[0] - timeNow) / 1000).toFixed(0));
         };
     };
 
@@ -12326,11 +12324,21 @@
         }
     }
 
-    if (!(/\/ferma\.php/.test(general.loc)) && initScript[41]) {
-        try {
-            new ScanPers().init();
-        } catch (e) {
-            general.cons.log(e);
+    if (!(/\/ferma\.php/.test(general.loc))) {
+        if (initScript[41]) {
+            try {
+                new ScanPers().init();
+            } catch (e) {
+                general.cons.log(e);
+            }
+        }
+
+        if (initScript[4]) {
+            try {
+                new BlacklistHighlighting().init();
+            } catch (e) {
+                general.cons.log(e);
+            }
         }
     }
 
@@ -12347,14 +12355,6 @@
         return;
     }
 
-    if (initScript[4]) {
-        try {
-            new BlacklistHighlighting().init();
-        } catch (e) {
-            general.cons.log(e);
-        }
-    }
-
     // везде кроме боев
     if (!(/\/b0\//.test(general.loc))) {
         try {
@@ -12366,14 +12366,6 @@
         if (/\/news\.php\?set=1/.test(general.loc)) {
             try {
                 new ShowMainSettings().init();
-            } catch (e) {
-                general.cons.log(e);
-            }
-        }
-
-        if (initScript[1]) {
-            try {
-                new AdditionForNavigationBar().init();
             } catch (e) {
                 general.cons.log(e);
             }
@@ -12444,14 +12436,6 @@
             }
         }
 
-        if (initScript[47]) {
-            try {
-                new ShowMyAchievements().init();
-            } catch (e) {
-                general.cons.log(e);
-            }
-        }
-
         if (!(/\/ferma\.php/.test(general.loc))) {
             if (initScript[6]) {
                 try {
@@ -12464,6 +12448,38 @@
             if (initScript[5]) {
                 try {
                     new WorkPostGrenadesBroken().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[1]) {
+                try {
+                    new AdditionForNavigationBar().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[47]) {
+                try {
+                    new ShowMyAchievements().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[14]) {
+                try {
+                    new GwMenu().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[43]) {
+                try {
+                    new SearchUser().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
@@ -12503,14 +12519,6 @@
                         general.cons.log(e);
                     }
                 }
-            }
-        }
-
-        if (initScript[14]) {
-            try {
-                new GwMenu().init();
-            } catch (e) {
-                general.cons.log(e);
             }
         }
 
@@ -12729,14 +12737,6 @@
                 } catch (e) {
                     general.cons.log(e);
                 }
-            }
-        }
-
-        if (initScript[43]) {
-            try {
-                new SearchUser().init();
-            } catch (e) {
-                general.cons.log(e);
             }
         }
 
