@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.03-241015-b
+// @version         1.00-251015-b
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.03-241015-b';
+        this.version = '1.00-251015-b';
         /**
          * @property stString
          * @type {String}
@@ -12326,7 +12326,7 @@
         }
     }
 
-    if (initScript[41]) {
+    if (!(/\/ferma\.php/.test(general.loc)) && initScript[41]) {
         try {
             new ScanPers().init();
         } catch (e) {
@@ -12444,14 +12444,6 @@
             }
         }
 
-        if (initScript[6]) {
-            try {
-                new ResourcesAndBonuses().init();
-            } catch (e) {
-                general.cons.log(e);
-            }
-        }
-
         if (initScript[47]) {
             try {
                 new ShowMyAchievements().init();
@@ -12460,11 +12452,21 @@
             }
         }
 
-        if (!(/\/ferma\.php/.test(general.loc)) && initScript[5]) {
-            try {
-                new WorkPostGrenadesBroken().init();
-            } catch (e) {
-                general.cons.log(e);
+        if (!(/\/ferma\.php/.test(general.loc))) {
+            if (initScript[6]) {
+                try {
+                    new ResourcesAndBonuses().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[5]) {
+                try {
+                    new WorkPostGrenadesBroken().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
             }
         }
 
