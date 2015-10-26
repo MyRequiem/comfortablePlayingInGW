@@ -7,7 +7,7 @@
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
 <br>
 <br>
-Версия: 1.00-261015-b
+Версия: 1.00-261015
 <br>
 Нашли ошибку? Пожалуйста, [сообщите](http://www.ganjawars.ru/info.php?id=2095458)
 * [Установить](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js)
@@ -21,7 +21,12 @@
 ![Screen1](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/screen1.png)
 <br>
 <br>
+*Включаем нужное, отключаем не нужное:*
 ![Screen2](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/screen2.png)
+<br>
+<br>
+*Жмем на дискетку в левом верхнем углу, открывается панель сохранения настрок:*
+![Screen3](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/screen3.png)
 <br>
 <br>
 

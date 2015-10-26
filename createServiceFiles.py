@@ -158,7 +158,12 @@ how_to_install/0-31)
 ![Screen1]({1}imgs/screen1.png)
 <br>
 <br>
+*Включаем нужное, отключаем не нужное:*
 ![Screen2]({1}imgs/screen2.png)
+<br>
+<br>
+*Жмем на дискетку в левом верхнем углу, открывается панель сохранения настрок:*
+![Screen3]({1}imgs/screen3.png)
 <br>
 <br>
 
