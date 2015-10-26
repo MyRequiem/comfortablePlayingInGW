@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.01-251015-b
+// @version         1.00-261015-b
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-251015-b';
+        this.version = '1.00-261015-b';
         /**
          * @property stString
          * @type {String}
@@ -3093,6 +3093,10 @@
             } else {
                 table = this.leftRightCommands[0].nextElementSibling.
                     lastElementChild.previousElementSibling;
+
+                if (/Наблюдатели/.test(table.innerHTML)) {
+                    table = table.previousElementSibling;
+                }
             }
 
             table.setAttribute('style', 'border-collapse: collapse;');

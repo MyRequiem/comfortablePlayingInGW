@@ -11,11 +11,11 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         3.31-231015
+// @version         3.40-261015
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
-/*global unsafeWindow: true , ActiveXObject: true */
+/*global unsafeWindow: true */
 
 /*jslint
     browser: true, passfail: true, vars: true, devel: true, plusplus: true
@@ -1200,6 +1200,10 @@
             } else {
                 table = this.leftRightCommands[0].nextElementSibling.
                     lastElementChild.previousElementSibling;
+
+                if (/Наблюдатели/.test(table.innerHTML)) {
+                    table = table.previousElementSibling;
+                }
             }
 
             table.setAttribute('style', 'border-collapse: collapse;');
