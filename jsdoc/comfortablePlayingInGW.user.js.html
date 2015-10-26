@@ -38,7 +38,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.00-241015-b
+// @version         1.00-261015
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -86,7 +86,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-241015-b';
+        this.version = '1.00-261015';
         /**
          * @property stString
          * @type {String}
@@ -755,8 +755,10 @@
             var topPanel = new GetTopPanel().init();
 
             if (topPanel) {
-                var settingsButton = general.doc.createElement('a');
-                var target = topPanel.parentNode.nextElementSibling;
+                var settingsButton = general.doc.createElement('a'),
+                    target = topPanel.parentNode.nextElementSibling;
+
+                target = target.firstElementChild || target;
                 settingsButton.innerHTML = '&lt;img src="' + general.imgPath +
                     'NotGiveCannabisLeaf/on.gif" whidth="15" height="15" ' +
                     'title="Настройки" alt="Настройки" />';
@@ -1320,15 +1322,13 @@
          * @method checkScriptUpdate
          */
         this.checkScriptUpdate = function () {
-            var url = 'http://www.ganjawars.ru/object-messages.php?' +
-                'id=117721&amp;tid=88232637&amp;fid=117721&amp;page_id=last';
+            var url = 'http://www.ganjawars.ru/info.php?id=2095458';
             new AjaxQuery().init(url, 'GET', null, true, function (xml) {
-                var v = /version: ([^&lt;]+)&lt;\/td>/.exec(xml.responseText);
-                if (!v || v[1] !== general.version) {
+                var ver = /cpingw:(\d+.\d+-\d+(-b)?)/.exec(xml.responseText)[1];
+                if (ver !== general.version) {
                     general.$('linkNewVerScript').style.
                         visibility = 'visible';
-                    general.$('refreshVer').innerHTML =  v ?
-                            '(' + v[1] + ')' : '';
+                    general.$('refreshVer').innerHTML = '(' + ver + ')';
                 }
             }, null);
         };
@@ -3121,6 +3121,10 @@
             } else {
                 table = this.leftRightCommands[0].nextElementSibling.
                     lastElementChild.previousElementSibling;
+
+                if (/Наблюдатели/.test(table.innerHTML)) {
+                    table = table.previousElementSibling;
+                }
             }
 
             table.setAttribute('style', 'border-collapse: collapse;');
@@ -4119,19 +4123,16 @@
          */
         this.init = function () {
             var topPanel = new GetTopPanel().init();
+            if (topPanel) {
+                topPanel.appendChild(general.doc.createTextNode(' | '));
+                topPanel.appendChild(this.wpgbContainer);
 
-            if (!topPanel) {
-                return;
+                this.startWorkPostGrenadesBroken(null);
+                var _this = this;
+                general.root.setInterval(function () {
+                    _this.startWorkPostGrenadesBroken(_this);
+                }, new GetRandom().init(30, 60) * 1000);
             }
-
-            topPanel.appendChild(general.doc.createTextNode(' | '));
-            topPanel.appendChild(this.wpgbContainer);
-
-            this.startWorkPostGrenadesBroken(null);
-            var _this = this;
-            general.root.setInterval(function () {
-                _this.startWorkPostGrenadesBroken(_this);
-            }, new GetRandom().init(30, 60) * 1000);
         };
     };
 
@@ -4854,30 +4855,28 @@
             }
 
             var topPanel = new GetTopPanel().init();
-            if (!topPanel || !stData[0]) {
-                return;
+            if (topPanel &amp;&amp; stData[0]) {
+                this.farmLink = general.doc.createElement('a');
+                this.farmLink.setAttribute('style', 'color: #0000FF; ' +
+                        'text-decoration: none;');
+                this.farmLink.href = 'http://www.ganjawars.ru/ferma.php?id=' +
+                    general.myID;
+                this.farmLink.setAttribute('target', '_blank');
+                topPanel.appendChild(general.doc.createTextNode(' | '));
+                topPanel.appendChild(this.farmLink);
+
+                if (timeNow >= +stData[0]) {
+                    this.setRedLink(stData[1]);
+                    var _this = this;
+                    general.root.setTimeout(function () {
+                        _this.showTimer(0);
+                    }, new GetRandom().init(1000, 3000));
+
+                    return;
+                }
+
+                this.showTimer(+((+stData[0] - timeNow) / 1000).toFixed(0));
             }
-
-            this.farmLink = general.doc.createElement('a');
-            this.farmLink.setAttribute('style', 'color: #0000FF; ' +
-                    'text-decoration: none;');
-            this.farmLink.href = 'http://www.ganjawars.ru/ferma.php?id=' +
-                general.myID;
-            this.farmLink.setAttribute('target', '_blank');
-            topPanel.appendChild(general.doc.createTextNode(' | '));
-            topPanel.appendChild(this.farmLink);
-
-            if (timeNow >= +stData[0]) {
-                this.setRedLink(stData[1]);
-                var _this = this;
-                general.root.setTimeout(function () {
-                    _this.showTimer(0);
-                }, new GetRandom().init(1000, 3000));
-
-                return;
-            }
-
-            this.showTimer(+((+stData[0] - timeNow) / 1000).toFixed(0));
         };
     };
 
@@ -12357,11 +12356,21 @@
         }
     }
 
-    if (initScript[41]) {
-        try {
-            new ScanPers().init();
-        } catch (e) {
-            general.cons.log(e);
+    if (!(/\/ferma\.php/.test(general.loc))) {
+        if (initScript[41]) {
+            try {
+                new ScanPers().init();
+            } catch (e) {
+                general.cons.log(e);
+            }
+        }
+
+        if (initScript[4]) {
+            try {
+                new BlacklistHighlighting().init();
+            } catch (e) {
+                general.cons.log(e);
+            }
         }
     }
 
@@ -12378,14 +12387,6 @@
         return;
     }
 
-    if (initScript[4]) {
-        try {
-            new BlacklistHighlighting().init();
-        } catch (e) {
-            general.cons.log(e);
-        }
-    }
-
     // везде кроме боев
     if (!(/\/b0\//.test(general.loc))) {
         try {
@@ -12397,14 +12398,6 @@
         if (/\/news\.php\?set=1/.test(general.loc)) {
             try {
                 new ShowMainSettings().init();
-            } catch (e) {
-                general.cons.log(e);
-            }
-        }
-
-        if (initScript[1]) {
-            try {
-                new AdditionForNavigationBar().init();
             } catch (e) {
                 general.cons.log(e);
             }
@@ -12475,27 +12468,53 @@
             }
         }
 
-        if (initScript[6]) {
-            try {
-                new ResourcesAndBonuses().init();
-            } catch (e) {
-                general.cons.log(e);
+        if (!(/\/ferma\.php/.test(general.loc))) {
+            if (initScript[6]) {
+                try {
+                    new ResourcesAndBonuses().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
             }
-        }
 
-        if (initScript[47]) {
-            try {
-                new ShowMyAchievements().init();
-            } catch (e) {
-                general.cons.log(e);
+            if (initScript[5]) {
+                try {
+                    new WorkPostGrenadesBroken().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
             }
-        }
 
-        if (initScript[5]) {
-            try {
-                new WorkPostGrenadesBroken().init();
-            } catch (e) {
-                general.cons.log(e);
+            if (initScript[1]) {
+                try {
+                    new AdditionForNavigationBar().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[47]) {
+                try {
+                    new ShowMyAchievements().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[14]) {
+                try {
+                    new GwMenu().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[43]) {
+                try {
+                    new SearchUser().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
             }
         }
 
@@ -12532,14 +12551,6 @@
                         general.cons.log(e);
                     }
                 }
-            }
-        }
-
-        if (initScript[14]) {
-            try {
-                new GwMenu().init();
-            } catch (e) {
-                general.cons.log(e);
             }
         }
 
@@ -12761,14 +12772,6 @@
             }
         }
 
-        if (initScript[43]) {
-            try {
-                new SearchUser().init();
-            } catch (e) {
-                general.cons.log(e);
-            }
-        }
-
         if (/\/info\.php\?id=|\/info\.vote\.php\?id=/.test(general.loc)) {
             if (initScript[50]) {
                 try {
@@ -12875,7 +12878,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Sat Oct 24 2015 01:07:33 GMT+0300 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Mon Oct 26 2015 13:29:56 GMT+0300 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>
