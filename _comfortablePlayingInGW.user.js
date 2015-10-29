@@ -8029,7 +8029,7 @@
         this.divRezult = general.doc.createElement('div');
         /**
          * @property trs
-         * @type {Array}
+         * @type {NodeList|null}
          */
         this.trs = null;
         /**
@@ -9591,12 +9591,14 @@
          * @property sectors
          * @type {Array}
          */
-        this.sectors = ['50&sy=47|', '47&sy=49|', '49&sy=49|1', '51&sy=49|1',
+        this.sectors = [
+            '50&sy=47|', '47&sy=49|', '49&sy=49|1', '51&sy=49|1',
             '53&sy=49|1', '48&sy=50|1', '50&sy=50|1', '52&sy=50|2',
             '49&sy=51|1', '53&sy=51|1', '47&sy=52|', '50&sy=52|1',
             '48&sy=53|1', '49&sy=53|', '53&sy=53|', '152&sy=148|',
             '149&sy=149|', '152&sy=149|1', '150&sy=150|1', '151&sy=150|',
-            '149&sy=152|', '151&sy=152|2'];
+            '149&sy=152|', '151&sy=152|2'
+        ];
         /**
          * @property imgPath
          * @type {String}
@@ -10370,7 +10372,7 @@
     var SkillCounters = function () {
         /**
          * @property counters
-         * @type {Array}
+         * @type {NodeList}
          */
         this.counters = general.doc.querySelectorAll('td[valign="top"]' +
                 '[bgcolor="#e9ffe9"]>table[border="0"] tr>td+td>nobr');
@@ -10378,8 +10380,10 @@
          * @property ids
          * @type {Array}
          */
-        this.ids = ['cFighting', 'cEconomic', 'cProduction', 'cGuns',
-            'cGrenades', 'cAuto', 'cHeavy', 'cShotguns', 'cSnipers'];
+        this.ids = [
+            'cFighting', 'cEconomic', 'cProduction', 'cGuns', 'cGrenades',
+            'cAuto', 'cHeavy', 'cShotguns', 'cSnipers'
+        ];
         /**
          * @property dataNow
          * @type {Array|null}
