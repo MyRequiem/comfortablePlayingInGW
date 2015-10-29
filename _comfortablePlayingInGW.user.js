@@ -4125,14 +4125,13 @@
          */
         this.fillData = function (data) {
             this.divResult.innerHTML = data + '<div style="margin-top: 5px;">' +
-                '<img id="divres_close" src="' + general.imgPath + 'close.gif' +
-                '" /></div>';
+                '<img id="divres_close" style="cursor: pointer;" ' +
+                'src="' + general.imgPath + 'close.gif" /></div>';
 
             var _this = this;
-            this.divResult.querySelector('#divres_close').
-                addEventListener('click', function () {
-                    _this.divResult.style.visibility = 'hidden';
-                }, false);
+            general.$('divres_close').addEventListener('click', function () {
+                _this.divResult.style.visibility = 'hidden';
+            }, false);
         };
 
         /**
