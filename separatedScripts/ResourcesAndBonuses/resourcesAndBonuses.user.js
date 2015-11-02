@@ -9,7 +9,7 @@
 // @exclude         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.10-251015
+// @version         2.11-291015
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -170,8 +170,8 @@
          */
         this.fillData = function (data) {
             this.divResult.innerHTML = data + '<div style="margin-top: 5px;">' +
-                '<img id="divres_close" src="' + this.imgPath + 'close.gif' +
-                '" /></div>';
+                '<img id="divres_close" style="cursor: pointer;" ' +
+                'src="' + this.imgPath + 'close.gif" /></div>';
 
             var _this = this;
             this.divResult.querySelector('#divres_close').
