@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.00-261015
+// @version         1.01-021115
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.00-261015';
+        this.version = '1.01-021115';
         /**
          * @property stString
          * @type {String}
@@ -9610,8 +9610,8 @@
         this.init = function () {
             var cells = general.doc.
                     querySelectorAll('a[href*="/map.php?sx="]>img'),
-                mySector,
                 coord,
+                cls,
                 tmp,
                 j,
                 i;
@@ -9621,18 +9621,21 @@
                 for (j = 0; j < this.sectors.length; j++) {
                     tmp = this.sectors[j].split('|');
                     if (coord === tmp[0]) {
-                        mySector = cells[i].parentNode.parentNode.
-                            getAttribute('class') === 'wbr';
+                        cls = cells[i].parentNode.parentNode.
+                                getAttribute('class');
 
                         if (!tmp[1]) {
-                            cells[i].src = this.imgPath + (mySector ?
-                                    'anchorS.png' : 'anchor.png');
+                            cells[i].src = this.imgPath + (cls === 'wbr' ?
+                                    'anchorS.png' : cls === 'wbb' ?
+                                        'anchorS2.png' : 'anchor.png');
                         } else if (tmp[1] === '1') {
-                            cells[i].src = this.imgPath + (mySector ?
-                                    'coinsS.png' : 'coins.png');
+                            cells[i].src = this.imgPath + (cls === 'wbr' ?
+                                    'coinsS.png' : cls === 'wbb' ?
+                                        'coinsS2.png' : 'coins.png');
                         } else {
-                            cells[i].src = this.imgPath + (mySector ?
-                                    'bothS.png' : 'both.png');
+                            cells[i].src = this.imgPath + (cls === 'wbr' ?
+                                    'bothS.png' : cls === 'wbb' ?
+                                        'bothS2.png' : 'both.png');
                         }
                     }
                 }

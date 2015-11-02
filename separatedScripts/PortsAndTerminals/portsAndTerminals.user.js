@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/map.php*
 // @grant           none
 // @license         MIT
-// @version         2.00-061015
+// @version         2.10-021115
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -84,8 +84,8 @@
         this.init = function () {
             var cells = general.doc.
                     querySelectorAll('a[href*="/map.php?sx="]>img'),
-                mySector,
                 coord,
+                cls,
                 tmp,
                 j,
                 i;
@@ -95,18 +95,21 @@
                 for (j = 0; j < this.sectors.length; j++) {
                     tmp = this.sectors[j].split('|');
                     if (coord === tmp[0]) {
-                        mySector = cells[i].parentNode.parentNode.
-                            getAttribute('class') === 'wbr';
+                        cls = cells[i].parentNode.parentNode.
+                                getAttribute('class');
 
                         if (!tmp[1]) {
-                            cells[i].src = this.imgPath + (mySector ?
-                                    'anchorS.png' : 'anchor.png');
+                            cells[i].src = this.imgPath + (cls === 'wbr' ?
+                                    'anchorS.png' : cls === 'wbb' ?
+                                        'anchorS2.png' : 'anchor.png');
                         } else if (tmp[1] === '1') {
-                            cells[i].src = this.imgPath + (mySector ?
-                                    'coinsS.png' : 'coins.png');
+                            cells[i].src = this.imgPath + (cls === 'wbr' ?
+                                    'coinsS.png' : cls === 'wbb' ?
+                                        'coinsS2.png' : 'coins.png');
                         } else {
-                            cells[i].src = this.imgPath + (mySector ?
-                                    'bothS.png' : 'both.png');
+                            cells[i].src = this.imgPath + (cls === 'wbr' ?
+                                    'bothS.png' : cls === 'wbb' ?
+                                        'bothS2.png' : 'both.png');
                         }
                     }
                 }
