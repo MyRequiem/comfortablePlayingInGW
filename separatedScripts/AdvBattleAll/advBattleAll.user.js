@@ -11,7 +11,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         3.40-261015
+// @version         3.50-041115
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -56,6 +56,7 @@
     [13] - кидаем грену или нет
     [14] - подходим или нет
     [15] - данные из списка выбора врагов (хэш: имя --> номер)
+    [16] - чекбокс "Говорить только левую руку (для БЩ)"
 */
 
     /**
@@ -131,7 +132,7 @@
         getData: function () {
             var stData = this.st.getItem(this.STNAME);
             if (!stData) {
-                stData = '|||||||||||||||';
+                stData = '||||||||||||||||';
                 this.st.setItem(this.STNAME, stData);
             }
 
@@ -390,10 +391,14 @@
 
             general.setData(dataSt);
             str += enemy[1];
-            if (dataSt[11]) {
+            // правая рука (если не установлен чекбокс
+            // "Говорить только левую руку (для БЩ)")
+            if (dataSt[11] && !dataSt[16]) {
                 str += dataSt[11] === '1' ? ' ле' :
                         dataSt[11] === '2' ? ' ц' : ' пр';
             }
+
+            // левая рука
             if (dataSt[10]) {
                 str += dataSt[10] === '1' ? ' ле' :
                         dataSt[10] === '2' ? ' ц' : ' пр';
@@ -892,6 +897,14 @@
             // если две руки, то "не дублировать цель" делаем видимым
             var vis = (general.$('left_attack1') &&
                     general.$('right_attack1')) ? '' : 'none';
+
+            // если одна рука, то сбрасываем чекбокс
+            // "Говорить только левую руку (для БЩ)"
+            if (vis) {
+                var stData = general.getData();
+                stData[16] = '';
+                general.setData(stData);
+            }
 
             divGenerator.innerHTML = '<input type="checkbox" ' +
                 'id="rand_stroke"> <span id="set_rand_stroke" ' +
@@ -1605,7 +1618,8 @@
                 _this.inpTextChat.focus();
             }, false);
 
-            if (general.getData()[8]) {
+            var stData = general.getData();
+            if (stData[8]) {
                 sayOnlyMyCommand.click();
             }
 
@@ -1628,6 +1642,23 @@
             }, false);
             sayOnlyMyCommand.parentNode.insertBefore(this.sayMoveButton,
                     sayOnlyMyCommand);
+
+            // чекбокс "Говорить только левую руку (для БЩ)"
+            if (general.$('left_attack1') && general.$('right_attack1')) {
+                var sayOnlyLeftHand = general.doc.createElement('input');
+                sayOnlyLeftHand.setAttribute('id', 'sayOnlyLeftHand');
+                sayOnlyLeftHand.type = 'checkbox';
+                sayOnlyLeftHand.setAttribute('title', 'Говорить только левую ' +
+                        'руку (для навыка Баллистический щит)');
+                sayOnlyLeftHand.addEventListener('click', function () {
+                    var data = general.getData();
+                    data[16] = sayOnlyLeftHand.checked ? '1' : '';
+                    general.setData(data);
+                }, false);
+                sayOnlyLeftHand.checked = stData[16];
+                sayOnlyMyCommand.parentNode.insertBefore(sayOnlyLeftHand,
+                        sayOnlyMyCommand);
+            }
 
             // добавляем кнопку "Обновить"
             var buttonUpdate = general.doc.createElement('input');
