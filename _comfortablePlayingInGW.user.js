@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.02-041115
+// @version         1.03-051115
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.02-041115';
+        this.version = '1.03-051115';
         /**
          * @property stString
          * @type {String}
@@ -1744,7 +1744,7 @@
 
         /**
          * @method addLink
-         * @param   {HTMLElement}   link
+         * @param   {Node}  link
          */
         this.addLink = function (link) {
             // добавление в панель
@@ -3510,7 +3510,6 @@
                 general.setData(dataSt, 4);
                 _this.inpTextChat.focus();
             }, false);
-
 
             var stData = general.getData(4);
             if (stData[10]) {
@@ -8396,7 +8395,7 @@
         /**
          * @method createTitle
          * @param    {String}   str
-         * @return   {Node}
+         * @return   {Element}
          */
         this.createTitle = function (str) {
             var tr = general.doc.createElement('tr');
@@ -8641,8 +8640,8 @@
                 str += '<tr><td style="text-align: right;">' +
                     '<a target="_blank" href="http://www.ganjawars.ru/' +
                     'syndicate.php?id=' + obj[i].synd + '&page=online">' +
-                    '<img src=http://images.ganjawars.ru/img/synds/' +
-                    obj[i].synd + '.gif></img>#' + obj[i].synd + '</a>';
+                    '<img src="http://images.ganjawars.ru/img/synds/' +
+                    obj[i].synd + '.gif" />#' + obj[i].synd + '</a>';
 
                 if (obj[i].union) {
                     str += ', <a target="_blank" href="http://www.ganjawars.' +
@@ -11243,6 +11242,7 @@
                 return 8;
             }
 
+            // выгнали
             if (/покинул синдикат/i.test(str)) {
                 return 9;
             }
@@ -11354,13 +11354,15 @@
                 strTakenSynd = '';
 
             for (i = 0; i < main.dismissedSynd.length; i++) {
-                pers = main.dismissedSynd[i];
-                strDismissedSynd += str4 + pers + '">' + pers + '</a>' + str3;
+                pers = main.dismissedSynd[i][0];
+                strDismissedSynd += str4 + pers + '">' + pers + '</a>, ' +
+                    main.dismissedSynd[i][1] + str3;
             }
 
             for (i = 0; i < main.takenSynd.length; i++) {
-                pers = main.takenSynd[i];
-                strTakenSynd += str4 + pers + '">' + pers + '</a>' + str3;
+                pers = main.takenSynd[i][0];
+                strTakenSynd += str4 + pers + '">' + pers + '</a>, ' +
+                    main.takenSynd[i][1] + str3;
             }
 
             var title = '<tr><td colspan="2" style="background: #D0EED0; ' +
@@ -11448,6 +11450,7 @@
                     take,
                     pers,
                     time,
+                    tmp,
                     str,
                     i;
 
@@ -11504,20 +11507,27 @@
                         break;
                     case 6:
                         _this.mainData.takenSynd.
-                            push(_this.getPersLink(lines[i]).
-                                    firstElementChild.innerHTML);
+                            push([_this.getPersLink(lines[i]).
+                                    firstElementChild.innerHTML,
+                                        lines[i].innerHTML]);
                         break;
                     case 7:
                         _this.mainData.dismissedSynd.
-                            push(_this.getPersLink(lines[i]).
-                                    firstElementChild.innerHTML);
+                            push([_this.getPersLink(lines[i]).
+                                    firstElementChild.innerHTML,
+                                        lines[i].innerHTML]);
                         break;
                     case 8:
                         _this.parseLine(str, _this.mainData.realEstate.bars);
                         break;
                     case 9:
-                        _this.mainData.dismissedSynd.
-                            push(/^(.*) покинул/.exec(str)[1]);
+                        // выгнали
+                        tmp = /^(.*) покинул синдикат( \(.*\))/.exec(str);
+                        if (tmp) {
+                            _this.mainData.dismissedSynd.push([tmp[1],
+                                    lines[i].innerHTML + tmp[2]]);
+                        }
+
                         break;
                     default:
                         break;
@@ -11629,7 +11639,7 @@
         this.addCloseButton = function () {
             this.divResult.innerHTML += '<div style="margin-top: 5px;">' +
                 '<img id="closemyachiev" src="' + general.imgPath +
-                'close.gif"></img></div>';
+                'close.gif" style="cursor: pointer;" /></div>';
 
             var _this = this;
             general.$('closemyachiev').addEventListener('click', function () {

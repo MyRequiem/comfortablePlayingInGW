@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.00-161015
+// @version         2.01-051115
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458] Идея: Горыныч
 // ==/UserScript==
 
@@ -219,7 +219,7 @@
         this.addCloseButton = function () {
             this.divResult.innerHTML += '<div style="margin-top: 5px;">' +
                 '<img id="closemyachiev" src="' + general.imgPath +
-                'close.gif"></img></div>';
+                'close.gif" style="cursor: pointer;" /></div>';
 
             var _this = this;
             general.$('closemyachiev').addEventListener('click', function () {

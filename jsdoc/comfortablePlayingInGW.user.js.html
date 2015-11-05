@@ -38,7 +38,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.01-021115
+// @version         1.03-051115
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -86,7 +86,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.01-021115';
+        this.version = '1.03-051115';
         /**
          * @property stString
          * @type {String}
@@ -181,8 +181,9 @@
                         [14] - куда отходим
                         [15] - кидаем грену или нет
                         [16] - подходим или нет
-                        [17] - список выбора врагов (хэш: имя --> номер) */
-                        '@|||||||||||||||||' +
+                        [17] - список выбора врагов (хэш: имя --> номер)
+                        [18] - чекбокс "Говорить только левую руку (для БЩ)" */
+                        '@||||||||||||||||||' +
                     /*
                     [5]  - BlacklistHighlighting
                         [0]  - ID персов из ЧС ('id1,id2,...')
@@ -1771,7 +1772,7 @@
 
         /**
          * @method addLink
-         * @param   {HTMLElement}   link
+         * @param   {Node}  link
          */
         this.addLink = function (link) {
             // добавление в панель
@@ -2309,10 +2310,14 @@
 
             general.setData(dataSt, 4);
             str += enemy[1];
-            if (dataSt[13]) {
+            // правая рука (если не установлен чекбокс
+            // "Говорить только левую руку (для БЩ)")
+            if (dataSt[13] &amp;&amp; !dataSt[18]) {
                 str += dataSt[13] === '1' ? ' ле' :
                         dataSt[13] === '2' ? ' ц' : ' пр';
             }
+
+            // левая рука
             if (dataSt[12]) {
                 str += dataSt[12] === '1' ? ' ле' :
                         dataSt[12] === '2' ? ' ц' : ' пр';
@@ -2813,6 +2818,14 @@
             // если две руки, то "не дублировать цель" делаем видимым
             var vis = (general.$('left_attack1') &amp;&amp;
                     general.$('right_attack1')) ? '' : 'none';
+
+            // если одна рука, то сбрасываем чекбокс
+            // "Говорить только левую руку (для БЩ)"
+            if (vis) {
+                var stData = general.getData(4);
+                stData[18] = '';
+                general.setData(stData, 4);
+            }
 
             divGenerator.innerHTML = '&lt;input type="checkbox" ' +
                 'id="rand_stroke"> &lt;span id="set_rand_stroke" ' +
@@ -3526,7 +3539,8 @@
                 _this.inpTextChat.focus();
             }, false);
 
-            if (general.getData(4)[10]) {
+            var stData = general.getData(4);
+            if (stData[10]) {
                 sayOnlyMyCommand.click();
             }
 
@@ -3549,6 +3563,23 @@
             }, false);
             sayOnlyMyCommand.parentNode.insertBefore(this.sayMoveButton,
                     sayOnlyMyCommand);
+
+            // чекбокс "Говорить только левую руку (для БЩ)"
+            if (general.$('left_attack1') &amp;&amp; general.$('right_attack1')) {
+                var sayOnlyLeftHand = general.doc.createElement('input');
+                sayOnlyLeftHand.setAttribute('id', 'sayOnlyLeftHand');
+                sayOnlyLeftHand.type = 'checkbox';
+                sayOnlyLeftHand.setAttribute('title', 'Говорить только левую ' +
+                        'руку (для навыка Баллистический щит)');
+                sayOnlyLeftHand.addEventListener('click', function () {
+                    var data = general.getData(4);
+                    data[18] = sayOnlyLeftHand.checked ? '1' : '';
+                    general.setData(data, 4);
+                }, false);
+                sayOnlyLeftHand.checked = stData[18];
+                sayOnlyMyCommand.parentNode.insertBefore(sayOnlyLeftHand,
+                        sayOnlyMyCommand);
+            }
 
             // добавляем кнопку "Обновить"
             var buttonUpdate = general.doc.createElement('input');
@@ -8392,7 +8423,7 @@
         /**
          * @method createTitle
          * @param    {String}   str
-         * @return   {Node}
+         * @return   {Element}
          */
         this.createTitle = function (str) {
             var tr = general.doc.createElement('tr');
@@ -8637,8 +8668,8 @@
                 str += '&lt;tr>&lt;td style="text-align: right;">' +
                     '&lt;a target="_blank" href="http://www.ganjawars.ru/' +
                     'syndicate.php?id=' + obj[i].synd + '&amp;page=online">' +
-                    '&lt;img src=http://images.ganjawars.ru/img/synds/' +
-                    obj[i].synd + '.gif>&lt;/img>#' + obj[i].synd + '&lt;/a>';
+                    '&lt;img src="http://images.ganjawars.ru/img/synds/' +
+                    obj[i].synd + '.gif" />#' + obj[i].synd + '&lt;/a>';
 
                 if (obj[i].union) {
                     str += ', &lt;a target="_blank" href="http://www.ganjawars.' +
@@ -11239,6 +11270,7 @@
                 return 8;
             }
 
+            // выгнали
             if (/покинул синдикат/i.test(str)) {
                 return 9;
             }
@@ -11350,13 +11382,15 @@
                 strTakenSynd = '';
 
             for (i = 0; i &lt; main.dismissedSynd.length; i++) {
-                pers = main.dismissedSynd[i];
-                strDismissedSynd += str4 + pers + '">' + pers + '&lt;/a>' + str3;
+                pers = main.dismissedSynd[i][0];
+                strDismissedSynd += str4 + pers + '">' + pers + '&lt;/a>, ' +
+                    main.dismissedSynd[i][1] + str3;
             }
 
             for (i = 0; i &lt; main.takenSynd.length; i++) {
-                pers = main.takenSynd[i];
-                strTakenSynd += str4 + pers + '">' + pers + '&lt;/a>' + str3;
+                pers = main.takenSynd[i][0];
+                strTakenSynd += str4 + pers + '">' + pers + '&lt;/a>, ' +
+                    main.takenSynd[i][1] + str3;
             }
 
             var title = '&lt;tr>&lt;td colspan="2" style="background: #D0EED0; ' +
@@ -11444,6 +11478,7 @@
                     take,
                     pers,
                     time,
+                    tmp,
                     str,
                     i;
 
@@ -11500,20 +11535,27 @@
                         break;
                     case 6:
                         _this.mainData.takenSynd.
-                            push(_this.getPersLink(lines[i]).
-                                    firstElementChild.innerHTML);
+                            push([_this.getPersLink(lines[i]).
+                                    firstElementChild.innerHTML,
+                                        lines[i].innerHTML]);
                         break;
                     case 7:
                         _this.mainData.dismissedSynd.
-                            push(_this.getPersLink(lines[i]).
-                                    firstElementChild.innerHTML);
+                            push([_this.getPersLink(lines[i]).
+                                    firstElementChild.innerHTML,
+                                        lines[i].innerHTML]);
                         break;
                     case 8:
                         _this.parseLine(str, _this.mainData.realEstate.bars);
                         break;
                     case 9:
-                        _this.mainData.dismissedSynd.
-                            push(/^(.*) покинул/.exec(str)[1]);
+                        // выгнали
+                        tmp = /^(.*) покинул синдикат( \(.*\))/.exec(str);
+                        if (tmp) {
+                            _this.mainData.dismissedSynd.push([tmp[1],
+                                    lines[i].innerHTML + tmp[2]]);
+                        }
+
                         break;
                     default:
                         break;
@@ -11625,7 +11667,7 @@
         this.addCloseButton = function () {
             this.divResult.innerHTML += '&lt;div style="margin-top: 5px;">' +
                 '&lt;img id="closemyachiev" src="' + general.imgPath +
-                'close.gif">&lt;/img>&lt;/div>';
+                'close.gif" style="cursor: pointer;" />&lt;/div>';
 
             var _this = this;
             general.$('closemyachiev').addEventListener('click', function () {
@@ -12884,7 +12926,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Mon Nov 02 2015 11:14:26 GMT+0300 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Thu Nov 05 2015 13:38:32 GMT+0300 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

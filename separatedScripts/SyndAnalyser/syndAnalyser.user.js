@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.00-151015
+// @version         2.10-051115
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -415,6 +415,7 @@
                 return 8;
             }
 
+            // выгнали
             if (/покинул синдикат/i.test(str)) {
                 return 9;
             }
@@ -424,11 +425,11 @@
 
         /**
          * @method getPersLink
-         * @param    {Element}  elem
+         * @param    {Node}     node
          * @return   {Element}
          */
-        this.getPersLink = function (elem) {
-            return elem.parentNode.nextElementSibling.querySelector('a');
+        this.getPersLink = function (node) {
+            return node.parentNode.nextElementSibling.querySelector('a');
         };
 
         /**
@@ -526,13 +527,15 @@
                 strTakenSynd = '';
 
             for (i = 0; i < main.dismissedSynd.length; i++) {
-                pers = main.dismissedSynd[i];
-                strDismissedSynd += str4 + pers + '">' + pers + '</a>' + str3;
+                pers = main.dismissedSynd[i][0];
+                strDismissedSynd += str4 + pers + '">' + pers + '</a>, ' +
+                    main.dismissedSynd[i][1] + str3;
             }
 
             for (i = 0; i < main.takenSynd.length; i++) {
-                pers = main.takenSynd[i];
-                strTakenSynd += str4 + pers + '">' + pers + '</a>' + str3;
+                pers = main.takenSynd[i][0];
+                strTakenSynd += str4 + pers + '">' + pers + '</a>, ' +
+                    main.takenSynd[i][1] + str3;
             }
 
             var title = '<tr><td colspan="2" style="background: #D0EED0; ' +
@@ -621,6 +624,7 @@
                     pers,
                     time,
                     str,
+                    tmp,
                     i;
 
                 for (i = 0; i < lines.length; i++) {
@@ -676,20 +680,27 @@
                         break;
                     case 6:
                         _this.mainData.takenSynd.
-                            push(_this.getPersLink(lines[i]).
-                                    firstElementChild.innerHTML);
+                            push([_this.getPersLink(lines[i]).
+                                    firstElementChild.innerHTML,
+                                        lines[i].innerHTML]);
                         break;
                     case 7:
                         _this.mainData.dismissedSynd.
-                            push(_this.getPersLink(lines[i]).
-                                    firstElementChild.innerHTML);
+                            push([_this.getPersLink(lines[i]).
+                                    firstElementChild.innerHTML,
+                                        lines[i].innerHTML]);
                         break;
                     case 8:
                         _this.parseLine(str, _this.mainData.realEstate.bars);
                         break;
                     case 9:
-                        _this.mainData.dismissedSynd.
-                            push(/^(.*) покинул/.exec(str)[1]);
+                        // выгнали
+                        tmp = /^(.*) покинул синдикат( \(.*\))/.exec(str);
+                        if (tmp) {
+                            _this.mainData.dismissedSynd.push([tmp[1],
+                                    lines[i].innerHTML + tmp[2]]);
+                        }
+
                         break;
                     default:
                         break;

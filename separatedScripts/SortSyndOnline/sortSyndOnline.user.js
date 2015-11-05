@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.11-190915
+// @version         1.12-051115
 // @author          MyRequiem, идея: z0man, VSOP_juDGe
 // ==/UserScript==
 
@@ -126,7 +126,7 @@
         /**
          * @method createTitle
          * @param    {String}   str
-         * @return   {Node}
+         * @return   {Element}
          */
         this.createTitle = function (str) {
             var tr = general.doc.createElement('tr');

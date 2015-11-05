@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/wargroup.php?war=attacks*
 // @grant           none
 // @license         MIT
-// @version         2.00-190915
+// @version         2.01-051115
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -125,8 +125,8 @@
                 str += '<tr><td style="text-align: right;">' +
                     '<a target="_blank" href="http://www.ganjawars.ru/' +
                     'syndicate.php?id=' + obj[i].synd + '&page=online">' +
-                    '<img src=http://images.ganjawars.ru/img/synds/' +
-                    obj[i].synd + '.gif></img>#' + obj[i].synd + '</a>';
+                    '<img src="http://images.ganjawars.ru/img/synds/' +
+                    obj[i].synd + '.gif" />#' + obj[i].synd + '</a>';
 
                 if (obj[i].union) {
                     str += ', <a target="_blank" href="http://www.ganjawars.' +
