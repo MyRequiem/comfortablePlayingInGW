@@ -10,5 +10,7 @@
 <br>
 ![SyndAnalyser](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/SyndAnalyser/screen3.png)
 <br>
+![SyndAnalyser](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/SyndAnalyser/screen4.png)
+<br>
 ![SyndAnalyser](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/SyndAnalyser/screen2.png)
 <br>
