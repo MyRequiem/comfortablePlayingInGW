@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/items.php*
 // @grant           none
 // @license         MIT
-// @version         2.00-030915
+// @version         2.10-111115
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -103,8 +103,9 @@
 
         /**
          * @method startInventoryPlus
+         * @param   {Object}    _this
          */
-        this.startInventoryPlus = function () {
+        this.startInventoryPlus = function (_this) {
             // ищем таблицу с инвентарем
             var tbody = general.doc.querySelectorAll('table[border="0"]' +
                     '[cellspacing="1"][cellpadding="5"][align="center"]' +
@@ -155,7 +156,7 @@
                 obj;
 
             for (i = 0; i < allLines.length; i++) {
-                obj = this.compareLines(allLines[i], linesObj);
+                obj = _this.compareLines(allLines[i], linesObj);
                 if (!obj) {
                     linesObj[linesObj.length] = {line: allLines[i], count: 1};
                 } else {
@@ -213,7 +214,7 @@
                             'font-weight: bold; cursor: pointer;');
                     divn.innerHTML = '[' + linesObj[i].count + '+]';
                     divn.addEventListener('click',
-                            this.openCloseItem(id), false);
+                            _this.openCloseItem(id), false);
                     linesObj[i].line.link.parentNode.appendChild(divn);
                 }
             }
@@ -245,14 +246,14 @@
                             replace('postdo', 'postdo_mod'));
                 }
             } else {
+                var _this = this;
                 general.root.dumb = function () {
-                    var _this = this;
-                    general.root.setTimeout(_this.startInventoryPlus, 100);
+                    general.root.
+                        setTimeout(_this.startInventoryPlus(_this), 100);
                 };
             }
 
-            this.startInventoryPlus();
-
+            this.startInventoryPlus(this);
         };
     };
 
