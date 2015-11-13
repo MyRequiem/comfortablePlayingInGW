@@ -1,4 +1,4 @@
-// ==UserScript==
+﻿// ==UserScript==
 // @name            ComfortablePlayingInGW
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     Веселые плюшки для ganjawars.ru
@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.04-111115
+// @version         1.05-131115
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.04-111115';
+        this.version = '1.05-131115';
         /**
          * @property stString
          * @type {String}
@@ -8963,8 +8963,11 @@
                     general.root.location = allMoveLinks[0].href;
                 };
 
-            var ev = e || general.root.event;
-            switch (ev.keyCode) {
+            var ev = e || general.root.event,
+                keyPressed = /Firefox/i.test(general.root.navigator.userAgent) ?
+                        ev.charCode : ev.keyCode;
+
+            switch (keyPressed) {
             // W,w,Ц,ц - вверх
             case 87:
             case 119:

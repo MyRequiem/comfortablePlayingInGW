@@ -8,7 +8,7 @@
 // @include         http://quest.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.10-220915
+// @version         1.20-131115
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -96,8 +96,11 @@
                     general.root.location = allMoveLinks[0].href;
                 };
 
-            var ev = e || general.root.event;
-            switch (ev.keyCode) {
+            var ev = e || general.root.event,
+                keyPressed = /Firefox/i.test(general.root.navigator.userAgent) ?
+                        ev.charCode : ev.keyCode;
+
+            switch (keyPressed) {
             // W,w,Ц,ц - вверх
             case 87:
             case 119:
