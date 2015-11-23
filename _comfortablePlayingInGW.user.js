@@ -1301,7 +1301,7 @@
                 if (ver && ver[1] !== general.version) {
                     general.$('linkNewVerScript').style.
                         visibility = 'visible';
-                    general.$('refreshVer').innerHTML = '(' + ver + ')';
+                    general.$('refreshVer').innerHTML = '(' + ver[1] + ')';
                 }
             }, null);
         };
