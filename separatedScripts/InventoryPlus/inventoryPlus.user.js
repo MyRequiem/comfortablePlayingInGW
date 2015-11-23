@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/items.php*
 // @grant           none
 // @license         MIT
-// @version         2.10-111115
+// @version         2.20-241115
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -107,13 +107,13 @@
          */
         this.startInventoryPlus = function (_this) {
             // ищем таблицу с инвентарем
-            var tbody = general.doc.querySelectorAll('table[border="0"]' +
+            var tbody = general.doc.querySelector('table[border="0"]' +
                     '[cellspacing="1"][cellpadding="5"][align="center"]' +
-                    '[width="700"]');
+                    '[width="700"]+script');
 
-            if (tbody[2]) {
+            if (tbody) {
                 // новое оформление экипировки
-                tbody = tbody[2].firstElementChild;
+                tbody = tbody.previousElementSibling.firstElementChild;
             } else {
                 // старое оформление экипировки
                 tbody = general.doc.querySelector('table[border="0"]' +
