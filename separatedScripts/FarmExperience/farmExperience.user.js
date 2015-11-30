@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.00-290815
+// @version         2.10-301115
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -82,15 +82,12 @@
                 return;
             }
 
-            var firsPage = /<font color="?#006600"?>\s?<b>Укроп<\/b>/.
-                test(general.doc.body.innerHTML),
-                prices1 = general.doc.querySelectorAll('label>font' +
+            var prices1 = general.doc.querySelectorAll('label>font' +
                         '[color="#006600"]>b:last-child'),
                 prices2 = general.doc.querySelectorAll('li>font' +
                         '[color="#990000"]>b:first-child'),
                 time = general.doc.querySelectorAll('form[action$=' +
-                        '"/ferma.php"]>li:nth-child(' +
-                            (firsPage ? 'odd' : 'even') + ')'),
+                        '"/ferma.php"]>li:nth-child(odd)'),
                 span,
                 i;
 
