@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.08-301115
+// @version         1.09-031215
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.08-301115';
+        this.version = '1.09-031215';
         /**
          * @property stString
          * @type {String}
@@ -6478,16 +6478,16 @@
             // ищем таблицу с инвентарем
             var tbody = general.doc.querySelector('table[border="0"]' +
                     '[cellspacing="1"][cellpadding="5"][align="center"]' +
-                    '[width="700"]+script');
+                    '[width="700"] tr[id^="item_tr"]');
 
             if (tbody) {
                 // новое оформление экипировки
-                tbody = tbody.previousElementSibling.firstElementChild;
+                tbody = tbody.parentNode;
             } else {
                 // старое оформление экипировки
                 tbody = general.doc.querySelector('table[border="0"]' +
-                        '[cellspacing="1"][cellpadding="3"][align="center"]' +
-                        '[width="700"]>tbody');
+                    '[cellspacing="1"][cellpadding="3"][align="center"]' +
+                    '[width="700"]>tbody');
             }
 
             if (!tbody.firstElementChild) {
