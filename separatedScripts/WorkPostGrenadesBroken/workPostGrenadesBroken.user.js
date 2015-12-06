@@ -12,7 +12,7 @@
 // @exclude         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.10-241015
+// @version         2.11-061215
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -370,7 +370,8 @@
 
                 // поиск ссылок на экипировку
                 var items = spanContent.
-                        querySelector('td[valign="bottom"][bgcolor="#e9ffe9"]');
+                        querySelector('td[valign="bottom"][bgcolor="#e9ffe9"]' +
+                            '[colspan="2"]');
                 items = items ? items.querySelectorAll('a') : false;
 
                 // время до окончания работы

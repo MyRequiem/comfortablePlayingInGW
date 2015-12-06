@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.09-031215
+// @version         1.10-061215
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.09-031215';
+        this.version = '1.10-061215';
         /**
          * @property stString
          * @type {String}
@@ -4051,7 +4051,8 @@
 
                 // поиск ссылок на экипировку
                 var items = spanContent.
-                        querySelector('td[valign="bottom"][bgcolor="#e9ffe9"]');
+                        querySelector('td[valign="bottom"][bgcolor="#e9ffe9"]' +
+                            '[colspan="2"]');
                 items = items ? items.querySelectorAll('a') : false;
 
                 // время до окончания работы
