@@ -9,7 +9,7 @@
 // @exclude         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.10-251015
+// @version         2.20-081215
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -424,7 +424,7 @@
 
                 // новое и старое оформление страницы персонажа
                 var target = spanContent.querySelector('table+br+table' +
-                    '[width="700"]') || spanContent.querySelector('table+br+' +
+                    '[width="730"]') || spanContent.querySelector('table+br+' +
                         'table[width="600"][cellpadding="1"][align="center"]');
                 if (!target.querySelector('a[href*="/syndicate.php?id=' +
                         syndId + '"]')) {

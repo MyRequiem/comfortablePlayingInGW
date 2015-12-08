@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.10-061215
+// @version         1.11-081215
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.10-061215';
+        this.version = '1.11-081215';
         /**
          * @property stString
          * @type {String}
@@ -7914,7 +7914,7 @@
         this.highTechItems = {
             'htGroup': ['auto', 'heavy', 'sniper', 'ppguns', 'shotguns',
                     'grl', 'armour', 'helmets', 'boots', 'masks', 'wear',
-                    'phones', 'drugs', 'transport'],
+                    'belts', 'phones', 'drugs', 'transport'],
             'sniper': 'snipe',
             'phones': 'misc'
         };
@@ -9996,7 +9996,7 @@
 
                 // новое и старое оформление страницы персонажа
                 var target = spanContent.querySelector('table+br+table' +
-                    '[width="700"]') || spanContent.querySelector('table+br+' +
+                    '[width="730"]') || spanContent.querySelector('table+br+' +
                         'table[width="600"][cellpadding="1"][align="center"]');
                 if (!target.querySelector('a[href*="/syndicate.php?id=' +
                         syndId + '"]')) {
