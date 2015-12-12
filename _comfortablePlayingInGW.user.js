@@ -12330,6 +12330,7 @@
     };
 
     general = new General();
+
     if (!general.checkMainData()) {
         return;
     }
