@@ -25,7 +25,7 @@
 ![Screen2](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/screen2.png)
 <br>
 <br>
-*Жмем на дискетку в левом верхнем углу, открывается панель сохранения настрок:*
+*Жмем на дискетку в левом верхнем углу, открывается панель сохранения настроек:*
 ![Screen3](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/screen3.png)
 <br>
 <br>
