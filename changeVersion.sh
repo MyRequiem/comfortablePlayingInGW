@@ -11,11 +11,11 @@ INFILE="
     _comfortablePlayingInGW.meta.js
 "
 
-for FILE in $INFILE; do
-    sed "s/[0-9]\?[0-9]\.[0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]\(-dev\)\?\(-a\)\?\(-b\)\?/$1/g" $FILE > $TMP
-    if [ -s $TMP ]; then
-        rm $FILE
-        mv tmp $FILE
+for FILE in ${INFILE}; do
+    sed "s/[0-9]\?[0-9]\.[0-9][0-9]-[0-9][0-9][0-9][0-9][0-9][0-9]\(-dev\)\?\(-a\)\?\(-b\)\?/$1/g" ${FILE} > ${TMP}
+    if [ -s ${TMP} ]; then
+        rm ${FILE}
+        mv ${TMP} ${FILE}
     fi
 done
 
