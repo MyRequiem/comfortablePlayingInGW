@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.11-081215
+// @version         1.12-070116
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.11-081215';
+        this.version = '1.12-070116';
         /**
          * @property stString
          * @type {String}
@@ -4311,7 +4311,8 @@
                 nik,
                 font,
                 str,
-                node;
+                node,
+                next;
 
             var i;
             for (i = 0; i < b.length; i++) {
@@ -4361,48 +4362,51 @@
                     // получаем запись своего хода
                     str = '';
                     node = b[i];
-                    while (node.nodeName !== 'BR') {
-                        if (node.nextSibling && node.nextSibling.nodeValue) {
-                            str += node.nextSibling.nodeValue;
+                    while (node && node.nodeName !== 'BR') {
+                        next = node.nextElementSibling;
+                        if (next.nodeName === 'I') {
+                            str += next.innerHTML;
                         }
 
-                        node = node.nextSibling;
+                        node = next;
                     }
 
-                    // считаем криты
-                    if (/в пах/.test(str)) {
-                        if (/\d+ в пах/.test(str)) {
-                            criticalShots.groin += (+(/(\d+) в пах/.
-                                        exec(str)[1]));
-                        } else {
-                            criticalShots.groin++;
+                    if (str) {
+                        // считаем криты
+                        if (/в пах/.test(str)) {
+                            if (/\d+ в пах/.test(str)) {
+                                criticalShots.groin += (+(/(\d+) в пах/.
+                                            exec(str)[1]));
+                            } else {
+                                criticalShots.groin++;
+                            }
                         }
-                    }
 
-                    if (/в шею/.test(str)) {
-                        if (/\d+ в шею/.test(str)) {
-                            criticalShots.neck += (+(/(\d+) в шею/.
-                                        exec(str)[1]));
-                        } else {
-                            criticalShots.neck++;
+                        if (/в шею/.test(str)) {
+                            if (/\d+ в шею/.test(str)) {
+                                criticalShots.neck += (+(/(\d+) в шею/.
+                                            exec(str)[1]));
+                            } else {
+                                criticalShots.neck++;
+                            }
                         }
-                    }
 
-                    if (/в ухо/.test(str)) {
-                        if (/\d+ в ухо/.test(str)) {
-                            criticalShots.ear += (+(/(\d+) в ухо/.
-                                        exec(str)[1]));
-                        } else {
-                            criticalShots.ear++;
+                        if (/в ухо/.test(str)) {
+                            if (/\d+ в ухо/.test(str)) {
+                                criticalShots.ear += (+(/(\d+) в ухо/.
+                                            exec(str)[1]));
+                            } else {
+                                criticalShots.ear++;
+                            }
                         }
-                    }
 
-                    if (/в висок/.test(str)) {
-                        if (/\d+ в висок/.test(str)) {
-                            criticalShots.temple += (+(/(\d+) в висок/.
-                                        exec(str)[1]));
-                        } else {
-                            criticalShots.temple++;
+                        if (/в висок/.test(str)) {
+                            if (/\d+ в висок/.test(str)) {
+                                criticalShots.temple += (+(/(\d+) в висок/.
+                                            exec(str)[1]));
+                            } else {
+                                criticalShots.temple++;
+                            }
                         }
                     }
                 }
