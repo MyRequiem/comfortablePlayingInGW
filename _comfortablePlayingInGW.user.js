@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.14-170116
+// @version         1.15-180116
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.14-170116';
+        this.version = '1.15-180116';
         /**
          * @property stString
          * @type {String}
@@ -8402,7 +8402,7 @@
          */
         this.createTitle = function (str) {
             var tr = general.doc.createElement('tr');
-            tr.innerHTML = '<td colspan="5" class="wb" ' +
+            tr.innerHTML = '<td colspan="6" class="wb" ' +
                 'bgcolor="#D0EED0" style="text-align: ' +
                 'center;"><span style="font-weight: bold;">' +
                 str + '</span></td>';
