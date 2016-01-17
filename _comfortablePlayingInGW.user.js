@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.13-170116
+// @version         1.14-170116
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.13-170116';
+        this.version = '1.14-170116';
         /**
          * @property stString
          * @type {String}
@@ -8082,7 +8082,7 @@
                 mass = [];
 
             mass[0] = nameAndLvl.firstElementChild.innerHTML;
-            mass[1] = /^(\d+)/.exec(obj.querySelector('td[colspan="5"]' +
+            mass[1] = /^(\d+)/.exec(obj.querySelector('td[colspan="6"]' +
                         '[class="wb"][bgcolor="#d0eed0"]' +
                         '[align="center"]>b').innerHTML)[1];
             mass[2] = /(\d+) LVL/.exec(nameAndLvl.innerHTML)[1];
