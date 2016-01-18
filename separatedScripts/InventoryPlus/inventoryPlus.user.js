@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/items.php*
 // @grant           none
 // @license         MIT
-// @version         2.21-031215
+// @version         2.22-190116
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -186,7 +186,7 @@
                     trHide.id = 'tr_' + id;
                     trHide.setAttribute('style', 'display: none');
                     td = general.doc.createElement('td');
-                    td.setAttribute('colspan', '2');
+                    td.setAttribute('colspan', '5');
                     tblTarget = general.doc.createElement('table');
                     tblTarget.setAttribute('style',
                             'width: 100%; margin-left: 30px;');

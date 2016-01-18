@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.15-180116
+// @version         1.16-190116
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.15-180116';
+        this.version = '1.16-190116';
         /**
          * @property stString
          * @type {String}
@@ -6560,7 +6560,7 @@
                     trHide.id = 'tr_' + id;
                     trHide.setAttribute('style', 'display: none');
                     td = general.doc.createElement('td');
-                    td.setAttribute('colspan', '2');
+                    td.setAttribute('colspan', '5');
                     tblTarget = general.doc.createElement('table');
                     tblTarget.setAttribute('style',
                             'width: 100%; margin-left: 30px;');
