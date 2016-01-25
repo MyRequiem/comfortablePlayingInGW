@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/sms.php*
 // @grant           none
 // @license         MIT
-// @version         2.10-250116
+// @version         2.11-250116
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -99,7 +99,7 @@
 
             target = target.parentNode.parentNode;
             target.innerHTML += '<td valign="top" class="greengreenbg" ' +
-                'align="center" style="width: 150px"></td>';
+                'align="center" style="width: 150px;"></td>';
             target = target.lastElementChild;
 
             // кнопка удаления

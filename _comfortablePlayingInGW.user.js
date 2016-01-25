@@ -4556,7 +4556,7 @@
 
             target = target.parentNode.parentNode;
             target.innerHTML += '<td valign="top" class="greengreenbg" ' +
-                'align="center" style="width: 150px"></td>';
+                'align="center" style="width: 150px;"></td>';
             target = target.lastElementChild;
 
             // кнопка удаления
