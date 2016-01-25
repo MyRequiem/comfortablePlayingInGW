@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.16-190116
+// @version         1.17-250116
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.16-190116';
+        this.version = '1.17-250116';
         /**
          * @property stString
          * @type {String}
@@ -4543,7 +4543,7 @@
          * @method init
          */
         this.init = function () {
-            var target = general.doc.querySelector('center>nobr>a:last-child' +
+            var target = general.doc.querySelector('tr>td>a:last-child' +
                         '[href="/sms.php?page=2"]'),
                 del = general.doc.querySelector('input[class="mainbutton"]' +
                     '[type="submit"][value="Удалить отмеченные"]'),
@@ -4554,7 +4554,11 @@
                 return;
             }
 
-            target = target.parentNode;
+            target = target.parentNode.parentNode;
+            target.innerHTML += '<td valign="top" class="greengreenbg" ' +
+                'align="center" style="width: 150px"></td>';
+            target = target.lastElementChild;
+
             // кнопка удаления
             var delButton = general.doc.createElement('span');
             delButton.innerHTML = 'Удалить отмеченные';
@@ -4564,7 +4568,6 @@
                 del.click();
             }, false);
 
-            target.appendChild(general.doc.createTextNode(' | '));
             target.appendChild(delButton);
 
             // кнопка "Отметить все"
