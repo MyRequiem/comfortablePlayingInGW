@@ -21,7 +21,7 @@
 ![Screen1](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/screen1.png)
 <br>
 <br>
-*Включаем нужное, отключаем не нужное:*
+*Включаем нужное, отключаем ненужное:*
 ![Screen2](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/screen2.png)
 <br>
 <br>
@@ -118,7 +118,7 @@
 
 **DeleteSms**
 <br>
-Версия: 2.10-250116
+Версия: 2.11-250116
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/DeleteSms/deleteSms.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/DeleteSms/deleteSms.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/DeleteSms)
 <br>

@@ -158,7 +158,7 @@ how_to_install/0-31)
 ![Screen1]({1}imgs/screen1.png)
 <br>
 <br>
-*Включаем нужное, отключаем не нужное:*
+*Включаем нужное, отключаем ненужное:*
 ![Screen2]({1}imgs/screen2.png)
 <br>
 <br>
