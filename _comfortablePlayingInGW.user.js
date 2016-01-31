@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.17-250116
+// @version         1.20-010216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.17-250116';
+        this.version = '1.20-010216';
         /**
          * @property stString
          * @type {String}
@@ -1340,16 +1340,70 @@
         };
 
         /**
+         * @method setZeroClipboardLib
+         */
+        this.setZeroClipboardLib = function () {
+            // тег <script> с библиотекой ZeroClipboard
+            // для копирования в буфер обмена
+            if (!general.$('zeroclipboard')) {
+                var script = general.doc.createElement('script');
+                script.id = 'zeroclipboard';
+                script.type = 'text/javascript';
+                script.src = general.imgPath +
+                    '../ZeroClipboard/ZeroClipboard.js';
+                general.doc.querySelector('head').appendChild(script);
+            }
+
+            // скрипт уже подгузился
+            if (general.root.ZeroClipboard) {
+                // иконка сохранения настроек
+                var imgSave = general.$('imgSaveSettings');
+                imgSave.src = 'http://images.ganjawars.ru/i/home/ganjafile.gif';
+                imgSave.title = 'Сохранить';
+                imgSave.style.cursor = 'pointer';
+
+                var clip = new general.root.ZeroClipboard(imgSave, {
+                        moviePath: general.imgPath +
+                            '../ZeroClipboard/ZeroClipboard.swf'
+                    });
+
+                // копируем в буфер обмена строкy из localStorage
+                clip.on('copy', function () {
+                    clip.setText(general.st.getItem(general.STORAGENAME));
+                });
+
+                // после копирования показываем сообщение для пользователя
+                clip.on('aftercopy', function () {
+                    alert('Строка настроек сохранена в буфере обмена. ' +
+                        'Откройте любой текстовый редактор, например ' +
+                        'блокнот, вставьте строку (Ctrl+V) и сохраните для ' +
+                        'последующего восстановления.');
+                });
+            } else {
+                // скрипт не подгрузился, ждем...
+                var _this = this;
+                general.root.setTimeout(function () {
+                    _this.setZeroClipboardLib();
+                }, 700);
+            }
+        };
+
+        /**
          * @method init
          */
         this.init = function () {
             var tdStyle = ' style="background-color: #E0FFE0;">',
                 str = '<table style="width: 100%; box-shadow: 8px 10px 7px ' +
                     'rgba(122,122,122,0.5);"><tr><td ' + tdStyle +
-                    '<table style="width: 100%"><tr><td style="width: 3%;">' +
-                    '<img id="imgSaveSettings" title="Сохранить/Восстановить ' +
-                    'настройки" src="http://images.ganjawars.ru/i/home/' +
-                    'ganjafile.gif" style="cursor: pointer;" /></td>' +
+                    '<table style="width: 100%"><tr><td style="width: 23%;">' +
+                    'Настройки:<img id="imgSaveSettings" src="' +
+                    general.imgPath + 'preloader.gif" style="margin-left: ' +
+                    '5px;" /><img id="imgRestoreSettings" ' +
+                    'title="Восстановить" src="http://images.ganjawars.ru/i/' +
+                    'home/cashlog.gif" style="cursor: pointer; margin-left: ' +
+                    '5px;" /><img id="imgResetSettings" title="Сбросить" ' +
+                    'src="http://images.ganjawars.ru/i/home/questlog.gif" ' +
+                    'style="cursor: pointer; margin-left: 5px;" /></td>' +
                     '<td style="font-size: 8pt; text-align: center;">' +
                     '<a id="linkNewVerScript" target="_blank" ' +
                     'style="color: #FF0000; visibility: hidden;" ' +
@@ -1357,26 +1411,20 @@
                     'comfortablePlayingInGW/master/_comfortablePlayingInGW.' +
                     'user.js">Доступна новая версия</a> ' +
                     '<span id="refreshVer"></span></td>' +
-                    '<td style="font-size: 7pt; width: 35%; text-align: ' +
+                    '<td style="font-size: 7pt; width: 32%; text-align: ' +
                     'right;"><a target="_blank" style="opacity: 0.5; ' +
                     'text-decoration: none; font-size: 7pt;" ' +
                     'href="http://www.ganjawars.ru/info.php?id=2095458">' +
                     '<span style="color: #F90332;">developed by</span> ' +
                     '<span style="color: #014305; font-weight: 700;">' +
                     'MyRequiem©</span></a> ' + general.version + '</td>' +
-                    '</tr><tr id="trSaveSettings" style="display: none;">' +
-                    '<td colspan="3"><br>Сохранить строку настроек ' +
-                    '(&lt;Ctrl-A&gt; - выделить всю строку, &lt;Ctrl-C&gt; - ' +
-                    'копировать):<br><input id="inpExportSettings" ' +
-                    'type="text" style="width: 97%;" /><br><br>' +
-                    'Восстановление настроек. Введите ранее сохраненную ' +
-                    'строку и нажмите "Восстановить":<br><input ' +
-                    'id="inpImportSettings" type="text" style="width: ' +
-                    '97%;" /><br><input id="butRestoreSettings" ' +
-                    'type="button" value="Восстановить" /><input ' +
-                    'id="butClearSettings" type="button" value="Сбросить ' +
-                    'настройки" style="margin-left: 10px;" />' +
-                    '</td></tr></table></td></tr>',
+                    '</tr><tr id="trRestoreSettings" style="display: none;">' +
+                    '<td colspan="3">Восстановление настроек. Вставьте ' +
+                    'ранее сохраненную строку настроек и нажмите ' +
+                    '"Восстановить":<br><input id="inpRestoreSettings" ' +
+                    'type="text" style="width: 97%;" /><br><input ' +
+                    'id="butRestoreSettings" type="button" ' +
+                    'value="Восстановить" /></td></tr></table></td></tr>',
                 groupStyle = ' style="background-color: #D0EED0; text-align: ' +
                     'center; color: #990000;"><b>',
                 spanStyle = ' style="cursor: pointer;">',
@@ -1410,6 +1458,9 @@
             settingsContainer.setAttribute('style', 'margin: 10px 0 20px 0');
             settingsContainer.innerHTML = str;
 
+            // установка библиотеки ZeroClipboard (копирование в буфер обмена)
+            this.setZeroClipboardLib();
+
             // проверка обновлений
             this.checkScriptUpdate();
 
@@ -1431,37 +1482,42 @@
                 }
             }
 
-            // открытие/закрытие панели сохранения настроек, обработчики
-            // текстовых полей, кнопки импорта настроек
-            general.$('imgSaveSettings').addEventListener('click', function () {
-                var trSaveSettings = general.$('trSaveSettings'),
-                    displ = trSaveSettings.style.display;
-
-                if (displ) {
-                    general.$('inpExportSettings').value = general.root.
-                        localStorage.getItem(general.STORAGENAME);
-                }
-                trSaveSettings.style.display = displ ? '' : 'none';
-            }, false);
-
-            general.$('butRestoreSettings').addEventListener('click',
+            general.$('imgRestoreSettings').addEventListener('click',
                 function () {
-                    var val = general.$('inpImportSettings').value;
-                    if (!val) {
-                        alert('Введите строку настроек');
-                        return;
-                    }
+                    var trRestoreSettings = general.$('trRestoreSettings');
 
-                    general.root.localStorage.setItem(general.STORAGENAME, val);
-                    general.root.location.reload();
+                    trRestoreSettings.style.display = trRestoreSettings.
+                        style.display ? '' : 'none';
                 }, false);
 
-            general.$('butClearSettings').addEventListener('click', function () {
-                if (confirm('Вы уверены ???')) {
-                    general.root.localStorage.removeItem(general.STORAGENAME);
-                    general.root.location.reload();
+            var butRestoreSettings = general.$('butRestoreSettings'),
+                inpRestoreSettings = general.$('inpRestoreSettings');
+
+            butRestoreSettings.addEventListener('click', function () {
+                var val = inpRestoreSettings.value;
+                if (!val) {
+                    alert('Введите строку настроек');
+                    return;
+                }
+
+                general.st.setItem(general.STORAGENAME, val);
+                general.root.location.reload();
+            }, false);
+
+            inpRestoreSettings.addEventListener('keypress', function (e) {
+                var ev = e || general.root.event;
+                if (ev.keyCode === 13 || ev.keyCode === 10) {
+                    butRestoreSettings.click();
                 }
             }, false);
+
+            general.$('imgResetSettings').addEventListener('click',
+                function () {
+                    if (confirm('Сброс настроек !!!\nВы уверены ???')) {
+                        general.st.removeItem(general.STORAGENAME);
+                        general.root.location.reload();
+                    }
+                }, false);
 
             // обработчики текстовых полей модуля дополнений для боев
             general.$('refreshBattle').
@@ -4556,7 +4612,7 @@
 
             target = target.parentNode.parentNode;
             target.innerHTML += '<td valign="top" class="greengreenbg" ' +
-                'align="center" style="width: 150px;"></td>';
+                'align="center" style="width: 150px"></td>';
             target = target.lastElementChild;
 
             // кнопка удаления
