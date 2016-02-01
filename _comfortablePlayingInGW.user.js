@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.21-010216
+// @version         1.22-010216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.21-010216';
+        this.version = '1.22-010216';
         /**
          * @property stString
          * @type {String}
@@ -5229,6 +5229,7 @@
                 var mainDiv = general.doc.createElement('div'),
                     target = general.doc.querySelector('td[rowspan="2"]' +
                         '[valign="top"][bgcolor="#e9ffe9"]>' +
+                        'div[style="padding-left:5px"]>' +
                         'a[href$="/home.friends.php"]').previousElementSibling,
                     onoff = stData[0] ? 'On' : 'Off';
 

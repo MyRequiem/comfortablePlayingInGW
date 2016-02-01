@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/npc.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.02-050915
+// @version         2.10-010216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -422,6 +422,7 @@
                 var mainDiv = general.doc.createElement('div'),
                     target = general.doc.querySelector('td[rowspan="2"]' +
                         '[valign="top"][bgcolor="#e9ffe9"]>' +
+                        'div[style="padding-left:5px"]>' +
                         'a[href$="/home.friends.php"]').previousElementSibling,
                     onoff = stData[0] ? 'On' : 'Off';
 
