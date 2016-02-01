@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.20-010216
+// @version         1.21-010216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.20-010216';
+        this.version = '1.21-010216';
         /**
          * @property stString
          * @type {String}
@@ -1350,7 +1350,7 @@
                 script.id = 'zeroclipboard';
                 script.type = 'text/javascript';
                 script.src = general.imgPath +
-                    '../ZeroClipboard/ZeroClipboard.js';
+                    '../ZeroClipboard/ZeroClipboard.min.js';
                 general.doc.querySelector('head').appendChild(script);
             }
 
