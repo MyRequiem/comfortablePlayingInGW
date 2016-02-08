@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/sms-read.php?type=*
 // @grant           none
 // @license         MIT
-// @version         2.02-110915
+// @version         2.03-080216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -346,8 +346,8 @@
                                 '"overflow:auto"]').innerHTML.
                                     replace(/^(\s|<br>)*|(\s|<br>)*$/g, '');
                     _this.sms[id].ofSyndLink = _this.spanContent.
-                        querySelector('div[align="center"]>' +
-                                'a[href*="/sms-pub.php?type="]').href;
+                        querySelector('#attndiv+center>' +
+                            'a[href*="/sms-pub.php?type="]').href;
 
                     id++;
                     if (!_this.sms[id]) {

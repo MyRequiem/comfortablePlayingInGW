@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.22-010216
+// @version         1.23-080216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.22-010216';
+        this.version = '1.23-080216';
         /**
          * @property stString
          * @type {String}
@@ -7883,8 +7883,8 @@
                                 '"overflow:auto"]').innerHTML.
                                     replace(/^(\s|<br>)*|(\s|<br>)*$/g, '');
                     _this.sms[id].ofSyndLink = _this.spanContent.
-                        querySelector('div[align="center"]>' +
-                                'a[href*="/sms-pub.php?type="]').href;
+                        querySelector('#attndiv+center>' +
+                            'a[href*="/sms-pub.php?type="]').href;
 
                     id++;
                     if (!_this.sms[id]) {

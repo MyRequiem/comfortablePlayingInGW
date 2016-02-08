@@ -7,7 +7,7 @@
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
 <br>
 <br>
-Версия: 1.22-010216
+Версия: 1.23-080216
 <br>
 Нашли ошибку? Пожалуйста, [сообщите](http://www.ganjawars.ru/info.php?id=2095458)
 * [Установить](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js)
@@ -202,7 +202,7 @@
 
 **HistorySms**
 <br>
-Версия: 2.02-110915
+Версия: 2.03-080216
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/HistorySms/historySms.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/HistorySms/historySms.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/HistorySms)
 <br>
