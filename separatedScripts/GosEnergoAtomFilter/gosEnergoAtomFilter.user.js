@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/info.realty.php?id=2
 // @grant           none
 // @license         MIT
-// @version         3.01-170116
+// @version         3.10-290216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -387,8 +387,26 @@
                 return;
             }
 
-            if (val2) {
-                val2 = val2 === '1' ? 'Электростанция' : 'Урановый рудник';
+            switch (val2) {
+            case '1':
+                val2 = 'Электростанция';
+                break;
+
+            case '2':
+                val2 = 'Урановый рудник';
+                break;
+
+            case '3':
+                val2 = 'Урановый рудник</a>&nbsp;[2]';
+                break;
+
+            case '4':
+                val2 = 'Урановый рудник</a>&nbsp;[3]';
+                break;
+
+            default:
+                val2 = false;
+                break;
             }
 
             for (i = 1; i < this.trs.length; i++) {
@@ -465,8 +483,9 @@
                 '<tr><td>Объект:</td><td><select id="selectObject" ' +
                 'style="margin-top: 5px;"><option value="0">Все</option>' +
                 '<option value="1">ЭС</option><option value="2">Уран</option>' +
-                '</select></td></tr><tr><td>Синдикат:</td><td>' +
-                '<select id="selectSynd" style="margin-top: 5px;">' +
+                '<option value="3">Уран [2]</option><option value="4">' +
+                'Уран [3]</option></select></td></tr><tr><td>Синдикат:</td>' +
+                '<td><select id="selectSynd" style="margin-top: 5px;">' +
                 '<option value="all">Все</option></select></td></tr></table>';
             general.doc.body.appendChild(divSort);
 

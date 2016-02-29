@@ -7,7 +7,7 @@
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
 <br>
 <br>
-Версия: 1.25-180216
+Версия: 1.26-290216
 <br>
 Нашли ошибку? Пожалуйста, [сообщите](http://www.ganjawars.ru/info.php?id=2095458)
 * [Установить](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js)
@@ -195,7 +195,7 @@
 
 **GosEnergoAtomFilter**
 <br>
-Версия: 3.01-170116
+Версия: 3.10-290216
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GosEnergoAtomFilter/gosEnergoAtomFilter.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GosEnergoAtomFilter/gosEnergoAtomFilter.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GosEnergoAtomFilter)
 <br>
