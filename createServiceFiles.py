@@ -151,6 +151,7 @@ comfortablePlayingInGW/master/separatedScripts/'
 [./separatedScripts]({2})
 * [Как устанавливать скрипты](http://gwscripts.ucoz.net/index/\
 how_to_install/0-31)
+* [История изменений]({1}ChangeLog.txt)
 <br>
 <br>
 *Кликаем на листик, открываются настройки*:
