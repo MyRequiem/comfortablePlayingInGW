@@ -1436,9 +1436,14 @@
                     'home/cashlog.gif" style="cursor: pointer; margin-left: ' +
                     '5px;" /><img id="imgResetSettings" title="Сбросить" ' +
                     'src="http://images.ganjawars.ru/i/home/questlog.gif" ' +
-                    'style="cursor: pointer; margin-left: 5px;" /></td>' +
-                    '<td style="font-size: 8pt; text-align: center;">' +
-                    '<a id="linkNewVerScript" target="_blank" ' +
+                    'style="cursor: pointer; margin-left: 5px;" />' +
+                    '<a target="_blank" href="https://raw.githubusercontent.' +
+                    'com/MyRequiem/comfortablePlayingInGW/master/ChangeLog.' +
+                    'txt" style="text-decoration: none; margin-left: 5px;">' +
+                    '<img src="http://images.ganjawars.ru/i/home/wlog.gif" ' +
+                    'border="0" width="12" height="10" tile="Лог" alt="Лог" ' +
+                    '/></a></td><td style="font-size: 8pt; text-align: ' +
+                    'center;"><a id="linkNewVerScript" target="_blank" ' +
                     'style="color: #FF0000; visibility: hidden;" ' +
                     'href="https://raw.githubusercontent.com/MyRequiem/' +
                     'comfortablePlayingInGW/master/_comfortablePlayingInGW.' +
