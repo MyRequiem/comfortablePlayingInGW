@@ -1,4 +1,10 @@
 
+2016-03-11
+--------------------------------------
+	- добавлен скрипт FindSyndUser
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FindSyndUser
+
+
 2016-03-03 [1.27-030316]
 --------------------------------------
 	- добавлен файл, который Вы смотрите :) + ссылка в настройках скрипта
