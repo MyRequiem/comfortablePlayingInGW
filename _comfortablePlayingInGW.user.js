@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.27-030316
+// @version         1.28-200316
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.27-030316';
+        this.version = '1.28-200316';
         /**
          * @property stString
          * @type {String}
@@ -119,9 +119,10 @@
                         [50] - TimeKarma
                         [51] - ImgPokemonsOnBattle
                         [52] - SoundSyndBattle
-                        [53] - AdvForum */
+                        [53] - AdvForum
+                        [54] - DelAndAddBlackSms */
                         '@||||||||||||||||||||||||||||||||||||||||' +
-                        '|||||||||||||' +
+                        '||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -983,6 +984,11 @@
                     '<input id="importantmail" type="checkbox" disabled /> ' +
                     'НЕ отмечать письма с пометкой "важное"' +
                     this.getGitHubLink('deleteSms'), '8'],
+                ['Подтверждение нажатия "Удалить и забанить"', 'Красит ' +
+                    'кнопку "Удалить и забанить" при просмотре личных ' +
+                    'сообщений в розовый цвет. При нажатии требует ' +
+                    'подтверждения операции.' +
+                    this.getGitHubLink('delAndAddBlackSms'), '54'],
                 ['Таймер для выполнения квестов NPC', 'На главной странице ' +
                     'выводит время, оставшееся до взятия квеста и сcылку на ' +
                     'NPC, у которого в последний раз брали квест. Звуковое ' +
@@ -8389,7 +8395,7 @@
             default:
                 val2 = false;
                 break;
-             }
+            }
 
             for (i = 1; i < this.trs.length; i++) {
                 if (val1 && this.trs[i].innerHTML.
@@ -12956,6 +12962,33 @@
         };
     };
 
+    /**
+     * @class DelAndAddBlackSms
+     * @constructor
+     */
+    var DelAndAddBlackSms = function () {
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var del = general.doc.querySelector('td>a[class="mainbutton"]' +
+                    '[href*="&do_black=1&addblack="]');
+
+            if (del) {
+                del.setAttribute('style', 'background: #FDD8D8;');
+
+                del.addEventListener('click', function (e) {
+                    if (!general.
+                            root.confirm('Удалить и забанить. Уверены ???')) {
+
+                        var ev = e || general.root.event;
+                        ev.preventDefault();
+                    }
+                }, false);
+            }
+        };
+    };
+
     general = new General();
 
     if (!general.checkMainData()) {
@@ -13080,6 +13113,16 @@
                     new HistorySms().init();
                 } catch (e) {
                     general.cons.log(e);
+                }
+            }
+
+            if (/\?type=1&id=/.test(general.loc)) {
+                if (initScript[54]) {
+                    try {
+                        new DelAndAddBlackSms().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
                 }
             }
         }

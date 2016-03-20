@@ -1,4 +1,10 @@
 
+2016-03-20 [1.28-200316]
+--------------------------------------
+	- добавлен скрипт DelAndAddBlackSms
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/DelAndAddBlackSms
+
+
 2016-03-11
 --------------------------------------
 	- добавлен скрипт FindSyndUser
