@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.00-221015
+// @version         2.01-290316
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -161,7 +161,7 @@
             m = m < 10 ? '0' + m : m;
             s = s < 10 ? '0' + s : s;
             this.redLink.innerHTML = this.redLink.innerHTML.
-                replace(/\d+\:\d+/, m + ':' + s);
+                replace(/\d+:\d+/, m + ':' + s);
 
             var _this = this;
             s = sec - 1;
@@ -221,12 +221,12 @@
             }
 
             // для нового оформления игры
-            if (/\[(\d+)\:(\d+)\]/.
+            if (/\[(\d+):(\d+)\]/.
                     test(this.redLink.nextElementSibling.innerHTML)) {
                 this.redLink = this.redLink.nextElementSibling;
             }
 
-            var time = /\[(\d+)\:(\d+)\]/.exec(this.redLink.innerHTML);
+            var time = /\[(\d+):(\d+)\]/.exec(this.redLink.innerHTML);
             if (time && timeLimit > 14) {
                 var t = +time[1] * 60 + (+time[2]);
                 this.redLink.href = '/wargroup.php?war=attacks';

@@ -175,7 +175,7 @@
 
 **FindSyndUser**
 <br>
-Версия: 2.00-110316
+Версия: 2.01-290316
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FindSyndUser/findSyndUser.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FindSyndUser/findSyndUser.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FindSyndUser)
 <br>
@@ -273,7 +273,7 @@
 
 **MoveArrowOnAut**
 <br>
-Версия: 1.20-131115
+Версия: 1.21-290316
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/MoveArrowOnAut/moveArrowOnAut.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/MoveArrowOnAut/moveArrowOnAut.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/MoveArrowOnAut)
 <br>
@@ -399,7 +399,7 @@
 
 **SoundSyndBattle**
 <br>
-Версия: 2.00-221015
+Версия: 2.01-290316
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SoundSyndBattle/soundSyndBattle.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SoundSyndBattle/soundSyndBattle.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SoundSyndBattle)
 <br>
@@ -441,7 +441,7 @@
 
 **TimeNpc**
 <br>
-Версия: 2.10-010216
+Версия: 2.11-290316
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeNpc/timeNpc.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeNpc/timeNpc.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/TimeNpc)
 <br>

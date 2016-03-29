@@ -1394,6 +1394,7 @@
             }
 
             // скрипт уже подгузился
+            /** @namespace general.root.ZeroClipboard */
             if (general.root.ZeroClipboard) {
                 // иконка сохранения настроек
                 var imgSave = general.$('imgSaveSettings');
@@ -1407,11 +1408,14 @@
                     });
 
                 // копируем в буфер обмена строкy из localStorage
+                //noinspection JSUnresolvedFunction
                 clip.on('copy', function () {
+                    //noinspection JSUnresolvedFunction
                     clip.setText(general.st.getItem(general.STORAGENAME));
                 });
 
                 // после копирования показываем сообщение для пользователя
+                //noinspection JSUnresolvedFunction
                 clip.on('aftercopy', function () {
                     alert('Строка настроек сохранена в буфере обмена. ' +
                         'Откройте любой текстовый редактор, например ' +
@@ -5206,15 +5210,12 @@
          * @param   {int}   sec
          */
         this.showTimerNPC = function (sec) {
-            var min,
-                s,
-                h;
+            var s = sec,
+                h = Math.floor(s / 3600);
 
-            s = sec;
-            h = Math.floor(s / 3600);
-            s = s - h * 3600;
-            min = Math.floor(s / 60);
-            s = s - min * 60;
+            s -= h * 3600;
+            var min = Math.floor(s / 60);
+            s -= min * 60;
 
             h = h < 10 ? '0' + h : h;
             min = min < 10 ? '0' + min : min;
@@ -9063,7 +9064,7 @@
 
                     for (i = 0; i < a.length; i++) {
                         emptyCell = a[i].querySelector('img[src*="/t.gif"]');
-                        if (emptyCell && (/\?w=\-?\d+\&wx=\-?\d+\&wy=\-?\d+\&/.
+                        if (emptyCell && (/\?w=\-?\d+&wx=\-?\d+&wy=\-?\d+&/.
                                 test(a[i].href))) {
                             allMoveLinks.push(a[i]);
                         }
@@ -12364,7 +12365,7 @@
             m = m < 10 ? '0' + m : m;
             s = s < 10 ? '0' + s : s;
             this.redLink.innerHTML = this.redLink.innerHTML.
-                replace(/\d+\:\d+/, m + ':' + s);
+                replace(/\d+:\d+/, m + ':' + s);
 
             var _this = this;
             s = sec - 1;
@@ -12421,12 +12422,12 @@
             }
 
             // для нового оформления игры
-            if (/\[(\d+)\:(\d+)\]/.
+            if (/\[(\d+):(\d+)\]/.
                     test(this.redLink.nextElementSibling.innerHTML)) {
                 this.redLink = this.redLink.nextElementSibling;
             }
 
-            var time = /\[(\d+)\:(\d+)\]/.exec(this.redLink.innerHTML),
+            var time = /\[(\d+):(\d+)\]/.exec(this.redLink.innerHTML),
                 timeLimit = +stData[0],
                 sound1 = +stData[1],
                 sound2 = +stData[2];
@@ -13088,7 +13089,7 @@
 
         if (/\/market(-p)?\.php/.test(general.loc)) {
             if (initScript[2] &&
-                    (/\?(stage=2\&item_id=|buy=)/.test(general.loc))) {
+                    (/\?(stage=2&item_id=|buy=)/.test(general.loc))) {
                 try {
                     new AdsFilter().init();
                 } catch (e) {

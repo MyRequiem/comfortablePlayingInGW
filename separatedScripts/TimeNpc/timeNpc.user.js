@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/npc.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.10-010216
+// @version         2.11-290316
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -338,15 +338,12 @@
          * @param   {int}   sec
          */
         this.showTimerNPC = function (sec) {
-            var min,
-                s,
-                h;
+            var s = sec,
+                h = Math.floor(s / 3600);
 
-            s = sec;
-            h = Math.floor(s / 3600);
-            s = s - h * 3600;
-            min = Math.floor(s / 60);
-            s = s - min * 60;
+            s -= h * 3600;
+            var min = Math.floor(s / 60);
+            s -= min * 60;
 
             h = h < 10 ? '0' + h : h;
             min = min < 10 ? '0' + min : min;

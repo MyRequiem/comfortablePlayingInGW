@@ -8,12 +8,15 @@
 // @include         http://www.ganjawars.ru/syndicate.edit.php*
 // @grant           none
 // @license         MIT
-// @version         2.00-110316
+// @version         2.01-290316
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458] Идея: Miay
 // ==/UserScript==
 
 /*global unsafeWindow: true */
-/*jslint browser: true, passfail: true, plusplus: true, vars: true */
+
+/*jslint
+    browser: true, passfail: true, plusplus: true, vars: true, nomen: true
+*/
 
 (function () {
     'use strict';
@@ -74,7 +77,8 @@
                 }, false);
 
                 inp.addEventListener('keypress', function (e) {
-                    var ev = e || this.root.event,
+                    var _this = this,
+                        ev = e || _this.root.event,
                         key = ev.keyCode;
 
                     if (key === 13 || key === 10) {

@@ -38,7 +38,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.11-081215
+// @version         1.28-200316
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -86,7 +86,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.11-081215';
+        this.version = '1.28-200316';
         /**
          * @property stString
          * @type {String}
@@ -146,9 +146,11 @@
                         [49] - SyndOnlineOnMainPage
                         [50] - TimeKarma
                         [51] - ImgPokemonsOnBattle
-                        [52] - SoundSyndBattle */
+                        [52] - SoundSyndBattle
+                        [53] - AdvForum
+                        [54] - DelAndAddBlackSms */
                         '@||||||||||||||||||||||||||||||||||||||||' +
-                        '||||||||||||' +
+                        '||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -258,7 +260,8 @@
                     /*
                      [17] - GosEnergoAtomFilter
                         [0] - остров ('' - любой, 'Z', 'G')
-                        [1] - тип объекта ('' - любой, '1' - эски, '2' - уранки)
+                        [1] - тип объекта ('' - любой, '1' - эски, '2' - уранки,
+                                '3' - уранки [2], '4' - уранки [3])
                         [2] - синдикат ('', '0' - ничейки, 'xxx' - ID синда) */
                         '@' +
                     /*
@@ -331,7 +334,32 @@
                         [1] - звук №1
                         [2] - звук №2
                         [3] - флаги проигрывани звука ('', '1', '2') */
-                        '@|||';
+                        '@|||' +
+                    /*
+                     [29] - AdvForum
+                        [0] - отмечать закрытые темы
+                        [1] - звук при появлении новой темы
+                        [2] - интервал перезагрузки страниц с темами форума
+                        [3] - не показывать закрытые темы
+                        [4] - не показывать прикрепленки
+                        [5] - ветки, где скрипт работать не будет
+                        [6] - список включения/отключения показа форумов
+                        [7] - данные веток форума:
+                          {
+                              'fid': {
+                                  'tid': {
+                                      d: str  // дата первого просмотра темы
+                                      l: str  // id последнего сообщения
+                                      с: str  // номер последнего сообщения
+                                  },
+                                  ...
+                              },
+                              ...
+                          }
+                        [8] - {'fid': id_последней темы, ...} */
+                        '@1|||||1,5,7,11,15,24,30,34,35,36,37,41,42,44,46,47,' +
+                        '48,54|1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,' +
+                        '1,1,1|{}|{}';
 
         /**
          * @property myID
@@ -984,6 +1012,11 @@
                     '&lt;input id="importantmail" type="checkbox" disabled /> ' +
                     'НЕ отмечать письма с пометкой "важное"' +
                     this.getGitHubLink('deleteSms'), '8'],
+                ['Подтверждение нажатия "Удалить и забанить"', 'Красит ' +
+                    'кнопку "Удалить и забанить" при просмотре личных ' +
+                    'сообщений в розовый цвет. При нажатии требует ' +
+                    'подтверждения операции.' +
+                    this.getGitHubLink('delAndAddBlackSms'), '54'],
                 ['Таймер для выполнения квестов NPC', 'На главной странице ' +
                     'выводит время, оставшееся до взятия квеста и сcылку на ' +
                     'NPC, у которого в последний раз брали квест. Звуковое ' +
@@ -1206,7 +1239,13 @@
                 ['Отображение сообщения, на которое отвечают', 'В ответе на ' +
                     'сообщение показывает то сообщение, на которое ' +
                     'отвечают.' + this.getGitHubLink('showInitMessOnForum'),
-                    '42']],
+                    '42'],
+                ['Отметки сообщений на форуме и другое.', 'Звуковые и ' +
+                    'визуальные оповещения при появлении новых тем или смене ' +
+                    'верхней темы, новых сообщений в темах, скрытие закрытых ' +
+                    'тем и прикрепленок, отметка закрытых тем, скрытие ' +
+                    'ненужных веток форума.' +
+                    this.getGitHubLink('advForum'), '53']],
 
             'Торговля': [
                 ['Фильтр поиска продажи/покупки/аренды', 'Фильтр ' +
@@ -1368,43 +1407,100 @@
         };
 
         /**
+         * @method setZeroClipboardLib
+         */
+        this.setZeroClipboardLib = function () {
+            // тег &lt;script> с библиотекой ZeroClipboard
+            // для копирования в буфер обмена
+            if (!general.$('zeroclipboard')) {
+                var script = general.doc.createElement('script');
+                script.id = 'zeroclipboard';
+                script.type = 'text/javascript';
+                script.src = general.imgPath +
+                    '../ZeroClipboard/ZeroClipboard.min.js';
+                general.doc.querySelector('head').appendChild(script);
+            }
+
+            // скрипт уже подгузился
+            /** @namespace general.root.ZeroClipboard */
+            if (general.root.ZeroClipboard) {
+                // иконка сохранения настроек
+                var imgSave = general.$('imgSaveSettings');
+                imgSave.src = 'http://images.ganjawars.ru/i/home/ganjafile.gif';
+                imgSave.title = 'Сохранить';
+                imgSave.style.cursor = 'pointer';
+
+                var clip = new general.root.ZeroClipboard(imgSave, {
+                        moviePath: general.imgPath +
+                            '../ZeroClipboard/ZeroClipboard.swf'
+                    });
+
+                // копируем в буфер обмена строкy из localStorage
+                //noinspection JSUnresolvedFunction
+                clip.on('copy', function () {
+                    //noinspection JSUnresolvedFunction
+                    clip.setText(general.st.getItem(general.STORAGENAME));
+                });
+
+                // после копирования показываем сообщение для пользователя
+                //noinspection JSUnresolvedFunction
+                clip.on('aftercopy', function () {
+                    alert('Строка настроек сохранена в буфере обмена. ' +
+                        'Откройте любой текстовый редактор, например ' +
+                        'блокнот, вставьте строку (Ctrl+V) и сохраните для ' +
+                        'последующего восстановления.');
+                });
+            } else {
+                // скрипт не подгрузился, ждем...
+                var _this = this;
+                general.root.setTimeout(function () {
+                    _this.setZeroClipboardLib();
+                }, 700);
+            }
+        };
+
+        /**
          * @method init
          */
         this.init = function () {
             var tdStyle = ' style="background-color: #E0FFE0;">',
                 str = '&lt;table style="width: 100%; box-shadow: 8px 10px 7px ' +
                     'rgba(122,122,122,0.5);">&lt;tr>&lt;td ' + tdStyle +
-                    '&lt;table style="width: 100%">&lt;tr>&lt;td style="width: 3%;">' +
-                    '&lt;img id="imgSaveSettings" title="Сохранить/Восстановить ' +
-                    'настройки" src="http://images.ganjawars.ru/i/home/' +
-                    'ganjafile.gif" style="cursor: pointer;" />&lt;/td>' +
-                    '&lt;td style="font-size: 8pt; text-align: center;">' +
-                    '&lt;a id="linkNewVerScript" target="_blank" ' +
+                    '&lt;table style="width: 100%">&lt;tr>&lt;td style="width: 23%;">' +
+                    'Настройки:&lt;img id="imgSaveSettings" src="' +
+                    general.imgPath + 'preloader.gif" style="margin-left: ' +
+                    '5px;" />&lt;img id="imgRestoreSettings" ' +
+                    'title="Восстановить" src="http://images.ganjawars.ru/i/' +
+                    'home/cashlog.gif" style="cursor: pointer; margin-left: ' +
+                    '5px;" />&lt;img id="imgResetSettings" title="Сбросить" ' +
+                    'src="http://images.ganjawars.ru/i/home/questlog.gif" ' +
+                    'style="cursor: pointer; margin-left: 5px;" />' +
+                    '&lt;a target="_blank" href="https://raw.githubusercontent.' +
+                    'com/MyRequiem/comfortablePlayingInGW/master/ChangeLog.' +
+                    'txt" style="text-decoration: none; margin-left: 5px;">' +
+                    '&lt;img src="http://images.ganjawars.ru/i/home/wlog.gif" ' +
+                    'border="0" width="12" height="10" tile="Лог" alt="Лог" ' +
+                    '/>&lt;/a>&lt;/td>&lt;td style="font-size: 8pt; text-align: ' +
+                    'center;">&lt;a id="linkNewVerScript" target="_blank" ' +
                     'style="color: #FF0000; visibility: hidden;" ' +
                     'href="https://raw.githubusercontent.com/MyRequiem/' +
                     'comfortablePlayingInGW/master/_comfortablePlayingInGW.' +
                     'user.js">Доступна новая версия&lt;/a> ' +
                     '&lt;span id="refreshVer">&lt;/span>&lt;/td>' +
-                    '&lt;td style="font-size: 7pt; width: 35%; text-align: ' +
+                    '&lt;td style="font-size: 7pt; width: 32%; text-align: ' +
                     'right;">&lt;a target="_blank" style="opacity: 0.5; ' +
                     'text-decoration: none; font-size: 7pt;" ' +
                     'href="http://www.ganjawars.ru/info.php?id=2095458">' +
                     '&lt;span style="color: #F90332;">developed by&lt;/span> ' +
                     '&lt;span style="color: #014305; font-weight: 700;">' +
                     'MyRequiem©&lt;/span>&lt;/a> ' + general.version + '&lt;/td>' +
-                    '&lt;/tr>&lt;tr id="trSaveSettings" style="display: none;">' +
-                    '&lt;td colspan="3">&lt;br>Сохранить строку настроек ' +
-                    '(&amp;lt;Ctrl-A&amp;gt; - выделить всю строку, &amp;lt;Ctrl-C&amp;gt; - ' +
-                    'копировать):&lt;br>&lt;input id="inpExportSettings" ' +
-                    'type="text" style="width: 97%;" />&lt;br>&lt;br>' +
-                    'Восстановление настроек. Введите ранее сохраненную ' +
-                    'строку и нажмите "Восстановить":&lt;br>&lt;input ' +
-                    'id="inpImportSettings" type="text" style="width: ' +
-                    '97%;" />&lt;br>&lt;input id="butRestoreSettings" ' +
-                    'type="button" value="Восстановить" />&lt;input ' +
-                    'id="butClearSettings" type="button" value="Сбросить ' +
-                    'настройки" style="margin-left: 10px;" />' +
-                    '&lt;/td>&lt;/tr>&lt;/table>&lt;/td>&lt;/tr>',
+                    '&lt;/tr>&lt;tr id="trRestoreSettings" style="display: none;">' +
+                    '&lt;td colspan="3">Восстановление настроек. Вставьте ' +
+                    'ранее сохраненную строку настроек и нажмите ' +
+                    '"Восстановить":&lt;br>&lt;input id="inpRestoreSettings" ' +
+                    'type="text" style="width: 97%;" />&lt;br>&lt;input ' +
+                    'id="butRestoreSettings" type="button" ' +
+                    'value="Восстановить" />&lt;/td>&lt;/tr>&lt;/table>&lt;/td>&lt;/tr>',
                 groupStyle = ' style="background-color: #D0EED0; text-align: ' +
                     'center; color: #990000;">&lt;b>',
                 spanStyle = ' style="cursor: pointer;">',
@@ -1438,6 +1534,9 @@
             settingsContainer.setAttribute('style', 'margin: 10px 0 20px 0');
             settingsContainer.innerHTML = str;
 
+            // установка библиотеки ZeroClipboard (копирование в буфер обмена)
+            this.setZeroClipboardLib();
+
             // проверка обновлений
             this.checkScriptUpdate();
 
@@ -1459,37 +1558,42 @@
                 }
             }
 
-            // открытие/закрытие панели сохранения настроек, обработчики
-            // текстовых полей, кнопки импорта настроек
-            general.$('imgSaveSettings').addEventListener('click', function () {
-                var trSaveSettings = general.$('trSaveSettings'),
-                    displ = trSaveSettings.style.display;
-
-                if (displ) {
-                    general.$('inpExportSettings').value = general.root.
-                        localStorage.getItem(general.STORAGENAME);
-                }
-                trSaveSettings.style.display = displ ? '' : 'none';
-            }, false);
-
-            general.$('butRestoreSettings').addEventListener('click',
+            general.$('imgRestoreSettings').addEventListener('click',
                 function () {
-                    var val = general.$('inpImportSettings').value;
-                    if (!val) {
-                        alert('Введите строку настроек');
-                        return;
-                    }
+                    var trRestoreSettings = general.$('trRestoreSettings');
 
-                    general.root.localStorage.setItem(general.STORAGENAME, val);
-                    general.root.location.reload();
+                    trRestoreSettings.style.display = trRestoreSettings.
+                        style.display ? '' : 'none';
                 }, false);
 
-            general.$('butClearSettings').addEventListener('click', function () {
-                if (confirm('Вы уверены ???')) {
-                    general.root.localStorage.removeItem(general.STORAGENAME);
-                    general.root.location.reload();
+            var butRestoreSettings = general.$('butRestoreSettings'),
+                inpRestoreSettings = general.$('inpRestoreSettings');
+
+            butRestoreSettings.addEventListener('click', function () {
+                var val = inpRestoreSettings.value;
+                if (!val) {
+                    alert('Введите строку настроек');
+                    return;
+                }
+
+                general.st.setItem(general.STORAGENAME, val);
+                general.root.location.reload();
+            }, false);
+
+            inpRestoreSettings.addEventListener('keypress', function (e) {
+                var ev = e || general.root.event;
+                if (ev.keyCode === 13 || ev.keyCode === 10) {
+                    butRestoreSettings.click();
                 }
             }, false);
+
+            general.$('imgResetSettings').addEventListener('click',
+                function () {
+                    if (confirm('Сброс настроек !!!\nВы уверены ???')) {
+                        general.st.removeItem(general.STORAGENAME);
+                        general.root.location.reload();
+                    }
+                }, false);
 
             // обработчики текстовых полей модуля дополнений для боев
             general.$('refreshBattle').
@@ -4339,7 +4443,8 @@
                 nik,
                 font,
                 str,
-                node;
+                node,
+                next;
 
             var i;
             for (i = 0; i &lt; b.length; i++) {
@@ -4389,48 +4494,51 @@
                     // получаем запись своего хода
                     str = '';
                     node = b[i];
-                    while (node.nodeName !== 'BR') {
-                        if (node.nextSibling &amp;&amp; node.nextSibling.nodeValue) {
-                            str += node.nextSibling.nodeValue;
+                    while (node &amp;&amp; node.nodeName !== 'BR') {
+                        next = node.nextElementSibling;
+                        if (next.nodeName === 'I') {
+                            str += next.innerHTML;
                         }
 
-                        node = node.nextSibling;
+                        node = next;
                     }
 
-                    // считаем криты
-                    if (/в пах/.test(str)) {
-                        if (/\d+ в пах/.test(str)) {
-                            criticalShots.groin += (+(/(\d+) в пах/.
-                                        exec(str)[1]));
-                        } else {
-                            criticalShots.groin++;
+                    if (str) {
+                        // считаем криты
+                        if (/в пах/.test(str)) {
+                            if (/\d+ в пах/.test(str)) {
+                                criticalShots.groin += (+(/(\d+) в пах/.
+                                            exec(str)[1]));
+                            } else {
+                                criticalShots.groin++;
+                            }
                         }
-                    }
 
-                    if (/в шею/.test(str)) {
-                        if (/\d+ в шею/.test(str)) {
-                            criticalShots.neck += (+(/(\d+) в шею/.
-                                        exec(str)[1]));
-                        } else {
-                            criticalShots.neck++;
+                        if (/в шею/.test(str)) {
+                            if (/\d+ в шею/.test(str)) {
+                                criticalShots.neck += (+(/(\d+) в шею/.
+                                            exec(str)[1]));
+                            } else {
+                                criticalShots.neck++;
+                            }
                         }
-                    }
 
-                    if (/в ухо/.test(str)) {
-                        if (/\d+ в ухо/.test(str)) {
-                            criticalShots.ear += (+(/(\d+) в ухо/.
-                                        exec(str)[1]));
-                        } else {
-                            criticalShots.ear++;
+                        if (/в ухо/.test(str)) {
+                            if (/\d+ в ухо/.test(str)) {
+                                criticalShots.ear += (+(/(\d+) в ухо/.
+                                            exec(str)[1]));
+                            } else {
+                                criticalShots.ear++;
+                            }
                         }
-                    }
 
-                    if (/в висок/.test(str)) {
-                        if (/\d+ в висок/.test(str)) {
-                            criticalShots.temple += (+(/(\d+) в висок/.
-                                        exec(str)[1]));
-                        } else {
-                            criticalShots.temple++;
+                        if (/в висок/.test(str)) {
+                            if (/\d+ в висок/.test(str)) {
+                                criticalShots.temple += (+(/(\d+) в висок/.
+                                            exec(str)[1]));
+                            } else {
+                                criticalShots.temple++;
+                            }
                         }
                     }
                 }
@@ -4567,7 +4675,7 @@
          * @method init
          */
         this.init = function () {
-            var target = general.doc.querySelector('center>nobr>a:last-child' +
+            var target = general.doc.querySelector('tr>td>a:last-child' +
                         '[href="/sms.php?page=2"]'),
                 del = general.doc.querySelector('input[class="mainbutton"]' +
                     '[type="submit"][value="Удалить отмеченные"]'),
@@ -4578,7 +4686,11 @@
                 return;
             }
 
-            target = target.parentNode;
+            target = target.parentNode.parentNode;
+            target.innerHTML += '&lt;td valign="top" class="greengreenbg" ' +
+                'align="center" style="width: 150px">&lt;/td>';
+            target = target.lastElementChild;
+
             // кнопка удаления
             var delButton = general.doc.createElement('span');
             delButton.innerHTML = 'Удалить отмеченные';
@@ -4588,7 +4700,6 @@
                 del.click();
             }, false);
 
-            target.appendChild(general.doc.createTextNode(' | '));
             target.appendChild(delButton);
 
             // кнопка "Отметить все"
@@ -5127,15 +5238,12 @@
          * @param   {int}   sec
          */
         this.showTimerNPC = function (sec) {
-            var min,
-                s,
-                h;
+            var s = sec,
+                h = Math.floor(s / 3600);
 
-            s = sec;
-            h = Math.floor(s / 3600);
-            s = s - h * 3600;
-            min = Math.floor(s / 60);
-            s = s - min * 60;
+            s -= h * 3600;
+            var min = Math.floor(s / 60);
+            s -= min * 60;
 
             h = h &lt; 10 ? '0' + h : h;
             min = min &lt; 10 ? '0' + min : min;
@@ -5194,6 +5302,7 @@
                 var mainDiv = general.doc.createElement('div'),
                     target = general.doc.querySelector('td[rowspan="2"]' +
                         '[valign="top"][bgcolor="#e9ffe9"]>' +
+                        'div[style="padding-left:5px"]>' +
                         'a[href$="/home.friends.php"]').previousElementSibling,
                     onoff = stData[0] ? 'On' : 'Off';
 
@@ -6584,7 +6693,7 @@
                     trHide.id = 'tr_' + id;
                     trHide.setAttribute('style', 'display: none');
                     td = general.doc.createElement('td');
-                    td.setAttribute('colspan', '2');
+                    td.setAttribute('colspan', '5');
                     tblTarget = general.doc.createElement('table');
                     tblTarget.setAttribute('style',
                             'width: 100%; margin-left: 30px;');
@@ -7847,8 +7956,8 @@
                                 '"overflow:auto"]').innerHTML.
                                     replace(/^(\s|&lt;br>)*|(\s|&lt;br>)*$/g, '');
                     _this.sms[id].ofSyndLink = _this.spanContent.
-                        querySelector('div[align="center"]>' +
-                                'a[href*="/sms-pub.php?type="]').href;
+                        querySelector('#attndiv+center>' +
+                            'a[href*="/sms-pub.php?type="]').href;
 
                     id++;
                     if (!_this.sms[id]) {
@@ -7942,7 +8051,7 @@
         this.highTechItems = {
             'htGroup': ['auto', 'heavy', 'sniper', 'ppguns', 'shotguns',
                     'grl', 'armour', 'helmets', 'boots', 'masks', 'wear',
-                    'belts', 'phones', 'drugs', 'transport'],
+                    'belts', 'phones', 'drugs', 'transport', 'gifts'],
             'sniper': 'snipe',
             'phones': 'misc'
         };
@@ -8106,7 +8215,7 @@
                 mass = [];
 
             mass[0] = nameAndLvl.firstElementChild.innerHTML;
-            mass[1] = /^(\d+)/.exec(obj.querySelector('td[colspan="5"]' +
+            mass[1] = /^(\d+)/.exec(obj.querySelector('td[colspan="6"]' +
                         '[class="wb"][bgcolor="#d0eed0"]' +
                         '[align="center"]>b').innerHTML)[1];
             mass[2] = /(\d+) LVL/.exec(nameAndLvl.innerHTML)[1];
@@ -8295,8 +8404,26 @@
                 return;
             }
 
-            if (val2) {
-                val2 = val2 === '1' ? 'Электростанция' : 'Урановый рудник';
+            switch (val2) {
+            case '1':
+                val2 = 'Электростанция';
+                break;
+
+            case '2':
+                val2 = 'Урановый рудник';
+                break;
+
+            case '3':
+                val2 = 'Урановый рудник&lt;/a>&amp;nbsp;[2]';
+                break;
+
+            case '4':
+                val2 = 'Урановый рудник&lt;/a>&amp;nbsp;[3]';
+                break;
+
+            default:
+                val2 = false;
+                break;
             }
 
             for (i = 1; i &lt; this.trs.length; i++) {
@@ -8363,8 +8490,9 @@
                 '&lt;tr>&lt;td>Объект:&lt;/td>&lt;td>&lt;select id="selectObject" ' +
                 'style="margin-top: 5px;">&lt;option value="0">Все&lt;/option>' +
                 '&lt;option value="1">ЭС&lt;/option>&lt;option value="2">Уран&lt;/option>' +
-                '&lt;/select>&lt;/td>&lt;/tr>&lt;tr>&lt;td>Синдикат:&lt;/td>&lt;td>' +
-                '&lt;select id="selectSynd" style="margin-top: 5px;">' +
+                '&lt;option value="3">Уран [2]&lt;/option>&lt;option value="4">' +
+                'Уран [3]&lt;/option>&lt;/select>&lt;/td>&lt;/tr>&lt;tr>&lt;td>Синдикат:&lt;/td>' +
+                '&lt;td>&lt;select id="selectSynd" style="margin-top: 5px;">' +
                 '&lt;option value="all">Все&lt;/option>&lt;/select>&lt;/td>&lt;/tr>&lt;/table>';
             general.doc.body.appendChild(divSort);
 
@@ -8426,7 +8554,7 @@
          */
         this.createTitle = function (str) {
             var tr = general.doc.createElement('tr');
-            tr.innerHTML = '&lt;td colspan="5" class="wb" ' +
+            tr.innerHTML = '&lt;td colspan="6" class="wb" ' +
                 'bgcolor="#D0EED0" style="text-align: ' +
                 'center;">&lt;span style="font-weight: bold;">' +
                 str + '&lt;/span>&lt;/td>';
@@ -8964,7 +9092,7 @@
 
                     for (i = 0; i &lt; a.length; i++) {
                         emptyCell = a[i].querySelector('img[src*="/t.gif"]');
-                        if (emptyCell &amp;&amp; (/\?w=\-?\d+\&amp;wx=\-?\d+\&amp;wy=\-?\d+\&amp;/.
+                        if (emptyCell &amp;&amp; (/\?w=\-?\d+&amp;wx=\-?\d+&amp;wy=\-?\d+&amp;/.
                                 test(a[i].href))) {
                             allMoveLinks.push(a[i]);
                         }
@@ -11852,7 +11980,7 @@
                 return;
             }
 
-            var target = this.trs[ind].querySelectorAll('td')[3],
+            var target = this.trs[ind].querySelectorAll('td')[4],
                 url = persLink.href,
                 _this = this;
 
@@ -12265,7 +12393,7 @@
             m = m &lt; 10 ? '0' + m : m;
             s = s &lt; 10 ? '0' + s : s;
             this.redLink.innerHTML = this.redLink.innerHTML.
-                replace(/\d+\:\d+/, m + ':' + s);
+                replace(/\d+:\d+/, m + ':' + s);
 
             var _this = this;
             s = sec - 1;
@@ -12322,12 +12450,12 @@
             }
 
             // для нового оформления игры
-            if (/\[(\d+)\:(\d+)\]/.
+            if (/\[(\d+):(\d+)\]/.
                     test(this.redLink.nextElementSibling.innerHTML)) {
                 this.redLink = this.redLink.nextElementSibling;
             }
 
-            var time = /\[(\d+)\:(\d+)\]/.exec(this.redLink.innerHTML),
+            var time = /\[(\d+):(\d+)\]/.exec(this.redLink.innerHTML),
                 timeLimit = +stData[0],
                 sound1 = +stData[1],
                 sound2 = +stData[2];
@@ -12353,6 +12481,539 @@
                 } else if (t &lt;= timeLimit &amp;&amp; stData[3] === '1') {
                     this.syndAlert('1', '2', sound2, getRandom(0, 3000));
                 }
+            }
+        };
+    };
+
+    /**
+     * @class AdvForum
+     * @constructor
+     */
+    var AdvForum = function () {
+        /**
+         * @property lifeTime
+         * @type {int}
+         */
+        this.lifeTime = 3 * 24 * 60 * 60 * 1000;
+        /**
+         * @property parseLoc
+         * @type {Array|null}
+         */
+        this.parseLoc = /\?fid=(\d+)(&amp;tid=(\d+))?/.exec(general.loc);
+
+        /**
+         * @method getForumTable
+         * @return  {HTMLElement}
+         */
+        this.getForumTable = function () {
+            return general.doc.querySelector('center+br+center+table');
+        };
+
+        /**
+         * @method processingThemesList
+         */
+        this.processingThemesList = function () {
+            var table = this.getForumTable(),
+                tableContent = table.innerHTML,
+                fid = this.toHex(this.parseLoc[1]);
+
+            // настройки
+            this.setSettins(table, fid);
+
+            var stData = general.getData(29),
+                json = JSON.parse(stData[7]),
+                json1 = JSON.parse(stData[8]),
+                trs = table.querySelectorAll('tr'),
+                lastTheme = true,
+                themeDataStorage,
+                themeLink,
+                imgClosed,
+                imgEyes,
+                tid,
+                i;
+
+            for (i = 1; i &lt; trs.length; i++) {
+                trs[i].style.display = '';
+                themeLink = trs[i].querySelector('td>a');
+
+                // прикрепленки пропускаем или скрываем, не отслеживаем
+                if (themeLink.firstElementChild) {
+                    if (stData[4]) {
+                        trs[i].style.display = 'none';
+                    }
+
+                    continue;
+                }
+
+                tid = this.toHex(+(/&amp;tid=(\d+)/.exec(themeLink.href)[1]));
+                // верхняя тема на первой странице
+                if (/\?fid=\d+(&amp;page_id=0)?$/.test(general.loc) &amp;&amp; lastTheme) {
+                    lastTheme = false;
+                    // id первой темы в хранилище не равен id первой
+                    // темы на странице - играем звук, запоминаем тему
+                    if (json1[fid] !== tid) {
+                        // если не первый раз заходим в данную ветку
+                        if (json1[fid]) {
+                            new PlaySound().init(stData[1]);
+                        }
+
+                        json1[fid] = tid;
+                        stData[8] = JSON.stringify(json1);
+                        general.setData(stData, 29);
+                    }
+                }
+
+                // закрытые темы
+                if (/тема закрыта/.test(trs[i].
+                        querySelector('td:last-child').innerHTML)) {
+                    // скрытие закрытой темы
+                    if (stData[3]) {
+                        trs[i].style.display = 'none';
+                        continue;
+                    }
+
+                    // отметка скрытой темы
+                    if (stData[0]) {
+                        imgClosed = general.doc.createElement('img');
+                        imgClosed.setAttribute('style', 'height: 10px; ' +
+                                'width: 10px; margin-right: 3px;');
+                        imgClosed.title = 'Тема закрыта';
+                        imgClosed.src = general.imgPath + 'AdvForum/closed.png';
+                        themeLink.parentNode.insertBefore(imgClosed, themeLink);
+                    }
+                }
+
+                // есть отслеживаемые темы в текущей ветке форума
+                if (json[fid]) {
+                    themeDataStorage = json[fid][tid];
+
+                    // текущая тема отслеживается
+                    if (themeDataStorage) {
+                        imgEyes = general.doc.createElement('img');
+                        imgEyes.setAttribute('style', 'margin-right: ' +
+                            '3px; height: 12px; width: 12px; cursor: ' +
+                            'pointer;');
+                        imgEyes.setAttribute('title',
+                                'Отменить отслеживание темы');
+                        themeLink.parentNode.
+                            insertBefore(imgEyes, themeLink);
+                        imgEyes.src = general.imgPath + 'AdvForum/';
+                        imgEyes.addEventListener('click',
+                            this.cleanStorage(fid, tid, tableContent), false);
+
+                        // появилось новое сообщение
+                        if (themeDataStorage.c !== (/\d+/.exec(trs[i].
+                                querySelectorAll('td')[2].innerHTML)[0])) {
+                            imgEyes.src += 'eyesPlus.png';
+                        } else {
+                            imgEyes.src += 'eyes.png';
+                        }
+                    }
+                }
+            }
+
+            var tm = +stData[2];
+            if (tm) {
+                general.root.setTimeout(function () {
+                    general.root.location.reload();
+                }, tm * 1000);
+            }
+        };
+
+        /**
+         * @method cleanStorage
+         * @param   {String}    f
+         * @param   {String}    t
+         * @param   {String}    tableHTML
+         * @return  {Function}
+         */
+        this.cleanStorage = function (f, t, tableHTML) {
+            var _this = this;
+
+            return function () {
+                var stData = general.getData(29),
+                    json = JSON.parse(stData[7]),
+                    tmp = {},
+                    fid,
+                    tid;
+
+                for (fid in json) {
+                    if (json.hasOwnProperty(fid)) {
+                        // удаляется ветка форума
+                        if (f &amp;&amp; !t &amp;&amp; fid === f &amp;&amp; general.root.
+                                confirm('Удалить все данные ветки?')) {
+                            continue;
+                        }
+
+                        for (tid in json[fid]) {
+                            if (json[fid].hasOwnProperty(tid)) {
+                                // удаляется тема форума
+                                if (f &amp;&amp; t &amp;&amp; fid === f &amp;&amp; t === tid &amp;&amp;
+                                        general.root.
+                                            confirm('Не отслеживать тему?')) {
+                                    continue;
+                                }
+
+                                if (_this.toDec(json[fid][tid].d) +
+                                        _this.lifeTime > new Date().getTime()) {
+
+                                    if (!tmp[fid]) {
+                                        tmp[fid] = {};
+                                    }
+
+                                    tmp[fid][tid] = json[fid][tid];
+                                }
+                            }
+                        }
+                    }
+                }
+
+                stData[7] = JSON.stringify(tmp);
+                general.setData(stData, 29);
+
+                if (tableHTML) {
+                    _this.getForumTable().innerHTML = tableHTML;
+                    _this.processingThemesList();
+                }
+            };
+        };
+
+        /**
+         * @method toDec
+         * @param   {String} hex
+         * @return  {int}
+         */
+        this.toDec = function (hex) {
+            return parseInt(hex, 16);
+        };
+
+        /**
+         * @method toHex
+         * @param   {int}       dec
+         * @return  {String}
+         */
+        this.toHex = function (dec) {
+            return Number(dec).toString(16);
+        };
+
+        /**
+         * @method showHideForum
+         */
+        this.showHideForum = function () {
+            return function () {
+                var stData = general.getData(29),
+                    f = stData[6].split(','),
+                    _this = this,
+                    ind = /\d+/.exec(_this.id)[0];
+
+                f[ind] = _this.checked ? '1' : '';
+                stData[6] = f.join(',');
+                general.setData(stData, 29);
+            };
+        };
+
+        /**
+         * @method setSettins
+         * @param   {HTMLElement}   table
+         * @param   {String}        fid
+         */
+        this.setSettins = function (table, fid) {
+            // кнопка настройки
+            var tableContent = table.innerHTML,
+                imgSettins = general.doc.createElement('img');
+
+            imgSettins.src = 'http://images.ganjawars.ru/i/home/properties.gif';
+            imgSettins.setAttribute('style', 'cursor: pointer; ' +
+                    'margin-left: 10px;');
+            imgSettins.setAttribute('title', 'Настройки');
+
+            // кнопка сброса всех данных ветки
+            var imgReset = general.doc.createElement('img');
+            imgReset.src = 'http://images.ganjawars.ru/i/home/questlog.gif';
+            imgReset.setAttribute('style', 'cursor: pointer; ' +
+                    'margin-left: 10px;');
+            imgReset.setAttribute('title', 'Сбросить все данные ветки');
+            imgReset.addEventListener('click',
+                        this.cleanStorage(fid, '', tableContent), false);
+
+            var td = table.querySelector('td');
+            td.appendChild(imgSettins);
+            td.appendChild(imgReset);
+
+            var _this = this;
+            imgSettins.addEventListener('click', function () {
+                var themes = [
+                        ['Официальные объявления', '1'],
+                        ['Вопросы и помощь в игре', '49'],
+                        ['Общий игровой форум', '27'],
+                        ['Открытый Клуб', '8'],
+                        ['Объявления синдикатов', '38'],
+                        ['Вступлю в синдикат', '56'],
+                        ['Идеи и предложения', '2'],
+                        ['Форум для неигровых тем', '22'],
+                        ['Клуб Нытиков', '55'],
+                        ['Тотализатор', '5'],
+                        ['Общение гостей острова', '30'],
+                        ['Конкурсы', '3'],
+                        ['Благодарности и поздравления', '4'],
+                        ['Offline встречи', '6'],
+                        ['Креатив', '23'],
+                        ['Официальные объявления налоговой инспекции', '24'],
+                        ['Официальные объявления суда', '11'],
+                        ['Зал суда', '12'],
+                        ['Зал бракосочетаний', '29'],
+                        ['Дворец Бракосочетания', '50'],
+                        ['Техническая поддержка', '17'],
+                        ['Баги и глюки (общее)', '18'],
+                        ['Баги и глюки (финансовые вопросы)', '19'],
+                        ['Проблемы с боями', '20'],
+                        ['Проблемы с персонажами', '33'],
+                        ['Respect Hill', '25']
+                    ],
+                    stData = general.getData(29),
+                    f = stData[6].split(','),
+                    str = '',
+                    i;
+
+                for (i = 0; i &lt; themes.length; i++) {
+                    str += '&lt;tr>&lt;td>&lt;a target="_blank" ' +
+                        'href="http://www.ganjawars.ru/threads.php?fid=' +
+                        themes[i][1] + '">' + themes[i][0] + '&lt;/a>&lt;/td>' +
+                        '&lt;td>&lt;input id="showForum_' + i + '" ' +
+                        'type="checkbox"' + (f[i] ? ' checked' : '') +
+                        ' />&lt;/td>&lt;/tr>';
+                }
+
+                table.innerHTML = '&lt;tr>&lt;td>&lt;table>&lt;tr>&lt;td>Отмечать закрытые ' +
+                    'темы&lt;/td>&lt;td>&lt;input id="markClosed" type="checkbox" />' +
+                    '&lt;/td>&lt;/tr>&lt;tr>&lt;td>Не показывать закрытые темы&lt;/td>' +
+                    '&lt;td>&lt;input id="showClosed" type="checkbox" />&lt;/td>&lt;/tr>' +
+                    '&lt;tr>&lt;td>Не показывать прикрепленки&lt;/td>&lt;td>' +
+                    '&lt;input id="showAttached" type="checkbox" />&lt;/td>&lt;/tr>' +
+                    '&lt;tr>&lt;td>Интервал перезагрузки страниц с темами форума ' +
+                    '(> 4)&lt;/td>&lt;td>&lt;input id="reloadInterval" type="text" ' +
+                    'maxlength="3" style="width: 40px;" /> сек (0 или пустое ' +
+                    'поле - без перезагрузки)&lt;/td>&lt;/tr>&lt;tr>&lt;td>Звук при ' +
+                    'появлении новой темы&lt;/td>&lt;td>' +
+                    new GetSelectSound().init('sound') +
+                    '&lt;/td>&lt;/tr>&lt;tr>&lt;td>Номера исключенных веток форума&lt;br>' +
+                    '(параметр fid=xxx в ссылке на форум)&lt;/td>&lt;td>' +
+                    '&lt;input id="exclusion" type="text" style="width: ' +
+                    '400px;" />&lt;/td>&lt;/tr>&lt;tr>&lt;td colspan="2" ' +
+                    'style="padding-top: 10px;">&lt;span id="return" ' +
+                    'style="cursor: pointer; color: #990000; font-weight: ' +
+                    'bold;">&lt;&lt; Назад&lt;/span>&lt;/td>&lt;/tr>&lt;tr>&lt;td cospan="2" ' +
+                    'style="font-weight: bold; padding-top: 10px;">' +
+                    'Показывать ветки форума на &lt;a target="_blank" ' +
+                    'href="http://www.ganjawars.ru/forum.php">этой странице' +
+                    '&lt;/a>:&lt;/td>&lt;/tr>' + str + '&lt;/table>&lt;/td>&lt;/tr>';
+
+                // чекбокс "Отмечать закрытые"
+                var markClosed = general.$('markClosed');
+                markClosed.checked = stData[0];
+                markClosed.addEventListener('click', function () {
+                    var data = general.getData(29);
+                    data[0] = markClosed.checked ? '1' : '';
+                    general.setData(data, 29);
+                }, false);
+
+                // чекбокс "Не показывать закрытые темы"
+                var showClosed = general.$('showClosed');
+                showClosed.checked = stData[3];
+                showClosed.addEventListener('click', function () {
+                    var data = general.getData(29);
+                    data[3] = showClosed.checked ? '1' : '';
+                    general.setData(data, 29);
+                }, false);
+
+                // чекбокс "Не показывать прикрепленки"
+                var showAttached = general.$('showAttached');
+                showAttached.checked = stData[4];
+                showAttached.addEventListener('click', function () {
+                    var data = general.getData(29);
+                    data[4] = showAttached.checked ? '1' : '';
+                    general.setData(data, 29);
+                }, false);
+
+                // текстовое поле "Интервал перезагрузки страниц"
+                var reloadInterval = general.$('reloadInterval');
+                reloadInterval.value = stData[2] || '0';
+                reloadInterval.addEventListener('input', function () {
+                    var data = general.getData(29),
+                        val = +reloadInterval.value;
+
+                    data[2] = val &amp;&amp; val > 4 ? val.toString() : '';
+                    general.setData(data, 29);
+                }, false);
+
+                // выбор и прослушивание звука
+                var selSound = general.$('sound'),
+                    lSound = general.$('lsound');
+
+                selSound.disabled = false;
+                lSound.disabled = false;
+                lSound.addEventListener('click', function () {
+                    new PlaySound().init(selSound.value);
+                }, false);
+
+                selSound.value = stData[1] || '0';
+                selSound.addEventListener('change', function () {
+                    var data = general.getData(29),
+                        val = selSound.value;
+
+                    data[1] = val === '0' ? '' : val;
+                    general.setData(data, 29);
+                }, false);
+
+                // поле с номерами форумов-исключений
+                var exclusion = general.$('exclusion');
+                exclusion.value = stData[5];
+                exclusion.addEventListener('input', function () {
+                    var data = general.getData(29);
+                    data[5] = exclusion.value.replace(/\s+/g, '');
+                    general.setData(data, 29);
+                }, false);
+
+                // кнопка "Назад"
+                general.$('return').addEventListener('click', function () {
+                    table.innerHTML = tableContent;
+                    _this.processingThemesList();
+                }, false);
+
+                // обработчики чекбоксов скрытия/показа форумов
+                var chks = table.querySelectorAll('input[id^="showForum_"]');
+                for (i = 0; i &lt; chks.length; i++) {
+                    chks[i].
+                        addEventListener('click', _this.showHideForum(), false);
+                }
+            }, false);
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var stData = general.getData(29),
+                i;
+
+            // на странице списка форумов
+            if (/\/forum\.php$/.test(general.loc)) {
+                var allBranches = general.doc.querySelectorAll('tr>' +
+                        'td[valign="top"][onclick*="/threads.php?fid="]'),
+                    f = stData[6].split(','),
+                    j = 0;
+
+                for (i = 0; i &lt; allBranches.length; i++) {
+                    if (!(/Форум синдиката #\d+/.
+                            test(allBranches[i].innerHTML))) {
+
+                        allBranches[i].parentNode.style.display = f[j] ?
+                                                            '' : 'none';
+                        j++;
+                    }
+                }
+
+                return;
+            }
+
+            var fid = this.parseLoc[1];
+            // исключенные форумы
+            if (new RegExp('(^|,)' + fid + '(,|$)').test(stData[5])) {
+                return;
+            }
+
+            fid = this.toHex(fid);
+            // на странице сообщений в теме
+            if (/\/messages\.php\?/.test(general.loc)) {
+                var json = JSON.parse(stData[7]),
+                    tid = this.toHex(this.parseLoc[3]);
+
+                // нет ветки форума в хранилище
+                if (!json[fid]) {
+                    json[fid] = {};
+                }
+
+                // нет темы в хранилище
+                if (!json[fid][tid]) {
+                    json[fid][tid] = {
+                        d: this.toHex(new Date().getTime()),
+                        l: '0', // id последнего сообщения на странице
+                        c: ''   // номер последнего сообщения
+                    };
+                }
+
+                // просматриваем сообщения на странице
+                var allMess = general.doc.querySelectorAll('td[id^="cella_"]'),
+                    lastSavedId,
+                    currMessId;
+
+                for (i = 0; i &lt; allMess.length; i++) {
+                    lastSavedId = this.toDec(json[fid][tid].l);
+                    currMessId = +(/\d+/.exec(allMess[i].id)[0]);
+                    // или сообщение новое или еще не заходили в тему
+                    if (lastSavedId &lt; currMessId) {
+                        // если это сообщение не наше и уже заходили
+                        // в тему, устанавливаем метку "New"
+                        if (/\?id=(\d+)/.exec(allMess[i].querySelector('b>a').
+                                href)[1] !== general.myID &amp;&amp; lastSavedId) {
+
+                            allMess[i].innerHTML = '&lt;span style="color: ' +
+                                '#339900; font-weight: bold; float: right;">' +
+                                '[New]&lt;/span>' + allMess[i].innerHTML;
+                        }
+
+                        // если сообщение последнее на странице
+                        // запоминаем его данные в хранилище
+                        if (!allMess[i + 1]) {
+                            json[fid][tid].l = this.toHex(currMessId);
+                            json[fid][tid].c = allMess[i].nextElementSibling.
+                                querySelector('a').innerHTML;
+                            stData[7] = JSON.stringify(json);
+                            general.setData(stData, 29);
+                        }
+                    }
+                }
+
+                return;
+            }
+
+            // на странице списка тем ветки форума
+            if (/\/threads\.php\?/.test(general.loc)) {
+                var spanClean = general.doc.createElement('span');
+                general.doc.body.appendChild(spanClean);
+                spanClean.addEventListener('click',
+                            this.cleanStorage('', '', ''), false);
+                // удаляем старые темы из хранилища
+                spanClean.click();
+
+                this.processingThemesList();
+            }
+        };
+    };
+
+    /**
+     * @class DelAndAddBlackSms
+     * @constructor
+     */
+    var DelAndAddBlackSms = function () {
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var del = general.doc.querySelector('td>a[class="mainbutton"]' +
+                    '[href*="&amp;do_black=1&amp;addblack="]');
+
+            if (del) {
+                del.setAttribute('style', 'background: #FDD8D8;');
+
+                del.addEventListener('click', function (e) {
+                    if (!general.
+                            root.confirm('Удалить и забанить. Уверены ???')) {
+
+                        var ev = e || general.root.event;
+                        ev.preventDefault();
+                    }
+                }, false);
             }
         };
     };
@@ -12456,7 +13117,7 @@
 
         if (/\/market(-p)?\.php/.test(general.loc)) {
             if (initScript[2] &amp;&amp;
-                    (/\?(stage=2\&amp;item_id=|buy=)/.test(general.loc))) {
+                    (/\?(stage=2&amp;item_id=|buy=)/.test(general.loc))) {
                 try {
                     new AdsFilter().init();
                 } catch (e) {
@@ -12481,6 +13142,16 @@
                     new HistorySms().init();
                 } catch (e) {
                     general.cons.log(e);
+                }
+            }
+
+            if (/\?type=1&amp;id=/.test(general.loc)) {
+                if (initScript[54]) {
+                    try {
+                        new DelAndAddBlackSms().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
                 }
             }
         }
@@ -12656,12 +13327,23 @@
             }
         }
 
-        if (/\/messages\.php/.test(general.loc)) {
-            if (initScript[42]) {
+        if (/\/(messages|threads)\.php\?fid=/.test(general.loc) ||
+                (/\/forum.php$/.test(general.loc))) {
+            if (initScript[53]) {
                 try {
-                    new ShowInitMessOnForum().init();
+                    new AdvForum().init();
                 } catch (e) {
                     general.cons.log(e);
+                }
+            }
+
+            if (/\/messages\.php/.test(general.loc)) {
+                if (initScript[42]) {
+                    try {
+                        new ShowInitMessOnForum().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
                 }
             }
         }
@@ -12923,13 +13605,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="-_anonymous_-CritShotsAndLinksBtlLog_CriticalShots.html">CriticalShots</a></li><li><a href="-_anonymous_-SyndAnalyser-MainData.html">MainData</a></li></ul><h3>Namespaces</h3><ul><li><a href="general.root.bf1.html">bf1</a></li><li><a href="general.root.bf2.html">bf2</a></li><li><a href="general.root.bf3.html">bf3</a></li><li><a href="general.root.bfndl.html">bfndl</a></li><li><a href="general.root.frames.bsrc.html">bsrc</a></li><li><a href="general.root.waitforturn.html">waitforturn</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#addCloseButton">addCloseButton</a></li><li><a href="global.html#addContent">addContent</a></li><li><a href="global.html#addData">addData</a></li><li><a href="global.html#addEvent">addEvent</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#advSetBonusInfo">advSetBonusInfo</a></li><li><a href="global.html#blink">blink</a></li><li><a href="global.html#calc">calc</a></li><li><a href="global.html#calculateBets">calculateBets</a></li><li><a href="global.html#calculateFarm">calculateFarm</a></li><li><a href="global.html#calculatePerHour">calculatePerHour</a></li><li><a href="global.html#change_updatechatlines">change_updatechatlines</a></li><li><a href="global.html#changeColor">changeColor</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#changeLocationFighters">changeLocationFighters</a></li><li><a href="global.html#changeMakebf">changeMakebf</a></li><li><a href="global.html#changeSelect">changeSelect</a></li><li><a href="global.html#changeSelectEnemies">changeSelectEnemies</a></li><li><a href="global.html#checkAvailability">checkAvailability</a></li><li><a href="global.html#checkKeyCode">checkKeyCode</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#checkScriptUpdate">checkScriptUpdate</a></li><li><a href="global.html#checkState">checkState</a></li><li><a href="global.html#clearClick">clearClick</a></li><li><a href="global.html#clearCounter">clearCounter</a></li><li><a href="global.html#clearFields">clearFields</a></li><li><a href="global.html#clearMarkStroke">clearMarkStroke</a></li><li><a href="global.html#clearNPCData">clearNPCData</a></li><li><a href="global.html#clearSavedStrokeAfterSay">clearSavedStrokeAfterSay</a></li><li><a href="global.html#clickImageFighters">clickImageFighters</a></li><li><a href="global.html#compareLines">compareLines</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#createDivSms">createDivSms</a></li><li><a href="global.html#createGwMenuDiv">createGwMenuDiv</a></li><li><a href="global.html#createGWMenuItems">createGWMenuItems</a></li><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createSelectList">createSelectList</a></li><li><a href="global.html#createTitle">createTitle</a></li><li><a href="global.html#deleteImagePoks">deleteImagePoks</a></li><li><a href="global.html#delSpaces">delSpaces</a></li><li><a href="global.html#enterPress">enterPress</a></li><li><a href="global.html#fillData">fillData</a></li><li><a href="global.html#findItem">findItem</a></li><li><a href="global.html#findObj">findObj</a></li><li><a href="global.html#fixSkills">fixSkills</a></li><li><a href="global.html#formatTime">formatTime</a></li><li><a href="global.html#fOut">fOut</a></li><li><a href="global.html#fOver">fOver</a></li><li><a href="global.html#getAchievNow">getAchievNow</a></li><li><a href="global.html#getAllCrits">getAllCrits</a></li><li><a href="global.html#getBattleField">getBattleField</a></li><li><a href="global.html#getBattles">getBattles</a></li><li><a href="global.html#getCoord">getCoord</a></li><li><a href="global.html#getCrits">getCrits</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataFighters">getDataFighters</a></li><li><a href="global.html#getDataNow">getDataNow</a></li><li><a href="global.html#getGitHubLink">getGitHubLink</a></li><li><a href="global.html#getHourTime">getHourTime</a></li><li><a href="global.html#getHtime">getHtime</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getLastDate">getLastDate</a></li><li><a href="global.html#getLeftRightCommands">getLeftRightCommands</a></li><li><a href="global.html#getLineMenu">getLineMenu</a></li><li><a href="global.html#getMessagesOnPages">getMessagesOnPages</a></li><li><a href="global.html#getNewsId">getNewsId</a></li><li><a href="global.html#getOnline">getOnline</a></li><li><a href="global.html#getPers">getPers</a></li><li><a href="global.html#getPersInfo">getPersInfo</a></li><li><a href="global.html#getPersLink">getPersLink</a></li><li><a href="global.html#getPersNote">getPersNote</a></li><li><a href="global.html#getRange">getRange</a></li><li><a href="global.html#getRealEstateStr">getRealEstateStr</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#getStrGameRez">getStrGameRez</a></li><li><a href="global.html#getTimeNow">getTimeNow</a></li><li><a href="global.html#getTrs">getTrs</a></li><li><a href="global.html#getTrsTable">getTrsTable</a></li><li><a href="global.html#getTypeLine">getTypeLine</a></li><li><a href="global.html#getUnionOnline">getUnionOnline</a></li><li><a href="global.html#getValue">getValue</a></li><li><a href="global.html#goQuest">goQuest</a></li><li><a href="global.html#gwMenuInit">gwMenuInit</a></li><li><a href="global.html#hideTooltip">hideTooltip</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#insertMess">insertMess</a></li><li><a href="global.html#isEven">isEven</a></li><li><a href="global.html#isForumPage">isForumPage</a></li><li><a href="global.html#listenSound">listenSound</a></li><li><a href="global.html#modifyData">modifyData</a></li><li><a href="global.html#moveArrow">moveArrow</a></li><li><a href="global.html#nextAjaxQuery">nextAjaxQuery</a></li><li><a href="global.html#nextPers">nextPers</a></li><li><a href="global.html#notesClick">notesClick</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#openCloseItem">openCloseItem</a></li><li><a href="global.html#parseLine">parseLine</a></li><li><a href="global.html#parseMessages">parseMessages</a></li><li><a href="global.html#parsePTSProtocols">parsePTSProtocols</a></li><li><a href="global.html#parseSyndPage">parseSyndPage</a></li><li><a href="global.html#parseSyndProtocols">parseSyndProtocols</a></li><li><a href="global.html#preGetOnline">preGetOnline</a></li><li><a href="global.html#rememberClick">rememberClick</a></li><li><a href="global.html#rememberTime">rememberTime</a></li><li><a href="global.html#resetGBCounter">resetGBCounter</a></li><li><a href="global.html#resetGosEnergoAtom">resetGosEnergoAtom</a></li><li><a href="global.html#saveData">saveData</a></li><li><a href="global.html#saveSyndData">saveSyndData</a></li><li><a href="global.html#scan">scan</a></li><li><a href="global.html#scanNPC">scanNPC</a></li><li><a href="global.html#selectChange">selectChange</a></li><li><a href="global.html#selectChangeHandler">selectChangeHandler</a></li><li><a href="global.html#selectMode">selectMode</a></li><li><a href="global.html#setBonusInfo">setBonusInfo</a></li><li><a href="global.html#setButton">setButton</a></li><li><a href="global.html#setChatInterface">setChatInterface</a></li><li><a href="global.html#setCheckboxes">setCheckboxes</a></li><li><a href="global.html#setChkHandler">setChkHandler</a></li><li><a href="global.html#setCloseButton">setCloseButton</a></li><li><a href="global.html#setColorFighters">setColorFighters</a></li><li><a href="global.html#setCounter">setCounter</a></li><li><a href="global.html#setCounters">setCounters</a></li><li><a href="global.html#setCountStroke">setCountStroke</a></li><li><a href="global.html#setCSSGwMenu">setCSSGwMenu</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setDataDiv">setDataDiv</a></li><li><a href="global.html#setEnvelope">setEnvelope</a></li><li><a href="global.html#setFilter">setFilter</a></li><li><a href="global.html#setFriendPage">setFriendPage</a></li><li><a href="global.html#setGBCounter">setGBCounter</a></li><li><a href="global.html#setGenerator">setGenerator</a></li><li><a href="global.html#setHandlersGWMenu">setHandlersGWMenu</a></li><li><a href="global.html#setHandlerSubmit">setHandlerSubmit</a></li><li><a href="global.html#setHighlighting">setHighlighting</a></li><li><a href="global.html#setHrefItem">setHrefItem</a></li><li><a href="global.html#setImgGetData">setImgGetData</a></li><li><a href="global.html#setLeftToLevel">setLeftToLevel</a></li><li><a href="global.html#setLink">setLink</a></li><li><a href="global.html#setMainPage">setMainPage</a></li><li><a href="global.html#setMainPanel">setMainPanel</a></li><li><a href="global.html#setMarkStroke">setMarkStroke</a></li><li><a href="global.html#setMyInfo">setMyInfo</a></li><li><a href="global.html#setNameInChat">setNameInChat</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setPlantData">setPlantData</a></li><li><a href="global.html#setRange">setRange</a></li><li><a href="global.html#setRedLink">setRedLink</a></li><li><a href="global.html#setReminder">setReminder</a></li><li><a href="global.html#setSettingsForAdvBattleAll">setSettingsForAdvBattleAll</a></li><li><a href="global.html#setSettingsPanel">setSettingsPanel</a></li><li><a href="global.html#setSms">setSms</a></li><li><a href="global.html#setSortListEnemy">setSortListEnemy</a></li><li><a href="global.html#setSortSyndWarData">setSortSyndWarData</a></li><li><a href="global.html#setStroke">setStroke</a></li><li><a href="global.html#setTimer">setTimer</a></li><li><a href="global.html#setTooltipsFighters">setTooltipsFighters</a></li><li><a href="global.html#showCrits">showCrits</a></li><li><a href="global.html#showData">showData</a></li><li><a href="global.html#showHideLink">showHideLink</a></li><li><a href="global.html#showHidePreloader">showHidePreloader</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li><li><a href="global.html#showHistory">showHistory</a></li><li><a href="global.html#showImagePoks">showImagePoks</a></li><li><a href="global.html#showOfSyndLinks">showOfSyndLinks</a></li><li><a href="global.html#showRange">showRange</a></li><li><a href="global.html#showRezult">showRezult</a></li><li><a href="global.html#showSector">showSector</a></li><li><a href="global.html#showSettings">showSettings</a></li><li><a href="global.html#showSms">showSms</a></li><li><a href="global.html#showSyndData">showSyndData</a></li><li><a href="global.html#showTimer">showTimer</a></li><li><a href="global.html#showTimerNPC">showTimerNPC</a></li><li><a href="global.html#showTooltip">showTooltip</a></li><li><a href="global.html#sortBattles">sortBattles</a></li><li><a href="global.html#sortEnemyList">sortEnemyList</a></li><li><a href="global.html#sortGosEnergoAtom">sortGosEnergoAtom</a></li><li><a href="global.html#sortGosEnergoAtomBySynd">sortGosEnergoAtomBySynd</a></li><li><a href="global.html#sortMess">sortMess</a></li><li><a href="global.html#sortPers">sortPers</a></li><li><a href="global.html#sortSyndWars">sortSyndWars</a></li><li><a href="global.html#sortWeapon">sortWeapon</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startCountBattles">startCountBattles</a></li><li><a href="global.html#startInventoryPlus">startInventoryPlus</a></li><li><a href="global.html#startWorkPostGrenadesBroken">startWorkPostGrenadesBroken</a></li><li><a href="global.html#syndAlert">syndAlert</a></li><li><a href="global.html#testSound">testSound</a></li><li><a href="global.html#testSubject">testSubject</a></li><li><a href="global.html#titleClick">titleClick</a></li><li><a href="global.html#tryStart">tryStart</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="-_anonymous_-CritShotsAndLinksBtlLog_CriticalShots.html">CriticalShots</a></li><li><a href="-_anonymous_-SyndAnalyser-MainData.html">MainData</a></li></ul><h3>Namespaces</h3><ul><li><a href="general.root.bf1.html">bf1</a></li><li><a href="general.root.bf2.html">bf2</a></li><li><a href="general.root.bf3.html">bf3</a></li><li><a href="general.root.bfndl.html">bfndl</a></li><li><a href="general.root.frames.bsrc.html">bsrc</a></li><li><a href="general.root.waitforturn.html">waitforturn</a></li><li><a href="general.root.ZeroClipboard.html">ZeroClipboard</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#addCloseButton">addCloseButton</a></li><li><a href="global.html#addContent">addContent</a></li><li><a href="global.html#addData">addData</a></li><li><a href="global.html#addEvent">addEvent</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#advSetBonusInfo">advSetBonusInfo</a></li><li><a href="global.html#blink">blink</a></li><li><a href="global.html#calc">calc</a></li><li><a href="global.html#calculateBets">calculateBets</a></li><li><a href="global.html#calculateFarm">calculateFarm</a></li><li><a href="global.html#calculatePerHour">calculatePerHour</a></li><li><a href="global.html#change_updatechatlines">change_updatechatlines</a></li><li><a href="global.html#changeColor">changeColor</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#changeLocationFighters">changeLocationFighters</a></li><li><a href="global.html#changeMakebf">changeMakebf</a></li><li><a href="global.html#changeSelect">changeSelect</a></li><li><a href="global.html#changeSelectEnemies">changeSelectEnemies</a></li><li><a href="global.html#checkAvailability">checkAvailability</a></li><li><a href="global.html#checkKeyCode">checkKeyCode</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#checkScriptUpdate">checkScriptUpdate</a></li><li><a href="global.html#checkState">checkState</a></li><li><a href="global.html#cleanStorage">cleanStorage</a></li><li><a href="global.html#clearClick">clearClick</a></li><li><a href="global.html#clearCounter">clearCounter</a></li><li><a href="global.html#clearFields">clearFields</a></li><li><a href="global.html#clearMarkStroke">clearMarkStroke</a></li><li><a href="global.html#clearNPCData">clearNPCData</a></li><li><a href="global.html#clearSavedStrokeAfterSay">clearSavedStrokeAfterSay</a></li><li><a href="global.html#clickImageFighters">clickImageFighters</a></li><li><a href="global.html#compareLines">compareLines</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#createDivSms">createDivSms</a></li><li><a href="global.html#createGwMenuDiv">createGwMenuDiv</a></li><li><a href="global.html#createGWMenuItems">createGWMenuItems</a></li><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createSelectList">createSelectList</a></li><li><a href="global.html#createTitle">createTitle</a></li><li><a href="global.html#deleteImagePoks">deleteImagePoks</a></li><li><a href="global.html#delSpaces">delSpaces</a></li><li><a href="global.html#enterPress">enterPress</a></li><li><a href="global.html#fillData">fillData</a></li><li><a href="global.html#findItem">findItem</a></li><li><a href="global.html#findObj">findObj</a></li><li><a href="global.html#fixSkills">fixSkills</a></li><li><a href="global.html#formatTime">formatTime</a></li><li><a href="global.html#fOut">fOut</a></li><li><a href="global.html#fOver">fOver</a></li><li><a href="global.html#getAchievNow">getAchievNow</a></li><li><a href="global.html#getAllCrits">getAllCrits</a></li><li><a href="global.html#getBattleField">getBattleField</a></li><li><a href="global.html#getBattles">getBattles</a></li><li><a href="global.html#getCoord">getCoord</a></li><li><a href="global.html#getCrits">getCrits</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataFighters">getDataFighters</a></li><li><a href="global.html#getDataNow">getDataNow</a></li><li><a href="global.html#getForumTable">getForumTable</a></li><li><a href="global.html#getGitHubLink">getGitHubLink</a></li><li><a href="global.html#getHourTime">getHourTime</a></li><li><a href="global.html#getHtime">getHtime</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getLastDate">getLastDate</a></li><li><a href="global.html#getLeftRightCommands">getLeftRightCommands</a></li><li><a href="global.html#getLineMenu">getLineMenu</a></li><li><a href="global.html#getMessagesOnPages">getMessagesOnPages</a></li><li><a href="global.html#getNewsId">getNewsId</a></li><li><a href="global.html#getOnline">getOnline</a></li><li><a href="global.html#getPers">getPers</a></li><li><a href="global.html#getPersInfo">getPersInfo</a></li><li><a href="global.html#getPersLink">getPersLink</a></li><li><a href="global.html#getPersNote">getPersNote</a></li><li><a href="global.html#getRange">getRange</a></li><li><a href="global.html#getRealEstateStr">getRealEstateStr</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#getStrGameRez">getStrGameRez</a></li><li><a href="global.html#getTimeNow">getTimeNow</a></li><li><a href="global.html#getTrs">getTrs</a></li><li><a href="global.html#getTrsTable">getTrsTable</a></li><li><a href="global.html#getTypeLine">getTypeLine</a></li><li><a href="global.html#getUnionOnline">getUnionOnline</a></li><li><a href="global.html#getValue">getValue</a></li><li><a href="global.html#goQuest">goQuest</a></li><li><a href="global.html#gwMenuInit">gwMenuInit</a></li><li><a href="global.html#hideTooltip">hideTooltip</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#insertMess">insertMess</a></li><li><a href="global.html#isEven">isEven</a></li><li><a href="global.html#isForumPage">isForumPage</a></li><li><a href="global.html#listenSound">listenSound</a></li><li><a href="global.html#modifyData">modifyData</a></li><li><a href="global.html#moveArrow">moveArrow</a></li><li><a href="global.html#nextAjaxQuery">nextAjaxQuery</a></li><li><a href="global.html#nextPers">nextPers</a></li><li><a href="global.html#notesClick">notesClick</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#openCloseItem">openCloseItem</a></li><li><a href="global.html#parseLine">parseLine</a></li><li><a href="global.html#parseMessages">parseMessages</a></li><li><a href="global.html#parsePTSProtocols">parsePTSProtocols</a></li><li><a href="global.html#parseSyndPage">parseSyndPage</a></li><li><a href="global.html#parseSyndProtocols">parseSyndProtocols</a></li><li><a href="global.html#preGetOnline">preGetOnline</a></li><li><a href="global.html#processingThemesList">processingThemesList</a></li><li><a href="global.html#rememberClick">rememberClick</a></li><li><a href="global.html#rememberTime">rememberTime</a></li><li><a href="global.html#resetGBCounter">resetGBCounter</a></li><li><a href="global.html#resetGosEnergoAtom">resetGosEnergoAtom</a></li><li><a href="global.html#saveData">saveData</a></li><li><a href="global.html#saveSyndData">saveSyndData</a></li><li><a href="global.html#scan">scan</a></li><li><a href="global.html#scanNPC">scanNPC</a></li><li><a href="global.html#selectChange">selectChange</a></li><li><a href="global.html#selectChangeHandler">selectChangeHandler</a></li><li><a href="global.html#selectMode">selectMode</a></li><li><a href="global.html#setBonusInfo">setBonusInfo</a></li><li><a href="global.html#setButton">setButton</a></li><li><a href="global.html#setChatInterface">setChatInterface</a></li><li><a href="global.html#setCheckboxes">setCheckboxes</a></li><li><a href="global.html#setChkHandler">setChkHandler</a></li><li><a href="global.html#setCloseButton">setCloseButton</a></li><li><a href="global.html#setColorFighters">setColorFighters</a></li><li><a href="global.html#setCounter">setCounter</a></li><li><a href="global.html#setCounters">setCounters</a></li><li><a href="global.html#setCountStroke">setCountStroke</a></li><li><a href="global.html#setCSSGwMenu">setCSSGwMenu</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setDataDiv">setDataDiv</a></li><li><a href="global.html#setEnvelope">setEnvelope</a></li><li><a href="global.html#setFilter">setFilter</a></li><li><a href="global.html#setFriendPage">setFriendPage</a></li><li><a href="global.html#setGBCounter">setGBCounter</a></li><li><a href="global.html#setGenerator">setGenerator</a></li><li><a href="global.html#setHandlersGWMenu">setHandlersGWMenu</a></li><li><a href="global.html#setHandlerSubmit">setHandlerSubmit</a></li><li><a href="global.html#setHighlighting">setHighlighting</a></li><li><a href="global.html#setHrefItem">setHrefItem</a></li><li><a href="global.html#setImgGetData">setImgGetData</a></li><li><a href="global.html#setLeftToLevel">setLeftToLevel</a></li><li><a href="global.html#setLink">setLink</a></li><li><a href="global.html#setMainPage">setMainPage</a></li><li><a href="global.html#setMainPanel">setMainPanel</a></li><li><a href="global.html#setMarkStroke">setMarkStroke</a></li><li><a href="global.html#setMyInfo">setMyInfo</a></li><li><a href="global.html#setNameInChat">setNameInChat</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setPlantData">setPlantData</a></li><li><a href="global.html#setRange">setRange</a></li><li><a href="global.html#setRedLink">setRedLink</a></li><li><a href="global.html#setReminder">setReminder</a></li><li><a href="global.html#setSettingsForAdvBattleAll">setSettingsForAdvBattleAll</a></li><li><a href="global.html#setSettingsPanel">setSettingsPanel</a></li><li><a href="global.html#setSettins">setSettins</a></li><li><a href="global.html#setSms">setSms</a></li><li><a href="global.html#setSortListEnemy">setSortListEnemy</a></li><li><a href="global.html#setSortSyndWarData">setSortSyndWarData</a></li><li><a href="global.html#setStroke">setStroke</a></li><li><a href="global.html#setTimer">setTimer</a></li><li><a href="global.html#setTooltipsFighters">setTooltipsFighters</a></li><li><a href="global.html#setZeroClipboardLib">setZeroClipboardLib</a></li><li><a href="global.html#showCrits">showCrits</a></li><li><a href="global.html#showData">showData</a></li><li><a href="global.html#showHideForum">showHideForum</a></li><li><a href="global.html#showHideLink">showHideLink</a></li><li><a href="global.html#showHidePreloader">showHidePreloader</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li><li><a href="global.html#showHistory">showHistory</a></li><li><a href="global.html#showImagePoks">showImagePoks</a></li><li><a href="global.html#showOfSyndLinks">showOfSyndLinks</a></li><li><a href="global.html#showRange">showRange</a></li><li><a href="global.html#showRezult">showRezult</a></li><li><a href="global.html#showSector">showSector</a></li><li><a href="global.html#showSettings">showSettings</a></li><li><a href="global.html#showSms">showSms</a></li><li><a href="global.html#showSyndData">showSyndData</a></li><li><a href="global.html#showTimer">showTimer</a></li><li><a href="global.html#showTimerNPC">showTimerNPC</a></li><li><a href="global.html#showTooltip">showTooltip</a></li><li><a href="global.html#sortBattles">sortBattles</a></li><li><a href="global.html#sortEnemyList">sortEnemyList</a></li><li><a href="global.html#sortGosEnergoAtom">sortGosEnergoAtom</a></li><li><a href="global.html#sortGosEnergoAtomBySynd">sortGosEnergoAtomBySynd</a></li><li><a href="global.html#sortMess">sortMess</a></li><li><a href="global.html#sortPers">sortPers</a></li><li><a href="global.html#sortSyndWars">sortSyndWars</a></li><li><a href="global.html#sortWeapon">sortWeapon</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startCountBattles">startCountBattles</a></li><li><a href="global.html#startInventoryPlus">startInventoryPlus</a></li><li><a href="global.html#startWorkPostGrenadesBroken">startWorkPostGrenadesBroken</a></li><li><a href="global.html#syndAlert">syndAlert</a></li><li><a href="global.html#testSound">testSound</a></li><li><a href="global.html#testSubject">testSubject</a></li><li><a href="global.html#titleClick">titleClick</a></li><li><a href="global.html#toDec">toDec</a></li><li><a href="global.html#toHex">toHex</a></li><li><a href="global.html#tryStart">tryStart</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.0-dev</a> on Thu Dec 17 2015 19:43:05 GMT+0300 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.0-dev</a> on Tue Mar 29 2016 16:10:14 GMT+0400 (+04)
 </footer>
 
 <script> prettyPrint(); </script>
