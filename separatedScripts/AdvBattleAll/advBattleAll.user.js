@@ -1378,7 +1378,7 @@
          * @param   {object}    obj
          */
         this.setCountStroke = function (obj) {
-                // персы, которые сделали ход (зеленые)
+            // персы, которые сделали ход (зеленые)
             var greenPersLinks = obj.
                     querySelectorAll('a[href*="/info.php?id="]' +
                             '[style*="#008800"]');

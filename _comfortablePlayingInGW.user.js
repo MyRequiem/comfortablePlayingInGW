@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.28-200316
+// @version         1.29-310316
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.28-200316';
+        this.version = '1.29-310316';
         /**
          * @property stString
          * @type {String}
@@ -3374,7 +3374,7 @@
          * @param   {object}    obj
          */
         this.setCountStroke = function (obj) {
-                // персы, которые сделали ход (зеленые)
+            // персы, которые сделали ход (зеленые)
             var greenPersLinks = obj.
                     querySelectorAll('a[href*="/info.php?id="]' +
                             '[style*="#008800"]');
@@ -11974,7 +11974,7 @@
                 lvlF = ' <span style="color: #FF0000;">[' +
                     (+lvlF < 10 ? '0' + lvlF : lvlF) + ']</span> ';
 
-                var lvlS = /<b>Основной синдикат:<\/b> #\d+[^\[]+\[\s?<b>(\d+)/.
+                var lvlS = /<b>Основной синд.*<\/b> #\d+[^\[]+\[\s?<b>(\d+)/.
                         exec(str);
                 lvlS = '<span style="color: #0000FF;">[' +
                     (!lvlS ? 'Без основы' : (+lvlS[1] < 10 ?

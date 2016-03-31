@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.01-170116
+// @version         2.10-310316
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -160,7 +160,7 @@
                 lvlF = ' <span style="color: #FF0000;">[' +
                     (+lvlF < 10 ? '0' + lvlF : lvlF) + ']</span> ';
 
-                var lvlS = /<b>Основной синдикат:<\/b> #\d+[^\[]+\[\s?<b>(\d+)/.
+                var lvlS = /<b>Основной синд.*<\/b> #\d+[^\[]+\[\s?<b>(\d+)/.
                         exec(str);
                 lvlS = '<span style="color: #0000FF;">[' +
                     (!lvlS ? 'Без основы' : (+lvlS[1] < 10 ?
