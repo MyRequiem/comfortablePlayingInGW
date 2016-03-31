@@ -1449,7 +1449,8 @@
                     'style="cursor: pointer; margin-left: 5px;" />' +
                     '<a target="_blank" href="https://raw.githubusercontent.' +
                     'com/MyRequiem/comfortablePlayingInGW/master/ChangeLog.' +
-                    'txt" style="text-decoration: none; margin-left: 5px;">' +
+                    'txt" style="text-decoration: none; margin-left: 5px;" ' +
+                    'title="История изменений">' +
                     '<img src="http://images.ganjawars.ru/i/home/wlog.gif" ' +
                     'border="0" width="12" height="10" tile="Лог" alt="Лог" ' +
                     '/></a></td><td style="font-size: 8pt; text-align: ' +
