@@ -1,4 +1,12 @@
 
+2016-04-08[1.31-080416]
+--------------------------------------
+	- изменен скрипт SyndPtsAnalyser
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndPtsAnalyser
+		Добавлено текстовое поле для удобного копирования
+		результатов сканирования. Спасибо Иринесса
+
+
 2016-04-07 [1.30-070416]
 --------------------------------------
 	- добавлен скрипт AdvancedOutland

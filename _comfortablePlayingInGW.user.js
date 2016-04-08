@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.30-070416
+// @version         1.31-080416
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.30-070416';
+        this.version = '1.31-080416';
         /**
          * @property stString
          * @type {String}
@@ -496,16 +496,17 @@
     var general, initScript;
 
     /**
-     * @class GetStrDateNow
+     * @class GetStrDate
      * @constructor
      */
-    var GetStrDateNow = function () {
+    var GetStrDate = function () {
         /**
          * @method init
+         * @param   {int|String}    time
          * @return  {String}
          */
-        this.init = function () {
-            var date = new Date(),
+        this.init = function (time) {
+            var date = time === 'now' ? new Date() : new Date(time),
                 month = date.getMonth() + 1,
                 day = date.getDate();
 
@@ -10845,41 +10846,85 @@
                     'cursor: pointer;">Всего</span></td></tr>',
                 setPoints = new SetPoints().init;
 
-            var i;
+            var getStrDate = new GetStrDate().init,
+                txtAreaStr = 'Период анализа: ' +
+                    getStrDate(this.from) + ' - ' + getStrDate(this.to) + '\n' +
+                        '----------------------------------------------------' +
+                            '---------\n\n',
+                name,
+                gren,
+                chip,
+                rank,
+                sign,
+                all,
+                i;
+
             for (i = 0; i < this.pers.length; i++) {
+                name = this.pers[i].name;
+                gren = setPoints(this.pers[i].gren, '\'', false);
+                chip = setPoints(this.pers[i].chip, '\'', false);
+                rank = setPoints(this.pers[i].rank, '\'', false);
+                sign = setPoints(this.pers[i].sign, '\'', false);
+                all = setPoints(this.pers[i].all, '\'', false);
+
                 str += '<tr><td class="wb2"><a target="_blank" ' +
-                    'href="http://www.ganjawars.ru/search.php?key=' +
-                    this.pers[i].name + '" style="text-decoration: none; ' +
-                    'font-weight: bold; color: #004400;">' +
-                    this.pers[i].name + '</td><td class="wb1">' +
-                    setPoints(this.pers[i].gren, '\'', false) +
-                    '</td><td class="wb1">' +
-                    setPoints(this.pers[i].chip, '\'', false) + '</td>' +
-                    '<td class="wb1">' +
-                    setPoints(this.pers[i].rank, '\'', false) + '</td>' +
-                    '<td class="wb1">' +
-                    setPoints(this.pers[i].sign, '\'', false) + '</td>' +
-                    '<td class="wb1" style="color: #008000;">' +
-                    setPoints(this.pers[i].all, '\'', false) + '</td></tr>';
+                    'href="http://www.ganjawars.ru/search.php?key=' + name +
+                    '" style="text-decoration: none; font-weight: bold; ' +
+                    'color: #004400;">' + name + '</a></td><td class="wb1">' +
+                    gren + '</td><td class="wb1">' + chip + '</td>' +
+                    '<td class="wb1">' + rank + '</td><td class="wb1">' +
+                    sign + '</td><td class="wb1" style="color: #008000;">' +
+                    all + '</td></tr>';
+
+                txtAreaStr += name + ':\nГранаты: ' + gren + ', Чипы: ' + chip +
+                    ', Звания: ' + rank + ', Знак: ' + sign + ', Всего: ' +
+                    all + '\n\n';
             }
 
+            var s0 = setPoints(this.summ[0], '\'', false),
+                s1 = setPoints(this.summ[1], '\'', false),
+                s2 = setPoints(this.summ[2], '\'', false),
+                s3 = setPoints(this.summ[3], '\'', false),
+                control = setPoints(this.control, '\'', false);
+
+            all = setPoints(this.all, '\'', false);
             str += '<tr style="font-weight: bold;"><td class="wb1" ' +
                 'style="color: #0000FF;">Всего</td><td class="wb1" ' +
-                'style="color: #0000FF;">' +
-                setPoints(this.summ[0], '\'', false) + '</td>' +
-                '<td class="wb1" style="color: #0000FF;">' +
-                setPoints(this.summ[1], '\'', false) +
-                '</td><td class="wb1" style="color: #0000FF;">' +
-                setPoints(this.summ[2], '\'', false) +
-                '</td><td class="wb1" style="color: #0000FF;">' +
-                setPoints(this.summ[3], '\'', false) +
-                '</td><td class="wb1" style="color: #FF0000;">' +
-                setPoints(this.all, '\'', false) +
+                'style="color: #0000FF;">' + s0 + '</td>' +
+                '<td class="wb1" style="color: #0000FF;">' + s1 +
+                '</td><td class="wb1" style="color: #0000FF;">' + s2 +
+                '</td><td class="wb1" style="color: #0000FF;">' + s3 +
+                '</td><td class="wb1" style="color: #FF0000;">' + all +
                 '</td></tr><tr><td class="wb1" colspan="6"><b>Начислено за ' +
-                'контроль</b>: <span style="color: #FF0000;">' +
-                new SetPoints().init(this.control, '\'', false) +
+                'контроль</b>: <span style="color: #FF0000;">' + control +
                 '</span> <b>PTS</b></td></tr>';
+
+            var separator = '------------------------------------------------' +
+                '--------------------------------------------------\n';
+            txtAreaStr += separator + 'Всего:\n Гранаты: ' + s0 + ', Чипы: ' +
+                s1 + ', Звания: ' + s2 + ', Знаки: ' + s3 + ', Всего: ' + all +
+                '\n' + separator + 'Начислено за контроль: ' + control +
+                ' PTS' + '\n' + separator;
+
             this.mainTable.innerHTML = str;
+
+            if (!general.$('txtArea')) {
+                var center = general.doc.createElement('center'),
+                    tArea = general.doc.createElement('textarea');
+
+                tArea.id = 'txtArea';
+                tArea.setAttribute('cols', '90');
+                tArea.setAttribute('rows', '10');
+                tArea.setAttribute('readonly', 'true');
+                center.appendChild(tArea);
+                var table = this.mainTable,
+                    prnt = table.parentNode,
+                    br = general.doc.createElement('br');
+                prnt.insertBefore(br, table);
+                prnt.insertBefore(center, br);
+            }
+
+            general.$('txtArea').value = txtAreaStr;
 
             var titleSort = general.$(id);
             titleSort.parentNode.style.background = '#A0EEA0';
@@ -11026,7 +11071,9 @@
                     }
 
                     rez = /выдал звание .* персонажу (.*) \((\d+) PT/.exec(str);
-                    if (rez) {
+                    // бывает так:
+                    // LPRulez выдал звание Private персонажу shiftman (0 PTS)
+                    if (rez && rez[2] !== '0') {
                         pers = _this.getPers(rez[1]);
                         _this.addData(pers, 'rank', +rez[2]);
                         continue;
@@ -11099,16 +11146,27 @@
                     return;
                 }
 
-                _this.mainTable.setAttribute('class', 'wb');
-                _this.mainTable.removeAttribute('style');
+                var table = _this.mainTable,
+                    tArea = general.$('txtArea');
 
-                var getStrDateNow = new GetStrDateNow().init;
-                _this.mainTable.innerHTML = '<tr><td>' +
+                if (tArea) {
+                    table.parentNode.
+                        removeChild(table.previousElementSibling);
+                    table.parentNode.
+                        removeChild(table.previousElementSibling);
+                }
+
+                table.setAttribute('class', 'wb');
+                table.setAttribute('width', '600');
+                table.setAttribute('style', 'margin-bottom: 50px;');
+
+                var getStrDate = new GetStrDate().init;
+                table.innerHTML = '<tr><td>' +
                     'Введите даты в формате дд.мм.гг<br>' +
                     'с: <input id="inpDateFrom" type="text" maxlength="8" ' +
                     'value="" style="width: 70px;" disabled> до: ' +
                     '<input id="inpDateTo" type="text" maxlength="8" value="' +
-                    getStrDateNow()  + '" style="width: 70px;" disabled> ' +
+                    getStrDate('now')  + '" style="width: 70px;" disabled> ' +
                     '<input type="button" id="goPTS" value=">>" disabled>' +
                     '<span id="ptsPreloader" style="margin-left: 10px;">' +
                     '<img src="' + general.imgPath + 'preloader.gif" />' +
@@ -11127,7 +11185,7 @@
                     _this.from = getTimestamp(general.$('inpDateFrom').value);
                     _this.to = getTimestamp(general.$('inpDateTo').value);
 
-                    var dateStrNow = getStrDateNow();
+                    var dateStrNow = getStrDate('now');
                     if (!_this.from || !_this.to ||
                             _this.from < getTimestamp(_this.lastDate) ||
                                 _this.to > getTimestamp(dateStrNow) ||
@@ -11704,13 +11762,13 @@
                 _this.mainTable.setAttribute('class', 'wb');
                 _this.mainTable.removeAttribute('style');
 
-                var getStrDateNow = new GetStrDateNow().init;
+                var getStrDate = new GetStrDate().init;
                 _this.mainTable.innerHTML = '<tr><td>' +
                     'Введите даты в формате дд.мм.гг<br>' +
                     'с: <input id="inpDateFrom" type="text" maxlength="8" ' +
                     'value="" style="width: 70px;" disabled> до: ' +
                     '<input id="inpDateTo" type="text" maxlength="8" value="' +
-                    getStrDateNow()  + '" style="width: 70px;" disabled> ' +
+                    getStrDate('now')  + '" style="width: 70px;" disabled> ' +
                     '<input type="button" id="goSAnalyse" value=">>" ' +
                     'disabled><span id="syndAnalysePreloader" ' +
                     'style="margin-left: 10px;"><img src="' + general.imgPath +
@@ -11730,7 +11788,7 @@
                     _this.from = getTimestamp(general.$('inpDateFrom').value);
                     _this.to = getTimestamp(general.$('inpDateTo').value);
 
-                    var dateStrNow = getStrDateNow();
+                    var dateStrNow = getStrDate('now');
                     if (!_this.from || !_this.to ||
                             _this.from < getTimestamp(_this.lastDate) ||
                                 _this.to > getTimestamp(dateStrNow) ||
