@@ -3,7 +3,7 @@
 --------------------------------------
 	В скрипт SyndPtsAnalyser
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndPtsAnalyser
-	добавлен вывод переводов синдикатного опыта за PTS.
+	добавлен вывод переводов синдикатного опыта за PTS. Спасибо (_v_)
 
 
 2016-04-16[1.32-110416]
