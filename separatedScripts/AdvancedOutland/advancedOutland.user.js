@@ -1,7 +1,7 @@
 ﻿// ==UserScript==
 // @name            AdvancedOutland
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     На ауте и в прибрежной зоне подсвечивает дорожки, отображает информацию покемонов и время для флагов без наведения на них мышью, добавляет ссылки "Моя инфа | Рюкзак | Ремонт | Магазин лицензий", автоматический выбор Аута в списке портов при отплытии.
+// @description     На ауте и в прибрежной зоне отображает информацию покемонов и время для флагов без наведения на них мышью, добавляет ссылки "Моя инфа | Рюкзак | Ремонт | Магазин лицензий", автоматический выбор Аута в списке портов при отплытии.
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvancedOutland/advancedOutland.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvancedOutland/advancedOutland.user.js
@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/object.php*
 // @grant           none
 // @license         MIT
-// @version         2.00-070416
+// @version         2.10-110416
 // @author          W_or_M (редакция MyRequiem)
 // ==/UserScript==
 
@@ -92,11 +92,10 @@
             }
 
             /** localStorage:
-                [0] - подсветка дорожек
-                [1] - показывать инфу поков
-                [2] - показывать время флагов
+                [0] - показывать инфу поков
+                [1] - показывать время флагов
             */
-            stData = ['', '', ''];
+            stData = ['', ''];
             this.setData(stData);
             return stData;
         },
@@ -125,19 +124,7 @@
             return function () {
                 var data = general.getData(),
                     _this = this,
-                    ind;
-
-                switch (_this.id) {
-                case 'chkTrack':
-                    ind = 0;
-                    break;
-                case 'chkShowDataPoks':
-                    ind = 1;
-                    break;
-                default:
-                    ind = 2;
-                    break;
-                }
+                    ind = _this.id === 'chkShowDataPoks' ? 0 : 1;
 
                 data[ind] = _this.checked ?  '1' : '';
                 general.setData(data);
@@ -184,13 +171,11 @@
                     'visibility: hidden; background-color: #F5FFF5; ' +
                     'border-radius: 7px; border: solid 1px #339933; ' +
                     'padding: 5px; top: 0; left: 0;');
-            divSettings.innerHTML = '<input id="chkTrack" type="checkbox">' +
-                '<label for="chkTrack">Показывать дорожки</label><br>' +
-                '<input id="chkShowDataPoks" type="checkbox">' +
-                '<label for="chkShowDataPoks">Показывать инфу поков</label>' +
-                '<br><input id="chkShowDataFlags" type="checkbox">' +
-                '<label for="chkShowDataFlags">Показывать время для флагов' +
-                '</label>';
+            divSettings.innerHTML = '<input id="chkShowDataPoks" ' +
+                'type="checkbox"><label for="chkShowDataPoks">Показывать ' +
+                'инфу поков</label><br><input id="chkShowDataFlags" ' +
+                'type="checkbox"><label for="chkShowDataFlags">Показывать ' +
+                'время для флагов</label>';
             general.doc.body.appendChild(divSettings);
 
             // кнопа "Настройки"
@@ -201,7 +186,7 @@
             butSettings.addEventListener('click', function (e) {
                 var ev = e || general.root.event;
                 if (divSettings.style.visibility === 'hidden') {
-                    divSettings.style.left = ev.pageX - 127;
+                    divSettings.style.left = ev.pageX - 100;
                     divSettings.style.top = ev.pageY + 15;
                     divSettings.style.visibility = 'visible';
                 } else {
@@ -214,19 +199,15 @@
             target.appendChild(butSettings);
 
             // чекбоксы в настройках
-            var chkTrack = general.$('chkTrack'),
-                stData = general.getData();
+            var stData = general.getData(),
+                chkShowDataPoks = general.$('chkShowDataPoks');
 
-            chkTrack.checked = stData[0];
-            chkTrack.addEventListener('click', this.changeStData(), false);
-
-            var chkShowDataPoks = general.$('chkShowDataPoks');
-            chkShowDataPoks.checked = stData[1];
+            chkShowDataPoks.checked = stData[0];
             chkShowDataPoks.
                 addEventListener('click', this.changeStData(), false);
 
             var chkShowDataFlags = general.$('chkShowDataFlags');
-            chkShowDataFlags.checked = stData[2];
+            chkShowDataFlags.checked = stData[1];
             chkShowDataFlags.
                 addEventListener('click', this.changeStData(), false);
 
@@ -240,22 +221,11 @@
                 'workshop.php">Ремонт</a> | <a target="_blank" ' +
                 'href="http://www.ganjawars.ru/shopl.php" target="_blank">' +
                 'Магазин лицензий</a> | ';
-            var forum = general.doc.querySelector('a[href*="/forum.php"]');
-            forum.parentNode.insertBefore(span, forum);
-
-            // подсвечиваем дорожки
-            if (stData[0]) {
-                var imgs = general.doc.querySelectorAll('td>a[href*="/walk"]>' +
-                        'img[src*="/q-new/t.gif"]');
-
-                for (i = 0; i < imgs.length; i++) {
-                    imgs[i].parentNode.parentNode.
-                                setAttribute('style', 'background: #D89D58');
-                }
-            }
+            target = general.doc.querySelector('a[href*="/forum.php"]');
+            target.parentNode.insertBefore(span, target);
 
             // показываем инфу поков и время флагов
-            if (stData[1] || stData[2]) {
+            if (stData[0] || stData[1]) {
                 // помещаем на страницу скрипт с новым
                 // обработчиком события onMouseOver
                 var s = general.doc.createElement('script');
@@ -338,14 +308,14 @@
                 // ищем всех ботов и флаги, изменяем обработчики onMouseOver
                 // на свои, вызываем и убираем все обработчики
                 var imgsOver = [];
-                if (stData[1]) {
+                if (stData[0]) {
                     imgsOver = imgsOver.
                         concat(Array.prototype.slice.
                                 call(general.doc.
                                     querySelectorAll('img[src*="/bot"]')));
                 }
 
-                if (stData[2]) {
+                if (stData[1]) {
                     imgsOver = imgsOver.
                         concat(Array.prototype.slice.
                                 call(general.doc.

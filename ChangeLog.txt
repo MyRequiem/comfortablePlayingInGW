@@ -1,4 +1,14 @@
 
+2016-04-16[1.32-110416]
+--------------------------------------
+	Изменения на Ауте и в прибрежной зоне. В игру на постоянной основе
+	был введен функционал подсветки дорожек. В связи с этим данная функция
+	была удалена из скрипта AdvancedOutland
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvancedOutland
+
+	Поправлен скрипт MoveArrowOnAut:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/MoveArrowOnAut
+
 2016-04-08[1.31-080416]
 --------------------------------------
 	- изменен скрипт SyndPtsAnalyser
