@@ -1,4 +1,11 @@
 
+2016-04-16[1.33-110416]
+--------------------------------------
+	В скрипт SyndPtsAnalyser
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndPtsAnalyser
+	добавлен вывод переводов синдикатного опыта за PTS.
+
+
 2016-04-16[1.32-110416]
 --------------------------------------
 	Изменения на Ауте и в прибрежной зоне. В игру на постоянной основе
@@ -8,6 +15,7 @@
 
 	Поправлен скрипт MoveArrowOnAut:
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/MoveArrowOnAut
+
 
 2016-04-08[1.31-080416]
 --------------------------------------

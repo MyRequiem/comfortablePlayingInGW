@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name            SyndPtsAnalyser
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     Анализ расхода PTS синдиката. Сортировка данных по купленным гранатам, чипам, выданным званиям и знакам, общему количеству PTS.
+// @description     Анализ расхода PTS синдиката. Сортировка данных по купленным гранатам, чипам, выданным званиям и знакам, общему количеству PTS. Вывод переводов синдикатного опыта за PTS.
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndPtsAnalyser/syndPtsAnalyser.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndPtsAnalyser/syndPtsAnalyser.user.js
 // @include         http://www.ganjawars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.10-080416
+// @version         2.20-110416
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -228,6 +228,11 @@
          */
         this.pers = null;
         /**
+         * @property soExpForPTS
+         * @type {Array|null}
+         */
+        this.soExpForPTS = null;
+        /**
          * @property from
          * @type {int}
          */
@@ -416,7 +421,20 @@
                 prnt.insertBefore(center, br);
             }
 
-            general.$('txtArea').value = txtAreaStr;
+            var txtArea = general.$('txtArea');
+            txtArea.value = txtAreaStr;
+
+            // если есть переводы синдового опыта за PTS выводим их
+            var len = this.soExpForPTS.length;
+            if (len) {
+                var div = general.doc.createElement('div');
+                div.setAttribute('style', 'margin-top: 15px; width: 650px; ' +
+                        'text-align: left;');
+                txtArea.parentNode.appendChild(div);
+                for (i = 0; i < len; i++) {
+                    div.appendChild(this.soExpForPTS[i]);
+                }
+            }
 
             var titleSort = general.$(id);
             titleSort.parentNode.style.background = '#A0EEA0';
@@ -521,6 +539,8 @@
                 }
 
                 var getTimestamp = new GetTimestamp().init,
+                    nobr1,
+                    nobr2,
                     pers,
                     time,
                     rez,
@@ -538,7 +558,9 @@
                         return;
                     }
 
-                    str = lines[i].parentNode.nextElementSibling.innerHTML;
+                    nobr1 = lines[i].parentNode;
+                    nobr2 = nobr1.nextElementSibling;
+                    str = nobr2.innerHTML;
 
                     rez = /(.*) купил.* за (\d+) PTS/.exec(str);
                     if (rez) {
@@ -574,6 +596,14 @@
                     rez = /Начислено \$.* и (\d+) PTS за контроль/.exec(str);
                     if (rez) {
                         _this.control += +rez[1];
+                    }
+
+                    // перевод синдового опыта за PTS
+                    rez = /\d+ ед. синдикатного опыта за \d+ PTS/.exec(str);
+                    if (rez) {
+                        _this.soExpForPTS.push(nobr1);
+                        _this.soExpForPTS.push(nobr2);
+                        _this.soExpForPTS.push(general.doc.createElement('br'));
                     }
                 }
 
@@ -694,6 +724,7 @@
                     general.$('goPTS').disabled = true;
 
                     _this.pers = [];
+                    _this.soExpForPTS = [];
                     // гранаты, чипы, звания, знаки
                     _this.summ = [0, 0, 0, 0, 0];
                     _this.all = 0;
