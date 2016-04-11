@@ -8,7 +8,5 @@
 <br>
 ![AdvancedOutland](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/AdvancedOutland/screen1.png)
 <br>
-![AdvancedOutland](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/AdvancedOutland/screen3.png)
-<br>
 ![AdvancedOutland](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/AdvancedOutland/screen2.png)
 <br>
