@@ -13239,10 +13239,8 @@
                                         'exec(text)[1] + " уровень</b>";' +
                             '} else {' +
                                 'var txt = "",' +
-                                    'rez;' +
+                                    'rez = /Опасность:[^<]+/i.exec(text);' +
 
-                                // 'alert(text);' +
-                                'rez = /Опасность:[^<]+/i.exec(text);' +
                                 'if (rez) {' +
                                     'txt += "<li>" + rez[0] + "</li>";' +
                                 '}' +
