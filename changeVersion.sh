@@ -7,7 +7,7 @@ fi
 
 TMP=tmp
 INFILE="
-    _comfortablePlayingInGW_src.user.js
+    _comfortablePlayingInGW.user.js
     _comfortablePlayingInGW.meta.js
 "
 
