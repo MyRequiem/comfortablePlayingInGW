@@ -1,3 +1,6 @@
 # WebStorm, PhpStorm
 .idea/
 
+# rope lib (python-mode plugin for vim)
+.ropeproject/
+
