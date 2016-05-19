@@ -1,8 +1,8 @@
 #! /bin/sh
 
 JSDOCPATH=/home/myrequiem/projects/git/jsdoc
-PROJECTPATH=/home/myrequiem/projects/git/comfortablePlayingInGW
-SCRIPTNAME=_comfortablePlayingInGW_src.user.js
+PROJECTPATH=/home/myrequiem/projects/git/gw/comfortablePlayingInGW
+SCRIPTNAME=_comfortablePlayingInGW.user.js
 NEWSCRIPTNAME=$(echo ${SCRIPTNAME} | cut -d _ -f 2-)
 
 if [ "${PROJECTPATH}" != "$(pwd)" ]; then
