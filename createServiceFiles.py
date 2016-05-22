@@ -73,8 +73,7 @@ comfortablePlayingInGW/master/separatedScripts/'
 
         s = open(self.scriptName, 'r')
         m = open(self.metaName, 'w')
-        while True:
-            line = s.readline()
+        for line in s:
             if line == '\n':
                 break
             m.write(line)
