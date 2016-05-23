@@ -1,6 +1,9 @@
 # WebStorm, PhpStorm
 .idea/
 
+# Byte-compiled / optimized
+__pycache__/
+*.pyc
+
 # rope lib (python-mode plugin for vim)
 .ropeproject/
-
