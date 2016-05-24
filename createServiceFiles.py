@@ -12,6 +12,6 @@ def main():
 
     CreateServiceFiles()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     from sys import exit
     exit(main())
