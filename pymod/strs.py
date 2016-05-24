@@ -3,7 +3,7 @@
 
 
 def getstrings():
-    mainreadme = ("""![Ganjawars.ru](http://images.ganjawars.ru/img/\
+    mainreadme1 = '''![Ganjawars.ru](http://images.ganjawars.ru/img/\
 apple144.png)
 
 #### Many buns for a comfortable game in \
@@ -43,16 +43,18 @@ how_to_install/0-31)
 
 #### Модули отдельными скриптами
 
-""", """**{0}**
+'''
+
+    mainreadme2 = '''**{0}**
 <br>
 Версия: {1}
 <br>
 [[Установить]]({2}) [[Скачать zip-архив]]({3}) [[Описание]]({4})
 <br>
 
-""")
+'''
 
-    readme = ("""{0}
+    readme1 = '''{0}
 <br>
 <br>
 Версия: {1}
@@ -60,19 +62,21 @@ how_to_install/0-31)
 [[Установить]]({2}) [[Скачать zip-архив]]({3})
 <br>
 <br>
-""", """![{0}]({1}{2})
+'''
+
+    readme2 = '''![{0}]({1}{2})
 <br>
-""")
+'''
 
-    raw = 'https://raw.githubusercontent.com/MyRequiem/\
-comfortablePlayingInGW/master/separatedScripts/'
+    raw = ('https://raw.githubusercontent.com/MyRequiem/'
+           'comfortablePlayingInGW/master/separatedScripts/')
 
-    tree = 'https://github.com/MyRequiem/comfortablePlayingInGW/tree\
-/master/separatedScripts/'
+    tree = ('https://github.com/MyRequiem/comfortablePlayingInGW/'
+            'tree/master/separatedScripts/')
 
     return {
-        'mainreadme': mainreadme,
-        'readme': readme,
+        'mainreadme': (mainreadme1, mainreadme2),
+        'readme': (readme1, readme2),
         'raw': raw,
         'tree': tree
     }
