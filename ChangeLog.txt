@@ -1,4 +1,10 @@
 
+2016-05-26[1.40-260516]
+--------------------------------------
+	- добавлен скрипт FilterGeneralFighting
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FilterGeneralFighting
+
+
 2016-04-16[1.33-110416]
 --------------------------------------
 	В скрипт SyndPtsAnalyser
