@@ -411,7 +411,7 @@
                 persLinks[i].parentNode.innerHTML += ' <span id="info_' +
                     persId + '" style="cursor: pointer;">[?]</span> ' +
                     '<img id="edit_' + persId + '" src="http://images.' +
-                    'ganjawars.ru/i/home/wlog.gif" style="cursor: pointer;"' +
+                    'ganjawars.ru/i/home/wlog.gif" style="cursor: pointer;" ' +
                     'title="Изменить заметку"/><br><input type="text" id="p' +
                     persId + '" value="' + this.getPersNote('p' + persId) +
                     '" style="width: 250px; margin-top: 3px; display: none;" ' +
