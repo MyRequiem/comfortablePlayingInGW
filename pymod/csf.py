@@ -90,8 +90,7 @@ class CreateServiceFiles:
         self.dwnldZip = raw + self.zipName
 
         strg = getstrings()['readme']
-        r.write(strg[0].
-                format(self.descr, self.ver, self.dwnld, self.dwnldZip))
+        r.write(strg[0].format(self.descr, self.ver, self.dwnld, self.dwnldZip))
 
         mask = 'screen*.png'
         imgsPath = '../../' +\
