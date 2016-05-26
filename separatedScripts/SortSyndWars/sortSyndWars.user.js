@@ -132,7 +132,7 @@
                     str += ', <a target="_blank" href="http://www.ganjawars.' +
                         'ru/syndicate.php?id=' + obj[i].union +
                         '&page=online"><img src=http://images.ganjawars.ru/' +
-                        'img/synds/' + obj[i].union + '.gif></img>#' +
+                        'img/synds/' + obj[i].union + '.gif />#' +
                         obj[i].union + '</a>';
                 }
 

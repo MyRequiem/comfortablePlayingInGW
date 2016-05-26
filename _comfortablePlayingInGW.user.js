@@ -762,7 +762,7 @@
 
                 target = target.firstElementChild || target;
                 settingsButton.innerHTML = '<img src="' + general.imgPath +
-                    'NotGiveCannabisLeaf/on.gif" whidth="15" height="15" ' +
+                    'NotGiveCannabisLeaf/on.gif" width="15" height="15" ' +
                     'title="Настройки" alt="Настройки" />';
                 settingsButton.setAttribute('href',
                         'http://www.ganjawars.ru/news.php?set=1');
@@ -8776,7 +8776,7 @@
                     str += ', <a target="_blank" href="http://www.ganjawars.' +
                         'ru/syndicate.php?id=' + obj[i].union +
                         '&page=online"><img src=http://images.ganjawars.ru/' +
-                        'img/synds/' + obj[i].union + '.gif></img>#' +
+                        'img/synds/' + obj[i].union + '.gif />#' +
                         obj[i].union + '</a>';
                 }
 
@@ -9637,7 +9637,7 @@
                 persLinks[i].parentNode.innerHTML += ' <span id="info_' +
                     persId + '" style="cursor: pointer;">[?]</span> ' +
                     '<img id="edit_' + persId + '" src="http://images.' +
-                    'ganjawars.ru/i/home/wlog.gif" style="cursor: pointer;"' +
+                    'ganjawars.ru/i/home/wlog.gif" style="cursor: pointer;" ' +
                     'title="Изменить заметку"/><br><input type="text" id="p' +
                     persId + '" value="' + this.getPersNote('p' + persId) +
                     '" style="width: 250px; margin-top: 3px; display: none;" ' +
@@ -10513,7 +10513,7 @@
                 td.setAttribute('style', 'width: 130px;');
                 td.innerHTML = '<form name="fsearch" id="fsearch" ' +
                     'method="GET" action="/search.php"><input type="text" ' +
-                    'id="skey" name="key" value="" style="width: 130px;"' +
+                    'id="skey" name="key" value="" style="width: 130px;" ' +
                     'title="Введите ник и нажмите Enter" /></form>';
                 topPanel = topPanel.parentNode.parentNode;
                 topPanel = general.DESIGN_VERSION === 'v2' ?
