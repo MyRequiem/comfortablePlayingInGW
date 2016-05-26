@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/wargroup.php*
 // @grant           none
 // @license         MIT
-// @version         1.00-250516
+// @version         1.01-260516
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -16,7 +16,7 @@
 
 /*jslint
     browser: true, passfail: true, vars: true, plusplus: true, nomen: true
-    continue: true, regexp: true
+    continue: true, regexp: true, devel: true
 */
 
 (function () {
@@ -331,6 +331,16 @@
          * @method init
          */
         this.init = function () {
+            if (!general.st) {
+                alert('Ваш браузер не поддерживает технологию localStorage.\n' +
+                    'MyRequiеm рекомендует вам скачать и установить один из\n' +
+                    'ниже перечисленных браузеров или удалите скрипт\n' +
+                    'FilterGeneralFighting:\n\nFireFox 4+\nOpera 11+' +
+                    '\nChrome 12+');
+
+                return;
+            }
+
             if (!(/\?war=(armed|gwars|street)/.test(general.loc))) {
                 return;
             }

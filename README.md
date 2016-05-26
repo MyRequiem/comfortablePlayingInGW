@@ -168,7 +168,7 @@
 
 **FilterGeneralFighting**
 <br>
-Версия: 1.00-250516
+Версия: 1.01-260516
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FilterGeneralFighting/filterGeneralFighting.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FilterGeneralFighting/filterGeneralFighting.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FilterGeneralFighting)
 <br>
