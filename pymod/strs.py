@@ -2,7 +2,15 @@
 # -*- coding: utf-8 -*-
 
 
+"""
+docstring
+"""
+
+
 def getstrings():
+    """
+    docstring
+    """
     mainreadme1 = '''![Ganjawars.ru](http://images.ganjawars.ru/img/\
 apple144.png)
 

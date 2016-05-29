@@ -2,7 +2,15 @@
 # -*- coding: utf-8 -*-
 
 
+"""
+docstring
+"""
+
+
 def main():
+    """
+    docstring
+    """
     from os import listdir
     from pymod.csf import CreateServiceFiles
 

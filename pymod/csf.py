@@ -2,6 +2,11 @@
 # -*- coding: utf-8 -*-
 
 
+"""
+docstring
+"""
+
+
 from os import path, getcwd, chdir, listdir
 from zipfile import ZipFile
 from re import search
@@ -11,6 +16,9 @@ from pymod.strs import getstrings
 
 
 class CreateServiceFiles:
+    """
+    docstring
+    """
     __rawLink = getstrings()['raw']
     __creating = '\033[1;32mcreating\033[1;m'
     __colorTempl = '{cr:>30} {name}\033[1;m'
@@ -18,6 +26,9 @@ class CreateServiceFiles:
     __listScript = []
 
     def __init__(self, d=None, p=None):
+        """
+        docstring
+        """
         if d is None:
             self.scriptName = '_comfortablePlayingInGW.user.js'
             self.metaName = '_comfortablePlayingInGW.meta.js'
@@ -30,6 +41,10 @@ class CreateServiceFiles:
         self.metaName = self.scriptName.replace('user.js', 'meta.js')
         self.zipName = self.scriptName + '.zip'
         self.dirFullPath = path.join(p, d) + '/'
+        self.descr = None
+        self.ver = None
+        self.dwnld = None
+        self.dwnldZip = None
 
         print('./{}'.format(self.dirFullPath))
         if not path.isfile(self.dirFullPath + self.scriptName):
@@ -49,6 +64,9 @@ class CreateServiceFiles:
         chdir(ret)
 
     def createZip(self):
+        """
+        docstring
+        """
         print(CreateServiceFiles.__colorTempl.
               format(cr=CreateServiceFiles.__creating,
                      name='\033[1;33m' + self.zipName))
@@ -58,6 +76,9 @@ class CreateServiceFiles:
         zf.close()
 
     def createMeta(self):
+        """
+        docstring
+        """
         print(CreateServiceFiles.__colorTempl.
               format(cr=CreateServiceFiles.__creating,
                      name='\033[1;36m' + self.metaName))
@@ -67,7 +88,7 @@ class CreateServiceFiles:
             for line in s:
                 if line == '\n':
                     break
-                m.write(line)
+                print(line, end='', file=m)
                 desc = search('@description\s+(.*?)\n', line)
                 if desc:
                     self.descr = desc.group(1)
@@ -81,6 +102,9 @@ class CreateServiceFiles:
         m.close()
 
     def createREADME(self):
+        """
+        docstring
+        """
         print(CreateServiceFiles.__colorTempl.
               format(cr=CreateServiceFiles.__creating,
                      name='\033[1;34m' + CreateServiceFiles.__readme))
@@ -90,7 +114,8 @@ class CreateServiceFiles:
         self.dwnldZip = raw + self.zipName
 
         strg = getstrings()['readme']
-        r.write(strg[0].format(self.descr, self.ver, self.dwnld, self.dwnldZip))
+        print(strg[0].format(
+            self.descr, self.ver, self.dwnld, self.dwnldZip), end='', file=r)
 
         mask = 'screen*.png'
         imgsPath = '../../' +\
@@ -98,13 +123,17 @@ class CreateServiceFiles:
         if path.isdir(imgsPath):
             for f in listdir(imgsPath):
                 if fnmatch(f, mask):
-                    r.write(strg[1].
-                            format(self.dirName,
-                                   raw.replace('separatedScripts', 'imgs'), f))
+                    print(strg[1].format(
+                        self.dirName,
+                        raw.replace('separatedScripts', 'imgs'),
+                        f), end='', file=r)
 
         r.close()
 
     def createMainREADME(self):
+        """
+        docstring
+        """
         print('----------------------------------------------')
         CreateServiceFiles.createZip(self)
         CreateServiceFiles.createMeta(self)
@@ -117,13 +146,16 @@ class CreateServiceFiles:
         r = open(CreateServiceFiles.__readme, 'w')
 
         strg = getstrings()['mainreadme']
-        r.write(strg[0].format(self.ver, raw, tree))
+        print(strg[0].format(self.ver, raw, tree), end='', file=r)
 
         CreateServiceFiles.__listScript.sort(key=SortKey('dirName'))
         for s in CreateServiceFiles.__listScript:
-            r.write(strg[1].
-                    format(s.dirName, s.ver, s.dwnld, s.dwnldZip,
-                           tree + s.dirName))
+            print(strg[1].format(
+                s.dirName,
+                s.ver,
+                s.dwnld,
+                s.dwnldZip,
+                tree + s.dirName), end='', file=r)
 
         r.close()
         print('----------------------------------------------')
