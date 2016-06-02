@@ -1,4 +1,11 @@
 
+2016-06-02[1.41-020616]
+--------------------------------------
+	- увеличен таймаут запросов на сервер с 700ms до 1000-1500ms во избежании
+		ситуаций изображенных на скриншоте:
+		https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/accessTempDisabled.png
+
+
 2016-05-26[1.40-260516]
 --------------------------------------
 	- добавлен скрипт FilterGeneralFighting
