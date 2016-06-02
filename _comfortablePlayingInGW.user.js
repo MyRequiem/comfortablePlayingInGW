@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.40-260516
+// @version         1.41-020616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.40-260516';
+        this.version = '1.41-020616';
         /**
          * @property stString
          * @type {String}
@@ -1452,7 +1452,7 @@
                 var _this = this;
                 general.root.setTimeout(function () {
                     _this.setZeroClipboardLib();
-                }, 700);
+                }, 300);
             }
         };
 
@@ -4248,7 +4248,7 @@
             }, function () {
                 general.root.setTimeout(function () {
                     _this.startWorkPostGrenadesBroken(_this);
-                }, 700);
+                }, 1000);
             });
         };
 
@@ -5103,7 +5103,7 @@
          * @property tm
          * @type {int}
          */
-        this.tm = 700;
+        this.tm = 1000;
         /**
          * @property regStr
          * @type {String}
@@ -5406,7 +5406,7 @@
          * @property tm
          * @type {int}
          */
-        this.tm = 700;
+        this.tm = 1000;
         /**
          * @property canPlant
          * @type {Boolean}
@@ -6791,7 +6791,7 @@
          * @property tm
          * @type {int}
          */
-        this.tm = 700;
+        this.tm = 1000;
 
         /**
          * @method getBattles
@@ -7872,7 +7872,7 @@
 
             general.root.setTimeout(function () {
                 _this.showHistory(outbox ? 0 : 1, 0, outbox ? null : 1);
-            }, 700);
+            }, 1000);
         };
 
         /**
@@ -7943,7 +7943,7 @@
                     general.root.setTimeout(function () {
                         id1++;
                         _this.showHistory(id, id1, id2);
-                    }, 700);
+                    }, 1000);
                 } else {
                     var time = _this.spanContent.querySelector('td[width=' +
                             '"100%"]>a[href*="/info.php?id="]:first-child').
@@ -7965,12 +7965,12 @@
 
                     general.root.setTimeout(function () {
                         _this.showHistory(id, 0, null);
-                    }, 700);
+                    }, 1000);
                 }
             }, function () {
                 general.root.setTimeout(function () {
                     _this.showHistory(id, id1, id2);
-                }, 700);
+                }, 1000);
             });
         };
 
@@ -8283,7 +8283,7 @@
                     url = url.replace(/online/g, 'politics');
                     general.root.setTimeout(function () {
                         _this.getOnline(url, img);
-                    }, 700);
+                    }, 1000);
                 } else if (/politics/.test(url)) {
                     linkUnion = spanContent.querySelector('td[class="wb"]' +
                         '[style="padding:10px;"]>' +
@@ -8292,7 +8292,7 @@
                         general.root.setTimeout(function () {
                             _this.getOnline(linkUnion + '&page=online&union=1',
                                     img);
-                        }, 700);
+                        }, 1000);
                         return;
                     }
 
@@ -8588,7 +8588,7 @@
                     if (unionLink) {
                         general.root.setTimeout(function () {
                             _this.getUnionOnline(unionLink + '&page=online');
-                        }, 700);
+                        }, 1000);
                     } else if (general.getData(18)[2]) {
                         _this.sortBattles();
                     }
@@ -8612,7 +8612,7 @@
             }, function () {
                 general.root.setTimeout(function () {
                     _this.getUnionOnline(URL);
-                }, 700);
+                }, 1000);
             });
         };
 
@@ -8715,7 +8715,7 @@
                         // на недвижимость перса
                         _this.showSector('http://www.ganjawars.ru/' +
                             'info.realty.php?id=' + general.myID, sector);
-                    }, 700);
+                    }, 1000);
                 } else {
                     var table = spanContent.querySelector('table[class="wb"]' +
                         '[align="center"]');
@@ -8740,7 +8740,7 @@
             }, function () {
                 general.root.setTimeout(function () {
                     _this.showSector(url, sector);
-                }, 700);
+                }, 1000);
             });
         };
 
@@ -9205,12 +9205,12 @@
                     str += ', ';
                     general.root.setTimeout(function () {
                         _this.getRange(1, str);
-                    }, 700);
+                    }, 1000);
                 }
             }, function () {
                 general.root.setTimeout(function () {
                     _this.getRange(ind, str);
-                }, 700);
+                }, 1000);
             });
         };
 
@@ -9286,7 +9286,7 @@
                 // дальность оружия
                 general.root.setTimeout(function () {
                     _this.getRange(0, 'Дальность оружия: ');
-                }, 700);
+                }, 1000);
             }, function () {
                 general.cons.log('Error xhr on One2OneCallerInfo');
             });
@@ -9379,7 +9379,7 @@
             }, function () {
                 general.root.setTimeout(function () {
                     _this.calculateBets();
-                }, 700);
+                }, 1000);
             });
         };
 
@@ -9900,7 +9900,7 @@
                         _this.weapon[ind - 1].src !== _this.weapon[ind].src) {
                     general.root.setTimeout(function () {
                         _this.getRange(ind);
-                    }, 700);
+                    }, 1000);
                 } else {
                     if (_this.weapon[ind]) {
                         _this.range.push(_this.range[0]);
@@ -9911,7 +9911,7 @@
             }, function () {
                 general.root.setTimeout(function () {
                     _this.getRange(ind);
-                }, 700);
+                }, 1000);
             });
         };
 
@@ -10179,9 +10179,13 @@
                 _this.showHideLink();
                 _this.showHidePreloader();
 
-                general.root.setTimeout(function () {_this.scan(false); }, 700);
+                general.root.setTimeout(function () {
+                    _this.scan(false);
+                }, 1000);
             }, function () {
-                general.root.setTimeout(function () {_this.saveData(); }, 700);
+                general.root.setTimeout(function () {
+                    _this.saveData();
+                }, 1000);
             });
         };
 
@@ -10241,7 +10245,9 @@
                     }
                 }
             }, function () {
-                general.root.setTimeout(function () {_this.scan(now); }, 700);
+                general.root.setTimeout(function () {
+                    _this.scan(now);
+                }, 1000);
             });
         };
 
@@ -10494,11 +10500,11 @@
                     ind++;
                     general.root.setTimeout(function () {
                         _this.parseMessages(ind);
-                    }, 700);
+                    }, 1000);
                 }, function () {
                     general.root.setTimeout(function () {
                         _this.parseMessages(ind);
-                    }, 700);
+                    }, 1000);
                 });
             }
         };
@@ -10743,7 +10749,7 @@
          * @property tm
          * @type {int}
          */
-        this.tm = 700;
+        this.tm = 1500;
         /**
          * @property mainTable
          * @type {Element}
@@ -11286,7 +11292,7 @@
          * @property tm
          * @type {int}
          */
-        this.tm = 700;
+        this.tm = 1500;
         /**
          * @property lastDate
          * @type {String}
