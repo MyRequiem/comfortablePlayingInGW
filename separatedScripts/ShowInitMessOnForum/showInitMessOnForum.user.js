@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/messages.php*
 // @grant           none
 // @license         MIT
-// @version         2.00-101015
+// @version         2.01-020616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -195,11 +195,11 @@
                     ind++;
                     general.root.setTimeout(function () {
                         _this.parseMessages(ind);
-                    }, 700);
+                    }, 1000);
                 }, function () {
                     general.root.setTimeout(function () {
                         _this.parseMessages(ind);
-                    }, 700);
+                    }, 1000);
                 });
             }
         };

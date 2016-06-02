@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/sms-read.php?type=*
 // @grant           none
 // @license         MIT
-// @version         2.03-080216
+// @version         2.04-020616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -264,7 +264,7 @@
 
             general.root.setTimeout(function () {
                 _this.showHistory(outbox ? 0 : 1, 0, outbox ? null : 1);
-            }, 700);
+            }, 1000);
         };
 
         /**
@@ -335,7 +335,7 @@
                     general.root.setTimeout(function () {
                         id1++;
                         _this.showHistory(id, id1, id2);
-                    }, 700);
+                    }, 1000);
                 } else {
                     var time = _this.spanContent.querySelector('td[width=' +
                             '"100%"]>a[href*="/info.php?id="]:first-child').
@@ -357,12 +357,12 @@
 
                     general.root.setTimeout(function () {
                         _this.showHistory(id, 0, null);
-                    }, 700);
+                    }, 1000);
                 }
             }, function () {
                 general.root.setTimeout(function () {
                     _this.showHistory(id, id1, id2);
-                }, 700);
+                }, 1000);
             });
         };
 

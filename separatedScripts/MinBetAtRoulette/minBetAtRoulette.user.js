@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/roulette.php
 // @grant           none
 // @license         MIT
-// @version         2.00-230915
+// @version         2.01-020616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -194,7 +194,7 @@
             }, function () {
                 general.root.setTimeout(function () {
                     _this.calculateBets();
-                }, 700);
+                }, 1000);
             });
         };
 

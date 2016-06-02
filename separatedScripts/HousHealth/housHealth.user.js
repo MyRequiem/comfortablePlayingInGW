@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/b0/*
 // @grant           none
 // @license         MIT
-// @version         2.00-180915
+// @version         2.01-020616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -162,7 +162,7 @@
                         // на недвижимость перса
                         _this.showSector('http://www.ganjawars.ru/' +
                             'info.realty.php?id=' + general.myID, sector);
-                    }, 700);
+                    }, 1000);
                 } else {
                     var table = spanContent.querySelector('table[class="wb"]' +
                         '[align="center"]');
@@ -187,7 +187,7 @@
             }, function () {
                 general.root.setTimeout(function () {
                     _this.showSector(url, sector);
-                }, 700);
+                }, 1000);
             });
         };
 

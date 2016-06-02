@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         1.22-090915
+// @version         1.23-020616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -200,7 +200,7 @@
          * @property tm
          * @type {int}
          */
-        this.tm = 700;
+        this.tm = 1000;
         /**
          * @property canPlant
          * @type {Boolean}

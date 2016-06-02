@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.10-051115
+// @version         2.11-020616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -215,7 +215,7 @@
          * @property tm
          * @type {int}
          */
-        this.tm = 700;
+        this.tm = 1500;
         /**
          * @property lastDate
          * @type {String}

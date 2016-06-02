@@ -9,7 +9,7 @@
 // @exclude         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.20-081215
+// @version         2.21-020616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -453,9 +453,13 @@
                 _this.showHideLink();
                 _this.showHidePreloader();
 
-                general.root.setTimeout(function () {_this.scan(false); }, 700);
+                general.root.setTimeout(function () {
+                    _this.scan(false);
+                }, 1000);
             }, function () {
-                general.root.setTimeout(function () {_this.saveData(); }, 700);
+                general.root.setTimeout(function () {
+                    _this.saveData();
+                }, 1000);
             });
         };
 
@@ -515,7 +519,9 @@
                     }
                 }
             }, function () {
-                general.root.setTimeout(function () {_this.scan(now); }, 700);
+                general.root.setTimeout(function () {
+                    _this.scan(now);
+                }, 1000);
             });
         };
 

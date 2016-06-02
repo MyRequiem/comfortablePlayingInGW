@@ -1,7 +1,7 @@
 Сортировка онлайна синдиката и союза по идущим боям, вывод онлайна союзного синдиката.
 <br>
 <br>
-Версия: 1.13-180116
+Версия: 1.14-020616
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SortSyndOnline/sortSyndOnline.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SortSyndOnline/sortSyndOnline.user.js.zip)
 <br>

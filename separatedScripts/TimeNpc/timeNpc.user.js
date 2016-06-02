@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/npc.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.11-290316
+// @version         2.12-020616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -205,7 +205,7 @@
          * @property tm
          * @type {int}
          */
-        this.tm = 700;
+        this.tm = 1000;
         /**
          * @property regStr
          * @type {String}

@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         2.00-200915
+// @version         2.01-020616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -174,12 +174,12 @@
                     str += ', ';
                     general.root.setTimeout(function () {
                         _this.getRange(1, str);
-                    }, 700);
+                    }, 1000);
                 }
             }, function () {
                 general.root.setTimeout(function () {
                     _this.getRange(ind, str);
-                }, 700);
+                }, 1000);
             });
         };
 
@@ -253,7 +253,7 @@
                 // дальность оружия
                 general.root.setTimeout(function () {
                     _this.getRange(0, 'Дальность оружия: ');
-                }, 700);
+                }, 1000);
             }, function () {
                 general.cons.log('Error xhr on One2OneCallerInfo');
             });

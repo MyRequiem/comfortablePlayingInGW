@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/info.php*
 // @grant           none
 // @license         MIT
-// @version         2.00-071015
+// @version         2.01-020616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -163,7 +163,7 @@
                         _this.weapon[ind - 1].src !== _this.weapon[ind].src) {
                     general.root.setTimeout(function () {
                         _this.getRange(ind);
-                    }, 700);
+                    }, 1000);
                 } else {
                     if (_this.weapon[ind]) {
                         _this.range.push(_this.range[0]);
@@ -174,7 +174,7 @@
             }, function () {
                 general.root.setTimeout(function () {
                     _this.getRange(ind);
-                }, 700);
+                }, 1000);
             });
         };
 
