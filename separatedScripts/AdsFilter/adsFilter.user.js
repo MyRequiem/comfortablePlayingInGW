@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/market.php?buy=*
 // @grant           none
 // @license         MIT
-// @version         2.10-241015
+// @version         2.20-030616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -155,14 +155,14 @@
                 this.setFilter(trs, 'reset', 'flag');
                 dataSt[0] = island === 'Z' ? '1' : '2';
                 this.setData(dataSt);
-                this.$('isl' + island).
-                    setAttribute('style', this.styleBold);
+                this.$('isl' + island).setAttribute('style', this.styleBold);
                 this.$('isl' + (island === 'G' ? 'Z' : 'G')).
                     setAttribute('style', this.styleNormal);
 
+                var tdIsl;
                 for (i = 3; i < trs.length; i++) {
-                    if (trs[i].querySelector('td:nth-child(4)').
-                                innerHTML.indexOf(island) === -1) {
+                    tdIsl = trs[i].querySelector('td:nth-child(4)');
+                    if (tdIsl && tdIsl.innerHTML.indexOf(island) === -1) {
                         trs[i].style.display = 'none';
                     }
                 }

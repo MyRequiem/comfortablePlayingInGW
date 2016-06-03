@@ -1,4 +1,10 @@
 
+2016-06-03[1.42-030616]
+--------------------------------------
+	- Поправлен скрипт adsFilter
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdsFilter
+
+
 2016-06-02[1.41-020616]
 --------------------------------------
 	- увеличен таймаут запросов на сервер с 700ms до 1000-1500ms во избежании
@@ -14,9 +20,9 @@
 
 2016-04-16[1.33-110416]
 --------------------------------------
-	В скрипт SyndPtsAnalyser
+	- В скрипт SyndPtsAnalyser
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndPtsAnalyser
-	добавлен вывод переводов синдикатного опыта за PTS. Спасибо (_v_)
+		добавлен вывод переводов синдикатного опыта за PTS. Спасибо (_v_)
 
 
 2016-04-16[1.32-110416]
@@ -26,7 +32,7 @@
 	была удалена из скрипта AdvancedOutland
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvancedOutland
 
-	Поправлен скрипт MoveArrowOnAut:
+	- Поправлен скрипт MoveArrowOnAut:
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/MoveArrowOnAut
 
 

@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.41-020616
+// @version         1.42-030616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.41-020616';
+        this.version = '1.42-030616';
         /**
          * @property stString
          * @type {String}
@@ -2148,9 +2148,10 @@
                 general.$('isl' + (island === 'G' ? 'Z' : 'G')).
                     setAttribute('style', this.styleNormal);
 
+                var tdIsl;
                 for (i = 3; i < trs.length; i++) {
-                    if (trs[i].querySelector('td:nth-child(4)').
-                                innerHTML.indexOf(island) === -1) {
+                    tdIsl = trs[i].querySelector('td:nth-child(4)');
+                    if (tdIsl && tdIsl.innerHTML.indexOf(island) === -1) {
                         trs[i].style.display = 'none';
                     }
                 }
