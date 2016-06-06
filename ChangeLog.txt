@@ -10,6 +10,9 @@
 		- в связи с появлением на Аутленд стрелок направления движения и
 			функционала передвижения с помощью клавиатуры исправлен скрипт
 			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/MoveArrowOnAut
+		- в скрипте advBattleAll
+			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+			отключена подсветка случайного хода.
 
 
 2016-06-03[1.42-030616]
