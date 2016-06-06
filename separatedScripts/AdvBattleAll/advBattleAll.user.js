@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            AdvBattleAll
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     Генератор ходов(легальный), нумерация противников, расширенная информация в списке выбора противника, сортировка списка, ДЦ, продвинутое расположение бойцов на поле боя как в бою, так и в режиме наблюдения за боем, полный лог боя в НЕ JS-версии, кнопка "Сказать ход", быстрая вставка ника в поле чата. Информация вверху о набитом HP, вашем здоровье и т.д. При щелчке на картинке противника происходит его выбор в качестве цели. Кнопка "Обновить" на поле боя. В JS-версии боя подсвечивает зеленым цветом тех персонажей, которые уже сделали ход. В обоих версиях выводит количество персонажей, сделавших ход. Таймаут обновления заявки после входа в нее и таймаут обновления данных в бою.
+// @description     Генератор ходов, нумерация противников, расширенная информация в списке выбора противника, сортировка списка, ДЦ, продвинутое расположение бойцов на поле боя как в бою, так и в режиме наблюдения за боем, полный лог боя в НЕ JS-версии, кнопка "Сказать ход", быстрая вставка ника в поле чата. Информация вверху о набитом HP, вашем здоровье и т.д. При щелчке на картинке противника происходит его выбор в качестве цели. Кнопка "Обновить" на поле боя. В JS-версии боя подсвечивает зеленым цветом тех персонажей, которые уже сделали ход. В обоих версиях выводит количество персонажей, сделавших ход. Таймаут обновления заявки после входа в нее и таймаут обновления данных в бою.
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js
@@ -11,7 +11,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         3.50-041115
+// @version         3.51-060616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -409,19 +409,6 @@
         };
 
         /**
-         * @method clearMarkStroke
-         */
-        this.clearMarkStroke = function () {
-            var labels = this.getBattleField().querySelectorAll('label' +
-                    '[style^="background-color"]'),
-                i;
-
-            for (i = 0; i < labels.length; i++) {
-                labels[i].removeAttribute('style');
-            }
-        };
-
-        /**
          * @method getLeftRightCommands
          */
         this.getLeftRightCommands = function () {
@@ -716,8 +703,9 @@
          * @param   {HTMLElement}   elem
          */
         this.setMarkStroke = function (elem) {
-            if (elem) {
-                elem.setAttribute('style', 'background-color: #C3C3C3;');
+            var _elem = elem;
+            if (_elem) {
+                _elem.click();
             }
         };
 
@@ -730,11 +718,8 @@
                 walk = general.$('walk');
 
             if (walk) {
-                if (!walk.checked && dataSt[ind]) {
-                    this.setMarkStroke(walk.nextElementSibling);
-                }
-
-                if (walk.checked && !dataSt[ind]) {
+                if ((!walk.checked && dataSt[ind]) ||
+                        (walk.checked && !dataSt[ind])) {
                     walk.click();
                 }
             }
@@ -744,11 +729,7 @@
          * @method setStroke
          */
         this.setStroke = function () {
-            var dataSt = general.getData(),
-                bf = this.getBattleField();
-
-            // очищаем все установленные ходы
-            this.clearMarkStroke();
+            var dataSt = general.getData();
 
             // если в хранилище есть запись в кого стреляли
             // (сказали ход), то устанавливаем именно его
@@ -766,20 +747,16 @@
 
                 // если грена
                 if (dataSt[13]) {
-                    this.setMarkStroke(bf.querySelector('label' +
-                            '[for="bagaboom"]'));
+                    this.setMarkStroke(general.$('bagaboom'));
                 } else {
                     // правая рука
-                    this.setMarkStroke(bf.querySelector('label' +
-                            '[for="right_attack' + dataSt[11] + '"]'));
+                    this.setMarkStroke(general.$('right_attack' + dataSt[11]));
                     // левая рука
-                    this.setMarkStroke(bf.querySelector('label' +
-                            '[for="left_attack' + dataSt[10] + '"]'));
+                    this.setMarkStroke(general.$('left_attack' + dataSt[10]));
                 }
 
                 // куда отходим
-                this.setMarkStroke(bf.querySelector('label' +
-                        '[for="defence' + dataSt[12] + '"]'));
+                this.setMarkStroke(general.$('defence' + dataSt[12]));
                 // подходим или нет
                 this.setWalk(14);
 
@@ -789,29 +766,23 @@
 
             // устанавливаем последний сохраненный ход
             if (dataSt[1] === '2') {
-                this.setMarkStroke(bf.querySelector('label' +
-                        '[for="left_attack' + dataSt[3] + '"]'));
-
+                this.setMarkStroke(general.$('left_attack' + dataSt[3]));
                 // если нет гранаты, то отмечаем правую руку
                 if (!dataSt[6] || !general.$('bagaboom')) {
-                    this.setMarkStroke(bf.querySelector('label' +
-                            '[for="right_attack' + dataSt[4] + '"]'));
+                    this.setMarkStroke(general.$('right_attack' + dataSt[4]));
                 }
 
-                this.setMarkStroke(bf.querySelector('label' +
-                        '[for="defence' + dataSt[5] + '"]'));
+                this.setMarkStroke(general.$('defence' + dataSt[5]));
 
                 if (dataSt[6]) {
-                    this.setMarkStroke(bf.
-                            querySelector('label[for="bagaboom"]'));
+                    this.setMarkStroke(general.$('bagaboom'));
                 }
 
                 // подходим или нет
                 this.setWalk(7);
             } else {    // случайный ход
                 // куда уходим
-                this.setMarkStroke(bf.querySelector('label' +
-                        '[for="defence' + this.getRandom1to3() + '"]'));
+                this.setMarkStroke(general.$('defence' + this.getRandom1to3()));
                 // правая, левая
                 var x = this.getRandom1to3(),
                     y = this.getRandom1to3();
@@ -823,10 +794,8 @@
                     }
                 }
 
-                this.setMarkStroke(bf.querySelector('label' +
-                        '[for="right_attack' + x + '"]'));
-                this.setMarkStroke(bf.querySelector('label' +
-                        '[for="left_attack' + y + '"]'));
+                this.setMarkStroke(general.$('right_attack' + x));
+                this.setMarkStroke(general.$('left_attack' + y));
             }
         };
 
@@ -940,7 +909,6 @@
                 } else {
                     dataSt[1] = '';
                     general.setData(dataSt);
-                    _this.clearMarkStroke();
                 }
 
             }, false);
@@ -961,7 +929,6 @@
                             ['javascript', ':', 'void(fight())'].join(''));
                     dataSt[1] = '';
                     general.setData(dataSt);
-                    _this.clearMarkStroke();
                 }
             }, false);
 
@@ -1220,8 +1187,7 @@
             }
 
             table.setAttribute('style', 'border-collapse: collapse;');
-            table.setAttribute('background', general.imgPath +
-                    'battleField.gif');
+            table.setAttribute('background', general.imgPath + 'battleField.gif');
 
             // вставим пустую строку после таблицы
             // (в НЕ JS-версии уже есть)
@@ -1448,9 +1414,6 @@
 
             // в бою
             if (!general.viewMode) {
-                // очищаем индикаторы ходов
-                this.clearMarkStroke();
-
                 // если есть список выбора врага (ход не сделан)
                 if (selectEnemies) {
                     var tmp;
@@ -1475,10 +1438,12 @@
                     if (!this.enemies) {
                         return;
                     }
-                } else if (!this.enemies) {
-                    return;
+                // JS-версия, ход сделан
+                } else {
+                    if (!this.enemies) {
+                        return;
+                    }
                 }
-
             } else {    // в режиме наблюдения за боем
                 dataSt[15] = '';    // удаляем данные из списка врагов
                 general.setData(dataSt);
@@ -1736,7 +1701,7 @@
                 alert('Ваш браузер не поддерживает технологию localStorage.\n' +
                     'MyRequiеm рекомендует вам установить один из\nниже ' +
                     'перечисленных браузеров или удалите скрипт\n' +
-                    'AdditionForNavigationBar\n\nFireFox 4+\nOpera 11+\n' +
+                    'AdvBattleAll\n\nFireFox 4+\nOpera 11+\n' +
                     'Chrome 12+');
 
                 return;

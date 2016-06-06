@@ -8,7 +8,7 @@
 // @include         http://quest.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.22-110416
+// @version         1.30-060616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -70,7 +70,9 @@
                         i;
 
                     for (i = 0; i < a.length; i++) {
-                        emptyCell = a[i].querySelector('img[src*="/t.png"]');
+                        emptyCell = a[i].querySelector('img[src*="/t.png"]') ||
+                            a[i].querySelector('img[src*="/i/arrow_"]');
+
                         if (emptyCell && (/\?w=\-?\d+&wx=\-?\d+&wy=\-?\d+&/.
                                 test(a[i].href))) {
                             allMoveLinks.push(a[i]);

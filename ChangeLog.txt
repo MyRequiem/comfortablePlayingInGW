@@ -1,4 +1,20 @@
 
+
+2016-06-06[1.43-060616]
+--------------------------------------
+	В связи с выходом новости
+	http://www.ganjawars.ru/messages.php?fid=1&tid=1333
+	в скриптах были сделаны некоторые изменения:
+		- удален скрипт	AutRefreshLink: обновление страниц на ауте теперь
+			происходит при нажатии на пробел.
+		- в связи с появлением на Аутленд стрелок направления движения и
+			функционала передвижения с помощью клавиатуры исправлен скрипт
+			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/MoveArrowOnAut
+		- в скрипте advBattleAll
+			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+			отключена подсветка случайного хода.
+
+
 2016-06-03[1.42-030616]
 --------------------------------------
 	- Поправлен скрипт adsFilter
