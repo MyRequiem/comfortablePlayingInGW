@@ -4015,28 +4015,6 @@
     };
 
     /**
-     * @class AutRefreshLink
-     * @constructor
-     */
-    var AutRefreshLink = function () {
-        /**
-         * @method init
-         */
-        this.init = function () {
-            var target = general.doc.querySelector('td>a[href*="?itemslist="]'),
-                refresh = general.doc.querySelector('div>a[href*="/walk"]');
-
-            if (target && refresh) {
-                refresh = refresh.cloneNode(true);
-                refresh.setAttribute('style', 'margin-left: 5px;');
-                target.parentNode.
-                    insertBefore(refresh, target.nextElementSibling);
-            }
-
-        };
-    };
-
-    /**
      * @class WorkPostGrenadesBroken
      * @constructor
      */
@@ -13721,12 +13699,6 @@
 
     // аут + прибрежка
     if (/\/quest\.ganjawars\.ru/.test(general.loc)) {
-        try {
-            new AutRefreshLink().init();
-        } catch (e) {
-            general.cons.log(e);
-        }
-
         try {
             new AutLinksOnChat().init();
         } catch (e) {
