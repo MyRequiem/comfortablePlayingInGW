@@ -1097,8 +1097,8 @@
                     this.getGitHubLink('timeKarma'), '50']],
 
             'Бои': [
-                ['Дополнение для боев', 'Генератор ходов(только подсветка ' +
-                    'хода), нумерация противников, расширенная информация в ' +
+                ['Дополнение для боев', 'Генератор ходов, ' +
+                    'нумерация противников, расширенная информация в ' +
                     'списке выбора противника, сортировка списка, ДЦ, ' +
                     'продвинутое расположение бойцов на поле боя как в бою, ' +
                     'так и в режиме наблюдения за боем, полный лог боя в НЕ ' +
@@ -2431,19 +2431,6 @@
         };
 
         /**
-         * @method clearMarkStroke
-         */
-        this.clearMarkStroke = function () {
-            var labels = this.getBattleField().querySelectorAll('label' +
-                    '[style^="background-color"]'),
-                i;
-
-            for (i = 0; i < labels.length; i++) {
-                labels[i].removeAttribute('style');
-            }
-        };
-
-        /**
          * @method getLeftRightCommands
          */
         this.getLeftRightCommands = function () {
@@ -2738,8 +2725,9 @@
          * @param   {HTMLElement}   elem
          */
         this.setMarkStroke = function (elem) {
-            if (elem) {
-                elem.setAttribute('style', 'background-color: #C3C3C3;');
+            var _elem = elem;
+            if (_elem) {
+                _elem.click();
             }
         };
 
@@ -2752,11 +2740,8 @@
                 walk = general.$('walk');
 
             if (walk) {
-                if (!walk.checked && dataSt[ind]) {
-                    this.setMarkStroke(walk.nextElementSibling);
-                }
-
-                if (walk.checked && !dataSt[ind]) {
+                if ((!walk.checked && dataSt[ind]) ||
+                        (walk.checked && !dataSt[ind])) {
                     walk.click();
                 }
             }
@@ -2766,11 +2751,7 @@
          * @method setStroke
          */
         this.setStroke = function () {
-            var dataSt = general.getData(4),
-                bf = this.getBattleField();
-
-            // очищаем все установленные ходы
-            this.clearMarkStroke();
+            var dataSt = general.getData(4);
 
             // если в хранилище есть запись в кого стреляли
             // (сказали ход), то устанавливаем именно его
@@ -2788,20 +2769,16 @@
 
                 // если грена
                 if (dataSt[15]) {
-                    this.setMarkStroke(bf.querySelector('label' +
-                            '[for="bagaboom"]'));
+                    this.setMarkStroke(general.$('bagaboom'));
                 } else {
                     // правая рука
-                    this.setMarkStroke(bf.querySelector('label' +
-                            '[for="right_attack' + dataSt[13] + '"]'));
+                    this.setMarkStroke(general.$('right_attack' + dataSt[13]));
                     // левая рука
-                    this.setMarkStroke(bf.querySelector('label' +
-                            '[for="left_attack' + dataSt[12] + '"]'));
+                    this.setMarkStroke(general.$('left_attack' + dataSt[12]));
                 }
 
                 // куда отходим
-                this.setMarkStroke(bf.querySelector('label' +
-                        '[for="defence' + dataSt[14] + '"]'));
+                this.setMarkStroke(general.$('defence' + dataSt[14]));
                 // подходим или нет
                 this.setWalk(16);
 
@@ -2811,29 +2788,23 @@
 
             // устанавливаем последний сохраненный ход
             if (dataSt[3] === '2') {
-                this.setMarkStroke(bf.querySelector('label' +
-                        '[for="left_attack' + dataSt[5] + '"]'));
-
+                this.setMarkStroke(general.$('left_attack' + dataSt[5]));
                 // если нет гранаты, то отмечаем правую руку
                 if (!dataSt[8] || !general.$('bagaboom')) {
-                    this.setMarkStroke(bf.querySelector('label' +
-                            '[for="right_attack' + dataSt[6] + '"]'));
+                    this.setMarkStroke(general.$('right_attack' + dataSt[6]));
                 }
 
-                this.setMarkStroke(bf.querySelector('label' +
-                        '[for="defence' + dataSt[7] + '"]'));
+                this.setMarkStroke(general.$('defence' + dataSt[7]));
 
                 if (dataSt[8]) {
-                    this.setMarkStroke(bf.
-                            querySelector('label[for="bagaboom"]'));
+                    this.setMarkStroke(general.$('bagaboom'));
                 }
 
                 // подходим или нет
                 this.setWalk(9);
             } else {    // случайный ход
                 // куда уходим
-                this.setMarkStroke(bf.querySelector('label' +
-                        '[for="defence' + this.getRandom1to3() + '"]'));
+                this.setMarkStroke(general.$('defence' + this.getRandom1to3()));
                 // правая, левая
                 var x = this.getRandom1to3(),
                     y = this.getRandom1to3();
@@ -2845,10 +2816,8 @@
                     }
                 }
 
-                this.setMarkStroke(bf.querySelector('label' +
-                        '[for="right_attack' + x + '"]'));
-                this.setMarkStroke(bf.querySelector('label' +
-                        '[for="left_attack' + y + '"]'));
+                this.setMarkStroke(general.$('right_attack' + x));
+                this.setMarkStroke(general.$('left_attack' + y));
             }
         };
 
@@ -2964,7 +2933,6 @@
                 } else {
                     dataSt[3] = '';
                     general.setData(dataSt, 4);
-                    _this.clearMarkStroke();
                 }
 
             }, false);
@@ -2985,7 +2953,6 @@
                             ['javascript', ':', 'void(fight())'].join(''));
                     dataSt[3] = '';
                     general.setData(dataSt, 4);
-                    _this.clearMarkStroke();
                 }
             }, false);
 
@@ -3471,9 +3438,6 @@
 
             // в бою
             if (!general.viewMode) {
-                // очищаем индикаторы ходов
-                this.clearMarkStroke();
-
                 // если есть список выбора врага (ход не сделан)
                 if (selectEnemies) {
                     var tmp;
@@ -3498,10 +3462,12 @@
                     if (!this.enemies) {
                         return;
                     }
-                } else if (!this.enemies) {
-                    return;
+                // JS-версия, ход сделан
+                } else {
+                    if (!this.enemies) {
+                        return;
+                    }
                 }
-
             } else {    // в режиме наблюдения за боем
                 dataSt[17] = '';    // удаляем данные из списка врагов
                 general.setData(dataSt, 4);
