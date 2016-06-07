@@ -6,3 +6,10 @@ __pycache__/
 
 # rope lib (python-mode plugin for vim)
 .ropeproject/
+
+# python virtual environment
+/bin
+/include
+/lib
+/lib64
+pyvenv.cfg
