@@ -17,6 +17,12 @@ from os import (
 )
 
 from pymod.strs import getstrings
+from pymod.utils import (
+    get_str_indent,
+    get_indent_size,
+    get_mname,
+    get_zname
+)
 
 
 class CreateServiceFiles(object):
@@ -35,7 +41,8 @@ class CreateServiceFiles(object):
             'sdwnld': '',
             'zdwnld': '',
             'readme': 'README.md',
-            'sdir': 'separatedScripts'
+            'sdir': 'separatedScripts',
+            'namemainscript': '_comfortablePlayingInGW.user.js'
         }
 
         self.root = getcwd()
@@ -65,13 +72,14 @@ class CreateServiceFiles(object):
             if path.isdir(d_path):
                 self.meta['dname'] = d
                 self.meta['sname'] = d[:1].lower() + d[1:] + '.user.js'
-                self.meta['mname'] = self.get_mname(self.meta['sname'])
-                self.meta['zname'] = self.get_zname(self.meta['sname'])
+                self.meta['mname'] = get_mname(self.meta['sname'])
+                self.meta['zname'] = get_zname(self.meta['sname'])
 
                 print('\n./{0}'.format(d_path))
 
                 if not path.isfile(d_path + self.meta['sname']):
-                    print((self.get_indent(8) + '{0}Script {1}{2}{0} does not '
+                    print((get_str_indent(8) +
+                           '{0}Script {1}{2}{0} does not '
                            'exist{3}').format(self.colors['RED'],
                                               self.colors['GREY'],
                                               self.meta['sname'],
@@ -79,8 +87,11 @@ class CreateServiceFiles(object):
                     raise SystemExit
 
                 chdir(d_path)
+                self.set_str_actions(self.meta['zname'], self.colors['YELLOW'])
                 self.create_zip()
+                self.set_str_actions(self.meta['mname'], self.colors['CYAN'])
                 self.create_meta()
+                self.set_str_actions(self.meta['readme'], self.colors['BLUE'])
                 self.create_readme()
                 self.list_all_scripts.append({
                     'dname': self.meta['dname'],
@@ -91,59 +102,37 @@ class CreateServiceFiles(object):
 
                 chdir(self.root)
 
-        self.meta['sname'] = '_comfortablePlayingInGW.user.js'
-        self.meta['mname'] = self.get_mname(self.meta['sname'])
-        self.meta['zname'] = self.get_zname(self.meta['sname'])
+        self.meta['sname'] = self.meta['namemainscript']
+        self.meta['mname'] = get_mname(self.meta['sname'])
+        self.meta['zname'] = get_zname(self.meta['sname'])
         self.create_service_files_for_main_script()
 
-    def get_creating_string(self, count=8):
+    def get_creating_string(self, indent=8):
         """
         docstring
         """
-        return (self.get_indent(count) +
+        return (get_str_indent(indent) +
                 '{0}creating{1}').format(self.colors['GREEN'],
                                          self.colors['ENDC'])
 
-    @staticmethod
-    def get_indent(count):
+    def set_str_actions(self, name, color, indent=8):
         """
         docstring
         """
-        return ' ' * count
-
-    @staticmethod
-    def get_mname(name):
-        """
-        docstring
-        """
-        return name.replace('.user.', '.meta.')
-
-    @staticmethod
-    def get_zname(name):
-        """
-        docstring
-        """
-        return name + '.zip'
-
-    def create_zip(self, count=8):
-        """
-        docstring
-        """
-        zname = self.meta['zname']
         vert, end = '', ''
-        if count != 8:
-            vert = '+'
-            end = ((' ' * (78 - count - 9 - len(zname))) +
-                   self.colors['LYELLOW'] +
-                   '+' +
-                   self.colors['ENDC'])
+        yellow = self.colors['LYELLOW']
+        endc = self.colors['ENDC']
+        if indent != 8:
+            vert = yellow + '+' + endc
+            end = (' ' * (78 - indent - 9 - len(name))) + yellow + '+' + endc
 
-        print(vert + self.color_templ.format(self.get_creating_string(count),
-                                             self.colors['YELLOW'],
-                                             zname,
-                                             self.colors['ENDC']) + end)
+        print(vert + self.color_templ.format(self.get_creating_string(indent),
+                                             color,
+                                             name,
+                                             endc) + end)
 
-        '''
+    def create_zip(self):
+        """
         class zipfile.ZipFile(file, mode='r', compression=ZIP_STORED)
 
         Compression ratio:
@@ -152,29 +141,17 @@ class CreateServiceFiles(object):
         zipfile.ZIP_DEFLATED  = 8  (requires the zlib module)
         zipfile.ZIP_BZIP2     = 12 (requires the bz2 module)
         zipfile.ZIP_LZMA      = 14 (requires the lzma module)
-        '''
-        zip_file = zipfile.ZipFile(zname, 'w', compression=zipfile.ZIP_LZMA)
+        """
+        zip_file = zipfile.ZipFile(self.meta['zname'], 'w',
+                                   compression=zipfile.ZIP_LZMA)
         zip_file.write(self.meta['sname'])
         zip_file.close()
 
-    def create_meta(self, count=8):
+    def create_meta(self):
         """
         docstring
         """
-        mname = self.meta['mname']
-        vert, end = '', ''
-        if count != 8:
-            vert = '+'
-            end = ((' ' * (78 - count - 9 - len(mname))) +
-                   self.colors['LYELLOW'] +
-                   '+' +
-                   self.colors['ENDC'])
-        print(vert + self.color_templ.format(self.get_creating_string(count),
-                                             self.colors['CYAN'],
-                                             mname,
-                                             self.colors['ENDC']) + end)
-
-        mfile = open(mname, 'w')
+        mfile = open(self.meta['mname'], 'w')
         with open(self.meta['sname']) as sfile:
             for line in iter(sfile.readline, '\n'):
                 print(line, end='', file=mfile)
@@ -194,17 +171,11 @@ class CreateServiceFiles(object):
         """
         docstring
         """
-        readme = self.meta['readme']
-        print(self.color_templ.format(self.get_creating_string(),
-                                      self.colors['BLUE'],
-                                      readme,
-                                      self.colors['ENDC']))
-
         raw = path.join(self.strs['raw'], self.meta['dname'], '')
         self.meta['sdwnld'] = raw + self.meta['sname']
         self.meta['zdwnld'] = raw + self.meta['zname']
 
-        rfile = open(readme, 'w')
+        rfile = open(self.meta['readme'], 'w')
         readme_templ = self.strs['readme']
         print(readme_templ[0].format(self.meta['desc'],
                                      self.meta['ver'],
@@ -222,34 +193,33 @@ class CreateServiceFiles(object):
 
         rfile.close()
 
-    def print_line(self, color=''):
+    def print_line(self):
         """
         docstring
         """
-        clr = self.colors[color] if color and color in self.colors else ''
-        print(clr + '+' + ('=' * 78) + '+' + self.colors['ENDC'])
+        print((self.colors['LYELLOW'] + '+' + ('=' * 78) + '+' +
+               self.colors['ENDC']))
 
     def create_service_files_for_main_script(self):
         """
         docstring
         """
         print()
-        self.print_line('LYELLOW')
+        self.print_line()
 
-        indent = (78 - 9 - len(self.meta['zname'])) // 2
-        self.create_zip(indent)
-        self.create_meta(indent)
+        zname = self.meta['zname']
+        self.set_str_actions(zname, self.colors['YELLOW'],
+                             get_indent_size(zname))
+        self.create_zip()
+
+        mname = self.meta['mname']
+        self.set_str_actions(mname, self.colors['CYAN'],
+                             get_indent_size(mname))
+        self.create_meta()
 
         readme = self.meta['readme']
-        end = ((' ' * (78 - indent - 9 - len(readme))) +
-               self.colors['LYELLOW'] +
-               '+' +
-               self.colors['ENDC'])
-        print(self.colors['LYELLOW'] + '+' + self.colors['ENDC'] +
-              self.color_templ.format(self.get_creating_string(indent),
-                                      self.colors['BLUE'],
-                                      readme,
-                                      self.colors['ENDC']) + end)
+        self.set_str_actions(readme, self.colors['BLUE'],
+                             get_indent_size(readme))
 
         raw = self.strs['raw'].replace(self.meta['sdir'] + '/', '')
         tree = self.strs['tree']
@@ -267,5 +237,5 @@ class CreateServiceFiles(object):
 
         rfile.close()
 
-        self.print_line('LYELLOW')
+        self.print_line()
         print()
