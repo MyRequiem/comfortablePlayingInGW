@@ -8,7 +8,7 @@
 <br>
 ![AdvForum](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/AdvForum/screen1.png)
 <br>
-![AdvForum](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/AdvForum/screen3.png)
-<br>
 ![AdvForum](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/AdvForum/screen2.png)
+<br>
+![AdvForum](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/AdvForum/screen3.png)
 <br>

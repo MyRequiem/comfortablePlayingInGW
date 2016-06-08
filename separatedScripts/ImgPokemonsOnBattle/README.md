@@ -8,7 +8,7 @@
 <br>
 ![ImgPokemonsOnBattle](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/ImgPokemonsOnBattle/screen1.png)
 <br>
-![ImgPokemonsOnBattle](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/ImgPokemonsOnBattle/screen3.png)
-<br>
 ![ImgPokemonsOnBattle](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/ImgPokemonsOnBattle/screen2.png)
+<br>
+![ImgPokemonsOnBattle](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/ImgPokemonsOnBattle/screen3.png)
 <br>

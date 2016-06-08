@@ -8,7 +8,7 @@
 <br>
 ![AdvBattleAll](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/AdvBattleAll/screen1.png)
 <br>
-![AdvBattleAll](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/AdvBattleAll/screen3.png)
-<br>
 ![AdvBattleAll](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/AdvBattleAll/screen2.png)
+<br>
+![AdvBattleAll](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/AdvBattleAll/screen3.png)
 <br>
