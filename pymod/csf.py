@@ -236,7 +236,7 @@ class CreateServiceFiles(object):
         print()
         self.print_line('LYELLOW')
 
-        indent = int((78 - (9 + len(self.meta['zname']))) / 2)
+        indent = (78 - 9 - len(self.meta['zname'])) // 2
         self.create_zip(indent)
         self.create_meta(indent)
 
