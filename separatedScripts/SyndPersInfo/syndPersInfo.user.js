@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.10-310316
+// @version         2.20-260616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -139,7 +139,8 @@
                 return;
             }
 
-            var target = this.trs[ind].querySelectorAll('td')[4],
+            var tdInd = /&page=online$/.test(general.loc) ? 5 : 3,
+                target = this.trs[ind].querySelectorAll('td')[tdInd],
                 _this = this;
 
             target.innerHTML = '';

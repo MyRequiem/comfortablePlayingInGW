@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.43-060616
+// @version         1.44-260616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.43-060616';
+        this.version = '1.44-260616';
         /**
          * @property stString
          * @type {String}
@@ -12019,7 +12019,8 @@
                 return;
             }
 
-            var target = this.trs[ind].querySelectorAll('td')[4],
+            var tdInd = /&page=online$/.test(general.loc) ? 5 : 3,
+                target = this.trs[ind].querySelectorAll('td')[tdInd],
                 url = persLink.href,
                 _this = this;
 
