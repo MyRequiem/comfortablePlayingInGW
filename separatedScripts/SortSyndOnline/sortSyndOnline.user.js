@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.14-020616
+// @version         1.15-270616
 // @author          MyRequiem, идея: z0man, VSOP_juDGe
 // ==/UserScript==
 
@@ -130,7 +130,7 @@
          */
         this.createTitle = function (str) {
             var tr = general.doc.createElement('tr');
-            tr.innerHTML = '<td colspan="6" class="wb" ' +
+            tr.innerHTML = '<td colspan="7" class="wb" ' +
                 'bgcolor="#D0EED0" style="text-align: ' +
                 'center;"><span style="font-weight: bold;">' +
                 str + '</span></td>';
