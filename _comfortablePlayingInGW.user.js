@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.45-270616
+// @version         1.46-290616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.45-270616';
+        this.version = '1.46-290616';
         /**
          * @property stString
          * @type {String}
@@ -157,8 +157,12 @@
                         [15] - кидаем грену или нет
                         [16] - подходим или нет
                         [17] - список выбора врагов (хэш: имя --> номер)
-                        [18] - чекбокс "Говорить только левую руку (для БЩ)" */
-                        '@||||||||||||||||||' +
+                        [18] - чекбокс "Говорить только левую руку (для БЩ)"
+                        [19] - общий навык
+                        [20] - навык специалиста
+                        [21] - звук при начале боя
+                        [22] - звук при начале хода */
+                        '@||||||||||||||||||||||' +
                     /*
                     [5]  - BlacklistHighlighting
                         [0]  - ID персов из ЧС ('id1,id2,...')
@@ -1111,14 +1115,19 @@
                     'версиях выводит количество персонажей, сделавших ход.' +
                     '<br><br><span style="color: #FF0000">Не ставьте ' +
                     'значения менее 3 секунд.</span><br>Таймаут обновления ' +
-                    'данных в бою: <input id="refreshBattle" type="text" ' +
+                    'данных в бою:<span style="margin-left: 54px;"> ' +
+                    '</span><input id="refreshBattle" type="text" ' +
                     'maxlength="3" style="width: 30px;" value="' +
                     (general.getData(4)[0] || '0') + '" disabled /> сек (0 - ' +
                     'настройки игры по умолчанию)<br>Таймаут обновления ' +
                     'заявки при входе в нее: <input id="refreshAppl" type="' +
                     'text" maxlength="3" style="width: 30px;" value="' +
                     (general.getData(4)[1] || '0') + '" disabled /> сек (0 - ' +
-                    'настройки игры по умолчанию)' +
+                    'настройки игры по умолчанию)<br>' +
+                    'Звук при начале боя:&nbsp;&nbsp;&nbsp;&nbsp;' +
+                    this.getSelectSound('advBattleSound1') + '<br>' +
+                    'Звук при начале хода:&nbsp;&nbsp;' +
+                    this.getSelectSound('advBattleSound2') +
                     this.getGitHubLink('advBattleAll'), '3'],
                 ['Ссылки в логе боя, критические выстрелы', 'В бою и на ' +
                     'страницax логов боев делает все ники персонажей ' +
@@ -1593,6 +1602,7 @@
                     }
                 }, false);
 
+            // AdvBattleAll
             // обработчики текстовых полей модуля дополнений для боев
             general.$('refreshBattle').
                 addEventListener('input',
@@ -1603,6 +1613,24 @@
 
             var checkInputText = new CheckInputText().init,
                 _this = this;
+
+            // выбор звука начала боя и начала хода
+            var advBattleSound1 = general.$('advBattleSound1'),
+                advBattleSound2 = general.$('advBattleSound2');
+            advBattleSound1.value = general.getData(4)[21] || '0';
+            advBattleSound1.addEventListener('change', function () {
+                _this.modifyData(4, 21, advBattleSound1.value === '0' ?
+                        '' : advBattleSound1.value);
+            }, false);
+            advBattleSound2.value = general.getData(4)[22] || '0';
+            advBattleSound2.addEventListener('change', function () {
+                _this.modifyData(4, 22, advBattleSound2.value === '0' ?
+                        '' : advBattleSound2.value);
+            }, false);
+            general.$('ladvBattleSound1').
+                addEventListener('click', this.testSound, false);
+            general.$('ladvBattleSound2').
+                addEventListener('click', this.testSound, false);
 
             // чекбокс настроек подсветки персонажей из черного списка
             // (блокировать или нет ссылку принятия боя в одиночках)
@@ -2323,6 +2351,11 @@
          * @type {HTMLTableElement|null}
          */
         this.graphTable = null;
+        /**
+         * @property checkSound
+         * @type {Boolean}
+         */
+        this.checkSound = true;
 
         /**
          * @metod getRandom1to3
@@ -2343,6 +2376,8 @@
             dataSt[14] = '';
             dataSt[15] = '';
             dataSt[16] = '';
+            dataSt[19] = '';
+            dataSt[20] = '';
             general.setData(dataSt, 4);
         };
         /**
@@ -2378,7 +2413,26 @@
                     break;
                 }
             }
+
             dataSt[11] = enemy[1];
+
+            // общий навык
+            var generalSkill = '';
+            if (general.doc.querySelector('input[type="checkbox"]' +
+                    '[name="apm_activate"]:checked')) {
+                dataSt[19] = general.doc.querySelector('label[for="apmid"]').
+                    innerHTML;
+                generalSkill = ' + ' + dataSt[19];
+            }
+
+            // навык специалиста
+            var specialSkill = '';
+            if (general.doc.querySelector('input[type="checkbox"]' +
+                    '[name="aps_activate"]:checked')) {
+                dataSt[20] = general.doc.querySelector('label[for="apsid"]').
+                    innerHTML;
+                specialSkill = ' + ' + dataSt[20];
+            }
 
             // кнопка отправки сообщения в чат
             var writeOnChatButton = general.doc.querySelector('input' +
@@ -2393,7 +2447,7 @@
                 dataSt[15] = '1';
                 general.setData(dataSt, 4);
                 _this.inpTextChat.value = str + ' в ' + enemy[1] +
-                    ' [' + enemy[2] + ']';
+                    ' [' + enemy[2] + ']' + generalSkill + specialSkill;
                 writeOnChatButton.click();
                 return;
             }
@@ -2426,7 +2480,8 @@
                         dataSt[12] === '2' ? ' ц' : ' пр';
             }
 
-            _this.inpTextChat.value = str + ' [' + enemy[2] + ']';
+            _this.inpTextChat.value = str + ' [' + enemy[2] + ']' +
+                generalSkill + specialSkill;
             writeOnChatButton.click();
         };
 
@@ -2721,10 +2776,10 @@
         };
 
         /**
-         * @method setMarkStroke
+         * @method clickElem
          * @param   {HTMLElement}   elem
          */
-        this.setMarkStroke = function (elem) {
+        this.clickElem = function (elem) {
             var _elem = elem;
             if (_elem) {
                 _elem.click();
@@ -2769,18 +2824,28 @@
 
                 // если грена
                 if (dataSt[15]) {
-                    this.setMarkStroke(general.$('bagaboom'));
+                    this.clickElem(general.$('bagaboom'));
                 } else {
                     // правая рука
-                    this.setMarkStroke(general.$('right_attack' + dataSt[13]));
+                    this.clickElem(general.$('right_attack' + dataSt[13]));
                     // левая рука
-                    this.setMarkStroke(general.$('left_attack' + dataSt[12]));
+                    this.clickElem(general.$('left_attack' + dataSt[12]));
                 }
 
                 // куда отходим
-                this.setMarkStroke(general.$('defence' + dataSt[14]));
+                this.clickElem(general.$('defence' + dataSt[14]));
                 // подходим или нет
                 this.setWalk(16);
+
+                // общий навык
+                if (dataSt[19]) {
+                    this.clickElem(general.$('apmid'));
+                }
+
+                // навык специалиста
+                if (dataSt[20]) {
+                    this.clickElem(general.$('apsid'));
+                }
 
                 this.clearSavedStrokeAfterSay();
                 return;
@@ -2788,23 +2853,23 @@
 
             // устанавливаем последний сохраненный ход
             if (dataSt[3] === '2') {
-                this.setMarkStroke(general.$('left_attack' + dataSt[5]));
+                this.clickElem(general.$('left_attack' + dataSt[5]));
                 // если нет гранаты, то отмечаем правую руку
                 if (!dataSt[8] || !general.$('bagaboom')) {
-                    this.setMarkStroke(general.$('right_attack' + dataSt[6]));
+                    this.clickElem(general.$('right_attack' + dataSt[6]));
                 }
 
-                this.setMarkStroke(general.$('defence' + dataSt[7]));
+                this.clickElem(general.$('defence' + dataSt[7]));
 
                 if (dataSt[8]) {
-                    this.setMarkStroke(general.$('bagaboom'));
+                    this.clickElem(general.$('bagaboom'));
                 }
 
                 // подходим или нет
                 this.setWalk(9);
             } else {    // случайный ход
                 // куда уходим
-                this.setMarkStroke(general.$('defence' + this.getRandom1to3()));
+                this.clickElem(general.$('defence' + this.getRandom1to3()));
                 // правая, левая
                 var x = this.getRandom1to3(),
                     y = this.getRandom1to3();
@@ -2816,8 +2881,8 @@
                     }
                 }
 
-                this.setMarkStroke(general.$('right_attack' + x));
-                this.setMarkStroke(general.$('left_attack' + y));
+                this.clickElem(general.$('right_attack' + x));
+                this.clickElem(general.$('left_attack' + y));
             }
         };
 
@@ -3440,6 +3505,12 @@
             if (!general.viewMode) {
                 // если есть список выбора врага (ход не сделан)
                 if (selectEnemies) {
+                    // играем звук о начале хода
+                    if (!this.checkSound) {
+                        new PlaySound().init(dataSt[22]);
+                        this.checkSound = true;
+                    }
+
                     var tmp;
                     // обнуляем хэш из выпадающего списка врагов (имя --> номер)
                     this.enemies = {};
@@ -3464,6 +3535,7 @@
                     }
                 // JS-версия, ход сделан
                 } else {
+                    this.checkSound = false;
                     if (!this.enemies) {
                         return;
                     }
@@ -3756,6 +3828,7 @@
 
             // в бою
             if (!general.viewMode) {
+                new PlaySound().init(general.getData(4)[21]);
                 // ячейка для вывода информации своего перса
                 var tdTop = general.doc.querySelector('td[class="txt"]' +
                         '[width="50%"][align="right"]');
@@ -13411,7 +13484,6 @@
                 td,
                 j,
                 i;
-
 
             for (i = 1; i < trs.length; i++) {
                 td = trs[i].querySelectorAll('td');
