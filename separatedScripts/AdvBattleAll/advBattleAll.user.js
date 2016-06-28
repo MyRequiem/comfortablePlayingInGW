@@ -11,7 +11,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         3.51-060616
+// @version         3.60-280616
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -33,7 +33,9 @@
     var refreshAppl = 0,
         /* обновление страницы после того, как сделали ход (в секундах)
         0 - таймаут по умолчанию, который выставлен в настройках персонажа */
-        refreshBattle = 0;
+        refreshBattle = 0,
+        sound1 = 0, // звук при начале боя (0 - без звука)
+        sound2 = 0; // звук при начале хода (0 - без звука)
     //============= КОНЕЦ НАСТРОЕК ===============
 
 /* localStorage data
@@ -47,9 +49,9 @@
     [5]  - куда отходим
     [6]  - кидаем грену или нет
     [7]  - подходим или нет
-    [8] - чекбокс <Сказать своей команде>
+    [8]  - чекбокс <Сказать своей команде>
     # запоминаем ход в хранилище перед тем как сказать ход
-    [9] - номер в кого стреляем
+    [9]  - номер в кого стреляем
     [10] - направление левой руки
     [11] - направление правой руки
     [12] - куда отходим
@@ -57,6 +59,8 @@
     [14] - подходим или нет
     [15] - данные из списка выбора врагов (хэш: имя --> номер)
     [16] - чекбокс "Говорить только левую руку (для БЩ)"
+    [17] - общий навык
+    [18] - навык специалиста
 */
 
     /**
@@ -132,7 +136,7 @@
         getData: function () {
             var stData = this.st.getItem(this.STNAME);
             if (!stData) {
-                stData = '||||||||||||||||';
+                stData = '||||||||||||||||||';
                 this.st.setItem(this.STNAME, stData);
             }
 
@@ -158,6 +162,36 @@
     };
 
     var general = new General();
+
+    /**
+     * @class PlaySound
+     * @constructor
+     */
+    var PlaySound = function () {
+        /**
+         * @method init
+         * @param   {int|String}    sound
+         */
+        this.init = function (sound) {
+            if (!sound || sound === '0') {
+                return;
+            }
+
+            var fl = general.$('_flashcontent');
+            if (!fl) {
+                fl = general.doc.createElement('div');
+                fl.id = '_flashcontent';
+                general.doc.body.appendChild(fl);
+            }
+
+            fl.innerHTML = '<embed ' +
+                'flashvars="soundPath=http://www.ganjawars.ru/sounds/' + sound +
+                '.mp3" allowscriptaccess="always" quality="high" height="1" ' +
+                'width="1" src="http://images.ganjawars.ru/i/play.swf" ' +
+                'type="application/x-shockwave-flash" pluginspage=' +
+                '"http://www.macromedia.com/go/getflashplayer" />';
+        };
+    };
 
     /**
      * @class AjaxQuery
@@ -300,6 +334,11 @@
          * @type {HTMLTableElement|null}
          */
         this.graphTable = null;
+        /**
+         * @property checkSound
+         * @type {Boolean}
+         */
+        this.checkSound = true;
 
         /**
          * @metod getRandom1to3
@@ -320,6 +359,8 @@
             dataSt[12] = '';
             dataSt[13] = '';
             dataSt[14] = '';
+            dataSt[17] = '';
+            dataSt[18] = '';
             general.setData(dataSt);
         };
 
@@ -352,11 +393,29 @@
                     // ecли пок то будет
                     // 1. Electrode [Major][20] 182 HP - 13!
                     enemy = reg.exec(tmps) || (/^(\d+)\. ([^\s]+)/.exec(tmps));
-
                     break;
                 }
             }
+
             dataSt[9] = enemy[1];
+
+            // общий навык
+            var generalSkill = '';
+            if (general.doc.querySelector('input[type="checkbox"]' +
+                    '[name="apm_activate"]:checked')) {
+                dataSt[17] = general.doc.querySelector('label[for="apmid"]').
+                    innerHTML;
+                generalSkill = ' + ' + dataSt[17];
+            }
+
+            // навык специалиста
+            var specialSkill = '';
+            if (general.doc.querySelector('input[type="checkbox"]' +
+                    '[name="aps_activate"]:checked')) {
+                dataSt[18] = general.doc.querySelector('label[for="apsid"]').
+                    innerHTML;
+                specialSkill = ' + ' + dataSt[18];
+            }
 
             // кнопка отправки сообщения в чат
             var writeOnChatButton = general.doc.querySelector('input' +
@@ -371,7 +430,7 @@
                 dataSt[13] = '1';
                 general.setData(dataSt);
                 _this.inpTextChat.value = str + ' в ' + enemy[1] +
-                    ' [' + enemy[2] + ']';
+                    ' [' + enemy[2] + ']' + generalSkill + specialSkill;
                 writeOnChatButton.click();
                 return;
             }
@@ -404,7 +463,8 @@
                         dataSt[10] === '2' ? ' ц' : ' пр';
             }
 
-            _this.inpTextChat.value = str + ' [' + enemy[2] + ']';
+            _this.inpTextChat.value = str + ' [' + enemy[2] + ']' +
+                generalSkill + specialSkill;
             writeOnChatButton.click();
         };
 
@@ -699,10 +759,10 @@
         };
 
         /**
-         * @method setMarkStroke
+         * @method clickElem
          * @param   {HTMLElement}   elem
          */
-        this.setMarkStroke = function (elem) {
+        this.clickElem = function (elem) {
             var _elem = elem;
             if (_elem) {
                 _elem.click();
@@ -747,18 +807,28 @@
 
                 // если грена
                 if (dataSt[13]) {
-                    this.setMarkStroke(general.$('bagaboom'));
+                    this.clickElem(general.$('bagaboom'));
                 } else {
                     // правая рука
-                    this.setMarkStroke(general.$('right_attack' + dataSt[11]));
+                    this.clickElem(general.$('right_attack' + dataSt[11]));
                     // левая рука
-                    this.setMarkStroke(general.$('left_attack' + dataSt[10]));
+                    this.clickElem(general.$('left_attack' + dataSt[10]));
                 }
 
                 // куда отходим
-                this.setMarkStroke(general.$('defence' + dataSt[12]));
+                this.clickElem(general.$('defence' + dataSt[12]));
                 // подходим или нет
                 this.setWalk(14);
+
+                // общий навык
+                if (dataSt[17]) {
+                    this.clickElem(general.$('apmid'));
+                }
+
+                // навык специалиста
+                if (dataSt[18]) {
+                    this.clickElem(general.$('apsid'));
+                }
 
                 this.clearSavedStrokeAfterSay();
                 return;
@@ -766,23 +836,23 @@
 
             // устанавливаем последний сохраненный ход
             if (dataSt[1] === '2') {
-                this.setMarkStroke(general.$('left_attack' + dataSt[3]));
+                this.clickElem(general.$('left_attack' + dataSt[3]));
                 // если нет гранаты, то отмечаем правую руку
                 if (!dataSt[6] || !general.$('bagaboom')) {
-                    this.setMarkStroke(general.$('right_attack' + dataSt[4]));
+                    this.clickElem(general.$('right_attack' + dataSt[4]));
                 }
 
-                this.setMarkStroke(general.$('defence' + dataSt[5]));
+                this.clickElem(general.$('defence' + dataSt[5]));
 
                 if (dataSt[6]) {
-                    this.setMarkStroke(general.$('bagaboom'));
+                    this.clickElem(general.$('bagaboom'));
                 }
 
                 // подходим или нет
                 this.setWalk(7);
             } else {    // случайный ход
                 // куда уходим
-                this.setMarkStroke(general.$('defence' + this.getRandom1to3()));
+                this.clickElem(general.$('defence' + this.getRandom1to3()));
                 // правая, левая
                 var x = this.getRandom1to3(),
                     y = this.getRandom1to3();
@@ -794,8 +864,8 @@
                     }
                 }
 
-                this.setMarkStroke(general.$('right_attack' + x));
-                this.setMarkStroke(general.$('left_attack' + y));
+                this.clickElem(general.$('right_attack' + x));
+                this.clickElem(general.$('left_attack' + y));
             }
         };
 
@@ -1416,6 +1486,12 @@
             if (!general.viewMode) {
                 // если есть список выбора врага (ход не сделан)
                 if (selectEnemies) {
+                    // играем звук о начале хода
+                    if (!this.checkSound) {
+                        new PlaySound().init(sound2);
+                        this.checkSound = true;
+                    }
+
                     var tmp;
                     // обнуляем хэш из выпадающего списка врагов (имя --> номер)
                     this.enemies = {};
@@ -1440,6 +1516,7 @@
                     }
                 // JS-версия, ход сделан
                 } else {
+                    this.checkSound = false;
                     if (!this.enemies) {
                         return;
                     }
@@ -1740,6 +1817,7 @@
 
             // в бою
             if (!general.viewMode) {
+                new PlaySound().init(sound1);
                 // ячейка для вывода информации своего перса
                 var tdTop = general.doc.querySelector('td[class="txt"]' +
                         '[width="50%"][align="right"]');
