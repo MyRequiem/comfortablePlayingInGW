@@ -8,7 +8,6 @@ docstring
 
 import zipfile
 from fnmatch import fnmatch
-from re import search
 from os import (
     listdir,
     getcwd,
@@ -18,8 +17,9 @@ from os import (
 
 from pymod.strs import getstrings
 from pymod.utils import (
-    get_str_indent,
     get_indent_size,
+    get_meta_value,
+    get_str_indent,
     get_mname,
     get_zname
 )
@@ -67,11 +67,12 @@ class CreateServiceFiles(object):
         """
         sep_cripts_dir = self.meta['sdir']
 
-        for d in sorted(listdir(sep_cripts_dir)):
-            d_path = path.join(sep_cripts_dir, d, '')
+        for sepdir in sorted(listdir(sep_cripts_dir)):
+            d_path = path.join(sep_cripts_dir, sepdir, '')
             if path.isdir(d_path):
-                self.meta['dname'] = d
-                self.meta['sname'] = d[:1].lower() + d[1:] + '.user.js'
+                self.meta['dname'] = sepdir
+                self.meta['sname'] = (sepdir[:1].lower() +
+                                      sepdir[1:] + '.user.js')
                 self.meta['mname'] = get_mname(self.meta['sname'])
                 self.meta['zname'] = get_zname(self.meta['sname'])
 
@@ -105,7 +106,7 @@ class CreateServiceFiles(object):
         self.meta['sname'] = self.meta['namemainscript']
         self.meta['mname'] = get_mname(self.meta['sname'])
         self.meta['zname'] = get_zname(self.meta['sname'])
-        self.create_service_files_for_main_script()
+        self.csf_main_script()
 
     def get_creating_string(self, indent=8):
         """
@@ -153,15 +154,14 @@ class CreateServiceFiles(object):
         """
         mfile = open(self.meta['mname'], 'w')
         with open(self.meta['sname']) as sfile:
-            for line in iter(sfile.readline, '\n'):
+            for line in sfile:
+                if line == '\n':
+                    break
                 print(line, end='', file=mfile)
-                desc = search('^// @description\s+(.*?)\n', line)
-                if desc:
-                    self.meta['desc'] = desc.group(1)
-
-                ver = search('^// @version\s+(.*?)\n', line)
-                if ver:
-                    self.meta['ver'] = ver.group(1)
+                if line.startswith('// @description '):
+                    self.meta['desc'] = get_meta_value(line)
+                if line.startswith('// @version '):
+                    self.meta['ver'] = get_meta_value(line)
 
         if not sfile.closed:
             sfile.close()
@@ -200,7 +200,7 @@ class CreateServiceFiles(object):
         print((self.colors['LYELLOW'] + '+' + ('=' * 78) + '+' +
                self.colors['ENDC']))
 
-    def create_service_files_for_main_script(self):
+    def csf_main_script(self):
         """
         docstring
         """
@@ -228,12 +228,12 @@ class CreateServiceFiles(object):
         rfile = open(readme, 'w')
         print(templ[0].format(self.meta['ver'], raw, tree), end='', file=rfile)
 
-        for s in self.list_all_scripts:
-            print(templ[1].format(s['dname'],
-                                  s['ver'],
-                                  s['sdwnld'],
-                                  s['zdwnld'],
-                                  tree + s['dname']), end='', file=rfile)
+        for script in self.list_all_scripts:
+            print(templ[1].format(script['dname'],
+                                  script['ver'],
+                                  script['sdwnld'],
+                                  script['zdwnld'],
+                                  tree + script['dname']), end='', file=rfile)
 
         rfile.close()
 

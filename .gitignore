@@ -2,6 +2,7 @@
 .idea/
 
 # Byte-compiled / optimized
+*.pyc
 __pycache__/
 
 # rope lib (python-mode plugin for vim)
