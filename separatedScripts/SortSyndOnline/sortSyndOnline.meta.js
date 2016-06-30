@@ -8,6 +8,6 @@
 // @include         http://www.ganjawars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.15-270616
+// @version         1.16-300616
 // @author          MyRequiem, идея: z0man, VSOP_juDGe
 // ==/UserScript==

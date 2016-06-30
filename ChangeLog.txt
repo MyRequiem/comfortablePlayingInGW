@@ -1,4 +1,11 @@
 
+2016-06-30[1.47-300616]
+--------------------------------------
+	- Удален скрипт SyndPersInfo
+		Весь функционал скрипта введен в игру на постоянной основе.
+	- Подправлен скрипт SortSyndOnline
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SortSyndOnline
+
 2016-06-29[1.46-290616]
 --------------------------------------
 	- Изменент скрипт AdvBattleAll
