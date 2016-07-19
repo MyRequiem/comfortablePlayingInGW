@@ -1,4 +1,11 @@
 
+2016-07-19[1.48-190716]
+--------------------------------------
+	- Поправлен скрипт AdvBattleAll
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+		Подсвечивание персонажей сделавших ход.
+
+
 2016-06-30[1.47-300616]
 --------------------------------------
 	- Удален скрипт SyndPersInfo

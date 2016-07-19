@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.47-300616
+// @version         1.48-190716
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.47-300616';
+        this.version = '1.48-190716';
         /**
          * @property stString
          * @type {String}
@@ -3475,7 +3475,7 @@
                 var url = general.loc.replace('btl.php', 'b.php'),
                     ajax = new AjaxQuery();
 
-                ajax.init(url, function (xhr) {
+                ajax.init(url, 'GET', null, true, function (xhr) {
                     var span = general.doc.createElement('span');
                     span.innerHTML = xhr.responseText;
                     _this.setCountStroke(span);
