@@ -1,16 +1,6 @@
-# WebStorm, PhpStorm
+# PhpStorm
 .idea/
 
-# Byte-compiled / optimized
-*.pyc
-__pycache__/
-
-# rope lib (python-mode plugin for vim)
-.ropeproject/
-
-# python virtual environment
-/bin
-/include
-/lib
-/lib64
-pyvenv.cfg
+# python
+pymod/*
+!pymod/*.py
