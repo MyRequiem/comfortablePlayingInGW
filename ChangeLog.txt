@@ -1,4 +1,13 @@
 
+2016-07-21[1.49-210716]
+--------------------------------------
+	- Скрипт WorkPostGrenadesBroken
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/WorkPostGrenadesBroken
+		теперь работает только на главной странице персонажа, на страницах
+		логов боев и на страницах заявок.
+		Обновлен список гранат.
+
+
 2016-07-19[1.48-190716]
 --------------------------------------
 	- Поправлен скрипт AdvBattleAll

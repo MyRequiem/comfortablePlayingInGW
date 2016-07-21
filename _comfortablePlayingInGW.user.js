@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.48-190716
+// @version         1.49-210716
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -58,7 +58,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.48-190716';
+        this.version = '1.49-210716';
         /**
          * @property stString
          * @type {String}
@@ -4077,10 +4077,10 @@
          */
         this.grenades = [
             // гос
-            'rgd5', 'grenade_f1', 'rgd2', 'lightst', 'lights', 'rkg3', 'mdn',
-            'rgd2m', 'rgo', 'm84', 'rgn', 'emp_ir', 'fg3l', 'l83a1', 'emp_s',
-            'm67', 'm3', 'hg78', 'hg84', 'fg6', 'anm14', 'm34ph', 'fg7',
-            'fg8bd',
+            'emp_irs', 'emp_a', 'rgd5', 'grenade_f1', 'rgd2', 'lightst',
+            'lights', 'rkg3', 'mdn', 'rgd2m', 'rgo', 'm84', 'rgn', 'emp_ir',
+            'fg3l', 'l83a1', 'emp_s', 'm67', 'm3', 'hg78', 'hg84', 'fg6',
+            'anm14', 'm34ph', 'fg7', 'fg8bd',
             //синдовые
             'lightss', 'lightsm', 'rgd2s', 'grenade_dg1', 'fg5', 'molotov',
             'hellsbreath', 'napalm', 'ghtb', 'me85',
@@ -11903,9 +11903,9 @@
          * @method addCloseButton
          */
         this.addCloseButton = function () {
-            this.divResult.innerHTML += '<div style="margin-top: 5px;">' +
-                '<img id="closemyachiev" src="' + general.imgPath +
-                'close.gif" style="cursor: pointer;" /></div>';
+            this.divResult.innerHTML += '<img id="closemyachiev" ' +
+                'src="' + general.imgPath + 'close.gif" style="cursor: ' +
+                'pointer;" />';
 
             var _this = this;
             general.$('closemyachiev').addEventListener('click', function () {
@@ -13794,25 +13794,28 @@
                 }
             }
 
-            if (initScript[5]) {
+            if (initScript[47]) {
                 try {
-                    new WorkPostGrenadesBroken().init();
+                    new ShowMyAchievements().init();
                 } catch (e) {
                     general.cons.log(e);
+                }
+            }
+
+            if (/(\/me\/)|(\/(warlog|warlist|wargroup)\.php\?)/.
+                    test(general.loc)) {
+                if (initScript[5]) {
+                    try {
+                        new WorkPostGrenadesBroken().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
                 }
             }
 
             if (initScript[1]) {
                 try {
                     new AdditionForNavigationBar().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[47]) {
-                try {
-                    new ShowMyAchievements().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
