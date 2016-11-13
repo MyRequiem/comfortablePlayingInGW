@@ -1,4 +1,12 @@
 
+2016-11-13[1.50-131116]
+--------------------------------------
+	- Обновлен скрипт AdvBattleAll
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+		Добавлено визуальное отображение здоровья персонажей на поле боя.
+		Спасибо Kriss_ :)
+
+
 2016-07-21[1.49-210716]
 --------------------------------------
 	- Скрипт WorkPostGrenadesBroken

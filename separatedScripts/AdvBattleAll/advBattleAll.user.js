@@ -11,7 +11,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         3.60-280616
+// @version         3.70-131116
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -1192,6 +1192,7 @@
                         }
 
                         img[i].style.opacity = visib.toString();
+                        img[i].style.marginLeft = '6px';
                         break;
                     }
                 }
@@ -1257,7 +1258,8 @@
             }
 
             table.setAttribute('style', 'border-collapse: collapse;');
-            table.setAttribute('background', general.imgPath + 'battleField.gif');
+            table.setAttribute('background', general.imgPath +
+                    'battleField.gif');
 
             // вставим пустую строку после таблицы
             // (в НЕ JS-версии уже есть)
@@ -1270,20 +1272,25 @@
 
             var reg = /\/(left|right)_.*\.gif/,
                 td = table.querySelectorAll('td'),
-                leftDC = -1,
+                prBarWidth = 27,
                 rightDC = -1,
+                leftDC = -1,
                 divBattleField,
                 diffCommand,
                 trNumbers,
+                divHealth,
                 tdNumber,
                 cloneTd,
                 myInd,
+                title,
+                hpClr,
                 even,
                 divL,
                 divR,
                 flag,
                 img,
                 DC,
+                hp,
                 i,
                 j;
 
@@ -1312,9 +1319,11 @@
 
                 flag = false;
                 for (j = 0; j < img.length; j++) {
+                    title = img[j].getAttribute('title');
+
                     // ячейка где находится мой перс
-                    if (!general.viewMode && img[j].getAttribute('title').
-                            indexOf(this.myPers.name) !== -1) {
+                    if (!general.viewMode &&
+                            title.indexOf(this.myPers.name) !== -1) {
                         myInd = -1 * i;
                     }
 
@@ -1326,12 +1335,32 @@
                     }
 
                     divBattleField = general.doc.createElement('div');
-                    divBattleField.setAttribute('style', 'padding: 2px;');
+
+                    // формируем прогресс бар здоровья
+                    hp = /\[(\d+)\/(\d+)\]/.exec(title);
+                    if (hp) {
+                        divHealth = general.doc.createElement('div');
+                        divHealth.setAttribute('style',
+                            'width: ' + prBarWidth + 'px; ' +
+                            'background-color: #FFEFDD; ' +
+                            'margin: 7px 1px 3px 1px;');
+
+                        // вычисляем процент оставшегося здоровья
+                        hp = Math.ceil(+hp[1] * 100 / +hp[2]);
+                        hpClr = hp < 30 ? 'FF0000' :
+                                    hp < 80 ? 'C44A00' : '339933';
+
+                        divHealth.innerHTML = '<div style="' +
+                            'height: 2px; width: ' +
+                                Math.ceil(prBarWidth / 100 * hp) + 'px; ' +
+                            'background-color: #' + hpClr + ';"></div>';
+                        divBattleField.appendChild(divHealth);
+                    }
 
                     if (!diffCommand) {
                         td[i].appendChild(divBattleField);
-                        td[i].lastElementChild.appendChild(img[j].
-                            cloneNode(true));
+                        td[i].lastElementChild.
+                                appendChild(img[j].cloneNode(true));
                     } else {
                         if (!flag) {
                             divL = general.doc.createElement('div');
