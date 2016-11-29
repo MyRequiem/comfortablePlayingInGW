@@ -14,10 +14,10 @@
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
-/*global unsafeWindow: true, escape: true */
+/*global unsafeWindow, escape */
 
 /*jslint
-    browser: true, todo: true, passfail: true, devel: true, regexp: true
+    browser: true, todo: true, passfail: true, devel: true, regexp: true,
     plusplus: true, continue: true, vars: true, nomen: true
 */
 
@@ -803,7 +803,7 @@
          * @param   {String|null}   param
          * @param   {Boolean}       async
          * @param   {Function}      onsuccess
-         * @param   {Function}      onfailure
+         * @param   {Function|null} onfailure
          */
         this.init = function (url, rmethod, param, async, onsuccess,
                 onfailure) {
@@ -836,7 +836,7 @@
                         clearTimeout(timeout);
                         if (xmlHttpRequest.status === 200) {
                             onsuccess(xmlHttpRequest);
-                        } else {
+                        } else if (onfailure) {
                             onfailure();
                         }
                     }
@@ -5066,8 +5066,8 @@
     var ComfortableLinksForFarm = function () {
         /**
          * @method setLink
-         * @param   {HTMLLinkElement}   a
-         * @param   {String|null}       txt
+         * @param   {Element}       a
+         * @param   {String|null}   txt
          */
         this.setLink = function (a, txt) {
             var target = general.doc.
@@ -6854,7 +6854,7 @@
                 }
             }
 
-            return btlLogs.length ? true : false;
+            return !!btlLogs.length;
         };
 
         /**
@@ -7919,9 +7919,9 @@
 
         /**
          * @method showHistory
-         * @param   {int}   id
-         * @param   {int}   id1
-         * @param   {int}   id2
+         * @param   {int}       id
+         * @param   {int}       id1
+         * @param   {int|null}  id2
          */
         this.showHistory = function (id, id1, id2) {
             var counter = general.$('counter'),
@@ -8173,7 +8173,7 @@
                 (!ttl ? 'color: #008000' : 'font-weight: bold') + ';">' +
                 game + ':</td>' + '<td style="color: #' +
                 (rez < 0 ? '0000FF' : 'FF0000') + ';">$' +
-                new SetPoints().init(rez, ',') + '</td></tr>';
+                new SetPoints().init(rez, ',', false) + '</td></tr>';
         };
 
         /**
@@ -8801,7 +8801,7 @@
                 // если здоровье менее 80%
                 if (general.doc.querySelector('#hpheader>font')) {
                     this.showSector('http://www.ganjawars.ru/info.php?id=' +
-                            general.myID, null);
+                            general.myID, '');
                 }
             }
         };
@@ -14199,7 +14199,7 @@
             }
         }
 
-        if (/\/wargroup\.php\?/) {
+        if (/\/wargroup\.php\?/.test(general.loc)) {
             if (initScript[55]) {
                 try {
                     new FilterGeneralFighting().init();
