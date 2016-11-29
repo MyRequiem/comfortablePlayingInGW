@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/info.warstats.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.21-020616
+// @version         2.22-291116
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -153,7 +153,7 @@
                 }
             }
 
-            return btlLogs.length ? true : false;
+            return !!btlLogs.length;
         };
 
         /**
