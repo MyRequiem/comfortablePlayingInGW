@@ -10,8 +10,7 @@ if [ "${PROJECTPATH}" != "$(pwd)" ]; then
     exit
 fi
 
-cd ${JSDOCPATH}
-cp ${PROJECTPATH}/${SCRIPTNAME} ${NEWSCRIPTNAME}
-./jsdoc.js --verbose --destination ${PROJECTPATH}/jsdoc ${NEWSCRIPTNAME}
-rm -f ${NEWSCRIPTNAME}
-
+cd ${JSDOCPATH} || exit 1
+cp ${PROJECTPATH}/${SCRIPTNAME} "${NEWSCRIPTNAME}"
+./jsdoc.js --verbose --destination ${PROJECTPATH}/jsdoc "${NEWSCRIPTNAME}"
+rm -f "${NEWSCRIPTNAME}"
