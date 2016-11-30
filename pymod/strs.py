@@ -29,7 +29,7 @@ sms-create.php?mailto=MyRequiem)
 * [Установить]({1}_comfortablePlayingInGW.user.js)
 * [Скачать zip-архив]({1}_comfortablePlayingInGW.user.js.zip)
 * *Все скрипты отдельными файлами находятся в директории* \
-[./separatedScripts]({2})
+[./separatedScripts]({2}) (Всего скриптов: {3})
 * [Как устанавливать скрипты](http://gwscripts.ucoz.net/index/\
 how_to_install/0-31)
 * [История изменений]({1}ChangeLog.txt)

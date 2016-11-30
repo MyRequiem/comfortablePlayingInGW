@@ -60,15 +60,17 @@ class CreateServiceFiles(object):
         }
 
         self.color_templ = '{0} {1}{2}{3}'
+        self.count_scripts = 0
 
     def run(self):
         """
         docstring
         """
-        sep_cripts_dir = self.meta['sdir']
+        sep_scripts_dir = self.meta['sdir']
 
-        for sepdir in sorted(listdir(sep_cripts_dir)):
-            d_path = path.join(sep_cripts_dir, sepdir, '')
+        for sepdir in sorted(listdir(sep_scripts_dir)):
+            self.count_scripts += 1
+            d_path = path.join(sep_scripts_dir, sepdir, '')
             if path.isdir(d_path):
                 self.meta['dname'] = sepdir
                 self.meta['sname'] = (sepdir[:1].lower() +
@@ -226,7 +228,11 @@ class CreateServiceFiles(object):
         templ = self.strs['mainreadme']
 
         rfile = open(readme, 'w')
-        print(templ[0].format(self.meta['ver'], raw, tree), end='', file=rfile)
+        print(templ[0].format(self.meta['ver'],
+                              raw,
+                              tree,
+                              self.count_scripts),
+              end='', file=rfile)
 
         for script in self.list_all_scripts:
             print(templ[1].format(script['dname'],

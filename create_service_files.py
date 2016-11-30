@@ -17,5 +17,5 @@ def main():
 
 
 if __name__ == '__main__':
-    from sys import exit
-    exit(main())
+    import sys
+    sys.exit(main())
