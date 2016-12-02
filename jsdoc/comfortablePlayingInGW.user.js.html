@@ -38,7 +38,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.43-060616
+// @version         1.50-131116
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -86,7 +86,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.43-060616';
+        this.version = '1.50-131116';
         /**
          * @property stString
          * @type {String}
@@ -142,7 +142,7 @@
                         [45] - SyndPtsAnalyser
                         [46] - SyndAnalyser
                         [47] - ShowMyAchievements
-                        [48] - SyndPersInfo
+                        [48] - SyndPersInfo (удален)
                         [49] - SyndOnlineOnMainPage
                         [50] - TimeKarma
                         [51] - ImgPokemonsOnBattle
@@ -185,8 +185,12 @@
                         [15] - кидаем грену или нет
                         [16] - подходим или нет
                         [17] - список выбора врагов (хэш: имя --> номер)
-                        [18] - чекбокс "Говорить только левую руку (для БЩ)" */
-                        '@||||||||||||||||||' +
+                        [18] - чекбокс "Говорить только левую руку (для БЩ)"
+                        [19] - общий навык
+                        [20] - навык специалиста
+                        [21] - звук при начале боя
+                        [22] - звук при начале хода */
+                        '@||||||||||||||||||||||' +
                     /*
                     [5]  - BlacklistHighlighting
                         [0]  - ID персов из ЧС ('id1,id2,...')
@@ -1139,14 +1143,19 @@
                     'версиях выводит количество персонажей, сделавших ход.' +
                     '&lt;br>&lt;br>&lt;span style="color: #FF0000">Не ставьте ' +
                     'значения менее 3 секунд.&lt;/span>&lt;br>Таймаут обновления ' +
-                    'данных в бою: &lt;input id="refreshBattle" type="text" ' +
+                    'данных в бою:&lt;span style="margin-left: 54px;"> ' +
+                    '&lt;/span>&lt;input id="refreshBattle" type="text" ' +
                     'maxlength="3" style="width: 30px;" value="' +
                     (general.getData(4)[0] || '0') + '" disabled /> сек (0 - ' +
                     'настройки игры по умолчанию)&lt;br>Таймаут обновления ' +
                     'заявки при входе в нее: &lt;input id="refreshAppl" type="' +
                     'text" maxlength="3" style="width: 30px;" value="' +
                     (general.getData(4)[1] || '0') + '" disabled /> сек (0 - ' +
-                    'настройки игры по умолчанию)' +
+                    'настройки игры по умолчанию)&lt;br>' +
+                    'Звук при начале боя:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;' +
+                    this.getSelectSound('advBattleSound1') + '&lt;br>' +
+                    'Звук при начале хода:&amp;nbsp;&amp;nbsp;' +
+                    this.getSelectSound('advBattleSound2') +
                     this.getGitHubLink('advBattleAll'), '3'],
                 ['Ссылки в логе боя, критические выстрелы', 'В бою и на ' +
                     'страницax логов боев делает все ники персонажей ' +
@@ -1247,10 +1256,6 @@
                     'Сортировка данных по купленным гранатам, чипам, ' +
                     'выданным званиям и знакам, общему количеству PTS.' +
                     this.getGitHubLink('syndPtsAnalyser'), '45'],
-                ['Информация о бойцах синдиката', 'На страницах онлайна и ' +
-                    'состава синдиката выводит остров, боевой и синдикатный ' +
-                    'уровни бойцов, процент выздоровления.' +
-                    this.getGitHubLink('syndPersInfo'), '48'],
                 ['Онлайн основного синдиката и союза на главной странице',
                     'На главной странице персонажа добавляет ссылки на его ' +
                     'основной синдикат и союз (если есть), при нажатии на ' +
@@ -1621,6 +1626,7 @@
                     }
                 }, false);
 
+            // AdvBattleAll
             // обработчики текстовых полей модуля дополнений для боев
             general.$('refreshBattle').
                 addEventListener('input',
@@ -1631,6 +1637,24 @@
 
             var checkInputText = new CheckInputText().init,
                 _this = this;
+
+            // выбор звука начала боя и начала хода
+            var advBattleSound1 = general.$('advBattleSound1'),
+                advBattleSound2 = general.$('advBattleSound2');
+            advBattleSound1.value = general.getData(4)[21] || '0';
+            advBattleSound1.addEventListener('change', function () {
+                _this.modifyData(4, 21, advBattleSound1.value === '0' ?
+                        '' : advBattleSound1.value);
+            }, false);
+            advBattleSound2.value = general.getData(4)[22] || '0';
+            advBattleSound2.addEventListener('change', function () {
+                _this.modifyData(4, 22, advBattleSound2.value === '0' ?
+                        '' : advBattleSound2.value);
+            }, false);
+            general.$('ladvBattleSound1').
+                addEventListener('click', this.testSound, false);
+            general.$('ladvBattleSound2').
+                addEventListener('click', this.testSound, false);
 
             // чекбокс настроек подсветки персонажей из черного списка
             // (блокировать или нет ссылку принятия боя в одиночках)
@@ -2351,6 +2375,11 @@
          * @type {HTMLTableElement|null}
          */
         this.graphTable = null;
+        /**
+         * @property checkSound
+         * @type {Boolean}
+         */
+        this.checkSound = true;
 
         /**
          * @metod getRandom1to3
@@ -2371,6 +2400,8 @@
             dataSt[14] = '';
             dataSt[15] = '';
             dataSt[16] = '';
+            dataSt[19] = '';
+            dataSt[20] = '';
             general.setData(dataSt, 4);
         };
         /**
@@ -2406,7 +2437,26 @@
                     break;
                 }
             }
+
             dataSt[11] = enemy[1];
+
+            // общий навык
+            var generalSkill = '';
+            if (general.doc.querySelector('input[type="checkbox"]' +
+                    '[name="apm_activate"]:checked')) {
+                dataSt[19] = general.doc.querySelector('label[for="apmid"]').
+                    innerHTML;
+                generalSkill = ' + ' + dataSt[19];
+            }
+
+            // навык специалиста
+            var specialSkill = '';
+            if (general.doc.querySelector('input[type="checkbox"]' +
+                    '[name="aps_activate"]:checked')) {
+                dataSt[20] = general.doc.querySelector('label[for="apsid"]').
+                    innerHTML;
+                specialSkill = ' + ' + dataSt[20];
+            }
 
             // кнопка отправки сообщения в чат
             var writeOnChatButton = general.doc.querySelector('input' +
@@ -2421,7 +2471,7 @@
                 dataSt[15] = '1';
                 general.setData(dataSt, 4);
                 _this.inpTextChat.value = str + ' в ' + enemy[1] +
-                    ' [' + enemy[2] + ']';
+                    ' [' + enemy[2] + ']' + generalSkill + specialSkill;
                 writeOnChatButton.click();
                 return;
             }
@@ -2454,7 +2504,8 @@
                         dataSt[12] === '2' ? ' ц' : ' пр';
             }
 
-            _this.inpTextChat.value = str + ' [' + enemy[2] + ']';
+            _this.inpTextChat.value = str + ' [' + enemy[2] + ']' +
+                generalSkill + specialSkill;
             writeOnChatButton.click();
         };
 
@@ -2749,10 +2800,10 @@
         };
 
         /**
-         * @method setMarkStroke
+         * @method clickElem
          * @param   {HTMLElement}   elem
          */
-        this.setMarkStroke = function (elem) {
+        this.clickElem = function (elem) {
             var _elem = elem;
             if (_elem) {
                 _elem.click();
@@ -2797,18 +2848,28 @@
 
                 // если грена
                 if (dataSt[15]) {
-                    this.setMarkStroke(general.$('bagaboom'));
+                    this.clickElem(general.$('bagaboom'));
                 } else {
                     // правая рука
-                    this.setMarkStroke(general.$('right_attack' + dataSt[13]));
+                    this.clickElem(general.$('right_attack' + dataSt[13]));
                     // левая рука
-                    this.setMarkStroke(general.$('left_attack' + dataSt[12]));
+                    this.clickElem(general.$('left_attack' + dataSt[12]));
                 }
 
                 // куда отходим
-                this.setMarkStroke(general.$('defence' + dataSt[14]));
+                this.clickElem(general.$('defence' + dataSt[14]));
                 // подходим или нет
                 this.setWalk(16);
+
+                // общий навык
+                if (dataSt[19]) {
+                    this.clickElem(general.$('apmid'));
+                }
+
+                // навык специалиста
+                if (dataSt[20]) {
+                    this.clickElem(general.$('apsid'));
+                }
 
                 this.clearSavedStrokeAfterSay();
                 return;
@@ -2816,23 +2877,23 @@
 
             // устанавливаем последний сохраненный ход
             if (dataSt[3] === '2') {
-                this.setMarkStroke(general.$('left_attack' + dataSt[5]));
+                this.clickElem(general.$('left_attack' + dataSt[5]));
                 // если нет гранаты, то отмечаем правую руку
                 if (!dataSt[8] || !general.$('bagaboom')) {
-                    this.setMarkStroke(general.$('right_attack' + dataSt[6]));
+                    this.clickElem(general.$('right_attack' + dataSt[6]));
                 }
 
-                this.setMarkStroke(general.$('defence' + dataSt[7]));
+                this.clickElem(general.$('defence' + dataSt[7]));
 
                 if (dataSt[8]) {
-                    this.setMarkStroke(general.$('bagaboom'));
+                    this.clickElem(general.$('bagaboom'));
                 }
 
                 // подходим или нет
                 this.setWalk(9);
             } else {    // случайный ход
                 // куда уходим
-                this.setMarkStroke(general.$('defence' + this.getRandom1to3()));
+                this.clickElem(general.$('defence' + this.getRandom1to3()));
                 // правая, левая
                 var x = this.getRandom1to3(),
                     y = this.getRandom1to3();
@@ -2844,8 +2905,8 @@
                     }
                 }
 
-                this.setMarkStroke(general.$('right_attack' + x));
-                this.setMarkStroke(general.$('left_attack' + y));
+                this.clickElem(general.$('right_attack' + x));
+                this.clickElem(general.$('left_attack' + y));
             }
         };
 
@@ -3174,6 +3235,7 @@
                         }
 
                         img[i].style.opacity = visib.toString();
+                        img[i].style.marginLeft = '6px';
                         break;
                     }
                 }
@@ -3252,20 +3314,25 @@
 
             var reg = /\/(left|right)_.*\.gif/,
                 td = table.querySelectorAll('td'),
-                leftDC = -1,
+                prBarWidth = 27,
                 rightDC = -1,
+                leftDC = -1,
                 divBattleField,
                 diffCommand,
                 trNumbers,
+                divHealth,
                 tdNumber,
                 cloneTd,
                 myInd,
+                title,
+                hpClr,
                 even,
                 divL,
                 divR,
                 flag,
                 img,
                 DC,
+                hp,
                 i,
                 j;
 
@@ -3294,9 +3361,11 @@
 
                 flag = false;
                 for (j = 0; j &lt; img.length; j++) {
+                    title = img[j].getAttribute('title');
+
                     // ячейка где находится мой перс
-                    if (!general.viewMode &amp;&amp; img[j].getAttribute('title').
-                            indexOf(this.myPers.name) !== -1) {
+                    if (!general.viewMode &amp;&amp;
+                            title.indexOf(this.myPers.name) !== -1) {
                         myInd = -1 * i;
                     }
 
@@ -3308,12 +3377,32 @@
                     }
 
                     divBattleField = general.doc.createElement('div');
-                    divBattleField.setAttribute('style', 'padding: 2px;');
+
+                    // формируем прогресс бар здоровья
+                    hp = /\[(\d+)\/(\d+)\]/.exec(title);
+                    if (hp) {
+                        divHealth = general.doc.createElement('div');
+                        divHealth.setAttribute('style',
+                            'width: ' + prBarWidth + 'px; ' +
+                            'background-color: #FFEFDD; ' +
+                            'margin: 7px 1px 3px 1px;');
+
+                        // вычисляем процент оставшегося здоровья
+                        hp = Math.ceil(+hp[1] * 100 / +hp[2]);
+                        hpClr = hp &lt; 30 ? 'FF0000' :
+                                    hp &lt; 80 ? 'C44A00' : '339933';
+
+                        divHealth.innerHTML = '&lt;div style="' +
+                            'height: 2px; width: ' +
+                                Math.ceil(prBarWidth / 100 * hp) + 'px; ' +
+                            'background-color: #' + hpClr + ';">&lt;/div>';
+                        divBattleField.appendChild(divHealth);
+                    }
 
                     if (!diffCommand) {
                         td[i].appendChild(divBattleField);
-                        td[i].lastElementChild.appendChild(img[j].
-                            cloneNode(true));
+                        td[i].lastElementChild.
+                                appendChild(img[j].cloneNode(true));
                     } else {
                         if (!flag) {
                             divL = general.doc.createElement('div');
@@ -3442,7 +3531,7 @@
                 var url = general.loc.replace('btl.php', 'b.php'),
                     ajax = new AjaxQuery();
 
-                ajax.init(url, function (xhr) {
+                ajax.init(url, 'GET', null, true, function (xhr) {
                     var span = general.doc.createElement('span');
                     span.innerHTML = xhr.responseText;
                     _this.setCountStroke(span);
@@ -3468,6 +3557,12 @@
             if (!general.viewMode) {
                 // если есть список выбора врага (ход не сделан)
                 if (selectEnemies) {
+                    // играем звук о начале хода
+                    if (!this.checkSound) {
+                        new PlaySound().init(dataSt[22]);
+                        this.checkSound = true;
+                    }
+
                     var tmp;
                     // обнуляем хэш из выпадающего списка врагов (имя --> номер)
                     this.enemies = {};
@@ -3492,6 +3587,7 @@
                     }
                 // JS-версия, ход сделан
                 } else {
+                    this.checkSound = false;
                     if (!this.enemies) {
                         return;
                     }
@@ -3784,6 +3880,7 @@
 
             // в бою
             if (!general.viewMode) {
+                new PlaySound().init(general.getData(4)[21]);
                 // ячейка для вывода информации своего перса
                 var tdTop = general.doc.querySelector('td[class="txt"]' +
                         '[width="50%"][align="right"]');
@@ -4036,10 +4133,10 @@
          */
         this.grenades = [
             // гос
-            'rgd5', 'grenade_f1', 'rgd2', 'lightst', 'lights', 'rkg3', 'mdn',
-            'rgd2m', 'rgo', 'm84', 'rgn', 'emp_ir', 'fg3l', 'l83a1', 'emp_s',
-            'm67', 'm3', 'hg78', 'hg84', 'fg6', 'anm14', 'm34ph', 'fg7',
-            'fg8bd',
+            'emp_irs', 'emp_a', 'rgd5', 'grenade_f1', 'rgd2', 'lightst',
+            'lights', 'rkg3', 'mdn', 'rgd2m', 'rgo', 'm84', 'rgn', 'emp_ir',
+            'fg3l', 'l83a1', 'emp_s', 'm67', 'm3', 'hg78', 'hg84', 'fg6',
+            'anm14', 'm34ph', 'fg7', 'fg8bd',
             //синдовые
             'lightss', 'lightsm', 'rgd2s', 'grenade_dg1', 'fg5', 'molotov',
             'hellsbreath', 'napalm', 'ghtb', 'me85',
@@ -8525,7 +8622,7 @@
          */
         this.createTitle = function (str) {
             var tr = general.doc.createElement('tr');
-            tr.innerHTML = '&lt;td colspan="6" class="wb" ' +
+            tr.innerHTML = '&lt;td colspan="8" class="wb" ' +
                 'bgcolor="#D0EED0" style="text-align: ' +
                 'center;">&lt;span style="font-weight: bold;">' +
                 str + '&lt;/span>&lt;/td>';
@@ -11862,9 +11959,9 @@
          * @method addCloseButton
          */
         this.addCloseButton = function () {
-            this.divResult.innerHTML += '&lt;div style="margin-top: 5px;">' +
-                '&lt;img id="closemyachiev" src="' + general.imgPath +
-                'close.gif" style="cursor: pointer;" />&lt;/div>';
+            this.divResult.innerHTML += '&lt;img id="closemyachiev" ' +
+                'src="' + general.imgPath + 'close.gif" style="cursor: ' +
+                'pointer;" />';
 
             var _this = this;
             general.$('closemyachiev').addEventListener('click', function () {
@@ -12003,120 +12100,6 @@
                         indexOf('/info.ach.php?id=' + general.myID) !== -1) {
                     this.setCheckboxes();
                 }
-            }
-        };
-    };
-
-    /**
-     * @class SyndPersInfo
-     * @constructor
-     */
-    var SyndPersInfo = function () {
-        /**
-         * @property trs
-         * @type {Array|null}
-         */
-        this.trs = null;
-
-        /**
-         * @method nextPers
-         * @param   {int}       ind
-         * @param   {Boolean}   timeout
-         */
-        this.nextPers = function (ind, timeout) {
-            var tm = timeout ? 1500 : 0,
-                _this = this;
-
-            if (this.trs[ind + 1]) {
-                general.root.setTimeout(function () {
-                    _this.getPersInfo(ind + 1);
-                }, tm);
-            }
-        };
-
-        /**
-         * @method getPersInfo
-         * @param   {int}   ind
-         */
-        this.getPersInfo = function (ind) {
-            var persLink = this.trs[ind].
-                    querySelector('a[href*="/info.php?id="]');
-
-            if (!persLink) {
-                this.nextPers(ind, false);
-                return;
-            }
-
-            var target = this.trs[ind].querySelectorAll('td')[4],
-                url = persLink.href,
-                _this = this;
-
-            target.innerHTML = '';
-            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
-                var str = xml.responseText;
-                if (/Технический персонаж&lt;\/font> \d+ \(\d+\)/.
-                        test(str)) {
-                    target.innerHTML = '[Тех]';
-                    _this.nextPers(ind, true);
-                    return;
-                }
-
-                var area = /Район:&lt;\/b> &lt;a[^>]+>(\[(Z|G|P|S)\])/.exec(str);
-                area = area ? area[1] : '[Аут]';
-
-                var lvlF = /Боевой:.+&lt;font color="?#99000"?>&lt;b>(\d+)/.
-                        exec(str)[1];
-                lvlF = ' &lt;span style="color: #FF0000;">[' +
-                    (+lvlF &lt; 10 ? '0' + lvlF : lvlF) + ']&lt;/span> ';
-
-                var lvlS = /&lt;b>Основной синд.*&lt;\/b> #\d+[^\[]+\[\s?&lt;b>(\d+)/.
-                        exec(str);
-                lvlS = '&lt;span style="color: #0000FF;">[' +
-                    (!lvlS ? 'Без основы' : (+lvlS[1] &lt; 10 ?
-                             '0' + lvlS[1] : lvlS[1])) + ']&lt;/span> ';
-
-                var spanContent = general.doc.createElement('span');
-                spanContent.innerHTML = str;
-
-                var hp = spanContent.querySelector('#namespan') ||
-                        spanContent.querySelector('span[style="padding-left:' +
-                            '10px;padding-right:13px;"]');
-
-                hp = /\[(-?)(\d+)\s\/\s(\d+)\]/.exec(hp.nextSibling.nodeValue);
-                hp = hp[1] ? '&lt;span style="color: #FF0000;">[Кильнули]&lt;/span>' :
-                        '[' + Math.round(+hp[2] * 100 / +hp[3]) + '%]';
-
-                target.innerHTML = area + lvlF + lvlS + hp;
-                _this.nextPers(ind, true);
-            }, function () {
-                general.root.setTimeout(function () {
-                    _this.getPersInfo(ind);
-                }, 1000);
-            });
-        };
-
-        /**
-         * @method init
-         */
-        this.init = function () {
-            this.trs = general.doc.querySelector('br+center+br+table').
-                    querySelectorAll('tr');
-
-            if (this.trs.length > 1) {
-                var link = general.doc.createElement('a');
-                link.setAttribute('style', 'cursor: pointer; ' +
-                        'text-decoration: underline;');
-                link.innerHTML = 'Инфо';
-                var target = general.doc.querySelector('br+center>' +
-                        'a[style*="bold;"]').nextElementSibling;
-                target.parentNode.insertBefore(link, target);
-                target.parentNode.
-                    insertBefore(general.doc.createTextNode(' | '), target);
-
-                var _this = this;
-                link.addEventListener('click', function () {
-                    _this.getPersInfo(1);
-                }, false);
             }
         };
     };
@@ -13439,7 +13422,6 @@
                 j,
                 i;
 
-
             for (i = 1; i &lt; trs.length; i++) {
                 td = trs[i].querySelectorAll('td');
 
@@ -13868,25 +13850,28 @@
                 }
             }
 
-            if (initScript[5]) {
+            if (initScript[47]) {
                 try {
-                    new WorkPostGrenadesBroken().init();
+                    new ShowMyAchievements().init();
                 } catch (e) {
                     general.cons.log(e);
+                }
+            }
+
+            if (/(\/me\/)|(\/(warlog|warlist|wargroup)\.php\?)/.
+                    test(general.loc)) {
+                if (initScript[5]) {
+                    try {
+                        new WorkPostGrenadesBroken().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
                 }
             }
 
             if (initScript[1]) {
                 try {
                     new AdditionForNavigationBar().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[47]) {
-                try {
-                    new ShowMyAchievements().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
@@ -14123,15 +14108,6 @@
                     general.cons.log(e);
                 }
             }
-
-            if (/&amp;page=online$|&amp;page=members$/.test(general.loc) &amp;&amp;
-                    initScript[48]) {
-                try {
-                    new SyndPersInfo().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
         }
 
         if (/\/roulette\.php$/.test(general.loc)) {
@@ -14284,13 +14260,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="-_anonymous_-CritShotsAndLinksBtlLog_CriticalShots.html">CriticalShots</a></li><li><a href="-_anonymous_-SyndAnalyser-MainData.html">MainData</a></li></ul><h3>Namespaces</h3><ul><li><a href="general.root.bf1.html">bf1</a></li><li><a href="general.root.bf2.html">bf2</a></li><li><a href="general.root.bf3.html">bf3</a></li><li><a href="general.root.bfndl.html">bfndl</a></li><li><a href="general.root.frames.bsrc.html">bsrc</a></li><li><a href="general.root.waitforturn.html">waitforturn</a></li><li><a href="general.root.ZeroClipboard.html">ZeroClipboard</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#addCloseButton">addCloseButton</a></li><li><a href="global.html#addContent">addContent</a></li><li><a href="global.html#addData">addData</a></li><li><a href="global.html#addEvent">addEvent</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#advSetBonusInfo">advSetBonusInfo</a></li><li><a href="global.html#blink">blink</a></li><li><a href="global.html#calc">calc</a></li><li><a href="global.html#calculateBets">calculateBets</a></li><li><a href="global.html#calculateFarm">calculateFarm</a></li><li><a href="global.html#calculatePerHour">calculatePerHour</a></li><li><a href="global.html#change_updatechatlines">change_updatechatlines</a></li><li><a href="global.html#changeColor">changeColor</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#changeLocationFighters">changeLocationFighters</a></li><li><a href="global.html#changeMakebf">changeMakebf</a></li><li><a href="global.html#changeSelect">changeSelect</a></li><li><a href="global.html#changeSelectEnemies">changeSelectEnemies</a></li><li><a href="global.html#changeStData">changeStData</a></li><li><a href="global.html#changeTable">changeTable</a></li><li><a href="global.html#checkAvailability">checkAvailability</a></li><li><a href="global.html#checkKeyCode">checkKeyCode</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#checkRange">checkRange</a></li><li><a href="global.html#checkScriptUpdate">checkScriptUpdate</a></li><li><a href="global.html#checkState">checkState</a></li><li><a href="global.html#cleanStorage">cleanStorage</a></li><li><a href="global.html#clearClick">clearClick</a></li><li><a href="global.html#clearCounter">clearCounter</a></li><li><a href="global.html#clearFields">clearFields</a></li><li><a href="global.html#clearNPCData">clearNPCData</a></li><li><a href="global.html#clearSavedStrokeAfterSay">clearSavedStrokeAfterSay</a></li><li><a href="global.html#clickImageFighters">clickImageFighters</a></li><li><a href="global.html#compareLines">compareLines</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#createDivSms">createDivSms</a></li><li><a href="global.html#createGwMenuDiv">createGwMenuDiv</a></li><li><a href="global.html#createGWMenuItems">createGWMenuItems</a></li><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createSelectList">createSelectList</a></li><li><a href="global.html#createTitle">createTitle</a></li><li><a href="global.html#deleteImagePoks">deleteImagePoks</a></li><li><a href="global.html#delSpaces">delSpaces</a></li><li><a href="global.html#enterPress">enterPress</a></li><li><a href="global.html#fillData">fillData</a></li><li><a href="global.html#findItem">findItem</a></li><li><a href="global.html#findObj">findObj</a></li><li><a href="global.html#fixSkills">fixSkills</a></li><li><a href="global.html#formatTime">formatTime</a></li><li><a href="global.html#fOut">fOut</a></li><li><a href="global.html#fOver">fOver</a></li><li><a href="global.html#getAchievNow">getAchievNow</a></li><li><a href="global.html#getAllCrits">getAllCrits</a></li><li><a href="global.html#getBattleField">getBattleField</a></li><li><a href="global.html#getBattles">getBattles</a></li><li><a href="global.html#getCoord">getCoord</a></li><li><a href="global.html#getCrits">getCrits</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataFighters">getDataFighters</a></li><li><a href="global.html#getDataNow">getDataNow</a></li><li><a href="global.html#getForumTable">getForumTable</a></li><li><a href="global.html#getGitHubLink">getGitHubLink</a></li><li><a href="global.html#getHourTime">getHourTime</a></li><li><a href="global.html#getHtime">getHtime</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getLastDate">getLastDate</a></li><li><a href="global.html#getLeftRightCommands">getLeftRightCommands</a></li><li><a href="global.html#getLineMenu">getLineMenu</a></li><li><a href="global.html#getMessagesOnPages">getMessagesOnPages</a></li><li><a href="global.html#getNewsId">getNewsId</a></li><li><a href="global.html#getOnline">getOnline</a></li><li><a href="global.html#getPers">getPers</a></li><li><a href="global.html#getPersInfo">getPersInfo</a></li><li><a href="global.html#getPersLink">getPersLink</a></li><li><a href="global.html#getPersNote">getPersNote</a></li><li><a href="global.html#getRange">getRange</a></li><li><a href="global.html#getRealEstateStr">getRealEstateStr</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#getSelectOptions">getSelectOptions</a></li><li><a href="global.html#getStrGameRez">getStrGameRez</a></li><li><a href="global.html#getTimeNow">getTimeNow</a></li><li><a href="global.html#getTrs">getTrs</a></li><li><a href="global.html#getTrsTable">getTrsTable</a></li><li><a href="global.html#getTypeLine">getTypeLine</a></li><li><a href="global.html#getUnionOnline">getUnionOnline</a></li><li><a href="global.html#getValue">getValue</a></li><li><a href="global.html#goQuest">goQuest</a></li><li><a href="global.html#gwMenuInit">gwMenuInit</a></li><li><a href="global.html#hideTooltip">hideTooltip</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#insertMess">insertMess</a></li><li><a href="global.html#isEven">isEven</a></li><li><a href="global.html#isForumPage">isForumPage</a></li><li><a href="global.html#listenSound">listenSound</a></li><li><a href="global.html#modifyData">modifyData</a></li><li><a href="global.html#moveArrow">moveArrow</a></li><li><a href="global.html#nextAjaxQuery">nextAjaxQuery</a></li><li><a href="global.html#nextPers">nextPers</a></li><li><a href="global.html#notesClick">notesClick</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#openCloseItem">openCloseItem</a></li><li><a href="global.html#parseLine">parseLine</a></li><li><a href="global.html#parseMessages">parseMessages</a></li><li><a href="global.html#parsePTSProtocols">parsePTSProtocols</a></li><li><a href="global.html#parseSyndPage">parseSyndPage</a></li><li><a href="global.html#parseSyndProtocols">parseSyndProtocols</a></li><li><a href="global.html#preGetOnline">preGetOnline</a></li><li><a href="global.html#processingThemesList">processingThemesList</a></li><li><a href="global.html#rememberClick">rememberClick</a></li><li><a href="global.html#rememberTime">rememberTime</a></li><li><a href="global.html#resetGBCounter">resetGBCounter</a></li><li><a href="global.html#resetGosEnergoAtom">resetGosEnergoAtom</a></li><li><a href="global.html#saveData">saveData</a></li><li><a href="global.html#saveSettings">saveSettings</a></li><li><a href="global.html#saveSyndData">saveSyndData</a></li><li><a href="global.html#scan">scan</a></li><li><a href="global.html#scanNPC">scanNPC</a></li><li><a href="global.html#selectChange">selectChange</a></li><li><a href="global.html#selectChangeHandler">selectChangeHandler</a></li><li><a href="global.html#selectMode">selectMode</a></li><li><a href="global.html#setBonusInfo">setBonusInfo</a></li><li><a href="global.html#setButton">setButton</a></li><li><a href="global.html#setChatInterface">setChatInterface</a></li><li><a href="global.html#setCheckboxes">setCheckboxes</a></li><li><a href="global.html#setChkHandler">setChkHandler</a></li><li><a href="global.html#setCloseButton">setCloseButton</a></li><li><a href="global.html#setColorFighters">setColorFighters</a></li><li><a href="global.html#setCounter">setCounter</a></li><li><a href="global.html#setCounters">setCounters</a></li><li><a href="global.html#setCountStroke">setCountStroke</a></li><li><a href="global.html#setCSSGwMenu">setCSSGwMenu</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setDataDiv">setDataDiv</a></li><li><a href="global.html#setEnvelope">setEnvelope</a></li><li><a href="global.html#setFilter">setFilter</a></li><li><a href="global.html#setFriendPage">setFriendPage</a></li><li><a href="global.html#setGBCounter">setGBCounter</a></li><li><a href="global.html#setGenerator">setGenerator</a></li><li><a href="global.html#setHandlersGWMenu">setHandlersGWMenu</a></li><li><a href="global.html#setHandlerSubmit">setHandlerSubmit</a></li><li><a href="global.html#setHighlighting">setHighlighting</a></li><li><a href="global.html#setHrefItem">setHrefItem</a></li><li><a href="global.html#setImgGetData">setImgGetData</a></li><li><a href="global.html#setLeftToLevel">setLeftToLevel</a></li><li><a href="global.html#setLink">setLink</a></li><li><a href="global.html#setMainPage">setMainPage</a></li><li><a href="global.html#setMainPanel">setMainPanel</a></li><li><a href="global.html#setMarkStroke">setMarkStroke</a></li><li><a href="global.html#setMyInfo">setMyInfo</a></li><li><a href="global.html#setNameInChat">setNameInChat</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setPlantData">setPlantData</a></li><li><a href="global.html#setRange">setRange</a></li><li><a href="global.html#setRedLink">setRedLink</a></li><li><a href="global.html#setReminder">setReminder</a></li><li><a href="global.html#setSettingsForAdvBattleAll">setSettingsForAdvBattleAll</a></li><li><a href="global.html#setSettingsPanel">setSettingsPanel</a></li><li><a href="global.html#setSettins">setSettins</a></li><li><a href="global.html#setSms">setSms</a></li><li><a href="global.html#setSortListEnemy">setSortListEnemy</a></li><li><a href="global.html#setSortSyndWarData">setSortSyndWarData</a></li><li><a href="global.html#setStroke">setStroke</a></li><li><a href="global.html#setTimer">setTimer</a></li><li><a href="global.html#setTooltipsFighters">setTooltipsFighters</a></li><li><a href="global.html#setZeroClipboardLib">setZeroClipboardLib</a></li><li><a href="global.html#showCrits">showCrits</a></li><li><a href="global.html#showData">showData</a></li><li><a href="global.html#showHideForum">showHideForum</a></li><li><a href="global.html#showHideLink">showHideLink</a></li><li><a href="global.html#showHidePreloader">showHidePreloader</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li><li><a href="global.html#showHistory">showHistory</a></li><li><a href="global.html#showImagePoks">showImagePoks</a></li><li><a href="global.html#showOfSyndLinks">showOfSyndLinks</a></li><li><a href="global.html#showRange">showRange</a></li><li><a href="global.html#showRezult">showRezult</a></li><li><a href="global.html#showSector">showSector</a></li><li><a href="global.html#showSettings">showSettings</a></li><li><a href="global.html#showSms">showSms</a></li><li><a href="global.html#showSyndData">showSyndData</a></li><li><a href="global.html#showTimer">showTimer</a></li><li><a href="global.html#showTimerNPC">showTimerNPC</a></li><li><a href="global.html#showTooltip">showTooltip</a></li><li><a href="global.html#sortBattles">sortBattles</a></li><li><a href="global.html#sortEnemyList">sortEnemyList</a></li><li><a href="global.html#sortGosEnergoAtom">sortGosEnergoAtom</a></li><li><a href="global.html#sortGosEnergoAtomBySynd">sortGosEnergoAtomBySynd</a></li><li><a href="global.html#sortMess">sortMess</a></li><li><a href="global.html#sortPers">sortPers</a></li><li><a href="global.html#sortSyndWars">sortSyndWars</a></li><li><a href="global.html#sortWeapon">sortWeapon</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startCountBattles">startCountBattles</a></li><li><a href="global.html#startInventoryPlus">startInventoryPlus</a></li><li><a href="global.html#startWorkPostGrenadesBroken">startWorkPostGrenadesBroken</a></li><li><a href="global.html#syndAlert">syndAlert</a></li><li><a href="global.html#testSound">testSound</a></li><li><a href="global.html#testSubject">testSubject</a></li><li><a href="global.html#titleClick">titleClick</a></li><li><a href="global.html#toDec">toDec</a></li><li><a href="global.html#toHex">toHex</a></li><li><a href="global.html#tryStart">tryStart</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="-_anonymous_-CritShotsAndLinksBtlLog_CriticalShots.html">CriticalShots</a></li><li><a href="-_anonymous_-SyndAnalyser-MainData.html">MainData</a></li></ul><h3>Namespaces</h3><ul><li><a href="general.root.bf1.html">bf1</a></li><li><a href="general.root.bf2.html">bf2</a></li><li><a href="general.root.bf3.html">bf3</a></li><li><a href="general.root.bfndl.html">bfndl</a></li><li><a href="general.root.frames.bsrc.html">bsrc</a></li><li><a href="general.root.waitforturn.html">waitforturn</a></li><li><a href="general.root.ZeroClipboard.html">ZeroClipboard</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#addCloseButton">addCloseButton</a></li><li><a href="global.html#addContent">addContent</a></li><li><a href="global.html#addData">addData</a></li><li><a href="global.html#addEvent">addEvent</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#advSetBonusInfo">advSetBonusInfo</a></li><li><a href="global.html#blink">blink</a></li><li><a href="global.html#calc">calc</a></li><li><a href="global.html#calculateBets">calculateBets</a></li><li><a href="global.html#calculateFarm">calculateFarm</a></li><li><a href="global.html#calculatePerHour">calculatePerHour</a></li><li><a href="global.html#change_updatechatlines">change_updatechatlines</a></li><li><a href="global.html#changeColor">changeColor</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#changeLocationFighters">changeLocationFighters</a></li><li><a href="global.html#changeMakebf">changeMakebf</a></li><li><a href="global.html#changeSelect">changeSelect</a></li><li><a href="global.html#changeSelectEnemies">changeSelectEnemies</a></li><li><a href="global.html#changeStData">changeStData</a></li><li><a href="global.html#changeTable">changeTable</a></li><li><a href="global.html#checkAvailability">checkAvailability</a></li><li><a href="global.html#checkKeyCode">checkKeyCode</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#checkRange">checkRange</a></li><li><a href="global.html#checkScriptUpdate">checkScriptUpdate</a></li><li><a href="global.html#checkState">checkState</a></li><li><a href="global.html#cleanStorage">cleanStorage</a></li><li><a href="global.html#clearClick">clearClick</a></li><li><a href="global.html#clearCounter">clearCounter</a></li><li><a href="global.html#clearFields">clearFields</a></li><li><a href="global.html#clearNPCData">clearNPCData</a></li><li><a href="global.html#clearSavedStrokeAfterSay">clearSavedStrokeAfterSay</a></li><li><a href="global.html#clickElem">clickElem</a></li><li><a href="global.html#clickImageFighters">clickImageFighters</a></li><li><a href="global.html#compareLines">compareLines</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#createDivSms">createDivSms</a></li><li><a href="global.html#createGwMenuDiv">createGwMenuDiv</a></li><li><a href="global.html#createGWMenuItems">createGWMenuItems</a></li><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createSelectList">createSelectList</a></li><li><a href="global.html#createTitle">createTitle</a></li><li><a href="global.html#deleteImagePoks">deleteImagePoks</a></li><li><a href="global.html#delSpaces">delSpaces</a></li><li><a href="global.html#enterPress">enterPress</a></li><li><a href="global.html#fillData">fillData</a></li><li><a href="global.html#findItem">findItem</a></li><li><a href="global.html#findObj">findObj</a></li><li><a href="global.html#fixSkills">fixSkills</a></li><li><a href="global.html#formatTime">formatTime</a></li><li><a href="global.html#fOut">fOut</a></li><li><a href="global.html#fOver">fOver</a></li><li><a href="global.html#getAchievNow">getAchievNow</a></li><li><a href="global.html#getAllCrits">getAllCrits</a></li><li><a href="global.html#getBattleField">getBattleField</a></li><li><a href="global.html#getBattles">getBattles</a></li><li><a href="global.html#getCoord">getCoord</a></li><li><a href="global.html#getCrits">getCrits</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataFighters">getDataFighters</a></li><li><a href="global.html#getDataNow">getDataNow</a></li><li><a href="global.html#getForumTable">getForumTable</a></li><li><a href="global.html#getGitHubLink">getGitHubLink</a></li><li><a href="global.html#getHourTime">getHourTime</a></li><li><a href="global.html#getHtime">getHtime</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getLastDate">getLastDate</a></li><li><a href="global.html#getLeftRightCommands">getLeftRightCommands</a></li><li><a href="global.html#getLineMenu">getLineMenu</a></li><li><a href="global.html#getMessagesOnPages">getMessagesOnPages</a></li><li><a href="global.html#getNewsId">getNewsId</a></li><li><a href="global.html#getOnline">getOnline</a></li><li><a href="global.html#getPers">getPers</a></li><li><a href="global.html#getPersLink">getPersLink</a></li><li><a href="global.html#getPersNote">getPersNote</a></li><li><a href="global.html#getRange">getRange</a></li><li><a href="global.html#getRealEstateStr">getRealEstateStr</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#getSelectOptions">getSelectOptions</a></li><li><a href="global.html#getStrGameRez">getStrGameRez</a></li><li><a href="global.html#getTimeNow">getTimeNow</a></li><li><a href="global.html#getTrs">getTrs</a></li><li><a href="global.html#getTrsTable">getTrsTable</a></li><li><a href="global.html#getTypeLine">getTypeLine</a></li><li><a href="global.html#getUnionOnline">getUnionOnline</a></li><li><a href="global.html#getValue">getValue</a></li><li><a href="global.html#goQuest">goQuest</a></li><li><a href="global.html#gwMenuInit">gwMenuInit</a></li><li><a href="global.html#hideTooltip">hideTooltip</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#insertMess">insertMess</a></li><li><a href="global.html#isEven">isEven</a></li><li><a href="global.html#isForumPage">isForumPage</a></li><li><a href="global.html#listenSound">listenSound</a></li><li><a href="global.html#modifyData">modifyData</a></li><li><a href="global.html#moveArrow">moveArrow</a></li><li><a href="global.html#nextAjaxQuery">nextAjaxQuery</a></li><li><a href="global.html#notesClick">notesClick</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#openCloseItem">openCloseItem</a></li><li><a href="global.html#parseLine">parseLine</a></li><li><a href="global.html#parseMessages">parseMessages</a></li><li><a href="global.html#parsePTSProtocols">parsePTSProtocols</a></li><li><a href="global.html#parseSyndPage">parseSyndPage</a></li><li><a href="global.html#parseSyndProtocols">parseSyndProtocols</a></li><li><a href="global.html#preGetOnline">preGetOnline</a></li><li><a href="global.html#processingThemesList">processingThemesList</a></li><li><a href="global.html#rememberClick">rememberClick</a></li><li><a href="global.html#rememberTime">rememberTime</a></li><li><a href="global.html#resetGBCounter">resetGBCounter</a></li><li><a href="global.html#resetGosEnergoAtom">resetGosEnergoAtom</a></li><li><a href="global.html#saveData">saveData</a></li><li><a href="global.html#saveSettings">saveSettings</a></li><li><a href="global.html#saveSyndData">saveSyndData</a></li><li><a href="global.html#scan">scan</a></li><li><a href="global.html#scanNPC">scanNPC</a></li><li><a href="global.html#selectChange">selectChange</a></li><li><a href="global.html#selectChangeHandler">selectChangeHandler</a></li><li><a href="global.html#selectMode">selectMode</a></li><li><a href="global.html#setBonusInfo">setBonusInfo</a></li><li><a href="global.html#setButton">setButton</a></li><li><a href="global.html#setChatInterface">setChatInterface</a></li><li><a href="global.html#setCheckboxes">setCheckboxes</a></li><li><a href="global.html#setChkHandler">setChkHandler</a></li><li><a href="global.html#setCloseButton">setCloseButton</a></li><li><a href="global.html#setColorFighters">setColorFighters</a></li><li><a href="global.html#setCounter">setCounter</a></li><li><a href="global.html#setCounters">setCounters</a></li><li><a href="global.html#setCountStroke">setCountStroke</a></li><li><a href="global.html#setCSSGwMenu">setCSSGwMenu</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setDataDiv">setDataDiv</a></li><li><a href="global.html#setEnvelope">setEnvelope</a></li><li><a href="global.html#setFilter">setFilter</a></li><li><a href="global.html#setFriendPage">setFriendPage</a></li><li><a href="global.html#setGBCounter">setGBCounter</a></li><li><a href="global.html#setGenerator">setGenerator</a></li><li><a href="global.html#setHandlersGWMenu">setHandlersGWMenu</a></li><li><a href="global.html#setHandlerSubmit">setHandlerSubmit</a></li><li><a href="global.html#setHighlighting">setHighlighting</a></li><li><a href="global.html#setHrefItem">setHrefItem</a></li><li><a href="global.html#setImgGetData">setImgGetData</a></li><li><a href="global.html#setLeftToLevel">setLeftToLevel</a></li><li><a href="global.html#setLink">setLink</a></li><li><a href="global.html#setMainPage">setMainPage</a></li><li><a href="global.html#setMainPanel">setMainPanel</a></li><li><a href="global.html#setMyInfo">setMyInfo</a></li><li><a href="global.html#setNameInChat">setNameInChat</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setPlantData">setPlantData</a></li><li><a href="global.html#setRange">setRange</a></li><li><a href="global.html#setRedLink">setRedLink</a></li><li><a href="global.html#setReminder">setReminder</a></li><li><a href="global.html#setSettingsForAdvBattleAll">setSettingsForAdvBattleAll</a></li><li><a href="global.html#setSettingsPanel">setSettingsPanel</a></li><li><a href="global.html#setSettins">setSettins</a></li><li><a href="global.html#setSms">setSms</a></li><li><a href="global.html#setSortListEnemy">setSortListEnemy</a></li><li><a href="global.html#setSortSyndWarData">setSortSyndWarData</a></li><li><a href="global.html#setStroke">setStroke</a></li><li><a href="global.html#setTimer">setTimer</a></li><li><a href="global.html#setTooltipsFighters">setTooltipsFighters</a></li><li><a href="global.html#setZeroClipboardLib">setZeroClipboardLib</a></li><li><a href="global.html#showCrits">showCrits</a></li><li><a href="global.html#showData">showData</a></li><li><a href="global.html#showHideForum">showHideForum</a></li><li><a href="global.html#showHideLink">showHideLink</a></li><li><a href="global.html#showHidePreloader">showHidePreloader</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li><li><a href="global.html#showHistory">showHistory</a></li><li><a href="global.html#showImagePoks">showImagePoks</a></li><li><a href="global.html#showOfSyndLinks">showOfSyndLinks</a></li><li><a href="global.html#showRange">showRange</a></li><li><a href="global.html#showRezult">showRezult</a></li><li><a href="global.html#showSector">showSector</a></li><li><a href="global.html#showSettings">showSettings</a></li><li><a href="global.html#showSms">showSms</a></li><li><a href="global.html#showSyndData">showSyndData</a></li><li><a href="global.html#showTimer">showTimer</a></li><li><a href="global.html#showTimerNPC">showTimerNPC</a></li><li><a href="global.html#showTooltip">showTooltip</a></li><li><a href="global.html#sortBattles">sortBattles</a></li><li><a href="global.html#sortEnemyList">sortEnemyList</a></li><li><a href="global.html#sortGosEnergoAtom">sortGosEnergoAtom</a></li><li><a href="global.html#sortGosEnergoAtomBySynd">sortGosEnergoAtomBySynd</a></li><li><a href="global.html#sortMess">sortMess</a></li><li><a href="global.html#sortPers">sortPers</a></li><li><a href="global.html#sortSyndWars">sortSyndWars</a></li><li><a href="global.html#sortWeapon">sortWeapon</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startCountBattles">startCountBattles</a></li><li><a href="global.html#startInventoryPlus">startInventoryPlus</a></li><li><a href="global.html#startWorkPostGrenadesBroken">startWorkPostGrenadesBroken</a></li><li><a href="global.html#syndAlert">syndAlert</a></li><li><a href="global.html#testSound">testSound</a></li><li><a href="global.html#testSubject">testSubject</a></li><li><a href="global.html#titleClick">titleClick</a></li><li><a href="global.html#toDec">toDec</a></li><li><a href="global.html#toHex">toHex</a></li><li><a href="global.html#tryStart">tryStart</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.0-dev</a> on Wed Jun 08 2016 16:36:07 GMT+0400 (+04)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri Dec 02 2016 12:26:12 GMT+0400 (+04)
 </footer>
 
 <script> prettyPrint(); </script>
