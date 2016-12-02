@@ -26,7 +26,7 @@
 ![Screen2](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/screen2.png)
 <br>
 <br>
-*Сохранение/восстановление/сброс настроек:*
+*Сохранение/восстановление/сброс настроек, просмотр истории изменений:*
 ![Screen3](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/screen3.png)
 <br>
 <br>
