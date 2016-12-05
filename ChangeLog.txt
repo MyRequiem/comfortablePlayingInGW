@@ -1,3 +1,8 @@
+2016-12-05[1.60-051216]
+--------------------------------------
+	- Добавлен скрипт Regeneration
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/Regeneration
+
 
 2016-11-13[1.50-131116]
 --------------------------------------
