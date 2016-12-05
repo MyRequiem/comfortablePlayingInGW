@@ -10,7 +10,7 @@
 // @include         http://www.ganjawars.ru/forum.php
 // @grant           none
 // @license         MIT
-// @version         2.00-180216
+// @version         2.01-051216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -533,7 +533,7 @@
                     '400px;" /></td></tr><tr><td colspan="2" ' +
                     'style="padding-top: 10px;"><span id="return" ' +
                     'style="cursor: pointer; color: #990000; font-weight: ' +
-                    'bold;"><< Назад</span></td></tr><tr><td cospan="2" ' +
+                    'bold;"><< Назад</span></td></tr><tr><td colspan="2" ' +
                     'style="font-weight: bold; padding-top: 10px;">' +
                     'Показывать ветки форума на <a target="_blank" ' +
                     'href="http://www.ganjawars.ru/forum.php">этой странице' +
