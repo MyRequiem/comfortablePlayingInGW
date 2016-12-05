@@ -1,4 +1,4 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name            ComfortablePlayingInGW
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     Веселые плюшки для ganjawars.ru
@@ -10,6 +10,6 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.50-131116
+// @version         1.60-051216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==

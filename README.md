@@ -7,12 +7,12 @@
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
 <br>
 <br>
-Версия: 1.50-131116
+Версия: 1.60-051216
 <br>
 Нашли ошибку? Пожалуйста, [сообщите](http://www.ganjawars.ru/sms-create.php?mailto=MyRequiem)
 * [Установить](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js)
 * [Скачать zip-архив](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js.zip)
-* *Все скрипты отдельными файлами находятся в директории* [./separatedScripts](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/) (Всего скриптов: 60)
+* *Все скрипты отдельными файлами находятся в директории* [./separatedScripts](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/) (Всего скриптов: 61)
 * [Как устанавливать скрипты](http://gwscripts.ucoz.net/index/how_to_install/0-31)
 * [История изменений](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/ChangeLog.txt)
 <br>
@@ -56,7 +56,7 @@
 
 **AdvForum**
 <br>
-Версия: 2.00-180216
+Версия: 2.01-051216
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvForum/advForum.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvForum/advForum.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvForum)
 <br>
@@ -325,6 +325,13 @@
 Версия: 2.01-020616
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/RangeWeapon/rangeWeapon.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/RangeWeapon/rangeWeapon.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/RangeWeapon)
+<br>
+
+**Regeneration**
+<br>
+Версия: 2.31-051216
+<br>
+[[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/Regeneration/regeneration.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/Regeneration/regeneration.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/Regeneration)
 <br>
 
 **RentAndSale**
