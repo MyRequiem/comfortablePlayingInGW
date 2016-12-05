@@ -1,4 +1,4 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name            ComfortablePlayingInGW
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     Веселые плюшки для ganjawars.ru
@@ -10,16 +10,23 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.50-131116
+// @version         1.60-051216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow, escape */
-
-/*jslint
-    browser: true, todo: true, passfail: true, devel: true, regexp: true,
-    plusplus: true, continue: true, vars: true, nomen: true
+/*jslint browser: true, maxlen: 80, regexp: true, vars: true, plusplus: true,
+    continue: true, devel: true, nomen: true
 */
+
+/*eslint-env browser */
+/*eslint indent: ['warn', 4], quotes: ['warn', 'single'],
+    semi: ['error', 'always'], eqeqeq: 'error', curly: 'error'
+*/
+
+/*jscs:disable requireMultipleVarDecl, requireVarDeclFirst */
+/*jscs:disable disallowKeywords, disallowDanglingUnderscores */
+/*jscs:disable validateIndentation */
 
 (function () {
     'use strict';
@@ -58,7 +65,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.50-131116';
+        this.version = '1.60-051216';
         /**
          * @property stString
          * @type {String}
@@ -121,9 +128,10 @@
                         [52] - SoundSyndBattle
                         [53] - AdvForum
                         [54] - DelAndAddBlackSms
-                        [55] - FilterGeneralFighting */
+                        [55] - FilterGeneralFighting
+                        [56] - Regeneration */
                         '@||||||||||||||||||||||||||||||||||||||||' +
-                        '|||||||||||||||' +
+                        '||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -170,7 +178,7 @@
                         '@|' +
                     /*
                     [6]  - WorkPostGrenadesBroken
-                        [0]  - звук при получении почты/посылки (проигран или нет)
+                        [0]  - звук при получении почты/посылки (проигран, нет)
                         [1]  - звук по окончании работы (проигран или нет)
                         [2]  - отображать время работы
                         [3]  - отображать почту/посылку
@@ -351,7 +359,19 @@
                         [9]  - показывать дальность
                         [10] - нужная дальность
                         [11] - время до боя (сек) */
-                        '@5|50||||||||||';
+                        '@5|50||||||||||' +
+                    /*
+                    [31] - Regeneration
+                        [0] - номер звука при 80%
+                        [1] - номер звука при 100%
+                        [2] - текущее состояние:
+                                '' : пустое
+                                '1': получили 80%
+                                '2': получили 100%
+                                '3': получили 80%, но еще не получили 100%
+                                '4': финиш
+                    */
+                        '@||';
 
         /**
          * @property myID
@@ -819,9 +839,9 @@
             if (rmethod === 'POST') {
                 xmlHttpRequest.setRequestHeader('Content-Type',
                     'application/x-www-form-urlencoded');
-                xmlHttpRequest.setRequestHeader("Content-length",
+                xmlHttpRequest.setRequestHeader('Content-length',
                     param.length.toString());
-                xmlHttpRequest.setRequestHeader("Connection", "close");
+                xmlHttpRequest.setRequestHeader('Connection', 'close');
             }
 
             xmlHttpRequest.send(param);
@@ -960,6 +980,17 @@
                     'rgba(122,122,122,0.5);" src="' + general.imgPath +
                     'NotGiveCannabisLeaf/on.gif" />' +
                     this.getGitHubLink('notGiveCannabisLeaf'), '0'],
+                ['Таймер выздоровления', 'Таймер выздоровления персонажа ' +
+                    'на главной странице.<br>' +
+                    this.getSelectSound('sound80HP') +
+                    ' звук при достижении 80% HP<br>' +
+                    this.getSelectSound('sound100HP') +
+                    ' звук при достижении 100% HP' +
+                    this.getGitHubLink('regeneration') +
+                    '<span style="margin-left: 15px;">идея: ' +
+                    '<a href="http://www.ganjawars.ru/info.php?id=73295" ' +
+                    'style="font-weight: bold;" target="_blank">W_or_M' +
+                    '</a></span>', '56'],
                 ['Дополнение для панели навигации',
                     'Добавляет возможность установить дополнительные ссылки ' +
                     'в панель навигации.' +
@@ -1306,8 +1337,8 @@
                     this.getGitHubLink('comfortableLinksForFarm'), '11'],
                 ['Все растения на одной странице, счетчики', 'На ферме ' +
                     'добавляет выпадающий список для выбора и посадки любого ' +
-                    'растения. Для каждого растения присутствует изображение, ' +
-                    'производственный опыт и прибыль (общие и в 1 час), ' +
+                    'растения. Для каждого растения присутствует изображение,' +
+                    ' производственный опыт и прибыль (общие и в 1 час), ' +
                     'цена, время созревания в минутах и часах. Счетчики ' +
                     'Гб и производственного опыта.<br><br>' +
                     '<input id="showGbFarmCounter" type="checkbox" ' +
@@ -1432,10 +1463,11 @@
                 imgSave.title = 'Сохранить';
                 imgSave.style.cursor = 'pointer';
 
-                var clip = new general.root.ZeroClipboard(imgSave, {
+                var param2 = {
                         moviePath: general.imgPath +
                             '../ZeroClipboard/ZeroClipboard.swf'
-                    });
+                    },
+                    clip = new general.root.ZeroClipboard(imgSave, param2);
 
                 // копируем в буфер обмена строкy из localStorage
                 //noinspection JSUnresolvedFunction
@@ -1818,6 +1850,24 @@
                 addEventListener('click', this.testSound, false);
             general.$('lsyndSoundBattle2').
                 addEventListener('click', this.testSound, false);
+
+            // Regeneration
+            var sound80HP = general.$('sound80HP'),
+                sound100HP = general.$('sound100HP');
+            sound80HP.value = general.getData(31)[0] || '0';
+            sound80HP.addEventListener('change', function () {
+                _this.modifyData(31, 0, sound80HP.value === '0' ?
+                        '' : sound80HP.value);
+            }, false);
+            sound100HP.value = general.getData(31)[1] || '0';
+            sound100HP.addEventListener('change', function () {
+                _this.modifyData(31, 1, sound100HP.value === '0' ?
+                        '' : sound100HP.value);
+            }, false);
+            general.$('lsound80HP').
+                addEventListener('click', this.testSound, false);
+            general.$('lsound100HP').
+                addEventListener('click', this.testSound, false);
         };
     };
 
@@ -2153,9 +2203,12 @@
             case 'reset':
                 if (!island) {
                     general.setData('|', 3);
-                    general.$('islZ').setAttribute('style', this.styleNormal);
-                    general.$('islG').setAttribute('style', this.styleNormal);
-                    general.$('online').setAttribute('style', this.styleNormal);
+                    general.$('islZ').
+                        setAttribute('style', this.styleNormal);
+                    general.$('islG').
+                        setAttribute('style', this.styleNormal);
+                    general.$('online').
+                        setAttribute('style', this.styleNormal);
                 }
 
                 for (i = 3; i < trs.length; i++) {
@@ -2168,7 +2221,8 @@
                 this.setFilter(trs, 'reset', 'flag');
                 dataSt[0] = island === 'Z' ? '1' : '2';
                 general.setData(dataSt, 3);
-                general.$('isl' + island).setAttribute('style', this.styleBold);
+                general.$('isl' + island).
+                    setAttribute('style', this.styleBold);
                 general.$('isl' + (island === 'G' ? 'Z' : 'G')).
                     setAttribute('style', this.styleNormal);
 
@@ -2190,7 +2244,8 @@
                 if (!island) {
                     dataSt[1] = '1';
                     general.setData(dataSt, 3);
-                    general.$('online').setAttribute('style', this.styleBold);
+                    general.$('online').
+                        setAttribute('style', this.styleBold);
                 }
 
                 for (i = 3; i < trs.length; i++) {
@@ -2703,7 +2758,9 @@
             general.setData(dataSt, 4);
 
             // сортируем список по возрастающей
-            var reg = /(\d+)\. \[(\d+)\][^\d]*(\d+)!? \((\d+)%\) \[(\d+) \/ (\d+)\]/,
+            var regstr = '(\\d+)\\. \\[(\\d+)\\][^\\d]*(\\d+)!? ' +
+                    '\\((\\d+)%\\) \\[(\\d+) \\/ (\\d+)\\]',
+                reg = new RegExp(regstr),
                 select = general.$('euids'),
                 countOpt = select.options.length,
                 buff,
@@ -2887,52 +2944,56 @@
          */
         this.setHandlerSubmit = function () {
             var s = general.doc.createElement('script');
-            s.innerHTML = "function fight_mod() {" +
-                    "var dataStAll = localStorage.getItem('" +
-                            general.STORAGENAME + "').split('@')," +
-                        "dataSt = dataStAll[4].split('|')," +
-                    "elem;" +
+            s.innerHTML = 'function fight_mod() {' +
+                    'var dataStAll = localStorage.getItem(\'' +
+                            general.STORAGENAME + '\').split(\'@\'),' +
+                        'dataSt = dataStAll[4].split(\'|\'),' +
+                    'elem;' +
 
-                    "dataSt[5] = '';" +
-                    "dataSt[6] = '';" +
-                    "dataSt[7] = '';" +
-                    "dataSt[8] = '';" +
-                    "dataSt[9] = '';" +
+                    'dataSt[5] = \'\';' +
+                    'dataSt[6] = \'\';' +
+                    'dataSt[7] = \'\';' +
+                    'dataSt[8] = \'\';' +
+                    'dataSt[9] = \'\';' +
 
                     // левая рука
-                    "if (elem = document.querySelector('input[type=\"radio\"]" +
-                            "[id^=\"left_attack\"]:checked')) {" +
-                        "dataSt[5] = /left_attack(\\d)/.exec(elem.id)[1];" +
-                    "}" +
+                    'if (elem = document.' +
+                            'querySelector(\'input[type=\"radio\"]' +
+                                '[id^=\"left_attack\"]:checked\')) {' +
+                        'dataSt[5] = /left_attack(\\d)/.exec(elem.id)[1];' +
+                    '}' +
 
                     // правая рука
-                    "if (elem = document.querySelector('input[type=\"radio\"]" +
-                            "[id^=\"right_attack\"]:checked')) {" +
-                        "dataSt[6] = /right_attack(\\d)/.exec(elem.id)[1];" +
-                    "}" +
+                    'if (elem = document.' +
+                            'querySelector(\'input[type=\"radio\"]' +
+                                '[id^=\"right_attack\"]:checked\')) {' +
+                        'dataSt[6] = /right_attack(\\d)/.exec(elem.id)[1];' +
+                    '}' +
 
                     // куда отходим
-                    "if (elem = document.querySelector('input[type=\"radio\"]" +
-                            "[id^=\"defence\"]:checked')) {" +
-                        "dataSt[7] = /defence(\\d)/.exec(elem.id)[1];" +
-                    "}" +
+                    'if (elem = document.' +
+                            'querySelector(\'input[type=\"radio\"]' +
+                                '[id^=\"defence\"]:checked\')) {' +
+                        'dataSt[7] = /defence(\\d)/.exec(elem.id)[1];' +
+                    '}' +
 
                     // граната
-                    "if (elem = document." +
-                            "querySelector('#bagaboom:checked')) {" +
-                        "dataSt[8] = '1';" +
-                    "}" +
+                    'if (elem = document.' +
+                            'querySelector(\'#bagaboom:checked\')) {' +
+                        'dataSt[8] = \'1\';' +
+                    '}' +
 
                     // подходим или нет
-                    "if (elem = document.querySelector('#walk:checked')) {" +
-                        "dataSt[9] = '1';" +
-                    "}" +
+                    'if (elem = document.querySelector(\'#walk:checked\')) {' +
+                        'dataSt[9] = \'1\';' +
+                    '}' +
 
-                    "dataStAll[4] = dataSt.join('|');" +
-                    "localStorage.setItem('" + general.STORAGENAME +
-                        "', dataStAll.join('@'));" +
-                    "fight();" +
-                "}";
+                    'dataStAll[4] = dataSt.join(\'|\');' +
+                    'localStorage.setItem(\'' + general.STORAGENAME +
+                        '\', dataStAll.join(\'@\'));' +
+                    'fight();' +
+                '}';
+
             general.doc.body.appendChild(s);
         };
 
@@ -3142,7 +3203,8 @@
                 var spanCheckRange = general.doc.createElement('span');
                 spanCheckRange.setAttribute('id', 'spanCheckRange');
                 spanCheckRange.innerHTML = 'Противник: ';
-                selectEnemy.parentNode.insertBefore(spanCheckRange, selectEnemy);
+                selectEnemy.parentNode.
+                    insertBefore(spanCheckRange, selectEnemy);
                 selectEnemy.addEventListener('change', function () {
                     _this.changeSelectEnemies();
                 }, false);
@@ -4753,7 +4815,7 @@
             markAll.addEventListener('click', function () {
                 var but = this,
                     s = ['[+]', '[&minus;]', 'Отметить все',
-                            'Снять все отметки'],
+                        'Снять все отметки'],
                     on = but.innerHTML === s[0];
 
                 but.innerHTML = on ? s[1] : s[0];
@@ -5022,13 +5084,13 @@
 
                 if (/уже пора/.test(aStr)) {
                     general.setData([timeNow, action, timeNow, '1',
-                                stData[4], stData[5]], 9);
+                        stData[4], stData[5]], 9);
                     return;
                 }
 
                 var timeLeft = +(/через (\d+) мин/.exec(aStr)[1]);
                 general.setData([timeNow + timeLeft * 60 * 1000,
-                        action, timeNow, '', stData[4], stData[5]], 9);
+                    action, timeNow, '', stData[4], stData[5]], 9);
 
                 return;
             }
@@ -8090,8 +8152,8 @@
          */
         this.highTechItems = {
             'htGroup': ['auto', 'heavy', 'sniper', 'ppguns', 'shotguns',
-                    'grl', 'armour', 'helmets', 'boots', 'masks', 'wear',
-                    'belts', 'phones', 'drugs', 'transport', 'gifts'],
+                'grl', 'armour', 'helmets', 'boots', 'masks', 'wear',
+                'belts', 'phones', 'drugs', 'transport', 'gifts'],
             'sniper': 'snipe',
             'phones': 'misc'
         };
@@ -9125,39 +9187,39 @@
          */
         this.moveArrow = function (e) {
             var makeMove = function (reg1, reg2, rev) {
-                    var a = general.doc.querySelectorAll('a'),
-                        allMoveLinks = [],
-                        emptyCell,
-                        i;
+                var a = general.doc.querySelectorAll('a'),
+                    allMoveLinks = [],
+                    emptyCell,
+                    i;
 
-                    for (i = 0; i < a.length; i++) {
-                        emptyCell = a[i].querySelector('img[src*="/t.png"]') ||
-                            a[i].querySelector('img[src*="/i/arrow_"]');
+                for (i = 0; i < a.length; i++) {
+                    emptyCell = a[i].querySelector('img[src*="/t.png"]') ||
+                        a[i].querySelector('img[src*="/i/arrow_"]');
 
-                        if (emptyCell && (/\?w=\-?\d+&wx=\-?\d+&wy=\-?\d+&/.
-                                test(a[i].href))) {
-                            allMoveLinks.push(a[i]);
-                        }
+                    if (emptyCell && (/\?w=\-?\d+&wx=\-?\d+&wy=\-?\d+&/.
+                            test(a[i].href))) {
+                        allMoveLinks.push(a[i]);
+                    }
+                }
+
+                allMoveLinks.sort(function (a, b) {
+                    var x = +(reg1.exec(a.href)[1]),
+                        x1 = +(reg2.exec(b.href)[1]),
+                        rez;
+
+                    if (x > x1) {
+                        rez = rev ? -1 : 1;
+                    } else if (x < x1) {
+                        rez = rev ? 1 : -1;
+                    } else {
+                        rez = 0;
                     }
 
-                    allMoveLinks.sort(function (a, b) {
-                        var x = +(reg1.exec(a.href)[1]),
-                            x1 = +(reg2.exec(b.href)[1]),
-                            rez;
+                    return rez;
+                });
 
-                        if (x > x1) {
-                            rez = rev ? -1 : 1;
-                        } else if (x < x1) {
-                            rez = rev ? 1 : -1;
-                        } else {
-                            rez = 0;
-                        }
-
-                        return rez;
-                    });
-
-                    general.root.location = allMoveLinks[0].href;
-                };
+                general.root.location = allMoveLinks[0].href;
+            };
 
             var ev = e || general.root.event,
                 keyPressed = /Firefox/i.test(general.root.navigator.userAgent) ?
@@ -10336,7 +10398,7 @@
                 'value="" style="' + brd + '"> <span style="font-size: 11px;' +
                 '">(без #)</span></td><tr><td>Интервал сканирования:</td><td>' +
                 '<input id="scan_interval" type="text" size="4" ' +
-                'maxlength="3" value="' + (stData[8] || "60") + '" style="' +
+                'maxlength="3" value="' + (stData[8] || '60') + '" style="' +
                 brd + '" /> сек (не менее 20)</td></tr><tr><td colspan="2" ' +
                 'style="padding-top: 10px;"><input id="scan_chksound" type=' +
                 '"checkbox" style="margin: 0;"><label for="scan_chksound"> ' +
@@ -11803,13 +11865,13 @@
                         _this.mainData.takenSynd.
                             push([_this.getPersLink(lines[i]).
                                     firstElementChild.innerHTML,
-                                        lines[i].innerHTML]);
+                                lines[i].innerHTML]);
                         break;
                     case 7:
                         _this.mainData.dismissedSynd.
                             push([_this.getPersLink(lines[i]).
                                     firstElementChild.innerHTML,
-                                        lines[i].innerHTML]);
+                                lines[i].innerHTML]);
                         break;
                     case 8:
                         _this.parseLine(str, _this.mainData.realEstate.bars);
@@ -11819,7 +11881,7 @@
                         tmp = /^(.*) покинул синдикат( \(.*\))/.exec(str);
                         if (tmp) {
                             _this.mainData.dismissedSynd.push([tmp[1],
-                                    lines[i].innerHTML + tmp[2]]);
+                                lines[i].innerHTML + tmp[2]]);
                         }
 
                         break;
@@ -12824,7 +12886,7 @@
                     '400px;" /></td></tr><tr><td colspan="2" ' +
                     'style="padding-top: 10px;"><span id="return" ' +
                     'style="cursor: pointer; color: #990000; font-weight: ' +
-                    'bold;"><< Назад</span></td></tr><tr><td cospan="2" ' +
+                    'bold;"><< Назад</span></td></tr><tr><td colspan="2" ' +
                     'style="font-weight: bold; padding-top: 10px;">' +
                     'Показывать ветки форума на <a target="_blank" ' +
                     'href="http://www.ganjawars.ru/forum.php">этой странице' +
@@ -13211,7 +13273,7 @@
                                         '"</li>";' +
                                 '}' +
 
-                                'rez = /мии за убийство: (\\d+%)/i.exec(text);' +
+                                'rez=/мии за убийство: (\\d+%)/i.exec(text);' +
                                 'if (rez) {' +
                                     'txt += "<li>Премия: " + rez[1] +' +
                                         '"</li>";' +
@@ -13641,6 +13703,186 @@
         };
     };
 
+    /**
+     * @class Regeneration
+     * @constructor
+     */
+    var Regeneration = function () {
+        /**
+         * @property currentHp
+         * @type {int}
+         */
+        this.currentHp = 0;
+        /**
+         * @property maxHp
+         * @type {int}
+         */
+        this.maxHp = 0;
+        /**
+         * @property speedHpRecovery
+         * @type {int}
+         */
+        this.speedHpRecovery = 0;
+        /**
+         * @property spanHP
+         * @type {HTMLElement|null}
+         */
+        this.spanHP = null;
+        /**
+         * @property progressBar
+         * @type {HTMLDivElement|null}
+         */
+        this.progressBar = null;
+        /**
+         * @property pbWidth
+         * @type {int}
+         */
+        this.pbWidth = 230;
+        /**
+         * @property pbHeight
+         * @type {int}
+         */
+        this.pbHeight = 4;
+
+        /**
+         * @method formatTime
+         * @param   {int}   sec
+         * @return  {String}
+         */
+        this.formatTime = function (sec) {
+            var str = '';
+            if (sec >= 3600) {
+                var h = Math.floor(sec / 3600);
+                str += '0' + h + ':';
+                sec -= h * 3600;
+            }
+
+            var m = Math.floor(sec / 60);
+            str += m ? (m < 10 ? '0' + m : m) : '00';
+            str += ':';
+            sec -= m * 60;
+
+            str += sec < 10 ? '0' + sec : sec;
+            return str;
+        };
+
+        /**
+         * @method hpupdate
+         * @param   {Boolean}   first
+         */
+        this.hpupdate = function (first) {
+            if (!first) {
+                this.currentHp += this.speedHpRecovery;
+            }
+
+            if (this.currentHp > this.maxHp) {
+                this.currentHp = this.maxHp;
+            }
+
+            // текущее HP в процентах
+            var hpPercent = Math.floor((this.currentHp * 100) / this.maxHp);
+            this.spanHP.innerHTML = '[' + hpPercent + '%]';
+
+            // прогресс бар
+            if (hpPercent >= 100) {
+                this.progressBar.parentNode.style.display = 'none';
+            } else if (hpPercent < 0) {
+                // если кильнули
+                this.progressBar.style.width = 0;
+            } else {
+                this.progressBar.style.width = Math.
+                        ceil(this.pbWidth * hpPercent / 100) + 1;
+            }
+
+            //паказываем время
+            var sec;
+            if (hpPercent < 100) {
+                sec = Math.floor((this.maxHp - this.currentHp) /
+                        this.speedHpRecovery);
+                this.spanHP.innerHTML += ' <span ' +
+                    'style="font-weight: bold; color: #008000;">[' +
+                    this.formatTime(sec) + ']</span>';
+            }
+
+            if (hpPercent < 80) {
+                sec = Math.floor(((this.maxHp * 0.8) - this.currentHp) /
+                        this.speedHpRecovery);
+                this.spanHP.innerHTML += ' <span ' +
+                    'style="font-weight: bold; color: #FF0000;"> [' +
+                    this.formatTime(sec)  + ']</span>';
+            }
+
+            var stData = general.getData(31),
+                playSound = new PlaySound().init;
+
+            if (hpPercent < 100 && hpPercent  >= 80 && !stData[2]) {
+                stData[2] = '1';
+            }
+
+            if (hpPercent === 100 && stData[2] === '3') {
+                stData[2] = '2';
+            }
+
+            if (stData[2] === '1') {
+                playSound(stData[0]);
+                stData[2] = '3';
+            } else if (stData[2] === '2') {
+                playSound(stData[1]);
+                stData[2] = '4';
+            } else if ((stData[2] === '3' || stData[2] === '4') &&
+                    hpPercent < 100) {
+                stData[2] = hpPercent < 80 ? '' : '3';
+            }
+
+            general.setData(stData, 31);
+
+            var _this = this;
+            if (stData[2] !== '4') {
+                general.root.setTimeout(function () {
+                    _this.hpupdate(false);
+                }, 1000);
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var target = general.doc.querySelector('div#hpdiv');
+            if (target) {
+                var divHealth = general.doc.createElement('div');
+                divHealth.setAttribute('style', 'color: #0000FF;');
+                divHealth.innerHTML = '&nbsp;» ' +
+                    '<span style="font-weight: bold;">Выздоровление:</span> ' +
+                    '<span id="regenHpPercent"></span>' +
+                    '<div style="width: 230px; border: 1px #BBCCBB solid; ' +
+                            'margin: 2px 0 3px 3px; box-shadow: 1px 1px 3px ' +
+                            'rgba(122,122,122,0.5);">' +
+                        '<div id="progressBar" style="width: ' + this.pbWidth +
+                            'px; height: ' + this.pbHeight + '; ' +
+                            'background-image: url(' + general.imgPath +
+                            'Regeneration/line.png);">' +
+                        '</div>' +
+                    '</div>';
+
+                target = target.nextElementSibling;
+                target.parentNode.insertBefore(divHealth, target.nextSibling);
+
+                this.spanHP = general.$('regenHpPercent');
+                this.progressBar = general.$('progressBar');
+
+                /** @namespace general.root.hp_start_h */
+                this.currentHp = +general.root.hp_start_h;
+                /** @namespace general.root.hp_max_h */
+                this.maxHp = +general.root.hp_max_h;
+                /** @namespace general.root.hp_speed_h */
+                this.speedHpRecovery = parseFloat(general.root.hp_speed_h);
+
+                this.hpupdate(true);
+            }
+        };
+    };
+
     general = new General();
 
     if (!general.checkMainData()) {
@@ -13813,6 +14055,22 @@
             }
         }
 
+        if (initScript[14]) {
+            try {
+                new GwMenu().init();
+            } catch (e) {
+                general.cons.log(e);
+            }
+        }
+
+        if (initScript[1]) {
+            try {
+                new AdditionForNavigationBar().init();
+            } catch (e) {
+                general.cons.log(e);
+            }
+        }
+
         if (!(/\/ferma\.php/.test(general.loc))) {
             if (initScript[6]) {
                 try {
@@ -13838,22 +14096,6 @@
                     } catch (e) {
                         general.cons.log(e);
                     }
-                }
-            }
-
-            if (initScript[1]) {
-                try {
-                    new AdditionForNavigationBar().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[14]) {
-                try {
-                    new GwMenu().init();
-                } catch (e) {
-                    general.cons.log(e);
                 }
             }
 
@@ -13895,6 +14137,14 @@
                 if (initScript[49]) {
                     try {
                         new SyndOnlineOnMainPage().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[56]) {
+                    try {
+                        new Regeneration().init();
                     } catch (e) {
                         general.cons.log(e);
                     }
