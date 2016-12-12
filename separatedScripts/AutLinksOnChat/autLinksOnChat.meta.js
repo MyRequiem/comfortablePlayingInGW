@@ -8,6 +8,6 @@
 // @include         http://quest.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.00-220815
+// @version         2.01-121216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
