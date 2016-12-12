@@ -287,7 +287,7 @@
 
 **NewsAndInvit**
 <br>
-Версия: 2.01-090915
+Версия: 2.02-121216
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NewsAndInvit/newsAndInvit.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NewsAndInvit/newsAndInvit.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/NewsAndInvit)
 <br>
