@@ -1572,6 +1572,12 @@
             this.leftPers = this.getPers(this.leftRightCommands[0]);
             this.rightPers = this.getPers(this.leftRightCommands[1]);
 
+            // бой закончился, режим наблюдения за боем,
+            // форма для отправки сообщений присутствует
+            if (!this.leftPers.length || !this.rightPers.length) {
+                return;
+            }
+
             // расстановка конвертиков, номера бойца и сбор дополнительной
             // информации (если они еще не были установлены)
             if (this.leftPers[0].nextElementSibling.nodeName !== 'SPAN') {
