@@ -8,16 +8,24 @@
 // @include         http://www.ganjawars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.11-020616
+// @version         2.12-121216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
-/*global unsafeWindow: true */
-
-/*jslint
-    browser: true, passfail: true, vars: true, nomen: true, regexp: true
-    devel: true, plusplus: true, continue: true
+/*global unsafeWindow */
+/*jslint browser: true, maxlen: 80, vars: true, nomen: true, regexp: true,
+    plusplus: true, continue: true, devel: true
 */
+
+/*eslint-env browser */
+/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+    quotes: ['error', 'single'], semi: ['error', 'always'],
+    eqeqeq: 'error', curly: 'error'
+*/
+
+/*jscs:disable requireMultipleVarDecl, requireVarDeclFirst */
+/*jscs:disable disallowKeywords, disallowDanglingUnderscores */
+/*jscs:disable validateIndentation */
 
 (function () {
     'use strict';
@@ -682,13 +690,13 @@
                         _this.mainData.takenSynd.
                             push([_this.getPersLink(lines[i]).
                                     firstElementChild.innerHTML,
-                                        lines[i].innerHTML]);
+                                lines[i].innerHTML]);
                         break;
                     case 7:
                         _this.mainData.dismissedSynd.
                             push([_this.getPersLink(lines[i]).
                                     firstElementChild.innerHTML,
-                                        lines[i].innerHTML]);
+                                lines[i].innerHTML]);
                         break;
                     case 8:
                         _this.parseLine(str, _this.mainData.realEstate.bars);
@@ -698,7 +706,7 @@
                         tmp = /^(.*) покинул синдикат( \(.*\))/.exec(str);
                         if (tmp) {
                             _this.mainData.dismissedSynd.push([tmp[1],
-                                    lines[i].innerHTML + tmp[2]]);
+                                lines[i].innerHTML + tmp[2]]);
                         }
 
                         break;
