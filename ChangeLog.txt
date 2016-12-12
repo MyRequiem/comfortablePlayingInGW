@@ -1,3 +1,9 @@
+2016-12-12[1.61-121216]
+--------------------------------------
+	- Небольшое исправление скриптa AdvBattleAll
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+
+
 2016-12-05[1.60-051216]
 --------------------------------------
 	- Добавлен скрипт Regeneration
