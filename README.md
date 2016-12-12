@@ -259,7 +259,7 @@
 
 **LinksInOne2One**
 <br>
-Версия: 2.00-200915
+Версия: 2.01-121216
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/LinksInOne2One/linksInOne2One.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/LinksInOne2One/linksInOne2One.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/LinksInOne2One)
 <br>
