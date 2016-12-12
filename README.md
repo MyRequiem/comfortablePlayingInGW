@@ -336,7 +336,7 @@
 
 **RentAndSale**
 <br>
-Версия: 2.00-071015
+Версия: 2.01-121216
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/RentAndSale/rentAndSale.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/RentAndSale/rentAndSale.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/RentAndSale)
 <br>
