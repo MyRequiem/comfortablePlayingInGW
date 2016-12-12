@@ -9,16 +9,23 @@
 // @exclude         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.21-020616
+// @version         2.22-121216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
-/*global unsafeWindow: true */
+/*global unsafeWindow */
+/*jslint browser: true, maxlen: 80, regexp: true, vars: true, nomen: true,
+plusplus: true, devel: true */
 
-/*jslint
-    browser: true, passfail: true, vars: true, devel: true, regexp: true
-    nomen: true, plusplus: true
+/*eslint-env browser */
+/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+    quotes: ['error', 'single'], semi: ['error', 'always'],
+    eqeqeq: 'error', curly: 'error'
 */
+
+/*jscs:disable requireMultipleVarDecl, requireVarDeclFirst */
+/*jscs:disable disallowKeywords, disallowDanglingUnderscores */
+/*jscs:disable validateIndentation */
 
 (function () {
     'use strict';
@@ -586,7 +593,7 @@
                 'value="" style="' + brd + '"> <span style="font-size: 11px;' +
                 '">(без #)</span></td><tr><td>Интервал сканирования:</td><td>' +
                 '<input id="scan_interval" type="text" size="4" ' +
-                'maxlength="3" value="' + (stData[8] || "60") + '" style="' +
+                'maxlength="3" value="' + (stData[8] || '60') + '" style="' +
                 brd + '" /> сек (не менее 20)</td></tr><tr><td colspan="2" ' +
                 'style="padding-top: 10px;"><input id="scan_chksound" type=' +
                 '"checkbox" style="margin: 0;"><label for="scan_chksound"> ' +
