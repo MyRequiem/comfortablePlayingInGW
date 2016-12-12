@@ -11,6 +11,6 @@
 // @include         http://www.ganjawars.ru/wargroup.php*
 // @grant           none
 // @license         MIT
-// @version         2.20-210716
+// @version         2.21-121216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
