@@ -8,15 +8,22 @@
 // @include         http://www.ganjawars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.16-300616
+// @version         1.17-121216
 // @author          MyRequiem, идея: z0man, VSOP_juDGe
 // ==/UserScript==
 
-/*global unsafeWindow: true */
+/*global unsafeWindow */
+/*jslint browser: true, maxlen: 80, vars: true, nomen: true, plusplus: true */
 
-/*jslint
-    browser: true, passfail: true, vars: true, plusplus: true, nomen: true
+/*eslint-env browser */
+/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+    quotes: ['error', 'single'], semi: ['error', 'always'],
+    eqeqeq: 'error', curly: 'error'
 */
+
+/*jscs:disable requireMultipleVarDecl, requireVarDeclFirst */
+/*jscs:disable disallowKeywords, disallowDanglingUnderscores */
+/*jscs:disable validateIndentation */
 
 (function () {
     'use strict';
