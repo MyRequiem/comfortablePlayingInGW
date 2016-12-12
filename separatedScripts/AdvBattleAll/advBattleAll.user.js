@@ -11,16 +11,24 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         3.70-131116
+// @version         3.71-121216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
-/*global unsafeWindow: true */
-
-/*jslint
-    browser: true, passfail: true, vars: true, devel: true, plusplus: true
-    nomen: true, regexp: true, continue: true, todo: true
+/*global unsafeWindow */
+/*jslint browser: true, maxlen: 80, regexp: true, vars: true, nomen: true,
+    plusplus: true, devel: true, continue: true
 */
+
+/*eslint-env browser */
+/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+    quotes: ['error', 'single'], semi: ['error', 'always'],
+    eqeqeq: 'error', curly: 'error'
+*/
+
+/*jscs:disable requireMultipleVarDecl, requireVarDeclFirst */
+/*jscs:disable disallowKeywords, disallowDanglingUnderscores */
+/*jscs:disable validateIndentation */
 
 (function () {
     'use strict';
@@ -690,7 +698,9 @@
             general.setData(dataSt);
 
             // сортируем список по возрастающей
-            var reg = /(\d+)\. \[(\d+)\][^\d]*(\d+)!? \((\d+)%\) \[(\d+) \/ (\d+)\]/,
+            var regstr = '(\\d+)\\. \\[(\\d+)\\][^\\d]*(\\d+)!? ' +
+                    '\\((\\d+)%\\) \\[(\\d+) \\/ (\\d+)\\]',
+                reg = new RegExp(regstr),
                 select = general.$('euids'),
                 countOpt = select.options.length,
                 buff,
@@ -874,50 +884,50 @@
          */
         this.setHandlerSubmit = function () {
             var s = general.doc.createElement('script');
-            s.innerHTML = "function fight_mod() {" +
-                    "var dataSt = localStorage.getItem('" + general.STNAME +
-                                    "').split('|')," +
-                    "elem;" +
+            s.innerHTML = 'function fight_mod() {' +
+                    'var dataSt = localStorage.getItem(\'' + general.STNAME +
+                                    '\').split(\'|\'),' +
+                    'elem;' +
 
-                    "dataSt[3] = '';" +
-                    "dataSt[4] = '';" +
-                    "dataSt[5] = '';" +
-                    "dataSt[6] = '';" +
-                    "dataSt[7] = '';" +
+                    'dataSt[3] = \'\';' +
+                    'dataSt[4] = \'\';' +
+                    'dataSt[5] = \'\';' +
+                    'dataSt[6] = \'\';' +
+                    'dataSt[7] = \'\';' +
 
                     // левая рука
-                    "if (elem = document.querySelector('input[type=\"radio\"]" +
-                            "[id^=\"left_attack\"]:checked')) {" +
-                        "dataSt[3] = /left_attack(\\d)/.exec(elem.id)[1];" +
-                    "}" +
+                    'if (elem = document.querySelector(\'input[type="radio"]' +
+                            '[id^="left_attack"]:checked\')) {' +
+                        'dataSt[3] = /left_attack(\\d)/.exec(elem.id)[1];' +
+                    '}' +
 
                     // правая рука
-                    "if (elem = document.querySelector('input[type=\"radio\"]" +
-                            "[id^=\"right_attack\"]:checked')) {" +
-                        "dataSt[4] = /right_attack(\\d)/.exec(elem.id)[1];" +
-                    "}" +
+                    'if (elem = document.querySelector(\'input[type="radio"]' +
+                            '[id^="right_attack"]:checked\')) {' +
+                        'dataSt[4] = /right_attack(\\d)/.exec(elem.id)[1];' +
+                    '}' +
 
                     // куда отходим
-                    "if (elem = document.querySelector('input[type=\"radio\"]" +
-                            "[id^=\"defence\"]:checked')) {" +
-                        "dataSt[5] = /defence(\\d)/.exec(elem.id)[1];" +
-                    "}" +
+                    'if (elem = document.querySelector(\'input[type="radio"]' +
+                            '[id^="defence"]:checked\')) {' +
+                        'dataSt[5] = /defence(\\d)/.exec(elem.id)[1];' +
+                    '}' +
 
                     // граната
-                    "if (elem = document." +
-                            "querySelector('#bagaboom:checked')) {" +
-                        "dataSt[6] = '1';" +
-                    "}" +
+                    'if (elem = document.' +
+                            'querySelector(\'#bagaboom:checked\')) {' +
+                        'dataSt[6] = \'1\';' +
+                    '}' +
 
                     // подходим или нет
-                    "if (elem = document.querySelector('#walk:checked')) {" +
-                        "dataSt[7] = '1';" +
-                    "}" +
+                    'if (elem = document.querySelector(\'#walk:checked\')) {' +
+                        'dataSt[7] = \'1\';' +
+                    '}' +
 
-                    "localStorage.setItem('" + general.STNAME +
-                        "', dataSt.join('|'));" +
-                    "fight();" +
-                "}";
+                    'localStorage.setItem(\'' + general.STNAME +
+                        '\', dataSt.join(\'|\'));' +
+                    'fight();' +
+                '}';
             general.doc.body.appendChild(s);
         };
 
@@ -1127,7 +1137,8 @@
                 var spanCheckRange = general.doc.createElement('span');
                 spanCheckRange.setAttribute('id', 'spanCheckRange');
                 spanCheckRange.innerHTML = 'Противник: ';
-                selectEnemy.parentNode.insertBefore(spanCheckRange, selectEnemy);
+                selectEnemy.parentNode.
+                    insertBefore(spanCheckRange, selectEnemy);
                 selectEnemy.addEventListener('change', function () {
                     _this.changeSelectEnemies();
                 }, false);
