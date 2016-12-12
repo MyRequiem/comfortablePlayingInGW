@@ -378,7 +378,7 @@
 
 **ShowMyAchievements**
 <br>
-Версия: 2.01-051115
+Версия: 2.02-121216
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ShowMyAchievements/showMyAchievements.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ShowMyAchievements/showMyAchievements.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ShowMyAchievements)
 <br>
