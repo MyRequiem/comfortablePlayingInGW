@@ -203,7 +203,7 @@
 
 **GameMania**
 <br>
-Версия: 2.30-130915
+Версия: 2.31-121216
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GameMania/gameMania.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GameMania/gameMania.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GameMania)
 <br>
