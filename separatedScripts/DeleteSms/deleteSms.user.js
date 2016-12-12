@@ -8,16 +8,22 @@
 // @include         http://www.ganjawars.ru/sms.php*
 // @grant           none
 // @license         MIT
-// @version         2.11-250116
+// @version         2.12-121216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
-/*global unsafeWindow: true */
+/*global unsafeWindow */
+/*jslint browser: true, maxlen: 80, vars: true, nomen: true, plusplus: true */
 
-/*jslint browser:
-    true, passfail: true, vars: true, plusplus: true, continue: true,
-    nomen: true
+/*eslint-env browser */
+/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+    quotes: ['error', 'single'], semi: ['error', 'always'],
+    eqeqeq: 'error', curly: 'error'
 */
+
+/*jscs:disable requireMultipleVarDecl, requireVarDeclFirst */
+/*jscs:disable disallowKeywords, disallowDanglingUnderscores */
+/*jscs:disable validateIndentation */
 
 (function () {
     'use strict';
@@ -124,7 +130,7 @@
             markAll.addEventListener('click', function () {
                 var but = this,
                     s = ['[+]', '[&minus;]', 'Отметить все',
-                            'Снять все отметки'],
+                        'Снять все отметки'],
                     on = but.innerHTML === s[0];
 
                 but.innerHTML = on ? s[1] : s[0];
