@@ -8,16 +8,24 @@
 // @include         http://www.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.01-101015
+// @version         2.02-121216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
-/*global unsafeWindow: true */
+/*global unsafeWindow */
+/*jslint browser: true, maxlen: 80, nomen: true, vars: true, plusplus: true,
+    regexp: true, continue: true, devel: true
+ */
 
-/*jslint
-    plusplus: true, devel: true, continue: true, browser: true,
-    passfail: true, vars: true, regexp: true, nomen: true
+/*eslint-env browser */
+/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+    quotes: ['error', 'single'], semi: ['error', 'always'],
+    eqeqeq: 'error', curly: 'error'
 */
+
+/*jscs:disable requireMultipleVarDecl, requireVarDeclFirst */
+/*jscs:disable disallowKeywords, disallowDanglingUnderscores */
+/*jscs:disable validateIndentation */
 
 (function () {
     'use strict';

@@ -35,7 +35,7 @@
 
 **AdditionForNavigationBar**
 <br>
-Версия: 2.01-101015
+Версия: 2.02-121216
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdditionForNavigationBar/additionForNavigationBar.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdditionForNavigationBar/additionForNavigationBar.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdditionForNavigationBar)
 <br>
