@@ -8,6 +8,6 @@
 // @include         http://www.ganjawars.ru/shop.php*
 // @grant           none
 // @license         MIT
-// @version         1.20-160216
+// @version         1.21-121216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458] идея Buger_man
 // ==/UserScript==
