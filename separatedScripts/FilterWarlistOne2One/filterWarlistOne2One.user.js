@@ -8,16 +8,24 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         2.00-100915
+// @version         2.01-121216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
-/*global unsafeWindow: true */
-
-/*jslint
-    browser: true, passfail: true, vars: true, devel: true, nomen: true,
-    plusplus: true, regexp: true
+/*global unsafeWindow */
+/*jslint browser: true, maxlen: 80, vars: true, plusplus: true, regexp: true
+    devel: true, nomen: true
 */
+
+/*eslint-env browser */
+/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+    quotes: ['error', 'single'], semi: ['error', 'always'],
+    eqeqeq: 'error', curly: 'error'
+*/
+
+/*jscs:disable requireMultipleVarDecl, requireVarDeclFirst */
+/*jscs:disable disallowKeywords, disallowDanglingUnderscores */
+/*jscs:disable validateIndentation */
 
 (function () {
     'use strict';
@@ -140,7 +148,8 @@
                 alert('Ваш браузер не поддерживает технологию localStorage.\n' +
                     'MyRequiеm рекомендует вам скачать и установить один из\n' +
                     'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'FilterWarlistOne2One:\n\nFireFox 4+\nOpera 11+\nChrome 12+');
+                    'FilterWarlistOne2One:\n\nFireFox 4+\nOpera 11+\n' +
+                    'Chrome 12+');
 
                 return;
             }
