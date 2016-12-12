@@ -1,4 +1,4 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name            AdvancedOutland
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
 // @description     На ауте и в прибрежной зоне отображает информацию покемонов и время для флагов без наведения на них мышью, добавляет ссылки "Моя инфа | Рюкзак | Ремонт | Магазин лицензий", автоматический выбор Аута в списке портов при отплытии.
@@ -9,16 +9,24 @@
 // @include         http://www.ganjawars.ru/object.php*
 // @grant           none
 // @license         MIT
-// @version         2.11-260416
+// @version         2.12-121216
 // @author          W_or_M (редакция MyRequiem)
 // ==/UserScript==
 
-/*global unsafeWindow: true */
-
-/*jslint
-    browser: true, passfail: true, vars: true, regexp: true, devel: true,
-    plusplus: true, nomen: true
+/*global unsafeWindow */
+/*jslint browser: true, maxlen: 80, regexp: true, vars: true, nomen: true,
+    plusplus: true, devel: true
 */
+
+/*eslint-env browser */
+/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+    quotes: ['error', 'single'], semi: ['error', 'always'],
+    eqeqeq: 'error', curly: 'error'
+*/
+
+/*jscs:disable requireMultipleVarDecl, requireVarDeclFirst */
+/*jscs:disable disallowKeywords, disallowDanglingUnderscores */
+/*jscs:disable validateIndentation */
 
 (function () {
     'use strict';
@@ -274,7 +282,7 @@
                                         '"</li>";' +
                                 '}' +
 
-                                'rez = /мии за убийство: (\\d+%)/i.exec(text);' +
+                                'rez=/мии за убийство: (\\d+%)/i.exec(text);' +
                                 'if (rez) {' +
                                     'txt += "<li>Премия: " + rez[1] +' +
                                         '"</li>";' +
