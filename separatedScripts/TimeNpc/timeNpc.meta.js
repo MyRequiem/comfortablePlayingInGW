@@ -9,6 +9,6 @@
 // @include         http://www.ganjawars.ru/npc.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.12-020616
+// @version         2.13-121216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==

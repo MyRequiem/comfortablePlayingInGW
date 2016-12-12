@@ -448,7 +448,7 @@
 
 **TimeNpc**
 <br>
-Версия: 2.12-020616
+Версия: 2.13-121216
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeNpc/timeNpc.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeNpc/timeNpc.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/TimeNpc)
 <br>
