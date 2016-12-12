@@ -8,15 +8,22 @@
 // @include         http://quest.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.30-060616
+// @version         1.31-121216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
-/*global unsafeWindow: true */
+/*global unsafeWindow */
+/*jslint browser: true, maxlen: 80, vars: true, plusplus: true */
 
-/*jslint
-    browser: true, passfail: true, vars: true, plusplus: true, nomen: true
+/*eslint-env browser */
+/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+    quotes: ['error', 'single'], semi: ['error', 'always'],
+    eqeqeq: 'error', curly: 'error'
 */
+
+/*jscs:disable requireMultipleVarDecl, requireVarDeclFirst */
+/*jscs:disable disallowKeywords, disallowDanglingUnderscores */
+/*jscs:disable validateIndentation */
 
 (function () {
     'use strict';
@@ -64,39 +71,39 @@
          */
         this.moveArrow = function (e) {
             var makeMove = function (reg1, reg2, rev) {
-                    var a = general.doc.querySelectorAll('a'),
-                        allMoveLinks = [],
-                        emptyCell,
-                        i;
+                var a = general.doc.querySelectorAll('a'),
+                    allMoveLinks = [],
+                    emptyCell,
+                    i;
 
-                    for (i = 0; i < a.length; i++) {
-                        emptyCell = a[i].querySelector('img[src*="/t.png"]') ||
-                            a[i].querySelector('img[src*="/i/arrow_"]');
+                for (i = 0; i < a.length; i++) {
+                    emptyCell = a[i].querySelector('img[src*="/t.png"]') ||
+                        a[i].querySelector('img[src*="/i/arrow_"]');
 
-                        if (emptyCell && (/\?w=\-?\d+&wx=\-?\d+&wy=\-?\d+&/.
-                                test(a[i].href))) {
-                            allMoveLinks.push(a[i]);
-                        }
+                    if (emptyCell && (/\?w=\-?\d+&wx=\-?\d+&wy=\-?\d+&/.
+                            test(a[i].href))) {
+                        allMoveLinks.push(a[i]);
+                    }
+                }
+
+                allMoveLinks.sort(function (a, b) {
+                    var x = +(reg1.exec(a.href)[1]),
+                        x1 = +(reg2.exec(b.href)[1]),
+                        rez;
+
+                    if (x > x1) {
+                        rez = rev ? -1 : 1;
+                    } else if (x < x1) {
+                        rez = rev ? 1 : -1;
+                    } else {
+                        rez = 0;
                     }
 
-                    allMoveLinks.sort(function (a, b) {
-                        var x = +(reg1.exec(a.href)[1]),
-                            x1 = +(reg2.exec(b.href)[1]),
-                            rez;
+                    return rez;
+                });
 
-                        if (x > x1) {
-                            rez = rev ? -1 : 1;
-                        } else if (x < x1) {
-                            rez = rev ? 1 : -1;
-                        } else {
-                            rez = 0;
-                        }
-
-                        return rez;
-                    });
-
-                    general.root.location = allMoveLinks[0].href;
-                };
+                general.root.location = allMoveLinks[0].href;
+            };
 
             var ev = e || general.root.event,
                 keyPressed = /Firefox/i.test(general.root.navigator.userAgent) ?
