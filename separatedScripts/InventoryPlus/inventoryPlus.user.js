@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/items.php*
 // @grant           none
 // @license         MIT
-// @version         2.23-121216
+// @version         2.30-171216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -75,7 +75,7 @@
          */
         this.openCloseItem = function (id) {
             return function () {
-                var tb = general.doc.querySelector('#tr_' + id),
+                var tb = general.doc.getElementById('tr_' + id),
                     _this = this;
 
                 if (tb.style.display === '') {
