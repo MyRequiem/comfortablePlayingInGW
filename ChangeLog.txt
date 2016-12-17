@@ -1,3 +1,9 @@
+2016-12-17[1.62-171216]
+--------------------------------------
+	- исправлен скрипт InventoryPlus
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/InventoryPlus
+
+
 2016-12-12[1.61-121216]
 --------------------------------------
 	- Небольшое исправление скриптa AdvBattleAll

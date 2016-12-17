@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.61-121216
+// @version         1.62-171216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -65,7 +65,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.61-121216';
+        this.version = '1.62-171216';
         /**
          * @property stString
          * @type {String}
@@ -6682,7 +6682,7 @@
          */
         this.openCloseItem = function (id) {
             return function () {
-                var tb = general.doc.querySelector('#tr_' + id),
+                var tb = general.doc.getElementById('tr_' + id),
                     _this = this;
 
                 if (tb.style.display === '') {
@@ -14077,15 +14077,15 @@
             }
         }
 
-        if (!(/\/ferma\.php/.test(general.loc))) {
-            if (initScript[6]) {
-                try {
-                    new ResourcesAndBonuses().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
+        if (initScript[6]) {
+            try {
+                new ResourcesAndBonuses().init();
+            } catch (e) {
+                general.cons.log(e);
             }
+        }
 
+        if (!(/\/ferma\.php/.test(general.loc))) {
             if (initScript[47]) {
                 try {
                     new ShowMyAchievements().init();
