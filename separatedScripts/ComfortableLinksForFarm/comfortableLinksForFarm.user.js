@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.01-121216
+// @version         2.02-201216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -140,10 +140,12 @@
             pos = but && pos ? new GetPos().init(pos.parentNode) : null;
             if (pos) {
                 but.setAttribute('style', 'position: absolute; ' +
-                        'background: #F4F3F1; border-radius: 7px; ' +
-                        'width: 62px; height: 17px; ' +
-                        'top: ' + (pos.y + 15) + 'px; left: ' + (pos.x - 9) +
-                        'px;');
+                        'background: #F4F3F1; ' +
+                        'border-radius: 7px; ' +
+                        'padding: 1px; ' +
+                        'top: ' + (pos.y + 15) + 'px; ' +
+                        'left: ' + (pos.x - 7) + 'px;');
+
                 but.focus();
             }
         };
