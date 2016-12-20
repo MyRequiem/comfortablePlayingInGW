@@ -1,3 +1,8 @@
+2016-12-20[1.63-201216]
+--------------------------------------
+	- исправлен скрипт InventoryPlus, достала меня эта глючная ботва
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/InventoryPlus
+
 2016-12-17[1.62-171216]
 --------------------------------------
 	- исправлен скрипт InventoryPlus

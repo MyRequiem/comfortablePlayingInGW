@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/items.php*
 // @grant           none
 // @license         MIT
-// @version         2.30-171216
+// @version         2.40-201216
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -232,34 +232,22 @@
          * @method init
          */
         this.init = function () {
-            // костыль для хрома
-            if (/Chrome/i.test(general.root.navigator.appVersion)) {
-                var scrpt = general.doc.createElement('script');
-                scrpt.innerHTML =  'function postdo_mod(url) {' +
-                    'new Ajax.Updater("itemsbody", url, ' +
-                    '{asynchronous: true, onComplete: dumb, onSuccess: ' +
-                    'function() {location.reload();}, method: "post"}); ' +
-                    'return false;}';
-                general.doc.body.insertBefore(scrpt,
-                        general.doc.body.querySelectorAll('script')[0]);
+            var _this = this;
+            /*global $, filteritems, def_filter */
+            general.root.postdo = function (url) {
+                /*jslint unparam: true */
+                /*eslint no-unused-vars: true */
+                $('#itemsbody').
+                    load(url, function (responseTxt, statusTxt, xhr) {
+                        if (statusTxt === 'success') {
+                            filteritems(def_filter);
+                        }
 
-                // изменим все ссылки на странице, использующие в
-                // атрибуте onclick функцию 'postdo' на 'postdo_mod'
-                var a = general.doc.
-                            querySelectorAll('a[onclick^="return postdo"]'),
-                    i;
+                        _this.startInventoryPlus(_this);
+                    });
 
-                for (i = 0; i < a.length; i++) {
-                    a[i].setAttribute('onclick', a[i].getAttribute('onclick').
-                            replace('postdo', 'postdo_mod'));
-                }
-            } else {
-                var _this = this;
-                general.root.dumb = function () {
-                    general.root.
-                        setTimeout(_this.startInventoryPlus(_this), 100);
-                };
-            }
+                return false;
+            };
 
             this.startInventoryPlus(this);
         };
