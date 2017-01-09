@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.10-090117
+// @version         2.11-090117
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -122,7 +122,7 @@
         this.init = function () {
                 // ссылка Собрать, Вскопать, Полить
             var a1 = general.doc.querySelector('td[bgcolor="#f0fff0"]' +
-                    ':not([align])>a[href^="/ferma.php?"]'),
+                    ':not([align="right"])>a[href^="/ferma.php?"]'),
                 // ссылка ближайшее действие
                 a2 = general.doc.querySelector('td[bgcolor="#e0eee0"]>a' +
                         '[href^="/ferma.php?"]'),

@@ -5163,7 +5163,7 @@
         this.init = function () {
                 // ссылка Собрать, Вскопать, Полить
             var a1 = general.doc.querySelector('td[bgcolor="#f0fff0"]' +
-                    ':not([align])>a[href^="/ferma.php?"]'),
+                    ':not([align="right"])>a[href^="/ferma.php?"]'),
                 // ссылка ближайшее действие
                 a2 = general.doc.querySelector('td[bgcolor="#e0eee0"]>a' +
                         '[href^="/ferma.php?"]'),
