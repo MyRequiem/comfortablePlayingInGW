@@ -129,9 +129,10 @@
                         [53] - AdvForum
                         [54] - DelAndAddBlackSms
                         [55] - FilterGeneralFighting
-                        [56] - Regeneration */
+                        [56] - Regeneration
+                        [57] - ProfColor */
                         '@||||||||||||||||||||||||||||||||||||||||' +
-                        '||||||||||||||||' +
+                        '|||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -1129,8 +1130,11 @@
                 ['Время до возможности выставить карму', 'На странице ' +
                     'информации персонажа показывает динамический счетчик ' +
                     'времени до возможности поставить карму.' +
-                    this.getGitHubLink('timeKarma'), '50']],
-
+                    this.getGitHubLink('timeKarma'), '50'],
+                ['Подсветка профессий', 'При наличии у персонажа лицензии ' +
+                    'киллера, боевика или наемника название профессии на его ' +
+                    'странице информации окрашивается в красный цвет.' +
+                    this.getGitHubLink('profColor'), '57']],
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов, ' +
                     'нумерация противников, расширенная информация в ' +
@@ -13879,6 +13883,26 @@
         };
     };
 
+    /**
+     * @class ProfColor
+     * @constructor
+     */
+    var ProfColor = function () {
+        /**
+         * @property activeProfs
+         * @type {NodeList}
+         */
+        this.activeProfs = general.doc.
+                querySelectorAll('tr>td>font[color="#006600"]');
+
+        this.init = function () {
+            var i;
+            for (i = 0; i < this.activeProfs.length; i++) {
+                this.activeProfs[i].setAttribute('color', '#FF0000');
+            }
+        }
+    };
+
     general = new General();
 
     if (!general.checkMainData()) {
@@ -13920,6 +13944,7 @@
     }
 
     initScript = general.getInitScript();
+
     // везде на www.ganjawars.ru
     if (initScript[0]) {
         try {
@@ -13929,6 +13954,15 @@
         }
     }
 
+    if (initScript[52]) {
+        try {
+            new SoundSyndBattle().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
+    }
+
+    // везде кроме фермы
     if (!(/\/ferma\.php/.test(general.loc))) {
         if (initScript[41]) {
             try {
@@ -13944,14 +13978,6 @@
             } catch (e) {
                 general.cons.log(e);
             }
-        }
-    }
-
-    if (initScript[52]) {
-        try {
-            new SoundSyndBattle().init();
-        } catch (e) {
-            general.cons.log(e);
         }
     }
 
@@ -14285,6 +14311,14 @@
                 if (initScript[40]) {
                     try {
                         new ScanKarma().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[57]) {
+                    try {
+                        new ProfColor().init();
                     } catch (e) {
                         general.cons.log(e);
                     }
