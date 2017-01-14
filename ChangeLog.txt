@@ -2,7 +2,7 @@
 --------------------------------------
 	- исправлен скрипт ComfortableLinksForFarm
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ComfortableLinksForFarm
-	- добавлен скрипт ProfInfo
+	- добавлен скрипт ProfColor
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ProfColor
 
 
