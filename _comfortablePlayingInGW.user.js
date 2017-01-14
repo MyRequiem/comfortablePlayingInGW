@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.63-201216
+// @version         1.64-140117
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -65,7 +65,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.63-201216';
+        this.version = '1.64-140117';
         /**
          * @property stString
          * @type {String}

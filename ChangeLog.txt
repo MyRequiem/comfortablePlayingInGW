@@ -1,7 +1,16 @@
+2017-01-14[1.64-140117]
+--------------------------------------
+	- исправлен скрипт ComfortableLinksForFarm
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ComfortableLinksForFarm
+	- добавлен скрипт ProfInfo
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ProfInfo
+
+
 2016-12-20[1.63-201216]
 --------------------------------------
 	- исправлен скрипт InventoryPlus, достала меня эта глючная ботва
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/InventoryPlus
+
 
 2016-12-17[1.62-171216]
 --------------------------------------

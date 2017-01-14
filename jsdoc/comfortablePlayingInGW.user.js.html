@@ -38,7 +38,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.60-051216
+// @version         1.64-140117
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -93,7 +93,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.60-051216';
+        this.version = '1.64-140117';
         /**
          * @property stString
          * @type {String}
@@ -157,9 +157,10 @@
                         [53] - AdvForum
                         [54] - DelAndAddBlackSms
                         [55] - FilterGeneralFighting
-                        [56] - Regeneration */
+                        [56] - Regeneration
+                        [57] - ProfColor */
                         '@||||||||||||||||||||||||||||||||||||||||' +
-                        '||||||||||||||||' +
+                        '|||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -1157,8 +1158,11 @@
                 ['Время до возможности выставить карму', 'На странице ' +
                     'информации персонажа показывает динамический счетчик ' +
                     'времени до возможности поставить карму.' +
-                    this.getGitHubLink('timeKarma'), '50']],
-
+                    this.getGitHubLink('timeKarma'), '50'],
+                ['Подсветка профессий', 'При наличии у персонажа лицензии ' +
+                    'киллера, боевика или наемника название профессии на его ' +
+                    'странице информации окрашивается в красный цвет.' +
+                    this.getGitHubLink('profColor'), '57']],
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов, ' +
                     'нумерация противников, расширенная информация в ' +
@@ -3665,6 +3669,12 @@
             this.leftPers = this.getPers(this.leftRightCommands[0]);
             this.rightPers = this.getPers(this.leftRightCommands[1]);
 
+            // бой закончился, режим наблюдения за боем,
+            // форма для отправки сообщений присутствует
+            if (!this.leftPers.length || !this.rightPers.length) {
+                return;
+            }
+
             // расстановка конвертиков, номера бойца и сбор дополнительной
             // информации (если они еще не были установлены)
             if (this.leftPers[0].nextElementSibling.nodeName !== 'SPAN') {
@@ -5184,8 +5194,8 @@
          */
         this.init = function () {
                 // ссылка Собрать, Вскопать, Полить
-            var a1 = general.doc.querySelector('td[bgcolor="#f0fff0"]>a' +
-                    '[href^="/ferma.php?"]'),
+            var a1 = general.doc.querySelector('td[bgcolor="#f0fff0"]' +
+                    ':not([align="right"])>a[href^="/ferma.php?"]'),
                 // ссылка ближайшее действие
                 a2 = general.doc.querySelector('td[bgcolor="#e0eee0"]>a' +
                         '[href^="/ferma.php?"]'),
@@ -5203,10 +5213,12 @@
             pos = but &amp;&amp; pos ? new GetPos().init(pos.parentNode) : null;
             if (pos) {
                 but.setAttribute('style', 'position: absolute; ' +
-                        'background: #F4F3F1; border-radius: 7px; ' +
-                        'width: 62px; height: 17px; ' +
-                        'top: ' + (pos.y + 15) + 'px; left: ' + (pos.x - 9) +
-                        'px;');
+                        'background: #F4F3F1; ' +
+                        'border-radius: 7px; ' +
+                        'padding: 1px; ' +
+                        'top: ' + (pos.y + 15) + 'px; ' +
+                        'left: ' + (pos.x - 7) + 'px;');
+
                 but.focus();
             }
         };
@@ -6704,7 +6716,7 @@
          */
         this.openCloseItem = function (id) {
             return function () {
-                var tb = general.doc.querySelector('#tr_' + id),
+                var tb = general.doc.getElementById('tr_' + id),
                     _this = this;
 
                 if (tb.style.display === '') {
@@ -6861,34 +6873,22 @@
          * @method init
          */
         this.init = function () {
-            // костыль для хрома
-            if (/Chrome/i.test(general.root.navigator.appVersion)) {
-                var scrpt = general.doc.createElement('script');
-                scrpt.innerHTML =  'function postdo_mod(url) {' +
-                    'new Ajax.Updater("itemsbody", url, ' +
-                    '{asynchronous: true, onComplete: dumb, onSuccess: ' +
-                    'function() {location.reload();}, method: "post"}); ' +
-                    'return false;}';
-                general.doc.body.insertBefore(scrpt,
-                        general.doc.body.querySelectorAll('script')[0]);
+            var _this = this;
+            /*global $, filteritems, def_filter */
+            general.root.postdo = function (url) {
+                /*jslint unparam: true */
+                /*eslint no-unused-vars: true */
+                $('#itemsbody').
+                    load(url, function (responseTxt, statusTxt, xhr) {
+                        if (statusTxt === 'success') {
+                            filteritems(def_filter);
+                        }
 
-                // изменим все ссылки на странице, использующие в
-                // атрибуте onclick функцию 'postdo' на 'postdo_mod'
-                var a = general.doc.
-                            querySelectorAll('a[onclick^="return postdo"]'),
-                    i;
+                        _this.startInventoryPlus(_this);
+                    });
 
-                for (i = 0; i &lt; a.length; i++) {
-                    a[i].setAttribute('onclick', a[i].getAttribute('onclick').
-                            replace('postdo', 'postdo_mod'));
-                }
-            } else {
-                var _this = this;
-                general.root.dumb = function () {
-                    general.root.
-                        setTimeout(_this.startInventoryPlus(_this), 100);
-                };
-            }
+                return false;
+            };
 
             this.startInventoryPlus(this);
         };
@@ -13911,6 +13911,26 @@
         };
     };
 
+    /**
+     * @class ProfColor
+     * @constructor
+     */
+    var ProfColor = function () {
+        /**
+         * @property activeProfs
+         * @type {NodeList}
+         */
+        this.activeProfs = general.doc.
+                querySelectorAll('tr>td>font[color="#006600"]');
+
+        this.init = function () {
+            var i;
+            for (i = 0; i &lt; this.activeProfs.length; i++) {
+                this.activeProfs[i].setAttribute('color', '#FF0000');
+            }
+        }
+    };
+
     general = new General();
 
     if (!general.checkMainData()) {
@@ -13952,6 +13972,7 @@
     }
 
     initScript = general.getInitScript();
+
     // везде на www.ganjawars.ru
     if (initScript[0]) {
         try {
@@ -13961,6 +13982,15 @@
         }
     }
 
+    if (initScript[52]) {
+        try {
+            new SoundSyndBattle().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
+    }
+
+    // везде кроме фермы
     if (!(/\/ferma\.php/.test(general.loc))) {
         if (initScript[41]) {
             try {
@@ -13976,14 +14006,6 @@
             } catch (e) {
                 general.cons.log(e);
             }
-        }
-    }
-
-    if (initScript[52]) {
-        try {
-            new SoundSyndBattle().init();
-        } catch (e) {
-            general.cons.log(e);
         }
     }
 
@@ -14099,15 +14121,15 @@
             }
         }
 
-        if (!(/\/ferma\.php/.test(general.loc))) {
-            if (initScript[6]) {
-                try {
-                    new ResourcesAndBonuses().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
+        if (initScript[6]) {
+            try {
+                new ResourcesAndBonuses().init();
+            } catch (e) {
+                general.cons.log(e);
             }
+        }
 
+        if (!(/\/ferma\.php/.test(general.loc))) {
             if (initScript[47]) {
                 try {
                     new ShowMyAchievements().init();
@@ -14321,6 +14343,14 @@
                         general.cons.log(e);
                     }
                 }
+
+                if (initScript[57]) {
+                    try {
+                        new ProfColor().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
             }
         }
 
@@ -14516,7 +14546,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Dec 05 2016 13:57:17 GMT+0400 (+04)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sat Jan 14 2017 11:35:29 GMT+0400 (+04)
 </footer>
 
 <script> prettyPrint(); </script>
