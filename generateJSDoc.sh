@@ -1,12 +1,10 @@
 #! /bin/sh
 
 # if jsdoc not installed
-if [ "x$(which jsdoc 2>/dev/null)" == "x" ]; then
-    echo "Command 'jsdoc' not found in your PATH."
-    echo "Installing jsdoc:"
-    echo "  $ cd ~/bin"
-    echo "  $ npm install jsdoc"
-    echo "  $ ln -s node_modules/jsdoc/jsdoc.js jsdoc"
+if ! which jsdoc 1>/dev/null 2>&1; then
+    echo "jsdoc: command not found"
+    echo "You need to install jsdoc:"
+    echo "$ npm install jsdoc"
     exit 1
 fi
 
