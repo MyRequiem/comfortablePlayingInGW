@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/wargroup.php*
 // @grant           none
 // @license         MIT
-// @version         1.02-121216
+// @version         1.10-130417
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -218,7 +218,8 @@
                 this.table.innerHTML = this.tableHTML;
             }
 
-            var trs = this.table.querySelectorAll('tr'),
+            var trs = this.table.querySelectorAll('table[cellpadding="5"]>' +
+                    'tbody>tr'),
                 stData = general.getData(),
                 linksPers,
                 ranges,
@@ -227,6 +228,7 @@
                 tmp,
                 lvl,
                 td,
+                k,
                 j,
                 i;
 
@@ -234,12 +236,12 @@
             for (i = 1; i < trs.length; i++) {
                 td = trs[i].querySelectorAll('td');
 
-                if (!td[4] || !td[7]) {
+                if (td.length !== 5) {
                     continue;
                 }
 
                 // проверяем установленый уровень
-                lvl = /\d+\-(\d+).*vs.*\d+\-\d+/.exec(td[4].innerHTML);
+                lvl = /\d+\-(\d+).*vs.*\d+\-\d+/.exec(td[1].innerHTML);
                 if (lvl) {
                     lvl = +lvl[1];
                     if (+stData[0] > lvl || +stData[1] < lvl) {
@@ -250,7 +252,7 @@
 
                 // оставляем только командные бои или
                 // только со случайным распределением
-                tmp = /class="?(r|b)"?/.test(td[7].innerHTML);
+                tmp = /class="?(r|b)"?/.test(td[3].innerHTML);
                 if ((stData[2] && !tmp) || (stData[3] && tmp)) {
                     trs[i].style.display = 'none';
                     continue;
@@ -258,34 +260,34 @@
 
                 // оставляем только DM или только не DM
                 tmp = /\[\s?<font color=.*>dm<\/font>\s?\]/.
-                        test(td[2].innerHTML);
+                        test(td[1].innerHTML);
                 if ((stData[4] && !tmp) || (stData[5] && tmp)) {
                     trs[i].style.display = 'none';
                     continue;
                 }
 
                 // оставляем только синдовые или прячем все синдовые
-                tmp = /#\d+/.test(td[4].innerHTML);
+                tmp = /#\d+/.test(td[2].innerHTML);
                 if ((stData[6] && tmp) || (stData[7] && !tmp)) {
                     trs[i].style.display = 'none';
                     continue;
                 }
 
                 // выделяем жирным красным количество бойцов с каждой стороны
-                td[7].innerHTML = td[7].innerHTML.
-                        replace(/(\(\d\d?\))/g, '<span style="color: ' +
-                            '#660000; font-weight: bold;">$1</span>');
+                td[3].innerHTML = td[3].innerHTML.
+                        replace(/(\(\d+\/\d+\))/g, '<span style="color: ' +
+                            '#990000; font-weight: bold;">$1</span>');
 
                 // показываем умения и дальность, подкрашиваем заявки,
                 // подходящие по указанной дальности
                 ranges = stData[10].split(',');
                 if (stData[8] || stData[9] || ranges[0]) {
                     tmp = '';
-                    linksPers = td[7].
+                    linksPers = td[3].
                         querySelectorAll('a[href*="/info.php?id="]');
 
                     for (j = 0; j < linksPers.length; j++) {
-                        title = /\((\d+)?, (\d+)?\)/.
+                        title = /\((\d+.*)?, (\d+)?\)/.
                             exec(linksPers[j].getAttribute('title'));
 
                         if (!title) {
@@ -311,11 +313,12 @@
                         }
 
                         // закрашиваем заявку, если подходит дальность
-                        if (ranges[0] && (/E7FFE7/i.test(td[7].parentNode.
-                                getAttribute('bgcolor')) &&
-                                    this.checkRange(+title[2], ranges))) {
-                            td[7].parentNode.
-                                setAttribute('bgcolor', '#C1F0E7');
+                        if (ranges[0] && !td[3].getAttribute('bgcolor') &&
+                                this.checkRange(+title[2], ranges)) {
+                            for (k = 0; k < 4; k++) {
+                                td[k].removeAttribute('class');
+                                td[k].setAttribute('bgcolor', '#C1F0E7');
+                            }
                         }
                     }
                 }
@@ -327,8 +330,10 @@
                     if (time) {
                         time = +time[1] * 60 + (+time[2]);
                         if (+stData[11] < time) {
-                            trs[i].
-                                setAttribute('style', 'background: #D9D9D9;');
+                            for (k = 0; k < 4; k++) {
+                                td[k].removeAttribute('class');
+                                td[k].setAttribute('bgcolor', '#D9D9D9');
+                            }
                         }
                     }
                 }
@@ -369,7 +374,6 @@
 
             // устанавливаем интерфейс настроек
             var inputSpan = general.doc.createElement('span');
-            inputSpan.setAttribute('style', 'margin-right: 10px;');
             inputSpan.innerHTML = 'с:' +
                 '<select id="lvlMin">' + this.getSelectOptions() +
                     '</select> ' +
@@ -386,11 +390,11 @@
                 'Нужная дальность: <input type="text" id="limitRange" ' +
                     'style="width: 50px;"> ' +
                 'Время: <input type="text" id="time" maxlength="3" ' +
-                    'style="width: 40px;">';
+                    'style="width: 40px;"><br>';
 
-            var target = updateTimer.parentNode.parentNode;
-            target.insertBefore(inputSpan,
-                        target.firstElementChild.nextElementSibling);
+            var target = general.doc.querySelector('td.txt>' +
+                'table[width="100%"]').parentNode;
+            target.insertBefore(inputSpan, target.querySelector('br'));
 
             var stData = general.getData();
 
@@ -478,7 +482,7 @@
 
             // таблица с заявками
             this.table = general.doc.querySelector('table[border="0"]' +
-                    '[class="wb"][cellpadding="3"]');
+                '[cellpadding="5"][cellspacing="1"]');
 
             if (this.table) {
                 this.table.parentNode.setAttribute('align', 'center');

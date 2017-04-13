@@ -1,3 +1,9 @@
+2017-04-13[1.65-130417]
+	- в связи с изменением страницы заявок общих, уличных, графических боев
+		исправлен скрипт FilterGeneralFighting
+			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FilterGeneralFighting
+
+
 2017-01-14[1.64-140117]
 --------------------------------------
 	- исправлен скрипт ComfortableLinksForFarm
