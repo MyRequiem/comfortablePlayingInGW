@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.65-130417
+// @version         1.66-200417
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -65,7 +65,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.65-130417';
+        this.version = '1.66-200417';
         /**
          * @property stString
          * @type {String}
@@ -8946,13 +8946,13 @@
                 reg1 = /./;
                 break;
             case '1':
-                reg1 = /Остров Z/;
+                reg1 = />\[Z\]<\/b>/;
                 break;
             case '2':
-                reg1 = /Остров G/;
+                reg1 = />\[G\]<\/b>/;
                 break;
             case '3':
-                reg1 = /Остров S/;
+                reg1 = />\[S\]<\/b>/;
                 break;
             default:
                 reg1 = false;
@@ -8991,7 +8991,7 @@
                 // делаем строку видимой
                 this.trs[i].style.display = '';
 
-                txt = this.trs[i].cells[2].innerHTML;
+                txt = this.trs[i].cells[1].innerHTML;
                 if (!reg2) {
                     if (!reg1.test(txt) || (/Электростанция/.test(txt)) ||
                             (/Урановый рудник/.test(txt))) {
@@ -9005,7 +9005,7 @@
                     }
                 }
 
-                if (stData[2] && this.trs[i].cells[4].innerHTML.
+                if (stData[2] && this.trs[i].cells[2].innerHTML.
                         indexOf(stData[2]) === -1) {
                     this.trs[i].style.display = 'none';
                     continue;
@@ -9018,8 +9018,8 @@
                 }
 
                 count++;
-                a = this.trs[i].cells[4].querySelectorAll('a' +
-                        '[href*="/syndicate.php?id="]');
+                a = this.trs[i].cells[2].
+                        querySelectorAll('a[href*="/syndicate.php?id="]');
 
                 r = [];
                 b = [];
@@ -9078,18 +9078,15 @@
          * @method init
          */
         this.init = function () {
-            var target = general.doc.querySelector('#updatetimer2'),
-                warTable = general.doc.querySelector('td[class="txt"]' +
-                        '[align="center"]>table[border="0"]');
-
-            // что-то не найдено или уже в заявке
-            if (!target || !warTable || general.doc.
-                    querySelector('center>b>font[color="#990000"]')) {
+            var warTable = general.doc.querySelector('td[class="txt"]>' +
+                        'table[border="0"][cellpadding="5"][ cellspacing="1"]');
+            // таблица с заявками не найдена
+            if (!warTable) {
                 return;
             }
 
-            // выравниваем таблицу с заявками по левому краю
-            warTable.parentNode.setAttribute('align', 'left');
+            // выравниваем таблицу с заявками по центру
+            warTable.parentNode.setAttribute('align', 'center');
 
             // вставляем контейнер настроек
             var mainPanel = general.doc.createElement('span');
@@ -9106,9 +9103,8 @@
                 'id="syndNumber2" type="text" maxlength="5" style="width: ' +
                 '45px;" />&nbsp;&nbsp;Куда я могу зайти: <input id="onlyMe3" ' +
                 'type="checkbox" />&nbsp;&nbsp;Всего боев: ' +
-                '<span id="countLines"></span>';
-            target = target.parentNode;
-            target.parentNode.insertBefore(mainPanel, target);
+                '<span id="countLines"></span><br>';
+            warTable.parentNode.insertBefore(mainPanel, warTable);
 
             var selIsl = general.$('selIsl0'),
                 selRealEstate = general.$('selRealEstate1'),
@@ -9130,10 +9126,10 @@
             }, false);
 
             this.divCountAll = general.doc.createElement('div');
-            target.parentNode.appendChild(this.divCountAll);
+            warTable.parentNode.appendChild(this.divCountAll);
 
-            this.trs = target.parentNode.
-                            querySelector('table').querySelectorAll('tr');
+            this.trs = warTable.querySelectorAll('table[cellpadding="5"]>' +
+                    'tbody>tr');
 
             var stData = general.getData(20);
             selIsl.value = stData[0] || '0';

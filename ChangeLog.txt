@@ -1,3 +1,9 @@
+2017-04-20[1.66-200417]
+	- в связи с изменением страницы синдикатных заявок исправлен скрипт
+		SortSyndWars
+			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SortSyndWars
+
+
 2017-04-13[1.65-130417]
 	- в связи с изменением страницы заявок общих, уличных, графических боев
 		исправлен скрипт FilterGeneralFighting
