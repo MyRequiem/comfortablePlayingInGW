@@ -7,7 +7,7 @@
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
 <br>
 <br>
-Версия: 1.66-200417
+Версия: 1.67-240417
 <br>
 Нашли ошибку? Пожалуйста, [сообщите](http://www.ganjawars.ru/sms-create.php?mailto=MyRequiem)
 * [Установить](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js)
@@ -406,7 +406,7 @@
 
 **SortSyndWars**
 <br>
-Версия: 2.10-200417
+Версия: 2.20-240417
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SortSyndWars/sortSyndWars.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SortSyndWars/sortSyndWars.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SortSyndWars)
 <br>

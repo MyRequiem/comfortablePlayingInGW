@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/wargroup.php?war=attacks*
 // @grant           none
 // @license         MIT
-// @version         2.10-200417
+// @version         2.20-240417
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -174,13 +174,11 @@
          * @method sortSyndWars
          */
         this.sortSyndWars = function () {
-            var stData = general.getData();
+            var stData = general.getData(),
+                reg1,
+                reg2;
 
-            var reg1;
             switch (stData[0]) {
-            case '':
-                reg1 = /./;
-                break;
             case '1':
                 reg1 = />\[Z\]<\/b>/;
                 break;
@@ -191,23 +189,23 @@
                 reg1 = />\[S\]<\/b>/;
                 break;
             default:
-                reg1 = false;
                 break;
             }
 
-            var reg2;
             switch (stData[1]) {
-            case '':
-                reg2 = /./;
-                break;
             case '1':
-                reg2 = /Электростанция/;
+                reg2 = /Электростанция/i;
                 break;
             case '2':
-                reg2 = /Урановый рудник/;
+                reg2 = /Урановый рудник/i;
+                break;
+            case '3':
+                reg2 = /контроль портов/i;
+                break;
+            case '4':
+                reg2 = /ферма|плантация|завод|база|Фабрика|лаборатория|цех/i;
                 break;
             default:
-                reg2 = false;
                 break;
             }
 
@@ -228,14 +226,15 @@
                 this.trs[i].style.display = '';
 
                 txt = this.trs[i].cells[1].innerHTML;
-                if (!reg2) {
-                    if (!reg1.test(txt) || (/Электростанция/.test(txt)) ||
-                            (/Урановый рудник/.test(txt))) {
-                        this.trs[i].style.display = 'none';
-                        continue;
+
+                if (reg1 || reg2) {
+                    // в боях за контроль портов острова нет
+                    if (stData[1] === '3') {
+                        reg1 = null;
                     }
-                } else {
-                    if (!reg1.test(txt) || !reg2.test(txt)) {
+
+                    if ((reg1 && !reg1.test(txt)) ||
+                            (reg2 && !reg2.test(txt))) {
                         this.trs[i].style.display = 'none';
                         continue;
                     }
@@ -292,7 +291,7 @@
                 }
             }
 
-            general.$('countLines').innerHTML = count ? '[' + count + ']' : '';
+            general.$('countLines').innerHTML = '[' + count + ']';
             this.showSyndData(objs);
         };
 
@@ -336,18 +335,28 @@
             // вставляем контейнер настроек
             var mainPanel = general.doc.createElement('span');
             mainPanel.setAttribute('style', 'margin-right: 20px;');
-            mainPanel.innerHTML = 'Остров: <select id="selIsl0" ' +
-                'style="border: 1px solid #339933;"><option value="0" ' +
-                '>Все</option><option value="1">[Z]</option><option ' +
-                'value="2">[G]</option><option value="3">[S]</option>' +
-                '</select> Объект: <select id="selRealEstate1" ' +
-                'style="border: 1px solid #339933; margin-left: 3px;">' +
-                '<option value="0">Все</option><option value="1">Эс</option>' +
-                '<option value="2">Уран</option><option value="3">Недвига' +
-                '</option></select>&nbsp;&nbsp;Синдикат: <input ' +
-                'id="syndNumber2" type="text" maxlength="5" style="width: ' +
-                '45px;" />&nbsp;&nbsp;Куда я могу зайти: <input id="onlyMe3" ' +
-                'type="checkbox" />&nbsp;&nbsp;Всего боев: ' +
+            mainPanel.innerHTML = 'Остров: ' +
+                '<select id="selIsl0" style="border: 1px solid #339933;">' +
+                    '<option value="0" >Все</option>' +
+                    '<option value="1">[Z]</option>' +
+                    '<option value="2">[G]</option>' +
+                    '<option value="3">[S]</option>' +
+                '</select> ' +
+                'Объект: ' +
+                '<select id="selRealEstate1" style="border: 1px solid ' +
+                        '#339933; margin-left: 3px;">' +
+                    '<option value="0">Все</option>' +
+                    '<option value="1">Эс</option>' +
+                    '<option value="2">Уран</option>' +
+                    '<option value="3">Порты</option>' +
+                    '<option value="4">Недвига</option>' +
+                '</select>&nbsp;&nbsp;' +
+                'Синдикат: ' +
+                '<input id="syndNumber2" type="text" maxlength="5" ' +
+                    'style="width: 45px;" />&nbsp;&nbsp;' +
+                'Куда я могу зайти: ' +
+                '<input id="onlyMe3" type="checkbox" />&nbsp;&nbsp;' +
+                'Всего боев: ' +
                 '<span id="countLines"></span><br>';
             warTable.parentNode.insertBefore(mainPanel, warTable);
 

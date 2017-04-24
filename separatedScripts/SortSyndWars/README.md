@@ -1,7 +1,7 @@
 Сортировка заявок на странице нападений по острову, типу недвиги, номеру синдиката. Вывод общего количества боев и боев по синдикатам.
 <br>
 <br>
-Версия: 2.10-200417
+Версия: 2.20-240417
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SortSyndWars/sortSyndWars.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SortSyndWars/sortSyndWars.user.js.zip)
 <br>
