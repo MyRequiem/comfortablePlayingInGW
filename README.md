@@ -5,31 +5,28 @@
 ![FirefoxLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/firefoxLogo.png)
 ![ChromeLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/chromeLogo.png)
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
-<br>
-<br>
+
 Версия: 1.67-240417
-<br>
+
 Нашли ошибку? Пожалуйста, [сообщите](http://www.ganjawars.ru/sms-create.php?mailto=MyRequiem)
+
 * [Установить](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js)
 * [Скачать zip-архив](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js.zip)
 * *Все скрипты отдельными файлами находятся в директории* [./separatedScripts](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/) (Всего скриптов: 62)
 * [Как устанавливать скрипты](http://gwscripts.ucoz.net/index/how_to_install/0-31)
 * [История изменений](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/ChangeLog.txt)
-<br>
-<br>
+
 *Кликаем на листик, открываются настройки*:
-<br>
+
 ![Screen1](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/screen1.png)
-<br>
-<br>
-*Включаем нужное, отключаем ненужное:*
+
+*Включаем нужное, отключаем ненужное*:
+
 ![Screen2](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/screen2.png)
-<br>
-<br>
-*Сохранение/восстановление/сброс настроек, просмотр истории изменений:*
+
+*Сохранение/восстановление/сброс настроек, просмотр истории изменений*:
+
 ![Screen3](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/screen3.png)
-<br>
-<br>
 
 #### Модули отдельными скриптами
 

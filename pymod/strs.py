@@ -20,12 +20,12 @@ apple144.png)
 ![FirefoxLogo]({1}imgs/firefoxLogo.png)
 ![ChromeLogo]({1}imgs/chromeLogo.png)
 ![YandexLogo]({1}imgs/yandexLogo.png)
-<br>
-<br>
+
 Версия: {0}
-<br>
+
 Нашли ошибку? Пожалуйста, [сообщите](http://www.ganjawars.ru/\
 sms-create.php?mailto=MyRequiem)
+
 * [Установить]({1}_comfortablePlayingInGW.user.js)
 * [Скачать zip-архив]({1}_comfortablePlayingInGW.user.js.zip)
 * *Все скрипты отдельными файлами находятся в директории* \
@@ -33,21 +33,18 @@ sms-create.php?mailto=MyRequiem)
 * [Как устанавливать скрипты](http://gwscripts.ucoz.net/index/\
 how_to_install/0-31)
 * [История изменений]({1}ChangeLog.txt)
-<br>
-<br>
+
 *Кликаем на листик, открываются настройки*:
-<br>
+
 ![Screen1]({1}imgs/screen1.png)
-<br>
-<br>
-*Включаем нужное, отключаем ненужное:*
+
+*Включаем нужное, отключаем ненужное*:
+
 ![Screen2]({1}imgs/screen2.png)
-<br>
-<br>
-*Сохранение/восстановление/сброс настроек, просмотр истории изменений:*
+
+*Сохранение/восстановление/сброс настроек, просмотр истории изменений*:
+
 ![Screen3]({1}imgs/screen3.png)
-<br>
-<br>
 
 #### Модули отдельными скриптами
 
