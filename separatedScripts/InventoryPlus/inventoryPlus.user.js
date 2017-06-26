@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/items.php*
 // @grant           none
 // @license         MIT
-// @version         2.40-201216
+// @version         2.41-250617
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -18,7 +18,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -238,7 +238,7 @@
                 /*jslint unparam: true */
                 /*eslint no-unused-vars: true */
                 $('#itemsbody').
-                    load(url, function (responseTxt, statusTxt, xhr) {
+                    load(url, function (responseTxt, statusTxt) {
                         if (statusTxt === 'success') {
                             filteritems(def_filter);
                         }

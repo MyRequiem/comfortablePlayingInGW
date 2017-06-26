@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/info.realty.php?id=2
 // @grant           none
 // @license         MIT
-// @version         3.12-121216
+// @version         3.13-250617
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -18,7 +18,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -257,7 +257,7 @@
                 this.divRezult.style.left = pos.x + 20;
                 this.divRezult.style.top = pos.y;
                 this.divRezult.innerHTML = '<img style="margin: 3px 3px ' +
-                    '3px 3px" src="' + general.imgPath + 'preloader.gif" />';
+                    '3px 3px;" src="' + general.imgPath + 'preloader.gif" />';
                 this.divRezult.style.visibility = 'visible';
 
                 this.strRez = '';

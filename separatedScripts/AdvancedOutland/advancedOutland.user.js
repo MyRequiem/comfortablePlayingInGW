@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/object.php*
 // @grant           none
 // @license         MIT
-// @version         2.12-121216
+// @version         2.13-250617
 // @author          W_or_M (редакция MyRequiem)
 // ==/UserScript==
 
@@ -19,7 +19,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -291,7 +291,7 @@
                                 'rez = /Мощность: ~\\d+/i.exec(text);' +
                                 'if (rez) {' +
                                     'txt += "<li><span style=\'color: ' +
-                                        '#FF0000\'>" + rez[0] + "</span>' +
+                                        '#FF0000;\'>" + rez[0] + "</span>' +
                                             '</li>"' +
                                 '}' +
 

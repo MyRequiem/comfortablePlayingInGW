@@ -38,7 +38,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.64-140117
+// @version         1.68-260617
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -48,7 +48,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['warn', 4], quotes: ['warn', 'single'],
+/*eslint  no-useless-escape: 'warn', quotes: ['warn', 'single'],
     semi: ['error', 'always'], eqeqeq: 'error', curly: 'error'
 */
 
@@ -93,7 +93,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.64-140117';
+        this.version = '1.68-260617';
         /**
          * @property stString
          * @type {String}
@@ -291,7 +291,8 @@
                     /*
                      [20] - SortSyndWars
                         [0] - остров ('' - все, 1 - [Z], 2 - [G], 3 - [S])
-                        [1] - тип объекта ('' - все, 1 - ЭС, 2 - Уран, 3 - проч)
+                        [1] - тип объекта ('' - все, 1 - ЭС, 2 - Уран,
+                                3 - порты, 4 - другая недвижимость)
                         [2] - номер синдиката
                         [3] - '', '1' - чекбокс "Куда я могу зайти" */
                         '@|||' +
@@ -1176,7 +1177,7 @@
                     'на поле боя. В JS-версии боя подсвечивает зеленым ' +
                     'цветом тех персонажей, которые уже сделали ход. В обоих ' +
                     'версиях выводит количество персонажей, сделавших ход.' +
-                    '&lt;br>&lt;br>&lt;span style="color: #FF0000">Не ставьте ' +
+                    '&lt;br>&lt;br>&lt;span style="color: #FF0000;">Не ставьте ' +
                     'значения менее 3 секунд.&lt;/span>&lt;br>Таймаут обновления ' +
                     'данных в бою:&lt;span style="margin-left: 54px;"> ' +
                     '&lt;/span>&lt;input id="refreshBattle" type="text" ' +
@@ -1532,7 +1533,7 @@
             var tdStyle = ' style="background-color: #E0FFE0;">',
                 str = '&lt;table style="width: 100%; box-shadow: 8px 10px 7px ' +
                     'rgba(122,122,122,0.5);">&lt;tr>&lt;td ' + tdStyle +
-                    '&lt;table style="width: 100%">&lt;tr>&lt;td style="width: 23%;">' +
+                    '&lt;table style="width: 100%;">&lt;tr>&lt;td style="width: 23%;">' +
                     'Настройки:&lt;img id="imgSaveSettings" src="' +
                     general.imgPath + 'preloader.gif" style="margin-left: ' +
                     '5px;" />&lt;img id="imgRestoreSettings" ' +
@@ -4361,7 +4362,7 @@
                 if (time) {
                     if (stData[2]) {
                         _this.wpgbContainer.innerHTML = '[&lt;span style=' +
-                            '"color: #0000FF">' + time + '&lt;/span> мин ' +
+                            '"color: #0000FF;">' + time + '&lt;/span> мин ' +
                             '&lt;a href="' + linkObj.href + '">&lt;img src="' +
                             _this.blueFactory + ttl;
                     }
@@ -4828,7 +4829,7 @@
 
             target = target.parentNode.parentNode;
             target.innerHTML += '&lt;td valign="top" class="greengreenbg" ' +
-                'align="center" style="width: 150px">&lt;/td>';
+                'align="center" style="width: 150px;">&lt;/td>';
             target = target.lastElementChild;
 
             // кнопка удаления
@@ -5066,9 +5067,9 @@
 
             s = sec;
             h = Math.floor(s / 3600);
-            s = s - h * 3600;
+            s -= h * 3600;
             min = Math.floor(s / 60);
-            s = s - min * 60;
+            s -= min * 60;
 
             this.farmLink.innerHTML = '[' + (h &lt; 10 ? '0' + h : h) + ':' +
                 (min &lt; 10 ? '0' + min : min) + ':' +
@@ -5311,7 +5312,7 @@
                 spanContent.innerHTML = xml.responseText;
                 if (/Вы находитесь в пути/.test(spanContent.innerHTML)) {
                     general.$('dataNPC').lastElementChild.innerHTML = '&lt;td ' +
-                        'style="color: #990000">Вы в пути. Данные NPC не ' +
+                        'style="color: #990000;">Вы в пути. Данные NPC не ' +
                         'доступны.&lt;/td>';
                     _this.setCloseButton();
                     return;
@@ -5459,7 +5460,7 @@
                     '.png" style="cursor: pointer; vertical-align: middle;" ' +
                     'title="Sound  ' + onoff + '" alt="Sound ' + onoff +
                     '"  />&lt;span id="timerNPC" style="margin-left: 5px;">' +
-                    '&lt;/span>&lt;table id="dataNPC" style="width: 100%">&lt;/table>';
+                    '&lt;/span>&lt;table id="dataNPC" style="width: 100%;">&lt;/table>';
 
                 var _this = this;
                 general.$('imgSoundNPC').addEventListener('click', function () {
@@ -6879,7 +6880,7 @@
                 /*jslint unparam: true */
                 /*eslint no-unused-vars: true */
                 $('#itemsbody').
-                    load(url, function (responseTxt, statusTxt, xhr) {
+                    load(url, function (responseTxt, statusTxt) {
                         if (statusTxt === 'success') {
                             filteritems(def_filter);
                         }
@@ -8396,7 +8397,7 @@
                 this.divRezult.style.left = pos.x + 20;
                 this.divRezult.style.top = pos.y;
                 this.divRezult.innerHTML = '&lt;img style="margin: 3px 3px ' +
-                    '3px 3px" src="' + general.imgPath + 'preloader.gif" />';
+                    '3px 3px;" src="' + general.imgPath + 'preloader.gif" />';
                 this.divRezult.style.visibility = 'visible';
 
                 this.strRez = '';
@@ -8966,40 +8967,38 @@
          * @method sortSyndWars
          */
         this.sortSyndWars = function () {
-            var stData = general.getData(20);
+            var stData = general.getData(20),
+                reg1,
+                reg2;
 
-            var reg1;
             switch (stData[0]) {
-            case '':
-                reg1 = /./;
-                break;
             case '1':
-                reg1 = /Остров Z/;
+                reg1 = />\[Z\]&lt;\/b>/;
                 break;
             case '2':
-                reg1 = /Остров G/;
+                reg1 = />\[G\]&lt;\/b>/;
                 break;
             case '3':
-                reg1 = /Остров S/;
+                reg1 = />\[S\]&lt;\/b>/;
                 break;
             default:
-                reg1 = false;
                 break;
             }
 
-            var reg2;
             switch (stData[1]) {
-            case '':
-                reg2 = /./;
-                break;
             case '1':
-                reg2 = /Электростанция/;
+                reg2 = /Электростанция/i;
                 break;
             case '2':
-                reg2 = /Урановый рудник/;
+                reg2 = /Урановый рудник/i;
+                break;
+            case '3':
+                reg2 = /контроль портов/i;
+                break;
+            case '4':
+                reg2 = /ферма|плантация|завод|база|Фабрика|лаборатория|цех/i;
                 break;
             default:
-                reg2 = false;
                 break;
             }
 
@@ -9019,21 +9018,22 @@
                 // делаем строку видимой
                 this.trs[i].style.display = '';
 
-                txt = this.trs[i].cells[2].innerHTML;
-                if (!reg2) {
-                    if (!reg1.test(txt) || (/Электростанция/.test(txt)) ||
-                            (/Урановый рудник/.test(txt))) {
-                        this.trs[i].style.display = 'none';
-                        continue;
+                txt = this.trs[i].cells[1].innerHTML;
+
+                if (reg1 || reg2) {
+                    // в боях за контроль портов острова нет
+                    if (stData[1] === '3') {
+                        reg1 = null;
                     }
-                } else {
-                    if (!reg1.test(txt) || !reg2.test(txt)) {
+
+                    if ((reg1 &amp;&amp; !reg1.test(txt)) ||
+                            (reg2 &amp;&amp; !reg2.test(txt))) {
                         this.trs[i].style.display = 'none';
                         continue;
                     }
                 }
 
-                if (stData[2] &amp;&amp; this.trs[i].cells[4].innerHTML.
+                if (stData[2] &amp;&amp; this.trs[i].cells[2].innerHTML.
                         indexOf(stData[2]) === -1) {
                     this.trs[i].style.display = 'none';
                     continue;
@@ -9046,8 +9046,8 @@
                 }
 
                 count++;
-                a = this.trs[i].cells[4].querySelectorAll('a' +
-                        '[href*="/syndicate.php?id="]');
+                a = this.trs[i].cells[2].
+                        querySelectorAll('a[href*="/syndicate.php?id="]');
 
                 r = [];
                 b = [];
@@ -9084,7 +9084,7 @@
                 }
             }
 
-            general.$('countLines').innerHTML = count ? '[' + count + ']' : '';
+            general.$('countLines').innerHTML = '[' + count + ']';
             this.showSyndData(objs);
         };
 
@@ -9106,37 +9106,43 @@
          * @method init
          */
         this.init = function () {
-            var target = general.doc.querySelector('#updatetimer2'),
-                warTable = general.doc.querySelector('td[class="txt"]' +
-                        '[align="center"]>table[border="0"]');
-
-            // что-то не найдено или уже в заявке
-            if (!target || !warTable || general.doc.
-                    querySelector('center>b>font[color="#990000"]')) {
+            var warTable = general.doc.querySelector('td[class="txt"]>' +
+                        'table[border="0"][cellpadding="5"][ cellspacing="1"]');
+            // таблица с заявками не найдена
+            if (!warTable) {
                 return;
             }
 
-            // выравниваем таблицу с заявками по левому краю
-            warTable.parentNode.setAttribute('align', 'left');
+            // выравниваем таблицу с заявками по центру
+            warTable.parentNode.setAttribute('align', 'center');
 
             // вставляем контейнер настроек
             var mainPanel = general.doc.createElement('span');
             mainPanel.setAttribute('style', 'margin-right: 20px;');
-            mainPanel.innerHTML = 'Остров: &lt;select id="selIsl0" ' +
-                'style="border: 1px solid #339933;">&lt;option value="0" ' +
-                '>Все&lt;/option>&lt;option value="1">[Z]&lt;/option>&lt;option ' +
-                'value="2">[G]&lt;/option>&lt;option value="3">[S]&lt;/option>' +
-                '&lt;/select> Объект: &lt;select id="selRealEstate1" ' +
-                'style="border: 1px solid #339933; margin-left: 3px;">' +
-                '&lt;option value="0">Все&lt;/option>&lt;option value="1">Эс&lt;/option>' +
-                '&lt;option value="2">Уран&lt;/option>&lt;option value="3">Недвига' +
-                '&lt;/option>&lt;/select>&amp;nbsp;&amp;nbsp;Синдикат: &lt;input ' +
-                'id="syndNumber2" type="text" maxlength="5" style="width: ' +
-                '45px;" />&amp;nbsp;&amp;nbsp;Куда я могу зайти: &lt;input id="onlyMe3" ' +
-                'type="checkbox" />&amp;nbsp;&amp;nbsp;Всего боев: ' +
-                '&lt;span id="countLines">&lt;/span>';
-            target = target.parentNode;
-            target.parentNode.insertBefore(mainPanel, target);
+            mainPanel.innerHTML = 'Остров: ' +
+                '&lt;select id="selIsl0" style="border: 1px solid #339933;">' +
+                    '&lt;option value="0" >Все&lt;/option>' +
+                    '&lt;option value="1">[Z]&lt;/option>' +
+                    '&lt;option value="2">[G]&lt;/option>' +
+                    '&lt;option value="3">[S]&lt;/option>' +
+                '&lt;/select> ' +
+                'Объект: ' +
+                '&lt;select id="selRealEstate1" style="border: 1px solid ' +
+                        '#339933; margin-left: 3px;">' +
+                    '&lt;option value="0">Все&lt;/option>' +
+                    '&lt;option value="1">Эс&lt;/option>' +
+                    '&lt;option value="2">Уран&lt;/option>' +
+                    '&lt;option value="3">Порты&lt;/option>' +
+                    '&lt;option value="4">Недвига&lt;/option>' +
+                '&lt;/select>&amp;nbsp;&amp;nbsp;' +
+                'Синдикат: ' +
+                '&lt;input id="syndNumber2" type="text" maxlength="5" ' +
+                    'style="width: 45px;" />&amp;nbsp;&amp;nbsp;' +
+                'Куда я могу зайти: ' +
+                '&lt;input id="onlyMe3" type="checkbox" />&amp;nbsp;&amp;nbsp;' +
+                'Всего боев: ' +
+                 '&lt;span id="countLines">&lt;/span>&lt;br>';
+            warTable.parentNode.insertBefore(mainPanel, warTable);
 
             var selIsl = general.$('selIsl0'),
                 selRealEstate = general.$('selRealEstate1'),
@@ -9158,10 +9164,10 @@
             }, false);
 
             this.divCountAll = general.doc.createElement('div');
-            target.parentNode.appendChild(this.divCountAll);
+            warTable.parentNode.appendChild(this.divCountAll);
 
-            this.trs = target.parentNode.
-                            querySelector('table').querySelectorAll('tr');
+            this.trs = warTable.querySelectorAll('table[cellpadding="5"]>' +
+                    'tbody>tr');
 
             var stData = general.getData(20);
             selIsl.value = stData[0] || '0';
@@ -9489,7 +9495,7 @@
                 });
 
                 var str = '&lt;table style="border: #339933 solid 1px; ' +
-                    'width: 100%">&lt;tr style="font-weight: bold; ' +
+                    'width: 100%;">&lt;tr style="font-weight: bold; ' +
                     'text-align: center;">&lt;td>Число&lt;/td>&lt;td>Ставка&lt;/td>&lt;/tr>',
                     count = +general.$('inptext').value,
                     j;
@@ -9530,15 +9536,15 @@
             if (target) {
                 target.innerHTML += '&lt;div style="background: #D0EED0; ' +
                     'margin-top: 5px; padding: 5px; text-align: center;">' +
-                    '&lt;span style="color: #0000FF">Показать минимальные ставки' +
-                    '&lt;/span>&lt;br>Вывести &lt;input type="text" id="inptext" ' +
-                    'value="5" maxlength="2" style="width: 30px"> чисел ' +
-                    '&lt;input type="button" id="butb" value=">>" />&lt;br>' +
-                    '&lt;input type=checkbox id="chknull" checked /> ' +
-                    '&lt;label for="chknull">Числа, на которые еще не ставили' +
-                    '&lt;/label>&lt;/div>&lt;div id="resultBets" style="visibility: ' +
-                    'hidden; text-align: center; background-color:#D0EED0; ' +
-                    'padding: 5px;">&lt;/div>';
+                    '&lt;span style="color: #0000FF;">Показать минимальные ' +
+                    'ставки&lt;/span>&lt;br>Вывести &lt;input type="text" ' +
+                    'id="inptext" value="5" maxlength="2" style="width: ' +
+                    '30px;"> чисел &lt;input type="button" id="butb" ' +
+                    'value=">>" />&lt;br>&lt;input type=checkbox id="chknull" ' +
+                    'checked /> &lt;label for="chknull">Числа, на которые еще ' +
+                    'не ставили&lt;/label>&lt;/div>&lt;div id="resultBets" ' +
+                    'style="visibility: hidden; text-align: center; ' +
+                    'background-color:#D0EED0; padding: 5px;">&lt;/div>';
 
                 var _this = this;
                 general.$('butb').addEventListener('click', function () {
@@ -10774,7 +10780,7 @@
                 syndExp.innerHTML += '&lt;span id="cSyndExp" ' +
                     'style="color: #FF0000; font-size: 9px;">&lt;/span> ' +
                     '&lt;span id="syndLeftToLevel" style="font-size: 8px; ' +
-                    'color: #696156">&lt;/span>';
+                    'color: #696156;">&lt;/span>';
             }
 
             this.dataNow.push(syndExp ? this.getValue(syndExp, 0) : '');
@@ -11754,10 +11760,10 @@
                 r = main.realEstate;
 
             this.mainTable.innerHTML = title + 'Нападающие [' +
-                'нападений: &lt;span style="color: #FF0000">' + main.allAttaks +
-                '&lt;/span>, защит: &lt;span style="color: #0000FF">' +
+                'нападений: &lt;span style="color: #FF0000;">' + main.allAttaks +
+                '&lt;/span>, защит: &lt;span style="color: #0000FF;">' +
                 main.allProtect + '&lt;/span>, всего боев: &lt;span style="color: ' +
-                '#990000">' + (main.allAttaks + main.allProtect) + '&lt;/span>]' +
+                '#990000;">' + (main.allAttaks + main.allProtect) + '&lt;/span>]' +
                 str3 + strAttaks +
 
                 this.getRealEstateStr(r.es, 'Электростанции',
@@ -11769,7 +11775,7 @@
                 this.getRealEstateStr(r.another, 'Другая недвижимость',
                         title, str1, str2, str3) +
 
-                title + 'Счет синдиката [$&lt;span style="color: #990000">' +
+                title + 'Счет синдиката [$&lt;span style="color: #990000;">' +
                 setPoints(main.allPut - main.allTake, '\'', true) +
                 '&lt;/span>]' + str3 + str1 + '&lt;span style="font-weight: bold; ' +
                 'color: #FF0000;">Взяли со счета&lt;/span> (всего)' + str2 +
@@ -12401,7 +12407,7 @@
                 span.setAttribute('id', 'spanKarmaTimer');
                 span.setAttribute('style', 'margin-left: 5px; color: #07A703;');
                 span.innerHTML = '» Вы сможете выставить карму через ' +
-                    '&lt;span id="karmaTimer" style="color: #056802">&lt;/span>';
+                    '&lt;span id="karmaTimer" style="color: #056802;">&lt;/span>';
 
                 var target = general.doc.
                         querySelector('td[colspan="3"]>table[width="100%"]'),
@@ -13310,7 +13316,7 @@
                                 'rez = /Мощность: ~\\d+/i.exec(text);' +
                                 'if (rez) {' +
                                     'txt += "&lt;li>&lt;span style=\'color: ' +
-                                        '#FF0000\'>" + rez[0] + "&lt;/span>' +
+                                        '#FF0000;\'>" + rez[0] + "&lt;/span>' +
                                             '&lt;/li>"' +
                                 '}' +
 
@@ -13472,7 +13478,8 @@
                 this.table.innerHTML = this.tableHTML;
             }
 
-            var trs = this.table.querySelectorAll('tr'),
+            var trs = this.table.querySelectorAll('table[cellpadding="5"]>' +
+                    'tbody>tr'),
                 stData = general.getData(30),
                 linksPers,
                 ranges,
@@ -13481,18 +13488,19 @@
                 tmp,
                 lvl,
                 td,
+                k,
                 j,
                 i;
 
             for (i = 1; i &lt; trs.length; i++) {
                 td = trs[i].querySelectorAll('td');
 
-                if (!td[4] || !td[7]) {
+                if (td.length !== 5) {
                     continue;
                 }
 
                 // проверяем установленый уровень
-                lvl = /\d+\-(\d+).*vs.*\d+\-\d+/.exec(td[4].innerHTML);
+                lvl = /\d+\-(\d+).*vs.*\d+\-\d+/.exec(td[1].innerHTML);
                 if (lvl) {
                     lvl = +lvl[1];
                     if (+stData[0] > lvl || +stData[1] &lt; lvl) {
@@ -13503,7 +13511,7 @@
 
                 // оставляем только командные бои или
                 // только со случайным распределением
-                tmp = /class="?(r|b)"?/.test(td[7].innerHTML);
+                tmp = /class="?(r|b)"?/.test(td[3].innerHTML);
                 if ((stData[2] &amp;&amp; !tmp) || (stData[3] &amp;&amp; tmp)) {
                     trs[i].style.display = 'none';
                     continue;
@@ -13511,34 +13519,34 @@
 
                 // оставляем только DM или только не DM
                 tmp = /\[\s?&lt;font color=.*>dm&lt;\/font>\s?\]/.
-                        test(td[2].innerHTML);
+                        test(td[1].innerHTML);
                 if ((stData[4] &amp;&amp; !tmp) || (stData[5] &amp;&amp; tmp)) {
                     trs[i].style.display = 'none';
                     continue;
                 }
 
                 // оставляем только синдовые или прячем все синдовые
-                tmp = /#\d+/.test(td[4].innerHTML);
+                tmp = /#\d+/.test(td[2].innerHTML);
                 if ((stData[6] &amp;&amp; tmp) || (stData[7] &amp;&amp; !tmp)) {
                     trs[i].style.display = 'none';
                     continue;
                 }
 
                 // выделяем жирным красным количество бойцов с каждой стороны
-                td[7].innerHTML = td[7].innerHTML.
-                        replace(/(\(\d\d?\))/g, '&lt;span style="color: ' +
-                            '#660000; font-weight: bold;">$1&lt;/span>');
+                td[3].innerHTML = td[3].innerHTML.
+                        replace(/(\(\d+\/\d+\))/g, '&lt;span style="color: ' +
+                            '#990000; font-weight: bold;">$1&lt;/span>');
 
                 // показываем умения и дальность, подкрашиваем заявки,
                 // подходящие по указанной дальности
                 ranges = stData[10].split(',');
                 if (stData[8] || stData[9] || ranges[0]) {
                     tmp = '';
-                    linksPers = td[7].
+                    linksPers = td[3].
                         querySelectorAll('a[href*="/info.php?id="]');
 
                     for (j = 0; j &lt; linksPers.length; j++) {
-                        title = /\((\d+)?, (\d+)?\)/.
+                        title = /\((\d+.*)?, (\d+)?\)/.
                             exec(linksPers[j].getAttribute('title'));
 
                         if (!title) {
@@ -13564,11 +13572,12 @@
                         }
 
                         // закрашиваем заявку, если подходит дальность
-                        if (ranges[0] &amp;&amp; (/E7FFE7/i.test(td[7].parentNode.
-                                getAttribute('bgcolor')) &amp;&amp;
-                                    this.checkRange(+title[2], ranges))) {
-                            td[7].parentNode.
-                                setAttribute('bgcolor', '#C1F0E7');
+                        if (ranges[0] &amp;&amp; !td[3].getAttribute('bgcolor') &amp;&amp;
+                                this.checkRange(+title[2], ranges)) {
+                            for (k = 0; k &lt; 4; k++) {
+                                td[k].removeAttribute('class');
+                                td[k].setAttribute('bgcolor', '#C1F0E7');
+                            }
                         }
                     }
                 }
@@ -13580,8 +13589,10 @@
                     if (time) {
                         time = +time[1] * 60 + (+time[2]);
                         if (+stData[11] &lt; time) {
-                            trs[i].
-                                setAttribute('style', 'background: #D9D9D9;');
+                            for (k = 0; k &lt; 4; k++) {
+                                td[k].removeAttribute('class');
+                                td[k].setAttribute('bgcolor', '#D9D9D9');
+                            }
                         }
                     }
                 }
@@ -13612,7 +13623,6 @@
 
             // устанавливаем интерфейс настроек
             var inputSpan = general.doc.createElement('span');
-            inputSpan.setAttribute('style', 'margin-right: 10px;');
             inputSpan.innerHTML = 'с:' +
                 '&lt;select id="lvlMin">' + this.getSelectOptions() +
                     '&lt;/select> ' +
@@ -13629,11 +13639,11 @@
                 'Нужная дальность: &lt;input type="text" id="limitRange" ' +
                     'style="width: 50px;"> ' +
                 'Время: &lt;input type="text" id="time" maxlength="3" ' +
-                    'style="width: 40px;">';
+                    'style="width: 40px;">&lt;br>';
 
-            var target = updateTimer.parentNode.parentNode;
-            target.insertBefore(inputSpan,
-                        target.firstElementChild.nextElementSibling);
+            var target = general.doc.querySelector('td.txt>' +
+                'table[width="100%"]').parentNode;
+            target.insertBefore(inputSpan, target.querySelector('br'));
 
             var stData = general.getData(30);
 
@@ -13721,7 +13731,7 @@
 
             // таблица с заявками
             this.table = general.doc.querySelector('table[border="0"]' +
-                    '[class="wb"][cellpadding="3"]');
+                    '[cellpadding="5"][cellspacing="1"]');
 
             if (this.table) {
                 this.table.parentNode.setAttribute('align', 'center');
@@ -13928,7 +13938,7 @@
             for (i = 0; i &lt; this.activeProfs.length; i++) {
                 this.activeProfs[i].setAttribute('color', '#FF0000');
             }
-        }
+        };
     };
 
     general = new General();
@@ -14546,7 +14556,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri Feb 03 2017 13:57:26 GMT+0400 (+04)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jun 26 2017 11:34:25 GMT+0400 (+04)
 </footer>
 
 <script> prettyPrint(); </script>

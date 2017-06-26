@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/npc.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.13-121216
+// @version         2.14-250617
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -19,7 +19,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -32,8 +32,7 @@
     'use strict';
 
     // ================= НАСТРОЙКИ ==========================
-    var soundNPC = 17; //  номер звука, когда пора делать квест
-                        // 0 - без звука
+    var soundNPC = 17;  // номер звука, когда пора делать квест (0 - без звука)
     // ============== КОНЕЦ НАСТРОЕК ========================
 
     /**
@@ -277,7 +276,7 @@
                 spanContent.innerHTML = xml.responseText;
                 if (/Вы находитесь в пути/.test(spanContent.innerHTML)) {
                     general.$('dataNPC').lastElementChild.innerHTML = '<td ' +
-                        'style="color: #990000">Вы в пути. Данные NPC не ' +
+                        'style="color: #990000;">Вы в пути. Данные NPC не ' +
                         'доступны.</td>';
                     _this.setCloseButton();
                     return;
@@ -442,7 +441,7 @@
                     '.png" style="cursor: pointer; vertical-align: middle;" ' +
                     'title="Sound  ' + onoff + '" alt="Sound ' + onoff +
                     '"  /><span id="timerNPC" style="margin-left: 5px;">' +
-                    '</span><table id="dataNPC" style="width: 100%"></table>';
+                    '</span><table id="dataNPC" style="width: 100%;"></table>';
 
                 var _this = this;
                 general.$('imgSoundNPC').addEventListener('click', function () {

@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/info.vote.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.02-121216
+// @version         2.03-250617
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -17,7 +17,7 @@
 /*jslint browser: true, maxlen: 80, vars: true, nomen: true, devel: true */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -166,7 +166,7 @@
                 span.setAttribute('id', 'spanKarmaTimer');
                 span.setAttribute('style', 'margin-left: 5px; color: #07A703;');
                 span.innerHTML = '» Вы сможете выставить карму через ' +
-                    '<span id="karmaTimer" style="color: #056802"></span>';
+                    '<span id="karmaTimer" style="color: #056802;"></span>';
 
                 var target = general.doc.
                         querySelector('td[colspan="3"]>table[width="100%"]'),

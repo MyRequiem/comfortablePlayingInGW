@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.67-240417
+// @version         1.68-260617
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -20,7 +20,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['warn', 4], quotes: ['warn', 'single'],
+/*eslint  no-useless-escape: 'warn', quotes: ['warn', 'single'],
     semi: ['error', 'always'], eqeqeq: 'error', curly: 'error'
 */
 
@@ -65,7 +65,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.67-240417';
+        this.version = '1.68-260617';
         /**
          * @property stString
          * @type {String}
@@ -1149,7 +1149,7 @@
                     'на поле боя. В JS-версии боя подсвечивает зеленым ' +
                     'цветом тех персонажей, которые уже сделали ход. В обоих ' +
                     'версиях выводит количество персонажей, сделавших ход.' +
-                    '<br><br><span style="color: #FF0000">Не ставьте ' +
+                    '<br><br><span style="color: #FF0000;">Не ставьте ' +
                     'значения менее 3 секунд.</span><br>Таймаут обновления ' +
                     'данных в бою:<span style="margin-left: 54px;"> ' +
                     '</span><input id="refreshBattle" type="text" ' +
@@ -1505,7 +1505,7 @@
             var tdStyle = ' style="background-color: #E0FFE0;">',
                 str = '<table style="width: 100%; box-shadow: 8px 10px 7px ' +
                     'rgba(122,122,122,0.5);"><tr><td ' + tdStyle +
-                    '<table style="width: 100%"><tr><td style="width: 23%;">' +
+                    '<table style="width: 100%;"><tr><td style="width: 23%;">' +
                     'Настройки:<img id="imgSaveSettings" src="' +
                     general.imgPath + 'preloader.gif" style="margin-left: ' +
                     '5px;" /><img id="imgRestoreSettings" ' +
@@ -4334,7 +4334,7 @@
                 if (time) {
                     if (stData[2]) {
                         _this.wpgbContainer.innerHTML = '[<span style=' +
-                            '"color: #0000FF">' + time + '</span> мин ' +
+                            '"color: #0000FF;">' + time + '</span> мин ' +
                             '<a href="' + linkObj.href + '"><img src="' +
                             _this.blueFactory + ttl;
                     }
@@ -4801,7 +4801,7 @@
 
             target = target.parentNode.parentNode;
             target.innerHTML += '<td valign="top" class="greengreenbg" ' +
-                'align="center" style="width: 150px"></td>';
+                'align="center" style="width: 150px;"></td>';
             target = target.lastElementChild;
 
             // кнопка удаления
@@ -5039,9 +5039,9 @@
 
             s = sec;
             h = Math.floor(s / 3600);
-            s = s - h * 3600;
+            s -= h * 3600;
             min = Math.floor(s / 60);
-            s = s - min * 60;
+            s -= min * 60;
 
             this.farmLink.innerHTML = '[' + (h < 10 ? '0' + h : h) + ':' +
                 (min < 10 ? '0' + min : min) + ':' +
@@ -5284,7 +5284,7 @@
                 spanContent.innerHTML = xml.responseText;
                 if (/Вы находитесь в пути/.test(spanContent.innerHTML)) {
                     general.$('dataNPC').lastElementChild.innerHTML = '<td ' +
-                        'style="color: #990000">Вы в пути. Данные NPC не ' +
+                        'style="color: #990000;">Вы в пути. Данные NPC не ' +
                         'доступны.</td>';
                     _this.setCloseButton();
                     return;
@@ -5432,7 +5432,7 @@
                     '.png" style="cursor: pointer; vertical-align: middle;" ' +
                     'title="Sound  ' + onoff + '" alt="Sound ' + onoff +
                     '"  /><span id="timerNPC" style="margin-left: 5px;">' +
-                    '</span><table id="dataNPC" style="width: 100%"></table>';
+                    '</span><table id="dataNPC" style="width: 100%;"></table>';
 
                 var _this = this;
                 general.$('imgSoundNPC').addEventListener('click', function () {
@@ -6852,7 +6852,7 @@
                 /*jslint unparam: true */
                 /*eslint no-unused-vars: true */
                 $('#itemsbody').
-                    load(url, function (responseTxt, statusTxt, xhr) {
+                    load(url, function (responseTxt, statusTxt) {
                         if (statusTxt === 'success') {
                             filteritems(def_filter);
                         }
@@ -8369,7 +8369,7 @@
                 this.divRezult.style.left = pos.x + 20;
                 this.divRezult.style.top = pos.y;
                 this.divRezult.innerHTML = '<img style="margin: 3px 3px ' +
-                    '3px 3px" src="' + general.imgPath + 'preloader.gif" />';
+                    '3px 3px;" src="' + general.imgPath + 'preloader.gif" />';
                 this.divRezult.style.visibility = 'visible';
 
                 this.strRez = '';
@@ -9467,7 +9467,7 @@
                 });
 
                 var str = '<table style="border: #339933 solid 1px; ' +
-                    'width: 100%"><tr style="font-weight: bold; ' +
+                    'width: 100%;"><tr style="font-weight: bold; ' +
                     'text-align: center;"><td>Число</td><td>Ставка</td></tr>',
                     count = +general.$('inptext').value,
                     j;
@@ -9508,15 +9508,15 @@
             if (target) {
                 target.innerHTML += '<div style="background: #D0EED0; ' +
                     'margin-top: 5px; padding: 5px; text-align: center;">' +
-                    '<span style="color: #0000FF">Показать минимальные ставки' +
-                    '</span><br>Вывести <input type="text" id="inptext" ' +
-                    'value="5" maxlength="2" style="width: 30px"> чисел ' +
-                    '<input type="button" id="butb" value=">>" /><br>' +
-                    '<input type=checkbox id="chknull" checked /> ' +
-                    '<label for="chknull">Числа, на которые еще не ставили' +
-                    '</label></div><div id="resultBets" style="visibility: ' +
-                    'hidden; text-align: center; background-color:#D0EED0; ' +
-                    'padding: 5px;"></div>';
+                    '<span style="color: #0000FF;">Показать минимальные ' +
+                    'ставки</span><br>Вывести <input type="text" ' +
+                    'id="inptext" value="5" maxlength="2" style="width: ' +
+                    '30px;"> чисел <input type="button" id="butb" ' +
+                    'value=">>" /><br><input type=checkbox id="chknull" ' +
+                    'checked /> <label for="chknull">Числа, на которые еще ' +
+                    'не ставили</label></div><div id="resultBets" ' +
+                    'style="visibility: hidden; text-align: center; ' +
+                    'background-color:#D0EED0; padding: 5px;"></div>';
 
                 var _this = this;
                 general.$('butb').addEventListener('click', function () {
@@ -10752,7 +10752,7 @@
                 syndExp.innerHTML += '<span id="cSyndExp" ' +
                     'style="color: #FF0000; font-size: 9px;"></span> ' +
                     '<span id="syndLeftToLevel" style="font-size: 8px; ' +
-                    'color: #696156"></span>';
+                    'color: #696156;"></span>';
             }
 
             this.dataNow.push(syndExp ? this.getValue(syndExp, 0) : '');
@@ -11732,10 +11732,10 @@
                 r = main.realEstate;
 
             this.mainTable.innerHTML = title + 'Нападающие [' +
-                'нападений: <span style="color: #FF0000">' + main.allAttaks +
-                '</span>, защит: <span style="color: #0000FF">' +
+                'нападений: <span style="color: #FF0000;">' + main.allAttaks +
+                '</span>, защит: <span style="color: #0000FF;">' +
                 main.allProtect + '</span>, всего боев: <span style="color: ' +
-                '#990000">' + (main.allAttaks + main.allProtect) + '</span>]' +
+                '#990000;">' + (main.allAttaks + main.allProtect) + '</span>]' +
                 str3 + strAttaks +
 
                 this.getRealEstateStr(r.es, 'Электростанции',
@@ -11747,7 +11747,7 @@
                 this.getRealEstateStr(r.another, 'Другая недвижимость',
                         title, str1, str2, str3) +
 
-                title + 'Счет синдиката [$<span style="color: #990000">' +
+                title + 'Счет синдиката [$<span style="color: #990000;">' +
                 setPoints(main.allPut - main.allTake, '\'', true) +
                 '</span>]' + str3 + str1 + '<span style="font-weight: bold; ' +
                 'color: #FF0000;">Взяли со счета</span> (всего)' + str2 +
@@ -12379,7 +12379,7 @@
                 span.setAttribute('id', 'spanKarmaTimer');
                 span.setAttribute('style', 'margin-left: 5px; color: #07A703;');
                 span.innerHTML = '» Вы сможете выставить карму через ' +
-                    '<span id="karmaTimer" style="color: #056802"></span>';
+                    '<span id="karmaTimer" style="color: #056802;"></span>';
 
                 var target = general.doc.
                         querySelector('td[colspan="3"]>table[width="100%"]'),
@@ -13288,7 +13288,7 @@
                                 'rez = /Мощность: ~\\d+/i.exec(text);' +
                                 'if (rez) {' +
                                     'txt += "<li><span style=\'color: ' +
-                                        '#FF0000\'>" + rez[0] + "</span>' +
+                                        '#FF0000;\'>" + rez[0] + "</span>' +
                                             '</li>"' +
                                 '}' +
 

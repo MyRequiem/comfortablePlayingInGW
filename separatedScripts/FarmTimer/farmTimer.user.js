@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.04-121216
+// @version         2.05-250617
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -18,7 +18,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -317,9 +317,9 @@
 
             s = sec;
             h = Math.floor(s / 3600);
-            s = s - h * 3600;
+            s -= h * 3600;
             min = Math.floor(s / 60);
-            s = s - min * 60;
+            s -= min * 60;
 
             this.farmLink.innerHTML = '[' + (h < 10 ? '0' + h : h) + ':' +
                 (min < 10 ? '0' + min : min) + ':' +

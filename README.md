@@ -6,7 +6,7 @@
 ![ChromeLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/chromeLogo.png)
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
 
-Версия: 1.67-240417
+Версия: 1.68-260617
 
 Нашли ошибку? Пожалуйста, [сообщите](http://www.ganjawars.ru/sms-create.php?mailto=MyRequiem)
 
@@ -60,7 +60,7 @@
 
 **AdvancedOutland**
 <br>
-Версия: 2.12-121216
+Версия: 2.13-250617
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvancedOutland/advancedOutland.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvancedOutland/advancedOutland.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvancedOutland)
 <br>
@@ -151,7 +151,7 @@
 
 **FarmTimer**
 <br>
-Версия: 2.04-121216
+Версия: 2.05-250617
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FarmTimer/farmTimer.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FarmTimer/farmTimer.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FarmTimer)
 <br>
@@ -214,14 +214,14 @@
 
 **GosEnergoAtomFilter**
 <br>
-Версия: 3.12-121216
+Версия: 3.13-250617
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GosEnergoAtomFilter/gosEnergoAtomFilter.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GosEnergoAtomFilter/gosEnergoAtomFilter.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GosEnergoAtomFilter)
 <br>
 
 **GwMenu**
 <br>
-Версия: 2.22-121216
+Версия: 2.23-250617
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GwMenu/gwMenu.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GwMenu/gwMenu.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu)
 <br>
@@ -249,7 +249,7 @@
 
 **InventoryPlus**
 <br>
-Версия: 2.40-201216
+Версия: 2.41-250617
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/InventoryPlus/inventoryPlus.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/InventoryPlus/inventoryPlus.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/InventoryPlus)
 <br>
@@ -270,7 +270,7 @@
 
 **MinBetAtRoulette**
 <br>
-Версия: 2.02-121216
+Версия: 2.03-250617
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/MinBetAtRoulette/minBetAtRoulette.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/MinBetAtRoulette/minBetAtRoulette.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/MinBetAtRoulette)
 <br>
@@ -389,7 +389,7 @@
 
 **SkillCounters**
 <br>
-Версия: 2.01-121216
+Версия: 2.02-250617
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SkillCounters/skillCounters.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SkillCounters/skillCounters.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SkillCounters)
 <br>
@@ -424,7 +424,7 @@
 
 **SyndAnalyser**
 <br>
-Версия: 2.12-121216
+Версия: 2.13-250617
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndAnalyser/syndAnalyser.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndAnalyser/syndAnalyser.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndAnalyser)
 <br>
@@ -445,21 +445,21 @@
 
 **TimeKarma**
 <br>
-Версия: 2.02-121216
+Версия: 2.03-250617
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeKarma/timeKarma.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeKarma/timeKarma.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/TimeKarma)
 <br>
 
 **TimeNpc**
 <br>
-Версия: 2.13-121216
+Версия: 2.14-250617
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeNpc/timeNpc.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeNpc/timeNpc.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/TimeNpc)
 <br>
 
 **WorkPostGrenadesBroken**
 <br>
-Версия: 2.21-121216
+Версия: 2.22-250617
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/WorkPostGrenadesBroken)
 <br>

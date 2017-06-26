@@ -9,6 +9,6 @@
 // @include         http://www.ganjawars.ru/info.vote.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.02-121216
+// @version         2.03-250617
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==

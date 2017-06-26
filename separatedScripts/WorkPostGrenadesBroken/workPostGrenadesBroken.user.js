@@ -11,7 +11,7 @@
 // @include         http://www.ganjawars.ru/wargroup.php*
 // @grant           none
 // @license         MIT
-// @version         2.21-121216
+// @version         2.22-250617
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -21,7 +21,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -415,7 +415,7 @@
                 if (time) {
                     if (showWorkTime) {
                         _this.wpgbContainer.innerHTML = '[<span style=' +
-                            '"color: #0000FF">' + time + '</span> мин ' +
+                            '"color: #0000FF;">' + time + '</span> мин ' +
                             '<a href="' + linkObj.href + '"><img src="' +
                             _this.blueFactory + ttl;
                     }

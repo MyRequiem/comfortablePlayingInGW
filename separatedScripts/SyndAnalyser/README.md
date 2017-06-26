@@ -1,7 +1,7 @@
 Анализ активности синдиката.
 <br>
 <br>
-Версия: 2.12-121216
+Версия: 2.13-250617
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndAnalyser/syndAnalyser.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndAnalyser/syndAnalyser.user.js.zip)
 <br>

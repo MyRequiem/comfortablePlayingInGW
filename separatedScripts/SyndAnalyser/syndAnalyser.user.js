@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.12-121216
+// @version         2.13-250617
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -18,7 +18,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -551,10 +551,10 @@
                 r = main.realEstate;
 
             this.mainTable.innerHTML = title + 'Нападающие [' +
-                'нападений: <span style="color: #FF0000">' + main.allAttaks +
-                '</span>, защит: <span style="color: #0000FF">' +
+                'нападений: <span style="color: #FF0000;">' + main.allAttaks +
+                '</span>, защит: <span style="color: #0000FF;">' +
                 main.allProtect + '</span>, всего боев: <span style="color: ' +
-                '#990000">' + (main.allAttaks + main.allProtect) + '</span>]' +
+                '#990000;">' + (main.allAttaks + main.allProtect) + '</span>]' +
                 str3 + strAttaks +
 
                 this.getRealEstateStr(r.es, 'Электростанции',
@@ -566,7 +566,7 @@
                 this.getRealEstateStr(r.another, 'Другая недвижимость',
                         title, str1, str2, str3) +
 
-                title + 'Счет синдиката [$<span style="color: #990000">' +
+                title + 'Счет синдиката [$<span style="color: #990000;">' +
                 setPoints(main.allPut - main.allTake, '\'', true) +
                 '</span>]' + str3 + str1 + '<span style="font-weight: bold; ' +
                 'color: #FF0000;">Взяли со счета</span> (всего)' + str2 +

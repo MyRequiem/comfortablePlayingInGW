@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/roulette.php
 // @grant           none
 // @license         MIT
-// @version         2.02-121216
+// @version         2.03-250617
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -18,7 +18,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -178,7 +178,7 @@
                 });
 
                 var str = '<table style="border: #339933 solid 1px; ' +
-                    'width: 100%"><tr style="font-weight: bold; ' +
+                    'width: 100%;"><tr style="font-weight: bold; ' +
                     'text-align: center;"><td>Число</td><td>Ставка</td></tr>',
                     count = +general.$('inptext').value,
                     j;
@@ -219,9 +219,9 @@
             if (target) {
                 target.innerHTML += '<div style="background: #D0EED0; ' +
                     'margin-top: 5px; padding: 5px; text-align: center;">' +
-                    '<span style="color: #0000FF">Показать минимальные ставки' +
-                    '</span><br>Вывести <input type="text" id="inptext" ' +
-                    'value="5" maxlength="2" style="width: 30px"> чисел ' +
+                    '<span style="color: #0000FF;">Показать минимальные ' +
+                    'ставки</span><br>Вывести <input type="text" id="inptext"' +
+                    ' value="5" maxlength="2" style="width: 30px;"> чисел ' +
                     '<input type="button" id="butb" value=">>" /><br>' +
                     '<input type=checkbox id="chknull" checked /> ' +
                     '<label for="chknull">Числа, на которые еще не ставили' +

@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.01-121216
+// @version         2.02-250617
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -18,7 +18,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -178,7 +178,7 @@
                 syndExp.innerHTML += '<span id="cSyndExp" ' +
                     'style="color: #FF0000; font-size: 9px;"></span> ' +
                     '<span id="syndLeftToLevel" style="font-size: 8px; ' +
-                    'color: #696156"></span>';
+                    'color: #696156;"></span>';
             }
 
             this.dataNow.push(syndExp ? this.getValue(syndExp, 0) : '');

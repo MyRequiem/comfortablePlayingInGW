@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru*
 // @grant           none
 // @license         MIT
-// @version         2.22-121216
+// @version         2.23-250617
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -18,7 +18,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -409,7 +409,7 @@
                     ['<td colspan="2"><input type="checkbox" id="showt" ' +
                         'title="Показывать всегда" />' +
                         '<span style="margin-left: 20px; font-size: 7pt; ' +
-                        'color: #585858">' + this.scriptVersion +
+                        'color: #585858;">' + this.scriptVersion +
                         '</span></td>', 'gw_menu']
                 ]},
                 {divm: 0, lines: [
