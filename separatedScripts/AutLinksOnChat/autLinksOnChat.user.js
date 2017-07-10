@@ -8,7 +8,7 @@
 // @include         http://quest.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.01-121216
+// @version         2.10-100717
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -77,6 +77,10 @@
                 var fonts = chat.querySelectorAll('font'),
                     name,
                     i;
+
+                general.root.gotourl = function () {
+                    return true;
+                };
 
                 for (i = 0; i < fonts.length; i++) {
                     if (!fonts[i].firstElementChild) {

@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/object.php*
 // @grant           none
 // @license         MIT
-// @version         2.13-250617
+// @version         2.20-100717
 // @author          W_or_M (редакция MyRequiem)
 // ==/UserScript==
 
@@ -151,6 +151,10 @@
 
                 return;
             }
+
+            general.root.gotourl = function () {
+                return true;
+            };
 
             var i;
             // выбираем аут в списке портов

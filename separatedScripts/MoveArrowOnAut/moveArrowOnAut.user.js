@@ -8,7 +8,7 @@
 // @include         http://quest.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.31-121216
+// @version         1.40-100717
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -16,7 +16,7 @@
 /*jslint browser: true, maxlen: 80, vars: true, plusplus: true */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -80,7 +80,7 @@
                     emptyCell = a[i].querySelector('img[src*="/t.png"]') ||
                         a[i].querySelector('img[src*="/i/arrow_"]');
 
-                    if (emptyCell && (/\?w=\-?\d+&wx=\-?\d+&wy=\-?\d+&/.
+                    if (emptyCell && (/\?w=-?\d+&wx=-?\d+&wy=-?\d+&/.
                             test(a[i].href))) {
                         allMoveLinks.push(a[i]);
                     }
@@ -115,28 +115,28 @@
             case 119:
             case 1062:
             case 1094:
-                makeMove(/&wy=(\-?\d+)/, /&wy=(\-?\d+)/, false);
+                makeMove(/&wy=(-?\d+)/, /&wy=(-?\d+)/, false);
                 break;
             // S,s,Ы,ы - вниз
             case 83:
             case 115:
             case 1067:
             case 1099:
-                makeMove(/&wy=(\-?\d+)/, /&wy=(\-?\d+)/, true);
+                makeMove(/&wy=(-?\d+)/, /&wy=(-?\d+)/, true);
                 break;
             // A,a,Ф,ф - лево
             case 65:
             case 97:
             case 1060:
             case 1092:
-                makeMove(/&wx=(\-?\d+)/, /&wx=(\-?\d+)/, false);
+                makeMove(/&wx=(-?\d+)/, /&wx=(-?\d+)/, false);
                 break;
             // D,d,В,в - право
             case 68:
             case 100:
             case 1042:
             case 1074:
-                makeMove(/&wx=(\-?\d+)/, /&wx=(\-?\d+)/, true);
+                makeMove(/&wx=(-?\d+)/, /&wx=(-?\d+)/, true);
                 break;
             default:
                 return;
@@ -147,6 +147,10 @@
          * @method init
          */
         this.init = function () {
+            general.root.gotourl = function () {
+                return true;
+            };
+
             var a = general.doc.querySelector('a[href*="&wx=0&wy=0&"]');
             a.addEventListener('keypress', this.moveArrow, false);
             a.focus();

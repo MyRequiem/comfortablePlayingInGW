@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.68-260617
+// @version         1.69-100717
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -65,7 +65,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.68-260617';
+        this.version = '1.69-100717';
         /**
          * @property stString
          * @type {String}
@@ -4136,6 +4136,10 @@
                 var fonts = chat.querySelectorAll('font'),
                     name,
                     i;
+
+                general.root.gotourl = function () {
+                    return true;
+                };
 
                 for (i = 0; i < fonts.length; i++) {
                     if (!fonts[i].firstElementChild) {
@@ -9202,7 +9206,7 @@
                     emptyCell = a[i].querySelector('img[src*="/t.png"]') ||
                         a[i].querySelector('img[src*="/i/arrow_"]');
 
-                    if (emptyCell && (/\?w=\-?\d+&wx=\-?\d+&wy=\-?\d+&/.
+                    if (emptyCell && (/\?w=-?\d+&wx=-?\d+&wy=-?\d+&/.
                             test(a[i].href))) {
                         allMoveLinks.push(a[i]);
                     }
@@ -9237,28 +9241,28 @@
             case 119:
             case 1062:
             case 1094:
-                makeMove(/&wy=(\-?\d+)/, /&wy=(\-?\d+)/, false);
+                makeMove(/&wy=(-?\d+)/, /&wy=(-?\d+)/, false);
                 break;
             // S,s,Ы,ы - вниз
             case 83:
             case 115:
             case 1067:
             case 1099:
-                makeMove(/&wy=(\-?\d+)/, /&wy=(\-?\d+)/, true);
+                makeMove(/&wy=(-?\d+)/, /&wy=(-?\d+)/, true);
                 break;
             // A,a,Ф,ф - лево
             case 65:
             case 97:
             case 1060:
             case 1092:
-                makeMove(/&wx=(\-?\d+)/, /&wx=(\-?\d+)/, false);
+                makeMove(/&wx=(-?\d+)/, /&wx=(-?\d+)/, false);
                 break;
             // D,d,В,в - право
             case 68:
             case 100:
             case 1042:
             case 1074:
-                makeMove(/&wx=(\-?\d+)/, /&wx=(\-?\d+)/, true);
+                makeMove(/&wx=(-?\d+)/, /&wx=(-?\d+)/, true);
                 break;
             default:
                 return;

@@ -1,3 +1,11 @@
+2017-07-10[1.69-100717]
+--------------------------------------
+	- в связи с изменением страницы Аутленда и прибрежки поправлены скрипты:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvancedOutland
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AutLinksOnChat
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/MoveArrowOnAut
+
+
 2017-06-26[1.68-260617]
 --------------------------------------
 	Some minor fixes
