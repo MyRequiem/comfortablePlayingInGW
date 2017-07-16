@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/messages.php*
 // @grant           none
 // @license         MIT
-// @version         2.02-121216
+// @version         2.10-160717
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -163,8 +163,15 @@
                 return;
             }
 
-            var r = /^<tbody><tr><td>\s*\+?\s*(\d+)(,\D+|\.\D+|\)|\s|:|\+\D+)/,
-                numReply = r.exec(this.messages[ind].innerHTML);
+            var messDiv = this.messages[ind].querySelector('div');
+            if (!messDiv) {
+                ind++;
+                this.parseMessages(ind);
+                return;
+            }
+
+            var reg = /^\s*\+?\s*(\d+)(,\D+|\.\D+|\)|\s|:|\+\D+)/,
+                numReply = reg.exec(messDiv.innerHTML);
 
             numReply = numReply ? +numReply[1] : 0;
 

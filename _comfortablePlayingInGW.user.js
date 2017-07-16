@@ -10,7 +10,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.69-100717
+// @version         1.70-160717
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -65,7 +65,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.69-100717';
+        this.version = '1.70-160717';
         /**
          * @property stString
          * @type {String}
@@ -10577,8 +10577,15 @@
                 return;
             }
 
-            var r = /^<tbody><tr><td>\s*\+?\s*(\d+)(,\D+|\.\D+|\)|\s|:|\+\D+)/,
-                numReply = r.exec(this.messages[ind].innerHTML);
+            var messDiv = this.messages[ind].querySelector('div');
+            if (!messDiv) {
+                ind++;
+                this.parseMessages(ind);
+                return;
+            }
+
+            var reg = /^\s*\+?\s*(\d+)(,\D+|\.\D+|\)|\s|:|\+\D+)/,
+                numReply = reg.exec(messDiv.innerHTML);
 
             numReply = numReply ? +numReply[1] : 0;
 
@@ -12839,13 +12846,12 @@
                 var themes = [
                         ['Официальные объявления', '1'],
                         ['Вопросы и помощь в игре', '49'],
-                        ['Общий игровой форум', '27'],
-                        ['Открытый Клуб', '8'],
-                        ['Объявления синдикатов', '38'],
-                        ['Вступлю в синдикат', '56'],
+                        ['Общий Форум', '27'],
                         ['Идеи и предложения', '2'],
                         ['Форум для неигровых тем', '22'],
                         ['Клуб Нытиков', '55'],
+                        ['Объявления синдикатов', '38'],
+                        ['Вступлю в синдикат', '56'],
                         ['Тотализатор', '5'],
                         ['Общение гостей острова', '30'],
                         ['Конкурсы', '3'],

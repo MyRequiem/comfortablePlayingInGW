@@ -1,3 +1,10 @@
+2017-07-16[1.70-160717]
+--------------------------------------
+	- Исправлены скрипты, работающие на страницах форума:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvForum
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ShowInitMessOnForum
+
+
 2017-07-10[1.69-100717]
 --------------------------------------
 	- в связи с изменением страницы Аутленда и прибрежки поправлены скрипты:

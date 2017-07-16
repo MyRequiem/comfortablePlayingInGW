@@ -10,17 +10,17 @@
 // @include         http://www.ganjawars.ru/forum.php
 // @grant           none
 // @license         MIT
-// @version         2.02-121216
+// @version         2.10-160717
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
 /*jslint browser: true, maxlen: 80, regexp: true, vars: true, plusplus: true,
-    nomen: true, continue: true, devel: true
+    continue: true, nomen: true, devel: true
 */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -484,13 +484,12 @@
                 var themes = [
                         ['Официальные объявления', '1'],
                         ['Вопросы и помощь в игре', '49'],
-                        ['Общий игровой форум', '27'],
-                        ['Открытый Клуб', '8'],
-                        ['Объявления синдикатов', '38'],
-                        ['Вступлю в синдикат', '56'],
+                        ['Общий Форум', '27'],
                         ['Идеи и предложения', '2'],
                         ['Форум для неигровых тем', '22'],
                         ['Клуб Нытиков', '55'],
+                        ['Объявления синдикатов', '38'],
+                        ['Вступлю в синдикат', '56'],
                         ['Тотализатор', '5'],
                         ['Общение гостей острова', '30'],
                         ['Конкурсы', '3'],
