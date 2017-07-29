@@ -361,7 +361,7 @@
 
 **ScanPers**
 <br>
-Версия: 2.22-121216
+Версия: 2.30-290717
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanPers/scanPers.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanPers/scanPers.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ScanPers)
 <br>
