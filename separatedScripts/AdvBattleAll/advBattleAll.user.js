@@ -11,7 +11,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         3.71-121216
+// @version         3.80-290717
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -21,7 +21,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -181,23 +181,21 @@
          * @param   {int|String}    sound
          */
         this.init = function (sound) {
-            if (!sound || sound === '0') {
-                return;
-            }
+            if (sound && sound !== '0') {
+                var audio = general.$('cpingw_audio');
+                if (!audio) {
+                    audio = general.doc.createElement('audio');
+                    audio.setAttribute('id', 'cpingw_audio');
+                    var divAudio = general.doc.createElement('div');
+                    divAudio.setAttribute('style', 'display: none;');
+                    divAudio.appendChild(audio);
+                    general.doc.body.appendChild(divAudio);
+                }
 
-            var fl = general.$('_flashcontent');
-            if (!fl) {
-                fl = general.doc.createElement('div');
-                fl.id = '_flashcontent';
-                general.doc.body.appendChild(fl);
+                audio.volume = 0.3;
+                audio.src = '/sounds/' + sound + '.ogg';
+                audio.play();
             }
-
-            fl.innerHTML = '<embed ' +
-                'flashvars="soundPath=http://www.ganjawars.ru/sounds/' + sound +
-                '.mp3" allowscriptaccess="always" quality="high" height="1" ' +
-                'width="1" src="http://images.ganjawars.ru/i/play.swf" ' +
-                'type="application/x-shockwave-flash" pluginspage=' +
-                '"http://www.macromedia.com/go/getflashplayer" />';
         };
     };
 
@@ -1594,8 +1592,10 @@
                 var enemyName, tmpObj;
                 if (selectEnemies) {
                     for (i = 0; i < options.length; i++) {
+                        /*eslint-disable no-useless-escape */
                         enemyName = /^\d+\. ([^\[]+)\[/.
                             exec(options[i].innerHTML);
+                        /*eslint-enable no-useless-escape */
 
                         if (!enemyName) {
                             continue;
