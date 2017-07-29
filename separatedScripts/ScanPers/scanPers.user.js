@@ -585,12 +585,12 @@ plusplus: true, devel: true */
 
             var getSelectSound = new GetSelectSound().init;
             settingsWin.innerHTML = '<table><tr><td>Ник персонажа:</td><td>' +
-                '<input id="scan_nik" type="text" value="" style="' + brd +
+                '<input id="scan_nik" value="" style="' + brd +
                 '"></td><tr><td>Номер синдиката:</td><td><input ' +
-                'id="scan_synd_id" type="text" size="5" maxlength="6" ' +
+                'id="scan_synd_id" size="5" maxlength="6" ' +
                 'value="" style="' + brd + '"> <span style="font-size: 11px;' +
                 '">(без #)</span></td><tr><td>Интервал сканирования:</td><td>' +
-                '<input id="scan_interval" type="text" size="4" ' +
+                '<input id="scan_interval" size="4" ' +
                 'maxlength="3" value="' + (stData[8] || '60') + '" style="' +
                 brd + '" /> сек (не менее 20)</td></tr><tr><td colspan="2" ' +
                 'style="padding-top: 10px;"><input id="scan_chksound" type=' +

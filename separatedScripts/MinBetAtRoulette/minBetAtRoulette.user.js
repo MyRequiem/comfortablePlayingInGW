@@ -220,7 +220,7 @@
                 target.innerHTML += '<div style="background: #D0EED0; ' +
                     'margin-top: 5px; padding: 5px; text-align: center;">' +
                     '<span style="color: #0000FF;">Показать минимальные ' +
-                    'ставки</span><br>Вывести <input type="text" id="inptext"' +
+                    'ставки</span><br>Вывести <input id="inptext"' +
                     ' value="5" maxlength="2" style="width: 30px;"> чисел ' +
                     '<input type="button" id="butb" value=">>" /><br>' +
                     '<input type=checkbox id="chknull" checked /> ' +

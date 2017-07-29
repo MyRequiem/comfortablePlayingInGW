@@ -693,9 +693,9 @@
                 var getStrDate = new GetStrDate().init;
                 table.innerHTML = '<tr><td>' +
                     'Введите даты в формате дд.мм.гг<br>' +
-                    'с: <input id="inpDateFrom" type="text" maxlength="8" ' +
+                    'с: <input id="inpDateFrom" maxlength="8" ' +
                     'value="" style="width: 70px;" disabled> до: ' +
-                    '<input id="inpDateTo" type="text" maxlength="8" value="' +
+                    '<input id="inpDateTo" maxlength="8" value="' +
                     getStrDate('now')  + '" style="width: 70px;" disabled> ' +
                     '<input type="button" id="goPTS" value=">>" disabled>' +
                     '<span id="ptsPreloader" style="margin-left: 10px;">' +

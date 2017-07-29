@@ -527,14 +527,14 @@
                     '<tr><td>Не показывать прикрепленки</td><td>' +
                     '<input id="showAttached" type="checkbox" /></td></tr>' +
                     '<tr><td>Интервал перезагрузки страниц с темами форума ' +
-                    '(> 4)</td><td><input id="reloadInterval" type="text" ' +
+                    '(> 4)</td><td><input id="reloadInterval" ' +
                     'maxlength="3" style="width: 40px;" /> сек (0 или пустое ' +
                     'поле - без перезагрузки)</td></tr><tr><td>Звук при ' +
                     'появлении новой темы</td><td>' +
                     new GetSelectSound().init('sound') +
                     '</td></tr><tr><td>Номера исключенных веток форума<br>' +
                     '(параметр fid=xxx в ссылке на форум)</td><td>' +
-                    '<input id="exclusion" type="text" style="width: ' +
+                    '<input id="exclusion" style="width: ' +
                     '400px;" /></td></tr><tr><td colspan="2" ' +
                     'style="padding-top: 10px;"><span id="return" ' +
                     'style="cursor: pointer; color: #990000; font-weight: ' +

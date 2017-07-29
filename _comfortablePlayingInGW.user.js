@@ -1150,12 +1150,12 @@
                     '<br><br><span style="color: #FF0000;">Не ставьте ' +
                     'значения менее 3 секунд.</span><br>Таймаут обновления ' +
                     'данных в бою:<span style="margin-left: 54px;"> ' +
-                    '</span><input id="refreshBattle" type="text" ' +
-                    'maxlength="3" style="width: 30px;" value="' +
+                    '</span><input id="refreshBattle" maxlength="3" ' +
+                    'style="width: 30px;" value="' +
                     (general.getData(4)[0] || '0') + '" disabled /> сек (0 - ' +
                     'настройки игры по умолчанию)<br>Таймаут обновления ' +
-                    'заявки при входе в нее: <input id="refreshAppl" type="' +
-                    'text" maxlength="3" style="width: 30px;" value="' +
+                    'заявки при входе в нее: <input id="refreshAppl" ' +
+                    'maxlength="3" style="width: 30px;" value="' +
                     (general.getData(4)[1] || '0') + '" disabled /> сек (0 - ' +
                     'настройки игры по умолчанию)<br>' +
                     'Звук при начале боя:&nbsp;&nbsp;&nbsp;&nbsp;' +
@@ -1176,7 +1176,7 @@
                 ['Счетчик времени до начала синдикатного боя', 'Динамический ' +
                     'счетчик времени до начала синдикатного боя, звуковое ' +
                     'оповещение.<br><br><input id="timeSyndSoundLimit" ' +
-                    'type="text" value="' + (general.getData(28)[0] || '90') +
+                    'value="' + (general.getData(28)[0] || '90') +
                     '" maxlength="3" style="width: 35px;" /> - время до боя ' +
                     '(сек), когда будет проигран второй звук ' +
                     '<span style="color: #FF0000;">(не менее 15)</span><br>' +
@@ -1304,8 +1304,7 @@
                     'названия ресурсов через запятую, которые будут ' +
                     'отображаться на вышеуказанной странице. Например: ' +
                     'Уран,Водоросли,Маковая соломка,Трава,Батареи<br>' +
-                    '<input id="filter_res" type="text" style="width: ' +
-                    '350px;" disabled />' +
+                    '<input id="filter_res" style="width: 350px;" disabled />' +
                     this.getGitHubLink('filterResOnStat'), '22'],
                 ['Ссылки на High-tech вооружение в государственном магазине',
                     'В государственном магазине рядом со ссылками на типы ' +
@@ -1331,7 +1330,7 @@
                     'пора полить/собрать.<br><br>' +
                     this.getSelectSound('farmTmSound') + ' - звук когда пора ' +
                     'поливать/собирать (0 - без звука)<br>' +
-                    '<input id="farmtmSndIntrvl" type="text" maxlength="3" ' +
+                    '<input id="farmtmSndIntrvl" maxlength="3" ' +
                     'style="width: 40px;" disabled /> - интервал повторения ' +
                     'звука в секундах (0 - не повторять)' +
                     this.getGitHubLink('farmTimer'), '10'],
@@ -1536,8 +1535,8 @@
                     '<td colspan="3">Восстановление настроек. Вставьте ' +
                     'ранее сохраненную строку настроек и нажмите ' +
                     '"Восстановить":<br><input id="inpRestoreSettings" ' +
-                    'type="text" style="width: 97%;" /><br><input ' +
-                    'id="butRestoreSettings" type="button" ' +
+                    'style="width: 97%;" /><br>' +
+                    '<input id="butRestoreSettings" type="button" ' +
                     'value="Восстановить" /></td></tr></table></td></tr>',
                 groupStyle = ' style="background-color: #D0EED0; text-align: ' +
                     'center; color: #990000;"><b>',
@@ -2084,10 +2083,10 @@
             var divAddLink = general.doc.createElement('div');
             divAddLink.setAttribute('style', 'margin-top: 5px;');
             divAddLink.innerHTML = 'Название:<br><input id="lname" ' +
-                'type="text" maxlength="20" style="width: 237px;" /><br>' +
+                'maxlength="20" style="width: 237px;" /><br>' +
                 'Ссылка:<br><input id="lhref" style="width: 237px;" ' +
                 'value="http://"/><br>Стиль, например: "color: blue;"<br>' +
-                '<input id="lstyle" type="text" style="width: 237px;" />' +
+                '<input id="lstyle" style="width: 237px;" />' +
                 '<br><span id="set_link" style="cursor: pointer; color: ' +
                 '#0000FF;">Добавить</span><span id="hide_nav_div" ' +
                 'style="cursor: pointer; margin-left: 20px; color: ' +
@@ -7599,7 +7598,7 @@
             var divSearch = general.doc.createElement('div');
             divSearch.innerHTML = '<span style="color: #008000; ' +
                 'font-weight: bold;">Быстрый поиск:</span> <input ' +
-                'id="txtFilter" type="text" size="40" style="margin-bottom: ' +
+                'id="txtFilter" size="40" style="margin-bottom: ' +
                 '10px;">';
             target.insertBefore(divSearch, target.firstChild);
 
@@ -7733,7 +7732,7 @@
                 s_lmax.setAttribute('style', 'width: 40px;');
 
                 var span = general.doc.createElement('span');
-                span.innerHTML = 'Название: <input type="text" id="w_name" ' +
+                span.innerHTML = 'Название: <input id="w_name" ' +
                     'style="width: 150px;" value="' + general.getData(16)[0] +
                     '" />';
                 target.parentNode.insertBefore(span, filtForm.nextSibling);
@@ -8091,8 +8090,8 @@
 
             target.parentNode.innerHTML += '<span id="showHistory" ' +
                 'style="color: #008000; cursor: pointer; margin-left: 10px;">' +
-                'История</span> <input id="countSms" type="text" ' +
-                'maxlength="5" style="width: 45px;" value="' + this.numberSms +
+                'История</span> <input id="countSms" maxlength="5" ' +
+                'style="width: 45px;" value="' + this.numberSms +
                 '" title="Количество исходящих сообщений" /> ' +
                 '<span id="preloader" style="margin: 0 10px 0 10px; ' +
                 'display: none;"><img src="' + general.imgPath +
@@ -9110,7 +9109,7 @@
                     '<option value="4">Недвига</option>' +
                 '</select>&nbsp;&nbsp;' +
                 'Синдикат: ' +
-                '<input id="syndNumber2" type="text" maxlength="5" ' +
+                '<input id="syndNumber2" maxlength="5" ' +
                     'style="width: 45px;" />&nbsp;&nbsp;' +
                 'Куда я могу зайти: ' +
                 '<input id="onlyMe3" type="checkbox" />&nbsp;&nbsp;' +
@@ -9511,10 +9510,10 @@
                 target.innerHTML += '<div style="background: #D0EED0; ' +
                     'margin-top: 5px; padding: 5px; text-align: center;">' +
                     '<span style="color: #0000FF;">Показать минимальные ' +
-                    'ставки</span><br>Вывести <input type="text" ' +
-                    'id="inptext" value="5" maxlength="2" style="width: ' +
-                    '30px;"> чисел <input type="button" id="butb" ' +
-                    'value=">>" /><br><input type=checkbox id="chknull" ' +
+                    'ставки</span><br>Вывести <input id="inptext" value="5" ' +
+                    'maxlength="2" style="width: 30px;"> чисел ' +
+                    '<input type="button" id="butb" value=">>" /><br>' +
+                    '<input type="checkbox" id="chknull" ' +
                     'checked /> <label for="chknull">Числа, на которые еще ' +
                     'не ставили</label></div><div id="resultBets" ' +
                     'style="visibility: hidden; text-align: center; ' +
@@ -9776,7 +9775,7 @@
                     persId + '" style="cursor: pointer;">[?]</span> ' +
                     '<img id="edit_' + persId + '" src="http://images.' +
                     'ganjawars.ru/i/home/wlog.gif" style="cursor: pointer;" ' +
-                    'title="Изменить заметку"/><br><input type="text" id="p' +
+                    'title="Изменить заметку"/><br><input id="p' +
                     persId + '" value="' + this.getPersNote('p' + persId) +
                     '" style="width: 250px; margin-top: 3px; display: none;" ' +
                     'title="Введите заметку и нажмите Enter" />';
@@ -10400,12 +10399,12 @@
 
             var getSelectSound = new GetSelectSound().init;
             settingsWin.innerHTML = '<table><tr><td>Ник персонажа:</td><td>' +
-                '<input id="scan_nik" type="text" value="" style="' + brd +
+                '<input id="scan_nik" value="" style="' + brd +
                 '"></td><tr><td>Номер синдиката:</td><td><input ' +
-                'id="scan_synd_id" type="text" size="5" maxlength="6" ' +
+                'id="scan_synd_id" size="5" maxlength="6" ' +
                 'value="" style="' + brd + '"> <span style="font-size: 11px;' +
                 '">(без #)</span></td><tr><td>Интервал сканирования:</td><td>' +
-                '<input id="scan_interval" type="text" size="4" ' +
+                '<input id="scan_interval" size="4" ' +
                 'maxlength="3" value="' + (stData[8] || '60') + '" style="' +
                 brd + '" /> сек (не менее 20)</td></tr><tr><td colspan="2" ' +
                 'style="padding-top: 10px;"><input id="scan_chksound" type=' +
@@ -10663,8 +10662,9 @@
                 var td = general.doc.createElement('td');
                 td.setAttribute('style', 'width: 130px;');
                 td.innerHTML = '<form name="fsearch" id="fsearch" ' +
-                    'method="GET" action="/search.php"><input type="text" ' +
-                    'id="skey" name="key" value="" style="width: 130px;" ' +
+                    'method="GET" action="/search.php">' +
+                    '<input id="skey" name="key" value="" ' +
+                    'style="width: 130px;" ' +
                     'title="Введите ник и нажмите Enter" /></form>';
                 topPanel = topPanel.parentNode.parentNode;
                 topPanel = general.DESIGN_VERSION === 'v2' ?
@@ -11344,9 +11344,9 @@
                 var getStrDate = new GetStrDate().init;
                 table.innerHTML = '<tr><td>' +
                     'Введите даты в формате дд.мм.гг<br>' +
-                    'с: <input id="inpDateFrom" type="text" maxlength="8" ' +
+                    'с: <input id="inpDateFrom" maxlength="8" ' +
                     'value="" style="width: 70px;" disabled> до: ' +
-                    '<input id="inpDateTo" type="text" maxlength="8" value="' +
+                    '<input id="inpDateTo" maxlength="8" value="' +
                     getStrDate('now')  + '" style="width: 70px;" disabled> ' +
                     '<input type="button" id="goPTS" value=">>" disabled>' +
                     '<span id="ptsPreloader" style="margin-left: 10px;">' +
@@ -11947,9 +11947,9 @@
                 var getStrDate = new GetStrDate().init;
                 _this.mainTable.innerHTML = '<tr><td>' +
                     'Введите даты в формате дд.мм.гг<br>' +
-                    'с: <input id="inpDateFrom" type="text" maxlength="8" ' +
+                    'с: <input id="inpDateFrom" maxlength="8" ' +
                     'value="" style="width: 70px;" disabled> до: ' +
-                    '<input id="inpDateTo" type="text" maxlength="8" value="' +
+                    '<input id="inpDateTo" maxlength="8" value="' +
                     getStrDate('now')  + '" style="width: 70px;" disabled> ' +
                     '<input type="button" id="goSAnalyse" value=">>" ' +
                     'disabled><span id="syndAnalysePreloader" ' +
@@ -12889,14 +12889,14 @@
                     '<tr><td>Не показывать прикрепленки</td><td>' +
                     '<input id="showAttached" type="checkbox" /></td></tr>' +
                     '<tr><td>Интервал перезагрузки страниц с темами форума ' +
-                    '(> 4)</td><td><input id="reloadInterval" type="text" ' +
+                    '(> 4)</td><td><input id="reloadInterval" ' +
                     'maxlength="3" style="width: 40px;" /> сек (0 или пустое ' +
                     'поле - без перезагрузки)</td></tr><tr><td>Звук при ' +
                     'появлении новой темы</td><td>' +
                     new GetSelectSound().init('sound') +
                     '</td></tr><tr><td>Номера исключенных веток форума<br>' +
                     '(параметр fid=xxx в ссылке на форум)</td><td>' +
-                    '<input id="exclusion" type="text" style="width: ' +
+                    '<input id="exclusion" style="width: ' +
                     '400px;" /></td></tr><tr><td colspan="2" ' +
                     'style="padding-top: 10px;"><span id="return" ' +
                     'style="cursor: pointer; color: #990000; font-weight: ' +
@@ -13616,9 +13616,9 @@
                 'Синдовые:<input id="onlySynd" type="checkbox" /> ' +
                 'Умения:<input id="showSkills" type="checkbox" /> ' +
                 'Дальность:<input id="showRange" type="checkbox" /> ' +
-                'Нужная дальность: <input type="text" id="limitRange" ' +
+                'Нужная дальность: <input id="limitRange" ' +
                     'style="width: 50px;"> ' +
-                'Время: <input type="text" id="time" maxlength="3" ' +
+                'Время: <input id="time" maxlength="3" ' +
                     'style="width: 40px;"><br>';
 
             var target = general.doc.querySelector('td.txt>' +

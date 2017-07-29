@@ -111,8 +111,8 @@
                 var td = general.doc.createElement('td');
                 td.setAttribute('style', 'width: 130px;');
                 td.innerHTML = '<form name="fsearch" id="fsearch" ' +
-                    'method="GET" action="/search.php"><input type="text" ' +
-                    'id="skey" name="key" value="" style="width: 130px;"' +
+                    'method="GET" action="/search.php"><input id="skey" ' +
+                    'name="key" value="" style="width: 130px;" ' +
                     'title="Введите ник и нажмите Enter" /></form>';
                 topPanel = topPanel.parentNode.parentNode;
                 topPanel = general.DESIGN_VERSION === 'v2' ?

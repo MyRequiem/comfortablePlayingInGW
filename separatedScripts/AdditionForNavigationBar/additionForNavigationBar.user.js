@@ -274,10 +274,10 @@
             var divAddLink = this.doc.createElement('div');
             divAddLink.setAttribute('style', 'margin-top: 5px;');
             divAddLink.innerHTML = 'Название:<br><input id="lname" ' +
-                'type="text" maxlength="20" style="width: 237px;" /><br>' +
+                'maxlength="20" style="width: 237px;" /><br>' +
                 'Ссылка:<br><input id="lhref" style="width: 237px;" ' +
                 'value="http://"/><br>Стиль, например: "color: blue;"<br>' +
-                '<input id="lstyle" type="text" style="width: 237px;" />' +
+                '<input id="lstyle" style="width: 237px;" />' +
                 '<br><span id="set_link" style="cursor: pointer; color: ' +
                 '#0000FF;">Добавить</span><span id="hide_nav_div" ' +
                 'style="cursor: pointer; margin-left: 20px; color: ' +

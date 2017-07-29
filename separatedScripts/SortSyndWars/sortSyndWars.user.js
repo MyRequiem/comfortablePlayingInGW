@@ -352,7 +352,7 @@
                     '<option value="4">Недвига</option>' +
                 '</select>&nbsp;&nbsp;' +
                 'Синдикат: ' +
-                '<input id="syndNumber2" type="text" maxlength="5" ' +
+                '<input id="syndNumber2" maxlength="5" ' +
                     'style="width: 45px;" />&nbsp;&nbsp;' +
                 'Куда я могу зайти: ' +
                 '<input id="onlyMe3" type="checkbox" />&nbsp;&nbsp;' +

@@ -195,7 +195,7 @@
                 s_lmax.setAttribute('style', 'width: 40px;');
 
                 var span = general.doc.createElement('span');
-                span.innerHTML = 'Название: <input type="text" id="w_name" ' +
+                span.innerHTML = 'Название: <input id="w_name" ' +
                     'style="width: 150px;" value="' +
                     (general.getData()[0] || '') + '" />';
                 target.parentNode.insertBefore(span, filtForm.nextSibling);

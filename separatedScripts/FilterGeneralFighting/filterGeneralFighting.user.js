@@ -387,9 +387,9 @@
                 'Синдовые:<input id="onlySynd" type="checkbox" /> ' +
                 'Умения:<input id="showSkills" type="checkbox" /> ' +
                 'Дальность:<input id="showRange" type="checkbox" /> ' +
-                'Нужная дальность: <input type="text" id="limitRange" ' +
+                'Нужная дальность: <input id="limitRange" ' +
                     'style="width: 50px;"> ' +
-                'Время: <input type="text" id="time" maxlength="3" ' +
+                'Время: <input id="time" maxlength="3" ' +
                     'style="width: 40px;"><br>';
 
             var target = general.doc.querySelector('td.txt>' +

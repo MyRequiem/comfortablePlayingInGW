@@ -177,7 +177,7 @@
             var divSearch = general.doc.createElement('div');
             divSearch.innerHTML = '<span style="color: #008000; ' +
                 'font-weight: bold;">Быстрый поиск:</span> <input ' +
-                'id="txtFilter" type="text" size="40" style="margin-bottom: ' +
+                'id="txtFilter" size="40" style="margin-bottom: ' +
                 '10px;">';
             target.insertBefore(divSearch, target.firstChild);
 

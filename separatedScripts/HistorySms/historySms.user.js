@@ -384,7 +384,7 @@
 
             target.parentNode.innerHTML += '<span id="showHistory" ' +
                 'style="color: #008000; cursor: pointer; margin-left: 10px;">' +
-                'История</span> <input id="countSms" type="text" ' +
+                'История</span> <input id="countSms" ' +
                 'maxlength="5" style="width: 45px;" value="' + this.numberSms +
                 '" title="Количество исходящих сообщений" /> ' +
                 '<span id="preloader" style="margin: 0 10px 0 10px; ' +
