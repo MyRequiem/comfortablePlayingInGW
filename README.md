@@ -410,7 +410,7 @@
 
 **SoundGraph**
 <br>
-Версия: 2.01-121216
+Версия: 2.10-290717
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SoundGraph/soundGraph.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SoundGraph/soundGraph.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SoundGraph)
 <br>
