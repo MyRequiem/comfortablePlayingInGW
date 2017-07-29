@@ -38,7 +38,7 @@
 // @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.68-260617
+// @version         1.71-300717
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -93,7 +93,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.68-260617';
+        this.version = '1.71-300717';
         /**
          * @property stString
          * @type {String}
@@ -758,23 +758,21 @@
          * @param   {int|String}    sound
          */
         this.init = function (sound) {
-            if (!sound || sound === '0') {
-                return;
-            }
+            if (sound &amp;&amp; sound !== '0') {
+                var audio = general.$('cpingw_audio');
+                if (!audio) {
+                    audio = general.doc.createElement('audio');
+                    audio.setAttribute('id', 'cpingw_audio');
+                    var divAudio = general.doc.createElement('div');
+                    divAudio.setAttribute('style', 'display: none;');
+                    divAudio.appendChild(audio);
+                    general.doc.body.appendChild(divAudio);
+                }
 
-            var fl = general.$('_flashcontent');
-            if (!fl) {
-                fl = general.doc.createElement('div');
-                fl.id = '_flashcontent';
-                general.doc.body.appendChild(fl);
+                audio.volume = 0.3;
+                audio.src = '/sounds/' + sound + '.ogg';
+                audio.play();
             }
-
-            fl.innerHTML = '&lt;embed ' +
-                'flashvars="soundPath=http://www.ganjawars.ru/sounds/' + sound +
-                '.mp3" allowscriptaccess="always" quality="high" height="1" ' +
-                'width="1" src="http://images.ganjawars.ru/i/play.swf" ' +
-                'type="application/x-shockwave-flash" pluginspage=' +
-                '"http://www.macromedia.com/go/getflashplayer" />';
         };
     };
 
@@ -4164,6 +4162,10 @@
                 var fonts = chat.querySelectorAll('font'),
                     name,
                     i;
+
+                general.root.gotourl = function () {
+                    return true;
+                };
 
                 for (i = 0; i &lt; fonts.length; i++) {
                     if (!fonts[i].firstElementChild) {
@@ -9230,7 +9232,7 @@
                     emptyCell = a[i].querySelector('img[src*="/t.png"]') ||
                         a[i].querySelector('img[src*="/i/arrow_"]');
 
-                    if (emptyCell &amp;&amp; (/\?w=\-?\d+&amp;wx=\-?\d+&amp;wy=\-?\d+&amp;/.
+                    if (emptyCell &amp;&amp; (/\?w=-?\d+&amp;wx=-?\d+&amp;wy=-?\d+&amp;/.
                             test(a[i].href))) {
                         allMoveLinks.push(a[i]);
                     }
@@ -9265,28 +9267,28 @@
             case 119:
             case 1062:
             case 1094:
-                makeMove(/&amp;wy=(\-?\d+)/, /&amp;wy=(\-?\d+)/, false);
+                makeMove(/&amp;wy=(-?\d+)/, /&amp;wy=(-?\d+)/, false);
                 break;
             // S,s,Ы,ы - вниз
             case 83:
             case 115:
             case 1067:
             case 1099:
-                makeMove(/&amp;wy=(\-?\d+)/, /&amp;wy=(\-?\d+)/, true);
+                makeMove(/&amp;wy=(-?\d+)/, /&amp;wy=(-?\d+)/, true);
                 break;
             // A,a,Ф,ф - лево
             case 65:
             case 97:
             case 1060:
             case 1092:
-                makeMove(/&amp;wx=(\-?\d+)/, /&amp;wx=(\-?\d+)/, false);
+                makeMove(/&amp;wx=(-?\d+)/, /&amp;wx=(-?\d+)/, false);
                 break;
             // D,d,В,в - право
             case 68:
             case 100:
             case 1042:
             case 1074:
-                makeMove(/&amp;wx=(\-?\d+)/, /&amp;wx=(\-?\d+)/, true);
+                makeMove(/&amp;wx=(-?\d+)/, /&amp;wx=(-?\d+)/, true);
                 break;
             default:
                 return;
@@ -10601,8 +10603,15 @@
                 return;
             }
 
-            var r = /^&lt;tbody>&lt;tr>&lt;td>\s*\+?\s*(\d+)(,\D+|\.\D+|\)|\s|:|\+\D+)/,
-                numReply = r.exec(this.messages[ind].innerHTML);
+            var messDiv = this.messages[ind].querySelector('div');
+            if (!messDiv) {
+                ind++;
+                this.parseMessages(ind);
+                return;
+            }
+
+            var reg = /^\s*\+?\s*(\d+)(,\D+|\.\D+|\)|\s|:|\+\D+)/,
+                numReply = reg.exec(messDiv.innerHTML);
 
             numReply = numReply ? +numReply[1] : 0;
 
@@ -12863,13 +12872,12 @@
                 var themes = [
                         ['Официальные объявления', '1'],
                         ['Вопросы и помощь в игре', '49'],
-                        ['Общий игровой форум', '27'],
-                        ['Открытый Клуб', '8'],
-                        ['Объявления синдикатов', '38'],
-                        ['Вступлю в синдикат', '56'],
+                        ['Общий Форум', '27'],
                         ['Идеи и предложения', '2'],
                         ['Форум для неигровых тем', '22'],
                         ['Клуб Нытиков', '55'],
+                        ['Объявления синдикатов', '38'],
+                        ['Вступлю в синдикат', '56'],
                         ['Тотализатор', '5'],
                         ['Общение гостей острова', '30'],
                         ['Конкурсы', '3'],
@@ -14556,7 +14564,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jun 26 2017 11:34:25 GMT+0400 (+04)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Jul 30 2017 00:27:27 GMT+0400 (+04)
 </footer>
 
 <script> prettyPrint(); </script>
