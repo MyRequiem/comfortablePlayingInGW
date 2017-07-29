@@ -157,7 +157,7 @@
 
         /**
          * @method playSound
-         * @param   {int}   sound
+         * @param   {int|String}   sound
          */
         this.playSound = function (sound) {
             if (sound && sound !== '0') {
