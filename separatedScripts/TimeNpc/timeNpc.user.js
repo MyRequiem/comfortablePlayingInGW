@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/npc.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.14-250617
+// @version         2.20-290717
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -169,23 +169,21 @@
          * @param   {int|String}    sound
          */
         this.init = function (sound) {
-            if (!sound || sound === '0') {
-                return;
-            }
+            if (sound && sound !== '0') {
+                var audio = general.$('cpingw_audio');
+                if (!audio) {
+                    audio = general.doc.createElement('audio');
+                    audio.setAttribute('id', 'cpingw_audio');
+                    var divAudio = general.doc.createElement('div');
+                    divAudio.setAttribute('style', 'display: none;');
+                    divAudio.appendChild(audio);
+                    general.doc.body.appendChild(divAudio);
+                }
 
-            var fl = general.$('_flashcontent');
-            if (!fl) {
-                fl = general.doc.createElement('div');
-                fl.id = '_flashcontent';
-                general.doc.body.appendChild(fl);
+                audio.volume = 0.3;
+                audio.src = '/sounds/' + sound + '.ogg';
+                audio.play();
             }
-
-            fl.innerHTML = '<embed ' +
-                'flashvars="soundPath=http://www.ganjawars.ru/sounds/' + sound +
-                '.mp3" allowscriptaccess="always" quality="high" height="1" ' +
-                'width="1" src="http://images.ganjawars.ru/i/play.swf" ' +
-                'type="application/x-shockwave-flash" pluginspage=' +
-                '"http://www.macromedia.com/go/getflashplayer" />';
         };
     };
 
