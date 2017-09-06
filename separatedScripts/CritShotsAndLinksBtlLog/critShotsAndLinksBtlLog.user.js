@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/warlog.php*
 // @grant           none
 // @license         MIT
-// @version         2.41-121216
+// @version         2.42-060917
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -19,7 +19,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -151,12 +151,13 @@
                 font,
                 str,
                 node,
-                next;
+                next,
+                prev,
+                i;
 
-            var i;
             for (i = 0; i < b.length; i++) {
                 // если это урон (-XX), 'vs', пок с '['
-                if ((/^\-\d+$|vs|\[|,/.test(b[i].innerHTML)) ||
+                if ((/^-\d+$|vs|\[|,/.test(b[i].innerHTML)) ||
                         (/может взять предметы/.test(b[i].innerHTML))) {
                     continue;
                 }
@@ -194,13 +195,13 @@
                 }
 
                 // проверяем и считаем криты
-                if (b[i].previousSibling && b[i].previousSibling.nodeValue &&
-                        (/\d+:\d+, #\d+ :/.
-                             test(b[i].previousSibling.nodeValue))) {
-
+                prev = b[i].previousSibling || b[i].parentNode.previousSibling;
+                if (prev && prev.nodeValue &&
+                        /\d+:\d+, #\d+ :/.test(prev.nodeValue)) {
                     // получаем запись своего хода
                     str = '';
-                    node = b[i];
+                    node = b[i].previousSibling ? b[i] : b[i].parentNode;
+
                     while (node && node.nodeName !== 'BR') {
                         next = node.nextElementSibling;
                         if (next.nodeName === 'I') {

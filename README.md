@@ -6,7 +6,7 @@
 ![ChromeLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/chromeLogo.png)
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
 
-Версия: 1.71-300717
+Версия: 1.72-060917
 
 Нашли ошибку? Пожалуйста, [сообщите](http://www.ganjawars.ru/sms-create.php?mailto=MyRequiem)
 
@@ -116,7 +116,7 @@
 
 **CritShotsAndLinksBtlLog**
 <br>
-Версия: 2.41-121216
+Версия: 2.42-060917
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CritShotsAndLinksBtlLog/critShotsAndLinksBtlLog.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CritShotsAndLinksBtlLog/critShotsAndLinksBtlLog.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CritShotsAndLinksBtlLog)
 <br>
