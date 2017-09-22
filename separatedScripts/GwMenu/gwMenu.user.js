@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru*
 // @grant           none
 // @license         MIT
-// @version         2.23-250617
+// @version         2.30-140917
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -82,10 +82,10 @@
 
         /**
          * @method setData
-         * @param   {Array}     data
+         * @param   {String}    data
          */
         setData: function (data) {
-            this.st.setItem(this.STNAME, data.join('|'));
+            this.st.setItem(this.STNAME, data);
         },
 
         /**
@@ -94,11 +94,11 @@
          */
         getData: function () {
             var stData = this.st.getItem(this.STNAME);
-            if (stData) {
-                return stData.split('|');
+            if (stData !== null) {
+                return stData;
             }
 
-            stData = [];
+            stData = '';
             this.setData(stData);
             return stData;
         },
@@ -124,7 +124,7 @@
          * @property scriptVersion
          * @type {String}
          */
-        this.scriptVersion = 'v. 2.10-030915';
+        this.scriptVersion = 'v. 2.30-140917';
         /**
          * @property imgPath
          * @type {String}
@@ -145,9 +145,8 @@
 
         /**
          * @method setCSSGwMenu
-         * @param   {Object}    _this
          */
-        this.setCSSGwMenu = function (_this) {
+        this.setCSSGwMenu = function () {
             var cssStyle = general.doc.createElement('style');
             cssStyle.innerHTML = '#c1 {color: #F90332;}' +
                 '#c2 {color: #014305; font-weight: bold;}' +
@@ -159,7 +158,7 @@
                     // тень для таблиц
                     // сдвиг по горизонтали, вертикали, радиус размытия, цвет
                     'box-shadow: 5px 6px 6px rgba(122,122,122,0.5);}' +
-                '.gwm table.main {background-image: url(' + _this.imgPath +
+                '.gwm table.main {background-image: url(' + this.imgPath +
                         'background.gif' + '); width: 210px;}' +
                 '.gwm tr {height: 15px;}' +
                 '.gwm td {border: 1px #339933 solid; ' +
@@ -344,11 +343,9 @@
 
         /**
          * @method gwMenuInit
-         * @param   {Object}    th
          */
-        this.gwMenuInit = function (th) {
+        this.gwMenuInit = function () {
             var gw_menu = general.$('gw_menu'),
-                _this = th,
                 gwM;
 
             if (gw_menu) {
@@ -357,7 +354,7 @@
                 return;
             }
 
-            _this.setCSSGwMenu(_this);
+            this.setCSSGwMenu();
 
             gwM = [
                 {divm: 'gw_menu', lines: [
@@ -366,13 +363,14 @@
                         'href="/info.php?id=2095458"><span id="c1">' +
                         'developed by</span> <span id="c2">MyRequiem&#169;' +
                         '</span><br><span id="c3">for GanjaWars fighters' +
-                        '</span></a></td><td class="center" id="exit">' +
-                        '<img src="' + _this.imgPath + 'hide.gif" ' +
-                        'alt="Закрыть" title="Закрыть"></td>', 'gw_menu'],
+                        '</span></a></td><td class="center" id="exit" ' +
+                        'style="cursor: pointer;"><img src="' + this.imgPath +
+                        'hide.gif" alt="Закрыть" title="Закрыть"></td>',
+                        'gw_menu'],
                     // основные разделы
                     ['Ресурсы', 'resourses', 'brown'],
                     ['Бои', 'battles', 'crimson'],
-                    ['ЭС, Уранки', 'real_estate'],
+                    ['ЭС, Уран', 'real_estate'],
                     ['Скрипты', 'scripts', 'darkorange'],
                     ['Синдикаты', 'syndicates'],
                     ['Острова', 'islands'],
@@ -394,7 +392,7 @@
                     ['Мои достижения', '/info.ach.php?id=' +
                         general.myID, 0, 1],
                     ['Мои квесты', '/questlog.php?id=' + general.myID, 0, 1],
-                    ['Mои навыки', '/home.skills.php', 0, 1],
+                    ['Mои навыки', '/home.skills.php?page=perks', 0, 1],
                     ['Протокол передач', '/usertransfers.php?id=' +
                         general.myID, 0, 1],
                     ['Протокол боев', '/info.warstats.php?id=' +
@@ -408,7 +406,7 @@
                     ['Выход из игры', '/logout.php', 'red', 1],
                     ['<td colspan="2"><input type="checkbox" id="showt" ' +
                         'title="Показывать всегда" />' +
-                        '<span style="margin-left: 20px; font-size: 7pt; ' +
+                        '<span style="margin-left: 10px; font-size: 7pt; ' +
                         'color: #585858;">' + this.scriptVersion +
                         '</span></td>', 'gw_menu']
                 ]},
@@ -446,8 +444,7 @@
                     ['ГосЭнергоАтом', '/info.realty.php?id=2'],
                     ['Статистика GanjaWars.Ru от vasena',
                         'http://gw-utils.ru/'],
-                    ['GWTools от Bas', 'https://www.gwtools.ru/'],
-                    ['Нападения', '/wargroup.php?war=attacks', 'red']
+                    ['GWTools от Bas', 'https://www.gwtools.ru/']
                 ], prnt: 'gw_menu', arrow: 'real_estate'},
                 {divm: 0, lines: [
                     ['Синдикат "Скрипты для GW"', '/syndicate.php?id=3579'],
@@ -468,8 +465,7 @@
                     ['Скрипты от z0man',
                         'http://www.ganjafoto.ru/image.php?aid=285332'],
                     ['Скрипты от гном убийца',
-                        'http://www.ganjafoto.ru/image.php?aid=256649'],
-                    ['GW-панель', 'http://gwpanel.org/']
+                        'http://www.ganjafoto.ru/image.php?aid=256649']
                 ], prnt: 'gw_menu', arrow: 'scripts', offsetY: -45},
                 {divm: 'syndicates_1', lines: [
                     ['Официальные синдикаты', 'offic_synd'],
@@ -479,38 +475,42 @@
                         0, 1]
                 ], prnt: 'gw_menu', arrow: 'syndicates', offsetY: -15},
                 {divm: 'offic_synd_1', lines: [
-                    ['GW - 911', '/syndicate.php?id=911'],
-                    ['GW - Bugtesters', '/syndicate.php?id=1949'],
-                    ['GW - Суд', '/syndicate.php?id=1318'],
-                    ['GW-Технические персонажи', '/syndicate.php?id=445'],
-                    ['GW - GanjaWiki', '/syndicate.php?id=6949'],
-                    ['GW - Коллегия адвокатов', '/syndicate.php?id=1948'],
                     ['Администраторы игры', '/syndicate.php?id=3'],
-                    ['GW - Загс', '/syndicate.php?id=1354'],
-                    ['GW - Маркетинговая служба игры',
-                        '/syndicate.php?id=2324'],
-                    ['GW - Мировой Суд', '/syndicate.php?id=3060'],
-                    ['GW - Модераторы GanjaFoto.Ru', '/syndicate.php?id=3516'],
-                    ['GW - Модераторы рейтинга сайтов',
-                        '/syndicate.php?id=3516'],
-                    ['GW - Модераторы форума', '/syndicate.php?id=1262'],
-                    ['GW - Модераторы чата', '/syndicate.php?id=274'],
-                    ['GW - Полиция', '/syndicate.php?id=1321'],
+                    ['GW - Редакторы описания игры', '/syndicate.php?id=1323'],
                     ['GW - Помощники администраторов',
                         '/syndicate.php?id=2076'],
                     ['GW - Почетный легион', '/syndicate.php?id=1320'],
-                    ['GW - Редакторы описания игры', '/syndicate.php?id=1323'],
-                    ['GW - Следователи', '/syndicate.php?id=2309'],
-                    ['GW - Суд - Ветераны', '/syndicate.php?id=1914'],
-                    ['GW - Суд // Common', '/syndicate.php?id=1953'],
+                    ['GW - Технические персонажи', '/syndicate.php?id=445'],
+                    ['GW - Bugtesters', '/syndicate.php?id=1949'],
+                    ['GW - Суд', '/syndicate.php?id=1318'],
                     ['GW - Суд по взломам', '/syndicate.php?id=4409'],
-                    ['GW - Судебные приставы', '/syndicate.php?id=1920']
+                    ['GW - Суд // Common', '/syndicate.php?id=1953'],
+                    ['GW - Суд - Ветераны', '/syndicate.php?id=1914'],
+                    ['GW - Мировой Суд', '/syndicate.php?id=3060'],
+                    ['GW - Судебные приставы', '/syndicate.php?id=1920'],
+                    ['GW - Следователи', '/syndicate.php?id=2309'],
+                    ['GW - Коллегия адвокатов', '/syndicate.php?id=1948'],
+                    ['GW - Полиция', '/syndicate.php?id=1321'],
+                    ['GW - Загс', '/syndicate.php?id=1354'],
+                    ['GW - 911', '/syndicate.php?id=911'],
+                    ['GW - GanjaWiki', '/syndicate.php?id=6949'],
+                    ['GW - Модераторы GanjaFoto.Ru', '/syndicate.php?id=3516'],
+                    ['GW - Модераторы рейтинга сайтов',
+                        '/syndicate.php?id=3516'],
+                    ['GW - Модераторы чата', '/syndicate.php?id=274'],
+                    ['GW - Модераторы форума', '/syndicate.php?id=1262'],
+                    ['GW - Модераторы торговых форумов',
+                        '/syndicate.php?id=3405'],
+                    ['ЗАО "Букмекерская контора №1"', '/syndicate.php?id=909'],
+                    ['GW - Маркетинговая служба игры',
+                        '/syndicate.php?id=2324']
                 ], prnt: 'syndicates_1', arrow: 'offic_synd', offsetY: -45},
                 {divm: 0, lines: [
                     ['Z', '/map.php?sx=150&sy=150'],
                     ['G', '/map.php?sx=50&sy=50'],
                     ['P', '/map.php?sx=123&sy=77'],
-                    ['S', '/map.php?sx=100&sy=100']
+                    ['S', '/map.php?sx=100&sy=100'],
+                    ['Аут', 'http://born2kill.clan.su/index/0-55']
                 ], prnt: 'gw_menu', arrow: 'islands', offsetY: -15},
                 {divm: 'npc_1', lines: [
                     ['Z', 'npcz'],
@@ -564,19 +564,18 @@
                     ['Основные форумы', '', 'zag', 1],
                     ['Официальные объявления', '/threads.php?fid=1', 0, 1],
                     ['Вопросы и помощь в игре', '/threads.php?fid=49', 0, 1],
-                    ['Общий игровой форум', '/threads.php?fid=27', 0, 1],
-                    ['Открытый Клуб', '/threads.php?fid=8', 0, 1],
-                    ['Объявления синдикатов', '/threads.php?fid=38', 0, 1],
-                    ['Вступлю в синдикат', '/threads.php?fid=56', 0, 1],
+                    ['Общий форум', '/threads.php?fid=27', 0, 1],
                     ['Идеи и предложения', '/threads.php?fid=2', 0, 1],
                     ['Форум для неигровых тем', '/threads.php?fid=22', 0, 1],
                     ['Клуб Нытиков', '/threads.php?fid=55', 0, 1],
+                    ['Объявления синдикатов', '/threads.php?fid=38', 0, 1],
+                    ['Вступлю в синдикат', '/threads.php?fid=56', 0, 1],
                     ['Тотализатор', '/threads.php?fid=5', 0, 1],
                     ['Общение гостей острова', '/threads.php?fid=30', 0, 1],
                     ['Конкурсы', '/threads.php?fid=3', 0, 1],
                     ['Благодарности и поздравления',
                         '/threads.php?fid=4', 0, 1],
-                    ['Оффline встречи', '/threads.php?fid=6', 0, 1],
+                    ['Offline встречи', '/threads.php?fid=6', 0, 1],
                     ['Креатив', '/threads.php?fid=23', 0, 1],
                     ['Официальные объявления<br>налоговой инспекции',
                         '/threads.php?fid=24', 0, 1],
@@ -601,12 +600,12 @@
                     ['Торговля предметами : Оружие', '/threads.php?fid=7'],
                     ['Торговля предметами : Броня', '/threads.php?fid=36'],
                     ['Торговля предметами : Аксессуары', '/threads.php?fid=37'],
+                    ['Торговля high-tech предметами', '/threads.php?fid=35'],
+                    ['Торговля недвижимостью', '/threads.php?fid=34'],
                     ['Торговля предметами : Редкие вещи',
                         '/threads.php?fid=44'],
-                    ['Торговля high-tech предметами', '/threads.php?fid=35'],
                     ['Торговля модифицированными предметами',
                         '/threads.php?fid=47'],
-                    ['Торговля недвижимостью', '/threads.php?fid=34'],
                     ['Торговля сломанными вещами', '/threads.php?fid=48'],
                     ['Аренда предметов', '/threads.php?fid=46'],
                     ['Аренда недвижимости', '/threads.php?fid=54'],
@@ -623,9 +622,9 @@
                 {divm: 0, lines: [
                     ['Огнестрельное оружие', '', 'zag'],
                     ['Пистолеты', '/shop.php?shop=shop_pistols'],
-                    ['ПП', '/shop.php?shop=shop_ppguns'],
                     ['Автоматы', '/shop.php?shop=shop_auto'],
                     ['Снайперское оружие', '/shop.php?shop=shop_sniper'],
+                    ['ПП', '/shop.php?shop=shop_ppguns'],
                     ['Пулемёты', '/shop.php?shop=shop_heavy'],
                     ['Дробовики', '/shop.php?shop=shop_shotguns'],
                     ['Гранатометы', '/shop.php?shop=shop_grl'],
@@ -637,6 +636,7 @@
                     ['Броня ног', '/shop.php?shop=shop_boots'],
                     ['Маскировка', '/shop.php?shop=shop_masks'],
                     ['Тепловизоры', '/shop.php?shop=shop_wear'],
+                    ['Пояса', '/shop.php?shop=shop_belts'],
                     ['Оборудование', '/shop.php?shop=shop_phones'],
                     ['Транспорт', '/shop.php?shop=shop_transport'],
                     ['Цветы', '/shop.php?shop=shop_flowers'],
@@ -645,10 +645,10 @@
                 ], prnt: 'shop_1', arrow: 'shop_gos', offsetY: -75},
                 {divm: 0, lines: [
                     ['Огнестрельное оружие', '', 'zag'],
-                    ['ПП', '/shopc.php?shop=shop_ppguns_c'],
                     ['Автоматы', '/shopc.php?shop=shop_auto_c'],
-                    ['Снайперское оружие', '/shopc.php?shop=shop_snipe_c'],
                     ['Пулемёты', '/shopc.php?shop=shop_heavy_c'],
+                    ['Снайперское оружие', '/shopc.php?shop=shop_snipe_c'],
+                    ['ПП', '/shopc.php?shop=shop_ppguns_c'],
                     ['Дробовики', '/shopc.php?shop=shop_shotguns_c'],
                     ['Гранатометы', '/shopc.php?shop=shop_grl_c'],
                     ['Полезные предметы', '', 'zag'],
@@ -657,7 +657,9 @@
                     ['Броня ног', '/shopc.php?shop=shop_boots_c'],
                     ['Маскировка', '/shopc.php?shop=shop_masks_c'],
                     ['Тепловизоры', '/shopc.php?shop=shop_wear_c'],
+                    ['Пояса', '/shopc.php?shop=shop_belts_c'],
                     ['Оборудование', '/shopc.php?shop=shop_misc_c'],
+                    ['Подарки', '/shopc.php?shop=shop_gifts_c'],
                     ['Аптека', '/shopc.php?shop=shop_drugs_c'],
                     ['Транспорт', '/shopc.php?shop=shop_transport_c']
                 ], prnt: 'shop_1', arrow: 'shop_hightech', offsetY: -75},
@@ -720,15 +722,13 @@
                     ['Mk-7 Frag Grenade', '/market.php?buy=1&item_id=fg7'],
                     ['Mk-8 Black Dust', '/market.php?buy=1&item_id=fg8bd'],
                     ['Синдовые', '', 'zag'],
+                    ['GHTB', '/sshop.php?tshop=grenades'],
                     ['Mk-5 Frag Grenade', '/statlist.php?r=fg5&type=i'],
                     ['Коктейль Молотова', '/statlist.php?r=molotov&type=i'],
                     ['HellsBreath', '/statlist.php?r=hellsbreath&type=i'],
                     ['Напалм', '/statlist.php?r=napalm&type=i'],
-                    ['GHTB', '/sshop.php?tshop=grenades'],
                     ['ME-85 Frag Grenade', '/statlist.php?r=me85&type=i']
                 ], prnt: 'pay_grenades_1', arrow: 'fightinggr', offsetY: -195},
-
-
                 {divm: 'pay_lut_1', lines: [
                     ['Оружие и броня', 'weapon_armour_lut'],
                     ['Медикаменты', 'drugs_lut'],
@@ -774,35 +774,39 @@
                         '/market.php?buy=1&item_id=magazine']
                 ], prnt: 'pay_lut_1', arrow: 'items_lut', offsetY: -15},
                 {divm: 0, lines: [
-                    ['от W_or_M', 'http://gw-dressroom.ru/'],
-                    ['от Yeni', 'http://help.yeni.name/gan/']
+                    ['от Yeni', 'http://help.yeni.name/gan/'],
+                    ['www.cccp-gw.su', 'http://www.cccp-gw.su/dress/']
                 ], prnt: 'gw_menu', arrow: 'changeclothing'},
                 {divm: 0, lines: [
-                    ['Главное', '/info.edit.php?type=main'],
+                    ['Настройки', '/info.edit.php?type=main'],
+                    ['Настройки боя', '/info.edit.php?type=battles'],
                     ['О себе', '/info.edit.php?type=pinfo'],
                     ['Анкета', '/info.anketa.php'],
                     ['E-mail и пароли', '/info.edit.php?type=security'],
+                    ['Привязка к телефону', '/info.sms.php'],
                     ['Секретный ключ', '/info.edit.php?type=pkey'],
-                    ['Картинка персонажа', '/info.edit.php?type=avatar'],
+                    ['Аватар', '/info.edit.php?type=avatar'],
+                    ['Приглашения', '/info.edit.php?type=invites'],
+                    ['PDA', '/info.edit.php?type=pda'],
                     ['Навигация', '/info.edit.php?type=navy']
                 ], prnt: 'gw_menu', arrow: 'settings', offsetY: -45}
             ];
 
             this.createGWMenuItems(gwM);
 
+            var _this = this;
             //кнопка закрытия меню
-            general.$('exit').
-                addEventListener('click', function () {
-                    _this.gwMenuInit(_this);
-                }, false);
-
-            //чекбокс "Показывать всегда"
-            general.$('showt').addEventListener('click', function () {
-                var showt = this;
-                general.setData(showt.checked ? ['1'] : []);
+            general.$('exit').addEventListener('click', function () {
+                _this.gwMenuInit();
             }, false);
 
-            _this.gwMenuInit(_this);
+            //чекбокс "Показывать всегда"
+            var showt = general.$('showt');
+            showt.addEventListener('click', function () {
+                general.setData(showt.checked ? '1' : '');
+            }, false);
+
+            this.gwMenuInit();
         };
 
         /**
@@ -813,8 +817,7 @@
                 alert('Ваш браузер не поддерживает технологию localStorage.' +
                     '\nMyRequiеm рекомендует вам установить один из\n' +
                     'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'ScriptName\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
+                    'GwMenu\n\nFireFox 4+\nOpera 11+\nChrome 12+');
 
                 return;
             }
@@ -822,17 +825,18 @@
             // ссылка в главном меню игры
             var mainLink = general.doc.querySelector('a[href$="/sites.php"]');
             if (mainLink) {
-                mainLink.innerHTML = '<b>GW-Меню</b>';
+                mainLink.setAttribute('style', 'font-weight: bold; ' +
+                    'cursor: pointer;');
                 mainLink.removeAttribute('href');
-                mainLink.setAttribute('style', 'cursor: pointer;');
+                mainLink.innerHTML = 'GW-Меню';
                 var _this = this;
                 mainLink.addEventListener('click', function () {
                     _this.gwMenuInit(_this);
                 }, false);
 
                 // если есть запись в хранилище "Показывать всегда"
-                if (general.getData()[0]) {
-                    this.gwMenuInit(this);
+                if (general.getData()) {
+                    this.gwMenuInit();
                     general.$('showt').checked = true;
                 }
             }

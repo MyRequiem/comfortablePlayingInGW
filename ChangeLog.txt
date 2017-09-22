@@ -1,3 +1,7 @@
+2017-09-22[1.73-220917]
+	- Изменены ссылки в скрипте GwMenu:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
+
 2017-09-06[1.72-060917]
 --------------------------------------
 	- Исправлен скрипт:
