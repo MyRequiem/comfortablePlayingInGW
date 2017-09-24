@@ -1,11 +1,26 @@
+2017-09-25[1.74-250917]
+--------------------------------------
+	- В скрипте GwMenu удалены ссылки на бои: графические, картофелемёты и рогатки
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
+	- Исправлен скрипт One2OneCallerInfo
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/One2OneCallerInfo
+	- В игре изменены некоторые адреса страниц. В связи с этим поправлены
+		многие скрипты для их корректной работы.
+	- Удалены скрипты сортировки общих и синдикатных заявок, звук при начале
+		графического боя
+		(filterGeneralFighting.user.js, sortSyndWars.user.js, soundGraph.user.js)
+
+
 2017-09-22[1.73-220917]
 	- Изменены ссылки в скрипте GwMenu:
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
+
 
 2017-09-06[1.72-060917]
 --------------------------------------
 	- Исправлен скрипт:
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CritShotsAndLinksBtlLog
+
 
 2017-07-30[1.71-300717]
 --------------------------------------

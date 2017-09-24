@@ -1,7 +1,7 @@
 Исправляет умелки вида +-xxx, полученные при выполнении квестов.
 <br>
 <br>
-Версия: 2.01-121216
+Версия: 2.02-240917
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FixSkills/fixSkills.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FixSkills/fixSkills.user.js.zip)
 <br>

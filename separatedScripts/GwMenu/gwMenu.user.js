@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru*
 // @grant           none
 // @license         MIT
-// @version         2.30-140917
+// @version         2.31-240917
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -124,7 +124,7 @@
          * @property scriptVersion
          * @type {String}
          */
-        this.scriptVersion = 'v. 2.30-140917';
+        this.scriptVersion = 'v. 2.31-240917';
         /**
          * @property imgPath
          * @type {String}
@@ -425,7 +425,7 @@
                 {divm: 'battles_1', lines: [
                     ['Одиночные', 'battles_1_single'],
                     ['Групповые', 'battles_1_group'],
-                    ['Идущие бои', '/war/', 0, 1]
+                    ['Идущие бои', '/war.php', 0, 1]
                 ], prnt: 'gw_menu', arrow: 'battles', offsetY: -15},
                 {divm: 0, lines: [
                     ['Общие', '/warlist.php?war=armed'],
@@ -434,9 +434,7 @@
                 ], prnt: 'battles_1', arrow: 'battles_1_single'},
                 {divm: 0, lines: [
                     ['Общие', '/wargroup.php?war=armed'],
-                    ['Графические', '/wargroup.php?war=gwars'],
                     ['Уличные', '/wargroup.php?war=street'],
-                    ['Картофелемёты и рогатки', '/wargroup.php?war=rogatki'],
                     ['Дуэли на спецоружии', '/wargroup.php?war=duels'],
                     ['Нападения', '/wargroup.php?war=attacks']
                 ], prnt: 'battles_1', arrow: 'battles_1_group', offsetY: -15},

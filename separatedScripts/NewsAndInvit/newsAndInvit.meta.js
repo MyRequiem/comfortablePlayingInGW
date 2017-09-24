@@ -5,10 +5,10 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NewsAndInvit/newsAndInvit.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NewsAndInvit/newsAndInvit.user.js
-// @include         http://www.ganjawars.ru/me/*
+// @include         http://www.ganjawars.ru/me.php*
 // @include         http://www.ganjawars.ru/messages.php?fid=1&tid=*
 // @grant           none
 // @license         MIT
-// @version         2.02-121216
+// @version         2.03-240917
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==

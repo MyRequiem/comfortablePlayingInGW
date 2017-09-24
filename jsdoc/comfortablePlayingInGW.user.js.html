@@ -35,10 +35,9 @@
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js
 // @include         http://www.ganjawars.ru/*
 // @include         http://quest.ganjawars.ru/*
-// @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.71-300717
+// @version         1.74-250917
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -93,7 +92,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.71-300717';
+        this.version = '1.74-250917';
         /**
          * @property stString
          * @type {String}
@@ -133,7 +132,7 @@
                         [29] - GosEnergoAtomFilter
                         [30] - SortSyndOnline
                         [31] - HousHealth
-                        [32] - SortSyndWars
+                        [32] - SortSyndWars (удален)
                         [33] - LinksInOne2One
                         [34] - One2OneCallerInfo
                         [35] - MinBetAtRoulette
@@ -156,7 +155,7 @@
                         [52] - SoundSyndBattle
                         [53] - AdvForum
                         [54] - DelAndAddBlackSms
-                        [55] - FilterGeneralFighting
+                        [55] - FilterGeneralFighting (удален)
                         [56] - Regeneration
                         [57] - ProfColor */
                         '@||||||||||||||||||||||||||||||||||||||||' +
@@ -289,7 +288,7 @@
                         [0] - вышел из боя */
                         '@' +
                     /*
-                     [20] - SortSyndWars
+                     [20] - SortSyndWars (удален)
                         [0] - остров ('' - все, 1 - [Z], 2 - [G], 3 - [S])
                         [1] - тип объекта ('' - все, 1 - ЭС, 2 - Уран,
                                 3 - порты, 4 - другая недвижимость)
@@ -376,7 +375,7 @@
                         '48,54|1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,' +
                         '1,1,1|{}|{}' +
                     /*
-                     [30] - FilterGeneralFighting
+                     [30] - FilterGeneralFighting (удален)
                         [0]  - минимальный уровень
                         [1]  - максимальный уровень
                         [2]  - командные
@@ -1162,6 +1161,7 @@
                     'киллера, боевика или наемника название профессии на его ' +
                     'странице информации окрашивается в красный цвет.' +
                     this.getGitHubLink('profColor'), '57']],
+
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов, ' +
                     'нумерация противников, расширенная информация в ' +
@@ -1178,12 +1178,12 @@
                     '&lt;br>&lt;br>&lt;span style="color: #FF0000;">Не ставьте ' +
                     'значения менее 3 секунд.&lt;/span>&lt;br>Таймаут обновления ' +
                     'данных в бою:&lt;span style="margin-left: 54px;"> ' +
-                    '&lt;/span>&lt;input id="refreshBattle" type="text" ' +
-                    'maxlength="3" style="width: 30px;" value="' +
+                    '&lt;/span>&lt;input id="refreshBattle" maxlength="3" ' +
+                    'style="width: 30px;" value="' +
                     (general.getData(4)[0] || '0') + '" disabled /> сек (0 - ' +
                     'настройки игры по умолчанию)&lt;br>Таймаут обновления ' +
-                    'заявки при входе в нее: &lt;input id="refreshAppl" type="' +
-                    'text" maxlength="3" style="width: 30px;" value="' +
+                    'заявки при входе в нее: &lt;input id="refreshAppl" ' +
+                    'maxlength="3" style="width: 30px;" value="' +
                     (general.getData(4)[1] || '0') + '" disabled /> сек (0 - ' +
                     'настройки игры по умолчанию)&lt;br>' +
                     'Звук при начале боя:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;' +
@@ -1204,7 +1204,7 @@
                 ['Счетчик времени до начала синдикатного боя', 'Динамический ' +
                     'счетчик времени до начала синдикатного боя, звуковое ' +
                     'оповещение.&lt;br>&lt;br>&lt;input id="timeSyndSoundLimit" ' +
-                    'type="text" value="' + (general.getData(28)[0] || '90') +
+                    'value="' + (general.getData(28)[0] || '90') +
                     '" maxlength="3" style="width: 35px;" /> - время до боя ' +
                     '(сек), когда будет проигран второй звук ' +
                     '&lt;span style="color: #FF0000;">(не менее 15)&lt;/span>&lt;br>' +
@@ -1241,22 +1241,6 @@
                     'если персонаж находится не в секторе со своим домом и ' +
                     'его здоровье менее 80%.' +
                     this.getGitHubLink('housHealth'), '31'],
-                ['Сортировка  заявок общих, уличных и графических боев',
-                    'Фильтр заявок общих, уличных и графических боев по ' +
-                        'уровню бойцов, сортировка по критериям: ' +
-                        'случайные/командные/DM/синдовые. Отображение умения ' +
-                        'и дальности оружия для каждого бойца. Выделение ' +
-                        'цветом заявок, подходящих по указанной дальности и ' +
-                        'времени начала боя.' +
-                        this.getGitHubLink('filterGeneralFighting'), '55'],
-                ['Сортировка синдикатных заявок', 'Сортировка на ' +
-                    '&lt;a target="_blank" href="http://www.ganjawars.ru/' +
-                    'wargroup.php?war=attacks">странице нападений&lt;/a> по ' +
-                    'острову, типу недвиги (ЭС, уран, остальное), синдикату, ' +
-                    'заявкам, в которые может зайти Ваш персонаж. ' +
-                    'Вывод общего количества боев и боев по синдикатам. ' +
-                    'Все настройки находятся на вышеуказанной странице.' +
-                    this.getGitHubLink('sortSyndWars'), '32'],
                 ['Изображения покемонов', 'В боях с покемонами и в режиме ' +
                     'наблюдения за боем (Ejection Point, Overlord Point, ' +
                     'прибрежная зона) показывает изображения для каждого ' +
@@ -1332,8 +1316,7 @@
                     'названия ресурсов через запятую, которые будут ' +
                     'отображаться на вышеуказанной странице. Например: ' +
                     'Уран,Водоросли,Маковая соломка,Трава,Батареи&lt;br>' +
-                    '&lt;input id="filter_res" type="text" style="width: ' +
-                    '350px;" disabled />' +
+                    '&lt;input id="filter_res" style="width: 350px;" disabled />' +
                     this.getGitHubLink('filterResOnStat'), '22'],
                 ['Ссылки на High-tech вооружение в государственном магазине',
                     'В государственном магазине рядом со ссылками на типы ' +
@@ -1359,7 +1342,7 @@
                     'пора полить/собрать.&lt;br>&lt;br>' +
                     this.getSelectSound('farmTmSound') + ' - звук когда пора ' +
                     'поливать/собирать (0 - без звука)&lt;br>' +
-                    '&lt;input id="farmtmSndIntrvl" type="text" maxlength="3" ' +
+                    '&lt;input id="farmtmSndIntrvl" maxlength="3" ' +
                     'style="width: 40px;" disabled /> - интервал повторения ' +
                     'звука в секундах (0 - не повторять)' +
                     this.getGitHubLink('farmTimer'), '10'],
@@ -1564,8 +1547,8 @@
                     '&lt;td colspan="3">Восстановление настроек. Вставьте ' +
                     'ранее сохраненную строку настроек и нажмите ' +
                     '"Восстановить":&lt;br>&lt;input id="inpRestoreSettings" ' +
-                    'type="text" style="width: 97%;" />&lt;br>&lt;input ' +
-                    'id="butRestoreSettings" type="button" ' +
+                    'style="width: 97%;" />&lt;br>' +
+                    '&lt;input id="butRestoreSettings" type="button" ' +
                     'value="Восстановить" />&lt;/td>&lt;/tr>&lt;/table>&lt;/td>&lt;/tr>',
                 groupStyle = ' style="background-color: #D0EED0; text-align: ' +
                     'center; color: #990000;">&lt;b>',
@@ -2112,10 +2095,10 @@
             var divAddLink = general.doc.createElement('div');
             divAddLink.setAttribute('style', 'margin-top: 5px;');
             divAddLink.innerHTML = 'Название:&lt;br>&lt;input id="lname" ' +
-                'type="text" maxlength="20" style="width: 237px;" />&lt;br>' +
+                'maxlength="20" style="width: 237px;" />&lt;br>' +
                 'Ссылка:&lt;br>&lt;input id="lhref" style="width: 237px;" ' +
                 'value="http://"/>&lt;br>Стиль, например: "color: blue;"&lt;br>' +
-                '&lt;input id="lstyle" type="text" style="width: 237px;" />' +
+                '&lt;input id="lstyle" style="width: 237px;" />' +
                 '&lt;br>&lt;span id="set_link" style="cursor: pointer; color: ' +
                 '#0000FF;">Добавить&lt;/span>&lt;span id="hide_nav_div" ' +
                 'style="cursor: pointer; margin-left: 20px; color: ' +
@@ -4268,7 +4251,7 @@
          */
         this.startWorkPostGrenadesBroken = function (_this) {
             var ajaxQuery = new AjaxQuery(),
-                url = 'http://www.ganjawars.ru/me/';
+                url = 'http://www.ganjawars.ru/me.php';
 
             _this = _this || this;
             ajaxQuery.init(url, 'GET', null, true, function (xml) {
@@ -4587,12 +4570,13 @@
                 font,
                 str,
                 node,
-                next;
+                next,
+                prev,
+                i;
 
-            var i;
             for (i = 0; i &lt; b.length; i++) {
                 // если это урон (-XX), 'vs', пок с '['
-                if ((/^\-\d+$|vs|\[|,/.test(b[i].innerHTML)) ||
+                if ((/^-\d+$|vs|\[|,/.test(b[i].innerHTML)) ||
                         (/может взять предметы/.test(b[i].innerHTML))) {
                     continue;
                 }
@@ -4630,13 +4614,13 @@
                 }
 
                 // проверяем и считаем криты
-                if (b[i].previousSibling &amp;&amp; b[i].previousSibling.nodeValue &amp;&amp;
-                        (/\d+:\d+, #\d+ :/.
-                             test(b[i].previousSibling.nodeValue))) {
+                prev = b[i].previousSibling || b[i].parentNode.previousSibling;
+                if (prev &amp;&amp; prev.nodeValue &amp;&amp;
+                        /\d+:\d+, #\d+ :/.test(prev.nodeValue)) {
 
                     // получаем запись своего хода
                     str = '';
-                    node = b[i];
+                    node = b[i].previousSibling ? b[i] : b[i].parentNode;
                     while (node &amp;&amp; node.nodeName !== 'BR') {
                         next = node.nextElementSibling;
                         if (next.nodeName === 'I') {
@@ -5443,7 +5427,7 @@
         this.init = function () {
             var stData = general.getData(10);
 
-            if (/www\.ganjawars\.ru\/me\//.test(general.loc)) {
+            if (/www\.ganjawars\.ru\/me.php/.test(general.loc)) {
                 var mainDiv = general.doc.createElement('div'),
                     target = general.doc.querySelector('td[rowspan="2"]' +
                         '[valign="top"][bgcolor="#e9ffe9"]>' +
@@ -6029,9 +6013,8 @@
 
         /**
          * @method setCSSGwMenu
-         * @param   {Object}    _this
          */
-        this.setCSSGwMenu = function (_this) {
+        this.setCSSGwMenu = function () {
             var cssStyle = general.doc.createElement('style');
             cssStyle.innerHTML = '#c1 {color: #F90332;}' +
                 '#c2 {color: #014305; font-weight: bold;}' +
@@ -6043,7 +6026,7 @@
                     // тень для таблиц
                     // сдвиг по горизонтали, вертикали, радиус размытия, цвет
                     'box-shadow: 5px 6px 6px rgba(122,122,122,0.5);}' +
-                '.gwm table.main {background-image: url(' + _this.imgPath +
+                '.gwm table.main {background-image: url(' + this.imgPath +
                         'background.gif' + '); width: 210px;}' +
                 '.gwm tr {height: 15px;}' +
                 '.gwm td {border: 1px #339933 solid; ' +
@@ -6228,11 +6211,9 @@
 
         /**
          * @method gwMenuInit
-         * @param   {Object}    th
          */
-        this.gwMenuInit = function (th) {
+        this.gwMenuInit = function () {
             var gw_menu = general.$('gw_menu'),
-                _this = th,
                 gwM;
 
             if (gw_menu) {
@@ -6241,7 +6222,7 @@
                 return;
             }
 
-            _this.setCSSGwMenu(_this);
+            this.setCSSGwMenu();
 
             gwM = [
                 {divm: 'gw_menu', lines: [
@@ -6250,13 +6231,14 @@
                         'href="/info.php?id=2095458">&lt;span id="c1">' +
                         'developed by&lt;/span> &lt;span id="c2">MyRequiem&amp;#169;' +
                         '&lt;/span>&lt;br>&lt;span id="c3">for GanjaWars fighters' +
-                        '&lt;/span>&lt;/a>&lt;/td>&lt;td class="center" id="exit">' +
-                        '&lt;img src="' + _this.imgPath + 'hide.gif" ' +
-                        'alt="Закрыть" title="Закрыть">&lt;/td>', 'gw_menu'],
+                        '&lt;/span>&lt;/a>&lt;/td>&lt;td class="center" id="exit" ' +
+                        'style="cursor: pointer;">&lt;img src="' + this.imgPath +
+                        'hide.gif" alt="Закрыть" title="Закрыть">&lt;/td>',
+                        'gw_menu'],
                     // основные разделы
                     ['Ресурсы', 'resourses', 'brown'],
                     ['Бои', 'battles', 'crimson'],
-                    ['ЭС, Уранки', 'real_estate'],
+                    ['ЭС, Уран', 'real_estate'],
                     ['Скрипты', 'scripts', 'darkorange'],
                     ['Синдикаты', 'syndicates'],
                     ['Острова', 'islands'],
@@ -6278,7 +6260,7 @@
                     ['Мои достижения', '/info.ach.php?id=' +
                         general.myID, 0, 1],
                     ['Мои квесты', '/questlog.php?id=' + general.myID, 0, 1],
-                    ['Mои навыки', '/home.skills.php', 0, 1],
+                    ['Mои навыки', '/home.skills.php?page=perks', 0, 1],
                     ['Протокол передач', '/usertransfers.php?id=' +
                         general.myID, 0, 1],
                     ['Протокол боев', '/info.warstats.php?id=' +
@@ -6308,7 +6290,7 @@
                 {divm: 'battles_1', lines: [
                     ['Одиночные', 'battles_1_single'],
                     ['Групповые', 'battles_1_group'],
-                    ['Идущие бои', '/war/', 0, 1]
+                    ['Идущие бои', '/war.php', 0, 1]
                 ], prnt: 'gw_menu', arrow: 'battles', offsetY: -15},
                 {divm: 0, lines: [
                     ['Общие', '/warlist.php?war=armed'],
@@ -6317,9 +6299,7 @@
                 ], prnt: 'battles_1', arrow: 'battles_1_single'},
                 {divm: 0, lines: [
                     ['Общие', '/wargroup.php?war=armed'],
-                    ['Графические', '/wargroup.php?war=gwars'],
                     ['Уличные', '/wargroup.php?war=street'],
-                    ['Картофелемёты и рогатки', '/wargroup.php?war=rogatki'],
                     ['Дуэли на спецоружии', '/wargroup.php?war=duels'],
                     ['Нападения', '/wargroup.php?war=attacks']
                 ], prnt: 'battles_1', arrow: 'battles_1_group', offsetY: -15},
@@ -6327,8 +6307,7 @@
                     ['ГосЭнергоАтом', '/info.realty.php?id=2'],
                     ['Статистика GanjaWars.Ru от vasena',
                         'http://gw-utils.ru/'],
-                    ['GWTools от Bas', 'https://www.gwtools.ru/'],
-                    ['Нападения', '/wargroup.php?war=attacks', 'red']
+                    ['GWTools от Bas', 'https://www.gwtools.ru/']
                 ], prnt: 'gw_menu', arrow: 'real_estate'},
                 {divm: 0, lines: [
                     ['Синдикат "Скрипты для GW"', '/syndicate.php?id=3579'],
@@ -6349,8 +6328,7 @@
                     ['Скрипты от z0man',
                         'http://www.ganjafoto.ru/image.php?aid=285332'],
                     ['Скрипты от гном убийца',
-                        'http://www.ganjafoto.ru/image.php?aid=256649'],
-                    ['GW-панель', 'http://gwpanel.org/']
+                        'http://www.ganjafoto.ru/image.php?aid=256649']
                 ], prnt: 'gw_menu', arrow: 'scripts', offsetY: -45},
                 {divm: 'syndicates_1', lines: [
                     ['Официальные синдикаты', 'offic_synd'],
@@ -6360,38 +6338,41 @@
                         0, 1]
                 ], prnt: 'gw_menu', arrow: 'syndicates', offsetY: -15},
                 {divm: 'offic_synd_1', lines: [
-                    ['GW - 911', '/syndicate.php?id=911'],
-                    ['GW - Bugtesters', '/syndicate.php?id=1949'],
-                    ['GW - Суд', '/syndicate.php?id=1318'],
-                    ['GW-Технические персонажи', '/syndicate.php?id=445'],
-                    ['GW - GanjaWiki', '/syndicate.php?id=6949'],
-                    ['GW - Коллегия адвокатов', '/syndicate.php?id=1948'],
                     ['Администраторы игры', '/syndicate.php?id=3'],
-                    ['GW - Загс', '/syndicate.php?id=1354'],
-                    ['GW - Маркетинговая служба игры',
-                        '/syndicate.php?id=2324'],
-                    ['GW - Мировой Суд', '/syndicate.php?id=3060'],
-                    ['GW - Модераторы GanjaFoto.Ru', '/syndicate.php?id=3516'],
-                    ['GW - Модераторы рейтинга сайтов',
-                        '/syndicate.php?id=3516'],
-                    ['GW - Модераторы форума', '/syndicate.php?id=1262'],
-                    ['GW - Модераторы чата', '/syndicate.php?id=274'],
-                    ['GW - Полиция', '/syndicate.php?id=1321'],
+                    ['GW - Редакторы описания игры', '/syndicate.php?id=1323'],
                     ['GW - Помощники администраторов',
                         '/syndicate.php?id=2076'],
                     ['GW - Почетный легион', '/syndicate.php?id=1320'],
-                    ['GW - Редакторы описания игры', '/syndicate.php?id=1323'],
-                    ['GW - Следователи', '/syndicate.php?id=2309'],
-                    ['GW - Суд - Ветераны', '/syndicate.php?id=1914'],
-                    ['GW - Суд // Common', '/syndicate.php?id=1953'],
+                    ['GW - Технические персонажи', '/syndicate.php?id=445'],
+                    ['GW - Bugtesters', '/syndicate.php?id=1949'],
+                    ['GW - Суд', '/syndicate.php?id=1318'],
                     ['GW - Суд по взломам', '/syndicate.php?id=4409'],
-                    ['GW - Судебные приставы', '/syndicate.php?id=1920']
+                    ['GW - Суд // Common', '/syndicate.php?id=1953'],
+                    ['GW - Суд - Ветераны', '/syndicate.php?id=1914'],
+                    ['GW - Мировой Суд', '/syndicate.php?id=3060'],
+                    ['GW - Судебные приставы', '/syndicate.php?id=1920'],
+                    ['GW - Следователи', '/syndicate.php?id=2309'],
+                    ['GW - Коллегия адвокатов', '/syndicate.php?id=1948'],
+                    ['GW - Полиция', '/syndicate.php?id=1321'],
+                    ['GW - Загс', '/syndicate.php?id=1354'],
+                    ['GW - 911', '/syndicate.php?id=911'],
+                    ['GW - GanjaWiki', '/syndicate.php?id=6949'],
+                    ['GW - Модераторы GanjaFoto.Ru', '/syndicate.php?id=3516'],
+                    ['GW - Модераторы рейтинга сайтов',
+                        '/syndicate.php?id=3516'],
+                    ['GW - Модераторы чата', '/syndicate.php?id=274'],
+                    ['GW - Модераторы форума', '/syndicate.php?id=1262'],
+                    ['GW - Модераторы торговых форумов',
+                        '/syndicate.php?id=3405'],
+                    ['ЗАО "Букмекерская контора №1"', '/syndicate.php?id=909'],
+                    ['GW - Маркетинговая служба игры', '/syndicate.php?id=2324']
                 ], prnt: 'syndicates_1', arrow: 'offic_synd', offsetY: -45},
                 {divm: 0, lines: [
                     ['Z', '/map.php?sx=150&amp;sy=150'],
                     ['G', '/map.php?sx=50&amp;sy=50'],
                     ['P', '/map.php?sx=123&amp;sy=77'],
-                    ['S', '/map.php?sx=100&amp;sy=100']
+                    ['S', '/map.php?sx=100&amp;sy=100'],
+                    ['Аут', 'http://born2kill.clan.su/index/0-55']
                 ], prnt: 'gw_menu', arrow: 'islands', offsetY: -15},
                 {divm: 'npc_1', lines: [
                     ['Z', 'npcz'],
@@ -6445,19 +6426,18 @@
                     ['Основные форумы', '', 'zag', 1],
                     ['Официальные объявления', '/threads.php?fid=1', 0, 1],
                     ['Вопросы и помощь в игре', '/threads.php?fid=49', 0, 1],
-                    ['Общий игровой форум', '/threads.php?fid=27', 0, 1],
-                    ['Открытый Клуб', '/threads.php?fid=8', 0, 1],
-                    ['Объявления синдикатов', '/threads.php?fid=38', 0, 1],
-                    ['Вступлю в синдикат', '/threads.php?fid=56', 0, 1],
+                    ['Общий форум', '/threads.php?fid=27', 0, 1],
                     ['Идеи и предложения', '/threads.php?fid=2', 0, 1],
                     ['Форум для неигровых тем', '/threads.php?fid=22', 0, 1],
                     ['Клуб Нытиков', '/threads.php?fid=55', 0, 1],
+                    ['Объявления синдикатов', '/threads.php?fid=38', 0, 1],
+                    ['Вступлю в синдикат', '/threads.php?fid=56', 0, 1],
                     ['Тотализатор', '/threads.php?fid=5', 0, 1],
                     ['Общение гостей острова', '/threads.php?fid=30', 0, 1],
                     ['Конкурсы', '/threads.php?fid=3', 0, 1],
                     ['Благодарности и поздравления',
                         '/threads.php?fid=4', 0, 1],
-                    ['Оффline встречи', '/threads.php?fid=6', 0, 1],
+                    ['Offline встречи', '/threads.php?fid=6', 0, 1],
                     ['Креатив', '/threads.php?fid=23', 0, 1],
                     ['Официальные объявления&lt;br>налоговой инспекции',
                         '/threads.php?fid=24', 0, 1],
@@ -6482,12 +6462,12 @@
                     ['Торговля предметами : Оружие', '/threads.php?fid=7'],
                     ['Торговля предметами : Броня', '/threads.php?fid=36'],
                     ['Торговля предметами : Аксессуары', '/threads.php?fid=37'],
+                    ['Торговля high-tech предметами', '/threads.php?fid=35'],
+                    ['Торговля недвижимостью', '/threads.php?fid=34'],
                     ['Торговля предметами : Редкие вещи',
                         '/threads.php?fid=44'],
-                    ['Торговля high-tech предметами', '/threads.php?fid=35'],
                     ['Торговля модифицированными предметами',
                         '/threads.php?fid=47'],
-                    ['Торговля недвижимостью', '/threads.php?fid=34'],
                     ['Торговля сломанными вещами', '/threads.php?fid=48'],
                     ['Аренда предметов', '/threads.php?fid=46'],
                     ['Аренда недвижимости', '/threads.php?fid=54'],
@@ -6504,9 +6484,9 @@
                 {divm: 0, lines: [
                     ['Огнестрельное оружие', '', 'zag'],
                     ['Пистолеты', '/shop.php?shop=shop_pistols'],
-                    ['ПП', '/shop.php?shop=shop_ppguns'],
                     ['Автоматы', '/shop.php?shop=shop_auto'],
                     ['Снайперское оружие', '/shop.php?shop=shop_sniper'],
+                    ['ПП', '/shop.php?shop=shop_ppguns'],
                     ['Пулемёты', '/shop.php?shop=shop_heavy'],
                     ['Дробовики', '/shop.php?shop=shop_shotguns'],
                     ['Гранатометы', '/shop.php?shop=shop_grl'],
@@ -6518,6 +6498,7 @@
                     ['Броня ног', '/shop.php?shop=shop_boots'],
                     ['Маскировка', '/shop.php?shop=shop_masks'],
                     ['Тепловизоры', '/shop.php?shop=shop_wear'],
+                    ['Пояса', '/shop.php?shop=shop_belts'],
                     ['Оборудование', '/shop.php?shop=shop_phones'],
                     ['Транспорт', '/shop.php?shop=shop_transport'],
                     ['Цветы', '/shop.php?shop=shop_flowers'],
@@ -6526,10 +6507,10 @@
                 ], prnt: 'shop_1', arrow: 'shop_gos', offsetY: -75},
                 {divm: 0, lines: [
                     ['Огнестрельное оружие', '', 'zag'],
-                    ['ПП', '/shopc.php?shop=shop_ppguns_c'],
                     ['Автоматы', '/shopc.php?shop=shop_auto_c'],
-                    ['Снайперское оружие', '/shopc.php?shop=shop_snipe_c'],
                     ['Пулемёты', '/shopc.php?shop=shop_heavy_c'],
+                    ['Снайперское оружие', '/shopc.php?shop=shop_snipe_c'],
+                    ['ПП', '/shopc.php?shop=shop_ppguns_c'],
                     ['Дробовики', '/shopc.php?shop=shop_shotguns_c'],
                     ['Гранатометы', '/shopc.php?shop=shop_grl_c'],
                     ['Полезные предметы', '', 'zag'],
@@ -6538,7 +6519,9 @@
                     ['Броня ног', '/shopc.php?shop=shop_boots_c'],
                     ['Маскировка', '/shopc.php?shop=shop_masks_c'],
                     ['Тепловизоры', '/shopc.php?shop=shop_wear_c'],
+                    ['Пояса', '/shopc.php?shop=shop_belts_c'],
                     ['Оборудование', '/shopc.php?shop=shop_misc_c'],
+                    ['Подарки', '/shopc.php?shop=shop_gifts_c'],
                     ['Аптека', '/shopc.php?shop=shop_drugs_c'],
                     ['Транспорт', '/shopc.php?shop=shop_transport_c']
                 ], prnt: 'shop_1', arrow: 'shop_hightech', offsetY: -75},
@@ -6601,11 +6584,11 @@
                     ['Mk-7 Frag Grenade', '/market.php?buy=1&amp;item_id=fg7'],
                     ['Mk-8 Black Dust', '/market.php?buy=1&amp;item_id=fg8bd'],
                     ['Синдовые', '', 'zag'],
+                    ['GHTB', '/sshop.php?tshop=grenades'],
                     ['Mk-5 Frag Grenade', '/statlist.php?r=fg5&amp;type=i'],
                     ['Коктейль Молотова', '/statlist.php?r=molotov&amp;type=i'],
                     ['HellsBreath', '/statlist.php?r=hellsbreath&amp;type=i'],
                     ['Напалм', '/statlist.php?r=napalm&amp;type=i'],
-                    ['GHTB', '/sshop.php?tshop=grenades'],
                     ['ME-85 Frag Grenade', '/statlist.php?r=me85&amp;type=i']
                 ], prnt: 'pay_grenades_1', arrow: 'fightinggr', offsetY: -195},
                 {divm: 'pay_lut_1', lines: [
@@ -6653,27 +6636,31 @@
                         '/market.php?buy=1&amp;item_id=magazine']
                 ], prnt: 'pay_lut_1', arrow: 'items_lut', offsetY: -15},
                 {divm: 0, lines: [
-                    ['от W_or_M', 'http://gw-dressroom.ru/'],
-                    ['от Yeni', 'http://help.yeni.name/gan/']
+                    ['от Yeni', 'http://help.yeni.name/gan/'],
+                    ['www.cccp-gw.su', 'http://www.cccp-gw.su/dress/']
                 ], prnt: 'gw_menu', arrow: 'changeclothing'},
                 {divm: 0, lines: [
-                    ['Главное', '/info.edit.php?type=main'],
+                    ['Настройки', '/info.edit.php?type=main'],
+                    ['Настройки боя', '/info.edit.php?type=battles'],
                     ['О себе', '/info.edit.php?type=pinfo'],
                     ['Анкета', '/info.anketa.php'],
                     ['E-mail и пароли', '/info.edit.php?type=security'],
+                    ['Привязка к телефону', '/info.sms.php'],
                     ['Секретный ключ', '/info.edit.php?type=pkey'],
-                    ['Картинка персонажа', '/info.edit.php?type=avatar'],
+                    ['Аватар', '/info.edit.php?type=avatar'],
+                    ['Приглашения', '/info.edit.php?type=invites'],
+                    ['PDA', '/info.edit.php?type=pda'],
                     ['Навигация', '/info.edit.php?type=navy']
                 ], prnt: 'gw_menu', arrow: 'settings', offsetY: -45}
             ];
 
             this.createGWMenuItems(gwM);
 
+            var _this = this;
             //кнопка закрытия меню
-            general.$('exit').
-                addEventListener('click', function () {
-                    _this.gwMenuInit(_this);
-                }, false);
+            general.$('exit').addEventListener('click', function () {
+                _this.gwMenuInit();
+            }, false);
 
             //чекбокс "Показывать всегда"
             general.$('showt').addEventListener('click', function () {
@@ -6681,7 +6668,7 @@
                 general.setData(showt.checked ? ['1'] : [], 12);
             }, false);
 
-            _this.gwMenuInit(_this);
+            this.gwMenuInit();
         };
 
         /**
@@ -6691,9 +6678,10 @@
             // ссылка в главном меню игры
             var mainLink = general.doc.querySelector('a[href$="/sites.php"]');
             if (mainLink) {
-                mainLink.innerHTML = '&lt;b>GW-Меню&lt;/b>';
+                mainLink.setAttribute('style', 'font-weight: bold; ' +
+                    'cursor: pointer;');
                 mainLink.removeAttribute('href');
-                mainLink.setAttribute('style', 'cursor: pointer;');
+                mainLink.innerHTML = 'GW-Меню';
                 var _this = this;
                 mainLink.addEventListener('click', function () {
                     _this.gwMenuInit(_this);
@@ -6701,7 +6689,7 @@
 
                 // если есть запись в хранилище "Показывать всегда"
                 if (general.getData(12)[0]) {
-                    this.gwMenuInit(this);
+                    this.gwMenuInit();
                     general.$('showt').checked = true;
                 }
             }
@@ -7627,7 +7615,7 @@
             var divSearch = general.doc.createElement('div');
             divSearch.innerHTML = '&lt;span style="color: #008000; ' +
                 'font-weight: bold;">Быстрый поиск:&lt;/span> &lt;input ' +
-                'id="txtFilter" type="text" size="40" style="margin-bottom: ' +
+                'id="txtFilter" size="40" style="margin-bottom: ' +
                 '10px;">';
             target.insertBefore(divSearch, target.firstChild);
 
@@ -7761,7 +7749,7 @@
                 s_lmax.setAttribute('style', 'width: 40px;');
 
                 var span = general.doc.createElement('span');
-                span.innerHTML = 'Название: &lt;input type="text" id="w_name" ' +
+                span.innerHTML = 'Название: &lt;input id="w_name" ' +
                     'style="width: 150px;" value="' + general.getData(16)[0] +
                     '" />';
                 target.parentNode.insertBefore(span, filtForm.nextSibling);
@@ -7877,7 +7865,7 @@
         this.init = function () {
             var link;
 
-            if (/\/me\//.test(general.loc)) {
+            if (/\/me.php/.test(general.loc)) {
                 link = general.doc.querySelector('[src$="images.ganjawars.' +
                         'ru/i/home/farm.gif"]').parentNode;
                 var lparent = link.parentNode;
@@ -8119,8 +8107,8 @@
 
             target.parentNode.innerHTML += '&lt;span id="showHistory" ' +
                 'style="color: #008000; cursor: pointer; margin-left: 10px;">' +
-                'История&lt;/span> &lt;input id="countSms" type="text" ' +
-                'maxlength="5" style="width: 45px;" value="' + this.numberSms +
+                'История&lt;/span> &lt;input id="countSms" maxlength="5" ' +
+                'style="width: 45px;" value="' + this.numberSms +
                 '" title="Количество исходящих сообщений" /> ' +
                 '&lt;span id="preloader" style="margin: 0 10px 0 10px; ' +
                 'display: none;">&lt;img src="' + general.imgPath +
@@ -8901,286 +8889,6 @@
     };
 
     /**
-     * @class SortSyndWars
-     * @constructor
-     */
-    var SortSyndWars = function () {
-        /**
-         * @property divCountAll
-         * @type {HTMLDivElement|null}
-         */
-        this.divCountAll = null;
-        /**
-         * @property trs
-         * @type {Array|null}
-         */
-        this.trs = null;
-
-        /**
-         * @method showSyndData
-         * @param   {Array}     obj
-         */
-        this.showSyndData = function (obj) {
-            var str = '&lt;table>',
-                i;
-
-            for (i = 0; i &lt; obj.length; i++) {
-                str += '&lt;tr>&lt;td style="text-align: right;">' +
-                    '&lt;a target="_blank" href="http://www.ganjawars.ru/' +
-                    'syndicate.php?id=' + obj[i].synd + '&amp;page=online">' +
-                    '&lt;img src="http://images.ganjawars.ru/img/synds/' +
-                    obj[i].synd + '.gif" />#' + obj[i].synd + '&lt;/a>';
-
-                if (obj[i].union) {
-                    str += ', &lt;a target="_blank" href="http://www.ganjawars.' +
-                        'ru/syndicate.php?id=' + obj[i].union +
-                        '&amp;page=online">&lt;img src=http://images.ganjawars.ru/' +
-                        'img/synds/' + obj[i].union + '.gif />#' +
-                        obj[i].union + '&lt;/a>';
-                }
-
-                str += '&lt;/td>&lt;td style="color: #0000FF; padding-left: 10px;">' +
-                    obj[i].count + '&lt;/td>&lt;/tr>';
-            }
-
-            str += '&lt;/table>';
-            this.divCountAll.innerHTML = str;
-        };
-
-        /**
-         * @method findObj
-         * @param   {Array}     objs
-         * @param   {Array}     mass
-         * @return  {Boolean}
-         */
-        this.findObj = function (objs, mass) {
-            var i;
-            for (i = 0; i &lt; objs.length; i++) {
-                if (objs[i].synd === mass[0] || objs[i].union === mass[0]) {
-                    objs[i].count++;
-                    return true;
-                }
-            }
-
-            return false;
-        };
-
-        /**
-         * @method sortSyndWars
-         */
-        this.sortSyndWars = function () {
-            var stData = general.getData(20),
-                reg1,
-                reg2;
-
-            switch (stData[0]) {
-            case '1':
-                reg1 = />\[Z\]&lt;\/b>/;
-                break;
-            case '2':
-                reg1 = />\[G\]&lt;\/b>/;
-                break;
-            case '3':
-                reg1 = />\[S\]&lt;\/b>/;
-                break;
-            default:
-                break;
-            }
-
-            switch (stData[1]) {
-            case '1':
-                reg2 = /Электростанция/i;
-                break;
-            case '2':
-                reg2 = /Урановый рудник/i;
-                break;
-            case '3':
-                reg2 = /контроль портов/i;
-                break;
-            case '4':
-                reg2 = /ферма|плантация|завод|база|Фабрика|лаборатория|цех/i;
-                break;
-            default:
-                break;
-            }
-
-            var count = 0,
-                objs = [],
-                clss,
-                txt,
-                num,
-                ob,
-                a,
-                r,
-                b,
-                j,
-                i;
-
-            for (i = 1; i &lt; this.trs.length; i++) {
-                // делаем строку видимой
-                this.trs[i].style.display = '';
-
-                txt = this.trs[i].cells[1].innerHTML;
-
-                if (reg1 || reg2) {
-                    // в боях за контроль портов острова нет
-                    if (stData[1] === '3') {
-                        reg1 = null;
-                    }
-
-                    if ((reg1 &amp;&amp; !reg1.test(txt)) ||
-                            (reg2 &amp;&amp; !reg2.test(txt))) {
-                        this.trs[i].style.display = 'none';
-                        continue;
-                    }
-                }
-
-                if (stData[2] &amp;&amp; this.trs[i].cells[2].innerHTML.
-                        indexOf(stData[2]) === -1) {
-                    this.trs[i].style.display = 'none';
-                    continue;
-                }
-
-                if (stData[3] &amp;&amp; !(/\[вступить\]/.
-                            test(this.trs[i].lastElementChild.innerHTML))) {
-                    this.trs[i].style.display = 'none';
-                    continue;
-                }
-
-                count++;
-                a = this.trs[i].cells[2].
-                        querySelectorAll('a[href*="/syndicate.php?id="]');
-
-                r = [];
-                b = [];
-                for (j = 0; j &lt; a.length; j++) {
-                    clss = a[j].getAttribute('class');
-                    num = /\d+/.exec(a[j].innerHTML);
-                    if (!(/^(r|b)$/.test(clss)) || !num) {
-                        continue;
-                    }
-
-                    if (clss === 'r') {
-                        r[r.length] = num[0];
-                    } else {
-                        b[b.length] = num[0];
-                    }
-                }
-
-                if (r.length &amp;&amp; !this.findObj(objs, r)) {
-                    ob = {synd: r[0], union: 0, count: 1};
-                    if (r.length > 1) {
-                        ob.union = r[1];
-                    }
-
-                    objs[objs.length] = ob;
-                }
-
-                if (b.length &amp;&amp; !this.findObj(objs, b)) {
-                    ob = {synd: b[0], union: 0, count: 1};
-                    if (b.length > 1) {
-                        ob.union = b[1];
-                    }
-
-                    objs[objs.length] = ob;
-                }
-            }
-
-            general.$('countLines').innerHTML = '[' + count + ']';
-            this.showSyndData(objs);
-        };
-
-        /**
-         * @method setSortSyndWarData
-         * @param    {Object}   _this
-         */
-        this.setSortSyndWarData = function (_this) {
-            var stData = general.getData(20),
-                ind = +(/\d/.exec(_this.id));
-
-            stData[ind] = ind !== 3 ? _this.value : (_this.checked ? '1' : '');
-            stData[ind] = stData[ind] === '0' ? '' : stData[ind];
-            general.setData(stData, 20);
-            this.sortSyndWars();
-        };
-
-        /**
-         * @method init
-         */
-        this.init = function () {
-            var warTable = general.doc.querySelector('td[class="txt"]>' +
-                        'table[border="0"][cellpadding="5"][ cellspacing="1"]');
-            // таблица с заявками не найдена
-            if (!warTable) {
-                return;
-            }
-
-            // выравниваем таблицу с заявками по центру
-            warTable.parentNode.setAttribute('align', 'center');
-
-            // вставляем контейнер настроек
-            var mainPanel = general.doc.createElement('span');
-            mainPanel.setAttribute('style', 'margin-right: 20px;');
-            mainPanel.innerHTML = 'Остров: ' +
-                '&lt;select id="selIsl0" style="border: 1px solid #339933;">' +
-                    '&lt;option value="0" >Все&lt;/option>' +
-                    '&lt;option value="1">[Z]&lt;/option>' +
-                    '&lt;option value="2">[G]&lt;/option>' +
-                    '&lt;option value="3">[S]&lt;/option>' +
-                '&lt;/select> ' +
-                'Объект: ' +
-                '&lt;select id="selRealEstate1" style="border: 1px solid ' +
-                        '#339933; margin-left: 3px;">' +
-                    '&lt;option value="0">Все&lt;/option>' +
-                    '&lt;option value="1">Эс&lt;/option>' +
-                    '&lt;option value="2">Уран&lt;/option>' +
-                    '&lt;option value="3">Порты&lt;/option>' +
-                    '&lt;option value="4">Недвига&lt;/option>' +
-                '&lt;/select>&amp;nbsp;&amp;nbsp;' +
-                'Синдикат: ' +
-                '&lt;input id="syndNumber2" type="text" maxlength="5" ' +
-                    'style="width: 45px;" />&amp;nbsp;&amp;nbsp;' +
-                'Куда я могу зайти: ' +
-                '&lt;input id="onlyMe3" type="checkbox" />&amp;nbsp;&amp;nbsp;' +
-                'Всего боев: ' +
-                 '&lt;span id="countLines">&lt;/span>&lt;br>';
-            warTable.parentNode.insertBefore(mainPanel, warTable);
-
-            var selIsl = general.$('selIsl0'),
-                selRealEstate = general.$('selRealEstate1'),
-                syndNumber = general.$('syndNumber2'),
-                onlyMe = general.$('onlyMe3'),
-                _this = this;
-
-            selIsl.addEventListener('change', function () {
-                _this.setSortSyndWarData(this);
-            }, false);
-            selRealEstate.addEventListener('change', function () {
-                _this.setSortSyndWarData(this);
-            }, false);
-            syndNumber.addEventListener('input', function () {
-                _this.setSortSyndWarData(this);
-            }, false);
-            onlyMe.addEventListener('click', function () {
-                _this.setSortSyndWarData(this);
-            }, false);
-
-            this.divCountAll = general.doc.createElement('div');
-            warTable.parentNode.appendChild(this.divCountAll);
-
-            this.trs = warTable.querySelectorAll('table[cellpadding="5"]>' +
-                    'tbody>tr');
-
-            var stData = general.getData(20);
-            selIsl.value = stData[0] || '0';
-            selRealEstate.value = stData[1] || '0';
-            syndNumber.value = stData[2];
-            onlyMe.checked = stData[3];
-            this.sortSyndWars();
-        };
-    };
-
-    /**
      * @class LinksInOne2One
      * @constructor
      */
@@ -9387,8 +9095,9 @@
                 called.parentNode.appendChild(spanHp);
 
                 // узел td со ссылками и изображениями на оружие
-                _this.weapon = spanContent.querySelector('table' +
-                        '[style="margin-right:1px;"]').parentNode;
+                _this.weapon = spanContent.
+                    querySelector('table[style="margin-right:1px;"]').
+                        parentNode;
                 _this.weapon.firstElementChild.removeAttribute('align');
                 _this.weapon.removeAttribute('rowspan');
                 _this.weapon.setAttribute('style', 'padding-left: 30px;');
@@ -9410,8 +9119,8 @@
                 }
 
                 // узел td со списком умелок
-                var skills = spanContent.
-                    querySelectorAll('td[align="right"][valign="top"]')[4];
+                var skills = spanContent.querySelectorAll('tr>td+' +
+                    'td[align="right"][valign="top"]')[2];
                 skills.setAttribute('style', 'padding-bottom: 10px;');
                 skills.removeAttribute('class');
                 var tr = general.doc.createElement('tr');
@@ -9539,10 +9248,10 @@
                 target.innerHTML += '&lt;div style="background: #D0EED0; ' +
                     'margin-top: 5px; padding: 5px; text-align: center;">' +
                     '&lt;span style="color: #0000FF;">Показать минимальные ' +
-                    'ставки&lt;/span>&lt;br>Вывести &lt;input type="text" ' +
-                    'id="inptext" value="5" maxlength="2" style="width: ' +
-                    '30px;"> чисел &lt;input type="button" id="butb" ' +
-                    'value=">>" />&lt;br>&lt;input type=checkbox id="chknull" ' +
+                    'ставки&lt;/span>&lt;br>Вывести &lt;input id="inptext" value="5" ' +
+                    'maxlength="2" style="width: 30px;"> чисел ' +
+                    '&lt;input type="button" id="butb" value=">>" />&lt;br>' +
+                    '&lt;input type="checkbox" id="chknull" ' +
                     'checked /> &lt;label for="chknull">Числа, на которые еще ' +
                     'не ставили&lt;/label>&lt;/div>&lt;div id="resultBets" ' +
                     'style="visibility: hidden; text-align: center; ' +
@@ -9804,7 +9513,7 @@
                     persId + '" style="cursor: pointer;">[?]&lt;/span> ' +
                     '&lt;img id="edit_' + persId + '" src="http://images.' +
                     'ganjawars.ru/i/home/wlog.gif" style="cursor: pointer;" ' +
-                    'title="Изменить заметку"/>&lt;br>&lt;input type="text" id="p' +
+                    'title="Изменить заметку"/>&lt;br>&lt;input id="p' +
                     persId + '" value="' + this.getPersNote('p' + persId) +
                     '" style="width: 250px; margin-top: 3px; display: none;" ' +
                     'title="Введите заметку и нажмите Enter" />';
@@ -10428,12 +10137,12 @@
 
             var getSelectSound = new GetSelectSound().init;
             settingsWin.innerHTML = '&lt;table>&lt;tr>&lt;td>Ник персонажа:&lt;/td>&lt;td>' +
-                '&lt;input id="scan_nik" type="text" value="" style="' + brd +
+                '&lt;input id="scan_nik" value="" style="' + brd +
                 '">&lt;/td>&lt;tr>&lt;td>Номер синдиката:&lt;/td>&lt;td>&lt;input ' +
-                'id="scan_synd_id" type="text" size="5" maxlength="6" ' +
+                'id="scan_synd_id" size="5" maxlength="6" ' +
                 'value="" style="' + brd + '"> &lt;span style="font-size: 11px;' +
                 '">(без #)&lt;/span>&lt;/td>&lt;tr>&lt;td>Интервал сканирования:&lt;/td>&lt;td>' +
-                '&lt;input id="scan_interval" type="text" size="4" ' +
+                '&lt;input id="scan_interval" size="4" ' +
                 'maxlength="3" value="' + (stData[8] || '60') + '" style="' +
                 brd + '" /> сек (не менее 20)&lt;/td>&lt;/tr>&lt;tr>&lt;td colspan="2" ' +
                 'style="padding-top: 10px;">&lt;input id="scan_chksound" type=' +
@@ -10691,8 +10400,9 @@
                 var td = general.doc.createElement('td');
                 td.setAttribute('style', 'width: 130px;');
                 td.innerHTML = '&lt;form name="fsearch" id="fsearch" ' +
-                    'method="GET" action="/search.php">&lt;input type="text" ' +
-                    'id="skey" name="key" value="" style="width: 130px;" ' +
+                    'method="GET" action="/search.php">' +
+                    '&lt;input id="skey" name="key" value="" ' +
+                    'style="width: 130px;" ' +
                     'title="Введите ник и нажмите Enter" />&lt;/form>';
                 topPanel = topPanel.parentNode.parentNode;
                 topPanel = general.DESIGN_VERSION === 'v2' ?
@@ -11372,9 +11082,9 @@
                 var getStrDate = new GetStrDate().init;
                 table.innerHTML = '&lt;tr>&lt;td>' +
                     'Введите даты в формате дд.мм.гг&lt;br>' +
-                    'с: &lt;input id="inpDateFrom" type="text" maxlength="8" ' +
+                    'с: &lt;input id="inpDateFrom" maxlength="8" ' +
                     'value="" style="width: 70px;" disabled> до: ' +
-                    '&lt;input id="inpDateTo" type="text" maxlength="8" value="' +
+                    '&lt;input id="inpDateTo" maxlength="8" value="' +
                     getStrDate('now')  + '" style="width: 70px;" disabled> ' +
                     '&lt;input type="button" id="goPTS" value=">>" disabled>' +
                     '&lt;span id="ptsPreloader" style="margin-left: 10px;">' +
@@ -11975,9 +11685,9 @@
                 var getStrDate = new GetStrDate().init;
                 _this.mainTable.innerHTML = '&lt;tr>&lt;td>' +
                     'Введите даты в формате дд.мм.гг&lt;br>' +
-                    'с: &lt;input id="inpDateFrom" type="text" maxlength="8" ' +
+                    'с: &lt;input id="inpDateFrom" maxlength="8" ' +
                     'value="" style="width: 70px;" disabled> до: ' +
-                    '&lt;input id="inpDateTo" type="text" maxlength="8" value="' +
+                    '&lt;input id="inpDateTo" maxlength="8" value="' +
                     getStrDate('now')  + '" style="width: 70px;" disabled> ' +
                     '&lt;input type="button" id="goSAnalyse" value=">>" ' +
                     'disabled>&lt;span id="syndAnalysePreloader" ' +
@@ -12349,19 +12059,6 @@
     };
 
     /**
-     * @class SoundGraph
-     * @constructor
-     */
-    var SoundGraph = function () {
-        /**
-         * @method init
-         */
-        this.init = function () {
-            new PlaySound().init(4);
-        };
-    };
-
-    /**
      * @class TimeKarma
      * @constructor
      */
@@ -12562,7 +12259,7 @@
                 return;
             }
 
-            if (!general.doc.querySelector('a[href*="/me/"]' +
+            if (!general.doc.querySelector('a[href*="/me.php"]' +
                         '[title^="Наличность"]')) {
                 return;
             }
@@ -12917,14 +12614,14 @@
                     '&lt;tr>&lt;td>Не показывать прикрепленки&lt;/td>&lt;td>' +
                     '&lt;input id="showAttached" type="checkbox" />&lt;/td>&lt;/tr>' +
                     '&lt;tr>&lt;td>Интервал перезагрузки страниц с темами форума ' +
-                    '(> 4)&lt;/td>&lt;td>&lt;input id="reloadInterval" type="text" ' +
+                    '(> 4)&lt;/td>&lt;td>&lt;input id="reloadInterval" ' +
                     'maxlength="3" style="width: 40px;" /> сек (0 или пустое ' +
                     'поле - без перезагрузки)&lt;/td>&lt;/tr>&lt;tr>&lt;td>Звук при ' +
                     'появлении новой темы&lt;/td>&lt;td>' +
                     new GetSelectSound().init('sound') +
                     '&lt;/td>&lt;/tr>&lt;tr>&lt;td>Номера исключенных веток форума&lt;br>' +
                     '(параметр fid=xxx в ссылке на форум)&lt;/td>&lt;td>' +
-                    '&lt;input id="exclusion" type="text" style="width: ' +
+                    '&lt;input id="exclusion" style="width: ' +
                     '400px;" />&lt;/td>&lt;/tr>&lt;tr>&lt;td colspan="2" ' +
                     'style="padding-top: 10px;">&lt;span id="return" ' +
                     'style="cursor: pointer; color: #990000; font-weight: ' +
@@ -13394,362 +13091,6 @@
     };
 
     /**
-     * @class FilterGeneralFighting
-     * @constructor
-     */
-    var FilterGeneralFighting = function () {
-        /**
-         * @property table
-         * @type {HTMLTableElement|null}
-         */
-        this.table = null;
-        /**
-         * @property tableHTML
-         * @type {String}
-         */
-        this.tableHTML = '';
-
-        /**
-         * @method getSelectOptions
-         * @return  {String}
-         */
-        this.getSelectOptions = function () {
-            var txt = '',
-                i;
-
-            for (i = 5; i &lt;= 50; i++) {
-                txt += '&lt;option value="' + i + '">' + i + '&lt;/option>';
-            }
-
-            return txt;
-        };
-
-        /**
-         * @method saveSettings
-         * @param   {int}       ind
-         * @param   {String}    id
-         */
-        this.saveSettings = function (ind, id) {
-            var _this = this;
-            return function () {
-                var stData = general.getData(30),
-                    obj = general.$(id),
-                    val = ind &lt; 2 || ind > 9 ? obj.value :
-                                                (obj.checked ? '1' : ''),
-                    ids = {
-                        2: ['onlyNoCommand', 3],
-                        3: ['onlyCommand', 2],
-                        4: ['noDm', 5],
-                        5: ['Dm', 4],
-                        6: ['onlySynd', 7],
-                        7: ['hideSynd', 6]
-                    };
-
-                var data = ids[ind];
-                if (data &amp;&amp; val) {
-                    stData[data[1]] = '';
-                    general.$(data[0]).checked = false;
-                }
-
-                stData[ind] = val;
-                general.setData(stData, 30);
-
-                _this.changeTable(true);
-            };
-        };
-
-        /**
-         * @method checkRange
-         * @param   {int}       range
-         * @param   {Array}     strRange
-         * @return  {Boolean}
-         */
-        this.checkRange = function (range, strRange) {
-            var r, i;
-            for (i = 0; i &lt; strRange.length; i++) {
-                r = strRange[i];
-                if (r &amp;&amp; !isNaN(r) &amp;&amp; (+r === range)) {
-                    return true;
-                }
-            }
-
-            return false;
-        };
-
-        /**
-         * @method changeTable
-         * @param   {Boolean}   mode
-         */
-        this.changeTable = function (mode) {
-            if (mode) {
-                // возвращает таблицу в исходное состояние
-                this.table.innerHTML = this.tableHTML;
-            }
-
-            var trs = this.table.querySelectorAll('table[cellpadding="5"]>' +
-                    'tbody>tr'),
-                stData = general.getData(30),
-                linksPers,
-                ranges,
-                title,
-                time,
-                tmp,
-                lvl,
-                td,
-                k,
-                j,
-                i;
-
-            for (i = 1; i &lt; trs.length; i++) {
-                td = trs[i].querySelectorAll('td');
-
-                if (td.length !== 5) {
-                    continue;
-                }
-
-                // проверяем установленый уровень
-                lvl = /\d+\-(\d+).*vs.*\d+\-\d+/.exec(td[1].innerHTML);
-                if (lvl) {
-                    lvl = +lvl[1];
-                    if (+stData[0] > lvl || +stData[1] &lt; lvl) {
-                        trs[i].style.display = 'none';
-                        continue;
-                    }
-                }
-
-                // оставляем только командные бои или
-                // только со случайным распределением
-                tmp = /class="?(r|b)"?/.test(td[3].innerHTML);
-                if ((stData[2] &amp;&amp; !tmp) || (stData[3] &amp;&amp; tmp)) {
-                    trs[i].style.display = 'none';
-                    continue;
-                }
-
-                // оставляем только DM или только не DM
-                tmp = /\[\s?&lt;font color=.*>dm&lt;\/font>\s?\]/.
-                        test(td[1].innerHTML);
-                if ((stData[4] &amp;&amp; !tmp) || (stData[5] &amp;&amp; tmp)) {
-                    trs[i].style.display = 'none';
-                    continue;
-                }
-
-                // оставляем только синдовые или прячем все синдовые
-                tmp = /#\d+/.test(td[2].innerHTML);
-                if ((stData[6] &amp;&amp; tmp) || (stData[7] &amp;&amp; !tmp)) {
-                    trs[i].style.display = 'none';
-                    continue;
-                }
-
-                // выделяем жирным красным количество бойцов с каждой стороны
-                td[3].innerHTML = td[3].innerHTML.
-                        replace(/(\(\d+\/\d+\))/g, '&lt;span style="color: ' +
-                            '#990000; font-weight: bold;">$1&lt;/span>');
-
-                // показываем умения и дальность, подкрашиваем заявки,
-                // подходящие по указанной дальности
-                ranges = stData[10].split(',');
-                if (stData[8] || stData[9] || ranges[0]) {
-                    tmp = '';
-                    linksPers = td[3].
-                        querySelectorAll('a[href*="/info.php?id="]');
-
-                    for (j = 0; j &lt; linksPers.length; j++) {
-                        title = /\((\d+.*)?, (\d+)?\)/.
-                            exec(linksPers[j].getAttribute('title'));
-
-                        if (!title) {
-                            continue;
-                        }
-
-                        // показываем умения и/или дальность оружия бойцов
-                        if (stData[8] || stData[9]) {
-                            // иногда не отображается умелка
-                            // либо дальность в title ссылки
-                            title[1] = title[1] || '?';
-                            title[2] = title[2] || '?';
-                            if (stData[8] &amp;&amp; stData[9]) {
-                                tmp = title[1] + ',' + title[2];
-                            } else if (stData[8]) {
-                                tmp = title[1];
-                            } else {
-                                tmp = title[2];
-                            }
-
-                            linksPers[j].innerHTML += '&lt;span style="color: ' +
-                                '#000000;">(' + tmp + ')&lt;/span>';
-                        }
-
-                        // закрашиваем заявку, если подходит дальность
-                        if (ranges[0] &amp;&amp; !td[3].getAttribute('bgcolor') &amp;&amp;
-                                this.checkRange(+title[2], ranges)) {
-                            for (k = 0; k &lt; 4; k++) {
-                                td[k].removeAttribute('class');
-                                td[k].setAttribute('bgcolor', '#C1F0E7');
-                            }
-                        }
-                    }
-                }
-
-                // выделяем заявку серым цветом если времени
-                // осталось больше указанного в настройках
-                if (stData[11] &amp;&amp; !isNaN(stData[11])) {
-                    time = /(\d+):(\d+)/.exec(td[0].innerHTML);
-                    if (time) {
-                        time = +time[1] * 60 + (+time[2]);
-                        if (+stData[11] &lt; time) {
-                            for (k = 0; k &lt; 4; k++) {
-                                td[k].removeAttribute('class');
-                                td[k].setAttribute('bgcolor', '#D9D9D9');
-                            }
-                        }
-                    }
-                }
-            }
-        };
-
-        /**
-         * @method init
-         */
-        this.init = function () {
-            if (!(/\?war=(armed|gwars|street)/.test(general.loc))) {
-                return;
-            }
-
-            var updateTimer = general.$('updatetimer2'),
-                bodyHTML = general.doc.body.innerHTML;
-
-            // если не попали в заявку обновляем страницу
-            if (/Заявка на бой отклонена/.test(bodyHTML)) {
-                general.root.location.href = updateTimer.parentNode.href;
-                return;
-            }
-
-            // если уже в заявке
-            if (/#990000"?>Вы заявлены на бой/.test(bodyHTML)) {
-                return;
-            }
-
-            // устанавливаем интерфейс настроек
-            var inputSpan = general.doc.createElement('span');
-            inputSpan.innerHTML = 'с:' +
-                '&lt;select id="lvlMin">' + this.getSelectOptions() +
-                    '&lt;/select> ' +
-                'до: &lt;select id="lvlMax">' + this.getSelectOptions() +
-                    '&lt;/select> ' +
-                'Командные:&lt;input id="onlyCommand" type="checkbox" /> ' +
-                'Случайные:&lt;input id="onlyNoCommand" type="checkbox" /> ' +
-                'DM:&lt;input id="dm" type="checkbox" /> ' +
-                'Без DM:&lt;input id="noDm" type="checkbox" /> ' +
-                'Без синдовых:&lt;input id="hideSynd" type="checkbox" /> ' +
-                'Синдовые:&lt;input id="onlySynd" type="checkbox" /> ' +
-                'Умения:&lt;input id="showSkills" type="checkbox" /> ' +
-                'Дальность:&lt;input id="showRange" type="checkbox" /> ' +
-                'Нужная дальность: &lt;input type="text" id="limitRange" ' +
-                    'style="width: 50px;"> ' +
-                'Время: &lt;input type="text" id="time" maxlength="3" ' +
-                    'style="width: 40px;">&lt;br>';
-
-            var target = general.doc.querySelector('td.txt>' +
-                'table[width="100%"]').parentNode;
-            target.insertBefore(inputSpan, target.querySelector('br'));
-
-            var stData = general.getData(30);
-
-            // устанавливаем значения select'ов, чекбоксов, текстовых полей
-            // списки выбора минимального и максимального боевого уровеня
-            var selMin = general.$('lvlMin');
-            selMin.value = stData[0];
-            var selMax = general.$('lvlMax');
-            selMax.value = stData[1];
-
-            // только командные
-            var onlyCommand = general.$('onlyCommand');
-            onlyCommand.checked = stData[2];
-
-            // только случайные
-            var onlyNoCommand = general.$('onlyNoCommand');
-            onlyNoCommand.checked = stData[3];
-
-            // только DM
-            var dm = general.$('dm');
-            dm.checked = stData[4];
-
-            // без DM
-            var noDm = general.$('noDm');
-            noDm.checked = stData[5];
-
-            // без синдовых
-            var hideSynd = general.$('hideSynd');
-            hideSynd.checked = stData[6];
-
-            // только синдовые
-            var onlySynd = general.$('onlySynd');
-            onlySynd.checked = stData[7];
-
-            // показывать умения бойцов
-            var showSkills = general.$('showSkills');
-            showSkills.checked = stData[8];
-
-            // показывать дальность оружия бойцов
-            var showRange = general.$('showRange');
-            showRange.checked = stData[9];
-
-            // нужная дальность
-            var limitRange = general.$('limitRange');
-            limitRange.value = stData[10];
-
-            // время до боя
-            var time = general.$('time');
-            time.value = stData[11];
-
-            // обработчики для интерфейса настроек
-            selMin.addEventListener('change',
-                        this.saveSettings(0, selMin.id), false);
-            selMax.addEventListener('change',
-                        this.saveSettings(1, selMax.id), false);
-
-            onlyCommand.addEventListener('click',
-                        this.saveSettings(2, onlyCommand.id), false);
-
-            onlyNoCommand.addEventListener('click',
-                        this.saveSettings(3, onlyNoCommand.id), false);
-
-            dm.addEventListener('click',
-                        this.saveSettings(4, dm.id), false);
-            noDm.addEventListener('click',
-                        this.saveSettings(5, noDm.id), false);
-
-            hideSynd.addEventListener('click',
-                        this.saveSettings(6, hideSynd.id), false);
-
-            onlySynd.addEventListener('click',
-                        this.saveSettings(7, onlySynd.id), false);
-
-            showSkills.addEventListener('click',
-                    this.saveSettings(8, showSkills.id), false);
-
-            showRange.addEventListener('click',
-                        this.saveSettings(9, showRange.id), false);
-
-            limitRange.addEventListener('input',
-                        this.saveSettings(10, limitRange.id), false);
-
-            time.addEventListener('input',
-                        this.saveSettings(11, time.id), false);
-
-            // таблица с заявками
-            this.table = general.doc.querySelector('table[border="0"]' +
-                    '[cellpadding="5"][cellspacing="1"]');
-
-            if (this.table) {
-                this.table.parentNode.setAttribute('align', 'center');
-                this.tableHTML = this.table.innerHTML;
-                this.changeTable(false);
-            }
-        };
-    };
-
-    /**
      * @class Regeneration
      * @constructor
      */
@@ -13978,17 +13319,6 @@
         return;
     }
 
-    // графические бои
-    if (/\/bfield0\.ganjawars\.ru\/go\.php\?bid=*/.test(general.loc)) {
-        try {
-            new SoundGraph().init();
-        } catch (e) {
-            general.cons.log(e);
-        }
-
-        return;
-    }
-
     initScript = general.getInitScript();
 
     // везде на www.ganjawars.ru
@@ -14156,7 +13486,7 @@
                 }
             }
 
-            if (/(\/me\/)|(\/(warlog|warlist|wargroup)\.php\?)/.
+            if (/(\/me.php)|(\/(warlog|warlist|wargroup)\.php\?)/.
                     test(general.loc)) {
                 if (initScript[5]) {
                     try {
@@ -14176,7 +13506,7 @@
             }
         }
 
-        if (/\/me\/|\/npc\.php\?id=/.test(general.loc)) {
+        if (/\/me.php|\/npc\.php\?id=/.test(general.loc)) {
             if (initScript[12]) {
                 try {
                     new TimeNpc().init();
@@ -14185,7 +13515,7 @@
                 }
             }
 
-            if (/\/me\//.test(general.loc)) {
+            if (/\/me.php/.test(general.loc)) {
                 if (initScript[17]) {
                     try {
                         new GbCounter().init();
@@ -14261,7 +13591,7 @@
             }
         }
 
-        if (/\/me\/|\/messages\.php\?fid=1&amp;tid=/.test(general.loc)) {
+        if (/\/me.php|\/messages\.php\?fid=1&amp;tid=/.test(general.loc)) {
             if (initScript[20]) {
                 try {
                     new NewsAndInvit().init();
@@ -14312,7 +13642,7 @@
             }
         }
 
-        if (/\/me\/|\/info\.php\?id=/.test(general.loc)) {
+        if (/\/me.php|\/info\.php\?id=/.test(general.loc)) {
             if (initScript[24]) {
                 try {
                     new FixSkills().init();
@@ -14418,7 +13748,7 @@
             }
         }
 
-        if (/\/me\/|\/home\.friends\.php/.test(general.loc)) {
+        if (/\/me.php|\/home\.friends\.php/.test(general.loc)) {
             if (initScript[36]) {
                 try {
                     new NotesForFriends().init();
@@ -14524,26 +13854,6 @@
                 }
             }
         }
-
-        if (/\/wargroup\.php\?/.test(general.loc)) {
-            if (initScript[55]) {
-                try {
-                    new FilterGeneralFighting().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (/\?war=attacks/.test(general.loc)) {
-                if (initScript[32]) {
-                    try {
-                        new SortSyndWars().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-            }
-        }
     }
 
 }());
@@ -14558,13 +13868,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="-_anonymous_-CritShotsAndLinksBtlLog_CriticalShots.html">CriticalShots</a></li><li><a href="-_anonymous_-SyndAnalyser-MainData.html">MainData</a></li></ul><h3>Namespaces</h3><ul><li><a href="general.root.bf1.html">bf1</a></li><li><a href="general.root.bf2.html">bf2</a></li><li><a href="general.root.bf3.html">bf3</a></li><li><a href="general.root.bfndl.html">bfndl</a></li><li><a href="general.root.frames.bsrc.html">bsrc</a></li><li><a href="general.root.hp_max_h.html">hp_max_h</a></li><li><a href="general.root.hp_speed_h.html">hp_speed_h</a></li><li><a href="general.root.hp_start_h.html">hp_start_h</a></li><li><a href="general.root.waitforturn.html">waitforturn</a></li><li><a href="general.root.ZeroClipboard.html">ZeroClipboard</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#addCloseButton">addCloseButton</a></li><li><a href="global.html#addContent">addContent</a></li><li><a href="global.html#addData">addData</a></li><li><a href="global.html#addEvent">addEvent</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#advSetBonusInfo">advSetBonusInfo</a></li><li><a href="global.html#blink">blink</a></li><li><a href="global.html#calc">calc</a></li><li><a href="global.html#calculateBets">calculateBets</a></li><li><a href="global.html#calculateFarm">calculateFarm</a></li><li><a href="global.html#calculatePerHour">calculatePerHour</a></li><li><a href="global.html#change_updatechatlines">change_updatechatlines</a></li><li><a href="global.html#changeColor">changeColor</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#changeLocationFighters">changeLocationFighters</a></li><li><a href="global.html#changeMakebf">changeMakebf</a></li><li><a href="global.html#changeSelect">changeSelect</a></li><li><a href="global.html#changeSelectEnemies">changeSelectEnemies</a></li><li><a href="global.html#changeStData">changeStData</a></li><li><a href="global.html#changeTable">changeTable</a></li><li><a href="global.html#checkAvailability">checkAvailability</a></li><li><a href="global.html#checkKeyCode">checkKeyCode</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#checkRange">checkRange</a></li><li><a href="global.html#checkScriptUpdate">checkScriptUpdate</a></li><li><a href="global.html#checkState">checkState</a></li><li><a href="global.html#cleanStorage">cleanStorage</a></li><li><a href="global.html#clearClick">clearClick</a></li><li><a href="global.html#clearCounter">clearCounter</a></li><li><a href="global.html#clearFields">clearFields</a></li><li><a href="global.html#clearNPCData">clearNPCData</a></li><li><a href="global.html#clearSavedStrokeAfterSay">clearSavedStrokeAfterSay</a></li><li><a href="global.html#clickElem">clickElem</a></li><li><a href="global.html#clickImageFighters">clickImageFighters</a></li><li><a href="global.html#compareLines">compareLines</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#createDivSms">createDivSms</a></li><li><a href="global.html#createGwMenuDiv">createGwMenuDiv</a></li><li><a href="global.html#createGWMenuItems">createGWMenuItems</a></li><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createSelectList">createSelectList</a></li><li><a href="global.html#createTitle">createTitle</a></li><li><a href="global.html#deleteImagePoks">deleteImagePoks</a></li><li><a href="global.html#delSpaces">delSpaces</a></li><li><a href="global.html#enterPress">enterPress</a></li><li><a href="global.html#fillData">fillData</a></li><li><a href="global.html#findItem">findItem</a></li><li><a href="global.html#findObj">findObj</a></li><li><a href="global.html#fixSkills">fixSkills</a></li><li><a href="global.html#formatTime">formatTime</a></li><li><a href="global.html#fOut">fOut</a></li><li><a href="global.html#fOver">fOver</a></li><li><a href="global.html#getAchievNow">getAchievNow</a></li><li><a href="global.html#getAllCrits">getAllCrits</a></li><li><a href="global.html#getBattleField">getBattleField</a></li><li><a href="global.html#getBattles">getBattles</a></li><li><a href="global.html#getCoord">getCoord</a></li><li><a href="global.html#getCrits">getCrits</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataFighters">getDataFighters</a></li><li><a href="global.html#getDataNow">getDataNow</a></li><li><a href="global.html#getForumTable">getForumTable</a></li><li><a href="global.html#getGitHubLink">getGitHubLink</a></li><li><a href="global.html#getHourTime">getHourTime</a></li><li><a href="global.html#getHtime">getHtime</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getLastDate">getLastDate</a></li><li><a href="global.html#getLeftRightCommands">getLeftRightCommands</a></li><li><a href="global.html#getLineMenu">getLineMenu</a></li><li><a href="global.html#getMessagesOnPages">getMessagesOnPages</a></li><li><a href="global.html#getNewsId">getNewsId</a></li><li><a href="global.html#getOnline">getOnline</a></li><li><a href="global.html#getPers">getPers</a></li><li><a href="global.html#getPersLink">getPersLink</a></li><li><a href="global.html#getPersNote">getPersNote</a></li><li><a href="global.html#getRange">getRange</a></li><li><a href="global.html#getRealEstateStr">getRealEstateStr</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#getSelectOptions">getSelectOptions</a></li><li><a href="global.html#getStrGameRez">getStrGameRez</a></li><li><a href="global.html#getTimeNow">getTimeNow</a></li><li><a href="global.html#getTrs">getTrs</a></li><li><a href="global.html#getTrsTable">getTrsTable</a></li><li><a href="global.html#getTypeLine">getTypeLine</a></li><li><a href="global.html#getUnionOnline">getUnionOnline</a></li><li><a href="global.html#getValue">getValue</a></li><li><a href="global.html#goQuest">goQuest</a></li><li><a href="global.html#gwMenuInit">gwMenuInit</a></li><li><a href="global.html#hideTooltip">hideTooltip</a></li><li><a href="global.html#hpupdate">hpupdate</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#insertMess">insertMess</a></li><li><a href="global.html#isEven">isEven</a></li><li><a href="global.html#isForumPage">isForumPage</a></li><li><a href="global.html#listenSound">listenSound</a></li><li><a href="global.html#modifyData">modifyData</a></li><li><a href="global.html#moveArrow">moveArrow</a></li><li><a href="global.html#nextAjaxQuery">nextAjaxQuery</a></li><li><a href="global.html#notesClick">notesClick</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#openCloseItem">openCloseItem</a></li><li><a href="global.html#parseLine">parseLine</a></li><li><a href="global.html#parseMessages">parseMessages</a></li><li><a href="global.html#parsePTSProtocols">parsePTSProtocols</a></li><li><a href="global.html#parseSyndPage">parseSyndPage</a></li><li><a href="global.html#parseSyndProtocols">parseSyndProtocols</a></li><li><a href="global.html#preGetOnline">preGetOnline</a></li><li><a href="global.html#processingThemesList">processingThemesList</a></li><li><a href="global.html#rememberClick">rememberClick</a></li><li><a href="global.html#rememberTime">rememberTime</a></li><li><a href="global.html#resetGBCounter">resetGBCounter</a></li><li><a href="global.html#resetGosEnergoAtom">resetGosEnergoAtom</a></li><li><a href="global.html#saveData">saveData</a></li><li><a href="global.html#saveSettings">saveSettings</a></li><li><a href="global.html#saveSyndData">saveSyndData</a></li><li><a href="global.html#scan">scan</a></li><li><a href="global.html#scanNPC">scanNPC</a></li><li><a href="global.html#selectChange">selectChange</a></li><li><a href="global.html#selectChangeHandler">selectChangeHandler</a></li><li><a href="global.html#selectMode">selectMode</a></li><li><a href="global.html#setBonusInfo">setBonusInfo</a></li><li><a href="global.html#setButton">setButton</a></li><li><a href="global.html#setChatInterface">setChatInterface</a></li><li><a href="global.html#setCheckboxes">setCheckboxes</a></li><li><a href="global.html#setChkHandler">setChkHandler</a></li><li><a href="global.html#setCloseButton">setCloseButton</a></li><li><a href="global.html#setColorFighters">setColorFighters</a></li><li><a href="global.html#setCounter">setCounter</a></li><li><a href="global.html#setCounters">setCounters</a></li><li><a href="global.html#setCountStroke">setCountStroke</a></li><li><a href="global.html#setCSSGwMenu">setCSSGwMenu</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setDataDiv">setDataDiv</a></li><li><a href="global.html#setEnvelope">setEnvelope</a></li><li><a href="global.html#setFilter">setFilter</a></li><li><a href="global.html#setFriendPage">setFriendPage</a></li><li><a href="global.html#setGBCounter">setGBCounter</a></li><li><a href="global.html#setGenerator">setGenerator</a></li><li><a href="global.html#setHandlersGWMenu">setHandlersGWMenu</a></li><li><a href="global.html#setHandlerSubmit">setHandlerSubmit</a></li><li><a href="global.html#setHighlighting">setHighlighting</a></li><li><a href="global.html#setHrefItem">setHrefItem</a></li><li><a href="global.html#setImgGetData">setImgGetData</a></li><li><a href="global.html#setLeftToLevel">setLeftToLevel</a></li><li><a href="global.html#setLink">setLink</a></li><li><a href="global.html#setMainPage">setMainPage</a></li><li><a href="global.html#setMainPanel">setMainPanel</a></li><li><a href="global.html#setMyInfo">setMyInfo</a></li><li><a href="global.html#setNameInChat">setNameInChat</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setPlantData">setPlantData</a></li><li><a href="global.html#setRange">setRange</a></li><li><a href="global.html#setRedLink">setRedLink</a></li><li><a href="global.html#setReminder">setReminder</a></li><li><a href="global.html#setSettingsForAdvBattleAll">setSettingsForAdvBattleAll</a></li><li><a href="global.html#setSettingsPanel">setSettingsPanel</a></li><li><a href="global.html#setSettins">setSettins</a></li><li><a href="global.html#setSms">setSms</a></li><li><a href="global.html#setSortListEnemy">setSortListEnemy</a></li><li><a href="global.html#setSortSyndWarData">setSortSyndWarData</a></li><li><a href="global.html#setStroke">setStroke</a></li><li><a href="global.html#setTimer">setTimer</a></li><li><a href="global.html#setTooltipsFighters">setTooltipsFighters</a></li><li><a href="global.html#setZeroClipboardLib">setZeroClipboardLib</a></li><li><a href="global.html#showCrits">showCrits</a></li><li><a href="global.html#showData">showData</a></li><li><a href="global.html#showHideForum">showHideForum</a></li><li><a href="global.html#showHideLink">showHideLink</a></li><li><a href="global.html#showHidePreloader">showHidePreloader</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li><li><a href="global.html#showHistory">showHistory</a></li><li><a href="global.html#showImagePoks">showImagePoks</a></li><li><a href="global.html#showOfSyndLinks">showOfSyndLinks</a></li><li><a href="global.html#showRange">showRange</a></li><li><a href="global.html#showRezult">showRezult</a></li><li><a href="global.html#showSector">showSector</a></li><li><a href="global.html#showSettings">showSettings</a></li><li><a href="global.html#showSms">showSms</a></li><li><a href="global.html#showSyndData">showSyndData</a></li><li><a href="global.html#showTimer">showTimer</a></li><li><a href="global.html#showTimerNPC">showTimerNPC</a></li><li><a href="global.html#showTooltip">showTooltip</a></li><li><a href="global.html#sortBattles">sortBattles</a></li><li><a href="global.html#sortEnemyList">sortEnemyList</a></li><li><a href="global.html#sortGosEnergoAtom">sortGosEnergoAtom</a></li><li><a href="global.html#sortGosEnergoAtomBySynd">sortGosEnergoAtomBySynd</a></li><li><a href="global.html#sortMess">sortMess</a></li><li><a href="global.html#sortPers">sortPers</a></li><li><a href="global.html#sortSyndWars">sortSyndWars</a></li><li><a href="global.html#sortWeapon">sortWeapon</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startCountBattles">startCountBattles</a></li><li><a href="global.html#startInventoryPlus">startInventoryPlus</a></li><li><a href="global.html#startWorkPostGrenadesBroken">startWorkPostGrenadesBroken</a></li><li><a href="global.html#syndAlert">syndAlert</a></li><li><a href="global.html#testSound">testSound</a></li><li><a href="global.html#testSubject">testSubject</a></li><li><a href="global.html#titleClick">titleClick</a></li><li><a href="global.html#toDec">toDec</a></li><li><a href="global.html#toHex">toHex</a></li><li><a href="global.html#tryStart">tryStart</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="-_anonymous_-CritShotsAndLinksBtlLog_CriticalShots.html">CriticalShots</a></li><li><a href="-_anonymous_-SyndAnalyser-MainData.html">MainData</a></li></ul><h3>Namespaces</h3><ul><li><a href="general.root.bf1.html">bf1</a></li><li><a href="general.root.bf2.html">bf2</a></li><li><a href="general.root.bf3.html">bf3</a></li><li><a href="general.root.bfndl.html">bfndl</a></li><li><a href="general.root.frames.bsrc.html">bsrc</a></li><li><a href="general.root.hp_max_h.html">hp_max_h</a></li><li><a href="general.root.hp_speed_h.html">hp_speed_h</a></li><li><a href="general.root.hp_start_h.html">hp_start_h</a></li><li><a href="general.root.waitforturn.html">waitforturn</a></li><li><a href="general.root.ZeroClipboard.html">ZeroClipboard</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#addCloseButton">addCloseButton</a></li><li><a href="global.html#addContent">addContent</a></li><li><a href="global.html#addData">addData</a></li><li><a href="global.html#addEvent">addEvent</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#advSetBonusInfo">advSetBonusInfo</a></li><li><a href="global.html#blink">blink</a></li><li><a href="global.html#calc">calc</a></li><li><a href="global.html#calculateBets">calculateBets</a></li><li><a href="global.html#calculateFarm">calculateFarm</a></li><li><a href="global.html#calculatePerHour">calculatePerHour</a></li><li><a href="global.html#change_updatechatlines">change_updatechatlines</a></li><li><a href="global.html#changeColor">changeColor</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#changeLocationFighters">changeLocationFighters</a></li><li><a href="global.html#changeMakebf">changeMakebf</a></li><li><a href="global.html#changeSelect">changeSelect</a></li><li><a href="global.html#changeSelectEnemies">changeSelectEnemies</a></li><li><a href="global.html#changeStData">changeStData</a></li><li><a href="global.html#checkAvailability">checkAvailability</a></li><li><a href="global.html#checkKeyCode">checkKeyCode</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#checkScriptUpdate">checkScriptUpdate</a></li><li><a href="global.html#checkState">checkState</a></li><li><a href="global.html#cleanStorage">cleanStorage</a></li><li><a href="global.html#clearClick">clearClick</a></li><li><a href="global.html#clearCounter">clearCounter</a></li><li><a href="global.html#clearFields">clearFields</a></li><li><a href="global.html#clearNPCData">clearNPCData</a></li><li><a href="global.html#clearSavedStrokeAfterSay">clearSavedStrokeAfterSay</a></li><li><a href="global.html#clickElem">clickElem</a></li><li><a href="global.html#clickImageFighters">clickImageFighters</a></li><li><a href="global.html#compareLines">compareLines</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#createDivSms">createDivSms</a></li><li><a href="global.html#createGwMenuDiv">createGwMenuDiv</a></li><li><a href="global.html#createGWMenuItems">createGWMenuItems</a></li><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createSelectList">createSelectList</a></li><li><a href="global.html#createTitle">createTitle</a></li><li><a href="global.html#deleteImagePoks">deleteImagePoks</a></li><li><a href="global.html#delSpaces">delSpaces</a></li><li><a href="global.html#enterPress">enterPress</a></li><li><a href="global.html#fillData">fillData</a></li><li><a href="global.html#findItem">findItem</a></li><li><a href="global.html#fixSkills">fixSkills</a></li><li><a href="global.html#formatTime">formatTime</a></li><li><a href="global.html#fOut">fOut</a></li><li><a href="global.html#fOver">fOver</a></li><li><a href="global.html#getAchievNow">getAchievNow</a></li><li><a href="global.html#getAllCrits">getAllCrits</a></li><li><a href="global.html#getBattleField">getBattleField</a></li><li><a href="global.html#getBattles">getBattles</a></li><li><a href="global.html#getCoord">getCoord</a></li><li><a href="global.html#getCrits">getCrits</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataFighters">getDataFighters</a></li><li><a href="global.html#getDataNow">getDataNow</a></li><li><a href="global.html#getForumTable">getForumTable</a></li><li><a href="global.html#getGitHubLink">getGitHubLink</a></li><li><a href="global.html#getHourTime">getHourTime</a></li><li><a href="global.html#getHtime">getHtime</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getLastDate">getLastDate</a></li><li><a href="global.html#getLeftRightCommands">getLeftRightCommands</a></li><li><a href="global.html#getLineMenu">getLineMenu</a></li><li><a href="global.html#getMessagesOnPages">getMessagesOnPages</a></li><li><a href="global.html#getNewsId">getNewsId</a></li><li><a href="global.html#getOnline">getOnline</a></li><li><a href="global.html#getPers">getPers</a></li><li><a href="global.html#getPersLink">getPersLink</a></li><li><a href="global.html#getPersNote">getPersNote</a></li><li><a href="global.html#getRange">getRange</a></li><li><a href="global.html#getRealEstateStr">getRealEstateStr</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#getStrGameRez">getStrGameRez</a></li><li><a href="global.html#getTimeNow">getTimeNow</a></li><li><a href="global.html#getTrs">getTrs</a></li><li><a href="global.html#getTrsTable">getTrsTable</a></li><li><a href="global.html#getTypeLine">getTypeLine</a></li><li><a href="global.html#getUnionOnline">getUnionOnline</a></li><li><a href="global.html#getValue">getValue</a></li><li><a href="global.html#goQuest">goQuest</a></li><li><a href="global.html#gwMenuInit">gwMenuInit</a></li><li><a href="global.html#hideTooltip">hideTooltip</a></li><li><a href="global.html#hpupdate">hpupdate</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#insertMess">insertMess</a></li><li><a href="global.html#isEven">isEven</a></li><li><a href="global.html#isForumPage">isForumPage</a></li><li><a href="global.html#listenSound">listenSound</a></li><li><a href="global.html#modifyData">modifyData</a></li><li><a href="global.html#moveArrow">moveArrow</a></li><li><a href="global.html#nextAjaxQuery">nextAjaxQuery</a></li><li><a href="global.html#notesClick">notesClick</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#openCloseItem">openCloseItem</a></li><li><a href="global.html#parseLine">parseLine</a></li><li><a href="global.html#parseMessages">parseMessages</a></li><li><a href="global.html#parsePTSProtocols">parsePTSProtocols</a></li><li><a href="global.html#parseSyndPage">parseSyndPage</a></li><li><a href="global.html#parseSyndProtocols">parseSyndProtocols</a></li><li><a href="global.html#preGetOnline">preGetOnline</a></li><li><a href="global.html#processingThemesList">processingThemesList</a></li><li><a href="global.html#rememberClick">rememberClick</a></li><li><a href="global.html#rememberTime">rememberTime</a></li><li><a href="global.html#resetGBCounter">resetGBCounter</a></li><li><a href="global.html#resetGosEnergoAtom">resetGosEnergoAtom</a></li><li><a href="global.html#saveData">saveData</a></li><li><a href="global.html#saveSyndData">saveSyndData</a></li><li><a href="global.html#scan">scan</a></li><li><a href="global.html#scanNPC">scanNPC</a></li><li><a href="global.html#selectChange">selectChange</a></li><li><a href="global.html#selectChangeHandler">selectChangeHandler</a></li><li><a href="global.html#selectMode">selectMode</a></li><li><a href="global.html#setBonusInfo">setBonusInfo</a></li><li><a href="global.html#setButton">setButton</a></li><li><a href="global.html#setChatInterface">setChatInterface</a></li><li><a href="global.html#setCheckboxes">setCheckboxes</a></li><li><a href="global.html#setChkHandler">setChkHandler</a></li><li><a href="global.html#setCloseButton">setCloseButton</a></li><li><a href="global.html#setColorFighters">setColorFighters</a></li><li><a href="global.html#setCounter">setCounter</a></li><li><a href="global.html#setCounters">setCounters</a></li><li><a href="global.html#setCountStroke">setCountStroke</a></li><li><a href="global.html#setCSSGwMenu">setCSSGwMenu</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setDataDiv">setDataDiv</a></li><li><a href="global.html#setEnvelope">setEnvelope</a></li><li><a href="global.html#setFilter">setFilter</a></li><li><a href="global.html#setFriendPage">setFriendPage</a></li><li><a href="global.html#setGBCounter">setGBCounter</a></li><li><a href="global.html#setGenerator">setGenerator</a></li><li><a href="global.html#setHandlersGWMenu">setHandlersGWMenu</a></li><li><a href="global.html#setHandlerSubmit">setHandlerSubmit</a></li><li><a href="global.html#setHighlighting">setHighlighting</a></li><li><a href="global.html#setHrefItem">setHrefItem</a></li><li><a href="global.html#setImgGetData">setImgGetData</a></li><li><a href="global.html#setLeftToLevel">setLeftToLevel</a></li><li><a href="global.html#setLink">setLink</a></li><li><a href="global.html#setMainPage">setMainPage</a></li><li><a href="global.html#setMainPanel">setMainPanel</a></li><li><a href="global.html#setMyInfo">setMyInfo</a></li><li><a href="global.html#setNameInChat">setNameInChat</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setPlantData">setPlantData</a></li><li><a href="global.html#setRange">setRange</a></li><li><a href="global.html#setRedLink">setRedLink</a></li><li><a href="global.html#setReminder">setReminder</a></li><li><a href="global.html#setSettingsForAdvBattleAll">setSettingsForAdvBattleAll</a></li><li><a href="global.html#setSettingsPanel">setSettingsPanel</a></li><li><a href="global.html#setSettins">setSettins</a></li><li><a href="global.html#setSms">setSms</a></li><li><a href="global.html#setSortListEnemy">setSortListEnemy</a></li><li><a href="global.html#setStroke">setStroke</a></li><li><a href="global.html#setTimer">setTimer</a></li><li><a href="global.html#setTooltipsFighters">setTooltipsFighters</a></li><li><a href="global.html#setZeroClipboardLib">setZeroClipboardLib</a></li><li><a href="global.html#showCrits">showCrits</a></li><li><a href="global.html#showData">showData</a></li><li><a href="global.html#showHideForum">showHideForum</a></li><li><a href="global.html#showHideLink">showHideLink</a></li><li><a href="global.html#showHidePreloader">showHidePreloader</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li><li><a href="global.html#showHistory">showHistory</a></li><li><a href="global.html#showImagePoks">showImagePoks</a></li><li><a href="global.html#showOfSyndLinks">showOfSyndLinks</a></li><li><a href="global.html#showRange">showRange</a></li><li><a href="global.html#showRezult">showRezult</a></li><li><a href="global.html#showSector">showSector</a></li><li><a href="global.html#showSettings">showSettings</a></li><li><a href="global.html#showSms">showSms</a></li><li><a href="global.html#showTimer">showTimer</a></li><li><a href="global.html#showTimerNPC">showTimerNPC</a></li><li><a href="global.html#showTooltip">showTooltip</a></li><li><a href="global.html#sortBattles">sortBattles</a></li><li><a href="global.html#sortEnemyList">sortEnemyList</a></li><li><a href="global.html#sortGosEnergoAtom">sortGosEnergoAtom</a></li><li><a href="global.html#sortGosEnergoAtomBySynd">sortGosEnergoAtomBySynd</a></li><li><a href="global.html#sortMess">sortMess</a></li><li><a href="global.html#sortPers">sortPers</a></li><li><a href="global.html#sortWeapon">sortWeapon</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startCountBattles">startCountBattles</a></li><li><a href="global.html#startInventoryPlus">startInventoryPlus</a></li><li><a href="global.html#startWorkPostGrenadesBroken">startWorkPostGrenadesBroken</a></li><li><a href="global.html#syndAlert">syndAlert</a></li><li><a href="global.html#testSound">testSound</a></li><li><a href="global.html#testSubject">testSubject</a></li><li><a href="global.html#titleClick">titleClick</a></li><li><a href="global.html#toDec">toDec</a></li><li><a href="global.html#toHex">toHex</a></li><li><a href="global.html#tryStart">tryStart</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Jul 30 2017 00:27:27 GMT+0400 (+04)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Sep 25 2017 00:39:28 GMT+0400 (+04)
 </footer>
 
 <script> prettyPrint(); </script>

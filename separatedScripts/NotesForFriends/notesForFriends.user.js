@@ -6,10 +6,10 @@
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NotesForFriends/notesForFriends.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NotesForFriends/notesForFriends.user.js
 // @include         http://www.ganjawars.ru/home.friends.php*
-// @include         http://www.ganjawars.ru/me/*
+// @include         http://www.ganjawars.ru/me.php*
 // @grant           none
 // @license         MIT
-// @version         2.11-121216
+// @version         2.12-240917
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458] (идея: ЧупакаЪра)
 // ==/UserScript==
 

@@ -7,10 +7,9 @@
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js
 // @include         http://www.ganjawars.ru/*
 // @include         http://quest.ganjawars.ru/*
-// @include         http://bfield0.ganjawars.ru/go.php?bid=*
 // @grant           none
 // @license         MIT
-// @version         1.73-220917
+// @version         1.74-250917
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -65,7 +64,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.73-220917';
+        this.version = '1.74-250917';
         /**
          * @property stString
          * @type {String}
@@ -105,7 +104,7 @@
                         [29] - GosEnergoAtomFilter
                         [30] - SortSyndOnline
                         [31] - HousHealth
-                        [32] - SortSyndWars
+                        [32] - SortSyndWars (удален)
                         [33] - LinksInOne2One
                         [34] - One2OneCallerInfo
                         [35] - MinBetAtRoulette
@@ -128,7 +127,7 @@
                         [52] - SoundSyndBattle
                         [53] - AdvForum
                         [54] - DelAndAddBlackSms
-                        [55] - FilterGeneralFighting
+                        [55] - FilterGeneralFighting (удален)
                         [56] - Regeneration
                         [57] - ProfColor */
                         '@||||||||||||||||||||||||||||||||||||||||' +
@@ -261,7 +260,7 @@
                         [0] - вышел из боя */
                         '@' +
                     /*
-                     [20] - SortSyndWars
+                     [20] - SortSyndWars (удален)
                         [0] - остров ('' - все, 1 - [Z], 2 - [G], 3 - [S])
                         [1] - тип объекта ('' - все, 1 - ЭС, 2 - Уран,
                                 3 - порты, 4 - другая недвижимость)
@@ -348,7 +347,7 @@
                         '48,54|1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,' +
                         '1,1,1|{}|{}' +
                     /*
-                     [30] - FilterGeneralFighting
+                     [30] - FilterGeneralFighting (удален)
                         [0]  - минимальный уровень
                         [1]  - максимальный уровень
                         [2]  - командные
@@ -1134,6 +1133,7 @@
                     'киллера, боевика или наемника название профессии на его ' +
                     'странице информации окрашивается в красный цвет.' +
                     this.getGitHubLink('profColor'), '57']],
+
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов, ' +
                     'нумерация противников, расширенная информация в ' +
@@ -1213,22 +1213,6 @@
                     'если персонаж находится не в секторе со своим домом и ' +
                     'его здоровье менее 80%.' +
                     this.getGitHubLink('housHealth'), '31'],
-                ['Сортировка  заявок общих, уличных и графических боев',
-                    'Фильтр заявок общих, уличных и графических боев по ' +
-                        'уровню бойцов, сортировка по критериям: ' +
-                        'случайные/командные/DM/синдовые. Отображение умения ' +
-                        'и дальности оружия для каждого бойца. Выделение ' +
-                        'цветом заявок, подходящих по указанной дальности и ' +
-                        'времени начала боя.' +
-                        this.getGitHubLink('filterGeneralFighting'), '55'],
-                ['Сортировка синдикатных заявок', 'Сортировка на ' +
-                    '<a target="_blank" href="http://www.ganjawars.ru/' +
-                    'wargroup.php?war=attacks">странице нападений</a> по ' +
-                    'острову, типу недвиги (ЭС, уран, остальное), синдикату, ' +
-                    'заявкам, в которые может зайти Ваш персонаж. ' +
-                    'Вывод общего количества боев и боев по синдикатам. ' +
-                    'Все настройки находятся на вышеуказанной странице.' +
-                    this.getGitHubLink('sortSyndWars'), '32'],
                 ['Изображения покемонов', 'В боях с покемонами и в режиме ' +
                     'наблюдения за боем (Ejection Point, Overlord Point, ' +
                     'прибрежная зона) показывает изображения для каждого ' +
@@ -4239,7 +4223,7 @@
          */
         this.startWorkPostGrenadesBroken = function (_this) {
             var ajaxQuery = new AjaxQuery(),
-                url = 'http://www.ganjawars.ru/me/';
+                url = 'http://www.ganjawars.ru/me.php';
 
             _this = _this || this;
             ajaxQuery.init(url, 'GET', null, true, function (xml) {
@@ -5415,7 +5399,7 @@
         this.init = function () {
             var stData = general.getData(10);
 
-            if (/www\.ganjawars\.ru\/me\//.test(general.loc)) {
+            if (/www\.ganjawars\.ru\/me.php/.test(general.loc)) {
                 var mainDiv = general.doc.createElement('div'),
                     target = general.doc.querySelector('td[rowspan="2"]' +
                         '[valign="top"][bgcolor="#e9ffe9"]>' +
@@ -6278,7 +6262,7 @@
                 {divm: 'battles_1', lines: [
                     ['Одиночные', 'battles_1_single'],
                     ['Групповые', 'battles_1_group'],
-                    ['Идущие бои', '/war/', 0, 1]
+                    ['Идущие бои', '/war.php', 0, 1]
                 ], prnt: 'gw_menu', arrow: 'battles', offsetY: -15},
                 {divm: 0, lines: [
                     ['Общие', '/warlist.php?war=armed'],
@@ -6287,9 +6271,7 @@
                 ], prnt: 'battles_1', arrow: 'battles_1_single'},
                 {divm: 0, lines: [
                     ['Общие', '/wargroup.php?war=armed'],
-                    ['Графические', '/wargroup.php?war=gwars'],
                     ['Уличные', '/wargroup.php?war=street'],
-                    ['Картофелемёты и рогатки', '/wargroup.php?war=rogatki'],
                     ['Дуэли на спецоружии', '/wargroup.php?war=duels'],
                     ['Нападения', '/wargroup.php?war=attacks']
                 ], prnt: 'battles_1', arrow: 'battles_1_group', offsetY: -15},
@@ -7855,7 +7837,7 @@
         this.init = function () {
             var link;
 
-            if (/\/me\//.test(general.loc)) {
+            if (/\/me.php/.test(general.loc)) {
                 link = general.doc.querySelector('[src$="images.ganjawars.' +
                         'ru/i/home/farm.gif"]').parentNode;
                 var lparent = link.parentNode;
@@ -8879,286 +8861,6 @@
     };
 
     /**
-     * @class SortSyndWars
-     * @constructor
-     */
-    var SortSyndWars = function () {
-        /**
-         * @property divCountAll
-         * @type {HTMLDivElement|null}
-         */
-        this.divCountAll = null;
-        /**
-         * @property trs
-         * @type {Array|null}
-         */
-        this.trs = null;
-
-        /**
-         * @method showSyndData
-         * @param   {Array}     obj
-         */
-        this.showSyndData = function (obj) {
-            var str = '<table>',
-                i;
-
-            for (i = 0; i < obj.length; i++) {
-                str += '<tr><td style="text-align: right;">' +
-                    '<a target="_blank" href="http://www.ganjawars.ru/' +
-                    'syndicate.php?id=' + obj[i].synd + '&page=online">' +
-                    '<img src="http://images.ganjawars.ru/img/synds/' +
-                    obj[i].synd + '.gif" />#' + obj[i].synd + '</a>';
-
-                if (obj[i].union) {
-                    str += ', <a target="_blank" href="http://www.ganjawars.' +
-                        'ru/syndicate.php?id=' + obj[i].union +
-                        '&page=online"><img src=http://images.ganjawars.ru/' +
-                        'img/synds/' + obj[i].union + '.gif />#' +
-                        obj[i].union + '</a>';
-                }
-
-                str += '</td><td style="color: #0000FF; padding-left: 10px;">' +
-                    obj[i].count + '</td></tr>';
-            }
-
-            str += '</table>';
-            this.divCountAll.innerHTML = str;
-        };
-
-        /**
-         * @method findObj
-         * @param   {Array}     objs
-         * @param   {Array}     mass
-         * @return  {Boolean}
-         */
-        this.findObj = function (objs, mass) {
-            var i;
-            for (i = 0; i < objs.length; i++) {
-                if (objs[i].synd === mass[0] || objs[i].union === mass[0]) {
-                    objs[i].count++;
-                    return true;
-                }
-            }
-
-            return false;
-        };
-
-        /**
-         * @method sortSyndWars
-         */
-        this.sortSyndWars = function () {
-            var stData = general.getData(20),
-                reg1,
-                reg2;
-
-            switch (stData[0]) {
-            case '1':
-                reg1 = />\[Z\]<\/b>/;
-                break;
-            case '2':
-                reg1 = />\[G\]<\/b>/;
-                break;
-            case '3':
-                reg1 = />\[S\]<\/b>/;
-                break;
-            default:
-                break;
-            }
-
-            switch (stData[1]) {
-            case '1':
-                reg2 = /Электростанция/i;
-                break;
-            case '2':
-                reg2 = /Урановый рудник/i;
-                break;
-            case '3':
-                reg2 = /контроль портов/i;
-                break;
-            case '4':
-                reg2 = /ферма|плантация|завод|база|Фабрика|лаборатория|цех/i;
-                break;
-            default:
-                break;
-            }
-
-            var count = 0,
-                objs = [],
-                clss,
-                txt,
-                num,
-                ob,
-                a,
-                r,
-                b,
-                j,
-                i;
-
-            for (i = 1; i < this.trs.length; i++) {
-                // делаем строку видимой
-                this.trs[i].style.display = '';
-
-                txt = this.trs[i].cells[1].innerHTML;
-
-                if (reg1 || reg2) {
-                    // в боях за контроль портов острова нет
-                    if (stData[1] === '3') {
-                        reg1 = null;
-                    }
-
-                    if ((reg1 && !reg1.test(txt)) ||
-                            (reg2 && !reg2.test(txt))) {
-                        this.trs[i].style.display = 'none';
-                        continue;
-                    }
-                }
-
-                if (stData[2] && this.trs[i].cells[2].innerHTML.
-                        indexOf(stData[2]) === -1) {
-                    this.trs[i].style.display = 'none';
-                    continue;
-                }
-
-                if (stData[3] && !(/\[вступить\]/.
-                            test(this.trs[i].lastElementChild.innerHTML))) {
-                    this.trs[i].style.display = 'none';
-                    continue;
-                }
-
-                count++;
-                a = this.trs[i].cells[2].
-                        querySelectorAll('a[href*="/syndicate.php?id="]');
-
-                r = [];
-                b = [];
-                for (j = 0; j < a.length; j++) {
-                    clss = a[j].getAttribute('class');
-                    num = /\d+/.exec(a[j].innerHTML);
-                    if (!(/^(r|b)$/.test(clss)) || !num) {
-                        continue;
-                    }
-
-                    if (clss === 'r') {
-                        r[r.length] = num[0];
-                    } else {
-                        b[b.length] = num[0];
-                    }
-                }
-
-                if (r.length && !this.findObj(objs, r)) {
-                    ob = {synd: r[0], union: 0, count: 1};
-                    if (r.length > 1) {
-                        ob.union = r[1];
-                    }
-
-                    objs[objs.length] = ob;
-                }
-
-                if (b.length && !this.findObj(objs, b)) {
-                    ob = {synd: b[0], union: 0, count: 1};
-                    if (b.length > 1) {
-                        ob.union = b[1];
-                    }
-
-                    objs[objs.length] = ob;
-                }
-            }
-
-            general.$('countLines').innerHTML = '[' + count + ']';
-            this.showSyndData(objs);
-        };
-
-        /**
-         * @method setSortSyndWarData
-         * @param    {Object}   _this
-         */
-        this.setSortSyndWarData = function (_this) {
-            var stData = general.getData(20),
-                ind = +(/\d/.exec(_this.id));
-
-            stData[ind] = ind !== 3 ? _this.value : (_this.checked ? '1' : '');
-            stData[ind] = stData[ind] === '0' ? '' : stData[ind];
-            general.setData(stData, 20);
-            this.sortSyndWars();
-        };
-
-        /**
-         * @method init
-         */
-        this.init = function () {
-            var warTable = general.doc.querySelector('td[class="txt"]>' +
-                        'table[border="0"][cellpadding="5"][ cellspacing="1"]');
-            // таблица с заявками не найдена
-            if (!warTable) {
-                return;
-            }
-
-            // выравниваем таблицу с заявками по центру
-            warTable.parentNode.setAttribute('align', 'center');
-
-            // вставляем контейнер настроек
-            var mainPanel = general.doc.createElement('span');
-            mainPanel.setAttribute('style', 'margin-right: 20px;');
-            mainPanel.innerHTML = 'Остров: ' +
-                '<select id="selIsl0" style="border: 1px solid #339933;">' +
-                    '<option value="0" >Все</option>' +
-                    '<option value="1">[Z]</option>' +
-                    '<option value="2">[G]</option>' +
-                    '<option value="3">[S]</option>' +
-                '</select> ' +
-                'Объект: ' +
-                '<select id="selRealEstate1" style="border: 1px solid ' +
-                        '#339933; margin-left: 3px;">' +
-                    '<option value="0">Все</option>' +
-                    '<option value="1">Эс</option>' +
-                    '<option value="2">Уран</option>' +
-                    '<option value="3">Порты</option>' +
-                    '<option value="4">Недвига</option>' +
-                '</select>&nbsp;&nbsp;' +
-                'Синдикат: ' +
-                '<input id="syndNumber2" maxlength="5" ' +
-                    'style="width: 45px;" />&nbsp;&nbsp;' +
-                'Куда я могу зайти: ' +
-                '<input id="onlyMe3" type="checkbox" />&nbsp;&nbsp;' +
-                'Всего боев: ' +
-                 '<span id="countLines"></span><br>';
-            warTable.parentNode.insertBefore(mainPanel, warTable);
-
-            var selIsl = general.$('selIsl0'),
-                selRealEstate = general.$('selRealEstate1'),
-                syndNumber = general.$('syndNumber2'),
-                onlyMe = general.$('onlyMe3'),
-                _this = this;
-
-            selIsl.addEventListener('change', function () {
-                _this.setSortSyndWarData(this);
-            }, false);
-            selRealEstate.addEventListener('change', function () {
-                _this.setSortSyndWarData(this);
-            }, false);
-            syndNumber.addEventListener('input', function () {
-                _this.setSortSyndWarData(this);
-            }, false);
-            onlyMe.addEventListener('click', function () {
-                _this.setSortSyndWarData(this);
-            }, false);
-
-            this.divCountAll = general.doc.createElement('div');
-            warTable.parentNode.appendChild(this.divCountAll);
-
-            this.trs = warTable.querySelectorAll('table[cellpadding="5"]>' +
-                    'tbody>tr');
-
-            var stData = general.getData(20);
-            selIsl.value = stData[0] || '0';
-            selRealEstate.value = stData[1] || '0';
-            syndNumber.value = stData[2];
-            onlyMe.checked = stData[3];
-            this.sortSyndWars();
-        };
-    };
-
-    /**
      * @class LinksInOne2One
      * @constructor
      */
@@ -9365,8 +9067,9 @@
                 called.parentNode.appendChild(spanHp);
 
                 // узел td со ссылками и изображениями на оружие
-                _this.weapon = spanContent.querySelector('table' +
-                        '[style="margin-right:1px;"]').parentNode;
+                _this.weapon = spanContent.
+                    querySelector('table[style="margin-right:1px;"]').
+                        parentNode;
                 _this.weapon.firstElementChild.removeAttribute('align');
                 _this.weapon.removeAttribute('rowspan');
                 _this.weapon.setAttribute('style', 'padding-left: 30px;');
@@ -9388,8 +9091,8 @@
                 }
 
                 // узел td со списком умелок
-                var skills = spanContent.
-                    querySelectorAll('td[align="right"][valign="top"]')[4];
+                var skills = spanContent.querySelectorAll('tr>td+' +
+                    'td[align="right"][valign="top"]')[2];
                 skills.setAttribute('style', 'padding-bottom: 10px;');
                 skills.removeAttribute('class');
                 var tr = general.doc.createElement('tr');
@@ -12328,19 +12031,6 @@
     };
 
     /**
-     * @class SoundGraph
-     * @constructor
-     */
-    var SoundGraph = function () {
-        /**
-         * @method init
-         */
-        this.init = function () {
-            new PlaySound().init(4);
-        };
-    };
-
-    /**
      * @class TimeKarma
      * @constructor
      */
@@ -12541,7 +12231,7 @@
                 return;
             }
 
-            if (!general.doc.querySelector('a[href*="/me/"]' +
+            if (!general.doc.querySelector('a[href*="/me.php"]' +
                         '[title^="Наличность"]')) {
                 return;
             }
@@ -13373,362 +13063,6 @@
     };
 
     /**
-     * @class FilterGeneralFighting
-     * @constructor
-     */
-    var FilterGeneralFighting = function () {
-        /**
-         * @property table
-         * @type {HTMLTableElement|null}
-         */
-        this.table = null;
-        /**
-         * @property tableHTML
-         * @type {String}
-         */
-        this.tableHTML = '';
-
-        /**
-         * @method getSelectOptions
-         * @return  {String}
-         */
-        this.getSelectOptions = function () {
-            var txt = '',
-                i;
-
-            for (i = 5; i <= 50; i++) {
-                txt += '<option value="' + i + '">' + i + '</option>';
-            }
-
-            return txt;
-        };
-
-        /**
-         * @method saveSettings
-         * @param   {int}       ind
-         * @param   {String}    id
-         */
-        this.saveSettings = function (ind, id) {
-            var _this = this;
-            return function () {
-                var stData = general.getData(30),
-                    obj = general.$(id),
-                    val = ind < 2 || ind > 9 ? obj.value :
-                                                (obj.checked ? '1' : ''),
-                    ids = {
-                        2: ['onlyNoCommand', 3],
-                        3: ['onlyCommand', 2],
-                        4: ['noDm', 5],
-                        5: ['Dm', 4],
-                        6: ['onlySynd', 7],
-                        7: ['hideSynd', 6]
-                    };
-
-                var data = ids[ind];
-                if (data && val) {
-                    stData[data[1]] = '';
-                    general.$(data[0]).checked = false;
-                }
-
-                stData[ind] = val;
-                general.setData(stData, 30);
-
-                _this.changeTable(true);
-            };
-        };
-
-        /**
-         * @method checkRange
-         * @param   {int}       range
-         * @param   {Array}     strRange
-         * @return  {Boolean}
-         */
-        this.checkRange = function (range, strRange) {
-            var r, i;
-            for (i = 0; i < strRange.length; i++) {
-                r = strRange[i];
-                if (r && !isNaN(r) && (+r === range)) {
-                    return true;
-                }
-            }
-
-            return false;
-        };
-
-        /**
-         * @method changeTable
-         * @param   {Boolean}   mode
-         */
-        this.changeTable = function (mode) {
-            if (mode) {
-                // возвращает таблицу в исходное состояние
-                this.table.innerHTML = this.tableHTML;
-            }
-
-            var trs = this.table.querySelectorAll('table[cellpadding="5"]>' +
-                    'tbody>tr'),
-                stData = general.getData(30),
-                linksPers,
-                ranges,
-                title,
-                time,
-                tmp,
-                lvl,
-                td,
-                k,
-                j,
-                i;
-
-            for (i = 1; i < trs.length; i++) {
-                td = trs[i].querySelectorAll('td');
-
-                if (td.length !== 5) {
-                    continue;
-                }
-
-                // проверяем установленый уровень
-                lvl = /\d+\-(\d+).*vs.*\d+\-\d+/.exec(td[1].innerHTML);
-                if (lvl) {
-                    lvl = +lvl[1];
-                    if (+stData[0] > lvl || +stData[1] < lvl) {
-                        trs[i].style.display = 'none';
-                        continue;
-                    }
-                }
-
-                // оставляем только командные бои или
-                // только со случайным распределением
-                tmp = /class="?(r|b)"?/.test(td[3].innerHTML);
-                if ((stData[2] && !tmp) || (stData[3] && tmp)) {
-                    trs[i].style.display = 'none';
-                    continue;
-                }
-
-                // оставляем только DM или только не DM
-                tmp = /\[\s?<font color=.*>dm<\/font>\s?\]/.
-                        test(td[1].innerHTML);
-                if ((stData[4] && !tmp) || (stData[5] && tmp)) {
-                    trs[i].style.display = 'none';
-                    continue;
-                }
-
-                // оставляем только синдовые или прячем все синдовые
-                tmp = /#\d+/.test(td[2].innerHTML);
-                if ((stData[6] && tmp) || (stData[7] && !tmp)) {
-                    trs[i].style.display = 'none';
-                    continue;
-                }
-
-                // выделяем жирным красным количество бойцов с каждой стороны
-                td[3].innerHTML = td[3].innerHTML.
-                        replace(/(\(\d+\/\d+\))/g, '<span style="color: ' +
-                            '#990000; font-weight: bold;">$1</span>');
-
-                // показываем умения и дальность, подкрашиваем заявки,
-                // подходящие по указанной дальности
-                ranges = stData[10].split(',');
-                if (stData[8] || stData[9] || ranges[0]) {
-                    tmp = '';
-                    linksPers = td[3].
-                        querySelectorAll('a[href*="/info.php?id="]');
-
-                    for (j = 0; j < linksPers.length; j++) {
-                        title = /\((\d+.*)?, (\d+)?\)/.
-                            exec(linksPers[j].getAttribute('title'));
-
-                        if (!title) {
-                            continue;
-                        }
-
-                        // показываем умения и/или дальность оружия бойцов
-                        if (stData[8] || stData[9]) {
-                            // иногда не отображается умелка
-                            // либо дальность в title ссылки
-                            title[1] = title[1] || '?';
-                            title[2] = title[2] || '?';
-                            if (stData[8] && stData[9]) {
-                                tmp = title[1] + ',' + title[2];
-                            } else if (stData[8]) {
-                                tmp = title[1];
-                            } else {
-                                tmp = title[2];
-                            }
-
-                            linksPers[j].innerHTML += '<span style="color: ' +
-                                '#000000;">(' + tmp + ')</span>';
-                        }
-
-                        // закрашиваем заявку, если подходит дальность
-                        if (ranges[0] && !td[3].getAttribute('bgcolor') &&
-                                this.checkRange(+title[2], ranges)) {
-                            for (k = 0; k < 4; k++) {
-                                td[k].removeAttribute('class');
-                                td[k].setAttribute('bgcolor', '#C1F0E7');
-                            }
-                        }
-                    }
-                }
-
-                // выделяем заявку серым цветом если времени
-                // осталось больше указанного в настройках
-                if (stData[11] && !isNaN(stData[11])) {
-                    time = /(\d+):(\d+)/.exec(td[0].innerHTML);
-                    if (time) {
-                        time = +time[1] * 60 + (+time[2]);
-                        if (+stData[11] < time) {
-                            for (k = 0; k < 4; k++) {
-                                td[k].removeAttribute('class');
-                                td[k].setAttribute('bgcolor', '#D9D9D9');
-                            }
-                        }
-                    }
-                }
-            }
-        };
-
-        /**
-         * @method init
-         */
-        this.init = function () {
-            if (!(/\?war=(armed|gwars|street)/.test(general.loc))) {
-                return;
-            }
-
-            var updateTimer = general.$('updatetimer2'),
-                bodyHTML = general.doc.body.innerHTML;
-
-            // если не попали в заявку обновляем страницу
-            if (/Заявка на бой отклонена/.test(bodyHTML)) {
-                general.root.location.href = updateTimer.parentNode.href;
-                return;
-            }
-
-            // если уже в заявке
-            if (/#990000"?>Вы заявлены на бой/.test(bodyHTML)) {
-                return;
-            }
-
-            // устанавливаем интерфейс настроек
-            var inputSpan = general.doc.createElement('span');
-            inputSpan.innerHTML = 'с:' +
-                '<select id="lvlMin">' + this.getSelectOptions() +
-                    '</select> ' +
-                'до: <select id="lvlMax">' + this.getSelectOptions() +
-                    '</select> ' +
-                'Командные:<input id="onlyCommand" type="checkbox" /> ' +
-                'Случайные:<input id="onlyNoCommand" type="checkbox" /> ' +
-                'DM:<input id="dm" type="checkbox" /> ' +
-                'Без DM:<input id="noDm" type="checkbox" /> ' +
-                'Без синдовых:<input id="hideSynd" type="checkbox" /> ' +
-                'Синдовые:<input id="onlySynd" type="checkbox" /> ' +
-                'Умения:<input id="showSkills" type="checkbox" /> ' +
-                'Дальность:<input id="showRange" type="checkbox" /> ' +
-                'Нужная дальность: <input id="limitRange" ' +
-                    'style="width: 50px;"> ' +
-                'Время: <input id="time" maxlength="3" ' +
-                    'style="width: 40px;"><br>';
-
-            var target = general.doc.querySelector('td.txt>' +
-                'table[width="100%"]').parentNode;
-            target.insertBefore(inputSpan, target.querySelector('br'));
-
-            var stData = general.getData(30);
-
-            // устанавливаем значения select'ов, чекбоксов, текстовых полей
-            // списки выбора минимального и максимального боевого уровеня
-            var selMin = general.$('lvlMin');
-            selMin.value = stData[0];
-            var selMax = general.$('lvlMax');
-            selMax.value = stData[1];
-
-            // только командные
-            var onlyCommand = general.$('onlyCommand');
-            onlyCommand.checked = stData[2];
-
-            // только случайные
-            var onlyNoCommand = general.$('onlyNoCommand');
-            onlyNoCommand.checked = stData[3];
-
-            // только DM
-            var dm = general.$('dm');
-            dm.checked = stData[4];
-
-            // без DM
-            var noDm = general.$('noDm');
-            noDm.checked = stData[5];
-
-            // без синдовых
-            var hideSynd = general.$('hideSynd');
-            hideSynd.checked = stData[6];
-
-            // только синдовые
-            var onlySynd = general.$('onlySynd');
-            onlySynd.checked = stData[7];
-
-            // показывать умения бойцов
-            var showSkills = general.$('showSkills');
-            showSkills.checked = stData[8];
-
-            // показывать дальность оружия бойцов
-            var showRange = general.$('showRange');
-            showRange.checked = stData[9];
-
-            // нужная дальность
-            var limitRange = general.$('limitRange');
-            limitRange.value = stData[10];
-
-            // время до боя
-            var time = general.$('time');
-            time.value = stData[11];
-
-            // обработчики для интерфейса настроек
-            selMin.addEventListener('change',
-                        this.saveSettings(0, selMin.id), false);
-            selMax.addEventListener('change',
-                        this.saveSettings(1, selMax.id), false);
-
-            onlyCommand.addEventListener('click',
-                        this.saveSettings(2, onlyCommand.id), false);
-
-            onlyNoCommand.addEventListener('click',
-                        this.saveSettings(3, onlyNoCommand.id), false);
-
-            dm.addEventListener('click',
-                        this.saveSettings(4, dm.id), false);
-            noDm.addEventListener('click',
-                        this.saveSettings(5, noDm.id), false);
-
-            hideSynd.addEventListener('click',
-                        this.saveSettings(6, hideSynd.id), false);
-
-            onlySynd.addEventListener('click',
-                        this.saveSettings(7, onlySynd.id), false);
-
-            showSkills.addEventListener('click',
-                    this.saveSettings(8, showSkills.id), false);
-
-            showRange.addEventListener('click',
-                        this.saveSettings(9, showRange.id), false);
-
-            limitRange.addEventListener('input',
-                        this.saveSettings(10, limitRange.id), false);
-
-            time.addEventListener('input',
-                        this.saveSettings(11, time.id), false);
-
-            // таблица с заявками
-            this.table = general.doc.querySelector('table[border="0"]' +
-                    '[cellpadding="5"][cellspacing="1"]');
-
-            if (this.table) {
-                this.table.parentNode.setAttribute('align', 'center');
-                this.tableHTML = this.table.innerHTML;
-                this.changeTable(false);
-            }
-        };
-    };
-
-    /**
      * @class Regeneration
      * @constructor
      */
@@ -13957,17 +13291,6 @@
         return;
     }
 
-    // графические бои
-    if (/\/bfield0\.ganjawars\.ru\/go\.php\?bid=*/.test(general.loc)) {
-        try {
-            new SoundGraph().init();
-        } catch (e) {
-            general.cons.log(e);
-        }
-
-        return;
-    }
-
     initScript = general.getInitScript();
 
     // везде на www.ganjawars.ru
@@ -14135,7 +13458,7 @@
                 }
             }
 
-            if (/(\/me\/)|(\/(warlog|warlist|wargroup)\.php\?)/.
+            if (/(\/me.php)|(\/(warlog|warlist|wargroup)\.php\?)/.
                     test(general.loc)) {
                 if (initScript[5]) {
                     try {
@@ -14155,7 +13478,7 @@
             }
         }
 
-        if (/\/me\/|\/npc\.php\?id=/.test(general.loc)) {
+        if (/\/me.php|\/npc\.php\?id=/.test(general.loc)) {
             if (initScript[12]) {
                 try {
                     new TimeNpc().init();
@@ -14164,7 +13487,7 @@
                 }
             }
 
-            if (/\/me\//.test(general.loc)) {
+            if (/\/me.php/.test(general.loc)) {
                 if (initScript[17]) {
                     try {
                         new GbCounter().init();
@@ -14240,7 +13563,7 @@
             }
         }
 
-        if (/\/me\/|\/messages\.php\?fid=1&tid=/.test(general.loc)) {
+        if (/\/me.php|\/messages\.php\?fid=1&tid=/.test(general.loc)) {
             if (initScript[20]) {
                 try {
                     new NewsAndInvit().init();
@@ -14291,7 +13614,7 @@
             }
         }
 
-        if (/\/me\/|\/info\.php\?id=/.test(general.loc)) {
+        if (/\/me.php|\/info\.php\?id=/.test(general.loc)) {
             if (initScript[24]) {
                 try {
                     new FixSkills().init();
@@ -14397,7 +13720,7 @@
             }
         }
 
-        if (/\/me\/|\/home\.friends\.php/.test(general.loc)) {
+        if (/\/me.php|\/home\.friends\.php/.test(general.loc)) {
             if (initScript[36]) {
                 try {
                     new NotesForFriends().init();
@@ -14497,26 +13820,6 @@
                 if (initScript[33]) {
                     try {
                         new LinksInOne2One().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-            }
-        }
-
-        if (/\/wargroup\.php\?/.test(general.loc)) {
-            if (initScript[55]) {
-                try {
-                    new FilterGeneralFighting().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (/\?war=attacks/.test(general.loc)) {
-                if (initScript[32]) {
-                    try {
-                        new SortSyndWars().init();
                     } catch (e) {
                         general.cons.log(e);
                     }

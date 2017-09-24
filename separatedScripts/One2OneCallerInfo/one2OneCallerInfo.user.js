@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         2.10-290717
+// @version         2.11-240917
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -217,8 +217,9 @@
                 called.parentNode.appendChild(spanHp);
 
                 // узел td со ссылками и изображениями на оружие
-                _this.weapon = spanContent.querySelector('table' +
-                        '[style="margin-right:1px;"]').parentNode;
+                _this.weapon = spanContent.
+                    querySelector('table[style="margin-right:1px;"]').
+                        parentNode;
                 _this.weapon.firstElementChild.removeAttribute('align');
                 _this.weapon.removeAttribute('rowspan');
                 _this.weapon.setAttribute('style', 'padding-left: 30px;');
@@ -240,8 +241,8 @@
                 }
 
                 // узел td со списком умелок
-                var skills = spanContent.
-                    querySelectorAll('td[align="right"][valign="top"]')[4];
+                var skills = spanContent.querySelectorAll('tr>td+' +
+                    'td[align="right"][valign="top"]')[2];
                 skills.setAttribute('style', 'padding-bottom: 10px;');
                 skills.removeAttribute('class');
                 var tr = general.doc.createElement('tr');
