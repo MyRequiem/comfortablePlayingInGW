@@ -6,12 +6,13 @@
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.user.js
 // @include         http://www.ganjawars.ru/me.php*
+// @include         http://www.ganjawars.ru/me/*
 // @include         http://www.ganjawars.ru/warlog.php?bid=*
 // @include         http://www.ganjawars.ru/warlist.php*
 // @include         http://www.ganjawars.ru/wargroup.php*
 // @grant           none
 // @license         MIT
-// @version         2.31-240917
+// @version         2.32-250917
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 

@@ -7,8 +7,9 @@
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NotesForFriends/notesForFriends.user.js
 // @include         http://www.ganjawars.ru/home.friends.php*
 // @include         http://www.ganjawars.ru/me.php*
+// @include         http://www.ganjawars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.12-240917
+// @version         2.13-250917
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458] (идея: ЧупакаЪра)
 // ==/UserScript==

@@ -6,10 +6,11 @@
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FuckTheFarm/fuckTheFarm.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FuckTheFarm/fuckTheFarm.user.js
 // @include         http://www.ganjawars.ru/me.php*
+// @include         http://www.ganjawars.ru/me/*
 // @include         http://www.ganjawars.ru/info.php?*
 // @grant           none
 // @license         MIT
-// @version         2.02-240917
+// @version         2.03-250917
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -78,7 +79,7 @@
         this.init = function () {
             var link;
 
-            if (/\/me\//.test(general.loc)) {
+            if (/\/me(\/|\.php)/.test(general.loc)) {
                 link = general.doc.querySelector('[src$="images.ganjawars.' +
                         'ru/i/home/farm.gif"]').parentNode;
                 var lparent = link.parentNode;

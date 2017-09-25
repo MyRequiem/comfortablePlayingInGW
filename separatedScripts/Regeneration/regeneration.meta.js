@@ -6,8 +6,9 @@
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/Regeneration/regeneration.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/Regeneration/regeneration.user.js
 // @include         http://www.ganjawars.ru/me.php*
+// @include         http://www.ganjawars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.41-240917
+// @version         2.42-250917
 // @author          W_or_M (редакция MyRequiem)
 // ==/UserScript==

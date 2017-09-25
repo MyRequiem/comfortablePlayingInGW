@@ -6,10 +6,11 @@
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeNpc/timeNpc.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeNpc/timeNpc.user.js
 // @include         http://www.ganjawars.ru/me.php*
+// @include         http://www.ganjawars.ru/me/*
 // @include         http://www.ganjawars.ru/npc.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.21-240917
+// @version         2.22-250917
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -420,7 +421,7 @@
 
             var stData = general.getData();
 
-            if (/www\.ganjawars\.ru\/me\//.test(general.loc)) {
+            if (/www\.ganjawars\.ru\/me(\/|\.php)/.test(general.loc)) {
                 var mainDiv = general.doc.createElement('div'),
                     target = general.doc.querySelector('td[rowspan="2"]' +
                         '[valign="top"][bgcolor="#e9ffe9"]>' +

@@ -6,13 +6,13 @@
 ![ChromeLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/chromeLogo.png)
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
 
-Версия: 1.74-250917
+Версия: 1.75-250917
 
 Нашли ошибку? Пожалуйста, [сообщите](http://www.ganjawars.ru/sms-create.php?mailto=MyRequiem)
 
 * [Установить](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js)
 * [Скачать zip-архив](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js.zip)
-* *Все скрипты отдельными файлами находятся в директории* [./separatedScripts](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/) (Всего скриптов: 59)
+* *Все скрипты отдельными файлами находятся в директории* [./separatedScripts](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/) (Всего скриптов: 56)
 * [Как устанавливать скрипты](http://gwscripts.ucoz.net/index/how_to_install/0-31)
 * [История изменений](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/ChangeLog.txt)
 
@@ -58,25 +58,11 @@
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvForum/advForum.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvForum/advForum.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvForum)
 <br>
 
-**AdvancedOutland**
-<br>
-Версия: 2.20-100717
-<br>
-[[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvancedOutland/advancedOutland.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvancedOutland/advancedOutland.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvancedOutland)
-<br>
-
 **AllPlantsOnFarm**
 <br>
 Версия: 1.24-121216
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AllPlantsOnFarm/allPlantsOnFarm.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AllPlantsOnFarm/allPlantsOnFarm.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AllPlantsOnFarm)
-<br>
-
-**AutLinksOnChat**
-<br>
-Версия: 2.10-100717
-<br>
-[[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AutLinksOnChat/autLinksOnChat.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AutLinksOnChat/autLinksOnChat.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AutLinksOnChat)
 <br>
 
 **BlacklistHighlighting**
@@ -186,7 +172,7 @@
 
 **FuckTheFarm**
 <br>
-Версия: 2.02-240917
+Версия: 2.03-250917
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FuckTheFarm/fuckTheFarm.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FuckTheFarm/fuckTheFarm.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FuckTheFarm)
 <br>
@@ -200,7 +186,7 @@
 
 **GbCounter**
 <br>
-Версия: 2.02-240917
+Версия: 2.03-250917
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GbCounter/gbCounter.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GbCounter/gbCounter.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GbCounter)
 <br>
@@ -268,16 +254,9 @@
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/MinBetAtRoulette/minBetAtRoulette.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/MinBetAtRoulette/minBetAtRoulette.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/MinBetAtRoulette)
 <br>
 
-**MoveArrowOnAut**
-<br>
-Версия: 1.40-100717
-<br>
-[[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/MoveArrowOnAut/moveArrowOnAut.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/MoveArrowOnAut/moveArrowOnAut.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/MoveArrowOnAut)
-<br>
-
 **NewsAndInvit**
 <br>
-Версия: 2.03-240917
+Версия: 2.04-250917
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NewsAndInvit/newsAndInvit.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NewsAndInvit/newsAndInvit.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/NewsAndInvit)
 <br>
@@ -291,7 +270,7 @@
 
 **NotesForFriends**
 <br>
-Версия: 2.12-240917
+Версия: 2.13-250917
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NotesForFriends/notesForFriends.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NotesForFriends/notesForFriends.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/NotesForFriends)
 <br>
@@ -326,7 +305,7 @@
 
 **Regeneration**
 <br>
-Версия: 2.41-240917
+Версия: 2.42-250917
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/Regeneration/regeneration.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/Regeneration/regeneration.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/Regeneration)
 <br>
@@ -354,7 +333,7 @@
 
 **ScanPers**
 <br>
-Версия: 2.30-290717
+Версия: 2.31-250917
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanPers/scanPers.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanPers/scanPers.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ScanPers)
 <br>
@@ -382,7 +361,7 @@
 
 **SkillCounters**
 <br>
-Версия: 2.03-240917
+Версия: 2.04-250917
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SkillCounters/skillCounters.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SkillCounters/skillCounters.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SkillCounters)
 <br>
@@ -396,7 +375,7 @@
 
 **SoundSyndBattle**
 <br>
-Версия: 2.10-290717
+Версия: 2.11-250917
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SoundSyndBattle/soundSyndBattle.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SoundSyndBattle/soundSyndBattle.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SoundSyndBattle)
 <br>
@@ -410,7 +389,7 @@
 
 **SyndOnlineOnMainPage**
 <br>
-Версия: 2.12-240917
+Версия: 2.13-250917
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndOnlineOnMainPage/syndOnlineOnMainPage.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndOnlineOnMainPage/syndOnlineOnMainPage.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndOnlineOnMainPage)
 <br>
@@ -431,14 +410,14 @@
 
 **TimeNpc**
 <br>
-Версия: 2.21-240917
+Версия: 2.22-250917
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeNpc/timeNpc.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeNpc/timeNpc.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/TimeNpc)
 <br>
 
 **WorkPostGrenadesBroken**
 <br>
-Версия: 2.31-240917
+Версия: 2.32-250917
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/WorkPostGrenadesBroken)
 <br>

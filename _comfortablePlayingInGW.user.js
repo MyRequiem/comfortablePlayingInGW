@@ -6,10 +6,9 @@
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js
 // @include         http://www.ganjawars.ru/*
-// @include         http://quest.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.74-250917
+// @version         1.75-250917
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -64,7 +63,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.74-250917';
+        this.version = '1.75-250917';
         /**
          * @property stString
          * @type {String}
@@ -4102,40 +4101,6 @@
     };
 
     /**
-     * @class AutLinksOnChat
-     * @constructor
-     */
-    var AutLinksOnChat = function () {
-        /**
-         * @method init
-         */
-        this.init = function () {
-            var chat = general.doc.querySelector('td[class="wb"]' +
-                    '[valign="top"][style="font-size:8pt"]');
-
-            if (chat) {
-                var fonts = chat.querySelectorAll('font'),
-                    name,
-                    i;
-
-                general.root.gotourl = function () {
-                    return true;
-                };
-
-                for (i = 0; i < fonts.length; i++) {
-                    if (!fonts[i].firstElementChild) {
-                        name = fonts[i].innerHTML;
-                        fonts[i].innerHTML = '<a target="_blank" ' +
-                            'style="font-size: 8pt; text-decoration: none; ' +
-                            'color: #990000;" href="http://www.ganjawars.ru' +
-                            '/search.php?key=' + name + '">' + name + '</a>';
-                    }
-                }
-            }
-        };
-    };
-
-    /**
      * @class WorkPostGrenadesBroken
      * @constructor
      */
@@ -5399,7 +5364,7 @@
         this.init = function () {
             var stData = general.getData(10);
 
-            if (/www\.ganjawars\.ru\/me.php/.test(general.loc)) {
+            if (/www\.ganjawars\.ru\/me(\/|\.php)/.test(general.loc)) {
                 var mainDiv = general.doc.createElement('div'),
                     target = general.doc.querySelector('td[rowspan="2"]' +
                         '[valign="top"][bgcolor="#e9ffe9"]>' +
@@ -7837,7 +7802,7 @@
         this.init = function () {
             var link;
 
-            if (/\/me.php/.test(general.loc)) {
+            if (/\/me(\/|\.php)/.test(general.loc)) {
                 link = general.doc.querySelector('[src$="images.ganjawars.' +
                         'ru/i/home/farm.gif"]').parentNode;
                 var lparent = link.parentNode;
@@ -8889,99 +8854,6 @@
                     }
                 }
             }
-        };
-    };
-
-    /**
-     * @class MoveArrowOnAut
-     * @constructor
-     */
-    var MoveArrowOnAut = function () {
-        /**
-         * @method moveArrow
-         * @param   {Object}    e
-         */
-        this.moveArrow = function (e) {
-            var makeMove = function (reg1, reg2, rev) {
-                var a = general.doc.querySelectorAll('a'),
-                    allMoveLinks = [],
-                    emptyCell,
-                    i;
-
-                for (i = 0; i < a.length; i++) {
-                    emptyCell = a[i].querySelector('img[src*="/t.png"]') ||
-                        a[i].querySelector('img[src*="/i/arrow_"]');
-
-                    if (emptyCell && (/\?w=-?\d+&wx=-?\d+&wy=-?\d+&/.
-                            test(a[i].href))) {
-                        allMoveLinks.push(a[i]);
-                    }
-                }
-
-                allMoveLinks.sort(function (a, b) {
-                    var x = +(reg1.exec(a.href)[1]),
-                        x1 = +(reg2.exec(b.href)[1]),
-                        rez;
-
-                    if (x > x1) {
-                        rez = rev ? -1 : 1;
-                    } else if (x < x1) {
-                        rez = rev ? 1 : -1;
-                    } else {
-                        rez = 0;
-                    }
-
-                    return rez;
-                });
-
-                general.root.location = allMoveLinks[0].href;
-            };
-
-            var ev = e || general.root.event,
-                keyPressed = /Firefox/i.test(general.root.navigator.userAgent) ?
-                        ev.charCode : ev.keyCode;
-
-            switch (keyPressed) {
-            // W,w,Ц,ц - вверх
-            case 87:
-            case 119:
-            case 1062:
-            case 1094:
-                makeMove(/&wy=(-?\d+)/, /&wy=(-?\d+)/, false);
-                break;
-            // S,s,Ы,ы - вниз
-            case 83:
-            case 115:
-            case 1067:
-            case 1099:
-                makeMove(/&wy=(-?\d+)/, /&wy=(-?\d+)/, true);
-                break;
-            // A,a,Ф,ф - лево
-            case 65:
-            case 97:
-            case 1060:
-            case 1092:
-                makeMove(/&wx=(-?\d+)/, /&wx=(-?\d+)/, false);
-                break;
-            // D,d,В,в - право
-            case 68:
-            case 100:
-            case 1042:
-            case 1074:
-                makeMove(/&wx=(-?\d+)/, /&wx=(-?\d+)/, true);
-                break;
-            default:
-                return;
-            }
-        };
-
-        /**
-         * @method init
-         */
-        this.init = function () {
-            var a = general.doc.querySelector('a[href*="&wx=0&wy=0&"]');
-            a.addEventListener('keypress', this.moveArrow, false);
-            a.focus();
         };
     };
 
@@ -10079,13 +9951,6 @@
          */
         this.init = function () {
             var stData = general.getData(24);
-
-            //на login или index
-            if (general.doc.querySelector('a[href*="/regform.php"]')) {
-                stData[7] = '';
-                general.setData(stData, 24);
-                return;
-            }
 
             var topPanel = new GetTopPanel().init();
             if (!topPanel) {
@@ -12224,13 +12089,6 @@
         this.init = function () {
             var stData = general.getData(28);
 
-            //на login или index
-            if (general.doc.querySelector('a[href*="/regform.php"]')) {
-                stData[3] = '';
-                general.setData(stData, 28);
-                return;
-            }
-
             if (!general.doc.querySelector('a[href*="/me.php"]' +
                         '[title^="Наличность"]')) {
                 return;
@@ -12814,255 +12672,6 @@
     };
 
     /**
-     * @class AdvancedOutland
-     * @constructor
-     */
-    var AdvancedOutland = function () {
-        /**
-         * @property STORAGENAME
-         * @type {String}
-         */
-        this.STORAGENAME = 'advancedOutland';
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(general.doc.cookie)[2];
-
-        /**
-         * @method setData
-         * @param   {Array} data
-         */
-        this.setData = function (data) {
-            general.st.setItem(this.STORAGENAME, data.join('|'));
-        };
-
-        /**
-         * @method getData
-         * @return  {Array}
-         */
-        this.getData = function () {
-            var stData = general.st.getItem(this.STORAGENAME);
-            if (stData) {
-                return stData.split('|');
-            }
-
-            /** localStorage:
-                [0] - показывать инфу поков
-                [1] - показывать время флагов
-            */
-            stData = ['', ''];
-            this.setData(stData);
-            return stData;
-        };
-
-        /**
-         * @method changeStData
-         */
-        this.changeStData = function () {
-            var _this = this;
-            return function () {
-                var data = _this.getData(),
-                    chk = this,
-                    ind = chk.id === 'chkShowDataPoks' ? 0 : 1;
-
-                data[ind] = chk.checked ?  '1' : '';
-                _this.setData(data);
-            };
-        };
-
-        /**
-         * @method init
-         */
-        this.init = function () {
-            // окно настроек
-            var divSettings = general.doc.createElement('div');
-            divSettings.setAttribute('style', 'position: absolute; ' +
-                    'visibility: hidden; background-color: #F5FFF5; ' +
-                    'border-radius: 7px; border: solid 1px #339933; ' +
-                    'padding: 5px; top: 0; left: 0;');
-            divSettings.innerHTML = '<input id="chkShowDataPoks" ' +
-                'type="checkbox"><label for="chkShowDataPoks">Показывать ' +
-                'инфу поков</label><br><input id="chkShowDataFlags" ' +
-                'type="checkbox"><label for="chkShowDataFlags">Показывать ' +
-                'время для флагов</label>';
-            general.doc.body.appendChild(divSettings);
-
-            // кнопа "Настройки"
-            var butSettings = general.doc.createElement('span');
-            butSettings.innerHTML = 'Настройки';
-            butSettings.
-                setAttribute('style', 'color: #0000FF; cursor: pointer;');
-            butSettings.addEventListener('click', function (e) {
-                var ev = e || general.root.event;
-                if (divSettings.style.visibility === 'hidden') {
-                    divSettings.style.left = ev.pageX - 100;
-                    divSettings.style.top = ev.pageY + 15;
-                    divSettings.style.visibility = 'visible';
-                } else {
-                    divSettings.style.visibility = 'hidden';
-                }
-            }, false);
-
-            var target = general.doc.querySelector('nobr');
-            target.appendChild(general.doc.createTextNode(' | '));
-            target.appendChild(butSettings);
-
-            // чекбоксы в настройках
-            var stData = this.getData(),
-                chkShowDataPoks = general.$('chkShowDataPoks');
-
-            chkShowDataPoks.checked = stData[0];
-            chkShowDataPoks.
-                addEventListener('click', this.changeStData(), false);
-
-            var chkShowDataFlags = general.$('chkShowDataFlags');
-            chkShowDataFlags.checked = stData[1];
-            chkShowDataFlags.
-                addEventListener('click', this.changeStData(), false);
-
-            // вставляем ссылки "Моя инфа | Рюкзак | Ремонт | Магазин лицензий"
-            var span = general.doc.createElement('span');
-            span.innerHTML = '<a target="_blank" ' +
-                'href="http://www.ganjawars.ru/info.php?id=' + this.myID +
-                '">Моя инфа</a> | <a target="_blank" ' +
-                'href="http://www.ganjawars.ru/items.php">Рюкзак</a> | ' +
-                '<a target="_blank" href="http://www.ganjawars.ru/' +
-                'workshop.php">Ремонт</a> | <a target="_blank" ' +
-                'href="http://www.ganjawars.ru/shopl.php" target="_blank">' +
-                'Магазин лицензий</a> | ';
-            target = general.doc.querySelector('a[href*="/forum.php"]');
-            target.parentNode.insertBefore(span, target);
-
-            // показываем инфу поков и время флагов
-            if (stData[0] || stData[1]) {
-                // помещаем на страницу скрипт с новым
-                // обработчиком события onMouseOver
-                var s = general.doc.createElement('script');
-                general.doc.querySelector('head').appendChild(s);
-                s.innerHTML = 'function overat_mod(x, y) {' +
-                        'var uh = userhere(x,y);' +
-                        'if (Page_Loaded && uh >= 0) {' +
-                            // убираем стандартный титл
-                            // (костыль для хрома 34+)
-                            'var oldtitle = document.' +
-                                    'querySelector("#infolayer");' +
-                            'oldtitle.style.left = -500;' +
-                            'oldtitle.style.top = -500;' +
-                            'oldtitle.innerHTML = "";' +
-
-                            'var ttipid = x + "|" + y;' +
-                            'if (document.querySelector("#ttipid")) {' +
-                                'return;' +
-                            '}' +
-
-                            'var ttip = document.createElement("div");' +
-                            'ttip.id = ttipid;' +
-                            'ttip.setAttribute("style", "position: absolute; ' +
-                                'padding: 2px; border-radius: 5px; ' +
-                                'font-size: 11px; border: solid 1px ' +
-                                '#339933; background-color: #D0EED0; ' +
-                                'opacity: 0.7;");' +
-                            'ttip.style.top = users[uh]["y"] * 25 + 30;' +
-                            'ttip.style.left = users[uh]["x"] * 25 + 12 + 25;' +
-                            'var text = users[uh]["info"];' +
-                            'if (/Бот, \\d+ уровень сложности/.test(text)) {' +
-                                'ttip.innerHTML = "<b>" + ' +
-                                    '/Бот, (\\d+) уровень сложности/.' +
-                                        'exec(text)[1] + " уровень</b>";' +
-                            '} else {' +
-                                'var txt = "",' +
-                                    'rez = /Опасность:[^<]+/i.exec(text);' +
-
-                                'if (rez) {' +
-                                    'txt += "<li>" + rez[0] + "</li>";' +
-                                '}' +
-
-                                'rez = /количество: ([^<]+)/i.exec(text);' +
-                                'if (rez) {' +
-                                    'txt += "<li>Количество: " + rez[1] + ' +
-                                        '"</li>";' +
-                                '}' +
-
-                                'rez=/мии за убийство: (\\d+%)/i.exec(text);' +
-                                'if (rez) {' +
-                                    'txt += "<li>Премия: " + rez[1] +' +
-                                        '"</li>";' +
-                                '}' +
-
-                                'rez = /Мощность: ~\\d+/i.exec(text);' +
-                                'if (rez) {' +
-                                    'txt += "<li><span style=\'color: ' +
-                                        '#FF0000;\'>" + rez[0] + "</span>' +
-                                            '</li>"' +
-                                '}' +
-
-                                'rez = /\\d+ мин. назад/i.exec(text);' +
-                                'if (rez) {' +
-                                    'txt += rez[0];' +
-                                '}' +
-
-                                'ttip.innerHTML = "<b>" + txt + "</b>";' +
-                            '}' +
-
-                            'ttip.addEventListener("click", function () {' +
-                                'this.style.visibility = "hidden";' +
-                            '}, false);' +
-
-                            'document.body.appendChild(ttip);' +
-                        '}' +
-                    '}';
-
-                // ищем всех ботов и флаги, изменяем обработчики onMouseOver
-                // на свои, вызываем и убираем все обработчики
-                var imgsOver = [];
-                if (stData[0]) {
-                    imgsOver = imgsOver.
-                        concat(Array.prototype.slice.
-                                call(general.doc.
-                                    querySelectorAll('img[src*="/bot"]')));
-                }
-
-                if (stData[1]) {
-                    imgsOver = imgsOver.
-                        concat(Array.prototype.slice.
-                                call(general.doc.
-                                    querySelectorAll('img[src*="/flag.gif"]')));
-                }
-
-                var handler,
-                    i,
-                    o;
-
-                for (i = 0; i < imgsOver.length; i++) {
-                    handler = imgsOver[i].getAttribute('onMouseOver');
-                    handler = 'overat_mod' +
-                                (/\(\d+,\d+\)/.exec(handler)[0]) + ';';
-                    imgsOver[i].setAttribute('onMouseOver', handler);
-
-                    // опера, FF
-                    if (imgsOver[i].onmouseover) {
-                        imgsOver[i].onmouseover();
-                    } else {
-                        // костыль для хромого
-                        // создаём объект события c модулем событий мыши
-                        o = general.doc.createEvent('MouseEvents');
-                        // инициализируем объект события
-                        o.initMouseEvent('mouseover', true, true, general.root,
-                                1, 12, 345, 7, 220, false, false, true,
-                                    false, 0, null);
-                        // инициализация события mouseover
-                        imgsOver[i].dispatchEvent(o);
-                    }
-
-                    imgsOver[i].removeAttribute('onMouseOut');
-                    imgsOver[i].removeAttribute('onMouseOver');
-                }
-            }
-        };
-    };
-
-    /**
      * @class Regeneration
      * @constructor
      */
@@ -13268,29 +12877,6 @@
         return;
     }
 
-    // аут + прибрежка
-    if (/\/quest\.ganjawars\.ru/.test(general.loc)) {
-        try {
-            new AutLinksOnChat().init();
-        } catch (e) {
-            general.cons.log(e);
-        }
-
-        try {
-            new MoveArrowOnAut().init();
-        } catch (e) {
-            general.cons.log(e);
-        }
-
-        try {
-            new AdvancedOutland().init();
-        } catch (e) {
-            general.cons.log(e);
-        }
-
-        return;
-    }
-
     initScript = general.getInitScript();
 
     // везде на www.ganjawars.ru
@@ -13327,11 +12913,6 @@
                 general.cons.log(e);
             }
         }
-    }
-
-    // перс не залогинен
-    if (general.doc.querySelector('a[href*="/regform.php"]')) {
-        return;
     }
 
     // везде кроме боев
@@ -13458,7 +13039,7 @@
                 }
             }
 
-            if (/(\/me.php)|(\/(warlog|warlist|wargroup)\.php\?)/.
+            if (/\/me(\/|\.php)|\/(warlog|warlist|wargroup)\.php\?/.
                     test(general.loc)) {
                 if (initScript[5]) {
                     try {
@@ -13478,7 +13059,7 @@
             }
         }
 
-        if (/\/me.php|\/npc\.php\?id=/.test(general.loc)) {
+        if (/\/me(\/|\.php)|\/npc\.php\?id=/.test(general.loc)) {
             if (initScript[12]) {
                 try {
                     new TimeNpc().init();
@@ -13487,7 +13068,7 @@
                 }
             }
 
-            if (/\/me.php/.test(general.loc)) {
+            if (/\/me(\/|\.php)/.test(general.loc)) {
                 if (initScript[17]) {
                     try {
                         new GbCounter().init();
@@ -13563,7 +13144,7 @@
             }
         }
 
-        if (/\/me.php|\/messages\.php\?fid=1&tid=/.test(general.loc)) {
+        if (/\/me(\/|\.php)|\/messages\.php\?fid=1&tid=/.test(general.loc)) {
             if (initScript[20]) {
                 try {
                     new NewsAndInvit().init();
@@ -13614,7 +13195,7 @@
             }
         }
 
-        if (/\/me.php|\/info\.php\?id=/.test(general.loc)) {
+        if (/\/me(\/|\.php)|\/info\.php\?id=/.test(general.loc)) {
             if (initScript[24]) {
                 try {
                     new FixSkills().init();
@@ -13720,7 +13301,7 @@
             }
         }
 
-        if (/\/me.php|\/home\.friends\.php/.test(general.loc)) {
+        if (/\/me(\/|\.php)|\/home\.friends\.php/.test(general.loc)) {
             if (initScript[36]) {
                 try {
                     new NotesForFriends().init();

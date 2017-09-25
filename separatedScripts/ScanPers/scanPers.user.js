@@ -9,7 +9,7 @@
 // @exclude         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.30-290717
+// @version         2.31-250917
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -555,13 +555,6 @@ plusplus: true, devel: true */
                 [8] - интервал сканирования (сек, не менее 20)
             */
             var stData = general.getData();
-
-            //на login или index
-            if (general.doc.querySelector('a[href*="/regform.php"]')) {
-                stData[7] = '';
-                general.setData(stData);
-                return;
-            }
 
             var topPanel = new GetTopPanel().init();
             if (!topPanel) {

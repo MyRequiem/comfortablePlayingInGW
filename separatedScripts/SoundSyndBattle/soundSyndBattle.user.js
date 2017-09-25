@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.10-290717
+// @version         2.11-250917
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -209,13 +209,7 @@
                 return;
             }
 
-            //на login или index
-            if (general.doc.querySelector('a[href*="/regform.php"]')) {
-                general.setData('');
-                return;
-            }
-
-            if (!general.doc.querySelector('a[href*="/me/"]' +
+            if (!general.doc.querySelector('a[href*="/me.php"]' +
                         '[title^="Наличность"]')) {
                 return;
             }
