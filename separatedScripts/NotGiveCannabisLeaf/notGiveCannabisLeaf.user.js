@@ -5,12 +5,12 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NotGiveCannabisLeaf/notGiveCannabisLeaf.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NotGiveCannabisLeaf/notGiveCannabisLeaf.user.js
-// @include         *ganjawars*
-// @include         http://www.ganjafoto.ru/*
-// @include         http://www.ganjafile.ru/*
+// @include         *ganjawars.ru*
+// @include         *ganjafile.ru*
+// @include         *ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         2.02-121216
+// @version         2.10-081017
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -45,6 +45,12 @@
          * @type {Object}
          */
         this.doc = this.root.document;
+        /**
+         * @property imgPath
+         * @type {String}
+         */
+        this.imgPath = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
+            'imgs/NotGiveCannabisLeaf/';
     };
 
     /**
@@ -77,9 +83,7 @@
                 var link = this.doc.createElement('link');
                 link.setAttribute('type', 'image/x-icon');
                 link.setAttribute('rel', 'shortcut icon');
-                link.setAttribute('href',
-                        'http://gwscripts.ucoz.net/images_for_scripts/' +
-                        'notgivecannabisleaf/favicon.ico');
+                link.setAttribute('href', this.imgPath + 'favicon.ico');
                 head.appendChild(link);
             }
         },
@@ -88,10 +92,8 @@
          * @method  changeIcons
          */
         changeIcons: function () {
-            var imgPath = 'http://gwscripts.ucoz.net/' +
-                    'comfortablePlayingInGW/imgs/NotGiveCannabisLeaf/',
-                imgOn = imgPath + 'on.gif',
-                imgOff = imgPath + 'off.gif',
+            var imgOn = this.imgPath + 'on.gif',
+                imgOff = this.imgPath + 'off.gif',
                 imgs = this.doc.querySelectorAll('img'),
                 src,
                 i;

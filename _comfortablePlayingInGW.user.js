@@ -6,9 +6,13 @@
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js
 // @include         http://www.ganjawars.ru/*
+// @include         https://www.ganjawars.ru/*
+// @include         *ganjafoto.ru*
+// @include         *photos.ganjawars.ru*
+// @include         *ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.75-250917
+// @version         1.76-091017
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -63,7 +67,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.75-250917';
+        this.version = '1.76-091017';
         /**
          * @property stString
          * @type {String}
@@ -6666,8 +6670,7 @@
         this.compareLines = function (line, linesObj) {
             var i;
 
-            line.link = line.line_1.querySelector('font[color="#990000"]').
-                parentNode.parentNode;
+            line.link = line.line_1.querySelectorAll('a')[1];
             line.id = /id=(.*)$/.exec(line.link)[1];
             for (i = 0; i < linesObj.length; i++) {
                 if (linesObj[i].line.id === line.id) {
@@ -12878,6 +12881,19 @@
     }
 
     initScript = general.getInitScript();
+
+    // не в игре, на ganjafoto или ganjafile меняем фавикон
+    if (general.doc.querySelector('a[href*="/regform.php"]') ||
+            /ganjafoto\.ru|ganjafile\.ru|photos.ganjawars.ru/.
+                test(general.loc)) {
+        try {
+            new NotGiveCannabisLeaf().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
+
+        return;
+    }
 
     // везде на www.ganjawars.ru
     if (initScript[0]) {

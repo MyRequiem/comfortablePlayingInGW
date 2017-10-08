@@ -1,7 +1,7 @@
 Упаковка одинаковых предметов в инвентаре.
 <br>
 <br>
-Версия: 2.41-250617
+Версия: 2.42-081017
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/InventoryPlus/inventoryPlus.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/InventoryPlus/inventoryPlus.user.js.zip)
 <br>

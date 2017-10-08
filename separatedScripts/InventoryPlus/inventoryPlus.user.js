@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/items.php*
 // @grant           none
 // @license         MIT
-// @version         2.41-250617
+// @version         2.42-081017
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -96,9 +96,7 @@
          */
         this.compareLines = function (line, linesObj) {
             var i;
-
-            line.link = line.line_1.querySelector('font[color="#990000"]').
-                parentNode.parentNode;
+            line.link = line.line_1.querySelectorAll('a')[1];
             line.id = /id=(.*)$/.exec(line.link)[1];
             for (i = 0; i < linesObj.length; i++) {
                 if (linesObj[i].line.id === line.id) {
