@@ -1478,7 +1478,7 @@
                     'value="Восстановить" /></td></tr>' +
                     '<tr id="trSaveSettings" style="display: none;">' +
                     '<td colspan="3"><span style="color: #C00000;">' +
-                    'Выделите &lt;Ctrl+A&gt; и сохраните &lt;Ctrl+S&gt; ' +
+                    'Выделите &lt;Ctrl+A&gt; и сохраните &lt;Ctrl+C&gt; ' +
                     'содержимое поля для последующего восстановления ' +
                     'настроек</span>:<textarea id="textAreaSaveSettings" ' +
                     'cols="90" rows="7" readonly="true" style="resize: none; ' +
