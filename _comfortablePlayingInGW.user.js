@@ -12,7 +12,7 @@
 // @include         *ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.76-091017
+// @version         1.77-121017
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -67,7 +67,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.76-091017';
+        this.version = '1.77-121017';
         /**
          * @property stString
          * @type {String}
@@ -1429,102 +1429,60 @@
         };
 
         /**
-         * @method setZeroClipboardLib
-         */
-        this.setZeroClipboardLib = function () {
-            // тег <script> с библиотекой ZeroClipboard
-            // для копирования в буфер обмена
-            if (!general.$('zeroclipboard')) {
-                var script = general.doc.createElement('script');
-                script.id = 'zeroclipboard';
-                script.type = 'text/javascript';
-                script.src = general.imgPath +
-                    '../ZeroClipboard/ZeroClipboard.min.js';
-                general.doc.querySelector('head').appendChild(script);
-            }
-
-            // скрипт уже подгузился
-            /** @namespace general.root.ZeroClipboard */
-            if (general.root.ZeroClipboard) {
-                // иконка сохранения настроек
-                var imgSave = general.$('imgSaveSettings');
-                imgSave.src = 'http://images.ganjawars.ru/i/home/ganjafile.gif';
-                imgSave.title = 'Сохранить';
-                imgSave.style.cursor = 'pointer';
-
-                var param2 = {
-                        moviePath: general.imgPath +
-                            '../ZeroClipboard/ZeroClipboard.swf'
-                    },
-                    clip = new general.root.ZeroClipboard(imgSave, param2);
-
-                // копируем в буфер обмена строкy из localStorage
-                //noinspection JSUnresolvedFunction
-                clip.on('copy', function () {
-                    //noinspection JSUnresolvedFunction
-                    clip.setText(general.st.getItem(general.STORAGENAME));
-                });
-
-                // после копирования показываем сообщение для пользователя
-                //noinspection JSUnresolvedFunction
-                clip.on('aftercopy', function () {
-                    alert('Строка настроек сохранена в буфере обмена. ' +
-                        'Откройте любой текстовый редактор, например ' +
-                        'блокнот, вставьте строку (Ctrl+V) и сохраните для ' +
-                        'последующего восстановления.');
-                });
-            } else {
-                // скрипт не подгрузился, ждем...
-                var _this = this;
-                general.root.setTimeout(function () {
-                    _this.setZeroClipboardLib();
-                }, 300);
-            }
-        };
-
-        /**
          * @method init
          */
         this.init = function () {
             var tdStyle = ' style="background-color: #E0FFE0;">',
+                gwImgUrl = 'http://images.ganjawars.ru/i/home/',
                 str = '<table style="width: 100%; box-shadow: 8px 10px 7px ' +
                     'rgba(122,122,122,0.5);"><tr><td ' + tdStyle +
                     '<table style="width: 100%;"><tr><td style="width: 23%;">' +
-                    'Настройки:<img id="imgSaveSettings" src="' +
-                    general.imgPath + 'preloader.gif" style="margin-left: ' +
-                    '5px;" /><img id="imgRestoreSettings" ' +
-                    'title="Восстановить" src="http://images.ganjawars.ru/i/' +
-                    'home/cashlog.gif" style="cursor: pointer; margin-left: ' +
-                    '5px;" /><img id="imgResetSettings" title="Сбросить" ' +
-                    'src="http://images.ganjawars.ru/i/home/questlog.gif" ' +
-                    'style="cursor: pointer; margin-left: 5px;" />' +
-                    '<a target="_blank" href="https://raw.githubusercontent.' +
-                    'com/MyRequiem/comfortablePlayingInGW/master/ChangeLog.' +
-                    'txt" style="text-decoration: none; margin-left: 5px;" ' +
-                    'title="История изменений">' +
-                    '<img src="http://images.ganjawars.ru/i/home/wlog.gif" ' +
-                    'border="0" width="12" height="10" tile="Лог" alt="Лог" ' +
-                    '/></a></td><td style="font-size: 8pt; text-align: ' +
-                    'center;"><a id="linkNewVerScript" target="_blank" ' +
+                    '<span style="color: #8C5B07; font-weight: bold;">' +
+                    'Настройки:</span><img id="imgSaveSettings" ' +
+                    'style="margin-left: 5px; cursor: pointer;" ' +
+                    'src="' + gwImgUrl + 'ganjafile.gif" title="Сохранить" ' +
+                    'alt="Сохранить" /><img id="imgRestoreSettings" ' +
+                    'style="cursor: pointer; margin-left: 5px;" ' +
+                    'src="' + gwImgUrl + 'cashlog.gif" title="Восстановить" ' +
+                    'alt="Восстановить" /><img id="imgResetSettings" ' +
+                    'style="cursor: pointer; margin-left: 5px;" ' +
+                    'src="' + gwImgUrl + 'questlog.gif" title="Сбросить" ' +
+                    'alt="Сбросить"  /></td>' +
+                    '<td style="font-size: 8pt; text-align: center;">' +
+                    '<a id="linkNewVerScript" target="_blank" ' +
                     'style="color: #FF0000; visibility: hidden;" ' +
                     'href="https://raw.githubusercontent.com/MyRequiem/' +
                     'comfortablePlayingInGW/master/_comfortablePlayingInGW.' +
                     'user.js">Доступна новая версия</a> ' +
                     '<span id="refreshVer"></span></td>' +
-                    '<td style="font-size: 7pt; width: 32%; text-align: ' +
+                    '<td style="font-size: 7pt; width: 35%; text-align: ' +
                     'right;"><a target="_blank" style="opacity: 0.5; ' +
                     'text-decoration: none; font-size: 7pt;" ' +
                     'href="http://www.ganjawars.ru/info.php?id=2095458">' +
                     '<span style="color: #F90332;">developed by</span> ' +
                     '<span style="color: #014305; font-weight: 700;">' +
-                    'MyRequiem©</span></a> ' + general.version + '</td>' +
+                    'MyRequiem©</span></a> ' + general.version +
+                    '<a target="_blank" title="История изменений" ' +
+                    'href="https://raw.githubusercontent.com/MyRequiem/' +
+                    'comfortablePlayingInGW/master/ChangeLog.txt" ' +
+                    'style="text-decoration: none; margin: 0 5px 0 3px;">' +
+                    '<img src="' + gwImgUrl + 'wlog.gif" border="0" ' +
+                    'width="12" height="10" tile="Лог" alt="Лог" /></a></td>' +
                     '</tr><tr id="trRestoreSettings" style="display: none;">' +
-                    '<td colspan="3">Восстановление настроек. Вставьте ' +
-                    'ранее сохраненную строку настроек и нажмите ' +
-                    '"Восстановить":<br><input id="inpRestoreSettings" ' +
+                    '<td colspan="3"><span style="color: #C00000;">' +
+                    'Восстановление настроек. Вставьте ранее сохраненную ' +
+                    'строку настроек и нажмите "Восстановить"</span>:' +
+                    '<br><input id="inpRestoreSettings" ' +
                     'style="width: 97%;" /><br>' +
                     '<input id="butRestoreSettings" type="button" ' +
-                    'value="Восстановить" /></td></tr></table></td></tr>',
+                    'value="Восстановить" /></td></tr>' +
+                    '<tr id="trSaveSettings" style="display: none;">' +
+                    '<td colspan="3"><span style="color: #C00000;">' +
+                    'Выделите &lt;Ctrl+A&gt; и сохраните &lt;Ctrl+S&gt; ' +
+                    'содержимое поля для последующего восстановления ' +
+                    'настроек</span>:<textarea id="textAreaSaveSettings" ' +
+                    'cols="90" rows="7" readonly="true" style="resize: none; ' +
+                    'width: 100%;"></textarea></td></tr></table></td></tr>',
                 groupStyle = ' style="background-color: #D0EED0; text-align: ' +
                     'center; color: #990000;"><b>',
                 spanStyle = ' style="cursor: pointer;">',
@@ -1558,9 +1516,6 @@
             settingsContainer.setAttribute('style', 'margin: 10px 0 20px 0');
             settingsContainer.innerHTML = str;
 
-            // установка библиотеки ZeroClipboard (копирование в буфер обмена)
-            this.setZeroClipboardLib();
-
             // проверка обновлений
             this.checkScriptUpdate();
 
@@ -1584,11 +1539,30 @@
 
             general.$('imgRestoreSettings').addEventListener('click',
                 function () {
-                    var trRestoreSettings = general.$('trRestoreSettings');
+                    var trRestoreSettings = general.$('trRestoreSettings'),
+                        trSaveSettings = general.$('trSaveSettings');
+
+                    if (!trSaveSettings.style.display) {
+                        trSaveSettings.style.display = 'none';
+                    }
 
                     trRestoreSettings.style.display = trRestoreSettings.
                         style.display ? '' : 'none';
                 }, false);
+
+            general.$('imgSaveSettings').addEventListener('click', function () {
+                var trSaveSettings = general.$('trSaveSettings'),
+                    trRestoreSettings = general.$('trRestoreSettings');
+
+                if (trSaveSettings.style.display) {
+                    trRestoreSettings.style.display = 'none';
+                    trSaveSettings.style.display = '';
+                    general.$('textAreaSaveSettings').value = general.st.
+                        getItem(general.STORAGENAME);
+                } else {
+                    trSaveSettings.style.display = 'none';
+                }
+            }, false);
 
             var butRestoreSettings = general.$('butRestoreSettings'),
                 inpRestoreSettings = general.$('inpRestoreSettings');
