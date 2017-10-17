@@ -12,11 +12,11 @@
 // @include         *ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.77-121017
+// @version         1.78-171017
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
-/*global unsafeWindow, escape */
+/*global unsafeWindow */
 /*jslint browser: true, maxlen: 80, regexp: true, vars: true, plusplus: true,
     continue: true, devel: true, nomen: true
 */
@@ -67,7 +67,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.77-121017';
+        this.version = '1.78-171017';
         /**
          * @property stString
          * @type {String}
@@ -110,8 +110,8 @@
                         [32] - SortSyndWars (удален)
                         [33] - LinksInOne2One
                         [34] - One2OneCallerInfo
-                        [35] - MinBetAtRoulette
-                        [36] - NotesForFriends
+                        [35] - MinBetAtRoulette (удален)
+                        [36] - NotesForFriends (удален)
                         [37] - PortsAndTerminals
                         [38] - RangeWeapon
                         [39] - RentAndSale
@@ -275,7 +275,7 @@
                         [0] - звук при вызове */
                         '@' +
                     /*
-                     [22] - NotesForFriends
+                     [22] - NotesForFriends (удален)
                         [0] - отображать/не отображать на главной странице
                         [1] - ID жалобы */
                         '@|' +
@@ -630,35 +630,6 @@
             }
 
             return result;
-        };
-    };
-
-    /**
-     * @class EncodeUTF
-     * @constructor
-     */
-    var EncodeUTF = function () {
-        /**
-         * @method init
-         * @param    {String}   str
-         * @return   {String}
-         */
-        this.init = function (str) {
-            var rez = '',
-                ch = 0,
-                i;
-
-            for (i = 0; i < str.length; i++) {
-                ch = str.charCodeAt(i);
-                if (ch > 1024) {
-                    ch = ch === 1025 ? 1016 : (ch === 1105 ? 1032 : ch);
-                    rez += String.fromCharCode(ch - 848);
-                } else if (ch <= 127) {
-                    rez += str.charAt(i);
-                }
-            }
-
-            return rez;
         };
     };
 
@@ -1083,22 +1054,6 @@
                     'покер и заработанных денег в боях на странице ' +
                     'информации персонажа.' +
                     this.getGitHubLink('gameMania'), '28'],
-                ['Минимальные ставки в рулетке', 'Показывает числа, на ' +
-                    'которые поставлено меньше всего Гб в данный момент на ' +
-                    'странице <a target="_blank" href="http://www.ganjawars.' +
-                    'ru/roulette.php">рулетки</a>. Количество выводимых ' +
-                    'чисел определяется пользователем.' +
-                    this.getGitHubLink('minBetAtRoulette'), '35'],
-                ['Комментарии для друзей и черного списка', 'Добавляет ' +
-                    'возможность сохранять комментарии для ваших друзей и ' +
-                    'персонажей из черного списка. Все настройки находятся' +
-                    'на <a target="_blank" href="http://www.ganjawars.ru/' +
-                    'home.friends.php">этой</a> странице.' +
-                    this.getGitHubLink('notesForFriends') +
-                    '<span style="margin-left: 15px;">идея: ' +
-                    '<a href="http://www.ganjawars.ru/info.php?id=993979" ' +
-                    'style="font-weight: bold;" target="_blank">ЧупакаЪра' +
-                    '</a></span>', '36'],
                 ['Порты и терминалы', 'Показывает на карте местонахождение ' +
                     'терминалов и портов.' +
                     this.getGitHubLink('portsAndTerminals'), '37'],
@@ -1209,8 +1164,7 @@
                 ['Контроль Уранa и ЭC', 'Сортировка объектов по типу, ' +
                     'островам и контролирующим синдикатам на странице ' +
                     '<a target="_blank" href="http://www.ganjawars.ru/' +
-                    'info.realty.php?id=2">ГосЭнегоАтом</a>. Выводит онлайны ' +
-                    'и уровни контролирующего синдиката и его союза.' +
+                    'info.realty.php?id=2">ГосЭнегоАтом</a>' +
                     this.getGitHubLink('gosEnergoAtomFilter'), '29'],
                 ['Проверка сектора после боя', 'Выводит сообщение после боя, ' +
                     'если персонаж находится не в секторе со своим домом и ' +
@@ -1285,9 +1239,10 @@
                     '/market.php">доске объявлений</a>. Поиск осуществляется ' +
                     'по мере ввода названия предмета.' +
                     this.getGitHubLink('doFilter'), '21'],
-                ['Фильтр ресурсов на странице статистики', 'Фильтр ресурсов ' +
-                    'на <a target="_blank" href="http://www.ganjawars.ru/' +
-                    'stats.php">странице статистики</a><br><br>Введите ' +
+                ['Фильтр ресурсов на странице экономической статистики',
+                    'Фильтр ресурсов на <a target="_blank" ' +
+                    'href="http://www.ganjawars.ru/stats.php">странице ' +
+                    'экономической статистики</a><br><br>Введите ' +
                     'названия ресурсов через запятую, которые будут ' +
                     'отображаться на вышеуказанной странице. Например: ' +
                     'Уран,Водоросли,Маковая соломка,Трава,Батареи<br>' +
@@ -8224,155 +8179,10 @@
      */
     var GosEnergoAtomFilter = function () {
         /**
-         * @property divRezult
-         * @type {HTMLDivElement}
-         */
-        this.divRezult = general.doc.createElement('div');
-        /**
          * @property trs
          * @type {NodeList|null}
          */
         this.trs = null;
-        /**
-         * @property strRez
-         * @type {String}
-         */
-        this.strRez = '';
-
-        /**
-         * @method parseSyndPage
-         * @param   {Object}    obj
-         * @return  {Array}
-         */
-        this.parseSyndPage = function (obj) {
-            var nameAndLvl = obj.querySelector('td[class="wb"][align="left"]' +
-                        '[width="100%"]'),
-                mass = [];
-
-            mass[0] = nameAndLvl.firstElementChild.innerHTML;
-            mass[1] = /^(\d+)/.exec(obj.querySelector('td[colspan="6"]' +
-                        '[class="wb"][bgcolor="#d0eed0"]' +
-                        '[align="center"]>b').innerHTML)[1];
-            mass[2] = /(\d+) LVL/.exec(nameAndLvl.innerHTML)[1];
-
-            return mass;
-        };
-
-        /**
-         * @method saveSyndData
-         * @param   {Object}    span
-         * @param   {String}    url
-         */
-        this.saveSyndData = function (span, url) {
-            var syndData = this.parseSyndPage(span);
-            this.strRez += '<table><tr><td style="color: #FF0000;">(' +
-                syndData[1] + ')</td><td><a target="_blank" href="' + url +
-                '" style="color: #0000FF;">' + syndData[0] + '</a></td>' +
-                '<td style="color: #008000;">[' + syndData[2] +
-                ']</td></tr></table>';
-        };
-
-        /**
-         * @method showRezult
-         */
-        this.showRezult = function () {
-            var imgclose = general.doc.createElement('img');
-
-            imgclose.src = general.imgPath + 'close.gif';
-            imgclose.setAttribute('style', 'cursor: pointer; ' +
-                    'margin: 0px 0px 3px 3px');
-            this.divRezult.innerHTML = this.strRez;
-            this.divRezult.appendChild(imgclose);
-
-            var _this = this;
-            imgclose.addEventListener('click', function () {
-                _this.divRezult.style.visibility = 'hidden';
-            }, false);
-        };
-
-        /**
-         * @method getOnline
-         * @param   {String|null}   url
-         * @param   {Object}        img
-         */
-        this.getOnline = function (url, img) {
-            if (!url) {
-                var pos = new GetPos().init(img.parentNode.nextElementSibling);
-                this.divRezult.style.left = pos.x + 20;
-                this.divRezult.style.top = pos.y;
-                this.divRezult.innerHTML = '<img style="margin: 3px 3px ' +
-                    '3px 3px;" src="' + general.imgPath + 'preloader.gif" />';
-                this.divRezult.style.visibility = 'visible';
-
-                this.strRez = '';
-                url = img.parentNode.querySelector('a').href + '&page=online';
-            }
-
-            var _this = this;
-            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
-                var spanContent = general.doc.createElement('span'),
-                    linkUnion;
-
-                spanContent.innerHTML = xml.responseText;
-
-                if (/online$/.test(url)) {
-                    _this.saveSyndData(spanContent, url);
-                    url = url.replace(/online/g, 'politics');
-                    general.root.setTimeout(function () {
-                        _this.getOnline(url, img);
-                    }, 1000);
-                } else if (/politics/.test(url)) {
-                    linkUnion = spanContent.querySelector('td[class="wb"]' +
-                        '[style="padding:10px;"]>' +
-                        'a[href*="/syndicate.php?id="]');
-                    if (linkUnion) {
-                        general.root.setTimeout(function () {
-                            _this.getOnline(linkUnion + '&page=online&union=1',
-                                    img);
-                        }, 1000);
-                        return;
-                    }
-
-                    _this.showRezult();
-                } else {
-                    _this.saveSyndData(spanContent, url);
-                    _this.showRezult();
-                }
-            }, function () {
-                _this.getOnline(url, img);
-            });
-        };
-
-        /**
-         * @method preGetOnline
-         * @param   {HTMLImageElement}  img
-         * @return  {Function}
-         */
-        this.preGetOnline = function (img) {
-            var _this = this;
-            return function () {
-                _this.getOnline(null, img);
-            };
-        };
-
-        /**
-         * @method setImgGetData
-         */
-        this.setImgGetData = function () {
-            var first, img, i;
-            for (i = 1; i < this.trs.length; i++) {
-                first = this.trs[i].firstElementChild;
-                if (/\/img\/synds\/\d+.gif/.test(first.innerHTML)) {
-                    img = general.doc.createElement('img');
-                    img.src = 'http://images.ganjawars.ru/i/home/wlog.gif';
-                    img.setAttribute('style', 'cursor: pointer; ' +
-                            'margin-left: 3px');
-                    first.appendChild(img);
-                    img.addEventListener('click',
-                            this.preGetOnline(img), false);
-                }
-            }
-        };
 
         /**
          * @method sortGosEnergoAtomBySynd
@@ -8410,7 +8220,6 @@
             }
 
             this.getTrsTable();
-            this.setImgGetData();
         };
 
         /**
@@ -8530,12 +8339,6 @@
                 '<td><select id="selectSynd" style="margin-top: 5px;">' +
                 '<option value="all">Все</option></select></td></tr></table>';
             general.doc.body.appendChild(divSort);
-
-            this.divRezult.setAttribute('style', 'position: absolute; ' +
-                    'visibility: hidden; border: solid 1px #339933; ' +
-                    'border-radius: 5px; background-color: #D0EED0; ' +
-                    'top:0; left:0;');
-            general.doc.body.appendChild(this.divRezult);
 
             var stData = general.getData(17),
                 _this = this;
@@ -8962,481 +8765,6 @@
             }, function () {
                 general.cons.log('Error xhr on One2OneCallerInfo');
             });
-        };
-    };
-
-    /**
-     * @class MinBetAtRoulette
-     * @constructor
-     */
-    var MinBetAtRoulette = function () {
-        /**
-         * @method calculateBets
-         */
-        this.calculateBets = function () {
-            var url = 'http://www.ganjawars.ru/rouinfo.php?id=0',
-                _this = this;
-
-            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
-                var spanContent = general.doc.createElement('span'),
-                    divRez = general.$('resultBets');
-
-                spanContent.innerHTML = xml.responseText;
-
-                //если нет ни одной ставки
-                if (/Доход казино: <b>0\$<\/b>/.test(spanContent.innerHTML)) {
-                    divRez.innerHTML = '<span style="color: #FF0000;">' +
-                        'Ставок пока нет</span>';
-                    return;
-                }
-
-                var trs = spanContent.querySelector('center+table+br+' +
-                        'center+table[border="0"][cellpadding="5"]' +
-                        '[cellspacing="1"][align="center"]').
-                            querySelectorAll('tr'),
-                    bets = [],
-                    i;
-
-                for (i = 0; i < 36; i++) {
-                    bets[i] = [i, 0];
-                }
-
-                var num, rate;
-                for (i = 0; i < trs.length; i++) {
-                    num = /Число (\d+)/.exec(trs[i].innerHTML);
-                    if (num) {
-                        num = +num[1];
-                        rate = +trs[i].firstElementChild.innerHTML.
-                            replace(/\$/, '').replace(/,/g, '');
-                        bets[num - 1][1] += rate;
-                    }
-                }
-
-                bets.sort(function (a, b) {
-                    var rez;
-
-                    if (a[1] > b[1]) {
-                        rez = 1;
-                    } else if (a[1] < b[1]) {
-                        rez = -1;
-                    } else {
-                        rez = 0;
-                    }
-
-                    return rez;
-                });
-
-                var str = '<table style="border: #339933 solid 1px; ' +
-                    'width: 100%;"><tr style="font-weight: bold; ' +
-                    'text-align: center;"><td>Число</td><td>Ставка</td></tr>',
-                    count = +general.$('inptext').value,
-                    j;
-
-                for (i = 0, j = 0; i < 36; i++) {
-                    if (j === count) {
-                        break;
-                    }
-
-                    if (general.$('chknull').checked || bets[i][1]) {
-                        str += '<tr style="text-align: center;">' +
-                            '<td style="color: #0000FF;">' + (bets[i][0] + 1) +
-                            '</td><td style="color: #FF0000;">$' + bets[i][1] +
-                            '</td></tr>';
-
-                        j++;
-                    }
-                }
-
-                divRez.innerHTML = str + '</table>';
-            }, function () {
-                general.root.setTimeout(function () {
-                    _this.calculateBets();
-                }, 1000);
-            });
-        };
-
-        /**
-         * @method init
-         */
-        this.init = function () {
-            var target = general.doc.querySelector('table+br+' +
-                    'table[width="100%"][cellspacing="0"][cellpadding="0"]');
-
-            target = target ? target.
-                querySelector('td[valign="top"]+td') : false;
-
-            if (target) {
-                target.innerHTML += '<div style="background: #D0EED0; ' +
-                    'margin-top: 5px; padding: 5px; text-align: center;">' +
-                    '<span style="color: #0000FF;">Показать минимальные ' +
-                    'ставки</span><br>Вывести <input id="inptext" value="5" ' +
-                    'maxlength="2" style="width: 30px;"> чисел ' +
-                    '<input type="button" id="butb" value=">>" /><br>' +
-                    '<input type="checkbox" id="chknull" ' +
-                    'checked /> <label for="chknull">Числа, на которые еще ' +
-                    'не ставили</label></div><div id="resultBets" ' +
-                    'style="visibility: hidden; text-align: center; ' +
-                    'background-color:#D0EED0; padding: 5px;"></div>';
-
-                var _this = this;
-                general.$('butb').addEventListener('click', function () {
-                    var count = +general.$('inptext').value;
-                    if (isNaN(count) || (count < 1)  || (count > 36)) {
-                        alert('Введите число от 1 до 36');
-                        return;
-                    }
-
-                    var divb = general.$('resultBets');
-                    divb.style.visibility = 'visible';
-                    divb.innerHTML = '<img src="' + general.imgPath +
-                        'preloader.gif" />';
-
-                    _this.calculateBets();
-                }, false);
-
-                general.$('inptext').addEventListener('keypress', function (e) {
-                    var ev = e || general.root.event;
-                    if (ev.keyCode === 13) {
-                        general.$('butb').click();
-                    }
-                }, false);
-            }
-        };
-    };
-
-    /**
-     * @class NotesForFriends
-     * @constructor
-     */
-    var NotesForFriends = function () {
-        /**
-         * @property friendPage
-         * @type {Boolean}
-         */
-        this.friendPage = /friends/.test(general.loc);
-        /**
-         * @property data
-         * @type {String}
-         */
-        this.data = '';
-        /**
-         * @property divTooltip
-         * @type {HTMLDivElement|null}
-         */
-        this.divTooltip = null;
-        /**
-         * @property urlComplaint
-         * @type {String}
-         */
-        this.urlComplaint = 'http://www.ganjawars.ru/complaint.php?isk_id=';
-
-        /**
-         * @method setSettingsPanel
-         * @param   {Element}  table
-         */
-        this.setSettingsPanel = function (table) {
-            var imgSettings = general.doc.createElement('img');
-            imgSettings.setAttribute('style', 'cursor: pointer; ' +
-                    'margin-right: 10px;');
-            imgSettings.setAttribute('title', 'Настройки');
-            imgSettings.src = 'http://images.ganjawars.ru/i/home/' +
-                'properties.gif';
-
-            var target = table.querySelector('td');
-            target.insertBefore(imgSettings, target.firstElementChild);
-
-            var stData = general.getData(22);
-            if (stData[1]) {
-                var linkComplaint = general.doc.createElement('a');
-                linkComplaint.setAttribute('style', 'color: #0000FF; ' +
-                    'margin-right: 10px; text-decoration: none;');
-                linkComplaint.setAttribute('target', '_blank');
-                linkComplaint.href = this.urlComplaint + stData[1];
-                linkComplaint.innerHTML = 'Заметки';
-                target.insertBefore(linkComplaint, target.firstElementChild);
-            }
-
-            imgSettings.addEventListener('click', function () {
-                table.innerHTML = '<tr><td>Создайте и сохраните ПУСТУЮ ' +
-                    'жалобу (если еще не создана) на <a href="http://www.' +
-                    'ganjawars.ru/complaint.php" target="_blank">этой</a> ' +
-                    'странице.<br><br><input id="compl_id"  maxlength="7" ' +
-                    'size="6" /> <label for="compl_id">ID жалобы</label><br>' +
-                    '<input id="chk" type="checkbox" /> <label for="chk">' +
-                    'Заметки на главной странице</label><br><input id="back" ' +
-                    'type="button" value="Отмена" /> <input id="set" ' +
-                    'type="button" value="Принять" /><td></tr>';
-
-                var inp = general.$('compl_id'),
-                    chk = general.$('chk'),
-                    butOk = general.$('set'),
-                    back = general.$('back');
-
-                inp.value = stData[1];
-                if (!stData[1]) {
-                    butOk.disabled = true;
-                    inp.style.background = '#F4DEDE';
-                }
-
-                chk.checked = stData[0];
-
-                inp.addEventListener('input', function () {
-                    var _this = this;
-                    if (!(/^\d+\s*$/.test(_this.value))) {
-                        butOk.disabled = true;
-                        _this.style.background = '#F4DEDE';
-                    } else {
-                        butOk.disabled = false;
-                        _this.style.background = '#FFFFFF';
-                    }
-                }, false);
-
-                butOk.addEventListener('click', function () {
-                    general.setData([chk.checked ? '1' : '', inp.value], 22);
-                    general.root.location.reload();
-                }, false);
-
-                back.addEventListener('click', function () {
-                    general.root.location.reload();
-                }, false);
-            }, false);
-        };
-
-        /**
-         * @method getPersNote
-         * @param    {String}   id
-         * @return   {String}
-         */
-        this.getPersNote = function (id) {
-            if (/Ошибка|Err/.test(this.data)) {
-                return this.data;
-            }
-
-            var reg = new RegExp('\\|' + id + '\\|: ([^\\n]*)\\n'),
-                note = reg.exec(this.data);
-
-            return note ? note[1] : '';
-        };
-
-        /**
-         * @method saveData
-         * @param   {Object}  inp
-         */
-        this.saveData = function (inp) {
-            inp.disabled = true;
-            var val = inp.value;
-            inp.value = 'Сохранение...';
-
-            var reg = new RegExp('\\|' + inp.id + '\\|: [^\\n]*\\n'),
-                rezTest = reg.test(this.data);
-
-            //поле пустое и записи для персонажа нет
-            if (!rezTest && !val) {
-                inp.disabled = false;
-                inp.value = '';
-                alert('Нечего сохранять');
-                return;
-            }
-
-            //нет записи для персонажа, добавляем
-            if (!rezTest && val) {
-                this.data += '|' + inp.id + '|: ' + val + '\n';
-            //есть запись и ничего не введено, удаляем ее
-            } else if (rezTest && !val) {
-                this.data = this.data.replace(reg, '');
-            } else {
-                this.data = this.data.
-                    replace(reg, '|' + inp.id + '|: ' + val + '\n');
-            }
-
-            var param = 'isk_id=' + general.getData(22)[1] +
-                    '&save_body=1&isk_body=' +
-                    escape(new EncodeUTF().init(this.data)),
-                url = 'http://www.ganjawars.ru/complaint.php';
-
-            new AjaxQuery().init(url, 'POST', param, true, function () {
-                general.root.location.reload();
-            }, function () {
-                inp.disabled = false;
-                inp.value = 'Ошибка ответа сервера...';
-            });
-        };
-
-        /**
-         * @method addEvent
-         * @param   {String}    id
-         * @param   {String}    evnt
-         */
-        this.addEvent = function (id, evnt) {
-            var node = general.$(id),
-                _this = this;
-
-            if (evnt === 'mouseout') {
-                node.addEventListener(evnt, function () {
-                    _this.divTooltip.style.display = 'none';
-                }, false);
-
-                return;
-            }
-
-            node.addEventListener(evnt, function (e) {
-                var ev = e || general.root.event;
-                _this.divTooltip.style.left = ev.pageX - 50;
-                _this.divTooltip.style.top = ev.pageY - 30;
-                _this.divTooltip.innerHTML = _this.
-                    getPersNote('p' + (/\d+/.exec(id)[0])) || '-------';
-                _this.divTooltip.style.display = '';
-            }, false);
-        };
-
-        /**
-         * @method checkKeyCode
-         * @param   {Object}    ths
-         */
-        this.checkKeyCode = function (ths) {
-            return function (e) {
-                var ev = e || general.root.event;
-                if (ev.keyCode === 13) {
-                    ths.saveData(this);
-                }
-            };
-        };
-
-        /**
-         * @method notesClick
-         * @param   {String}    id
-         */
-        this.notesClick = function (id) {
-            return function () {
-                var inp = general.$(id);
-                inp.style.display = inp.style.display === 'none' ? '' : 'none';
-                inp.focus();
-            };
-        };
-
-        /**
-         * @method setFriendPage
-         */
-        this.setFriendPage = function () {
-            var table = general.doc.
-                    querySelector('table[align="center"][width="600"]'),
-                persLinks = table.querySelectorAll('a[href*="/info.php?id="]');
-
-            this.setSettingsPanel(table.querySelector('table'));
-
-            var inpText,
-                persId,
-                i;
-
-            for (i = 0; i < persLinks.length; i++) {
-                persId = /\?id=(\d+)/.exec(persLinks[i].href)[1];
-                persLinks[i].parentNode.innerHTML += ' <span id="info_' +
-                    persId + '" style="cursor: pointer;">[?]</span> ' +
-                    '<img id="edit_' + persId + '" src="http://images.' +
-                    'ganjawars.ru/i/home/wlog.gif" style="cursor: pointer;" ' +
-                    'title="Изменить заметку"/><br><input id="p' +
-                    persId + '" value="' + this.getPersNote('p' + persId) +
-                    '" style="width: 250px; margin-top: 3px; display: none;" ' +
-                    'title="Введите заметку и нажмите Enter" />';
-
-                inpText = general.$('p' + persId);
-                if (/Err/.test(inpText.value)) {
-                    inpText.disabled = true;
-                } else {
-                    inpText.addEventListener('keypress',
-                        this.checkKeyCode(this), false);
-                }
-
-                general.$('edit_' + persId).
-                    addEventListener('click',
-                        this.notesClick('p' + persId), false);
-
-                this.addEvent('info_' + persId, 'mouseover');
-                this.addEvent('info_' + persId, 'mouseout');
-            }
-        };
-
-        /**
-         * @method setMainPage
-         * @param   {Object}    _this
-         */
-        this.setMainPage = function (_this) {
-            var friendsbody = general.$('friendsbody');
-            if (!(/\[\?\]/.test(friendsbody.innerHTML))) {
-                var nobrs = friendsbody.querySelectorAll('nobr'),
-                    persLink,
-                    id,
-                    i;
-
-                for (i = 0; i < nobrs.length; i++) {
-                    persLink = nobrs[i].
-                        querySelector('a[href*="/info.php?id="]');
-
-                    if (persLink) {
-                        id = /\?id=(\d+)/.exec(persLink.href)[1];
-                        nobrs[i].innerHTML += ' <span id="info_' + id +
-                            '" style="cursor: pointer;">[?]</span>';
-
-                        this.addEvent('info_' + id, 'mouseover');
-                        this.addEvent('info_' + id, 'mouseout');
-                    }
-                }
-
-                //обработчик 'onclick' на ссылке "Друзья онлайн"
-                general.doc.querySelector('a[onclick*="return setfriends"]').
-                    addEventListener('click', function () {
-                        general.root.setTimeout(_this.setMainPage(_this), 50);
-                    }, false);
-            }
-        };
-
-        /**
-         * @method selectMode
-         */
-        this.selectMode = function () {
-            if (this.friendPage) {
-                this.setFriendPage();
-            } else {
-                this.setMainPage(this);
-            }
-        };
-
-        /**
-         * @method init
-         */
-        this.init = function () {
-            var stData = general.getData(22);
-            if (this.friendPage || stData[0]) {
-                this.divTooltip = general.doc.createElement('div');
-                this.divTooltip.setAttribute('style', 'position: absolute; ' +
-                    'display: none; background: #E7FFE7; border: 1px #339933 ' +
-                    'solid; padding: 3px; border-radius: 5px;');
-                general.doc.body.appendChild(this.divTooltip);
-
-                this.data = 'Err: Проверьте ID жалобы в настройках';
-
-                if (stData[1]) {
-                    var url = this.urlComplaint + stData[1],
-                        _this = this;
-
-                    new AjaxQuery().
-                        init(url, 'GET', null, true, function (xml) {
-                            var spanContent = general.doc.createElement('span');
-                            spanContent.innerHTML = xml.responseText;
-                            var txtArea = spanContent.querySelector('textarea');
-                            if (txtArea) {
-                                _this.data = txtArea.value;
-                            }
-
-                            _this.selectMode();
-                        }, function () {
-                            _this.data = 'Ошибка ответа сервера...';
-                            _this.selectMode();
-                        });
-                } else {
-                    this.selectMode();
-                }
-            }
         };
     };
 
@@ -13275,26 +12603,6 @@
             if (initScript[46]) {
                 try {
                     new SyndAnalyser().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/roulette\.php$/.test(general.loc)) {
-            if (initScript[35]) {
-                try {
-                    new MinBetAtRoulette().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/me(\/|\.php)|\/home\.friends\.php/.test(general.loc)) {
-            if (initScript[36]) {
-                try {
-                    new NotesForFriends().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
