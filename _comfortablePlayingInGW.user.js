@@ -12,7 +12,7 @@
 // @include         *ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.78-171017
+// @version         1.79-211017
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -67,7 +67,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.78-171017';
+        this.version = '1.79-211017';
         /**
          * @property stString
          * @type {String}
@@ -9653,8 +9653,8 @@
          * @param   {int}   val
          */
         this.setLeftToLevel = function (val) {
-            var syndLevels = [5, 15, 37, 76, 143, 249, 412, 655, 1007, 1505,
-                2199, 3149, 4433, 6146, 8407, 11362, 15192, 20113, 26394,
+            var syndLevels = [5, 15, 37, 76, 143, 200, 280, 500, 750, 1000,
+                1250, 1600, 2200, 3000, 4500, 6000, 9000, 15000, 26394,
                 34353, 44377, 56931, 72568, 91947, 115853, 145214, 181127,
                 224882, 277996, 342247, 419713, 512821, 624395, 757716, 916591,
                 1105426, 1329313, 1594124, 1906627, 2274598, 2723523, 3293658,
