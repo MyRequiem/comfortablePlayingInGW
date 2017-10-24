@@ -12,7 +12,7 @@
 // @include         http://www.ganjawars.ru/wargroup.php*
 // @grant           none
 // @license         MIT
-// @version         2.32-250917
+// @version         2.33-241017
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -148,22 +148,6 @@
 
             return general.doc.
                 querySelector('td.txt[align="left"] nobr:first-child');
-        };
-    };
-
-    /**
-     * @class GetRandom
-     * @constructor
-     */
-    var GetRandom = function () {
-        /**
-         * @method init
-         * @param   {int}   a
-         * @param   {int}   b
-         * @return  {int}
-         */
-        this.init = function (a, b) {
-            return Math.round(a + (b - a) * Math.random());
         };
     };
 
@@ -478,7 +462,7 @@
                 var _this = this;
                 general.root.setInterval(function () {
                     _this.startWorkPostGrenadesBroken(_this);
-                }, new GetRandom().init(30, 60) * 1000);
+                }, Math.round(20000 + 20000 * Math.random()));
             }
         };
     };
