@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.01-121216
+// @version         2.02-011117
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -16,7 +16,7 @@
 /*jslint browser: true, maxlen: 80, vars: true, nomen: true, plusplus: true */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -217,7 +217,11 @@
                 'уменьшающий на N/100 получаемое персонажем опьянение при ' +
                 'выпивании коктейлей в барах. То есть, при N=50 получаемое ' +
                 'опьянение уменьшится в два раза. Максимальное полезное ' +
-                'значение - 100.']
+                'значение - 100.'],
+            'бонус защиты': ['Бонус защиты снижает урон, получаемый ' +
+                'персонажем, на (количество бонуса)% независимо от вида ' +
+                'урона. Снижение урона распространяется и на обычные ' +
+                'выстрелы, и на гранаты, и на критические попадания.']
         };
 
         /**
