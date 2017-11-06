@@ -6369,11 +6369,13 @@
                     ['Маскировка', '/shop.php?shop=shop_masks'],
                     ['Тепловизоры', '/shop.php?shop=shop_wear'],
                     ['Пояса', '/shop.php?shop=shop_belts'],
-                    ['Оборудование', '/shop.php?shop=shop_phones'],
+                    ['Правый карман', '/shop.php?shop=shop_rightpocket'],
+                    ['Левый карман', '/shop.php?shop=shop_leftpocket'],
+                    ['Доп.карманы', '/shop.php?shop=shop_epockets'],
                     ['Транспорт', '/shop.php?shop=shop_transport'],
                     ['Цветы', '/shop.php?shop=shop_flowers'],
                     ['Аптека', '/shop.php?shop=shop_drugs'],
-                    ['Подарки', '/shop.php?shop=shop_gifts']
+                    ['Сувениры', '/shop.php?shop=shop_gifts']
                 ], prnt: 'shop_1', arrow: 'shop_gos', offsetY: -75},
                 {divm: 0, lines: [
                     ['Огнестрельное оружие', '', 'zag'],
@@ -6390,8 +6392,9 @@
                     ['Маскировка', '/shopc.php?shop=shop_masks_c'],
                     ['Тепловизоры', '/shopc.php?shop=shop_wear_c'],
                     ['Пояса', '/shopc.php?shop=shop_belts_c'],
-                    ['Оборудование', '/shopc.php?shop=shop_misc_c'],
-                    ['Подарки', '/shopc.php?shop=shop_gifts_c'],
+                    ['Правый карман', '/shopc.php?shop=shop_rightpocket_c'],
+                    ['Левый карман', '/shopc.php?shop=shop_leftpocket_c'],
+                    ['Доп.карманы', '/shopc.php?shop=shop_epockets_c'],
                     ['Аптека', '/shopc.php?shop=shop_drugs_c'],
                     ['Транспорт', '/shopc.php?shop=shop_transport_c']
                 ], prnt: 'shop_1', arrow: 'shop_hightech', offsetY: -75},
