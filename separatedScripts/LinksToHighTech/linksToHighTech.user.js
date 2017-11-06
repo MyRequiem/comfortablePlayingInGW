@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/shop.php*
 // @grant           none
 // @license         MIT
-// @version         1.21-121216
+// @version         1.22-061117
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458] идея Buger_man
 // ==/UserScript==
 
@@ -16,7 +16,7 @@
 /*jslint browser: true, maxlen: 80, vars: true, plusplus: true, regexp: true */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -73,9 +73,9 @@
         this.highTechItems = {
             'htGroup': ['auto', 'heavy', 'sniper', 'ppguns', 'shotguns',
                 'grl', 'armour', 'helmets', 'boots', 'masks', 'wear',
-                'belts', 'phones', 'drugs', 'transport', 'gifts'],
-            'sniper': 'snipe',
-            'phones': 'misc'
+                'belts', 'rightpocket', 'leftpocket', 'epockets', 'drugs',
+                'transport'],
+            'sniper': 'snipe'
         };
 
 

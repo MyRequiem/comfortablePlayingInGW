@@ -8048,9 +8048,9 @@
         this.highTechItems = {
             'htGroup': ['auto', 'heavy', 'sniper', 'ppguns', 'shotguns',
                 'grl', 'armour', 'helmets', 'boots', 'masks', 'wear',
-                'belts', 'phones', 'drugs', 'transport', 'gifts'],
-            'sniper': 'snipe',
-            'phones': 'misc'
+                'belts', 'rightpocket', 'leftpocket', 'epockets', 'drugs',
+                'transport'],
+            'sniper': 'snipe'
         };
 
         /**
