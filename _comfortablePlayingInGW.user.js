@@ -4763,31 +4763,34 @@
          */
         this.init = function () {
             //если в постройках или не на пустрой грядке
-            if ((/section=items/.test(general.root.location.href)) ||
-                    !(/Грядка пустая/.test(general.doc.body.innerHTML))) {
+            if (/section=items/.test(general.root.location.href) ||
+                    !general.doc.querySelector('div>' +
+                        'img[src$="/img/ferma/ground.png"]')) {
                 return;
             }
 
-            var prices1 = general.doc.querySelectorAll('label>font' +
-                        '[color="#006600"]>b:last-child'),
-                prices2 = general.doc.querySelectorAll('li>font' +
-                        '[color="#990000"]>b:first-child'),
-                time = general.doc.querySelectorAll('form[action$=' +
-                        '"/ferma.php"]>li:nth-child(odd)'),
+            var plants = general.doc.querySelectorAll('table[cellspacing="0"]' +
+                    '[cellpadding="0"]  td[valign="top"][onclick*="btn_"]'),
+                price1,
+                price2,
+                target,
+                time,
                 span,
+                exp,
                 i;
 
-            for (i = 0; i < prices1.length; i++) {
+            for (i = 0; i < plants.length; i++) {
                 span = general.doc.createElement('span');
                 span.setAttribute('style', 'font-size: 9px;');
-                span.innerHTML = this.calculateFarm(+(/\$(\d+)/.
-                            exec(prices1[i].innerHTML)[1]),
-                    +(/\$(\d+)/.exec(prices2[i].innerHTML)[1]),
-                    +(/созревания:\s(\d+)/.exec(time[i].innerHTML)[1]),
-                    parseFloat(/(\d+\.?\d*) опыта/.
-                        exec(time[i].nextElementSibling.innerHTML)[1]));
-
-                prices1[i].parentNode.appendChild(span);
+                price1 = +/\$(\d+)/.exec(plants[i].querySelector('font' +
+                    '[color="#006600"]>b:last-child').innerHTML)[1];
+                price2 = +/\$(\d+)/.exec(plants[i].querySelector('font' +
+                    '[color="#990000"]>b').innerHTML)[1];
+                time = +/созревания:\s(\d+)/.exec(plants[i].innerHTML)[1];
+                exp = parseFloat(/(\d+\.?\d*) опыта/.exec(plants[i].innerHTML));
+                span.innerHTML = this.calculateFarm(price1, price2, time, exp);
+                target = plants[i].querySelector('br');
+                target.parentNode.insertBefore(span, target);
             }
         };
     };
