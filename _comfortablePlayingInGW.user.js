@@ -219,6 +219,7 @@
                     /*
                     [11] - AllPlantsOnFarm
                         [0]  - номер первого недоступного растения
+                                (не используется с версии 1.82-101117)
                         [1]  - время сброса счетчика
                         [2]  - количество гб
                         [3]  - количество производа
@@ -1279,12 +1280,11 @@
                 ['Удобные ссылки на ферме', 'Удобные ссылки для полива, ' +
                     'сбора, вскапывания, посадки на ферме.' +
                     this.getGitHubLink('comfortableLinksForFarm'), '11'],
-                ['Все растения на одной странице, счетчики', 'На ферме ' +
-                    'добавляет выпадающий список для выбора и посадки любого ' +
-                    'растения. Для каждого растения присутствует изображение,' +
-                    ' производственный опыт и прибыль (общие и в 1 час), ' +
-                    'цена, время созревания в минутах и часах. Счетчики ' +
-                    'Гб и производственного опыта.<br><br>' +
+                ['Все растения на одной странице, счетчики', 'Счетчик гб и ' +
+                    'производственного опыта на ферме. Для каждого растения ' +
+                    'присутствует изображение, производственный опыт и ' +
+                    'прибыль (общие и в 1 час), цена, время созревания в ' +
+                    'минутах и часах.<br><br>' +
                     '<input id="showGbFarmCounter" type="checkbox" ' +
                     'disabled /> показывать счетчик Гб<br>' +
                     '<input id="showExpFarmCounter" type="checkbox" ' +
@@ -5407,105 +5407,93 @@
      */
     var AllPlantsOnFarm = function () {
         /**
-         * @property tm
-         * @type {int}
-         */
-        this.tm = 1000;
-        /**
-         * @property canPlant
-         * @type {Boolean}
-         */
-        this.canPlant = true;
-        /**
          * @property target
-         * @type {Boolean}
+         * @type {Object|null}
          */
-        this.target = false;
+        this.target = null;
         /**
          * @property plant
          * @type {Object}
          */
         this.plant = {
-            'ukrop': {name: 'Укроп', price: 5, time: 12, bonus: 6, exp: 0.007,
-                id: 0},
+            'ukrop': {name: 'Укроп', price: 5, time: 12, bonus: 6, exp: 0.007},
             'opyata': {name: 'Странные опята', price: 10, time: 376, bonus: 40,
-                exp: 0.204, id: 1},
+                exp: 0.204},
             'tulips': {name: 'Тюльпаны', price: 20, time: 67, bonus: 26,
-                exp: 0.04, id: 2},
+                exp: 0.04},
             'mak': {name: 'Полевой мак', price: 12, time: 27, bonus: 15,
-                exp: 0.02, id: 3},
+                exp: 0.02},
             'muhomor': {name: 'Мухомор', price: 150, time: 150, bonus: 165,
-                exp: 0.098, id: 4},
+                exp: 0.098},
             'podsolnuh': {name: 'Подсолнух', price: 50, time: 126, bonus: 62,
-                exp: 0.082, id: 5},
+                exp: 0.082},
             'kaktus': {name: 'Коричневый кактус', price: 160, time: 376,
-                bonus: 197, exp: 0.245, id: 6},
+                bonus: 197, exp: 0.245},
             'geran': {name: 'Герань', price: 10, time: 57, bonus: 17,
-                exp: 0.048, id: 7},
+                exp: 0.048},
             'tabak': {name: 'Веселый табак', price: 20, time: 150, bonus: 37,
-                exp: 0.114, id: 8},
+                exp: 0.114},
             'korica': {name: 'Корица забористая', price: 16, time: 68,
-                bonus: 25, exp: 0.057, id: 9},
+                bonus: 25, exp: 0.057},
             'hren': {name: 'Хрен', price: 210, time: 300, bonus: 244,
-                exp: 0.229, id: 10},
+                exp: 0.229},
             'baklajan': {name: 'Баклажан', price: 150, time: 226, bonus: 176,
-                exp: 0.171, id: 11},
+                exp: 0.171},
             'chai': {name: 'Зеленый чай', price: 50, time: 90, bonus: 63,
-                exp: 0.087, id: 12},
+                exp: 0.087},
             'aloe': {name: 'Алоэ', price: 120, time: 45, bonus: 127,
-                exp: 0.044, id: 13},
+                exp: 0.044},
             'ogurets': {name: 'Огурцы', price: 350, time: 68, bonus: 360,
-                exp: 0.065, id: 14},
+                exp: 0.065},
             'klubnika': {name: 'Клубника', price: 100, time: 450, bonus: 159,
-                exp: 0.392, id: 15},
+                exp: 0.392},
             'malina': {name: 'Малина', price: 190, time: 90, bonus: 203,
-                exp: 0.087, id: 16},
+                exp: 0.087},
             'shalfei': {name: 'Задумчивый шалфей&nbsp;', price: 800, time: 715,
-                bonus: 885, exp: 0.566, id: 17},
-            'mint': {name: 'Мята', price: 50, time: 34, bonus: 56, exp: 0.037,
-                id: 18},
+                bonus: 885, exp: 0.566},
+            'mint': {name: 'Мята', price: 50, time: 34, bonus: 56, exp: 0.037},
             'kokos': {name: 'Кокосовая пальма', price: 200, time: 176,
-                bonus: 226, exp: 0.171, id: 19},
+                bonus: 226, exp: 0.171},
             'vinograd': {name: 'Виноград', price: 140, time: 90, bonus: 155,
-                exp: 0.098, id: 20},
+                exp: 0.098},
             'tabak2': {name: 'Жевательный табак', price: 170, time: 29,
-                bonus: 175, exp: 0.031, id: 21},
+                bonus: 175, exp: 0.031},
             'whitemush': {name: 'Белые грибы', price: 120, time: 126,
-                bonus: 138, exp: 0.122, id: 22},
+                bonus: 138, exp: 0.122},
             'kapusta': {name: 'Капуста', price: 150, time: 79, bonus: 164,
-                exp: 0.095, id: 23},
+                exp: 0.095},
             'kust': {name: 'Хвойный куст', price: 600, time: 350, bonus: 657,
-                exp: 0.381, id: 24},
+                exp: 0.381},
             'kabachok': {name: 'Кабачок', price: 140, time: 95, bonus: 155,
-                exp: 0.102, id: 25},
+                exp: 0.102},
             'kukuruza': {name: 'Кукуруза', price: 170, time: 68, bonus: 182,
-                exp: 0.082, id: 26},
+                exp: 0.082},
             'jahntak': {name: 'Джантак', price: 130, time: 164, bonus: 157,
-                exp: 0.177, id: 27},
+                exp: 0.177},
             'kaktusi': {name: 'Кактусы пушистые ', price: 1100, time: 634,
-                bonus: 1194, exp: 0.626, id: 28},
+                bonus: 1194, exp: 0.626},
             'perets': {name: 'Красный перец', price: 180, time: 51, bonus: 191,
-                exp: 0.073, id: 29},
+                exp: 0.073},
             'petrushka': {name: 'Петрушка курчавая ', price: 145, time: 29,
-                bonus: 151, exp: 0.041, id: 30},
+                bonus: 151, exp: 0.041},
             'tomat': {name: 'Говорящий томат', price: 500, time: 276,
-                bonus: 554, exp: 0.359, id: 31},
+                bonus: 554, exp: 0.359},
             'arbuz': {name: 'Арбуз', price: 100, time: 45, bonus: 111,
-                exp: 0.071, id: 32},
+                exp: 0.071},
             'hmel': {name: 'Душистый хмель', price: 130, time: 23, bonus: 135,
-                exp: 0.035, id: 33},
+                exp: 0.035},
             'bambuk': {name: 'Ростки Бамбука', price: 10, time: 17, bonus: 14,
-                exp: 0.029, id: 34},
+                exp: 0.029},
             'tikva': {name: 'Тыква', price: 200, time: 57, bonus: 214,
-                exp: 0.095, id: 35},
+                exp: 0.095},
             'shishki': {name: 'Еловые шишки', price: 250, time: 45, bonus: 262,
-                exp: 0.082, id: 36},
+                exp: 0.082},
             'dinya': {name: 'Дыня', price: 120, time: 88, bonus: 141,
-                exp: 0.143, id: 37},
+                exp: 0.143},
             'podsolnuh2': {name: 'Подсолнух-мутант', price: 200, time: 50,
-                bonus: 213, exp: 0.087, id: 38},
+                bonus: 213, exp: 0.087},
             'poganka': {name: 'Бледная поганка', price: 1500, time: 338,
-                bonus: 1604, exp: 0.694, id: 39}
+                bonus: 1604, exp: 0.694}
         };
 
         /**
@@ -5539,17 +5527,6 @@
         };
 
         /**
-         * @method getCoord
-         * @return  {Object}
-         */
-        this.getCoord = function () {
-            var _x = /(\?|&)x=(\d)/.exec(general.loc),
-                _y = /(\?|&)y=(\d)/.exec(general.loc);
-
-            return {x: _x ? _x[2] : '0', y: _y ? _y[2] : '0'};
-        };
-
-        /**
          * @method setPlantData
          */
         this.setPlantData = function () {
@@ -5567,22 +5544,13 @@
                         'img/ferma/' + val + i + '.png" />';
                 }
 
-                var stData = general.getData(11),
-                    disbld = (!stData[0] || this.plant[val].id >= +stData[0]) ?
-                                ' disabled' : '',
-                    style = !this.canPlant ? ' style="display: none;"' : '',
-                    coord = this.getCoord();
-
-                str += ' <a href="/ferma.php?x=' + coord.x + '&y=' + coord.y +
-                    '&page_id=' + Math.floor(pl.id / 4) + '"' + style + '>' +
-                    '[Перейти]</a><br><input type="radio" name="plant_id" ' +
-                    'value="' + val + '" id="' + id + '"' + style + disbld +
-                    ' /> <label for="' + id + '"><b style="color: #006600;">' +
-                    pl.name + ', ' + pl.price + '$</b></label> ' +
-                    '<br><li>Время созревания: <b style="color: #990000;">' +
-                    pl.time + ' мин</b> ' + this.getHourTime(pl.time, true) +
-                    '<li>Премия за урожай: <b style="color: #990000;">' +
-                    pl.bonus + '$</b> (<span style="color: #0000FF;">' +
+                str += '<br><label for="' + id + '">' +
+                    '<b style="color: #006600;">' + pl.name + ', ' + pl.price +
+                    '$</b></label><br><li>Время созревания: ' +
+                    '<b style="color: #990000;">' + pl.time + ' мин</b> ' +
+                    this.getHourTime(pl.time, true) + '<li>Премия за урожай: ' +
+                    '<b style="color: #990000;">' + pl.bonus + '$</b> ' +
+                    '(<span style="color: #0000FF;">' +
                     this.calculatePerHour(pl.time, pl.bonus - pl.price, 2) +
                     '$</span> в час)<li>Производственный опыт: ' +
                     '<b style="color: #990000;">' + pl.exp + '</b> (' +
@@ -5600,21 +5568,12 @@
          */
         this.createSelectList = function () {
             var sel = general.doc.createElement('select'),
-                stData = general.getData(11),
-                block = '',
                 str = '',
                 val;
 
             for (val in this.plant) {
                 if (this.plant.hasOwnProperty(val)) {
-                    // есть возможность сажать и данных в хранилище
-                    // нет или это недоступное растение
-                    if (this.canPlant &&
-                            (!stData[0] || this.plant[val].id >= +stData[0])) {
-                        block = ' style="background-color: #FADADA"';
-                    }
-
-                    str += '<option value="' + val + '"' + block + '>' +
+                    str += '<option value="' + val + '">' +
                         this.plant[val].name + '</option>';
                 }
             }
@@ -5630,48 +5589,6 @@
         };
 
         /**
-         * @method checkAvailability
-         * @param   {int}   ind
-         */
-        this.checkAvailability = function (ind) {
-            general.$('counter').innerHTML = ind + 1;
-            var coord = this.getCoord(),
-                url = 'http://www.ganjawars.ru/ferma.php?' +
-                    'x=' + coord.x + '&y=' + coord.y + '&page_id=' + ind,
-                _this = this,
-                stData = general.getData(11);
-
-            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
-                var disabled = /value=('|")?([^\s'"]+)('|")? ([^>]+) disabled/.
-                        exec(xml.responseText);
-
-                if (disabled) {
-                    stData[0] = _this.plant[disabled[2]].id;
-                    general.setData(stData, 11);
-                    _this.setMainPanel();
-                    return;
-                }
-
-                ind++;
-                if (ind > 9) {
-                    // доступны все растения
-                    stData[0] = Number.MAX_VALUE;
-                    general.setData(stData, 11);
-                    _this.setMainPanel();
-                    return;
-                }
-
-                general.root.setTimeout(function () {
-                    _this.checkAvailability(ind);
-                }, _this.tm);
-            }, function () {
-                general.root.setTimeout(function () {
-                    _this.checkAvailability(ind);
-                }, _this.tm);
-            });
-        };
-
-        /**
          * @method setMainPanel
          */
         this.setMainPanel = function () {
@@ -5680,34 +5597,19 @@
             if (!div) {
                 div = general.doc.createElement('div');
                 div.id = 'allPlantContainer';
-                this.target.appendChild(div);
+                div.setAttribute('style', 'margin-top: 7px');
+                if (this.target.nodeName === 'FORM') {
+                    this.target.parentNode.lastElementChild.
+                            firstElementChild.appendChild(div);
+                } else {
+                    this.target.appendChild(div);
+                }
             }
 
-            div.innerHTML = this.canPlant ? '' : '<br>';
             div.appendChild(this.createSelectList());
 
-            // кнопа "Что могу посадить?"
-            var butCheckPlant = general.doc.createElement('input');
-            butCheckPlant.type = 'button';
-            butCheckPlant.value = 'Что могу посадить?';
-            butCheckPlant.setAttribute('style', this.canPlant ?
-                    'margin-left: 5px;' : 'display: none;');
-            var _this = this;
-            butCheckPlant.addEventListener('click', function () {
-                div.querySelector('#preloader').style.display = '';
-                _this.checkAvailability(0);
-            }, false);
-            div.appendChild(butCheckPlant);
-
-            var span = general.doc.createElement('span');
-            span.id = 'preloader';
-            span.innerHTML = '<img src="' + general.imgPath +
-                'preloader.gif" style="margin: 0 5px 0 10px;" />' +
-                '(<span id="counter"></span>)';
-            span.style.display = 'none';
-            div.appendChild(span);
-
             var chkContainer = general.doc.createElement('div');
+            chkContainer.setAttribute('align', 'left');
             chkContainer.id = 'checkBoxContainer';
             div.appendChild(chkContainer);
         };
@@ -5736,7 +5638,7 @@
 
             // опыт виден (на пустой вскопанной клетке)
             if (prod) {
-                var gb = /Счет:\s?<b>\$([^<]+)<\/b>/.
+                var gb = /<a name="pf">Счет:<\/a>\s?<b>\$([^<]+)<\/b>/.
                         exec(table.innerHTML)[1].replace(/,/g, ''),
                     exp = prod[1],
                     stData = general.getData(11);
@@ -5821,16 +5723,16 @@
             if (!capcha && !(/section=items/.test(general.loc)) &&
                     !(farmId && farmId[2] !== general.myID) && this.target) {
 
-                this.canPlant = this.target.nodeName === 'FORM';
+                var canPlant = this.target.nodeName === 'FORM';
 
                 // счетчики Гб и производа
                 var stData = general.getData(11);
-                if (this.canPlant && (stData[4] || stData[5])) {
+                if (canPlant && (stData[4] || stData[5])) {
                     this.setCounter();
                 }
 
                 // перевод дохрена минут в чч:мм
-                if (!this.canPlant) {
+                if (!canPlant) {
                     var tbl = general.doc.querySelector('table[width="100%"]' +
                             '[cellpadding="4"][cellspacing="2"][border="0"]');
 

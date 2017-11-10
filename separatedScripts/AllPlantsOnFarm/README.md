@@ -1,7 +1,7 @@
-На ферме добавляет выпадающий список для выбора и посадки любого растения. Для каждого растения присутствует изображение, производственный опыт и прибыль (общие и в 1 час), цена, время созревания в минутах и часах. Счетчик гб и производственного опыта.
+Счетчик гб и производственного опыта на ферме. Для каждого растения присутствует изображение, производственный опыт и прибыль (общие и в 1 час), цена, время созревания в минутах и часах.
 <br>
 <br>
-Версия: 1.24-121216
+Версия: 1.30-101117
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AllPlantsOnFarm/allPlantsOnFarm.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AllPlantsOnFarm/allPlantsOnFarm.user.js.zip)
 <br>
