@@ -5302,7 +5302,7 @@
 
             if (/www\.ganjawars\.ru\/me(\/|\.php)/.test(general.loc)) {
                 var mainDiv = general.doc.createElement('div'),
-                    target = general.doc.querySelector('td[rowspan="2"]' +
+                    target = general.doc.querySelector('td[rowspan="3"]' +
                         '[valign="top"][bgcolor="#e9ffe9"]>' +
                         'div[style="padding-left:5px"]>' +
                         'a[href$="/home.friends.php"]').previousElementSibling,

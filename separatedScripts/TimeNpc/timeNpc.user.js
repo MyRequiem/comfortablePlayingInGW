@@ -10,7 +10,7 @@
 // @include         http://www.ganjawars.ru/npc.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.22-250917
+// @version         2.23-121117
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -423,7 +423,7 @@
 
             if (/www\.ganjawars\.ru\/me(\/|\.php)/.test(general.loc)) {
                 var mainDiv = general.doc.createElement('div'),
-                    target = general.doc.querySelector('td[rowspan="2"]' +
+                    target = general.doc.querySelector('td[rowspan="3"]' +
                         '[valign="top"][bgcolor="#e9ffe9"]>' +
                         'div[style="padding-left:5px"]>' +
                         'a[href$="/home.friends.php"]').previousElementSibling,
