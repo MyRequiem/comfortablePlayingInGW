@@ -1,3 +1,16 @@
+2017-11-12[1.83-121117]
+--------------------------------------
+	- Исправлен скрипт для фермы AllPlantsOnFarm (скрипт не должен работать
+		при появлении капчи):
+			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AllPlantsOnFarm
+
+	- В связи с изменениями главной страницы персонажа исправлены скрипты:
+		(ссылка на новость: http://www.ganjawars.ru/messages.php?fid=1&tid=1423)
+			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SkillCounters
+			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/TimeNpc
+			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FixSkills
+
+
 2017-11-10[1.82-101117]
 --------------------------------------
 	- Исправлены скрипты для фермы (спасибо Зачупатель):
@@ -519,9 +532,6 @@
 	- добавлены скрипты:
 		> RangeWeapon
 		> RentAndSale
-
-
---------------------------------------
 
 
 2015-10-06 [1.00-061015-dev]

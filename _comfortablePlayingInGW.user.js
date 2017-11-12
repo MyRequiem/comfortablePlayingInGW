@@ -12,7 +12,7 @@
 // @include         *ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.82-101117
+// @version         1.83-121117
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -67,7 +67,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.82-101117';
+        this.version = '1.83-121117';
         /**
          * @property stString
          * @type {String}
@@ -219,7 +219,7 @@
                     /*
                     [11] - AllPlantsOnFarm
                         [0]  - номер первого недоступного растения
-                                (не используется с версии 1.82-101117)
+                                (не используется с версии 1.82)
                         [1]  - время сброса счетчика
                         [2]  - количество гб
                         [3]  - количество производа
