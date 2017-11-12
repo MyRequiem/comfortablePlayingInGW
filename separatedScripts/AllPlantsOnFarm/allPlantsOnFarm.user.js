@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         1.30-101117
+// @version         1.31-121117
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -478,8 +478,8 @@
             }
 
             var farmId = /(\?|&)id=(\d+)/.exec(general.loc),
-                capcha = general.doc.querySelector('input[type="text"]' +
-                        '[name="fermacode"]');
+                capcha = general.doc.querySelector('input[type="hidden"]' +
+                    '[name="captcha_question"]');
 
             this.target = general.doc.
                     querySelector('form[action="/ferma.php"]') ||

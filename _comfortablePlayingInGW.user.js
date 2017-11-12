@@ -5711,8 +5711,8 @@
          */
         this.init = function () {
             var farmId = /(\?|&)id=(\d+)/.exec(general.loc),
-                capcha = general.doc.querySelector('input[type="text"]' +
-                        '[name="fermacode"]');
+                capcha = general.doc.querySelector('input[type="hidden"]' +
+                    '[name="captcha_question"]');
 
             this.target = general.doc.
                     querySelector('form[action="/ferma.php"]') ||
