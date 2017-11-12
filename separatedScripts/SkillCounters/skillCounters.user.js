@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.05-211017
+// @version         2.06-121117
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -110,7 +110,7 @@
          * @type {Array}
          */
         this.counters = general.doc.querySelectorAll('td[valign="top"]' +
-                '[bgcolor="#e9ffe9"]>table[border="0"] tr>td+td>nobr');
+                '[bgcolor="#e9ffe9"]>div>table[border="0"] tr>td+td>nobr');
         /**
          * @property ids
          * @type {Array}

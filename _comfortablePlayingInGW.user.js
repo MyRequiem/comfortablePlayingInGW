@@ -9483,7 +9483,7 @@
          * @type {NodeList}
          */
         this.counters = general.doc.querySelectorAll('td[valign="top"]' +
-                '[bgcolor="#e9ffe9"]>table[border="0"] tr>td+td>nobr');
+                '[bgcolor="#e9ffe9"]>div>table[border="0"] tr>td+td>nobr');
         /**
          * @property ids
          * @type {Array}
