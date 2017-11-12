@@ -7,8 +7,9 @@
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FixSkills/fixSkills.user.js
 // @include         http://www.ganjawars.ru/info.php?id=*
 // @include         http://www.ganjawars.ru/me.php*
+// @include         http://www.ganjawars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.02-240917
+// @version         2.03-121117
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==

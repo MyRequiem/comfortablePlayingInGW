@@ -7,9 +7,10 @@
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FixSkills/fixSkills.user.js
 // @include         http://www.ganjawars.ru/info.php?id=*
 // @include         http://www.ganjawars.ru/me.php*
+// @include         http://www.ganjawars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.02-240917
+// @version         2.03-121117
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -17,7 +18,7 @@
 /*jslint browser: true, maxlen: 80, vars: true, plusplus: true, regexp: true */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -99,7 +100,7 @@
                 j;
 
             for (i = 0; i < nbrs.length; i++) {
-                x = /\((\d+.?\d*)\)\s*.*\+\-\d+.?\d*<\/font>/.
+                x = /\((\d+.?\d*)\)\s*.*\+-\d+.?\d*<\/font>/.
                     exec(nbrs[i].innerHTML);
 
                 if (x) {
@@ -141,10 +142,9 @@
                         '[align="right"][style="font-size:10px"]').
                             parentNode.parentNode.querySelectorAll('nobr');
             } else {
-                nobrs = general.doc.querySelector('td[rowspan="2"]' +
-                        '[valign="top"][align="center"]>table' +
-                        '[cellspacing="0"][cellpadding="0"][border="0"]').
-                            querySelectorAll('nobr');
+                nobrs = general.doc.querySelector('td[valign="top"]' +
+                    '[align="center"]>table[cellspacing="0"][cellpadding="0"]' +
+                    '[border="0"]').querySelectorAll('nobr');
             }
 
             this.fixSkills(nobrs);

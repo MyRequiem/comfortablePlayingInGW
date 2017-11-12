@@ -7583,7 +7583,7 @@
                 j;
 
             for (i = 0; i < nbrs.length; i++) {
-                x = /\((\d+.?\d*)\)\s*.*\+\-\d+.?\d*<\/font>/.
+                x = /\((\d+.?\d*)\)\s*.*\+-\d+.?\d*<\/font>/.
                     exec(nbrs[i].innerHTML);
 
                 if (x) {
@@ -7625,10 +7625,9 @@
                         '[align="right"][style="font-size:10px"]').
                             parentNode.parentNode.querySelectorAll('nobr');
             } else {
-                nobrs = general.doc.querySelector('td[rowspan="2"]' +
-                        '[valign="top"][align="center"]>table' +
-                        '[cellspacing="0"][cellpadding="0"][border="0"]').
-                            querySelectorAll('nobr');
+                nobrs = general.doc.querySelector('td[valign="top"]' +
+                    '[align="center"]>table[cellspacing="0"][cellpadding="0"]' +
+                    '[border="0"]').querySelectorAll('nobr');
             }
 
             this.fixSkills(nobrs);
