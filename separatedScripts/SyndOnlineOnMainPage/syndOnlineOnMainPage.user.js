@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.13-250917
+// @version         2.20-201117
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -186,8 +186,10 @@
                     (/<b>(\d+) бойцов онлайн<\/b>/.
                         exec(spanContent.innerHTML)[1]) + ')<br>';
 
-                var trs = spanContent.querySelector('br+center+br+table').
-                        querySelectorAll('tr');
+                var trs = spanContent.
+                            querySelector('table[class="bordersupdown"]' +
+                                '[width="100%"]').querySelectorAll('tr');
+
                 if (trs.length > 1) {
                     var nobr, pers, syndImg, war, i;
                     for (i = 1; i < trs.length; i++) {
@@ -273,8 +275,9 @@
                     spanContent.innerHTML = xml.responseText;
 
                     _this.syndUnion = spanContent.
-                        querySelector('td>br:first-child+b+' +
-                            'a[href*="/syndicate.php?id="]');
+                        querySelector('tr>td[colspan="3"]' +
+                            '[class="greengreenbg"]>' +
+                            'a[href*="/syndicate.php?id="]:last-child');
 
                     if (_this.syndUnion) {
                         b.appendChild(general.doc.createTextNode(' '));
