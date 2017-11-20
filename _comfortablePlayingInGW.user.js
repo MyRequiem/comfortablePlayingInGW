@@ -254,7 +254,7 @@
                         [2] - синдикат ('', '0' - ничейки, 'xxx' - ID синда) */
                         '@' +
                     /*
-                     [18] - SortSyndOnline
+                     [18] - SortSyndOnline (настройки удалены с версии 1.84)
                         [0] - сортировать по боям
                         [1] - показывать онлайн союза
                         [2] - сортировать вместе с союзом */
@@ -1182,19 +1182,9 @@
 
             'Синдикаты': [
                 ['Сортировка на странице онлайна синдиката', 'Сортировка ' +
-                    'онлайна синдиката и союза по идущим боям, вывод онлайна ' +
-                    'союзного синдиката.<br><br><input type="checkbox" ' +
-                    'id="showSortBattles" disabled> сортировать по боям<br>' +
-                    '<input type="checkbox"  id="showUnionOnline" disabled> ' +
-                    'показывать онлайн союза<br><input type="checkbox"  ' +
-                    'id="sortMainAndUnion" disabled> сортировать вместе с ' +
-                    'союзом' + this.getGitHubLink('sortSyndOnline') +
-                    '<span style="margin-left: 15px;">идея: ' +
-                    '<a href="http://www.ganjawars.ru/info.php?id=732670" ' +
-                    'style="font-weight: bold;" target="_blank">z0man</a>, ' +
-                    '<a href="http://www.ganjawars.ru/info.php?id=198825" ' +
-                    'style="font-weight: bold;" target="_blank">VSOP_juDGe' +
-                    '</a></span>', '30'],
+                    'онлайна синдиката и союза по идущим боям. Выделение ' +
+                    'синдикатных боев.' +
+                    this.getGitHubLink('sortSyndOnline'), '30'],
                 ['Анализ активности синдиката', 'Анализ активности ' +
                     'синдиката. Рейтинг нападающих, баланс Гб и PTS ' +
                     'контролируемой недвижимости, кто и сколько взял/положил ' +
@@ -1699,33 +1689,6 @@
             filtRes.addEventListener('input', function () {
                 general.setData(filtRes.value, 15);
             }, false);
-
-            // SortSyndOnline
-            var showSortBattles = general.$('showSortBattles');
-            showSortBattles.checked = general.getData(18)[0];
-            showSortBattles.addEventListener('click', function () {
-                _this.modifyData(18, 0, showSortBattles.checked ? '1' : '');
-            }, false);
-            var showUnionOnline = general.$('showUnionOnline');
-            showUnionOnline.checked = general.getData(18)[1];
-            showUnionOnline.addEventListener('click', function () {
-                _this.modifyData(18, 1, showUnionOnline.checked ? '1' : '');
-            }, false);
-            var sortMainAndUnion = general.$('sortMainAndUnion');
-            sortMainAndUnion.addEventListener('click', function () {
-                _this.modifyData(18, 2, sortMainAndUnion.checked ? '1' : '');
-                if (sortMainAndUnion.checked) {
-                    if (!showSortBattles.checked) {
-                        showSortBattles.click();
-                    }
-                    if (!showUnionOnline.checked) {
-                        showUnionOnline.click();
-                    }
-                }
-            }, false);
-            if (general.getData(18)[2]) {
-                sortMainAndUnion.click();
-            }
 
             // One2OneCallerInfo
             general.$('lsoundOne2One').
@@ -8285,129 +8248,78 @@
      */
     var SortSyndOnline = function () {
         /**
-         * @property trs
-         * @type {Array|null}
-         */
-        this.trs = null;
-
-        /**
-         * @property prnt
+         * @property mainTable
          * @type {Object|null}
          */
-        this.prnt = null;
-
-        /**
-         * @method createTitle
-         * @param    {String}   str
-         * @return   {Element}
-         */
-        this.createTitle = function (str) {
-            var tr = general.doc.createElement('tr');
-            tr.innerHTML = '<td colspan="8" class="wb" ' +
-                'bgcolor="#D0EED0" style="text-align: ' +
-                'center;"><span style="font-weight: bold;">' +
-                str + '</span></td>';
-
-            return tr;
-        };
-
-        /**
-         * @method getTrs
-         * @param   {Object}    obj
-         */
-        this.getTrs = function (obj) {
-            var tbl = obj.querySelector('center+br+table');
-            return tbl ? tbl.querySelectorAll('tr') : [];
-        };
-
-        /**
-         * @method getUnionOnline
-         * @param    {String}   URL
-         */
-        this.getUnionOnline = function (URL) {
-            var url = URL || general.loc + '&page=politics',
-                _this = this;
-
-            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
-                var spanContent = general.doc.createElement('span');
-                spanContent.innerHTML = xml.responseText;
-
-                if (/politics/.test(url)) {
-                    var unionLink = spanContent.
-                            querySelector('td>br:first-child+b+' +
-                                'a[href*="/syndicate.php?id="]');
-                    if (unionLink) {
-                        general.root.setTimeout(function () {
-                            _this.getUnionOnline(unionLink + '&page=online');
-                        }, 1000);
-                    } else if (general.getData(18)[2]) {
-                        _this.sortBattles();
-                    }
-                } else {
-                    var trs = _this.getTrs(spanContent);
-                    if (trs.length) {
-                        _this.prnt.appendChild(_this.createTitle('<a target=' +
-                            '"_blank" href="' + url + '">Союз</a>'));
-
-                        var i;
-                        for (i = 0; i < trs.length; i++) {
-                            _this.prnt.appendChild(trs[i]);
-                        }
-                    }
-
-                    if (general.getData(18)[2]) {
-                        _this.trs = _this.getTrs(general.doc);
-                        _this.sortBattles();
-                    }
-                }
-            }, function () {
-                general.root.setTimeout(function () {
-                    _this.getUnionOnline(URL);
-                }, 1000);
-            });
-        };
+        this.mainTable = general.doc.querySelector('table[width="600"]' +
+                '[align="center"][cellspacing="0"][cellpadding="0"]');
 
         /**
          * @method sortBattles
          */
         this.sortBattles = function () {
-            var reg = /\/warlog\.php\?bid=(\d+)/;
-            if (reg.test(this.prnt.innerHTML)) {
-                var battles = {},
-                    bid,
-                    i;
+            var trs = this.mainTable.querySelectorAll('tr'),
+                reg = /\/warlog\.php\?bid=(\d+)/,
+                battles = {},
+                bid,
+                i;
 
-                for (i = 1; i < this.trs.length; i++) {
-                    bid = reg.exec(this.trs[i].innerHTML);
-                    if (bid) {
-                        if (!battles[bid[1]]) {
-                            battles[bid[1]] = [];
-                        }
-
-                        battles[bid[1]].push(this.trs[i].cloneNode(true));
-                        this.prnt.removeChild(this.trs[i]);
+            for (i = 1; i < trs.length; i++) {
+                bid = reg.exec(trs[i].innerHTML);
+                // alert(trs[i].innerHTML);
+                if (/<b>(\s?|&nbsp;)?\d+(\s?|&nbsp;)?<\/b>$/.
+                        test(trs[i].firstElementChild.innerHTML) &&
+                            bid) {
+                    if (!battles[bid[1]]) {
+                        battles[bid[1]] = [];
                     }
+
+                    battles[bid[1]].push(trs[i].cloneNode(true));
+                    trs[i].parentNode.removeChild(trs[i]);
                 }
+            }
 
-                var before = this.prnt.querySelectorAll('tr')[1],
-                    countBattles = 1,
-                    btl,
-                    tr;
+            var target = this.mainTable.querySelector('tr'),
+                tr = general.doc.createElement('tr');
 
-                for (btl in battles) {
-                    if (battles.hasOwnProperty(btl)) {
-                        tr = this.createTitle('Бой ' + countBattles);
-                        this.prnt.insertBefore(tr, before);
-                        for (i = 0; i < battles[btl].length; i++) {
-                            this.prnt.insertBefore(battles[btl][i],
-                                tr.nextElementSibling);
+            tr.innerHTML = '<td><table class="bordersupdown" width="100%" ' +
+                'cellspacing="1" cellpadding="4" align="center" ' +
+                'style="margin-bottom: 15px;"><tbody></tbody></table></td>';
+            target.parentNode.insertBefore(tr, target);
+            target = tr.querySelector('tbody');
+
+            // ссылки на идущие синдикатные бои (таблица внизу страницы)
+            var syndBattles = general.doc.
+                    querySelectorAll('td[class="greengreenbg"][valign="top"]>' +
+                        'a[href*="/warlog.php?bid="]'),
+                countBattles = 1,
+                color,
+                btl;
+
+            for (btl in battles) {
+                if (battles.hasOwnProperty(btl)) {
+                    color = '';
+                    for (i = 0; i < syndBattles.length; i++) {
+                        // если бой синдикатный, выделяем зеленым цветом
+                        if (btl === reg.exec(syndBattles[i].href)[1]) {
+                            color = ' style="color: #00AA00;"';
+                            break;
                         }
-
-                        countBattles++;
                     }
-                }
 
-                this.prnt.insertBefore(this.createTitle('&nbsp;'), before);
+                    tr = general.doc.createElement('tr');
+                    tr.innerHTML = '<td colspan="8" class="greenbg" ' +
+                        'style="text-align: center; font-weight: bold;">' +
+                        '<span' + color + '>Бой: ' + countBattles +
+                        '</span></td>';
+                    target.appendChild(tr);
+
+                    for (i = 0; i < battles[btl].length; i++) {
+                        target.appendChild(battles[btl][i]);
+                    }
+
+                    countBattles++;
+                }
             }
         };
 
@@ -8415,29 +8327,11 @@
          * @method init
          */
         this.init = function () {
-            if (/&page=online$/.test(general.loc)) {
-                this.trs = this.getTrs(general.doc);
-                if (!this.trs[0]) {
-                    return;
-                }
-
-                var stData = general.getData(18);
-                this.prnt = this.trs[0].parentNode;
-
-                if (stData[2]) {
-                    this.getUnionOnline(null);
-                    return;
-                }
-
-                if (stData[0]) {
-                    this.sortBattles();
-                }
-
-                if (stData[1]) {
-                    this.getUnionOnline(null);
-                }
-
-                general.doc.body.appendChild(general.doc.createElement('br'));
+            if (/&page=online$/.test(general.loc) && this.mainTable &&
+                    this.mainTable.
+                        querySelector('td>a[href*="/warlog.php?bid="]>' +
+                            'img[src*="/i/icons/"]')) {
+                this.sortBattles();
             }
         };
     };
