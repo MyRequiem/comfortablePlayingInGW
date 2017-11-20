@@ -1,3 +1,10 @@
+2017-11-20[1.84-201117]
+--------------------------------------
+	- В связи с изменением страниц онлайна синдикатов исправлены скрипты:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SortSyndOnline
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndOnlineOnMainPage
+
+
 2017-11-12[1.83-121117]
 --------------------------------------
 	- Исправлен скрипт для фермы AllPlantsOnFarm (скрипт не должен работать
