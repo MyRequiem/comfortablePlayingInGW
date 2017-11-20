@@ -40,7 +40,7 @@
 // @include         *ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.78-171017
+// @version         1.83-121117
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -95,7 +95,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.78-171017';
+        this.version = '1.83-121117';
         /**
          * @property stString
          * @type {String}
@@ -247,6 +247,7 @@
                     /*
                     [11] - AllPlantsOnFarm
                         [0]  - номер первого недоступного растения
+                                (не используется с версии 1.82)
                         [1]  - время сброса счетчика
                         [2]  - количество гб
                         [3]  - количество производа
@@ -281,7 +282,7 @@
                         [2] - синдикат ('', '0' - ничейки, 'xxx' - ID синда) */
                         '@' +
                     /*
-                     [18] - SortSyndOnline
+                     [18] - SortSyndOnline (настройки удалены с версии 1.84)
                         [0] - сортировать по боям
                         [1] - показывать онлайн союза
                         [2] - сортировать вместе с союзом */
@@ -1209,19 +1210,9 @@
 
             'Синдикаты': [
                 ['Сортировка на странице онлайна синдиката', 'Сортировка ' +
-                    'онлайна синдиката и союза по идущим боям, вывод онлайна ' +
-                    'союзного синдиката.&lt;br>&lt;br>&lt;input type="checkbox" ' +
-                    'id="showSortBattles" disabled> сортировать по боям&lt;br>' +
-                    '&lt;input type="checkbox"  id="showUnionOnline" disabled> ' +
-                    'показывать онлайн союза&lt;br>&lt;input type="checkbox"  ' +
-                    'id="sortMainAndUnion" disabled> сортировать вместе с ' +
-                    'союзом' + this.getGitHubLink('sortSyndOnline') +
-                    '&lt;span style="margin-left: 15px;">идея: ' +
-                    '&lt;a href="http://www.ganjawars.ru/info.php?id=732670" ' +
-                    'style="font-weight: bold;" target="_blank">z0man&lt;/a>, ' +
-                    '&lt;a href="http://www.ganjawars.ru/info.php?id=198825" ' +
-                    'style="font-weight: bold;" target="_blank">VSOP_juDGe' +
-                    '&lt;/a>&lt;/span>', '30'],
+                    'онлайна синдиката и союза по идущим боям. Выделение ' +
+                    'синдикатных боев.' +
+                    this.getGitHubLink('sortSyndOnline'), '30'],
                 ['Анализ активности синдиката', 'Анализ активности ' +
                     'синдиката. Рейтинг нападающих, баланс Гб и PTS ' +
                     'контролируемой недвижимости, кто и сколько взял/положил ' +
@@ -1307,12 +1298,11 @@
                 ['Удобные ссылки на ферме', 'Удобные ссылки для полива, ' +
                     'сбора, вскапывания, посадки на ферме.' +
                     this.getGitHubLink('comfortableLinksForFarm'), '11'],
-                ['Все растения на одной странице, счетчики', 'На ферме ' +
-                    'добавляет выпадающий список для выбора и посадки любого ' +
-                    'растения. Для каждого растения присутствует изображение,' +
-                    ' производственный опыт и прибыль (общие и в 1 час), ' +
-                    'цена, время созревания в минутах и часах. Счетчики ' +
-                    'Гб и производственного опыта.&lt;br>&lt;br>' +
+                ['Все растения на одной странице, счетчики', 'Счетчик гб и ' +
+                    'производственного опыта на ферме. Для каждого растения ' +
+                    'присутствует изображение, производственный опыт и ' +
+                    'прибыль (общие и в 1 час), цена, время созревания в ' +
+                    'минутах и часах.&lt;br>&lt;br>' +
                     '&lt;input id="showGbFarmCounter" type="checkbox" ' +
                     'disabled /> показывать счетчик Гб&lt;br>' +
                     '&lt;input id="showExpFarmCounter" type="checkbox" ' +
@@ -1727,33 +1717,6 @@
             filtRes.addEventListener('input', function () {
                 general.setData(filtRes.value, 15);
             }, false);
-
-            // SortSyndOnline
-            var showSortBattles = general.$('showSortBattles');
-            showSortBattles.checked = general.getData(18)[0];
-            showSortBattles.addEventListener('click', function () {
-                _this.modifyData(18, 0, showSortBattles.checked ? '1' : '');
-            }, false);
-            var showUnionOnline = general.$('showUnionOnline');
-            showUnionOnline.checked = general.getData(18)[1];
-            showUnionOnline.addEventListener('click', function () {
-                _this.modifyData(18, 1, showUnionOnline.checked ? '1' : '');
-            }, false);
-            var sortMainAndUnion = general.$('sortMainAndUnion');
-            sortMainAndUnion.addEventListener('click', function () {
-                _this.modifyData(18, 2, sortMainAndUnion.checked ? '1' : '');
-                if (sortMainAndUnion.checked) {
-                    if (!showSortBattles.checked) {
-                        showSortBattles.click();
-                    }
-                    if (!showUnionOnline.checked) {
-                        showUnionOnline.click();
-                    }
-                }
-            }, false);
-            if (general.getData(18)[2]) {
-                sortMainAndUnion.click();
-            }
 
             // One2OneCallerInfo
             general.$('lsoundOne2One').
@@ -4291,7 +4254,7 @@
                 var _this = this;
                 general.root.setInterval(function () {
                     _this.startWorkPostGrenadesBroken(_this);
-                }, new GetRandom().init(30, 60) * 1000);
+                }, new GetRandom().init(20, 40) * 1000);
             }
         };
     };
@@ -4791,31 +4754,34 @@
          */
         this.init = function () {
             //если в постройках или не на пустрой грядке
-            if ((/section=items/.test(general.root.location.href)) ||
-                    !(/Грядка пустая/.test(general.doc.body.innerHTML))) {
+            if (/section=items/.test(general.root.location.href) ||
+                    !general.doc.querySelector('div>' +
+                        'img[src$="/img/ferma/ground.png"]')) {
                 return;
             }
 
-            var prices1 = general.doc.querySelectorAll('label>font' +
-                        '[color="#006600"]>b:last-child'),
-                prices2 = general.doc.querySelectorAll('li>font' +
-                        '[color="#990000"]>b:first-child'),
-                time = general.doc.querySelectorAll('form[action$=' +
-                        '"/ferma.php"]>li:nth-child(odd)'),
+            var plants = general.doc.querySelectorAll('table[cellspacing="0"]' +
+                    '[cellpadding="0"]  td[valign="top"][onclick*="btn_"]'),
+                price1,
+                price2,
+                target,
+                time,
                 span,
+                exp,
                 i;
 
-            for (i = 0; i &lt; prices1.length; i++) {
+            for (i = 0; i &lt; plants.length; i++) {
                 span = general.doc.createElement('span');
                 span.setAttribute('style', 'font-size: 9px;');
-                span.innerHTML = this.calculateFarm(+(/\$(\d+)/.
-                            exec(prices1[i].innerHTML)[1]),
-                    +(/\$(\d+)/.exec(prices2[i].innerHTML)[1]),
-                    +(/созревания:\s(\d+)/.exec(time[i].innerHTML)[1]),
-                    parseFloat(/(\d+\.?\d*) опыта/.
-                        exec(time[i].nextElementSibling.innerHTML)[1]));
-
-                prices1[i].parentNode.appendChild(span);
+                price1 = +/\$(\d+)/.exec(plants[i].querySelector('font' +
+                    '[color="#006600"]>b:last-child').innerHTML)[1];
+                price2 = +/\$(\d+)/.exec(plants[i].querySelector('font' +
+                    '[color="#990000"]>b').innerHTML)[1];
+                time = +/созревания:\s(\d+)/.exec(plants[i].innerHTML)[1];
+                exp = parseFloat(/(\d+\.?\d*) опыта/.exec(plants[i].innerHTML));
+                span.innerHTML = this.calculateFarm(price1, price2, time, exp);
+                target = plants[i].querySelector('br');
+                target.parentNode.insertBefore(span, target);
             }
         };
     };
@@ -5327,7 +5293,7 @@
 
             if (/www\.ganjawars\.ru\/me(\/|\.php)/.test(general.loc)) {
                 var mainDiv = general.doc.createElement('div'),
-                    target = general.doc.querySelector('td[rowspan="2"]' +
+                    target = general.doc.querySelector('td[rowspan="3"]' +
                         '[valign="top"][bgcolor="#e9ffe9"]>' +
                         'div[style="padding-left:5px"]>' +
                         'a[href$="/home.friends.php"]').previousElementSibling,
@@ -5432,105 +5398,93 @@
      */
     var AllPlantsOnFarm = function () {
         /**
-         * @property tm
-         * @type {int}
-         */
-        this.tm = 1000;
-        /**
-         * @property canPlant
-         * @type {Boolean}
-         */
-        this.canPlant = true;
-        /**
          * @property target
-         * @type {Boolean}
+         * @type {Object|null}
          */
-        this.target = false;
+        this.target = null;
         /**
          * @property plant
          * @type {Object}
          */
         this.plant = {
-            'ukrop': {name: 'Укроп', price: 5, time: 12, bonus: 6, exp: 0.007,
-                id: 0},
+            'ukrop': {name: 'Укроп', price: 5, time: 12, bonus: 6, exp: 0.007},
             'opyata': {name: 'Странные опята', price: 10, time: 376, bonus: 40,
-                exp: 0.204, id: 1},
+                exp: 0.204},
             'tulips': {name: 'Тюльпаны', price: 20, time: 67, bonus: 26,
-                exp: 0.04, id: 2},
+                exp: 0.04},
             'mak': {name: 'Полевой мак', price: 12, time: 27, bonus: 15,
-                exp: 0.02, id: 3},
+                exp: 0.02},
             'muhomor': {name: 'Мухомор', price: 150, time: 150, bonus: 165,
-                exp: 0.098, id: 4},
+                exp: 0.098},
             'podsolnuh': {name: 'Подсолнух', price: 50, time: 126, bonus: 62,
-                exp: 0.082, id: 5},
+                exp: 0.082},
             'kaktus': {name: 'Коричневый кактус', price: 160, time: 376,
-                bonus: 197, exp: 0.245, id: 6},
+                bonus: 197, exp: 0.245},
             'geran': {name: 'Герань', price: 10, time: 57, bonus: 17,
-                exp: 0.048, id: 7},
+                exp: 0.048},
             'tabak': {name: 'Веселый табак', price: 20, time: 150, bonus: 37,
-                exp: 0.114, id: 8},
+                exp: 0.114},
             'korica': {name: 'Корица забористая', price: 16, time: 68,
-                bonus: 25, exp: 0.057, id: 9},
+                bonus: 25, exp: 0.057},
             'hren': {name: 'Хрен', price: 210, time: 300, bonus: 244,
-                exp: 0.229, id: 10},
+                exp: 0.229},
             'baklajan': {name: 'Баклажан', price: 150, time: 226, bonus: 176,
-                exp: 0.171, id: 11},
+                exp: 0.171},
             'chai': {name: 'Зеленый чай', price: 50, time: 90, bonus: 63,
-                exp: 0.087, id: 12},
+                exp: 0.087},
             'aloe': {name: 'Алоэ', price: 120, time: 45, bonus: 127,
-                exp: 0.044, id: 13},
+                exp: 0.044},
             'ogurets': {name: 'Огурцы', price: 350, time: 68, bonus: 360,
-                exp: 0.065, id: 14},
+                exp: 0.065},
             'klubnika': {name: 'Клубника', price: 100, time: 450, bonus: 159,
-                exp: 0.392, id: 15},
+                exp: 0.392},
             'malina': {name: 'Малина', price: 190, time: 90, bonus: 203,
-                exp: 0.087, id: 16},
+                exp: 0.087},
             'shalfei': {name: 'Задумчивый шалфей&amp;nbsp;', price: 800, time: 715,
-                bonus: 885, exp: 0.566, id: 17},
-            'mint': {name: 'Мята', price: 50, time: 34, bonus: 56, exp: 0.037,
-                id: 18},
+                bonus: 885, exp: 0.566},
+            'mint': {name: 'Мята', price: 50, time: 34, bonus: 56, exp: 0.037},
             'kokos': {name: 'Кокосовая пальма', price: 200, time: 176,
-                bonus: 226, exp: 0.171, id: 19},
+                bonus: 226, exp: 0.171},
             'vinograd': {name: 'Виноград', price: 140, time: 90, bonus: 155,
-                exp: 0.098, id: 20},
+                exp: 0.098},
             'tabak2': {name: 'Жевательный табак', price: 170, time: 29,
-                bonus: 175, exp: 0.031, id: 21},
+                bonus: 175, exp: 0.031},
             'whitemush': {name: 'Белые грибы', price: 120, time: 126,
-                bonus: 138, exp: 0.122, id: 22},
+                bonus: 138, exp: 0.122},
             'kapusta': {name: 'Капуста', price: 150, time: 79, bonus: 164,
-                exp: 0.095, id: 23},
+                exp: 0.095},
             'kust': {name: 'Хвойный куст', price: 600, time: 350, bonus: 657,
-                exp: 0.381, id: 24},
+                exp: 0.381},
             'kabachok': {name: 'Кабачок', price: 140, time: 95, bonus: 155,
-                exp: 0.102, id: 25},
+                exp: 0.102},
             'kukuruza': {name: 'Кукуруза', price: 170, time: 68, bonus: 182,
-                exp: 0.082, id: 26},
+                exp: 0.082},
             'jahntak': {name: 'Джантак', price: 130, time: 164, bonus: 157,
-                exp: 0.177, id: 27},
+                exp: 0.177},
             'kaktusi': {name: 'Кактусы пушистые ', price: 1100, time: 634,
-                bonus: 1194, exp: 0.626, id: 28},
+                bonus: 1194, exp: 0.626},
             'perets': {name: 'Красный перец', price: 180, time: 51, bonus: 191,
-                exp: 0.073, id: 29},
+                exp: 0.073},
             'petrushka': {name: 'Петрушка курчавая ', price: 145, time: 29,
-                bonus: 151, exp: 0.041, id: 30},
+                bonus: 151, exp: 0.041},
             'tomat': {name: 'Говорящий томат', price: 500, time: 276,
-                bonus: 554, exp: 0.359, id: 31},
+                bonus: 554, exp: 0.359},
             'arbuz': {name: 'Арбуз', price: 100, time: 45, bonus: 111,
-                exp: 0.071, id: 32},
+                exp: 0.071},
             'hmel': {name: 'Душистый хмель', price: 130, time: 23, bonus: 135,
-                exp: 0.035, id: 33},
+                exp: 0.035},
             'bambuk': {name: 'Ростки Бамбука', price: 10, time: 17, bonus: 14,
-                exp: 0.029, id: 34},
+                exp: 0.029},
             'tikva': {name: 'Тыква', price: 200, time: 57, bonus: 214,
-                exp: 0.095, id: 35},
+                exp: 0.095},
             'shishki': {name: 'Еловые шишки', price: 250, time: 45, bonus: 262,
-                exp: 0.082, id: 36},
+                exp: 0.082},
             'dinya': {name: 'Дыня', price: 120, time: 88, bonus: 141,
-                exp: 0.143, id: 37},
+                exp: 0.143},
             'podsolnuh2': {name: 'Подсолнух-мутант', price: 200, time: 50,
-                bonus: 213, exp: 0.087, id: 38},
+                bonus: 213, exp: 0.087},
             'poganka': {name: 'Бледная поганка', price: 1500, time: 338,
-                bonus: 1604, exp: 0.694, id: 39}
+                bonus: 1604, exp: 0.694}
         };
 
         /**
@@ -5564,17 +5518,6 @@
         };
 
         /**
-         * @method getCoord
-         * @return  {Object}
-         */
-        this.getCoord = function () {
-            var _x = /(\?|&amp;)x=(\d)/.exec(general.loc),
-                _y = /(\?|&amp;)y=(\d)/.exec(general.loc);
-
-            return {x: _x ? _x[2] : '0', y: _y ? _y[2] : '0'};
-        };
-
-        /**
          * @method setPlantData
          */
         this.setPlantData = function () {
@@ -5592,22 +5535,13 @@
                         'img/ferma/' + val + i + '.png" />';
                 }
 
-                var stData = general.getData(11),
-                    disbld = (!stData[0] || this.plant[val].id >= +stData[0]) ?
-                                ' disabled' : '',
-                    style = !this.canPlant ? ' style="display: none;"' : '',
-                    coord = this.getCoord();
-
-                str += ' &lt;a href="/ferma.php?x=' + coord.x + '&amp;y=' + coord.y +
-                    '&amp;page_id=' + Math.floor(pl.id / 4) + '"' + style + '>' +
-                    '[Перейти]&lt;/a>&lt;br>&lt;input type="radio" name="plant_id" ' +
-                    'value="' + val + '" id="' + id + '"' + style + disbld +
-                    ' /> &lt;label for="' + id + '">&lt;b style="color: #006600;">' +
-                    pl.name + ', ' + pl.price + '$&lt;/b>&lt;/label> ' +
-                    '&lt;br>&lt;li>Время созревания: &lt;b style="color: #990000;">' +
-                    pl.time + ' мин&lt;/b> ' + this.getHourTime(pl.time, true) +
-                    '&lt;li>Премия за урожай: &lt;b style="color: #990000;">' +
-                    pl.bonus + '$&lt;/b> (&lt;span style="color: #0000FF;">' +
+                str += '&lt;br>&lt;label for="' + id + '">' +
+                    '&lt;b style="color: #006600;">' + pl.name + ', ' + pl.price +
+                    '$&lt;/b>&lt;/label>&lt;br>&lt;li>Время созревания: ' +
+                    '&lt;b style="color: #990000;">' + pl.time + ' мин&lt;/b> ' +
+                    this.getHourTime(pl.time, true) + '&lt;li>Премия за урожай: ' +
+                    '&lt;b style="color: #990000;">' + pl.bonus + '$&lt;/b> ' +
+                    '(&lt;span style="color: #0000FF;">' +
                     this.calculatePerHour(pl.time, pl.bonus - pl.price, 2) +
                     '$&lt;/span> в час)&lt;li>Производственный опыт: ' +
                     '&lt;b style="color: #990000;">' + pl.exp + '&lt;/b> (' +
@@ -5625,21 +5559,12 @@
          */
         this.createSelectList = function () {
             var sel = general.doc.createElement('select'),
-                stData = general.getData(11),
-                block = '',
                 str = '',
                 val;
 
             for (val in this.plant) {
                 if (this.plant.hasOwnProperty(val)) {
-                    // есть возможность сажать и данных в хранилище
-                    // нет или это недоступное растение
-                    if (this.canPlant &amp;&amp;
-                            (!stData[0] || this.plant[val].id >= +stData[0])) {
-                        block = ' style="background-color: #FADADA"';
-                    }
-
-                    str += '&lt;option value="' + val + '"' + block + '>' +
+                    str += '&lt;option value="' + val + '">' +
                         this.plant[val].name + '&lt;/option>';
                 }
             }
@@ -5655,48 +5580,6 @@
         };
 
         /**
-         * @method checkAvailability
-         * @param   {int}   ind
-         */
-        this.checkAvailability = function (ind) {
-            general.$('counter').innerHTML = ind + 1;
-            var coord = this.getCoord(),
-                url = 'http://www.ganjawars.ru/ferma.php?' +
-                    'x=' + coord.x + '&amp;y=' + coord.y + '&amp;page_id=' + ind,
-                _this = this,
-                stData = general.getData(11);
-
-            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
-                var disabled = /value=('|")?([^\s'"]+)('|")? ([^>]+) disabled/.
-                        exec(xml.responseText);
-
-                if (disabled) {
-                    stData[0] = _this.plant[disabled[2]].id;
-                    general.setData(stData, 11);
-                    _this.setMainPanel();
-                    return;
-                }
-
-                ind++;
-                if (ind > 9) {
-                    // доступны все растения
-                    stData[0] = Number.MAX_VALUE;
-                    general.setData(stData, 11);
-                    _this.setMainPanel();
-                    return;
-                }
-
-                general.root.setTimeout(function () {
-                    _this.checkAvailability(ind);
-                }, _this.tm);
-            }, function () {
-                general.root.setTimeout(function () {
-                    _this.checkAvailability(ind);
-                }, _this.tm);
-            });
-        };
-
-        /**
          * @method setMainPanel
          */
         this.setMainPanel = function () {
@@ -5705,34 +5588,19 @@
             if (!div) {
                 div = general.doc.createElement('div');
                 div.id = 'allPlantContainer';
-                this.target.appendChild(div);
+                div.setAttribute('style', 'margin-top: 7px');
+                if (this.target.nodeName === 'FORM') {
+                    this.target.parentNode.lastElementChild.
+                            firstElementChild.appendChild(div);
+                } else {
+                    this.target.appendChild(div);
+                }
             }
 
-            div.innerHTML = this.canPlant ? '' : '&lt;br>';
             div.appendChild(this.createSelectList());
 
-            // кнопа "Что могу посадить?"
-            var butCheckPlant = general.doc.createElement('input');
-            butCheckPlant.type = 'button';
-            butCheckPlant.value = 'Что могу посадить?';
-            butCheckPlant.setAttribute('style', this.canPlant ?
-                    'margin-left: 5px;' : 'display: none;');
-            var _this = this;
-            butCheckPlant.addEventListener('click', function () {
-                div.querySelector('#preloader').style.display = '';
-                _this.checkAvailability(0);
-            }, false);
-            div.appendChild(butCheckPlant);
-
-            var span = general.doc.createElement('span');
-            span.id = 'preloader';
-            span.innerHTML = '&lt;img src="' + general.imgPath +
-                'preloader.gif" style="margin: 0 5px 0 10px;" />' +
-                '(&lt;span id="counter">&lt;/span>)';
-            span.style.display = 'none';
-            div.appendChild(span);
-
             var chkContainer = general.doc.createElement('div');
+            chkContainer.setAttribute('align', 'left');
             chkContainer.id = 'checkBoxContainer';
             div.appendChild(chkContainer);
         };
@@ -5761,7 +5629,7 @@
 
             // опыт виден (на пустой вскопанной клетке)
             if (prod) {
-                var gb = /Счет:\s?&lt;b>\$([^&lt;]+)&lt;\/b>/.
+                var gb = /&lt;a name="pf">Счет:&lt;\/a>\s?&lt;b>\$([^&lt;]+)&lt;\/b>/.
                         exec(table.innerHTML)[1].replace(/,/g, ''),
                     exp = prod[1],
                     stData = general.getData(11);
@@ -5834,8 +5702,8 @@
          */
         this.init = function () {
             var farmId = /(\?|&amp;)id=(\d+)/.exec(general.loc),
-                capcha = general.doc.querySelector('input[type="text"]' +
-                        '[name="fermacode"]');
+                capcha = general.doc.querySelector('input[type="hidden"]' +
+                    '[name="captcha_question"]');
 
             this.target = general.doc.
                     querySelector('form[action="/ferma.php"]') ||
@@ -5846,16 +5714,16 @@
             if (!capcha &amp;&amp; !(/section=items/.test(general.loc)) &amp;&amp;
                     !(farmId &amp;&amp; farmId[2] !== general.myID) &amp;&amp; this.target) {
 
-                this.canPlant = this.target.nodeName === 'FORM';
+                var canPlant = this.target.nodeName === 'FORM';
 
                 // счетчики Гб и производа
                 var stData = general.getData(11);
-                if (this.canPlant &amp;&amp; (stData[4] || stData[5])) {
+                if (canPlant &amp;&amp; (stData[4] || stData[5])) {
                     this.setCounter();
                 }
 
                 // перевод дохрена минут в чч:мм
-                if (!this.canPlant) {
+                if (!canPlant) {
                     var tbl = general.doc.querySelector('table[width="100%"]' +
                             '[cellpadding="4"][cellspacing="2"][border="0"]');
 
@@ -6397,11 +6265,13 @@
                     ['Маскировка', '/shop.php?shop=shop_masks'],
                     ['Тепловизоры', '/shop.php?shop=shop_wear'],
                     ['Пояса', '/shop.php?shop=shop_belts'],
-                    ['Оборудование', '/shop.php?shop=shop_phones'],
+                    ['Правый карман', '/shop.php?shop=shop_rightpocket'],
+                    ['Левый карман', '/shop.php?shop=shop_leftpocket'],
+                    ['Доп.карманы', '/shop.php?shop=shop_epockets'],
                     ['Транспорт', '/shop.php?shop=shop_transport'],
                     ['Цветы', '/shop.php?shop=shop_flowers'],
                     ['Аптека', '/shop.php?shop=shop_drugs'],
-                    ['Подарки', '/shop.php?shop=shop_gifts']
+                    ['Сувениры', '/shop.php?shop=shop_gifts']
                 ], prnt: 'shop_1', arrow: 'shop_gos', offsetY: -75},
                 {divm: 0, lines: [
                     ['Огнестрельное оружие', '', 'zag'],
@@ -6418,8 +6288,9 @@
                     ['Маскировка', '/shopc.php?shop=shop_masks_c'],
                     ['Тепловизоры', '/shopc.php?shop=shop_wear_c'],
                     ['Пояса', '/shopc.php?shop=shop_belts_c'],
-                    ['Оборудование', '/shopc.php?shop=shop_misc_c'],
-                    ['Подарки', '/shopc.php?shop=shop_gifts_c'],
+                    ['Правый карман', '/shopc.php?shop=shop_rightpocket_c'],
+                    ['Левый карман', '/shopc.php?shop=shop_leftpocket_c'],
+                    ['Доп.карманы', '/shopc.php?shop=shop_epockets_c'],
                     ['Аптека', '/shopc.php?shop=shop_drugs_c'],
                     ['Транспорт', '/shopc.php?shop=shop_transport_c']
                 ], prnt: 'shop_1', arrow: 'shop_hightech', offsetY: -75},
@@ -7158,7 +7029,11 @@
                 'уменьшающий на N/100 получаемое персонажем опьянение при ' +
                 'выпивании коктейлей в барах. То есть, при N=50 получаемое ' +
                 'опьянение уменьшится в два раза. Максимальное полезное ' +
-                'значение - 100.']
+                'значение - 100.'],
+            'бонус защиты': ['Бонус защиты снижает урон, получаемый ' +
+                'персонажем, на (количество бонуса)% независимо от вида ' +
+                'урона. Снижение урона распространяется и на обычные ' +
+                'выстрелы, и на гранаты, и на критические попадания.']
         };
 
         /**
@@ -7699,7 +7574,7 @@
                 j;
 
             for (i = 0; i &lt; nbrs.length; i++) {
-                x = /\((\d+.?\d*)\)\s*.*\+\-\d+.?\d*&lt;\/font>/.
+                x = /\((\d+.?\d*)\)\s*.*\+-\d+.?\d*&lt;\/font>/.
                     exec(nbrs[i].innerHTML);
 
                 if (x) {
@@ -7741,10 +7616,9 @@
                         '[align="right"][style="font-size:10px"]').
                             parentNode.parentNode.querySelectorAll('nobr');
             } else {
-                nobrs = general.doc.querySelector('td[rowspan="2"]' +
-                        '[valign="top"][align="center"]>table' +
-                        '[cellspacing="0"][cellpadding="0"][border="0"]').
-                            querySelectorAll('nobr');
+                nobrs = general.doc.querySelector('td[valign="top"]' +
+                    '[align="center"]>table[cellspacing="0"][cellpadding="0"]' +
+                    '[border="0"]').querySelectorAll('nobr');
             }
 
             this.fixSkills(nobrs);
@@ -8069,9 +7943,9 @@
         this.highTechItems = {
             'htGroup': ['auto', 'heavy', 'sniper', 'ppguns', 'shotguns',
                 'grl', 'armour', 'helmets', 'boots', 'masks', 'wear',
-                'belts', 'phones', 'drugs', 'transport', 'gifts'],
-            'sniper': 'snipe',
-            'phones': 'misc'
+                'belts', 'rightpocket', 'leftpocket', 'epockets', 'drugs',
+                'transport'],
+            'sniper': 'snipe'
         };
 
         /**
@@ -8402,129 +8276,78 @@
      */
     var SortSyndOnline = function () {
         /**
-         * @property trs
-         * @type {Array|null}
-         */
-        this.trs = null;
-
-        /**
-         * @property prnt
+         * @property mainTable
          * @type {Object|null}
          */
-        this.prnt = null;
-
-        /**
-         * @method createTitle
-         * @param    {String}   str
-         * @return   {Element}
-         */
-        this.createTitle = function (str) {
-            var tr = general.doc.createElement('tr');
-            tr.innerHTML = '&lt;td colspan="8" class="wb" ' +
-                'bgcolor="#D0EED0" style="text-align: ' +
-                'center;">&lt;span style="font-weight: bold;">' +
-                str + '&lt;/span>&lt;/td>';
-
-            return tr;
-        };
-
-        /**
-         * @method getTrs
-         * @param   {Object}    obj
-         */
-        this.getTrs = function (obj) {
-            var tbl = obj.querySelector('center+br+table');
-            return tbl ? tbl.querySelectorAll('tr') : [];
-        };
-
-        /**
-         * @method getUnionOnline
-         * @param    {String}   URL
-         */
-        this.getUnionOnline = function (URL) {
-            var url = URL || general.loc + '&amp;page=politics',
-                _this = this;
-
-            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
-                var spanContent = general.doc.createElement('span');
-                spanContent.innerHTML = xml.responseText;
-
-                if (/politics/.test(url)) {
-                    var unionLink = spanContent.
-                            querySelector('td>br:first-child+b+' +
-                                'a[href*="/syndicate.php?id="]');
-                    if (unionLink) {
-                        general.root.setTimeout(function () {
-                            _this.getUnionOnline(unionLink + '&amp;page=online');
-                        }, 1000);
-                    } else if (general.getData(18)[2]) {
-                        _this.sortBattles();
-                    }
-                } else {
-                    var trs = _this.getTrs(spanContent);
-                    if (trs.length) {
-                        _this.prnt.appendChild(_this.createTitle('&lt;a target=' +
-                            '"_blank" href="' + url + '">Союз&lt;/a>'));
-
-                        var i;
-                        for (i = 0; i &lt; trs.length; i++) {
-                            _this.prnt.appendChild(trs[i]);
-                        }
-                    }
-
-                    if (general.getData(18)[2]) {
-                        _this.trs = _this.getTrs(general.doc);
-                        _this.sortBattles();
-                    }
-                }
-            }, function () {
-                general.root.setTimeout(function () {
-                    _this.getUnionOnline(URL);
-                }, 1000);
-            });
-        };
+        this.mainTable = general.doc.querySelector('table[width="600"]' +
+                '[align="center"][cellspacing="0"][cellpadding="0"]');
 
         /**
          * @method sortBattles
          */
         this.sortBattles = function () {
-            var reg = /\/warlog\.php\?bid=(\d+)/;
-            if (reg.test(this.prnt.innerHTML)) {
-                var battles = {},
-                    bid,
-                    i;
+            var trs = this.mainTable.querySelectorAll('tr'),
+                reg = /\/warlog\.php\?bid=(\d+)/,
+                battles = {},
+                bid,
+                i;
 
-                for (i = 1; i &lt; this.trs.length; i++) {
-                    bid = reg.exec(this.trs[i].innerHTML);
-                    if (bid) {
-                        if (!battles[bid[1]]) {
-                            battles[bid[1]] = [];
-                        }
-
-                        battles[bid[1]].push(this.trs[i].cloneNode(true));
-                        this.prnt.removeChild(this.trs[i]);
+            for (i = 1; i &lt; trs.length; i++) {
+                bid = reg.exec(trs[i].innerHTML);
+                // alert(trs[i].innerHTML);
+                if (/&lt;b>(\s?|&amp;nbsp;)?\d+(\s?|&amp;nbsp;)?&lt;\/b>$/.
+                        test(trs[i].firstElementChild.innerHTML) &amp;&amp;
+                            bid) {
+                    if (!battles[bid[1]]) {
+                        battles[bid[1]] = [];
                     }
+
+                    battles[bid[1]].push(trs[i].cloneNode(true));
+                    trs[i].parentNode.removeChild(trs[i]);
                 }
+            }
 
-                var before = this.prnt.querySelectorAll('tr')[1],
-                    countBattles = 1,
-                    btl,
-                    tr;
+            var target = this.mainTable.querySelector('tr'),
+                tr = general.doc.createElement('tr');
 
-                for (btl in battles) {
-                    if (battles.hasOwnProperty(btl)) {
-                        tr = this.createTitle('Бой ' + countBattles);
-                        this.prnt.insertBefore(tr, before);
-                        for (i = 0; i &lt; battles[btl].length; i++) {
-                            this.prnt.insertBefore(battles[btl][i],
-                                tr.nextElementSibling);
+            tr.innerHTML = '&lt;td>&lt;table class="bordersupdown" width="100%" ' +
+                'cellspacing="1" cellpadding="4" align="center" ' +
+                'style="margin-bottom: 15px;">&lt;tbody>&lt;/tbody>&lt;/table>&lt;/td>';
+            target.parentNode.insertBefore(tr, target);
+            target = tr.querySelector('tbody');
+
+            // ссылки на идущие синдикатные бои (таблица внизу страницы)
+            var syndBattles = general.doc.
+                    querySelectorAll('td[class="greengreenbg"][valign="top"]>' +
+                        'a[href*="/warlog.php?bid="]'),
+                countBattles = 1,
+                color,
+                btl;
+
+            for (btl in battles) {
+                if (battles.hasOwnProperty(btl)) {
+                    color = '';
+                    for (i = 0; i &lt; syndBattles.length; i++) {
+                        // если бой синдикатный, выделяем зеленым цветом
+                        if (btl === reg.exec(syndBattles[i].href)[1]) {
+                            color = ' style="color: #00AA00;"';
+                            break;
                         }
-
-                        countBattles++;
                     }
-                }
 
-                this.prnt.insertBefore(this.createTitle('&amp;nbsp;'), before);
+                    tr = general.doc.createElement('tr');
+                    tr.innerHTML = '&lt;td colspan="8" class="greenbg" ' +
+                        'style="text-align: center; font-weight: bold;">' +
+                        '&lt;span' + color + '>Бой: ' + countBattles +
+                        '&lt;/span>&lt;/td>';
+                    target.appendChild(tr);
+
+                    for (i = 0; i &lt; battles[btl].length; i++) {
+                        target.appendChild(battles[btl][i]);
+                    }
+
+                    countBattles++;
+                }
             }
         };
 
@@ -8532,29 +8355,11 @@
          * @method init
          */
         this.init = function () {
-            if (/&amp;page=online$/.test(general.loc)) {
-                this.trs = this.getTrs(general.doc);
-                if (!this.trs[0]) {
-                    return;
-                }
-
-                var stData = general.getData(18);
-                this.prnt = this.trs[0].parentNode;
-
-                if (stData[2]) {
-                    this.getUnionOnline(null);
-                    return;
-                }
-
-                if (stData[0]) {
-                    this.sortBattles();
-                }
-
-                if (stData[1]) {
-                    this.getUnionOnline(null);
-                }
-
-                general.doc.body.appendChild(general.doc.createElement('br'));
+            if (/&amp;page=online$/.test(general.loc) &amp;&amp; this.mainTable &amp;&amp;
+                    this.mainTable.
+                        querySelector('td>a[href*="/warlog.php?bid="]>' +
+                            'img[src*="/i/icons/"]')) {
+                this.sortBattles();
             }
         };
     };
@@ -9599,7 +9404,7 @@
          * @type {NodeList}
          */
         this.counters = general.doc.querySelectorAll('td[valign="top"]' +
-                '[bgcolor="#e9ffe9"]>table[border="0"] tr>td+td>nobr');
+                '[bgcolor="#e9ffe9"]>div>table[border="0"] tr>td+td>nobr');
         /**
          * @property ids
          * @type {Array}
@@ -9681,8 +9486,8 @@
          * @param   {int}   val
          */
         this.setLeftToLevel = function (val) {
-            var syndLevels = [5, 15, 37, 76, 143, 249, 412, 655, 1007, 1505,
-                2199, 3149, 4433, 6146, 8407, 11362, 15192, 20113, 26394,
+            var syndLevels = [5, 15, 37, 76, 143, 200, 280, 500, 750, 1000,
+                1250, 1600, 2200, 3000, 4500, 6000, 9000, 15000, 26394,
                 34353, 44377, 56931, 72568, 91947, 115853, 145214, 181127,
                 224882, 277996, 342247, 419713, 512821, 624395, 757716, 916591,
                 1105426, 1329313, 1594124, 1906627, 2274598, 2723523, 3293658,
@@ -11127,8 +10932,10 @@
                     (/&lt;b>(\d+) бойцов онлайн&lt;\/b>/.
                         exec(spanContent.innerHTML)[1]) + ')&lt;br>';
 
-                var trs = spanContent.querySelector('br+center+br+table').
-                        querySelectorAll('tr');
+                var trs = spanContent.
+                            querySelector('table[class="bordersupdown"]' +
+                                '[width="100%"]').querySelectorAll('tr');
+
                 if (trs.length > 1) {
                     var nobr, pers, syndImg, war, i;
                     for (i = 1; i &lt; trs.length; i++) {
@@ -11214,8 +11021,9 @@
                     spanContent.innerHTML = xml.responseText;
 
                     _this.syndUnion = spanContent.
-                        querySelector('td>br:first-child+b+' +
-                            'a[href*="/syndicate.php?id="]');
+                        querySelector('tr>td[colspan="3"]' +
+                            '[class="greengreenbg"]>' +
+                            'a[href*="/syndicate.php?id="]:last-child');
 
                     if (_this.syndUnion) {
                         b.appendChild(general.doc.createTextNode(' '));
@@ -12747,13 +12555,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="-_anonymous_-CritShotsAndLinksBtlLog_CriticalShots.html">CriticalShots</a></li><li><a href="-_anonymous_-SyndAnalyser-MainData.html">MainData</a></li></ul><h3>Namespaces</h3><ul><li><a href="general.root.bf1.html">bf1</a></li><li><a href="general.root.bf2.html">bf2</a></li><li><a href="general.root.bf3.html">bf3</a></li><li><a href="general.root.bfndl.html">bfndl</a></li><li><a href="general.root.frames.bsrc.html">bsrc</a></li><li><a href="general.root.hp_max_h.html">hp_max_h</a></li><li><a href="general.root.hp_speed_h.html">hp_speed_h</a></li><li><a href="general.root.hp_start_h.html">hp_start_h</a></li><li><a href="general.root.waitforturn.html">waitforturn</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#addCloseButton">addCloseButton</a></li><li><a href="global.html#addContent">addContent</a></li><li><a href="global.html#addData">addData</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#advSetBonusInfo">advSetBonusInfo</a></li><li><a href="global.html#blink">blink</a></li><li><a href="global.html#calc">calc</a></li><li><a href="global.html#calculateFarm">calculateFarm</a></li><li><a href="global.html#calculatePerHour">calculatePerHour</a></li><li><a href="global.html#change_updatechatlines">change_updatechatlines</a></li><li><a href="global.html#changeColor">changeColor</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#changeLocationFighters">changeLocationFighters</a></li><li><a href="global.html#changeMakebf">changeMakebf</a></li><li><a href="global.html#changeSelect">changeSelect</a></li><li><a href="global.html#changeSelectEnemies">changeSelectEnemies</a></li><li><a href="global.html#checkAvailability">checkAvailability</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#checkScriptUpdate">checkScriptUpdate</a></li><li><a href="global.html#checkState">checkState</a></li><li><a href="global.html#cleanStorage">cleanStorage</a></li><li><a href="global.html#clearClick">clearClick</a></li><li><a href="global.html#clearCounter">clearCounter</a></li><li><a href="global.html#clearFields">clearFields</a></li><li><a href="global.html#clearNPCData">clearNPCData</a></li><li><a href="global.html#clearSavedStrokeAfterSay">clearSavedStrokeAfterSay</a></li><li><a href="global.html#clickElem">clickElem</a></li><li><a href="global.html#clickImageFighters">clickImageFighters</a></li><li><a href="global.html#compareLines">compareLines</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#createDivSms">createDivSms</a></li><li><a href="global.html#createGwMenuDiv">createGwMenuDiv</a></li><li><a href="global.html#createGWMenuItems">createGWMenuItems</a></li><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createSelectList">createSelectList</a></li><li><a href="global.html#createTitle">createTitle</a></li><li><a href="global.html#deleteImagePoks">deleteImagePoks</a></li><li><a href="global.html#delSpaces">delSpaces</a></li><li><a href="global.html#enterPress">enterPress</a></li><li><a href="global.html#fillData">fillData</a></li><li><a href="global.html#findItem">findItem</a></li><li><a href="global.html#fixSkills">fixSkills</a></li><li><a href="global.html#formatTime">formatTime</a></li><li><a href="global.html#fOut">fOut</a></li><li><a href="global.html#fOver">fOver</a></li><li><a href="global.html#getAchievNow">getAchievNow</a></li><li><a href="global.html#getAllCrits">getAllCrits</a></li><li><a href="global.html#getBattleField">getBattleField</a></li><li><a href="global.html#getBattles">getBattles</a></li><li><a href="global.html#getCoord">getCoord</a></li><li><a href="global.html#getCrits">getCrits</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataFighters">getDataFighters</a></li><li><a href="global.html#getDataNow">getDataNow</a></li><li><a href="global.html#getForumTable">getForumTable</a></li><li><a href="global.html#getGitHubLink">getGitHubLink</a></li><li><a href="global.html#getHourTime">getHourTime</a></li><li><a href="global.html#getHtime">getHtime</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getLastDate">getLastDate</a></li><li><a href="global.html#getLeftRightCommands">getLeftRightCommands</a></li><li><a href="global.html#getLineMenu">getLineMenu</a></li><li><a href="global.html#getMessagesOnPages">getMessagesOnPages</a></li><li><a href="global.html#getNewsId">getNewsId</a></li><li><a href="global.html#getOnline">getOnline</a></li><li><a href="global.html#getPers">getPers</a></li><li><a href="global.html#getPersLink">getPersLink</a></li><li><a href="global.html#getRange">getRange</a></li><li><a href="global.html#getRealEstateStr">getRealEstateStr</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#getStrGameRez">getStrGameRez</a></li><li><a href="global.html#getTimeNow">getTimeNow</a></li><li><a href="global.html#getTrs">getTrs</a></li><li><a href="global.html#getTrsTable">getTrsTable</a></li><li><a href="global.html#getTypeLine">getTypeLine</a></li><li><a href="global.html#getUnionOnline">getUnionOnline</a></li><li><a href="global.html#getValue">getValue</a></li><li><a href="global.html#goQuest">goQuest</a></li><li><a href="global.html#gwMenuInit">gwMenuInit</a></li><li><a href="global.html#hideTooltip">hideTooltip</a></li><li><a href="global.html#hpupdate">hpupdate</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#insertMess">insertMess</a></li><li><a href="global.html#isEven">isEven</a></li><li><a href="global.html#isForumPage">isForumPage</a></li><li><a href="global.html#listenSound">listenSound</a></li><li><a href="global.html#modifyData">modifyData</a></li><li><a href="global.html#nextAjaxQuery">nextAjaxQuery</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#openCloseItem">openCloseItem</a></li><li><a href="global.html#parseLine">parseLine</a></li><li><a href="global.html#parseMessages">parseMessages</a></li><li><a href="global.html#parsePTSProtocols">parsePTSProtocols</a></li><li><a href="global.html#parseSyndProtocols">parseSyndProtocols</a></li><li><a href="global.html#processingThemesList">processingThemesList</a></li><li><a href="global.html#rememberClick">rememberClick</a></li><li><a href="global.html#rememberTime">rememberTime</a></li><li><a href="global.html#resetGBCounter">resetGBCounter</a></li><li><a href="global.html#resetGosEnergoAtom">resetGosEnergoAtom</a></li><li><a href="global.html#saveData">saveData</a></li><li><a href="global.html#scan">scan</a></li><li><a href="global.html#scanNPC">scanNPC</a></li><li><a href="global.html#selectChange">selectChange</a></li><li><a href="global.html#selectChangeHandler">selectChangeHandler</a></li><li><a href="global.html#setBonusInfo">setBonusInfo</a></li><li><a href="global.html#setButton">setButton</a></li><li><a href="global.html#setChatInterface">setChatInterface</a></li><li><a href="global.html#setCheckboxes">setCheckboxes</a></li><li><a href="global.html#setChkHandler">setChkHandler</a></li><li><a href="global.html#setCloseButton">setCloseButton</a></li><li><a href="global.html#setColorFighters">setColorFighters</a></li><li><a href="global.html#setCounter">setCounter</a></li><li><a href="global.html#setCounters">setCounters</a></li><li><a href="global.html#setCountStroke">setCountStroke</a></li><li><a href="global.html#setCSSGwMenu">setCSSGwMenu</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setDataDiv">setDataDiv</a></li><li><a href="global.html#setEnvelope">setEnvelope</a></li><li><a href="global.html#setFilter">setFilter</a></li><li><a href="global.html#setGBCounter">setGBCounter</a></li><li><a href="global.html#setGenerator">setGenerator</a></li><li><a href="global.html#setHandlersGWMenu">setHandlersGWMenu</a></li><li><a href="global.html#setHandlerSubmit">setHandlerSubmit</a></li><li><a href="global.html#setHighlighting">setHighlighting</a></li><li><a href="global.html#setHrefItem">setHrefItem</a></li><li><a href="global.html#setLeftToLevel">setLeftToLevel</a></li><li><a href="global.html#setLink">setLink</a></li><li><a href="global.html#setMainPanel">setMainPanel</a></li><li><a href="global.html#setMyInfo">setMyInfo</a></li><li><a href="global.html#setNameInChat">setNameInChat</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setPlantData">setPlantData</a></li><li><a href="global.html#setRange">setRange</a></li><li><a href="global.html#setRedLink">setRedLink</a></li><li><a href="global.html#setReminder">setReminder</a></li><li><a href="global.html#setSettingsForAdvBattleAll">setSettingsForAdvBattleAll</a></li><li><a href="global.html#setSettins">setSettins</a></li><li><a href="global.html#setSms">setSms</a></li><li><a href="global.html#setSortListEnemy">setSortListEnemy</a></li><li><a href="global.html#setStroke">setStroke</a></li><li><a href="global.html#setTimer">setTimer</a></li><li><a href="global.html#setTooltipsFighters">setTooltipsFighters</a></li><li><a href="global.html#showCrits">showCrits</a></li><li><a href="global.html#showData">showData</a></li><li><a href="global.html#showHideForum">showHideForum</a></li><li><a href="global.html#showHideLink">showHideLink</a></li><li><a href="global.html#showHidePreloader">showHidePreloader</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li><li><a href="global.html#showHistory">showHistory</a></li><li><a href="global.html#showImagePoks">showImagePoks</a></li><li><a href="global.html#showOfSyndLinks">showOfSyndLinks</a></li><li><a href="global.html#showRange">showRange</a></li><li><a href="global.html#showRezult">showRezult</a></li><li><a href="global.html#showSector">showSector</a></li><li><a href="global.html#showSettings">showSettings</a></li><li><a href="global.html#showSms">showSms</a></li><li><a href="global.html#showTimer">showTimer</a></li><li><a href="global.html#showTimerNPC">showTimerNPC</a></li><li><a href="global.html#showTooltip">showTooltip</a></li><li><a href="global.html#sortBattles">sortBattles</a></li><li><a href="global.html#sortEnemyList">sortEnemyList</a></li><li><a href="global.html#sortGosEnergoAtom">sortGosEnergoAtom</a></li><li><a href="global.html#sortGosEnergoAtomBySynd">sortGosEnergoAtomBySynd</a></li><li><a href="global.html#sortMess">sortMess</a></li><li><a href="global.html#sortPers">sortPers</a></li><li><a href="global.html#sortWeapon">sortWeapon</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startCountBattles">startCountBattles</a></li><li><a href="global.html#startInventoryPlus">startInventoryPlus</a></li><li><a href="global.html#startWorkPostGrenadesBroken">startWorkPostGrenadesBroken</a></li><li><a href="global.html#syndAlert">syndAlert</a></li><li><a href="global.html#testSound">testSound</a></li><li><a href="global.html#testSubject">testSubject</a></li><li><a href="global.html#titleClick">titleClick</a></li><li><a href="global.html#toDec">toDec</a></li><li><a href="global.html#toHex">toHex</a></li><li><a href="global.html#tryStart">tryStart</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="-_anonymous_-CritShotsAndLinksBtlLog_CriticalShots.html">CriticalShots</a></li><li><a href="-_anonymous_-SyndAnalyser-MainData.html">MainData</a></li></ul><h3>Namespaces</h3><ul><li><a href="general.root.bf1.html">bf1</a></li><li><a href="general.root.bf2.html">bf2</a></li><li><a href="general.root.bf3.html">bf3</a></li><li><a href="general.root.bfndl.html">bfndl</a></li><li><a href="general.root.frames.bsrc.html">bsrc</a></li><li><a href="general.root.hp_max_h.html">hp_max_h</a></li><li><a href="general.root.hp_speed_h.html">hp_speed_h</a></li><li><a href="general.root.hp_start_h.html">hp_start_h</a></li><li><a href="general.root.waitforturn.html">waitforturn</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#addCloseButton">addCloseButton</a></li><li><a href="global.html#addContent">addContent</a></li><li><a href="global.html#addData">addData</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#advSetBonusInfo">advSetBonusInfo</a></li><li><a href="global.html#blink">blink</a></li><li><a href="global.html#calc">calc</a></li><li><a href="global.html#calculateFarm">calculateFarm</a></li><li><a href="global.html#calculatePerHour">calculatePerHour</a></li><li><a href="global.html#change_updatechatlines">change_updatechatlines</a></li><li><a href="global.html#changeColor">changeColor</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#changeLocationFighters">changeLocationFighters</a></li><li><a href="global.html#changeMakebf">changeMakebf</a></li><li><a href="global.html#changeSelect">changeSelect</a></li><li><a href="global.html#changeSelectEnemies">changeSelectEnemies</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#checkScriptUpdate">checkScriptUpdate</a></li><li><a href="global.html#checkState">checkState</a></li><li><a href="global.html#cleanStorage">cleanStorage</a></li><li><a href="global.html#clearClick">clearClick</a></li><li><a href="global.html#clearCounter">clearCounter</a></li><li><a href="global.html#clearFields">clearFields</a></li><li><a href="global.html#clearNPCData">clearNPCData</a></li><li><a href="global.html#clearSavedStrokeAfterSay">clearSavedStrokeAfterSay</a></li><li><a href="global.html#clickElem">clickElem</a></li><li><a href="global.html#clickImageFighters">clickImageFighters</a></li><li><a href="global.html#compareLines">compareLines</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#createDivSms">createDivSms</a></li><li><a href="global.html#createGwMenuDiv">createGwMenuDiv</a></li><li><a href="global.html#createGWMenuItems">createGWMenuItems</a></li><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createSelectList">createSelectList</a></li><li><a href="global.html#deleteImagePoks">deleteImagePoks</a></li><li><a href="global.html#delSpaces">delSpaces</a></li><li><a href="global.html#enterPress">enterPress</a></li><li><a href="global.html#fillData">fillData</a></li><li><a href="global.html#findItem">findItem</a></li><li><a href="global.html#fixSkills">fixSkills</a></li><li><a href="global.html#formatTime">formatTime</a></li><li><a href="global.html#fOut">fOut</a></li><li><a href="global.html#fOver">fOver</a></li><li><a href="global.html#getAchievNow">getAchievNow</a></li><li><a href="global.html#getAllCrits">getAllCrits</a></li><li><a href="global.html#getBattleField">getBattleField</a></li><li><a href="global.html#getBattles">getBattles</a></li><li><a href="global.html#getCrits">getCrits</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataFighters">getDataFighters</a></li><li><a href="global.html#getDataNow">getDataNow</a></li><li><a href="global.html#getForumTable">getForumTable</a></li><li><a href="global.html#getGitHubLink">getGitHubLink</a></li><li><a href="global.html#getHourTime">getHourTime</a></li><li><a href="global.html#getHtime">getHtime</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getLastDate">getLastDate</a></li><li><a href="global.html#getLeftRightCommands">getLeftRightCommands</a></li><li><a href="global.html#getLineMenu">getLineMenu</a></li><li><a href="global.html#getMessagesOnPages">getMessagesOnPages</a></li><li><a href="global.html#getNewsId">getNewsId</a></li><li><a href="global.html#getOnline">getOnline</a></li><li><a href="global.html#getPers">getPers</a></li><li><a href="global.html#getPersLink">getPersLink</a></li><li><a href="global.html#getRange">getRange</a></li><li><a href="global.html#getRealEstateStr">getRealEstateStr</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#getStrGameRez">getStrGameRez</a></li><li><a href="global.html#getTimeNow">getTimeNow</a></li><li><a href="global.html#getTrsTable">getTrsTable</a></li><li><a href="global.html#getTypeLine">getTypeLine</a></li><li><a href="global.html#getValue">getValue</a></li><li><a href="global.html#goQuest">goQuest</a></li><li><a href="global.html#gwMenuInit">gwMenuInit</a></li><li><a href="global.html#hideTooltip">hideTooltip</a></li><li><a href="global.html#hpupdate">hpupdate</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#insertMess">insertMess</a></li><li><a href="global.html#isEven">isEven</a></li><li><a href="global.html#isForumPage">isForumPage</a></li><li><a href="global.html#listenSound">listenSound</a></li><li><a href="global.html#modifyData">modifyData</a></li><li><a href="global.html#nextAjaxQuery">nextAjaxQuery</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#openCloseItem">openCloseItem</a></li><li><a href="global.html#parseLine">parseLine</a></li><li><a href="global.html#parseMessages">parseMessages</a></li><li><a href="global.html#parsePTSProtocols">parsePTSProtocols</a></li><li><a href="global.html#parseSyndProtocols">parseSyndProtocols</a></li><li><a href="global.html#processingThemesList">processingThemesList</a></li><li><a href="global.html#rememberClick">rememberClick</a></li><li><a href="global.html#rememberTime">rememberTime</a></li><li><a href="global.html#resetGBCounter">resetGBCounter</a></li><li><a href="global.html#resetGosEnergoAtom">resetGosEnergoAtom</a></li><li><a href="global.html#saveData">saveData</a></li><li><a href="global.html#scan">scan</a></li><li><a href="global.html#scanNPC">scanNPC</a></li><li><a href="global.html#selectChange">selectChange</a></li><li><a href="global.html#selectChangeHandler">selectChangeHandler</a></li><li><a href="global.html#setBonusInfo">setBonusInfo</a></li><li><a href="global.html#setButton">setButton</a></li><li><a href="global.html#setChatInterface">setChatInterface</a></li><li><a href="global.html#setCheckboxes">setCheckboxes</a></li><li><a href="global.html#setChkHandler">setChkHandler</a></li><li><a href="global.html#setCloseButton">setCloseButton</a></li><li><a href="global.html#setColorFighters">setColorFighters</a></li><li><a href="global.html#setCounter">setCounter</a></li><li><a href="global.html#setCounters">setCounters</a></li><li><a href="global.html#setCountStroke">setCountStroke</a></li><li><a href="global.html#setCSSGwMenu">setCSSGwMenu</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setDataDiv">setDataDiv</a></li><li><a href="global.html#setEnvelope">setEnvelope</a></li><li><a href="global.html#setFilter">setFilter</a></li><li><a href="global.html#setGBCounter">setGBCounter</a></li><li><a href="global.html#setGenerator">setGenerator</a></li><li><a href="global.html#setHandlersGWMenu">setHandlersGWMenu</a></li><li><a href="global.html#setHandlerSubmit">setHandlerSubmit</a></li><li><a href="global.html#setHighlighting">setHighlighting</a></li><li><a href="global.html#setHrefItem">setHrefItem</a></li><li><a href="global.html#setLeftToLevel">setLeftToLevel</a></li><li><a href="global.html#setLink">setLink</a></li><li><a href="global.html#setMainPanel">setMainPanel</a></li><li><a href="global.html#setMyInfo">setMyInfo</a></li><li><a href="global.html#setNameInChat">setNameInChat</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setPlantData">setPlantData</a></li><li><a href="global.html#setRange">setRange</a></li><li><a href="global.html#setRedLink">setRedLink</a></li><li><a href="global.html#setReminder">setReminder</a></li><li><a href="global.html#setSettingsForAdvBattleAll">setSettingsForAdvBattleAll</a></li><li><a href="global.html#setSettins">setSettins</a></li><li><a href="global.html#setSms">setSms</a></li><li><a href="global.html#setSortListEnemy">setSortListEnemy</a></li><li><a href="global.html#setStroke">setStroke</a></li><li><a href="global.html#setTimer">setTimer</a></li><li><a href="global.html#setTooltipsFighters">setTooltipsFighters</a></li><li><a href="global.html#showCrits">showCrits</a></li><li><a href="global.html#showData">showData</a></li><li><a href="global.html#showHideForum">showHideForum</a></li><li><a href="global.html#showHideLink">showHideLink</a></li><li><a href="global.html#showHidePreloader">showHidePreloader</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li><li><a href="global.html#showHistory">showHistory</a></li><li><a href="global.html#showImagePoks">showImagePoks</a></li><li><a href="global.html#showOfSyndLinks">showOfSyndLinks</a></li><li><a href="global.html#showRange">showRange</a></li><li><a href="global.html#showRezult">showRezult</a></li><li><a href="global.html#showSector">showSector</a></li><li><a href="global.html#showSettings">showSettings</a></li><li><a href="global.html#showSms">showSms</a></li><li><a href="global.html#showTimer">showTimer</a></li><li><a href="global.html#showTimerNPC">showTimerNPC</a></li><li><a href="global.html#showTooltip">showTooltip</a></li><li><a href="global.html#sortBattles">sortBattles</a></li><li><a href="global.html#sortEnemyList">sortEnemyList</a></li><li><a href="global.html#sortGosEnergoAtom">sortGosEnergoAtom</a></li><li><a href="global.html#sortGosEnergoAtomBySynd">sortGosEnergoAtomBySynd</a></li><li><a href="global.html#sortMess">sortMess</a></li><li><a href="global.html#sortPers">sortPers</a></li><li><a href="global.html#sortWeapon">sortWeapon</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startCountBattles">startCountBattles</a></li><li><a href="global.html#startInventoryPlus">startInventoryPlus</a></li><li><a href="global.html#startWorkPostGrenadesBroken">startWorkPostGrenadesBroken</a></li><li><a href="global.html#syndAlert">syndAlert</a></li><li><a href="global.html#testSound">testSound</a></li><li><a href="global.html#testSubject">testSubject</a></li><li><a href="global.html#titleClick">titleClick</a></li><li><a href="global.html#toDec">toDec</a></li><li><a href="global.html#toHex">toHex</a></li><li><a href="global.html#tryStart">tryStart</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Oct 17 2017 11:00:04 GMT+0400 (+04)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Nov 20 2017 15:18:18 GMT+0400 (+04)
 </footer>
 
 <script> prettyPrint(); </script>
