@@ -1,22 +1,22 @@
 // ==UserScript==
 // @name            SortSyndOnline
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     Сортировка онлайна синдиката и союза по идущим боям, вывод онлайна союзного синдиката.
+// @description     Сортировка онлайна синдиката и союза по идущим боям. Выделение синдикатных боев.
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SortSyndOnline/sortSyndOnline.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SortSyndOnline/sortSyndOnline.user.js
 // @include         http://www.ganjawars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.17-121216
-// @author          MyRequiem, идея: z0man, VSOP_juDGe
+// @version         2.00-201117
+// @author          MyRequiem
 // ==/UserScript==
 
 /*global unsafeWindow */
 /*jslint browser: true, maxlen: 80, vars: true, nomen: true, plusplus: true */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -27,14 +27,6 @@
 
 (function () {
     'use strict';
-
-    // ==================== НАСТРОЙКИ ==========================
-    // 1 - да, 0 - нет
-    var showSortBattles = 1,    // сортировать по боям
-        showUnionOnline = 1,    // показывать онлайн союза
-        sortMainAndUnion = 0;   // сортировать вместе с союзом (установка в 1
-                                // автоматически установит все настройки в 1)
-    // ================= КОНЕЦ НАСТРОЕК ========================
 
     /**
      * @class General
@@ -75,173 +67,83 @@
     var general = new General();
 
     /**
-     * @class AjaxQuery
-     * @constructor
-     */
-    var AjaxQuery = function () {
-        /**
-         * @method init
-         * @param   {String}        url
-         * @param   {Function}      onsuccess
-         * @param   {Function}      onfailure
-         */
-        this.init = function (url, onsuccess, onfailure) {
-            var xmlHttpRequest = new XMLHttpRequest();
-
-            if (!xmlHttpRequest) {
-                general.root.console.log('Error create xmlHttpRequest !!!');
-                return;
-            }
-
-            xmlHttpRequest.open('GET', url, true);
-            xmlHttpRequest.send(null);
-
-            var timeout = general.root.setTimeout(function () {
-                xmlHttpRequest.abort();
-            }, 10000);
-
-            xmlHttpRequest.onreadystatechange = function () {
-                if (xmlHttpRequest.readyState === 4) {
-                    clearTimeout(timeout);
-                    if (xmlHttpRequest.status === 200) {
-                        onsuccess(xmlHttpRequest);
-                    } else {
-                        onfailure();
-                    }
-                }
-            };
-        };
-    };
-
-    /**
      * @class SortSyndOnline
      * @constructor
      */
     var SortSyndOnline = function () {
         /**
-         * @property trs
-         * @type {Array|null}
-         */
-        this.trs = null;
-
-        /**
-         * @property prnt
+         * @property mainTable
          * @type {Object|null}
          */
-        this.prnt = null;
-
-        /**
-         * @method createTitle
-         * @param    {String}   str
-         * @return   {Element}
-         */
-        this.createTitle = function (str) {
-            var tr = general.doc.createElement('tr');
-            tr.innerHTML = '<td colspan="8" class="wb" ' +
-                'bgcolor="#D0EED0" style="text-align: ' +
-                'center;"><span style="font-weight: bold;">' +
-                str + '</span></td>';
-
-            return tr;
-        };
-
-        /**
-         * @method getTrs
-         * @param   {Object}    obj
-         */
-        this.getTrs = function (obj) {
-            var tbl = obj.querySelector('center+br+table');
-            return tbl ? tbl.querySelectorAll('tr') : [];
-        };
-
-        /**
-         * @method getUnionOnline
-         * @param    {String}   URL
-         */
-        this.getUnionOnline = function (URL) {
-            var url = URL || general.loc + '&page=politics',
-                _this = this;
-
-            new AjaxQuery().init(url, function (xml) {
-                var spanContent = general.doc.createElement('span');
-                spanContent.innerHTML = xml.responseText;
-
-                if (/politics/.test(url)) {
-                    var unionLink = spanContent.
-                            querySelector('td>br:first-child+b+' +
-                                'a[href*="/syndicate.php?id="]');
-                    if (unionLink) {
-                        general.root.setTimeout(function () {
-                            _this.getUnionOnline(unionLink + '&page=online');
-                        }, 1000);
-                    } else if (sortMainAndUnion) {
-                        _this.sortBattles();
-                    }
-                } else {
-                    var trs = _this.getTrs(spanContent);
-                    if (trs.length) {
-                        _this.prnt.appendChild(_this.createTitle('<a target=' +
-                            '"_blank" href="' + url + '">Союз</a>'));
-
-                        var i;
-                        for (i = 0; i < trs.length; i++) {
-                            _this.prnt.appendChild(trs[i]);
-                        }
-                    }
-
-                    if (sortMainAndUnion) {
-                        _this.trs = _this.getTrs(general.doc);
-                        _this.sortBattles();
-                    }
-                }
-            }, function () {
-                general.root.setTimeout(function () {
-                    _this.getUnionOnline(URL);
-                }, 1000);
-            });
-        };
+        this.mainTable = general.doc.querySelector('table[width="600"]' +
+            '[align="center"][cellspacing="0"][cellpadding="0"]');
 
         /**
          * @method sortBattles
          */
         this.sortBattles = function () {
-            var reg = /\/warlog\.php\?bid=(\d+)/;
-            if (reg.test(this.prnt.innerHTML)) {
-                var battles = {},
-                    bid,
-                    i;
+            var trs = this.mainTable.querySelectorAll('tr'),
+                reg = /\/warlog\.php\?bid=(\d+)/,
+                battles = {},
+                bid,
+                i;
 
-                for (i = 1; i < this.trs.length; i++) {
-                    bid = reg.exec(this.trs[i].innerHTML);
-                    if (bid) {
-                        if (!battles[bid[1]]) {
-                            battles[bid[1]] = [];
-                        }
-
-                        battles[bid[1]].push(this.trs[i].cloneNode(true));
-                        this.prnt.removeChild(this.trs[i]);
+            for (i = 1; i < trs.length; i++) {
+                bid = reg.exec(trs[i].innerHTML);
+                // alert(trs[i].innerHTML);
+                if (/<b>(\s?|&nbsp;)?\d+(\s?|&nbsp;)?<\/b>$/.
+                        test(trs[i].firstElementChild.innerHTML) &&
+                            bid) {
+                    if (!battles[bid[1]]) {
+                        battles[bid[1]] = [];
                     }
+
+                    battles[bid[1]].push(trs[i].cloneNode(true));
+                    trs[i].parentNode.removeChild(trs[i]);
                 }
+            }
 
-                var before = this.prnt.querySelectorAll('tr')[1],
-                    countBattles = 1,
-                    btl,
-                    tr;
+            var target = this.mainTable.querySelector('tr'),
+                tr = general.doc.createElement('tr');
 
-                for (btl in battles) {
-                    if (battles.hasOwnProperty(btl)) {
-                        tr = this.createTitle('Бой ' + countBattles);
-                        this.prnt.insertBefore(tr, before);
-                        for (i = 0; i < battles[btl].length; i++) {
-                            this.prnt.insertBefore(battles[btl][i],
-                                tr.nextElementSibling);
+            tr.innerHTML = '<td><table class="bordersupdown" width="100%" ' +
+                'cellspacing="1" cellpadding="4" align="center" ' +
+                'style="margin-bottom: 15px;"><tbody></tbody></table></td>';
+            target.parentNode.insertBefore(tr, target);
+            target = tr.querySelector('tbody');
+
+            // ссылки на идущие синдикатные бои (таблица внизу страницы)
+            var syndBattles = general.doc.
+                    querySelectorAll('td[class="greengreenbg"][valign="top"]>' +
+                        'a[href*="/warlog.php?bid="]'),
+                countBattles = 1,
+                color,
+                btl;
+
+            for (btl in battles) {
+                if (battles.hasOwnProperty(btl)) {
+                    color = '';
+                    for (i = 0; i < syndBattles.length; i++) {
+                        // если бой синдикатный, выделяем зеленым цветом
+                        if (btl === reg.exec(syndBattles[i].href)[1]) {
+                            color = ' style="color: #00AA00;"';
+                            break;
                         }
-
-                        countBattles++;
                     }
-                }
 
-                this.prnt.insertBefore(this.createTitle('&nbsp;'), before);
+                    tr = general.doc.createElement('tr');
+                    tr.innerHTML = '<td colspan="8" class="greenbg" ' +
+                        'style="text-align: center; font-weight: bold;">' +
+                        '<span' + color + '>Бой: ' + countBattles +
+                        '</span></td>';
+                    target.appendChild(tr);
+
+                    for (i = 0; i < battles[btl].length; i++) {
+                        target.appendChild(battles[btl][i]);
+                    }
+
+                    countBattles++;
+                }
             }
         };
 
@@ -249,28 +151,11 @@
          * @method init
          */
         this.init = function () {
-            if (/&page=online$/.test(general.loc)) {
-                this.trs = this.getTrs(general.doc);
-                if (!this.trs[0]) {
-                    return;
-                }
-
-                this.prnt = this.trs[0].parentNode;
-
-                if (sortMainAndUnion) {
-                    this.getUnionOnline(null);
-                    return;
-                }
-
-                if (showSortBattles) {
-                    this.sortBattles();
-                }
-
-                if (showUnionOnline) {
-                    this.getUnionOnline(null);
-                }
-
-                general.doc.body.appendChild(general.doc.createElement('br'));
+            if (/&page=online$/.test(general.loc) && this.mainTable &&
+                    this.mainTable.
+                        querySelector('td>a[href*="/warlog.php?bid="]>' +
+                            'img[src*="/i/icons/"]')) {
+                this.sortBattles();
             }
         };
     };
