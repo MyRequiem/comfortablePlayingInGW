@@ -1,3 +1,11 @@
+2017-12-03[1.85-031217]
+--------------------------------------
+	- Исправлены скрипты:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BlacklistHighlighting
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FilterWarlistOne2One
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/One2OneCallerInfo
+
+
 2017-11-20[1.84-201117]
 --------------------------------------
 	- В связи с изменением страниц онлайна синдикатов исправлены скрипты:

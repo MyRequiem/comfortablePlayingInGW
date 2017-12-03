@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.02-121216
+// @version         2.03-031217
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -31,8 +31,8 @@
     'use strict';
 
     // =================== НАСТРОЙКИ ======================
-    //если в заявке одиночных боев Вас вызвает персонаж из
-    //черного списка, то ссылка "Принять" будет:
+    // если в заявке одиночных боев Вас вызвает персонаж из
+    // черного списка, то ссылка "Подтвердить" будет:
     // не активной          - 1
     // оставить активной    - 0
     var blockLinkOne2One = 0;
@@ -170,8 +170,10 @@
                     if (blockLinkOne2One &&
                             (/Подтверждаете бой с/.
                                 test(a[i].parentNode.innerHTML))) {
-                        link = a[i].parentNode.parentNode.parentNode.
-                            nextElementSibling.querySelector('a');
+                        link = general.doc.
+                            querySelector('a[class="mainbutton"]' +
+                                '[href*="/warlist.php?war=armed&do=5&cu="]');
+                        link.removeAttribute('class');
                         link.setAttribute('style', 'text-decoration: ' +
                             'line-through; color: #808080;');
                         link.href = '#';

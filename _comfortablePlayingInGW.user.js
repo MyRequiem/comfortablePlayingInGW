@@ -12,7 +12,7 @@
 // @include         *ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.84-201117
+// @version         1.85-031217
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -67,7 +67,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.84-201117';
+        this.version = '1.85-031217';
         /**
          * @property stString
          * @type {String}
@@ -3934,8 +3934,10 @@
                     // блокировка ссылки принятия боя в одиночных заявках
                     if (stData[1] && (/Подтверждаете бой с/.
                             test(a[i].parentNode.innerHTML))) {
-                        link = a[i].parentNode.parentNode.parentNode.
-                            nextElementSibling.querySelector('a');
+                        link = general.doc.
+                            querySelector('a[class="mainbutton"]' +
+                                '[href*="/warlist.php?war=armed&do=5&cu="]');
+                        link.removeAttribute('class');
                         link.setAttribute('style', 'text-decoration: ' +
                             'line-through; color: #808080;');
                         link.href = '#';
@@ -7434,8 +7436,10 @@
                 i;
 
             for (i = 0; i < tr.length; i++) {
+                /*eslint-disable no-useless-escape */
                 if (tr[i].firstElementChild &&
                         (/<b>[^\[]*\[\d+\]/.test(tr[i].innerHTML))) {
+                    /*eslint-enable no-useless-escape */
                     tr[i].style.display = '';
                     if (weapon) {
                         text = tr[i].firstElementChild.nextElementSibling.
@@ -7458,7 +7462,7 @@
             if (filtForm && this.table) {
                 filtForm = filtForm.cloneNode(false);
                 filtForm.setAttribute('style', 'display: inline-block; ' +
-                        'margin: 0 10px 0 10px;');
+                    'margin: 0 10px 0 10px;');
 
                 var hidden1 = general.
                         doc.querySelector('input[name="levelset"]').
@@ -7485,9 +7489,9 @@
                 subm.value = '»';
                 filtForm.appendChild(subm);
 
-                var target = general.$('updatetimer').
-                                parentNode.firstElementChild;
-                target.parentNode.insertBefore(filtForm, target.nextSibling);
+                var target = general.$('updatetimer').nextElementSibling;
+                target.parentNode.
+                    insertBefore(filtForm, target.nextElementSibling);
 
                 s_lmin.setAttribute('style', 'width: 40px;');
                 s_lmax.setAttribute('style', 'width: 40px;');
@@ -8466,20 +8470,19 @@
         this.getRange = function (ind, str) {
             var _this = this,
                 a = _this.weapon.querySelectorAll('a'),
-                url = a[ind].href;
+                url = a[ind].href,
+                range;
 
             new AjaxQuery().init(url, 'GET', null, true, function (xml) {
-                if (/Дальность стрельбы: \d+ ходов/i.test(xml.responseText)) {
-                    str += (/Дальность стрельбы: (\d+) ходов/i.
-                            exec(xml.responseText))[1];
-                } else {
-                    str += '<span style="color: #FF0000; font-weight: ' +
-                        'normal;">не найдена</span>';
-                }
+                range = /стрельбы: (\d+) ходов/i.exec(xml.responseText);
+                str += range ? range[1] : 'не найдена';
 
                 if (!_this.twoHand || ind || (a[1].href === url)) {
-                    _this.weapon.innerHTML += '<span style="color: #0000FF; ' +
-                        'font-weight: bold;">' + str + '</span>';
+                    var div = general.doc.createElement('div');
+                    div.setAttribute('style', 'color: #0000FF; ' +
+                        'font-weight: bold;');
+                    div.innerHTML = str;
+                    _this.weapon.appendChild(div);
                 } else {
                     str += ', ';
                     general.root.setTimeout(function () {
@@ -8497,8 +8500,8 @@
          * @method init
          */
         this.init = function () {
-            var called = general.doc.
-                    querySelector('hr+b>a[href*="/info.php?id="]');
+            var called = general.doc.querySelector('td[class="greengreenbg"]' +
+                    '[colspan="2"]>center>b>a[href*="/info.php?id="]');
 
             if (!called) {
                 return;
@@ -8517,50 +8520,44 @@
                 spanContent.innerHTML = xml.responseText;
                 // здоровье
                 spanHp.innerHTML = /\[(\d+) \/ (\d+)\]/.exec(spanContent.
-                        querySelector('td[style="padding-top:3px;"]').
-                            innerHTML)[0];
-                spanHp.
-                    setAttribute('style', 'color: #990000; margin-left: 5px;');
+                    querySelector('td[style="padding-top:3px;"]').innerHTML)[0];
+                spanHp.setAttribute('style', 'color: #990000; ' +
+                    'margin-left: 5px;');
                 called.parentNode.appendChild(spanHp);
 
-                // узел td со ссылками и изображениями на оружие
+                // узел td с изображениями на оружие
                 _this.weapon = spanContent.
                     querySelector('table[style="margin-right:1px;"]').
                         parentNode;
-                _this.weapon.firstElementChild.removeAttribute('align');
+                general.doc.querySelector('table[style="padding-top:10px;"]' +
+                    '[border="0"][cellspacing="1"][cellpadding="5"]' +
+                        '[width="450"]').removeAttribute('width');
                 _this.weapon.removeAttribute('rowspan');
-                _this.weapon.setAttribute('style', 'padding-left: 30px;');
+                _this.weapon.firstElementChild.removeAttribute('align');
                 var target = general.doc.
-                        querySelector('td[class="txt"]>hr').parentNode;
+                        querySelector('td[class="greengreenbg"][colspan="2"]');
                 target.parentNode.appendChild(_this.weapon);
 
                 // раскрашиваем умелку
-                var li = target.querySelectorAll('li'),
-                    i;
+                target.innerHTML = target.innerHTML.replace(/(\(\d+\))/g,
+                    '<span style="color: #00C000;">$1</span>');
 
-                for (i = 0; i < li.length; i++) {
-                    if (/\(\d+\)/.test(li[i].innerHTML)) {
-                        li[i].innerHTML = li[i].innerHTML.replace(/(\(\d+\))/,
-                            '<span style="color: #00C000; ' +
-                                'font-weight: bold;">$1</span>');
-                        _this.twoHand = i === 1;
-                    }
-                }
+                // две руки
+                _this.twoHand = /Левая/.test(target.innerHTML) &&
+                    /Правая/.test(target.innerHTML);
 
                 // узел td со списком умелок
                 var skills = spanContent.querySelectorAll('tr>td+' +
                     'td[align="right"][valign="top"]')[2];
-                skills.setAttribute('style', 'padding-bottom: 10px;');
-                skills.removeAttribute('class');
+                skills.setAttribute('colspan', '2');
                 var tr = general.doc.createElement('tr');
+                tr.appendChild(skills);
                 target = target.parentNode.parentNode;
                 target.insertBefore(tr, target.lastElementChild);
-                tr.appendChild(skills);
 
                 // узел td со списком бонусов
                 var bonuses = spanContent.
                         querySelectorAll('td[align="center"][valign="top"]')[2];
-                bonuses.removeAttribute('class');
                 tr.appendChild(bonuses);
 
                 // дальность оружия

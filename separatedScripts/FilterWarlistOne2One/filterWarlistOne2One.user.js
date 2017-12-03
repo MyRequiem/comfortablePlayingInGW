@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         2.01-121216
+// @version         2.02-031217
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -18,7 +18,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -126,8 +126,10 @@
                 i;
 
             for (i = 0; i < tr.length; i++) {
+                /*eslint-disable no-useless-escape */
                 if (tr[i].firstElementChild &&
                         (/<b>[^\[]*\[\d+\]/.test(tr[i].innerHTML))) {
+                    /*eslint-enable no-useless-escape */
                     tr[i].style.display = '';
                     if (weapon) {
                         text = tr[i].firstElementChild.nextElementSibling.
@@ -160,7 +162,7 @@
             if (filtForm && this.table) {
                 filtForm = filtForm.cloneNode(false);
                 filtForm.setAttribute('style', 'display: inline-block; ' +
-                        'margin: 0 10px 0 10px;');
+                    'margin: 10px 0 10px 0;');
 
                 var hidden1 = general.
                         doc.querySelector('input[name="levelset"]').
@@ -187,9 +189,9 @@
                 subm.value = '»';
                 filtForm.appendChild(subm);
 
-                var target = general.$('updatetimer').
-                                parentNode.firstElementChild;
-                target.parentNode.insertBefore(filtForm, target.nextSibling);
+                var target = general.$('updatetimer').nextElementSibling;
+                target.parentNode.
+                    insertBefore(filtForm, target.nextElementSibling);
 
                 s_lmin.setAttribute('style', 'width: 40px;');
                 s_lmax.setAttribute('style', 'width: 40px;');

@@ -12,6 +12,6 @@
 // @include         *ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.84-201117
+// @version         1.85-031217
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
