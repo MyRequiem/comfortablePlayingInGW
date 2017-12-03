@@ -7210,7 +7210,7 @@
 
             // на главной
             // приглосы
-            var invit = general.doc.querySelector('a[href*="/me/?nb=synd"]');
+            var invit = general.doc.querySelector('a[href*="/me.php?nb=synd"]');
             if (invit) {
                 invit.setAttribute('style', 'color: #FF0000; ' +
                         'font-weight: bold;');

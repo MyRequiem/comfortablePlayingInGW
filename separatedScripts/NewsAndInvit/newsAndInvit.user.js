@@ -10,7 +10,7 @@
 // @include         http://www.ganjawars.ru/messages.php?fid=1&tid=*
 // @grant           none
 // @license         MIT
-// @version         2.04-250917
+// @version         2.05-031217
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -160,7 +160,7 @@
 
             // на главной
             // приглосы
-            var invit = general.doc.querySelector('a[href*="/me/?nb=synd"]');
+            var invit = general.doc.querySelector('a[href*="/me.php?nb=synd"]');
             if (invit) {
                 invit.setAttribute('style', 'color: #FF0000; ' +
                         'font-weight: bold;');
