@@ -1,7 +1,7 @@
 Красит кнопку "Удалить и забанить" при просмотре личных сообщений в розовый цвет. При нажатии требует подтверждения операции.
 <br>
 <br>
-Версия: 1.01-121216
+Версия: 1.02-150118
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/DelAndAddBlackSms/delAndAddBlackSms.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/DelAndAddBlackSms/delAndAddBlackSms.user.js.zip)
 <br>
