@@ -9,7 +9,7 @@
 // @exclude         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.31-250917
+// @version         2.32-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -268,6 +268,7 @@ plusplus: true, devel: true */
 
                 audio.volume = 0.3;
                 audio.src = '/sounds/' + sound + '.ogg';
+                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -333,8 +334,8 @@ plusplus: true, devel: true */
             var settings = general.$('settingsWin'),
                 pos = new GetPos().init(this);
 
-            settings.style.top = pos.y + 28;
-            settings.style.left = pos.x - 120;
+            settings.style.top = String(pos.y + 28);
+            settings.style.left = String(pos.x - 120);
             settings.style.visibility = settings.style.visibility === 'hidden' ?
                     'visible' : 'hidden';
         };
@@ -344,6 +345,7 @@ plusplus: true, devel: true */
          */
         this.listenSound = function () {
             var _this = this;
+            // noinspection Annotator
             new PlaySound().init(_this.previousElementSibling.value);
         };
 
@@ -564,6 +566,7 @@ plusplus: true, devel: true */
             var settingsBut = general.doc.createElement('span');
             settingsBut.setAttribute('style', 'cursor: pointer;');
             settingsBut.innerHTML = 'ScanPers';
+            // noinspection JSCheckFunctionSignatures
             topPanel.appendChild(general.doc.createTextNode(' | '));
             topPanel.appendChild(settingsBut);
             settingsBut.addEventListener('click', this.showSettings, false);

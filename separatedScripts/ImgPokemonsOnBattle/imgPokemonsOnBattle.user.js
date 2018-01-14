@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/warlog.php*
 // @grant           none
 // @license         MIT
-// @version         2.11-121216
+// @version         2.12-150118
 // @author          MyRequiem, идея Buger_man
 // ==/UserScript==
 
@@ -19,7 +19,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -147,8 +147,9 @@
                     general.doc.body.appendChild(div);
                     div.setAttribute('style', 'position: absolute;');
                     div.setAttribute('name', 'imagepokemon');
-                    div.style.left = pos.x > 200 ? pos.x - 70 : pos.x + 130;
-                    div.style.top = pos.y;
+                    div.style.left = String(pos.x > 200 ?
+                            pos.x - 70 : pos.x + 130);
+                    div.style.top = String(pos.y);
                     div.innerHTML = '<img src="' + imgPath + name[1] + ext +
                         '" style="width: 70px; height: 80px;" ' +
                         'title="' + name[1] + '" alt="' + name[1] + '" />';

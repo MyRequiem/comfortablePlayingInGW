@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.06-121117
+// @version         2.07-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -168,6 +168,7 @@
                     push(this.getValue(this.counters[i], i < 3 ? 0 : 2));
 
                 if (loadPage) {
+                    // noinspection Annotator
                     this.counters[i].parentNode.parentNode.lastElementChild.
                         innerHTML = '<span id="' + this.ids[i] +
                         '" style="color: #FF0000; font-size: 9px;"></span>';

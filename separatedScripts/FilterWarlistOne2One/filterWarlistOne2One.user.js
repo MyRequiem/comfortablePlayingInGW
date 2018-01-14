@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         2.02-031217
+// @version         2.03-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -178,10 +178,13 @@
 
                 filtForm.appendChild(hidden1);
                 filtForm.appendChild(hidden2);
+                // noinspection JSCheckFunctionSignatures
                 filtForm.appendChild(general.doc.createTextNode('от '));
                 filtForm.appendChild(s_lmin);
+                // noinspection JSCheckFunctionSignatures
                 filtForm.appendChild(general.doc.createTextNode(' до '));
                 filtForm.appendChild(s_lmax);
+                // noinspection JSCheckFunctionSignatures
                 filtForm.appendChild(general.doc.createTextNode(' тип '));
                 filtForm.appendChild(s_ltype);
                 var subm = general.doc.createElement('input');

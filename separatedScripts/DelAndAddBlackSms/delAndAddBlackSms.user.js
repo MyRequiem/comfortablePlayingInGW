@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/sms-read.php?type=1&id=*
 // @grant           none
 // @license         MIT
-// @version         1.01-121216
+// @version         1.02-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -16,7 +16,7 @@
 /*jslint browser: true, maxlen: 80, vars: true */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -76,6 +76,7 @@
             if (del) {
                 del.setAttribute('style', 'background: #FDD8D8;');
 
+                // noinspection Annotator
                 del.addEventListener('click', function (e) {
                     if (!general.
                             root.confirm('Удалить и забанить. Уверены ???')) {

@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru*
 // @grant           none
 // @license         MIT
-// @version         2.32-061117
+// @version         2.33-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -192,8 +192,8 @@
             if (id) {
                 div.setAttribute('id', id);
                 if (id === 'gw_menu') {
-                    div.style.top = 83;
-                    div.style.left = 0;
+                    div.style.top = '83';
+                    div.style.left = '0';
                     general.doc.body.appendChild(div);
                 }
             }
@@ -256,8 +256,10 @@
                 arrow.removeAttribute('tm');
             }
 
-            div.style.left = arrow.parentNode.offsetWidth + this.correctXGwMenu;
-            div.style.top = arrow.offsetTop + _offsettop + this.correctYGwMenu;
+            div.style.left = String(arrow.parentNode.offsetWidth +
+                this.correctXGwMenu);
+            div.style.top = String(arrow.offsetTop + _offsettop +
+                this.correctYGwMenu);
             arrow.style.background = '#7FF89E';
             div.style.display = '';
         };
@@ -831,6 +833,7 @@
                 mainLink.removeAttribute('href');
                 mainLink.innerHTML = 'GW-Меню';
                 var _this = this;
+                // noinspection Annotator
                 mainLink.addEventListener('click', function () {
                     _this.gwMenuInit(_this);
                 }, false);

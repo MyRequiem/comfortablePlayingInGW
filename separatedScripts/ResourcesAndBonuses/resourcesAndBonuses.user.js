@@ -9,7 +9,7 @@
 // @exclude         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.12-121216
+// @version         2.13-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -17,7 +17,7 @@
 /*jslint browser: true, maxlen: 80, regexp: true, vars: true, nomen: true */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -184,6 +184,7 @@
                 'src="' + this.imgPath + 'close.gif" /></div>';
 
             var _this = this;
+            // noinspection Annotator
             this.divResult.querySelector('#divres_close').
                 addEventListener('click', function () {
                     _this.divResult.style.visibility = 'hidden';
@@ -268,8 +269,10 @@
                         '5px 6px 6px rgba(122,122,122,0.5);');
                 general.doc.body.appendChild(this.divResult);
 
+                // noinspection JSCheckFunctionSignatures
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(this.createButton('Ресурсы', 'res'));
+                // noinspection JSCheckFunctionSignatures
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(this.createButton('Бонусы', 'bonus'));
             }

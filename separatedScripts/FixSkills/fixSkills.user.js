@@ -10,7 +10,7 @@
 // @include         http://www.ganjawars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.03-121117
+// @version         2.04-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -138,6 +138,7 @@
         this.init = function () {
             var nobrs;
             if (/\/info\.php\?id=/.test(general.loc)) {
+                // noinspection Annotator
                 nobrs = general.doc.querySelector('td[class="txt"]' +
                         '[align="right"][style="font-size:10px"]').
                             parentNode.parentNode.querySelectorAll('nobr');

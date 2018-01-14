@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.11-090117
+// @version         2.12-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -16,7 +16,7 @@
 /*jslint browser: true, maxlen: 80, vars: true, nomen: true */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -100,6 +100,7 @@
             var target = general.doc.
                     querySelector('center>b>font[color="#990000"]').parentNode;
 
+            // noinspection Annotator
             if (txt && (/\(через \d+/.test(a.parentNode.innerHTML))) {
                 return;
             }

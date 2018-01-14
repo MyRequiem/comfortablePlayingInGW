@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/sms.php*
 // @grant           none
 // @license         MIT
-// @version         2.12-121216
+// @version         2.13-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -16,7 +16,7 @@
 /*jslint browser: true, maxlen: 80, vars: true, nomen: true, plusplus: true */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -28,12 +28,12 @@
 (function () {
     'use strict';
 
-        // =============== НАСТРОЙКИ =====================
+    // ============================ НАСТРОЙКИ ==================================
     var markSyndSms = 1,        // отмечать синдовые рассылки
         markRobotSms = 1,       // отмечать рассылки от робота
         noMarkImportantSms = 1; // НЕ отмечать письма с пометкой "важное" при
                                 // нажатии на [+] (Отметить все)
-        // ============ КОНЕЦ НАСТРОЕК ===================
+    // ========================= КОНЕЦ НАСТРОЕК ================================
 
     /**
      * @class General
@@ -85,6 +85,7 @@
          * @return  {Boolean}
          */
         this.testSubject = function (chk, reg) {
+            // noinspection Annotator
             return reg.test(chk.parentNode.nextElementSibling.innerHTML);
         };
 
@@ -146,6 +147,7 @@
             // отмечаем нужное
             var i;
             for (i = 0; i < smsChk.length; i++) {
+                // noinspection Annotator
                 if ((markSyndSms &&
                         this.testSubject(smsChk[i], /<b>#\d+<\/b>/)) ||
                             (markRobotSms && smsChk[i].parentNode.parentNode.

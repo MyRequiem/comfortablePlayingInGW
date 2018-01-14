@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/market-p.php*
 // @grant           none
 // @license         MIT
-// @version         2.01-121216
+// @version         2.02-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -19,7 +19,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -184,6 +184,7 @@
             var textField = general.doc.querySelector('#txtFilter'),
                 _this = this;
 
+            // noinspection Annotator
             textField.addEventListener('input', function () {
                 _this.findItem(textField);
             }, false);

@@ -10,7 +10,7 @@
 // @include         http://www.ganjawars.ru/forum.php
 // @grant           none
 // @license         MIT
-// @version         2.20-290717
+// @version         2.21-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -169,6 +169,7 @@
 
                 audio.volume = 0.3;
                 audio.src = '/sounds/' + sound + '.ogg';
+                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -652,6 +653,7 @@
                     if (!(/Форум синдиката #\d+/.
                             test(allBranches[i].innerHTML))) {
 
+                        // noinspection Annotator
                         allBranches[i].parentNode.style.display = f[j] ?
                                                             '' : 'none';
                         j++;

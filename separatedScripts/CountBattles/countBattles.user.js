@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/info.warstats.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.23-121216
+// @version         2.24-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -16,7 +16,7 @@
 /*jslint browser: true, maxlen: 80, vars: true, plusplus: true, nomen: true */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -153,6 +153,7 @@
 
             for (i = 0; i < btlLogs.length; i++) {
                 if (this.reg.test(btlLogs[i].innerHTML)) {
+                    // noinspection Annotator
                     this.rez.btls.push(btlLogs[i].parentNode.parentNode.
                             nextElementSibling);
                 } else {
@@ -172,6 +173,7 @@
             for (i = 0; i < this.rez.btls.length; i++) {
                 b = this.rez.btls[i].querySelector('a>b');
                 if (b) {
+                    // noinspection Annotator
                     stl = b.parentNode.getAttribute('style');
                     if (/red/.test(stl)) {
                         this.rez.win++;

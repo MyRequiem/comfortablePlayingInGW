@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.22-121216
+// @version         2.23-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -18,7 +18,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -667,6 +667,7 @@
             var butShowPTSAnalizePanel = general.doc.createElement('a');
             butShowPTSAnalizePanel.innerHTML = 'Анализ PTS';
             butShowPTSAnalizePanel.setAttribute('style', 'cursor: pointer');
+            // noinspection JSCheckFunctionSignatures
             target.appendChild(general.doc.createTextNode(' | '));
             target.appendChild(butShowPTSAnalizePanel);
 

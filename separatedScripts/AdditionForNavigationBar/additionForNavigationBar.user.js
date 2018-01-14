@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.02-121216
+// @version         2.03-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -18,7 +18,7 @@
  */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -139,6 +139,7 @@
             // добавление в панель
             var target = this.navigPanel.
                     lastElementChild.previousSibling;
+            // noinspection JSCheckFunctionSignatures
             this.navigPanel.insertBefore(this.doc.createTextNode(' | '),
                     target);
             this.navigPanel.insertBefore(link, target);

@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         2.12-031217
+// @version         2.13-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -130,6 +130,7 @@
 
                 audio.volume = 0.3;
                 audio.src = '/sounds/' + sound + '.ogg';
+                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };

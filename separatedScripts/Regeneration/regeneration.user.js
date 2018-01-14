@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.42-250917
+// @version         2.43-150118
 // @author          W_or_M (редакция MyRequiem)
 // ==/UserScript==
 
@@ -174,6 +174,7 @@
 
                 audio.volume = 0.3;
                 audio.src = '/sounds/' + sound + '.ogg';
+                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -219,13 +220,14 @@
 
             // прогресс бар
             if (hpPercent >= 100) {
+                // noinspection Annotator
                 this.progressBar.parentNode.style.display = 'none';
             } else if (hpPercent < 0) {
                 // если кильнули
-                this.progressBar.style.width = 0;
+                this.progressBar.style.width = '0';
             } else {
-                this.progressBar.style.width = Math.
-                        ceil(this.pbWidth * hpPercent / 100) + 1;
+                this.progressBar.style.width = String(Math.ceil(this.pbWidth *
+                    hpPercent / 100) + 1);
             }
 
             //паказываем время

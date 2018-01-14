@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.10-290717
+// @version         2.11-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -30,12 +30,12 @@
 (function () {
     'use strict';
 
-        // =============== НАСТРОЙКИ ====================
+    // ============================ НАСТРОЙКИ ==================================
         // звук когда пора поливать/собирать(0 - без звука)
     var farmSound = 8,
         // повторять звук не чаще чем один раз в X секунд (0 - не повторять)
         soundInterval = 120;
-        // ============ КОНЕЦ НАСТРОЕК ==================
+    // ========================= КОНЕЦ НАСТРОЕК ================================
 
     /**
      * @class General
@@ -163,6 +163,7 @@
 
                 audio.volume = 0.3;
                 audio.src = '/sounds/' + sound + '.ogg';
+                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -402,6 +403,7 @@
             this.farmLink.href = 'http://www.ganjawars.ru/ferma.php?id=' +
                 general.myID;
             this.farmLink.setAttribute('target', '_blank');
+            // noinspection JSCheckFunctionSignatures
             topPanel.appendChild(general.doc.createTextNode(' | '));
             topPanel.appendChild(this.farmLink);
 

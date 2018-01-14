@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.31-121216
+// @version         2.32-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -16,7 +16,7 @@
 /*jslint browser: true, maxlen: 80, vars: true, regexp: true */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -100,6 +100,7 @@
      * @constructor
      */
     var GameMania = function () {
+        // noinspection Annotator
         /**
          * @property target
          * @type {HTMLTableCellElement}
@@ -158,8 +159,10 @@
                     /Выигрыш в казино: <b>\$([^<]*)/i),
                 tot = this.calc(/Потрачено в тотализаторе: <b>\$([^<]*)/i,
                     /Выигрыш в тотализаторе: <b>\$([^<]*)/i),
+                /*eslint-disable no-useless-escape */
                 poker = this.calc(/Потрачено на покер:\s?<b>[^\$]*\$([^<]*)/i,
                     /Получено с покера:\s?<b>[^\$]*\$([^<]*)/i),
+                /*eslint-enable no-useless-escape */
                 fight = /Выигрыш в боях/i.test(this.target.innerHTML);
 
             if (roul || tot || poker || fight) {

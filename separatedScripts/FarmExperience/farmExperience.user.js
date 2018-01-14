@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.20-101117
+// @version         2.21-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -111,6 +111,7 @@
                 price2 = +/\$(\d+)/.exec(plants[i].querySelector('font' +
                     '[color="#990000"]>b').innerHTML)[1];
                 time = +/созревания:\s(\d+)/.exec(plants[i].innerHTML)[1];
+                // noinspection JSCheckFunctionSignatures
                 exp = parseFloat(/(\d+\.?\d*) опыта/.exec(plants[i].innerHTML));
                 span.innerHTML = this.calculateFarm(price1, price2, time, exp);
                 target = plants[i].querySelector('br');

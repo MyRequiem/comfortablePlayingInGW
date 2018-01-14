@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.02-011117
+// @version         2.03-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -284,6 +284,7 @@
 
             for (i = 0; i < td.length; i++) {
                 if (td[i].innerHTML === '<b>Бонусы</b>') {
+                    // noinspection Annotator
                     this.target = td[i].parentNode.
                                 nextElementSibling.lastElementChild;
                     break;

@@ -11,7 +11,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         3.80-290717
+// @version         3.81-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -194,6 +194,7 @@
 
                 audio.volume = 0.3;
                 audio.src = '/sounds/' + sound + '.ogg';
+                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -737,6 +738,7 @@
 
             // если есть чекбокс "Подойти ближе"
             if (walk) {
+                // noinspection JSCheckFunctionSignatures
                 walk.parentNode.insertBefore(general.doc.createElement('br'),
                         walk);
             } else {
@@ -1104,8 +1106,8 @@
                 }
 
                 _this.tooltip.innerHTML = ttl;
-                _this.tooltip.style.top = getPos.init(obj.x).y - obj.y;
-                _this.tooltip.style.left = getPos.init(this).x - 50;
+                _this.tooltip.style.top = String(getPos.init(obj.x).y - obj.y);
+                _this.tooltip.style.left = String(getPos.init(this).x - 50);
                 _this.tooltip.style.display = '';
             };
         };
@@ -1237,9 +1239,12 @@
                 if (/Ждём ход противника/i.test(bf.innerHTML)) {
                     if (this.graphTable && !general.nojs) {
                         var target = bf.querySelector('a').parentNode;
+                        // noinspection JSCheckFunctionSignatures
                         target.appendChild(general.doc.createElement('br'));
+                        // noinspection JSCheckFunctionSignatures
                         target.appendChild(general.doc.createElement('br'));
                         target.appendChild(this.graphTable);
+                        // noinspection JSCheckFunctionSignatures
                         target.appendChild(general.doc.createElement('br'));
                         this.setTooltipsFighters(this.graphTable);
                         return;
@@ -1273,8 +1278,10 @@
             // вставим пустую строку после таблицы
             // (в НЕ JS-версии уже есть)
             if (!general.viewMode && !general.nojs) {   // JS-версия
+                // noinspection JSCheckFunctionSignatures
                 table.parentNode.appendChild(general.doc.createElement('br'));
             } else if (general.viewMode) {
+                // noinspection JSCheckFunctionSignatures
                 table.parentNode.insertBefore(general.doc.createElement('br'),
                     table.nextElementSibling);
             }
@@ -1412,7 +1419,7 @@
                 tdNumber = general.doc.createElement('td');
                 trNumbers.appendChild(tdNumber);
 
-                tdNumber.innerHTML = Math.abs(myInd);
+                tdNumber.innerHTML = String(Math.abs(myInd));
                 // если индекс нулевой (там где я стою) то цвет синий
                 if (myInd) {
                     tdNumber.setAttribute('style',

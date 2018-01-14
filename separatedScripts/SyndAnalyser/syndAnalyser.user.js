@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.13-250617
+// @version         2.14-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -437,6 +437,7 @@
          * @return   {Element}
          */
         this.getPersLink = function (node) {
+            // noinspection Annotator
             return node.parentNode.nextElementSibling.querySelector('a');
         };
 
@@ -646,6 +647,7 @@
                         return;
                     }
 
+                    // noinspection Annotator
                     str = lines[i].parentNode.nextElementSibling.innerHTML;
                     typeLine = _this.getTypeLine(str);
 
@@ -742,6 +744,7 @@
             var butShowAnalysePanel = general.doc.createElement('a');
             butShowAnalysePanel.innerHTML = 'Анализ активности';
             butShowAnalysePanel.setAttribute('style', 'cursor: pointer');
+            // noinspection JSCheckFunctionSignatures
             target.appendChild(general.doc.createTextNode(' | '));
             target.appendChild(butShowAnalysePanel);
 

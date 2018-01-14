@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.20-201117
+// @version         2.21-150118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -263,6 +263,7 @@
 
             if (this.syndMain) {
                 var b = general.doc.createElement('b');
+                // noinspection JSCheckFunctionSignatures
                 b.appendChild(general.doc.createTextNode(' / '));
                 b.appendChild(this.createLink('Основа', false));
                 guests.parentNode.parentNode.appendChild(b);
@@ -280,6 +281,7 @@
                             'a[href*="/syndicate.php?id="]:last-child');
 
                     if (_this.syndUnion) {
+                        // noinspection JSCheckFunctionSignatures
                         b.appendChild(general.doc.createTextNode(' '));
                         b.appendChild(_this.createLink('Союз', true));
                     }
