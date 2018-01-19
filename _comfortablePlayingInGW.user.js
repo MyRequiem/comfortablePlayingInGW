@@ -133,9 +133,10 @@
                         [54] - DelAndAddBlackSms
                         [55] - FilterGeneralFighting (удален)
                         [56] - Regeneration
-                        [57] - ProfColor */
+                        [57] - ProfColor
+                        [58] - CurrentQuestOnInfo */
                         '@||||||||||||||||||||||||||||||||||||||||' +
-                        '|||||||||||||||||' +
+                        '||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -1094,7 +1095,15 @@
                 ['Подсветка профессий', 'При наличии у персонажа лицензии ' +
                     'киллера, боевика или наемника название профессии на его ' +
                     'странице информации окрашивается в красный цвет.' +
-                    this.getGitHubLink('profColor'), '57']],
+                    this.getGitHubLink('profColor'), '57'],
+                ['Текущий мини-квест на странице информации персонажа',
+                    'Вывод текущего ужедневного мини-квеста на странице ' +
+                    'информации персонажа.' +
+                    this.getGitHubLink('currentQuestOnInfo') +
+                    '<span style="margin-left: 15px;">идея: ' +
+                    '<a href="http://www.ganjawars.ru/info.php?id=54662" ' +
+                    'style="font-weight: bold;" target="_blank">kaa</a>' +
+                    '</span>', '58']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов, ' +
@@ -12037,6 +12046,65 @@
         };
     };
 
+    /**
+     * @class CurrentQuestOnInfo
+     * @constructor
+     */
+    var CurrentQuestOnInfo = function () {
+        /**
+         * @property questURL
+         * @type {String}
+         */
+        this.questURL = 'http://www.ganjawars.ru/questlog.php?id=';
+        /**
+         * @property persID
+         * @type {String}
+         */
+        this.persID = /\?id=(\d+)/.exec(general.loc)[1];
+        /**
+         * @property tm
+         * @type {int}
+         */
+        this.tm = 1200;
+
+        /**
+         * @method showQuest
+         * @param   {String}    url
+         */
+        this.showQuest = function (url) {
+            var _this = this;
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xhr) {
+                var span = general.doc.createElement('span');
+                span.innerHTML = xhr.responseText;
+
+                var td = span.querySelector('td[valign="top"]' +
+                        '[align="right"]>a[href*="/help/index.php?sid="]').
+                            parentNode.previousElementSibling,
+                    questDescr = td.firstElementChild.nextSibling.nodeValue,
+                    acQuests = /-квестов:<\/b>\s?(\d+)/.exec(td.innerHTML)[1],
+                    div = general.doc.createElement('div');
+
+                div.setAttribute('style', 'margin-left: 10px;');
+                div.innerHTML = '<span style="font-weight: bold;">Мини-квест:' +
+                    '</span> ' + questDescr + '<span style="font-weight: ' +
+                    'bold; margin-left: 10px;">Накоплено:</span> ' + acQuests;
+                general.doc.querySelector('#namespan').parentNode.
+                        appendChild(div);
+            }, function () {
+                _this.root.setTimeout(function () {
+                    _this.showQuest(url);
+                }, _this.tm);
+            });
+        };
+
+        this.init = function () {
+            if (this.persID) {
+                this.showQuest(this.questURL + this.persID);
+            }
+        };
+    };
+
     general = new General();
 
     if (!general.checkMainData()) {
@@ -12427,6 +12495,14 @@
                 if (initScript[57]) {
                     try {
                         new ProfColor().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[58]) {
+                    try {
+                        new CurrentQuestOnInfo().init();
                     } catch (e) {
                         general.cons.log(e);
                     }
