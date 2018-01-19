@@ -4718,6 +4718,7 @@
             // отмечаем нужное
             var stData = general.getData(8),
                 i;
+
             for (i = 0; i < smsChk.length; i++) {
                 // noinspection Annotator
                 if ((stData[0] &&
@@ -8840,11 +8841,11 @@
          */
         this.init = function () {
             if (/\?id=(\d+)/.exec(general.loc)[1] === general.myID) {
-                var nowKarma = /Карма:\s\d+\.?\d*\s\((\d+\/\d+)\)/i.
+                var karma = /Карма:\s\d+\.?\d*\s\((\d+\/\d+)\)/i.
                         exec(general.doc.body.textContent);
 
-                if (nowKarma) {
-                    nowKarma = nowKarma[1];
+                if (karma) {
+                    var nowKarma = karma[1];
                     if (!general.getData(23)[0]) {
                         general.setData(nowKarma, 23);
                         return;
@@ -8862,9 +8863,7 @@
                     oldKarma[1] = +oldKarma[1];
 
                     nowKarma = nowKarma.split('/');
-                    // noinspection Annotator
                     nowKarma[0] = +nowKarma[0];
-                    // noinspection Annotator
                     nowKarma[1] = +nowKarma[1];
 
                     var str = 'Ваша карма была изменена \n\n';
