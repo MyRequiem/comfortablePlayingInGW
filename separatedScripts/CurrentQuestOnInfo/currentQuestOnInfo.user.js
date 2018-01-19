@@ -52,7 +52,7 @@
          * @property persID
          * @type {String}
          */
-        this.persID = /\?id=(\d+)/.exec(this.root.location)[1];
+        this.persID = /\?id=(\d+)/.exec(this.root.location.href)[1];
     };
 
     /**
