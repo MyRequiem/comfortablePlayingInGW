@@ -22,8 +22,9 @@
 */
 
 /*eslint-env browser */
-/*eslint  no-useless-escape: 'warn', quotes: ['warn', 'single'],
-    semi: ['error', 'always'], eqeqeq: 'error', curly: 'error'
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
+    quotes: ['error', 'single'], semi: ['error', 'always'],
+    eqeqeq: 'error', curly: 'error'
 */
 
 /*jscs:disable requireMultipleVarDecl, requireVarDeclFirst */
@@ -132,9 +133,10 @@
                         [54] - DelAndAddBlackSms
                         [55] - FilterGeneralFighting (удален)
                         [56] - Regeneration
-                        [57] - ProfColor */
+                        [57] - ProfColor
+                        [58] - CurrentQuestOnInfo */
                         '@||||||||||||||||||||||||||||||||||||||||' +
-                        '|||||||||||||||||' +
+                        '||||||||||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -717,6 +719,7 @@
 
                 audio.volume = 0.3;
                 audio.src = '/sounds/' + sound + '.ogg';
+                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -771,6 +774,7 @@
             var topPanel = new GetTopPanel().init();
 
             if (topPanel) {
+                // noinspection Annotator
                 var settingsButton = general.doc.createElement('a'),
                     target = topPanel.parentNode.nextElementSibling;
 
@@ -1091,7 +1095,15 @@
                 ['Подсветка профессий', 'При наличии у персонажа лицензии ' +
                     'киллера, боевика или наемника название профессии на его ' +
                     'странице информации окрашивается в красный цвет.' +
-                    this.getGitHubLink('profColor'), '57']],
+                    this.getGitHubLink('profColor'), '57'],
+                ['Текущий мини-квест на странице информации персонажа',
+                    'Вывод текущего ужедневного мини-квеста на странице ' +
+                    'информации персонажа.' +
+                    this.getGitHubLink('currentQuestOnInfo') +
+                    '<span style="margin-left: 15px;">идея: ' +
+                    '<a href="http://www.ganjawars.ru/info.php?id=54662" ' +
+                    'style="font-weight: bold;" target="_blank">kaa</a>' +
+                    '</span>', '58']],
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов, ' +
@@ -1358,6 +1370,7 @@
          */
         this.testSound = function () {
             var _this = this;
+            // noinspection Annotator
             new PlaySound().init(_this.previousElementSibling.value);
         };
 
@@ -1835,6 +1848,7 @@
             // добавление в панель
             var target = this.navigPanel.
                     lastElementChild.previousSibling;
+            // noinspection JSCheckFunctionSignatures
             this.navigPanel.insertBefore(general.doc.createTextNode(' | '),
                     target);
             this.navigPanel.insertBefore(link, target);
@@ -2680,6 +2694,7 @@
 
             // если есть чекбокс "Подойти ближе"
             if (walk) {
+                // noinspection JSCheckFunctionSignatures
                 walk.parentNode.insertBefore(general.doc.createElement('br'),
                         walk);
             } else {
@@ -3053,8 +3068,8 @@
                 }
 
                 _this.tooltip.innerHTML = ttl;
-                _this.tooltip.style.top = getPos.init(obj.x).y - obj.y;
-                _this.tooltip.style.left = getPos.init(this).x - 50;
+                _this.tooltip.style.top = String(getPos.init(obj.x).y - obj.y);
+                _this.tooltip.style.left = String(getPos.init(this).x - 50);
                 _this.tooltip.style.display = '';
             };
         };
@@ -3186,9 +3201,12 @@
                 if (/Ждём ход противника/i.test(bf.innerHTML)) {
                     if (this.graphTable && !general.nojs) {
                         var target = bf.querySelector('a').parentNode;
+                        // noinspection JSCheckFunctionSignatures
                         target.appendChild(general.doc.createElement('br'));
+                        // noinspection JSCheckFunctionSignatures
                         target.appendChild(general.doc.createElement('br'));
                         target.appendChild(this.graphTable);
+                        // noinspection JSCheckFunctionSignatures
                         target.appendChild(general.doc.createElement('br'));
                         this.setTooltipsFighters(this.graphTable);
                         return;
@@ -3221,8 +3239,10 @@
             // вставим пустую строку после таблицы
             // (в НЕ JS-версии уже есть)
             if (!general.viewMode && !general.nojs) {   // JS-версия
+                // noinspection JSCheckFunctionSignatures
                 table.parentNode.appendChild(general.doc.createElement('br'));
             } else if (general.viewMode) {
+                // noinspection JSCheckFunctionSignatures
                 table.parentNode.insertBefore(general.doc.createElement('br'),
                     table.nextElementSibling);
             }
@@ -3360,7 +3380,7 @@
                 tdNumber = general.doc.createElement('td');
                 trNumbers.appendChild(tdNumber);
 
-                tdNumber.innerHTML = Math.abs(myInd);
+                tdNumber.innerHTML = String(Math.abs(myInd));
                 // если индекс нулевой (там где я стою) то цвет синий
                 if (myInd) {
                     tdNumber.setAttribute('style',
@@ -3932,6 +3952,7 @@
                 if (id && stData[0].indexOf(id) !== -1) {
                     a[i].style.background = '#B6B5B5';
                     // блокировка ссылки принятия боя в одиночных заявках
+                    // noinspection Annotator
                     if (stData[1] && (/Подтверждаете бой с/.
                             test(a[i].parentNode.innerHTML))) {
                         link = general.doc.
@@ -4221,6 +4242,7 @@
         this.init = function () {
             var topPanel = new GetTopPanel().init();
             if (topPanel) {
+                // noinspection JSCheckFunctionSignatures
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(this.wpgbContainer);
 
@@ -4337,8 +4359,10 @@
                         '5px 6px 6px rgba(122,122,122,0.5);');
                 general.doc.body.appendChild(this.divResult);
 
+                // noinspection JSCheckFunctionSignatures
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(this.createButton('Ресурсы', 'res'));
+                // noinspection JSCheckFunctionSignatures
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(this.createButton('Бонусы', 'bonus'));
             }
@@ -4608,7 +4632,9 @@
             } else if (general.viewMode) {  // режим наблюдения за боем
                 var center = general.doc.querySelector('td[valign="top"]' +
                         '[width="70%"]>center');
+                // noinspection JSCheckFunctionSignatures
                 center.appendChild(general.doc.createElement('br'));
+                // noinspection JSCheckFunctionSignatures
                 center.appendChild(general.doc.createElement('br'));
                 this.setDataDiv(center, true);
                 this.showCrits(this.getCrits(general.doc.
@@ -4630,6 +4656,7 @@
          * @return  {Boolean}
          */
         this.testSubject = function (chk, reg) {
+            // noinspection Annotator
             return reg.test(chk.parentNode.nextElementSibling.innerHTML);
         };
 
@@ -4692,6 +4719,7 @@
             var stData = general.getData(8),
                 i;
             for (i = 0; i < smsChk.length; i++) {
+                // noinspection Annotator
                 if ((stData[0] &&
                         this.testSubject(smsChk[i], /<b>#\d+<\/b>/)) ||
                             (stData[1] && smsChk[i].parentNode.parentNode.
@@ -4752,6 +4780,7 @@
                 price2 = +/\$(\d+)/.exec(plants[i].querySelector('font' +
                     '[color="#990000"]>b').innerHTML)[1];
                 time = +/созревания:\s(\d+)/.exec(plants[i].innerHTML)[1];
+                // noinspection JSCheckFunctionSignatures
                 exp = parseFloat(/(\d+\.?\d*) опыта/.exec(plants[i].innerHTML));
                 span.innerHTML = this.calculateFarm(price1, price2, time, exp);
                 target = plants[i].querySelector('br');
@@ -4966,6 +4995,7 @@
                 this.farmLink.href = 'http://www.ganjawars.ru/ferma.php?id=' +
                     general.myID;
                 this.farmLink.setAttribute('target', '_blank');
+                // noinspection JSCheckFunctionSignatures
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(this.farmLink);
 
@@ -4998,6 +5028,7 @@
             var target = general.doc.
                     querySelector('center>b>font[color="#990000"]').parentNode;
 
+            // noinspection Annotator
             if (txt && (/\(через \d+/.test(a.parentNode.innerHTML))) {
                 return;
             }
@@ -5800,8 +5831,8 @@
             if (id) {
                 div.setAttribute('id', id);
                 if (id === 'gw_menu') {
-                    div.style.top = 83;
-                    div.style.left = 0;
+                    div.style.top = '83';
+                    div.style.left = '0';
                     general.doc.body.appendChild(div);
                 }
             }
@@ -5864,8 +5895,10 @@
                 arrow.removeAttribute('tm');
             }
 
-            div.style.left = arrow.parentNode.offsetWidth + this.correctXGwMenu;
-            div.style.top = arrow.offsetTop + _offsettop + this.correctYGwMenu;
+            div.style.left = String(arrow.parentNode.offsetWidth +
+                this.correctXGwMenu);
+            div.style.top = String(arrow.offsetTop + _offsettop +
+                this.correctYGwMenu);
             arrow.style.background = '#7FF89E';
             div.style.display = '';
         };
@@ -6426,6 +6459,7 @@
                 mainLink.removeAttribute('href');
                 mainLink.innerHTML = 'GW-Меню';
                 var _this = this;
+                // noinspection Annotator
                 mainLink.addEventListener('click', function () {
                     _this.gwMenuInit(_this);
                 }, false);
@@ -6670,6 +6704,7 @@
 
             for (i = 0; i < btlLogs.length; i++) {
                 if (this.reg.test(btlLogs[i].innerHTML)) {
+                    // noinspection Annotator
                     this.rez.btls.push(btlLogs[i].parentNode.parentNode.
                             nextElementSibling);
                 } else {
@@ -6689,6 +6724,7 @@
             for (i = 0; i < this.rez.btls.length; i++) {
                 b = this.rez.btls[i].querySelector('a>b');
                 if (b) {
+                    // noinspection Annotator
                     stl = b.parentNode.getAttribute('style');
                     if (/red/.test(stl)) {
                         this.rez.win++;
@@ -7070,6 +7106,7 @@
 
             for (i = 0; i < td.length; i++) {
                 if (td[i].innerHTML === '<b>Бонусы</b>') {
+                    // noinspection Annotator
                     this.target = td[i].parentNode.
                                 nextElementSibling.lastElementChild;
                     break;
@@ -7102,6 +7139,7 @@
                     i;
 
                 for (i = 0; i < descrTd.length; i++) {
+                    // noinspection Annotator
                     id = /id=(.+)$/.exec(descrTd[i].parentNode.
                             querySelector('a').href)[1];
                     price = /(\d+) EUN/.exec(descrTd[i].innerHTML)[1];
@@ -7368,6 +7406,7 @@
             var textField = general.doc.querySelector('#txtFilter'),
                 _this = this;
 
+            // noinspection Annotator
             textField.addEventListener('input', function () {
                 _this.findItem(textField);
             }, false);
@@ -7478,10 +7517,13 @@
 
                 filtForm.appendChild(hidden1);
                 filtForm.appendChild(hidden2);
+                // noinspection JSCheckFunctionSignatures
                 filtForm.appendChild(general.doc.createTextNode('от '));
                 filtForm.appendChild(s_lmin);
+                // noinspection JSCheckFunctionSignatures
                 filtForm.appendChild(general.doc.createTextNode(' до '));
                 filtForm.appendChild(s_lmax);
+                // noinspection JSCheckFunctionSignatures
                 filtForm.appendChild(general.doc.createTextNode(' тип '));
                 filtForm.appendChild(s_ltype);
                 var subm = general.doc.createElement('input');
@@ -7588,6 +7630,7 @@
         this.init = function () {
             var nobrs;
             if (/\/info\.php\?id=/.test(general.loc)) {
+                // noinspection Annotator
                 nobrs = general.doc.querySelector('td[class="txt"]' +
                         '[align="right"][style="font-size:10px"]').
                             parentNode.parentNode.querySelectorAll('nobr');
@@ -7938,6 +7981,7 @@
                 if (links[i].innerHTML) {
                     group = /\?shop=shop_(.*)$/.exec(links[i].href)[1];
                     if (this.highTechItems.htGroup.indexOf(group) !== -1) {
+                        // noinspection Annotator
                         links[i].parentNode.innerHTML = '<a ' +
                             'href="/shopc.php?shop=shop_' +
                             (this.highTechItems[group] || group) +
@@ -7954,6 +7998,7 @@
      * @constructor
      */
     var GameMania = function () {
+        // noinspection Annotator
         /**
          * @property target
          * @type {HTMLTableCellElement}
@@ -8606,10 +8651,12 @@
                 i;
 
             for (i = 0; i < cells.length; i++) {
+                // noinspection Annotator
                 coord = /\d+&sy=\d+/.exec(cells[i].parentNode.href)[0];
                 for (j = 0; j < this.sectors.length; j++) {
                     tmp = this.sectors[j].split('|');
                     if (coord === tmp[0]) {
+                        // noinspection Annotator
                         cls = cells[i].parentNode.parentNode.
                                 getAttribute('class');
 
@@ -8754,6 +8801,7 @@
                             _this.id === 'send1' ? '#FB8F8F' : '#95CCF6';
 
             td.style.background = color;
+            // noinspection Annotator
             td.previousElementSibling.style.background = color;
         };
 
@@ -8814,7 +8862,9 @@
                     oldKarma[1] = +oldKarma[1];
 
                     nowKarma = nowKarma.split('/');
+                    // noinspection Annotator
                     nowKarma[0] = +nowKarma[0];
+                    // noinspection Annotator
                     nowKarma[1] = +nowKarma[1];
 
                     var str = 'Ваша карма была изменена \n\n';
@@ -8856,8 +8906,8 @@
             var settings = general.$('settingsWin'),
                 pos = new GetPos().init(this);
 
-            settings.style.top = pos.y + 28;
-            settings.style.left = pos.x - 120;
+            settings.style.top = String(pos.y + 28);
+            settings.style.left = String(pos.x - 120);
             settings.style.visibility = settings.style.visibility === 'hidden' ?
                     'visible' : 'hidden';
         };
@@ -8867,6 +8917,7 @@
          */
         this.listenSound = function () {
             var _this = this;
+            // noinspection Annotator
             new PlaySound().init(_this.previousElementSibling.value);
         };
 
@@ -9067,6 +9118,7 @@
             var settingsBut = general.doc.createElement('span');
             settingsBut.setAttribute('style', 'cursor: pointer;');
             settingsBut.innerHTML = 'ScanPers';
+            // noinspection JSCheckFunctionSignatures
             topPanel.appendChild(general.doc.createTextNode(' | '));
             topPanel.appendChild(settingsBut);
             settingsBut.addEventListener('click', this.showSettings, false);
@@ -9234,6 +9286,7 @@
             target.firstElementChild.
                 setAttribute('style', 'padding-left: 20px;');
 
+            // noinspection Annotator
             var author = last.parentNode.previousElementSibling.
                     querySelector('b').innerHTML,
                 lastLink = last.previousElementSibling.querySelector('a').href,
@@ -9432,6 +9485,7 @@
                     push(this.getValue(this.counters[i], i < 3 ? 0 : 2));
 
                 if (loadPage) {
+                    // noinspection Annotator
                     this.counters[i].parentNode.parentNode.lastElementChild.
                         innerHTML = '<span id="' + this.ids[i] +
                         '" style="color: #FF0000; font-size: 9px;"></span>';
@@ -10000,6 +10054,7 @@
             var butShowPTSAnalizePanel = general.doc.createElement('a');
             butShowPTSAnalizePanel.innerHTML = 'Анализ PTS';
             butShowPTSAnalizePanel.setAttribute('style', 'cursor: pointer');
+            // noinspection JSCheckFunctionSignatures
             target.appendChild(general.doc.createTextNode(' | '));
             target.appendChild(butShowPTSAnalizePanel);
 
@@ -10309,6 +10364,7 @@
          * @return   {Element}
          */
         this.getPersLink = function (elem) {
+            // noinspection Annotator
             return elem.parentNode.nextElementSibling.querySelector('a');
         };
 
@@ -10518,6 +10574,7 @@
                         return;
                     }
 
+                    // noinspection Annotator
                     str = lines[i].parentNode.nextElementSibling.innerHTML;
                     typeLine = _this.getTypeLine(str);
 
@@ -10614,6 +10671,7 @@
             var butShowAnalysePanel = general.doc.createElement('a');
             butShowAnalysePanel.innerHTML = 'Анализ активности';
             butShowAnalysePanel.setAttribute('style', 'cursor: pointer');
+            // noinspection JSCheckFunctionSignatures
             target.appendChild(general.doc.createTextNode(' | '));
             target.appendChild(butShowAnalysePanel);
 
@@ -10823,6 +10881,7 @@
                     _this.showData(this);
                 }, false);
 
+                // noinspection JSCheckFunctionSignatures
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(span);
 
@@ -10978,6 +11037,7 @@
 
             if (this.syndMain) {
                 var b = general.doc.createElement('b');
+                // noinspection JSCheckFunctionSignatures
                 b.appendChild(general.doc.createTextNode(' / '));
                 b.appendChild(this.createLink('Основа', false));
                 guests.parentNode.parentNode.appendChild(b);
@@ -10995,6 +11055,7 @@
                             'a[href*="/syndicate.php?id="]:last-child');
 
                     if (_this.syndUnion) {
+                        // noinspection JSCheckFunctionSignatures
                         b.appendChild(general.doc.createTextNode(' '));
                         b.appendChild(_this.createLink('Союз', true));
                     }
@@ -11116,8 +11177,9 @@
                     general.doc.body.appendChild(div);
                     div.setAttribute('style', 'position: absolute;');
                     div.setAttribute('name', 'imagepokemon');
-                    div.style.left = pos.x > 200 ? pos.x - 70 : pos.x + 130;
-                    div.style.top = pos.y;
+                    div.style.left = String(pos.x > 200 ?
+                            pos.x - 70 : pos.x + 130);
+                    div.style.top = String(pos.y);
                     div.innerHTML = '<img src="' + imgPath + name[1] + ext +
                         '" style="width: 70px; height: 80px;" ' +
                         'title="' + name[1] + '" alt="' + name[1] + '" />';
@@ -11670,6 +11732,7 @@
                     if (!(/Форум синдиката #\d+/.
                             test(allBranches[i].innerHTML))) {
 
+                        // noinspection Annotator
                         allBranches[i].parentNode.style.display = f[j] ?
                                                             '' : 'none';
                         j++;
@@ -11769,6 +11832,7 @@
             if (del) {
                 del.setAttribute('style', 'background: #FDD8D8;');
 
+                // noinspection Annotator
                 del.addEventListener('click', function (e) {
                     if (!general.
                             root.confirm('Удалить и забанить. Уверены ???')) {
@@ -11863,13 +11927,14 @@
 
             // прогресс бар
             if (hpPercent >= 100) {
+                // noinspection Annotator
                 this.progressBar.parentNode.style.display = 'none';
             } else if (hpPercent < 0) {
                 // если кильнули
-                this.progressBar.style.width = 0;
+                this.progressBar.style.width = '0';
             } else {
-                this.progressBar.style.width = Math.
-                        ceil(this.pbWidth * hpPercent / 100) + 1;
+                this.progressBar.style.width = String(Math.ceil(this.pbWidth *
+                    hpPercent / 100) + 1);
             }
 
             //паказываем время
@@ -11977,6 +12042,65 @@
             var i;
             for (i = 0; i < this.activeProfs.length; i++) {
                 this.activeProfs[i].setAttribute('color', '#FF0000');
+            }
+        };
+    };
+
+    /**
+     * @class CurrentQuestOnInfo
+     * @constructor
+     */
+    var CurrentQuestOnInfo = function () {
+        /**
+         * @property questURL
+         * @type {String}
+         */
+        this.questURL = 'http://www.ganjawars.ru/questlog.php?id=';
+        /**
+         * @property persID
+         * @type {String}
+         */
+        this.persID = /\?id=(\d+)/.exec(general.loc)[1];
+        /**
+         * @property tm
+         * @type {int}
+         */
+        this.tm = 1200;
+
+        /**
+         * @method showQuest
+         * @param   {String}    url
+         */
+        this.showQuest = function (url) {
+            var _this = this;
+
+            new AjaxQuery().init(url, 'GET', null, true, function (xhr) {
+                var span = general.doc.createElement('span');
+                span.innerHTML = xhr.responseText;
+
+                var td = span.querySelector('td[valign="top"]' +
+                        '[align="right"]>a[href*="/help/index.php?sid="]').
+                            parentNode.previousElementSibling,
+                    questDescr = td.firstElementChild.nextSibling.nodeValue,
+                    acQuests = /-квестов:<\/b>\s?(\d+)/.exec(td.innerHTML)[1],
+                    div = general.doc.createElement('div');
+
+                div.setAttribute('style', 'margin-left: 10px;');
+                div.innerHTML = '<span style="font-weight: bold;">Мини-квест:' +
+                    '</span> ' + questDescr + '<span style="font-weight: ' +
+                    'bold; margin-left: 10px;">Накоплено:</span> ' + acQuests;
+                general.doc.querySelector('#namespan').parentNode.
+                        appendChild(div);
+            }, function () {
+                _this.root.setTimeout(function () {
+                    _this.showQuest(url);
+                }, _this.tm);
+            });
+        };
+
+        this.init = function () {
+            if (this.persID) {
+                this.showQuest(this.questURL + this.persID);
             }
         };
     };
@@ -12371,6 +12495,14 @@
                 if (initScript[57]) {
                     try {
                         new ProfColor().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[58]) {
+                    try {
+                        new CurrentQuestOnInfo().init();
                     } catch (e) {
                         general.cons.log(e);
                     }
