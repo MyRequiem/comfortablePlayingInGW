@@ -1,3 +1,10 @@
+2018-01-19[1.86-190118]
+--------------------------------------
+	- Добавлен новый скрипт:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
+
+	- Minifixes
+
 2017-12-03[1.85-031217]
 --------------------------------------
 	- Исправлены скрипты:
