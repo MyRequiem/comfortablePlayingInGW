@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.02-150118
+// @version         2.03-190118
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -118,11 +118,11 @@
             }
 
             if (/\?id=(\d+)/.exec(general.loc)[1] === general.myID) {
-                var nowKarma = /Карма:\s\d+\.?\d*\s\((\d+\/\d+)\)/i.
+                var karma = /Карма:\s\d+\.?\d*\s\((\d+\/\d+)\)/i.
                         exec(general.doc.body.textContent);
 
-                if (nowKarma) {
-                    nowKarma = nowKarma[1];
+                if (karma) {
+                    var nowKarma = karma[1];
                     if (!general.getData()) {
                         general.setData(nowKarma);
                         return;
