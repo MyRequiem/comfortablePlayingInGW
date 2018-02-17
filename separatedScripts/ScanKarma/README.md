@@ -1,7 +1,7 @@
 При изменении Вашей кармы выводит сообщение на странице информации персонажа.
 <br>
 <br>
-Версия: 2.03-190118
+Версия: 2.04-170218
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanKarma/scanKarma.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanKarma/scanKarma.user.js.zip)
 <br>

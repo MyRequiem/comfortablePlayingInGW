@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.03-190118
+// @version         2.04-170218
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -122,48 +122,46 @@
                         exec(general.doc.body.textContent);
 
                 if (karma) {
-                    var nowKarma = karma[1];
+                    karma = karma[1];
                     if (!general.getData()) {
-                        general.setData(nowKarma);
+                        general.setData(karma);
                         return;
                     }
 
                     var oldKarma = general.getData()[0];
-                    if (nowKarma === oldKarma) {
+                    if (karma === oldKarma) {
                         return;
                     }
 
-                    general.setData(nowKarma);
+                    general.setData(karma);
 
                     oldKarma = oldKarma.split('/');
                     oldKarma[0] = +oldKarma[0];
                     oldKarma[1] = +oldKarma[1];
 
-                    nowKarma = nowKarma.split('/');
-                    // noinspection Annotator
-                    nowKarma[0] = +nowKarma[0];
-                    // noinspection Annotator
-                    nowKarma[1] = +nowKarma[1];
+                    karma = karma.split('/');
+                    karma[0] = +karma[0];
+                    karma[1] = +karma[1];
 
                     var str = 'Ваша карма была изменена \n\n';
-                    if (nowKarma[0] > oldKarma[0]) {
+                    if (karma[0] > oldKarma[0]) {
                         str += 'Отрицательная карма увеличилась на ' +
-                            (nowKarma[0] - oldKarma[0]) + ' (' + oldKarma[0] +
-                            ' ---> ' + nowKarma[0] + ')\n';
-                    } else if (nowKarma[0] < oldKarma[0]) {
+                            (karma[0] - oldKarma[0]) + ' (' + oldKarma[0] +
+                            ' ---> ' + karma[0] + ')\n';
+                    } else if (karma[0] < oldKarma[0]) {
                         str += 'Отрицательная карма уменьшилась на ' +
-                            (oldKarma[0] - nowKarma[0]) + ' (' + oldKarma[0] +
-                            ' ---> ' + nowKarma[0] + ')\n';
+                            (oldKarma[0] - karma[0]) + ' (' + oldKarma[0] +
+                            ' ---> ' + karma[0] + ')\n';
                     }
 
-                    if (nowKarma[1] > oldKarma[1]) {
+                    if (karma[1] > oldKarma[1]) {
                         str += 'Положительная карма увеличилась на ' +
-                            (nowKarma[1] - oldKarma[1]) +  ' (' + oldKarma[1] +
-                            ' ---> ' + nowKarma[1] + ')';
-                    } else if (nowKarma[1] < oldKarma[1]) {
+                            (karma[1] - oldKarma[1]) +  ' (' + oldKarma[1] +
+                            ' ---> ' + karma[1] + ')';
+                    } else if (karma[1] < oldKarma[1]) {
                         str += 'Положительная карма уменьшилась на ' +
-                            (oldKarma[1] - nowKarma[1]) +  ' (' + oldKarma[1] +
-                            ' ---> ' + nowKarma[1] + ')';
+                            (oldKarma[1] - karma[1]) +  ' (' + oldKarma[1] +
+                            ' ---> ' + karma[1] + ')';
                     }
 
                     alert(str);
