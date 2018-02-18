@@ -1,9 +1,17 @@
+2018-02-18[1.87-180218]
+--------------------------------------
+	- Добавлен новый скрипт:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CommonBattleFilter
+	- mimifix
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ScanKarma
+
+
 2018-01-19[1.86-190118]
 --------------------------------------
 	- Добавлен новый скрипт:
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
-
 	- Minifixes
+
 
 2017-12-03[1.85-031217]
 --------------------------------------
