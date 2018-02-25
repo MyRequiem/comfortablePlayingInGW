@@ -1,3 +1,11 @@
+2018-02-25[1.88-250218]
+--------------------------------------
+	- В скрипт
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BonusInfo
+		добавлен новый бонус: "Бонус точности"
+		(ссылка на новость: http://www.ganjawars.ru/messages.php?fid=1&tid=1443)
+
+
 2018-02-18[1.87-180218]
 --------------------------------------
 	- Добавлен новый скрипт:
