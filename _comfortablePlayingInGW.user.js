@@ -12,7 +12,7 @@
 // @include         *ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.88-250218
+// @version         1.89-060318
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -68,7 +68,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.88-250218';
+        this.version = '1.89-060318';
         /**
          * @property stString
          * @type {String}
@@ -112,7 +112,7 @@
                         [33] - LinksInOne2One
                         [34] - One2OneCallerInfo
                         [35] - MinBetAtRoulette (удален)
-                        [36] - NotesForFriends (удален)
+                        [36] - PortTimer
                         [37] - PortsAndTerminals
                         [38] - RangeWeapon
                         [39] - RentAndSale
@@ -268,20 +268,18 @@
                         '@' +
                     /*
                      [20] - CommonBattleFilter
-                        [0] - максимальный уровень 1
-                        [1] - максимальный уровень 2
-                        [2] - чекбокс "без именных"
-                        [3] - чекбокс "по  мощности" */
-                        '@|||' +
+                        [0] - максимальный уровень
+                        [1] - чекбокс "без именных"
+                        [2] - чекбокс "по  мощности" */
+                        '@0|1|1' +
                     /*
                      [21] - One2OneCallerInfo
                         [0] - звук при вызове */
                         '@' +
                     /*
-                     [22] - NotesForFriends (удален)
-                        [0] - отображать/не отображать на главной странице
-                        [1] - ID жалобы */
-                        '@|' +
+                     [22] - PortTimer
+                        [0] - '{date: '', syndid: '', time: [], current: ''}' */
+                        '@' +
                     /*
                      [23] - ScanKarma
                         [0] - текущая карма 'xx/xx' */
@@ -1192,7 +1190,14 @@
                     '<span style="margin-left: 15px;">идея: ' +
                     '<a href="http://www.ganjawars.ru/info.php?id=436429" ' +
                     'style="font-weight: bold;" target="_blank">Buger_man</a>' +
-                    '</span>', '51']],
+                    '</span>', '51'],
+                ['Таймер для боев за порты', 'Вывод точного/оставшегося ' +
+                    'времени до боя за порт в верхней части страницы.' +
+                    this.getGitHubLink('portTimer') +
+                    '<span style="margin-left: 15px;">идея: ' +
+                    '<a href="http://www.ganjawars.ru/info.php?id=205482" ' +
+                    'style="font-weight: bold;" target="_blank">Enemy333</a>' +
+                    '</span>', '36']],
 
             'Синдикаты': [
                 ['Сортировка на странице онлайна синдиката', 'Сортировка ' +
@@ -12127,11 +12132,10 @@
         /**
          * @method getLvl
          * @param   {Object}    row
-         * @param   {String}    color
          * @return  {int}
          */
-        this.getLvl = function (row, color) {
-            return +row.querySelector('font[color="' + color + '"]').innerHTML.
+        this.getLvl = function (row) {
+            return +row.querySelector('font[color="red"]').innerHTML.
                 split('-')[1];
         };
 
@@ -12148,20 +12152,15 @@
                 row.style.display = '';
 
                 stData[0] = +stData[0];
-                if (stData[0] && this.getLvl(row, 'red') > stData[0]) {
+                if (stData[0] && this.getLvl(row) > stData[0]) {
                     row.style.display = 'none';
                 }
 
-                stData[1] = +stData[1];
-                if (stData[1] && this.getLvl(row, 'blue') > stData[1]) {
+                if (stData[1] && !/<s>именные<\/s>/.test(row.innerHTML)) {
                     row.style.display = 'none';
                 }
 
-                if (stData[2] && !/<s>именные<\/s>/.test(row.innerHTML)) {
-                    row.style.display = 'none';
-                }
-
-                if (stData[3] && !/по мощности/.test(row.innerHTML)) {
+                if (stData[2] && !/по мощности/.test(row.innerHTML)) {
                     row.style.display = 'none';
                 }
             }
@@ -12256,62 +12255,263 @@
             // интерфейс
             var span = general.doc.createElement('span');
             span.setAttribute('style', 'margin-left: 10px;');
-            span.innerHTML = 'Максимальные уровни: ' +
-                this.getSelect('blevel1') +
-                this.getSelect('blevel2') +
+            span.innerHTML = 'Максимальный уровeнь: ' +
+                this.getSelect('blevel') +
                 'без именных:<input type="checkbox" id="personalchk" /> ' +
                 'по мощности:<input type="checkbox" id="powerchk" />';
             general.$('updatetimer2').parentNode.parentNode.appendChild(span);
 
-            /* localStorage:
-             * 0,1  - уровни
-             * 2    - без именных
-             * 3    - по  мощности
-             */
             var stData = general.getData(20),
                 _this = this;
 
-            // уровни
-            var blevel1 = general.$('blevel1');
-            blevel1.value = stData[0];
-            blevel1.addEventListener('change', function () {
+            // максимальный уровень
+            var blevel = general.$('blevel');
+            blevel.value = stData[0];
+            blevel.addEventListener('change', function () {
                 var data = general.getData(20);
-                data[0] = blevel1.value;
+                data[0] = blevel.value;
                 general.setData(data, 20);
                 _this.sortBattleTable();
             }, false);
 
-            var blevel2 = general.$('blevel2');
-            blevel2.value = stData[1];
-            blevel2.addEventListener('change', function () {
-                var data = general.getData(20);
-                data[1] = blevel2.value;
-                general.setData(data, 20);
-                _this.sortBattleTable();
-            }, false);
-
-            // чекбоксы
+            // чекбокс "без именных"
             var personal = general.$('personalchk');
-            personal.checked = !!stData[2];
+            personal.checked = !!stData[1];
             personal.addEventListener('click', function () {
                 personal.checked = !!personal.checked;
                 var data = general.getData(20);
-                data[2] = personal.checked ? 1 : '';
+                data[1] = personal.checked ? 1 : '';
                 general.setData(data, 20);
                 _this.sortBattleTable();
             }, false);
 
+            // чекбокс "по мощности"
             var power = general.$('powerchk');
-            power.checked = !!stData[3];
+            power.checked = !!stData[2];
             power.addEventListener('click', function () {
                 power.checked = !!power.checked;
                 var data = general.getData(20);
-                data[3] = power.checked ? 1 : '';
+                data[2] = power.checked ? 1 : '';
                 general.setData(data, 20);
                 _this.sortBattleTable();
             }, false);
 
             this.sortBattleTable();
+        };
+    };
+
+    /**
+     * @class PortTimer
+     * @constructor
+     */
+    var PortTimer = function () {
+        /**
+         * @property tm
+         * @type {int}
+         */
+        this.tm = 1200;
+        /**
+         * @property topPanel
+         * @type {HTMLElement|null}
+         */
+        this.topPanel = null;
+        /**
+         * @property url
+         * @type {String|null}
+         */
+        this.url = null;
+        /**
+         * @property date
+         * @type {int|null}
+         */
+        this.date = null;
+
+        /**
+         * @method getBattles
+         */
+        this.getBattles = function () {
+            var _this = this;
+            new AjaxQuery().init(_this.url, 'GET', null, true, function (xhr) {
+                var spanContent = general.doc.createElement('span');
+
+                spanContent.innerHTML = xhr.responseText;
+                var table = spanContent.querySelector('table[cellspacing="1"]' +
+                    '[cellpadding="5"][width="100%"]');
+
+                if (table) {
+                    var data = JSON.parse(general.getData(22)[0]),
+                        trs = table.querySelectorAll('tr'),
+                        i;
+
+                    data.time = [];
+                    if (trs.length > 1 && !/<i>\(отсутствуют\)<\/i>/.
+                            test(trs[1].innerHTML)) {
+                        for (i = 1; i < trs.length; i++) {
+                            data.time.push(trs[i].
+                                querySelector('nobr').innerHTML);
+                        }
+                    }
+
+                    data.date = _this.date;
+                    data.time.reverse();
+                    data.current = '';
+                    general.setData(JSON.stringify(data), 22);
+                    _this.setTime();
+                }
+            }, function () {
+                general.root.setTimeout(function () {
+                    _this.getBattles();
+                }, _this.tm);
+            });
+        };
+
+        /**
+         * @method resetStorage
+         */
+        this.resetStorage = function () {
+            general.setData(JSON.stringify({
+                'date': '',
+                'syndid': '',
+                'time': [],
+                'current': ''
+            }), 22);
+        };
+
+        /**
+         * @method getTimeDiff
+         * @return  {int}
+         */
+        this.getTimeDiff = function () {
+            var stData = JSON.parse(general.getData(22)[0]),
+                now = new Date();
+
+            stData.current = stData.current.split(':');
+            return (+stData.current[0] * 60 + (+stData.current[1])) -
+                ((now.getUTCHours() + 3) * 60 + now.getMinutes());
+        };
+
+        /**
+         * @method setTimer
+         */
+        this.setTimer = function () {
+            var diff = this.getTimeDiff(),
+                hours = parseInt(diff / 60, 10),
+                min = diff - hours * 60;
+
+            general.$('portTimer').innerHTML = (hours < 10 ? '0' + hours :
+                    hours) + ':' + (min < 10 ? '0' + min : min);
+        };
+
+        /**
+         * @method changeCurrentTime
+         */
+        this.changeCurrentTime = function () {
+            var stData = JSON.parse(general.getData(22)[0]);
+            if (!stData.time.length) {
+                stData.current = '';
+                general.setData(JSON.stringify(stData), 22);
+                return;
+            }
+
+            var time = stData.time.pop();
+            stData.current = time;
+            general.setData(JSON.stringify(stData), 22);
+            if (this.getTimeDiff() <= 0) {
+                this.changeCurrentTime();
+                return;
+            }
+
+            this.setInterface();
+            general.$('portTime').innerHTML = time;
+            this.setTimer();
+        };
+
+        /**
+         * @method setInterface
+         */
+        this.setInterface = function () {
+            var mainTimer = general.doc.createElement('span');
+            mainTimer.innerHTML = '<a href="' + this.url +
+                '" style="text-decoration: none;" target="_blank">' +
+                'Порты</a> ' +
+                '<span id="portTime" style="font-weight: bold;"></span> ' +
+                '[<span id="portTimer" style=""></span>]';
+            this.topPanel.appendChild(general.doc.createTextNode(' | '));
+            this.topPanel.appendChild(mainTimer);
+        };
+
+        /**
+         * @method setTime
+         */
+        this.setTime = function () {
+            var stData = JSON.parse(general.getData(22)[0]);
+            if (!stData.current || this.getTimeDiff() <= 0) {
+                this.changeCurrentTime();
+            } else {
+                this.setInterface();
+                general.$('portTime').innerHTML = stData.current;
+                this.setTimer();
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            // верхняя панель
+            this.topPanel = new GetTopPanel().init();
+            if (!this.topPanel) {
+                return;
+            }
+
+            /* localStorage:
+             * [0] - '{date: '', syndid: '', time: [], current: ''}'
+             */
+            var stData = general.getData(22)[0];
+            if (!stData) {
+                this.resetStorage();
+            }
+
+            stData = JSON.parse(general.getData(22)[0]);
+
+            // на главной странице персонажа проверяем ID основного синдиката
+            if (/\/me(\/|\.php)/.test(general.loc)) {
+                var linkMainSynd = general.doc.querySelector('span>b+nobr>' +
+                    'a[href*="/syndicate.php?id="]');
+                var syndID = linkMainSynd ?
+                        /\?id=(\d+)/.exec(linkMainSynd.href)[1] : null;
+
+                // нет основного синдиката
+                if (!syndID) {
+                    this.resetStorage();
+                    return;
+                }
+
+                // сменили синд
+                if (stData.syndid !== syndID) {
+                    stData.syndid = syndID;
+                    stData.time = [];
+                    general.setData(JSON.stringify(stData), 22);
+                }
+            }
+
+            // нет основного синдиката
+            if (!stData.syndid) {
+                return;
+            }
+
+            this.url = 'http://www.ganjawars.ru/object.php?id=11712&' +
+                'page=oncoming1&sid=' + stData.syndid;
+
+            // сегодня запрос не делали, делаем не ранее 7 утра.
+            var now = new Date();
+            this.date = new Date(now.setHours(now.getHours() +
+                    (now.getTimezoneOffset() / 60) + 3)).getDate();
+            if (+stData.date !== this.date && now.getUTCHours() + 3 >= 7) {
+                this.getBattles();
+            } else {
+                this.setTime();
+            }
         };
     };
 
@@ -12340,6 +12540,14 @@
     if (initScript[0]) {
         try {
             new NotGiveCannabisLeaf().init();
+        } catch (e) {
+            general.cons.log(e);
+        }
+    }
+
+    if (initScript[36]) {
+        try {
+            new PortTimer().init();
         } catch (e) {
             general.cons.log(e);
         }

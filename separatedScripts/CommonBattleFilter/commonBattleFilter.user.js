@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/wargroup.php?war=armed*
 // @grant           none
 // @license         MIT
-// @version         1.00-180218
+// @version         1.10-060318
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
             var stData = this.st.getItem(this.STORAGENAME);
 
             if (!stData) {
-                var data = [0, 0, 1, 1];
+                var data = [0, 1, 1];
                 this.setData(data);
                 return data;
             }
@@ -123,11 +123,10 @@
         /**
          * @method getLvl
          * @param   {Object}    row
-         * @param   {String}    color
          * @return  {int}
          */
-        this.getLvl = function (row, color) {
-            return +row.querySelector('font[color="' + color + '"]').innerHTML.
+        this.getLvl = function (row) {
+            return +row.querySelector('font[color="red"]').innerHTML.
                 split('-')[1];
         };
 
@@ -144,20 +143,15 @@
                 row.style.display = '';
 
                 stData[0] = +stData[0];
-                if (stData[0] && this.getLvl(row, 'red') > stData[0]) {
+                if (stData[0] && this.getLvl(row) > stData[0]) {
                     row.style.display = 'none';
                 }
 
-                stData[1] = +stData[1];
-                if (stData[1] && this.getLvl(row, 'blue') > stData[1]) {
+                if (stData[1] && !/<s>именные<\/s>/.test(row.innerHTML)) {
                     row.style.display = 'none';
                 }
 
-                if (stData[2] && !/<s>именные<\/s>/.test(row.innerHTML)) {
-                    row.style.display = 'none';
-                }
-
-                if (stData[3] && !/по мощности/.test(row.innerHTML)) {
+                if (stData[2] && !/по мощности/.test(row.innerHTML)) {
                     row.style.display = 'none';
                 }
             }
@@ -252,57 +246,48 @@
             // интерфейс
             var span = general.doc.createElement('span');
             span.setAttribute('style', 'margin-left: 10px;');
-            span.innerHTML = 'Максимальные уровни: ' +
-                this.getSelect('blevel1') +
-                this.getSelect('blevel2') +
+            span.innerHTML = 'Максимальный уровeнь: ' +
+                this.getSelect('blevel') +
                 'без именных:<input type="checkbox" id="personalchk" /> ' +
                 'по мощности:<input type="checkbox" id="powerchk" />';
             general.$('updatetimer2').parentNode.parentNode.appendChild(span);
 
             /* localStorage:
-             * 0,1  - уровни
-             * 2    - без именных
-             * 3    - по  мощности
+             * 0    - максимальный уровень
+             * 1    - без именных
+             * 2    - по  мощности
              */
             var stData = general.getData(),
                 _this = this;
 
-            // уровни
-            var blevel1 = general.$('blevel1');
-            blevel1.value = stData[0];
-            blevel1.addEventListener('change', function () {
+            // максимальный уровень
+            var blevel = general.$('blevel');
+            blevel.value = stData[0];
+            blevel.addEventListener('change', function () {
                 var data = general.getData();
-                data[0] = blevel1.value;
+                data[0] = blevel.value;
                 general.setData(data);
                 _this.sortBattleTable();
             }, false);
 
-            var blevel2 = general.$('blevel2');
-            blevel2.value = stData[1];
-            blevel2.addEventListener('change', function () {
-                var data = general.getData();
-                data[1] = blevel2.value;
-                general.setData(data);
-                _this.sortBattleTable();
-            }, false);
-
-            // чекбоксы
+            // чекбокс "без именных"
             var personal = general.$('personalchk');
-            personal.checked = !!stData[2];
+            personal.checked = !!stData[1];
             personal.addEventListener('click', function () {
                 personal.checked = !!personal.checked;
                 var data = general.getData();
-                data[2] = personal.checked ? 1 : '';
+                data[1] = personal.checked ? 1 : '';
                 general.setData(data);
                 _this.sortBattleTable();
             }, false);
 
+            // чекбокс "по мощности"
             var power = general.$('powerchk');
-            power.checked = !!stData[3];
+            power.checked = !!stData[2];
             power.addEventListener('click', function () {
                 power.checked = !!power.checked;
                 var data = general.getData();
-                data[3] = power.checked ? 1 : '';
+                data[2] = power.checked ? 1 : '';
                 general.setData(data);
                 _this.sortBattleTable();
             }, false);

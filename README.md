@@ -6,13 +6,13 @@
 ![ChromeLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/chromeLogo.png)
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
 
-Версия: 1.88-250218
+Версия: 1.89-060318
 
 Нашли ошибку? Пожалуйста, [сообщите](http://www.ganjawars.ru/sms-create.php?mailto=MyRequiem)
 
 * [Установить](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js)
 * [Скачать zip-архив](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js.zip)
-* *Все скрипты отдельными файлами находятся в директории* [./separatedScripts](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/) (Всего скриптов: 55)
+* *Все скрипты отдельными файлами находятся в директории* [./separatedScripts](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/) (Всего скриптов: 56)
 * [Как устанавливать скрипты](http://gwscripts.ucoz.net/index/how_to_install/0-31)
 * [История изменений](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/ChangeLog.txt)
 
@@ -95,7 +95,7 @@
 
 **CommonBattleFilter**
 <br>
-Версия: 1.00-180218
+Версия: 1.10-060318
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CommonBattleFilter/commonBattleFilter.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CommonBattleFilter/commonBattleFilter.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CommonBattleFilter)
 <br>
@@ -273,6 +273,13 @@
 Версия: 2.13-150118
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/One2OneCallerInfo/one2OneCallerInfo.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/One2OneCallerInfo/one2OneCallerInfo.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/One2OneCallerInfo)
+<br>
+
+**PortTimer**
+<br>
+Версия: 1.00-110318
+<br>
+[[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortTimer/portTimer.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortTimer/portTimer.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PortTimer)
 <br>
 
 **PortsAndTerminals**

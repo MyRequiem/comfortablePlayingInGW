@@ -1,7 +1,7 @@
 Фильтр общих боев по уровню бойцов
 <br>
 <br>
-Версия: 1.00-180218
+Версия: 1.10-060318
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CommonBattleFilter/commonBattleFilter.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CommonBattleFilter/commonBattleFilter.user.js.zip)
 <br>
