@@ -12,7 +12,7 @@
 // @include         *ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.89-060318
+// @version         1.89-120318
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -68,7 +68,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.89-060318';
+        this.version = '1.89-120318';
         /**
          * @property stString
          * @type {String}
@@ -278,7 +278,11 @@
                         '@' +
                     /*
                      [22] - PortTimer
-                        [0] - '{date: '', syndid: '', time: [], current: ''}' */
+                        [0] - '{
+                            date: "",
+                            syndid: "",
+                            time: [],
+                            current: ""}' */
                         '@' +
                     /*
                      [23] - ScanKarma
@@ -8876,7 +8880,9 @@
                     oldKarma[1] = +oldKarma[1];
 
                     karma = karma.split('/');
+                    // noinspection JSValidateTypes
                     karma[0] = +karma[0];
+                    // noinspection JSValidateTypes
                     karma[1] = +karma[1];
 
                     var str = 'Ваша карма была изменена \n\n';
@@ -12395,7 +12401,7 @@
          */
         this.setTimer = function () {
             var diff = this.getTimeDiff(),
-                hours = parseInt(diff / 60, 10),
+                hours = parseInt((diff / 60).toString(), 10),
                 min = diff - hours * 60;
 
             general.$('portTimer').innerHTML = (hours < 10 ? '0' + hours :
@@ -12436,6 +12442,7 @@
                 'Порты</a> ' +
                 '<span id="portTime" style="font-weight: bold;"></span> ' +
                 '[<span id="portTimer" style=""></span>]';
+            // noinspection JSCheckFunctionSignatures
             this.topPanel.appendChild(general.doc.createTextNode(' | '));
             this.topPanel.appendChild(mainTimer);
         };
@@ -12507,7 +12514,8 @@
             var now = new Date();
             this.date = new Date(now.setHours(now.getHours() +
                     (now.getTimezoneOffset() / 60) + 3)).getDate();
-            if (+stData.date !== this.date && now.getUTCHours() + 3 >= 7) {
+            if (+stData.date !== this.date &&
+                    new Date().getUTCHours() + 3 >= 7) {
                 this.getBattles();
             } else {
                 this.setTime();

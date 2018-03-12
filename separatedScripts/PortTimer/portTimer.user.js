@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.00-110318
+// @version         1.00-120318
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458], идея Enemy333
 // ==/UserScript==
 
@@ -262,7 +262,7 @@
          */
         this.setTimer = function () {
             var diff = this.getTimeDiff(),
-                hours = parseInt(diff / 60, 10),
+                hours = parseInt((diff / 60).toString(), 10),
                 min = diff - hours * 60;
 
             general.$('portTimer').innerHTML = (hours < 10 ? '0' + hours :
@@ -303,6 +303,7 @@
                 'Порты</a> ' +
                 '<span id="portTime" style="font-weight: bold;"></span> ' +
                 '[<span id="portTimer" style=""></span>]';
+            // noinspection JSCheckFunctionSignatures
             this.topPanel.appendChild(general.doc.createTextNode(' | '));
             this.topPanel.appendChild(mainTimer);
         };
@@ -374,7 +375,8 @@
             var now = new Date();
             this.date = new Date(now.setHours(now.getHours() +
                     (now.getTimezoneOffset() / 60) + 3)).getDate();
-            if (+stData.date !== this.date && now.getUTCHours() + 3 >= 7) {
+            if (+stData.date !== this.date &&
+                    new Date().getUTCHours() + 3 >= 7) {
                 this.getBattles();
             } else {
                 this.setTime();
