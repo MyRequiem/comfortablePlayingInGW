@@ -12,7 +12,7 @@
 // @include         *ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.89-120318
+// @version         1.90-200318
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -68,7 +68,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.89-120318';
+        this.version = '1.90-200318';
         /**
          * @property stString
          * @type {String}
@@ -3810,9 +3810,13 @@
                             general.doc.querySelector('td[width="70%"]>b>' +
                                     'font[color="#990000"]'))) {
 
-                    general.root.setTimeout(function () {
-                        general.doc.querySelector('a[href*="&r="]').click();
-                    }, (+refreshAppl) * 1000);
+                    var updateLink = general.$('updatetimer2') ||
+                            general.$('updatetimer');
+                    if (updateLink) {
+                        general.root.setTimeout(function () {
+                            general.root.location = updateLink.parentNode.href;
+                        }, (+refreshAppl) * 1000);
+                    }
                 }
 
                 return;

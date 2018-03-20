@@ -11,7 +11,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         3.81-150118
+// @version         3.82-200318
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -1848,9 +1848,13 @@
                             general.doc.querySelector('td[width="70%"]>b>' +
                                     'font[color="#990000"]'))) {
 
-                    general.root.setTimeout(function () {
-                        general.doc.querySelector('a[href*="&r="]').click();
-                    }, refreshAppl * 1000);
+                    var updateLink = general.$('updatetimer2') ||
+                            general.$('updatetimer');
+                    if (updateLink) {
+                        general.root.setTimeout(function () {
+                            general.root.location = updateLink.parentNode.href;
+                        }, refreshAppl * 1000);
+                    }
                 }
 
                 return;
