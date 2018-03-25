@@ -12,7 +12,7 @@
 // @include         *ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.90-200318
+// @version         1.91-250318
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -68,7 +68,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.90-200318';
+        this.version = '1.91-250318';
         /**
          * @property stString
          * @type {String}
@@ -11599,7 +11599,6 @@
                         ['Клуб Нытиков', '55'],
                         ['Объявления синдикатов', '38'],
                         ['Вступлю в синдикат', '56'],
-                        ['Тотализатор', '5'],
                         ['Общение гостей острова', '30'],
                         ['Конкурсы', '3'],
                         ['Благодарности и поздравления', '4'],

@@ -1,3 +1,11 @@
+2018-03-25[1.91-250318]
+--------------------------------------
+	- Исправлены настройки скрипта:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvForum
+		(со страницы списка форумов удалена ссылка на форум "Тотализатор"
+		[http://www.ganjawars.ru/threads.php?fid=5])
+
+
 2018-03-20[1.90-200318]
 --------------------------------------
 	- Minifix:
