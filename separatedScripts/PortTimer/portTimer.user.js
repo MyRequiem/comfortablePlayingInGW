@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.00-120318
+// @version         1.10-260318
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458], идея Enemy333
 // ==/UserScript==
 
@@ -372,11 +372,14 @@
                 'page=oncoming1&sid=' + stData.syndid;
 
             // сегодня запрос не делали, делаем не ранее 7 утра.
-            var now = new Date();
+            var serverHour = new Date().getUTCHours() + 3,
+                now = new Date();
+
+            serverHour = serverHour > 23 ? serverHour - 24 : serverHour;
             this.date = new Date(now.setHours(now.getHours() +
                     (now.getTimezoneOffset() / 60) + 3)).getDate();
-            if (+stData.date !== this.date &&
-                    new Date().getUTCHours() + 3 >= 7) {
+
+            if (+stData.date !== this.date && serverHour >= 7) {
                 this.getBattles();
             } else {
                 this.setTime();

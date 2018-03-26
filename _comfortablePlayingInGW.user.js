@@ -12,7 +12,7 @@
 // @include         *ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.91-250318
+// @version         1.92-260318
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -68,7 +68,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.91-250318';
+        this.version = '1.92-260318';
         /**
          * @property stString
          * @type {String}
@@ -1109,12 +1109,12 @@
 
             'Бои': [
                 ['Дополнение для боев', 'Генератор ходов, ' +
-                    'нумерация противников, расширенная информация в ' +
-                    'списке выбора противника, сортировка списка, ДЦ, ' +
-                    'продвинутое расположение бойцов на поле боя как в бою, ' +
-                    'так и в режиме наблюдения за боем, полный лог боя в НЕ ' +
-                    'JS-версии, кнопка "Сказать ход", быстрая вставка ника в ' +
-                    'поле чата. Информация вверху страницы боя о набитом HP, ' +
+                    'расширенная информация в списке выбора противника, ' +
+                    'сортировка списка, ДЦ, продвинутое расположение бойцов ' +
+                    'на поле боя как в бою, так и в режиме наблюдения за ' +
+                    'боем, полный лог боя в НЕ JS-версии, кнопка ' +
+                    '"Сказать ход", быстрая вставка ника в поле чата. ' +
+                    'Информация вверху страницы боя о набитом HP, ' +
                     'вашем здоровье и т.д. При щелчке на картинке противника ' +
                     'происходит его выбор в качестве цели. Кнопка "Обновить" ' +
                     'на поле боя. В JS-версии боя подсвечивает зеленым ' +
@@ -2567,40 +2567,29 @@
          */
         this.setEnvelope = function () {
             var mass = [this.leftPers, this.rightPers],
-                number,
                 before,
-                name,
                 span,
-                env,
                 j,
                 i;
 
             for (i = 0; i < 2; i++) {
                 for (j = 0; j < mass[i].length; j++) {
-                    name = mass[i][j].textContent;
                     this.getDataFighters(mass[i][j]);
-                    // конвертики и номера покам не нужны
+
+                    // конвертики покам не нужны
                     if (mass[i][j].nodeName === 'B') {
                         continue;
                     }
 
-                    number = '';
-                    // в режиме наблюдения номера бойцов не нужны
-                    if (this.enemies && !general.viewMode) {
-                        number = this.enemies[name] ?
-                                ' <span style="font-weight: bold;">' +
-                                    this.enemies[name] + '.</span> ' : '';
-                    }
-
-                    env = ' <img src="' + this.imgPath + 'envelope.gif" ' +
-                        'style="width: 15px; cursor: pointer;"> ';
-
                     span = general.doc.createElement('span');
-                    span.innerHTML = !i ? number + env : env + number;
-                    before = !i ? mass[i][j].nextElementSibling : mass[i][j];
+                    span.innerHTML = ' <img src="' + general.imgPath +
+                        'AdvBattleAll/envelope.gif" style="width: 15px; ' +
+                        'cursor: pointer; margin-right: 5px;">';
+                    before = !i ? mass[i][j].nextElementSibling :
+                            mass[i][j].previousElementSibling;
                     mass[i][j].parentNode.insertBefore(span, before);
                     span.querySelector('img').addEventListener('click',
-                            this.setNameInChat(name), false);
+                        this.setNameInChat(mass[i][j].textContent), false);
                 }
             }
         };
@@ -3555,7 +3544,7 @@
                 return;
             }
 
-            // расстановка конвертиков, номера бойца и сбор дополнительной
+            // расстановка конвертиков и сбор дополнительной
             // информации (если они еще не были установлены)
             if (this.leftPers[0].nextElementSibling.nodeName !== 'SPAN') {
                 this.allFighters = {};
@@ -11179,7 +11168,7 @@
         this.showImagePoks = function () {
             var enemies = general.doc.
                     querySelectorAll('div[style*="font-size:8pt;"]>' +
-                        'b:first-child'),
+                        'span[class="battletags"]+b'),
                 getPos = new GetPos().init,
                 imgPath = 'http://www.gw-rent.h19.ru/pokemon/',
                 ext = '.png',
@@ -12514,11 +12503,14 @@
                 'page=oncoming1&sid=' + stData.syndid;
 
             // сегодня запрос не делали, делаем не ранее 7 утра.
-            var now = new Date();
+            var serverHour = new Date().getUTCHours() + 3,
+                now = new Date();
+
+            serverHour = serverHour > 23 ? serverHour - 24 : serverHour;
             this.date = new Date(now.setHours(now.getHours() +
                     (now.getTimezoneOffset() / 60) + 3)).getDate();
-            if (+stData.date !== this.date &&
-                    new Date().getUTCHours() + 3 >= 7) {
+
+            if (+stData.date !== this.date && serverHour >= 7) {
                 this.getBattles();
             } else {
                 this.setTime();

@@ -1,3 +1,15 @@
+2018-03-26[1.92-260318]
+--------------------------------------
+	- Изменились страницы боев и страницы наблюдения за боем
+		(новость: http://www.ganjawars.ru/messages.php?fid=1&tid=1451)
+		В скрипте AdvBattleAll удалены порядковые номера персонажей
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+		а так же исправлен скрипт:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ImgPokemonsOnBattle
+	- Исправлен скрипт:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PortTimer
+
+
 2018-03-25[1.91-250318]
 --------------------------------------
 	- Исправлены настройки скрипта:

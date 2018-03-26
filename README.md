@@ -6,7 +6,7 @@
 ![ChromeLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/chromeLogo.png)
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
 
-Версия: 1.91-250318
+Версия: 1.92-260318
 
 Нашли ошибку? Пожалуйста, [сообщите](http://www.ganjawars.ru/sms-create.php?mailto=MyRequiem)
 
@@ -46,7 +46,7 @@
 
 **AdvBattleAll**
 <br>
-Версия: 3.82-200318
+Версия: 3.83-260318
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll)
 <br>
@@ -228,7 +228,7 @@
 
 **ImgPokemonsOnBattle**
 <br>
-Версия: 2.12-150118
+Версия: 2.13-260318
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ImgPokemonsOnBattle/imgPokemonsOnBattle.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ImgPokemonsOnBattle/imgPokemonsOnBattle.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ImgPokemonsOnBattle)
 <br>
@@ -277,7 +277,7 @@
 
 **PortTimer**
 <br>
-Версия: 1.00-120318
+Версия: 1.10-260318
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortTimer/portTimer.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortTimer/portTimer.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PortTimer)
 <br>

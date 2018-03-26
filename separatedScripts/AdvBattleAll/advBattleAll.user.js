@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            AdvBattleAll
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     Генератор ходов, нумерация противников, расширенная информация в списке выбора противника, сортировка списка, ДЦ, продвинутое расположение бойцов на поле боя как в бою, так и в режиме наблюдения за боем, полный лог боя в НЕ JS-версии, кнопка "Сказать ход", быстрая вставка ника в поле чата. Информация вверху о набитом HP, вашем здоровье и т.д. При щелчке на картинке противника происходит его выбор в качестве цели. Кнопка "Обновить" на поле боя. В JS-версии боя подсвечивает зеленым цветом тех персонажей, которые уже сделали ход. В обоих версиях выводит количество персонажей, сделавших ход. Таймаут обновления заявки после входа в нее и таймаут обновления данных в бою.
+// @description     Генератор ходов, расширенная информация в списке выбора противника, сортировка списка, ДЦ, продвинутое расположение бойцов на поле боя как в бою, так и в режиме наблюдения за боем, полный лог боя в НЕ JS-версии, кнопка "Сказать ход", быстрая вставка ника в поле чата. Информация вверху о набитом HP, вашем здоровье и т.д. При щелчке на картинке противника происходит его выбор в качестве цели. Кнопка "Обновить" на поле боя. В JS-версии боя подсвечивает зеленым цветом тех персонажей, которые уже сделали ход. В обоих версиях выводит количество персонажей, сделавших ход. Таймаут обновления заявки после входа в нее и таймаут обновления данных в бою.
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js
@@ -11,7 +11,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         3.82-200318
+// @version         3.83-260318
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -600,40 +600,29 @@
          */
         this.setEnvelope = function () {
             var mass = [this.leftPers, this.rightPers],
-                number,
                 before,
-                name,
                 span,
-                env,
                 j,
                 i;
 
             for (i = 0; i < 2; i++) {
                 for (j = 0; j < mass[i].length; j++) {
-                    name = mass[i][j].textContent;
                     this.getDataFighters(mass[i][j]);
-                    // конвертики и номера покам не нужны
+
+                    // конвертики покам не нужны
                     if (mass[i][j].nodeName === 'B') {
                         continue;
                     }
 
-                    number = '';
-                    // в режиме наблюдения номера бойцов не нужны
-                    if (this.enemies && !general.viewMode) {
-                        number = this.enemies[name] ?
-                                ' <span style="font-weight: bold;">' +
-                                    this.enemies[name] + '.</span> ' : '';
-                    }
-
-                    env = ' <img src="' + general.imgPath + 'envelope.gif" ' +
-                        'style="width: 15px; cursor: pointer;"> ';
-
                     span = general.doc.createElement('span');
-                    span.innerHTML = !i ? number + env : env + number;
-                    before = !i ? mass[i][j].nextElementSibling : mass[i][j];
+                    span.innerHTML = ' <img src="' + general.imgPath +
+                        'envelope.gif" style="width: 15px; cursor: pointer; ' +
+                        'margin-right: 5px;">';
+                    before = !i ? mass[i][j].nextElementSibling :
+                            mass[i][j].previousElementSibling;
                     mass[i][j].parentNode.insertBefore(span, before);
                     span.querySelector('img').addEventListener('click',
-                            this.setNameInChat(name), false);
+                        this.setNameInChat(mass[i][j].textContent), false);
                 }
             }
         };
@@ -1583,7 +1572,7 @@
                 return;
             }
 
-            // расстановка конвертиков, номера бойца и сбор дополнительной
+            // расстановка конвертиков и сбор дополнительной
             // информации (если они еще не были установлены)
             if (this.leftPers[0].nextElementSibling.nodeName !== 'SPAN') {
                 this.allFighters = {};

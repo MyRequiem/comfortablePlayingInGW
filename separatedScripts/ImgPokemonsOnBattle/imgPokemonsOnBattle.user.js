@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/warlog.php*
 // @grant           none
 // @license         MIT
-// @version         2.12-150118
+// @version         2.13-260318
 // @author          MyRequiem, идея Buger_man
 // ==/UserScript==
 
@@ -127,7 +127,7 @@
         this.showImagePoks = function () {
             var enemies = general.doc.
                     querySelectorAll('div[style*="font-size:8pt;"]>' +
-                        'b:first-child'),
+                        'span[class="battletags"]+b'),
                 getPos = new GetPos().init,
                 imgPath = 'http://www.gw-rent.h19.ru/pokemon/',
                 ext = '.png',
