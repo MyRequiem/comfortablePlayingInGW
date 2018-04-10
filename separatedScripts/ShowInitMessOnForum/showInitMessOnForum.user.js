@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/messages.php*
 // @grant           none
 // @license         MIT
-// @version         2.11-150118
+// @version         2.12-110418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -141,7 +141,7 @@
             target.firstElementChild.
                 setAttribute('style', 'padding-left: 20px;');
 
-            // noinspection Annotator
+            // noinspection JSUnresolvedVariable
             var author = last.parentNode.previousElementSibling.
                     querySelector('b').innerHTML,
                 lastLink = last.previousElementSibling.querySelector('a').href,
