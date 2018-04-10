@@ -1,7 +1,7 @@
 Удобные ссылки для полива, сбора, вскапывания, посадки на ферме.
 <br>
 <br>
-Версия: 2.12-150118
+Версия: 2.13-110418
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ComfortableLinksForFarm/comfortableLinksForFarm.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ComfortableLinksForFarm/comfortableLinksForFarm.user.js.zip)
 <br>
