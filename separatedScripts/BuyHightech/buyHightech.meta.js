@@ -9,6 +9,6 @@
 // @include         http://www.ganjawars.ru/market-p.php?stage=2&item_id=*
 // @grant           none
 // @license         MIT
-// @version         2.02-150118
+// @version         2.03-100418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==

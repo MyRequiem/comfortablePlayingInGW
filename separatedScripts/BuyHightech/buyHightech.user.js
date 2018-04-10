@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/market-p.php?stage=2&item_id=*
 // @grant           none
 // @license         MIT
-// @version         2.02-150118
+// @version         2.03-100418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -86,7 +86,7 @@
                     i;
 
                 for (i = 0; i < descrTd.length; i++) {
-                    // noinspection Annotator
+                    // noinspection JSUnresolvedFunction
                     id = /id=(.+)$/.exec(descrTd[i].parentNode.
                             querySelector('a').href)[1];
                     price = /(\d+) EUN/.exec(descrTd[i].innerHTML)[1];
