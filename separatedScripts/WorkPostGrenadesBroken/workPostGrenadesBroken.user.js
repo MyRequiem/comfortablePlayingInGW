@@ -12,7 +12,7 @@
 // @include         http://www.ganjawars.ru/wargroup.php*
 // @grant           none
 // @license         MIT
-// @version         2.34-150118
+// @version         2.35-100418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -344,9 +344,9 @@
                 }
 
                 // ищем ссылку на объект где работаем/работали
-                var linkObj = spanContent.
-                        querySelector('td[align="center"][style="font-size:' +
-                            '8pt"][bgcolor="#e9ffe9"]');
+                var cssSelector = 'td[align="center"][style="font-size:8pt"]' +
+                        '[bgcolor="#e9ffe9"]',
+                    linkObj = spanContent.querySelector(cssSelector);
 
                 // видимо что-то случилось
                 if (!linkObj) {
@@ -360,9 +360,9 @@
                 }
 
                 // поиск ссылок на экипировку
-                var items = spanContent.
-                        querySelector('td[valign="bottom"][bgcolor="#e9ffe9"]' +
-                            '[colspan="2"]');
+                cssSelector = 'td[valign="bottom"][bgcolor="#e9ffe9"]' +
+                    '[colspan="2"]';
+                var items = spanContent.querySelector(cssSelector);
                 items = items ? items.querySelectorAll('a') : false;
 
                 // время до окончания работы
@@ -420,8 +420,9 @@
                     }
                 }
 
-                var testBroken = spanContent.querySelector('a[href=' +
-                    '"/workshop.php"][style$="#990000;"]') || false;
+                cssSelector = 'a[href="/workshop.php"][style$="#990000;"]';
+                var testBroken = spanContent.querySelector(cssSelector) ||
+                        false;
                 _this.wpgbContainer.innerHTML += _this.addContent(testSms,
                     testGrenades, testBroken);
             }, function () {
