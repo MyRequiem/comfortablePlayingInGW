@@ -74,7 +74,7 @@
 
 **BonusInfo**
 <br>
-Версия: 2.04-250218
+Версия: 2.05-110418
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BonusInfo/bonusInfo.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BonusInfo/bonusInfo.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BonusInfo)
 <br>
