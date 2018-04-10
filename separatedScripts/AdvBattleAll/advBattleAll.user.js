@@ -11,7 +11,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         3.83-260318
+// @version         3.84-100418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -286,9 +286,9 @@
         this.tooltip = null;
         /**
          * @property intervalUpdateInpTextChat
-         * @type {int|null}
+         * @type {int}
          */
-        this.intervalUpdateInpTextChat = null;
+        this.intervalUpdateInpTextChat = 0;
         /**
          * @property sayMoveButton
          * @type {HTMLInputElement|null}
