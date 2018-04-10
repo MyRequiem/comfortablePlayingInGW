@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.14-150118
+// @version         2.15-110418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -437,7 +437,7 @@
          * @return   {Element}
          */
         this.getPersLink = function (node) {
-            // noinspection Annotator
+            // noinspection JSUnresolvedVariable
             return node.parentNode.nextElementSibling.querySelector('a');
         };
 
@@ -647,7 +647,7 @@
                         return;
                     }
 
-                    // noinspection Annotator
+                    // noinspection JSUnresolvedVariable
                     str = lines[i].parentNode.nextElementSibling.innerHTML;
                     typeLine = _this.getTypeLine(str);
 
