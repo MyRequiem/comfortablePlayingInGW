@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.43-150118
+// @version         2.44-100418
 // @author          W_or_M (редакция MyRequiem)
 // ==/UserScript==
 
@@ -84,7 +84,7 @@
 
         /**
          * @method getData
-         * @return  {Array}
+         * @return  {String}
          */
         getData: function () {
             var stData = this.st.getItem(this.STORAGENAME);
@@ -220,7 +220,7 @@
 
             // прогресс бар
             if (hpPercent >= 100) {
-                // noinspection Annotator
+                // noinspection JSUnresolvedVariable
                 this.progressBar.parentNode.style.display = 'none';
             } else if (hpPercent < 0) {
                 // если кильнули
