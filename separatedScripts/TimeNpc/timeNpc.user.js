@@ -10,7 +10,7 @@
 // @include         http://www.ganjawars.ru/npc.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.24-150118
+// @version         2.25-100418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -282,12 +282,14 @@
                     return;
                 }
 
-                var syndLink = spanContent.
-                        querySelector('td[class="wb"][colspan="3"]' +
-                            '[bgcolor="#f0fff0"]').
-                                querySelector('a[href*="/syndicate.php?id="]'),
-                    nameNPC = spanContent.querySelector('td[class="wb"]' +
-                        '[align="left" ][width="100%"]>b').innerHTML;
+                var cssSelector1 = 'td[class="wb"][colspan="3"]' +
+                        '[bgcolor="#f0fff0"]',
+                    cssSelector2 = 'a[href*="/syndicate.php?id="]',
+                    cssSelector3 = 'td[class="wb"][align="left" ]' +
+                        '[width="100%"]>b',
+                    syndLink = spanContent.querySelector(cssSelector1).
+                        querySelector(cssSelector2),
+                    nameNPC = spanContent.querySelector(cssSelector3).innerHTML;
 
                 general.$('dataNPC').lastElementChild.innerHTML = '<td>' +
                     '<a target="_blank" href="' + syndLink.href +
