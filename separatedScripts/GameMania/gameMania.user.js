@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.32-150118
+// @version         2.33-110418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -100,7 +100,7 @@
      * @constructor
      */
     var GameMania = function () {
-        // noinspection Annotator
+        // noinspection JSUnresolvedVariable
         /**
          * @property target
          * @type {HTMLTableCellElement}
