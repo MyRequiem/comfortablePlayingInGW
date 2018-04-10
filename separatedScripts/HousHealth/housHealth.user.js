@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/b0/*
 // @grant           none
 // @license         MIT
-// @version         2.02-121216
+// @version         2.03-100418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -160,20 +160,22 @@
             var _this = this;
 
             new AjaxQuery().init(url, function (xml) {
-                var spanContent = general.doc.createElement('span');
+                var spanContent = general.doc.createElement('span'),
+                    cssSelector;
+
                 spanContent.innerHTML = xml.responseText;
 
                 if (!sector) {    // ищем сектор перса
-                    sector = spanContent.querySelector('b+' +
-                                'a[href*="/map.php?s"]').innerHTML;
+                    cssSelector = 'b+a[href*="/map.php?s"]';
+                    sector = spanContent.querySelector(cssSelector).innerHTML;
                     general.root.setTimeout(function () {
                         // на недвижимость перса
                         _this.showSector('http://www.ganjawars.ru/' +
                             'info.realty.php?id=' + general.myID, sector);
                     }, 1000);
                 } else {
-                    var table = spanContent.querySelector('table[class="wb"]' +
-                        '[align="center"]');
+                    cssSelector = 'table[class="wb"][align="center"]';
+                    var table = spanContent.querySelector(cssSelector);
 
                     if (table) {
                         var trs = table.querySelectorAll('tr'),
