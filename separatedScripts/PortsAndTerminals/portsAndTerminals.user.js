@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/map.php*
 // @grant           none
 // @license         MIT
-// @version         2.12-150118
+// @version         2.13-100418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -101,12 +101,12 @@
                 i;
 
             for (i = 0; i < cells.length; i++) {
-                // noinspection Annotator
+                // noinspection JSUnresolvedVariable
                 coord = /\d+&sy=\d+/.exec(cells[i].parentNode.href)[0];
                 for (j = 0; j < this.sectors.length; j++) {
                     tmp = this.sectors[j].split('|');
                     if (coord === tmp[0]) {
-                        // noinspection Annotator
+                        // noinspection JSUnresolvedFunction
                         cls = cells[i].parentNode.parentNode.
                                 getAttribute('class');
 
