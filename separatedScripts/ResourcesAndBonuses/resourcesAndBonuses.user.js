@@ -9,7 +9,7 @@
 // @exclude         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.13-150118
+// @version         2.14-100418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -211,13 +211,16 @@
             new AjaxQuery().init(url, function (xml) {
                 var spanContent = general.doc.createElement('span');
                 spanContent.innerHTML = xml.responseText;
-                var tables = spanContent.querySelectorAll('td[class="wb"]' +
-                        '[bgcolor="#f0fff0"][align="center"][valign="top"]'),
+
+                var cssSelector = 'td[class="wb"][bgcolor="#f0fff0"]' +
+                        '[align="center"][valign="top"]',
+                    tables = spanContent.querySelectorAll(cssSelector),
                     data;
 
                 if (!tables.length) {   // новый стиль оформления страницы инфы
-                    tables = spanContent.querySelectorAll('td[class=' +
-                            '"greenbrightbg"][align="center"][valign="top"]');
+                    cssSelector = 'td[class="greenbrightbg"][align="center"]' +
+                        '[valign="top"]';
+                    tables = spanContent.querySelectorAll(cssSelector);
                 }
 
                 data = idElem === 'res' ?
