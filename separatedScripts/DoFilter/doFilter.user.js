@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/market-p.php*
 // @grant           none
 // @license         MIT
-// @version         2.02-150118
+// @version         2.03-100418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -71,7 +71,7 @@
     var DoFilter = function () {
         /**
          * @property selects
-         * @type {HTMLSelectElement}
+         * @type {NodeList}
          */
         this.selects = general.doc.querySelectorAll('select[name="item_id"]');
 
