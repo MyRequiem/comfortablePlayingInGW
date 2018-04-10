@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.00-190118
+// @version         1.01-100418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458], идея kaa
 // ==/UserScript==
 
@@ -109,9 +109,11 @@
                 var span = _this.doc.createElement('span');
                 span.innerHTML = xhr.responseText;
 
-                var td = span.querySelector('td[valign="top"]' +
-                        '[align="right"]>a[href*="/help/index.php?sid="]').
-                            parentNode.previousElementSibling,
+                // noinspection JSUnresolvedVariable
+                var cssSelector = 'td[valign="top"][align="right"]>' +
+                        'a[href*="/help/index.php?sid="]',
+                    td = span.querySelector(cssSelector).parentNode.
+                        previousElementSibling,
                     questDescr = td.firstElementChild.nextSibling.nodeValue,
                     acQuests = /-квестов:<\/b>\s?(\d+)/.exec(td.innerHTML)[1],
                     div = _this.doc.createElement('div');
