@@ -9,7 +9,7 @@
 // @exclude         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.32-150118
+// @version         2.33-100418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -430,11 +430,14 @@ plusplus: true, devel: true */
                 }
 
                 // новое и старое оформление страницы персонажа
-                var target = spanContent.querySelector('table+br+table' +
-                    '[width="730"]') || spanContent.querySelector('table+br+' +
-                        'table[width="600"][cellpadding="1"][align="center"]');
-                if (!target.querySelector('a[href*="/syndicate.php?id=' +
-                        syndId + '"]')) {
+                var cssSelector1 = 'table+br+table[width="730"]',
+                    cssSelector2 = 'table+br+table[width="600"]' +
+                        '[cellpadding="1"][align="center"]',
+                    cssSelector3 = 'a[href*="/syndicate.php?id=' +
+                        syndId + '"]',
+                    target = spanContent.querySelector(cssSelector1) ||
+                        spanContent.querySelector(cssSelector2);
+                if (!target.querySelector(cssSelector3)) {
                     _this.showHidePreloader();
                     alert('Персонаж ' + persNik + ' не состоит в синдикате #' +
                         syndId + ',\nили его список синдикатов скрыт. Если ' +
@@ -442,11 +445,13 @@ plusplus: true, devel: true */
                     return;
                 }
 
-                var stData = general.getData();
+                var stData = general.getData(),
+                    cssSelector = 'a[href*="/usertransfers.php?id="]';
+
                 stData[0] = persNik;
                 stData[1] = syndId;
-                stData[6] = /\?id=(\d+)/.exec(target.querySelector('a[href*=' +
-                    '"/usertransfers.php?id="]').href)[1];
+                stData[6] = /\?id=(\d+)/.
+                    exec(target.querySelector(cssSelector).href)[1];
                 stData[7] = '';
 
                 var interval = general.$('scan_interval').value;
@@ -492,8 +497,10 @@ plusplus: true, devel: true */
                 var spanContent = general.doc.createElement('span');
                 spanContent.innerHTML = xml.responseText;
 
-                var online = spanContent.querySelector('center+br+table').
-                    querySelector('a[href*="/info.php?id=' + persId + '"]');
+                var cssSelector1 = 'center+br+table',
+                    cssSelector2 = 'a[href*="/info.php?id=' + persId + '"]',
+                    online = spanContent.querySelector(cssSelector1).
+                        querySelector(cssSelector2);
 
                 _this.showHidePreloader();
                 if (now) { //нажали кнопу "Узнать сейчас"
