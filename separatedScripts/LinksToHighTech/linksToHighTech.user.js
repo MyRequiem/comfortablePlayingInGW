@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/shop.php*
 // @grant           none
 // @license         MIT
-// @version         1.23-150118
+// @version         1.24-110418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458] идея Buger_man
 // ==/UserScript==
 
@@ -93,7 +93,7 @@
                 if (links[i].innerHTML) {
                     group = /\?shop=shop_(.*)$/.exec(links[i].href)[1];
                     if (this.highTechItems.htGroup.indexOf(group) !== -1) {
-                        // noinspection Annotator
+                        // noinspection JSUnresolvedVariable
                         links[i].parentNode.innerHTML = '<a ' +
                             'href="/shopc.php?shop=shop_' +
                             (this.highTechItems[group] || group) +
