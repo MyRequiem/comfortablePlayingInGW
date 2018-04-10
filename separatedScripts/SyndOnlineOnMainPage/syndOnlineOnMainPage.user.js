@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.21-150118
+// @version         2.22-100418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -186,9 +186,9 @@
                     (/<b>(\d+) бойцов онлайн<\/b>/.
                         exec(spanContent.innerHTML)[1]) + ')<br>';
 
-                var trs = spanContent.
-                            querySelector('table[class="bordersupdown"]' +
-                                '[width="100%"]').querySelectorAll('tr');
+                var cssSelector = 'table[class="bordersupdown"][width="100%"]',
+                    trs = spanContent.querySelector(cssSelector).
+                        querySelectorAll('tr');
 
                 if (trs.length > 1) {
                     var nobr, pers, syndImg, war, i;
@@ -275,10 +275,10 @@
                     var spanContent = general.doc.createElement('span');
                     spanContent.innerHTML = xml.responseText;
 
-                    _this.syndUnion = spanContent.
-                        querySelector('tr>td[colspan="3"]' +
-                            '[class="greengreenbg"]>' +
-                            'a[href*="/syndicate.php?id="]:last-child');
+                    var cssSelector = 'tr>td[colspan="3"]' +
+                        '[class="greengreenbg"]>' +
+                        'a[href*="/syndicate.php?id="]:last-child';
+                    _this.syndUnion = spanContent.querySelector(cssSelector);
 
                     if (_this.syndUnion) {
                         // noinspection JSCheckFunctionSignatures
