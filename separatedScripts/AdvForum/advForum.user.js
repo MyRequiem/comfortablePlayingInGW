@@ -10,7 +10,7 @@
 // @include         http://www.ganjawars.ru/forum.php
 // @grant           none
 // @license         MIT
-// @version         2.22-250318
+// @version         2.23-110418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -652,7 +652,7 @@
                     if (!(/Форум синдиката #\d+/.
                             test(allBranches[i].innerHTML))) {
 
-                        // noinspection Annotator
+                        // noinspection JSUnresolvedVariable
                         allBranches[i].parentNode.style.display = f[j] ?
                                                             '' : 'none';
                         j++;
