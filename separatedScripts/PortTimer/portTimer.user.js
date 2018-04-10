@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.10-260318
+// @version         1.11-100418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458], идея Enemy333
 // ==/UserScript==
 
@@ -156,9 +156,9 @@
         this.url = null;
         /**
          * @property date
-         * @type {int|null}
+         * @type {int}
          */
-        this.date = null;
+        this.date = 0;
 
         /**
          * @method ajax
@@ -202,8 +202,9 @@
                 var spanContent = general.doc.createElement('span');
 
                 spanContent.innerHTML = xhr.responseText;
-                var table = spanContent.querySelector('table[cellspacing="1"]' +
-                    '[cellpadding="5"][width="100%"]');
+                var cssSelector = 'table[cellspacing="1"][cellpadding="5"]' +
+                        '[width="100%"]',
+                    table = spanContent.querySelector(cssSelector);
 
                 if (table) {
                     var data = JSON.parse(general.getData()),

@@ -8,6 +8,6 @@
 // @include         http://www.ganjawars.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.10-260318
+// @version         1.11-100418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458], идея Enemy333
 // ==/UserScript==
