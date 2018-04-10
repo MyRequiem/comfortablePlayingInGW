@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.07-150118
+// @version         2.08-100418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -107,7 +107,7 @@
     var SkillCounters = function () {
         /**
          * @property counters
-         * @type {Array}
+         * @type {NodeList}
          */
         this.counters = general.doc.querySelectorAll('td[valign="top"]' +
                 '[bgcolor="#e9ffe9"]>div>table[border="0"] tr>td+td>nobr');
@@ -168,7 +168,7 @@
                     push(this.getValue(this.counters[i], i < 3 ? 0 : 2));
 
                 if (loadPage) {
-                    // noinspection Annotator
+                    // noinspection JSUnresolvedVariable
                     this.counters[i].parentNode.parentNode.lastElementChild.
                         innerHTML = '<span id="' + this.ids[i] +
                         '" style="color: #FF0000; font-size: 9px;"></span>';
