@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         2.13-150118
+// @version         2.14-100418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -218,10 +218,11 @@
                     /Правая/.test(target.innerHTML);
 
                 // узел td со списком умелок
-                var skills = spanContent.querySelectorAll('tr>td+' +
-                    'td[align="right"][valign="top"]')[2];
+                var cssSelector = 'tr>td+td[align="right"][valign="top"]',
+                    skills = spanContent.querySelectorAll(cssSelector)[2],
+                    tr = general.doc.createElement('tr');
+
                 skills.setAttribute('colspan', '2');
-                var tr = general.doc.createElement('tr');
                 tr.appendChild(skills);
                 target = target.parentNode.parentNode;
                 target.insertBefore(tr, target.lastElementChild);
