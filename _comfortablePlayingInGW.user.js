@@ -12102,7 +12102,7 @@
                 general.doc.querySelector('#namespan').parentNode.
                         appendChild(div);
             }, function () {
-                _this.root.setTimeout(function () {
+                general.root.setTimeout(function () {
                     _this.showQuest(url);
                 }, _this.tm);
             });
