@@ -120,6 +120,7 @@
                 }
 
                 // выбираем самый первый пустой option
+                // noinspection JSUndefinedPropertyAssignment
                 this.selects[i].value = '#';
                 // прокручиваем весь список и ищем совпадения
                 for (j = 0; j < this.selects[i].options.length; j++) {
