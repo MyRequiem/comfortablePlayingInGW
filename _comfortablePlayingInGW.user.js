@@ -4152,9 +4152,9 @@
                 }
 
                 // ищем ссылку на объект где работаем/работали
-                var linkObj = spanContent.
-                        querySelector('td[align="center"][style="font-size:' +
-                            '8pt"][bgcolor="#e9ffe9"]');
+                var cssSelector = 'td[align="center"][style="font-size:8pt"]' +
+                        '[bgcolor="#e9ffe9"]',
+                    linkObj = spanContent.querySelector(cssSelector);
 
                 // видимо что-то случилось
                 if (!linkObj) {
@@ -4168,9 +4168,9 @@
                 }
 
                 // поиск ссылок на экипировку
-                var items = spanContent.
-                        querySelector('td[valign="bottom"][bgcolor="#e9ffe9"]' +
-                            '[colspan="2"]');
+                cssSelector = 'td[valign="bottom"][bgcolor="#e9ffe9"]' +
+                    '[colspan="2"]';
+                var items = spanContent.querySelector(cssSelector);
                 items = items ? items.querySelectorAll('a') : false;
 
                 // время до окончания работы
@@ -4228,8 +4228,9 @@
                     }
                 }
 
-                var testBroken = spanContent.querySelector('a[href=' +
-                    '"/workshop.php"][style$="#990000;"]') || false;
+                cssSelector = 'a[href="/workshop.php"][style$="#990000;"]';
+                var testBroken = spanContent.querySelector(cssSelector) ||
+                        false;
                 _this.wpgbContainer.innerHTML += _this.addContent(testSms,
                     testGrenades, testBroken);
 
@@ -4305,13 +4306,15 @@
             new AjaxQuery().init(url, 'GET', null, true, function (xml) {
                 var spanContent = general.doc.createElement('span');
                 spanContent.innerHTML = xml.responseText;
-                var tables = spanContent.querySelectorAll('td[class="wb"]' +
-                        '[bgcolor="#f0fff0"][align="center"][valign="top"]'),
+                var cssSelector = 'td[class="wb"][bgcolor="#f0fff0"]' +
+                        '[align="center"][valign="top"]',
+                    tables = spanContent.querySelectorAll(cssSelector),
                     data;
 
                 if (!tables.length) {   // новый стиль оформления страницы инфы
-                    tables = spanContent.querySelectorAll('td[class=' +
-                            '"greenbrightbg"][align="center"][valign="top"]');
+                    cssSelector = 'td[class="greenbrightbg"][align="center"]' +
+                        '[valign="top"]';
+                    tables = spanContent.querySelectorAll(cssSelector);
                 }
 
                 data = idElem === 'res' ?
@@ -5178,12 +5181,14 @@
                     return;
                 }
 
-                var syndLink = spanContent.
-                        querySelector('td[class="wb"][colspan="3"]' +
-                            '[bgcolor="#f0fff0"]').
-                                querySelector('a[href*="/syndicate.php?id="]'),
-                    nameNPC = spanContent.querySelector('td[class="wb"]' +
-                        '[align="left" ][width="100%"]>b').innerHTML;
+                var cssSelector1 = 'td[class="wb"][colspan="3"]' +
+                        '[bgcolor="#f0fff0"]',
+                    cssSelector2 = 'a[href*="/syndicate.php?id="]',
+                    cssSelector3 = 'td[class="wb"][align="left" ]' +
+                        '[width="100%"]>b',
+                    syndLink = spanContent.querySelector(cssSelector1).
+                                querySelector(cssSelector2),
+                    nameNPC = spanContent.querySelector(cssSelector3).innerHTML;
 
                 general.$('dataNPC').lastElementChild.innerHTML = '<td>' +
                     '<a target="_blank" href="' + syndLink.href +
@@ -8410,20 +8415,22 @@
             var _this = this;
 
             new AjaxQuery().init(url, 'GET', null, true, function (xml) {
-                var spanContent = general.doc.createElement('span');
+                var spanContent = general.doc.createElement('span'),
+                    cssSelector;
+
                 spanContent.innerHTML = xml.responseText;
 
                 if (!sector) {    // ищем сектор перса
-                    sector = spanContent.querySelector('b+' +
-                                'a[href*="/map.php?s"]').innerHTML;
+                    cssSelector = 'b+a[href*="/map.php?s"]';
+                    sector = spanContent.querySelector(cssSelector).innerHTML;
                     general.root.setTimeout(function () {
                         // на недвижимость перса
                         _this.showSector('http://www.ganjawars.ru/' +
                             'info.realty.php?id=' + general.myID, sector);
                     }, 1000);
                 } else {
-                    var table = spanContent.querySelector('table[class="wb"]' +
-                        '[align="center"]');
+                    cssSelector = 'table[class="wb"][align="center"]';
+                    var table = spanContent.querySelector(cssSelector);
 
                     if (table) {
                         var trs = table.querySelectorAll('tr'),
@@ -8603,8 +8610,8 @@
                     /Правая/.test(target.innerHTML);
 
                 // узел td со списком умелок
-                var skills = spanContent.querySelectorAll('tr>td+' +
-                    'td[align="right"][valign="top"]')[2];
+                var cssSelector = 'tr>td+td[align="right"][valign="top"]',
+                    skills = spanContent.querySelectorAll(cssSelector)[2];
                 skills.setAttribute('colspan', '2');
                 var tr = general.doc.createElement('tr');
                 tr.appendChild(skills);
@@ -9013,11 +9020,15 @@
                 }
 
                 // новое и старое оформление страницы персонажа
-                var target = spanContent.querySelector('table+br+table' +
-                    '[width="730"]') || spanContent.querySelector('table+br+' +
-                        'table[width="600"][cellpadding="1"][align="center"]');
-                if (!target.querySelector('a[href*="/syndicate.php?id=' +
-                        syndId + '"]')) {
+                var cssSelector1 = 'table+br+table[width="730"]',
+                    cssSelector2 = 'table+br+table[width="600"]' +
+                        '[cellpadding="1"][align="center"]',
+                    cssSelector3 = 'a[href*="/syndicate.php?id=' +
+                        syndId + '"]',
+                    target = spanContent.querySelector(cssSelector1) ||
+                        spanContent.querySelector(cssSelector2);
+
+                if (!target.querySelector(cssSelector3)) {
                     _this.showHidePreloader();
                     alert('Персонаж ' + persNik + ' не состоит в синдикате #' +
                         syndId + ',\nили его список синдикатов скрыт. Если ' +
@@ -9025,11 +9036,12 @@
                     return;
                 }
 
-                var stData = general.getData(24);
+                var cssSelector = 'a[href*="/usertransfers.php?id="]',
+                    stData = general.getData(24);
                 stData[0] = persNik;
                 stData[1] = syndId;
-                stData[6] = /\?id=(\d+)/.exec(target.querySelector('a[href*=' +
-                    '"/usertransfers.php?id="]').href)[1];
+                stData[6] = /\?id=(\d+)/.
+                    exec(target.querySelector(cssSelector).href)[1];
                 stData[7] = '';
 
                 var interval = general.$('scan_interval').value;
@@ -9075,8 +9087,9 @@
                 var spanContent = general.doc.createElement('span');
                 spanContent.innerHTML = xml.responseText;
 
-                var online = spanContent.querySelector('center+br+table').
-                    querySelector('a[href*="/info.php?id=' + persId + '"]');
+                var cssSelector = 'a[href*="/info.php?id=' + persId + '"]',
+                    online = spanContent.querySelector('center+br+table').
+                        querySelector(cssSelector);
 
                 _this.showHidePreloader();
                 if (now) { //нажали кнопу "Узнать сейчас"
@@ -10971,9 +10984,9 @@
                     (/<b>(\d+) бойцов онлайн<\/b>/.
                         exec(spanContent.innerHTML)[1]) + ')<br>';
 
-                var trs = spanContent.
-                            querySelector('table[class="bordersupdown"]' +
-                                '[width="100%"]').querySelectorAll('tr');
+                var cssSelector = 'table[class="bordersupdown"][width="100%"]',
+                    trs = spanContent.querySelector(cssSelector).
+                        querySelectorAll('tr');
 
                 if (trs.length > 1) {
                     var nobr, pers, syndImg, war, i;
@@ -11060,10 +11073,10 @@
                     var spanContent = general.doc.createElement('span');
                     spanContent.innerHTML = xml.responseText;
 
-                    _this.syndUnion = spanContent.
-                        querySelector('tr>td[colspan="3"]' +
-                            '[class="greengreenbg"]>' +
-                            'a[href*="/syndicate.php?id="]:last-child');
+                    var cssSelector = 'tr>td[colspan="3"]' +
+                        '[class="greengreenbg"]>' +
+                        'a[href*="/syndicate.php?id="]:last-child';
+                    _this.syndUnion = spanContent.querySelector(cssSelector);
 
                     if (_this.syndUnion) {
                         // noinspection JSCheckFunctionSignatures
@@ -12088,9 +12101,10 @@
                 var span = general.doc.createElement('span');
                 span.innerHTML = xhr.responseText;
 
-                var td = span.querySelector('td[valign="top"]' +
-                        '[align="right"]>a[href*="/help/index.php?sid="]').
-                            parentNode.previousElementSibling,
+                var cssSelector = 'td[valign="top"][align="right"]>' +
+                        'a[href*="/help/index.php?sid="]',
+                    td = span.querySelector(cssSelector).parentNode.
+                        previousElementSibling,
                     questDescr = td.firstElementChild.nextSibling.nodeValue,
                     acQuests = /-квестов:<\/b>\s?(\d+)/.exec(td.innerHTML)[1],
                     div = general.doc.createElement('div');
@@ -12330,11 +12344,12 @@
         this.getBattles = function () {
             var _this = this;
             new AjaxQuery().init(_this.url, 'GET', null, true, function (xhr) {
-                var spanContent = general.doc.createElement('span');
+                var spanContent = general.doc.createElement('span'),
+                    cssSelector = 'table[cellspacing="1"][cellpadding="5"]' +
+                        '[width="100%"]';
 
                 spanContent.innerHTML = xhr.responseText;
-                var table = spanContent.querySelector('table[cellspacing="1"]' +
-                    '[cellpadding="5"][width="100%"]');
+                var table = spanContent.querySelector(cssSelector);
 
                 if (table) {
                     var data = JSON.parse(general.getData(22)[0]),
