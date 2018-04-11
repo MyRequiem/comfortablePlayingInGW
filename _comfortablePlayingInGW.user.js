@@ -384,12 +384,12 @@
 
         /**
          * @property myID
-         * @type {String}
+         * @type {RegExpExecArray}
          */
         this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie);
         /**
          * @property DESIGN_VERSION
-         * @type {String}
+         * @type {RegExpExecArray}
          */
         this.DESIGN_VERSION = /(^|;) ?version=([^;]*)(;|$)/.
                 exec(this.doc.cookie);
@@ -776,7 +776,7 @@
             var topPanel = new GetTopPanel().init();
 
             if (topPanel) {
-                // noinspection Annotator
+                // noinspection JSUnresolvedVariable
                 var settingsButton = general.doc.createElement('a'),
                     target = topPanel.parentNode.nextElementSibling;
 
@@ -1381,7 +1381,6 @@
          */
         this.testSound = function () {
             var _this = this;
-            // noinspection Annotator
             new PlaySound().init(_this.previousElementSibling.value);
         };
 
@@ -2246,11 +2245,12 @@
          * @type {HTMLDivElement|null}
          */
         this.tooltip = null;
+        // noinspection JSUnusedGlobalSymbols
         /**
          * @property intervalUpdateInpTextChat
-         * @type {int|null}
+         * @type {int}
          */
-        this.intervalUpdateInpTextChat = null;
+        this.intervalUpdateInpTextChat = 0;
         /**
          * @property sayMoveButton
          * @type {HTMLInputElement|null}
@@ -2293,21 +2293,25 @@
          * @type {String}
          */
         this.imgPath = general.imgPath + 'AdvBattleAll/';
+        // noinspection JSUnusedGlobalSymbols
         /**
          * @property tmRefreshBattle
          * @type {int}
          */
         this.tmRefreshBattle = 0;
+        // noinspection JSUnusedGlobalSymbols
         /**
          * @property tmHighlightPers
          * @type {int}
          */
         this.tmHighlightPers = 0;
+        // noinspection JSUnusedGlobalSymbols
         /**
          * @property graphTable
          * @type {HTMLTableElement|null}
          */
         this.graphTable = null;
+        // noinspection JSUnusedGlobalSymbols
         /**
          * @property checkSound
          * @type {Boolean}
@@ -3956,7 +3960,7 @@
                 if (id && stData[0].indexOf(id) !== -1) {
                     a[i].style.background = '#B6B5B5';
                     // блокировка ссылки принятия боя в одиночных заявках
-                    // noinspection Annotator
+                    // noinspection JSUnresolvedVariable
                     if (stData[1] && (/Подтверждаете бой с/.
                             test(a[i].parentNode.innerHTML))) {
                         link = general.doc.
@@ -4467,6 +4471,7 @@
                         nik = b[i].innerHTML;
                     }
 
+                    // noinspection JSUndefinedPropertyAssignment
                     b[i].innerHTML = '<a target="_blank" style="' + linkStyle +
                         '"  href="http://www.ganjawars.ru/search.php?key=' +
                         nik + '">' + nik + '</a>';
@@ -4663,7 +4668,7 @@
          * @return  {Boolean}
          */
         this.testSubject = function (chk, reg) {
-            // noinspection Annotator
+            // noinspection JSUnresolvedVariable
             return reg.test(chk.parentNode.nextElementSibling.innerHTML);
         };
 
@@ -4727,7 +4732,7 @@
                 i;
 
             for (i = 0; i < smsChk.length; i++) {
-                // noinspection Annotator
+                // noinspection JSUnresolvedFunction
                 if ((stData[0] &&
                         this.testSubject(smsChk[i], /<b>#\d+<\/b>/)) ||
                             (stData[1] && smsChk[i].parentNode.parentNode.
@@ -4809,9 +4814,9 @@
         this.farmLink = null;
         /**
          * @property checkInterval
-         * @type {int|null}
+         * @type {int}
          */
-        this.checkInterval = null;
+        this.checkInterval = 0;
 
         /**
          * @method setRedLink
@@ -5036,7 +5041,7 @@
             var target = general.doc.
                     querySelector('center>b>font[color="#990000"]').parentNode;
 
-            // noinspection Annotator
+            // noinspection JSUnresolvedVariable
             if (txt && (/\(через \d+/.test(a.parentNode.innerHTML))) {
                 return;
             }
@@ -6469,7 +6474,6 @@
                 mainLink.removeAttribute('href');
                 mainLink.innerHTML = 'GW-Меню';
                 var _this = this;
-                // noinspection Annotator
                 mainLink.addEventListener('click', function () {
                     _this.gwMenuInit(_this);
                 }, false);
@@ -6714,7 +6718,7 @@
 
             for (i = 0; i < btlLogs.length; i++) {
                 if (this.reg.test(btlLogs[i].innerHTML)) {
-                    // noinspection Annotator
+                    // noinspection JSUnresolvedVariable
                     this.rez.btls.push(btlLogs[i].parentNode.parentNode.
                             nextElementSibling);
                 } else {
@@ -6734,7 +6738,7 @@
             for (i = 0; i < this.rez.btls.length; i++) {
                 b = this.rez.btls[i].querySelector('a>b');
                 if (b) {
-                    // noinspection Annotator
+                    // noinspection JSUnresolvedFunction
                     stl = b.parentNode.getAttribute('style');
                     if (/red/.test(stl)) {
                         this.rez.win++;
@@ -7122,7 +7126,7 @@
 
             for (i = 0; i < td.length; i++) {
                 if (td[i].innerHTML === '<b>Бонусы</b>') {
-                    // noinspection Annotator
+                    // noinspection JSUnresolvedVariable
                     this.target = td[i].parentNode.
                                 nextElementSibling.lastElementChild;
                     break;
@@ -7155,7 +7159,7 @@
                     i;
 
                 for (i = 0; i < descrTd.length; i++) {
-                    // noinspection Annotator
+                    // noinspection JSUnresolvedFunction
                     id = /id=(.+)$/.exec(descrTd[i].parentNode.
                             querySelector('a').href)[1];
                     price = /(\d+) EUN/.exec(descrTd[i].innerHTML)[1];
@@ -7309,7 +7313,7 @@
     var DoFilter = function () {
         /**
          * @property selects
-         * @type {HTMLSelectElement}
+         * @type {NodeList}
          */
         this.selects = general.doc.querySelectorAll('select[name="item_id"]');
 
@@ -7358,6 +7362,7 @@
                 }
 
                 // выбираем самый первый пустой option
+                // noinspection JSUndefinedPropertyAssignment
                 this.selects[i].value = '#';
                 // прокручиваем весь список и ищем совпадения
                 for (j = 0; j < this.selects[i].options.length; j++) {
@@ -7422,7 +7427,6 @@
             var textField = general.doc.querySelector('#txtFilter'),
                 _this = this;
 
-            // noinspection Annotator
             textField.addEventListener('input', function () {
                 _this.findItem(textField);
             }, false);
@@ -7646,7 +7650,7 @@
         this.init = function () {
             var nobrs;
             if (/\/info\.php\?id=/.test(general.loc)) {
-                // noinspection Annotator
+                // noinspection JSUnresolvedFunction
                 nobrs = general.doc.querySelector('td[class="txt"]' +
                         '[align="right"][style="font-size:10px"]').
                             parentNode.parentNode.querySelectorAll('nobr');
@@ -7997,7 +8001,7 @@
                 if (links[i].innerHTML) {
                     group = /\?shop=shop_(.*)$/.exec(links[i].href)[1];
                     if (this.highTechItems.htGroup.indexOf(group) !== -1) {
-                        // noinspection Annotator
+                        // noinspection JSUnresolvedVariable
                         links[i].parentNode.innerHTML = '<a ' +
                             'href="/shopc.php?shop=shop_' +
                             (this.highTechItems[group] || group) +
@@ -8014,13 +8018,14 @@
      * @constructor
      */
     var GameMania = function () {
-        // noinspection Annotator
+        // noinspection JSUnresolvedVariable
         /**
          * @property target
          * @type {HTMLTableCellElement}
          */
         this.target = general.doc.querySelector('a[href*="/info.ach.php?id="]' +
                 '+br+a[href*="/ferma.php?id="]').parentNode.nextElementSibling;
+        // noinspection JSUnusedGlobalSymbols
         /**
          * @property total
          * @type {int}
@@ -8046,6 +8051,7 @@
                 return 0;
             }
 
+            // noinspection JSUnusedGlobalSymbols
             this.total += rez;
             return rez;
         };
@@ -8669,12 +8675,12 @@
                 i;
 
             for (i = 0; i < cells.length; i++) {
-                // noinspection Annotator
+                // noinspection JSUnresolvedVariable
                 coord = /\d+&sy=\d+/.exec(cells[i].parentNode.href)[0];
                 for (j = 0; j < this.sectors.length; j++) {
                     tmp = this.sectors[j].split('|');
                     if (coord === tmp[0]) {
-                        // noinspection Annotator
+                        // noinspection JSUnresolvedFunction
                         cls = cells[i].parentNode.parentNode.
                                 getAttribute('class');
 
@@ -8819,7 +8825,6 @@
                             _this.id === 'send1' ? '#FB8F8F' : '#95CCF6';
 
             td.style.background = color;
-            // noinspection Annotator
             td.previousElementSibling.style.background = color;
         };
 
@@ -8935,7 +8940,6 @@
          */
         this.listenSound = function () {
             var _this = this;
-            // noinspection Annotator
             new PlaySound().init(_this.previousElementSibling.value);
         };
 
@@ -9310,7 +9314,7 @@
             target.firstElementChild.
                 setAttribute('style', 'padding-left: 20px;');
 
-            // noinspection Annotator
+            // noinspection JSUnresolvedVariable
             var author = last.parentNode.previousElementSibling.
                     querySelector('b').innerHTML,
                 lastLink = last.previousElementSibling.querySelector('a').href,
@@ -9509,7 +9513,7 @@
                     push(this.getValue(this.counters[i], i < 3 ? 0 : 2));
 
                 if (loadPage) {
-                    // noinspection Annotator
+                    // noinspection JSUnresolvedVariable
                     this.counters[i].parentNode.parentNode.lastElementChild.
                         innerHTML = '<span id="' + this.ids[i] +
                         '" style="color: #FF0000; font-size: 9px;"></span>';
@@ -9666,6 +9670,7 @@
          * @type {Array|null}
          */
         this.summ = null;
+        // noinspection JSUnusedGlobalSymbols
         /**
          * @property all
          * @type {int}
@@ -9932,6 +9937,7 @@
             }
 
             this.summ[ind] += val;
+            // noinspection JSUnusedGlobalSymbols
             this.all += val;
         };
 
@@ -10388,7 +10394,7 @@
          * @return   {Element}
          */
         this.getPersLink = function (elem) {
-            // noinspection Annotator
+            // noinspection JSUnresolvedVariable
             return elem.parentNode.nextElementSibling.querySelector('a');
         };
 
@@ -10598,7 +10604,7 @@
                         return;
                     }
 
-                    // noinspection Annotator
+                    // noinspection JSUnresolvedVariable
                     str = lines[i].parentNode.nextElementSibling.innerHTML;
                     typeLine = _this.getTypeLine(str);
 
@@ -11755,7 +11761,7 @@
                     if (!(/Форум синдиката #\d+/.
                             test(allBranches[i].innerHTML))) {
 
-                        // noinspection Annotator
+                        // noinspection JSUnresolvedVariable
                         allBranches[i].parentNode.style.display = f[j] ?
                                                             '' : 'none';
                         j++;
@@ -11855,7 +11861,6 @@
             if (del) {
                 del.setAttribute('style', 'background: #FDD8D8;');
 
-                // noinspection Annotator
                 del.addEventListener('click', function (e) {
                     if (!general.
                             root.confirm('Удалить и забанить. Уверены ???')) {
@@ -11873,6 +11878,7 @@
      * @constructor
      */
     var Regeneration = function () {
+        // noinspection JSUnusedGlobalSymbols
         /**
          * @property currentHp
          * @type {int}
@@ -11950,7 +11956,7 @@
 
             // прогресс бар
             if (hpPercent >= 100) {
-                // noinspection Annotator
+                // noinspection JSUnresolvedVariable
                 this.progressBar.parentNode.style.display = 'none';
             } else if (hpPercent < 0) {
                 // если кильнули
@@ -12037,6 +12043,7 @@
                 this.spanHP = general.$('regenHpPercent');
                 this.progressBar = general.$('progressBar');
 
+                // noinspection JSUnusedGlobalSymbols
                 /** @namespace general.root.hp_start_h */
                 this.currentHp = +general.root.hp_start_h;
                 /** @namespace general.root.hp_max_h */
@@ -12101,6 +12108,7 @@
                 var span = general.doc.createElement('span');
                 span.innerHTML = xhr.responseText;
 
+                // noinspection JSUnresolvedVariable
                 var cssSelector = 'td[valign="top"][align="right"]>' +
                         'a[href*="/help/index.php?sid="]',
                     td = span.querySelector(cssSelector).parentNode.
@@ -12334,9 +12342,9 @@
         this.url = null;
         /**
          * @property date
-         * @type {int|null}
+         * @type {int}
          */
-        this.date = null;
+        this.date = 0;
 
         /**
          * @method getBattles
