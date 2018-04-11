@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/sms-read.php?type=1&id=*
 // @grant           none
 // @license         MIT
-// @version         1.02-150118
+// @version         1.03-110418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -76,7 +76,6 @@
             if (del) {
                 del.setAttribute('style', 'background: #FDD8D8;');
 
-                // noinspection Annotator
                 del.addEventListener('click', function (e) {
                     if (!general.
                             root.confirm('Удалить и забанить. Уверены ???')) {

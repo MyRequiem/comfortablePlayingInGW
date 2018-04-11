@@ -123,7 +123,7 @@
 
 **DelAndAddBlackSms**
 <br>
-Версия: 1.02-150118
+Версия: 1.03-110418
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/DelAndAddBlackSms/delAndAddBlackSms.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/DelAndAddBlackSms/delAndAddBlackSms.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/DelAndAddBlackSms)
 <br>
@@ -137,7 +137,7 @@
 
 **DoFilter**
 <br>
-Версия: 2.03-100418
+Версия: 2.03-110418
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/DoFilter/doFilter.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/DoFilter/doFilter.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/DoFilter)
 <br>
@@ -207,7 +207,7 @@
 
 **GwMenu**
 <br>
-Версия: 2.34-100418
+Версия: 2.34-110418
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GwMenu/gwMenu.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GwMenu/gwMenu.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu)
 <br>
@@ -312,14 +312,14 @@
 
 **RentAndSale**
 <br>
-Версия: 2.02-150118
+Версия: 2.03-110418
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/RentAndSale/rentAndSale.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/RentAndSale/rentAndSale.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/RentAndSale)
 <br>
 
 **ResourcesAndBonuses**
 <br>
-Версия: 2.14-100418
+Версия: 2.14-110418
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ResourcesAndBonuses/resourcesAndBonuses.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ResourcesAndBonuses/resourcesAndBonuses.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ResourcesAndBonuses)
 <br>
@@ -333,7 +333,7 @@
 
 **ScanPers**
 <br>
-Версия: 2.33-100418
+Версия: 2.33-110418
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanPers/scanPers.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanPers/scanPers.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ScanPers)
 <br>

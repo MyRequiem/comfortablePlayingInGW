@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru*
 // @grant           none
 // @license         MIT
-// @version         2.34-100418
+// @version         2.34-110418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -833,7 +833,6 @@
                 mainLink.removeAttribute('href');
                 mainLink.innerHTML = 'GW-Меню';
                 var _this = this;
-                // noinspection Annotator
                 mainLink.addEventListener('click', function () {
                     _this.gwMenuInit(_this);
                 }, false);

@@ -9,7 +9,7 @@
 // @exclude         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.14-100418
+// @version         2.14-110418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -184,7 +184,6 @@
                 'src="' + this.imgPath + 'close.gif" /></div>';
 
             var _this = this;
-            // noinspection Annotator
             this.divResult.querySelector('#divres_close').
                 addEventListener('click', function () {
                     _this.divResult.style.visibility = 'hidden';

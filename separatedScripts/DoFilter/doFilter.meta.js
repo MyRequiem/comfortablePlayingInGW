@@ -9,6 +9,6 @@
 // @include         http://www.ganjawars.ru/market-p.php*
 // @grant           none
 // @license         MIT
-// @version         2.03-100418
+// @version         2.03-110418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
