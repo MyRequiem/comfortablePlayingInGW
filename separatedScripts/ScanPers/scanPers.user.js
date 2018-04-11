@@ -9,7 +9,7 @@
 // @exclude         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.33-100418
+// @version         2.33-110418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -345,7 +345,6 @@ plusplus: true, devel: true */
          */
         this.listenSound = function () {
             var _this = this;
-            // noinspection Annotator
             new PlaySound().init(_this.previousElementSibling.value);
         };
 
