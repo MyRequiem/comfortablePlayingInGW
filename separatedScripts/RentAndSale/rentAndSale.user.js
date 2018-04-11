@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/home.senditem.php*
 // @grant           none
 // @license         MIT
-// @version         2.02-150118
+// @version         2.03-110418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -77,7 +77,6 @@
                             _this.id === 'send1' ? '#FB8F8F' : '#95CCF6';
 
             td.style.background = color;
-            // noinspection Annotator
             td.previousElementSibling.style.background = color;
         };
 
