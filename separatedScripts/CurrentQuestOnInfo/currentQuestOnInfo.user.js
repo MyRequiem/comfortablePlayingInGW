@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.01-100418
+// @version         1.02-200418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458], идея kaa
 // ==/UserScript==
 
@@ -121,7 +121,10 @@
                 div.setAttribute('style', 'margin-left: 10px;');
                 div.innerHTML = '<span style="font-weight: bold;">Мини-квест:' +
                     '</span> ' + questDescr + '<span style="font-weight: ' +
-                    'bold; margin-left: 10px;">Накоплено:</span> ' + acQuests;
+                    'bold; margin-left: 10px;"><a target="_blank" ' +
+                    'style="color:#007700; text-decoration: none;" ' +
+                    'href="http://www.ganjawars.ru/help/index.php?' +
+                    'sid=102&pid=45">Накоплено</a>:</span> ' + acQuests;
                 _this.doc.querySelector('#namespan').parentNode.
                         appendChild(div);
             }, function () {

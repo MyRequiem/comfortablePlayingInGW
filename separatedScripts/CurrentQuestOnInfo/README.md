@@ -1,7 +1,7 @@
 Вывод текущего ужедневного мини-квеста на странице информации персонажа.
 <br>
 <br>
-Версия: 1.01-100418
+Версия: 1.02-200418
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CurrentQuestOnInfo/currentQuestOnInfo.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CurrentQuestOnInfo/currentQuestOnInfo.user.js.zip)
 <br>

@@ -12,7 +12,7 @@
 // @include         *ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.93-110418
+// @version         1.94-200418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -68,7 +68,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.93-110418';
+        this.version = '1.94-200418';
         /**
          * @property stString
          * @type {String}
@@ -12120,7 +12120,10 @@
                 div.setAttribute('style', 'margin-left: 10px;');
                 div.innerHTML = '<span style="font-weight: bold;">Мини-квест:' +
                     '</span> ' + questDescr + '<span style="font-weight: ' +
-                    'bold; margin-left: 10px;">Накоплено:</span> ' + acQuests;
+                    'bold; margin-left: 10px;"><a target="_blank" ' +
+                    'style="color:#007700; text-decoration: none;" ' +
+                    'href="http://www.ganjawars.ru/help/index.php?' +
+                    'sid=102&pid=45">Накоплено</a>:</span> ' + acQuests;
                 general.doc.querySelector('#namespan').parentNode.
                         appendChild(div);
             }, function () {
