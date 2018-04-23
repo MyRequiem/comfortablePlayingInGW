@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         1.31-121117
+// @version         1.32-230418
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -397,14 +397,21 @@
 
             // опыт виден (на пустой вскопанной клетке)
             if (prod) {
-                var gb = /<a name="pf">Счет:<\/a>\s?<b>\$([^<]+)<\/b>/.
-                        exec(table.innerHTML)[1].replace(/,/g, ''),
+                // noinspection JSUnresolvedFunction
+                var gb = table.querySelector('a[name="pf"]').parentNode.
+                        querySelectorAll('b'),
                     exp = prod[1],
                     stData = general.getData();
 
+                // количесво Гб на ферме с учетом схрона
+                // Счет: $85 + урожай на $6.6 в схроне, 1 шт.
+                gb = +gb[0].innerHTML.replace(/\$|,/g, '') + (gb[1] ?
+                        Math.round(parseFloat(gb[1].innerHTML.
+                            replace(/\$|,/g, ''))) : 0);
+
                 // время сброса не установлено
                 if (!stData[1]) {
-                    this.clearCounter(gb, exp);
+                    this.clearCounter(gb.toString(), exp);
                 }
 
                 var t = new Date(+stData[1]),
@@ -424,7 +431,7 @@
                 time += min < 10 ? '0' + min : min;
 
                 var setPoint = new SetPoints().init,
-                    diffGb = +gb - (+stData[2]),
+                    diffGb = gb - (+stData[2]),
                     diffExp = (+exp - (+stData[3])).toFixed(3).split('.');
 
                 var str = '';
@@ -456,7 +463,7 @@
                 var _this = this;
                 general.$('clearFarmCounter').
                     addEventListener('click', function () {
-                        _this.clearCounter(gb, exp);
+                        _this.clearCounter(gb.toString(), exp);
                         divCounters.parentNode.removeChild(divCounters);
                         _this.setCounter();
                     }, false);
