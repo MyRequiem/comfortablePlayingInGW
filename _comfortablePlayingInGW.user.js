@@ -16,6 +16,20 @@
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
+
+//     ______                ____           __        __    __
+//    / ____/___  ____ ___  / __/___  _____/ /_____ _/ /_  / /__
+//   / /   / __ \/ __ `__ \/ /_/ __ \/ ___/ __/ __ `/ __ \/ / _ \
+//  / /___/ /_/ / / / / / / __/ /_/ / /  / /_/ /_/ / /_/ / /  __/
+//  \____/\____/_/ /_/ /_/_/  \____/_/   \__/\__,_/_.___/_/\___/
+//
+//      ____  __            _                ____         _______       __
+//     / __ \/ /___ ___  __(_)___  ____ _   /  _/___     / ____/ |     / /
+//    / /_/ / / __ `/ / / / / __ \/ __ `/   / // __ \   / / __ | | /| / /
+//   / ____/ / /_/ / /_/ / / / / / /_/ /  _/ // / / /  / /_/ / | |/ |/ /
+//  /_/   /_/\__,_/\__, /_/_/ /_/\__, /  /___/_/ /_/   \____/  |__/|__/
+//                /____/        /____/
+
 /*global unsafeWindow */
 /*jslint browser: true, maxlen: 80, regexp: true, vars: true, plusplus: true,
     continue: true, devel: true, nomen: true
@@ -9662,6 +9676,7 @@
          * @type {Array|null}
          */
         this.soExpForPTS = null;
+        // noinspection JSUnusedGlobalSymbols
         /**
          * @property from
          * @type {int}
@@ -10193,6 +10208,7 @@
          * @type {String}
          */
         this.lastDate = '';
+        // noinspection JSUnusedGlobalSymbols
         /**
          * @property from
          * @type {int}
