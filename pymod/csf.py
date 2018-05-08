@@ -8,21 +8,11 @@ docstring
 
 import zipfile
 from fnmatch import fnmatch
-from os import (
-    listdir,
-    getcwd,
-    chdir,
-    path
-)
+from os import chdir, getcwd, listdir, path
 
 from pymod.strs import getstrings
-from pymod.utils import (
-    get_indent_size,
-    get_meta_value,
-    get_str_indent,
-    get_mname,
-    get_zname
-)
+from pymod.utils import (get_indent_size, get_meta_value, get_mname,
+                         get_str_indent, get_zname)
 
 
 class CreateServiceFiles(object):
