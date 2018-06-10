@@ -1,4 +1,4 @@
-2018-06-10[1.96-100618]
+2018-06-11[1.96-110618]
 --------------------------------------
 	- Исправлены скрипты:
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/RangeWeapon
