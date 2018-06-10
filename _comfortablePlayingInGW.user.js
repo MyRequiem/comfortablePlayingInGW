@@ -1368,7 +1368,7 @@
         this.checkScriptUpdate = function () {
             var url = 'http://www.ganjawars.ru/info.php?id=2095458';
             new AjaxQuery().init(url, 'GET', null, true, function (xml) {
-                var ver = /cpingw:(\d+\.\d+\-\d+)/.exec(xml.responseText);
+                var ver = /cpingw:(\d+\.\d+-\d+)/.exec(xml.responseText);
                 if (ver && ver[1] !== general.version) {
                     general.$('linkNewVerScript').style.
                         visibility = 'visible';
@@ -2872,21 +2872,27 @@
 
                     // левая рука
                     'if (elem = document.' +
+                            // eslint-disable-next-line no-useless-escape
                             'querySelector(\'input[type=\"radio\"]' +
+                                // eslint-disable-next-line no-useless-escape
                                 '[id^=\"left_attack\"]:checked\')) {' +
                         'dataSt[5] = /left_attack(\\d)/.exec(elem.id)[1];' +
                     '}' +
 
                     // правая рука
                     'if (elem = document.' +
+                            // eslint-disable-next-line no-useless-escape
                             'querySelector(\'input[type=\"radio\"]' +
+                                // eslint-disable-next-line no-useless-escape
                                 '[id^=\"right_attack\"]:checked\')) {' +
                         'dataSt[6] = /right_attack(\\d)/.exec(elem.id)[1];' +
                     '}' +
 
                     // куда отходим
                     'if (elem = document.' +
+                            // eslint-disable-next-line no-useless-escape
                             'querySelector(\'input[type=\"radio\"]' +
+                                // eslint-disable-next-line no-useless-escape
                                 '[id^=\"defence\"]:checked\')) {' +
                         'dataSt[7] = /defence(\\d)/.exec(elem.id)[1];' +
                     '}' +
@@ -3578,6 +3584,7 @@
                 var enemyName, tmpObj;
                 if (selectEnemies) {
                     for (i = 0; i < options.length; i++) {
+                        // eslint-disable-next-line no-useless-escape
                         enemyName = /^\d+\. ([^\[]+)\[/.
                             exec(options[i].innerHTML);
 
@@ -6679,7 +6686,6 @@
             /*global $, filteritems, def_filter */
             general.root.postdo = function (url) {
                 /*jslint unparam: true */
-                /*eslint no-unused-vars: true */
                 $('#itemsbody').
                     load(url, function (responseTxt, statusTxt) {
                         if (statusTxt === 'success') {
@@ -7485,6 +7491,7 @@
                     i;
 
                 for (i = 1; i < trs.length; i++) {
+                    // eslint-disable-next-line no-useless-escape
                     nameRes = this.delSpaces(/[^\(]+/.exec(trs[i].
                                     firstElementChild.innerHTML)[0]);
                     if (res.indexOf(nameRes) === -1) {
@@ -8100,8 +8107,11 @@
                     /Выигрыш в казино: <b>\$([^<]*)/i),
                 tot = this.calc(/Потрачено в тотализаторе: <b>\$([^<]*)/i,
                     /Выигрыш в тотализаторе: <b>\$([^<]*)/i),
-                poker = this.calc(/Потрачено на покер:\s?<b>[^\$]*\$([^<]*)/i,
-                    /Получено с покера:\s?<b>[^\$]*\$([^<]*)/i),
+                // eslint-disable-next-line no-useless-escape
+                reg1 = /Потрачено на покер:\s?<b>[^\$]*\$([^<]*)/i,
+                // eslint-disable-next-line no-useless-escape
+                reg2 = /Получено с покера:\s?<b>[^\$]*\$([^<]*)/i,
+                poker = this.calc(reg1, reg2),
                 fight = /Выигрыш в боях/i.test(this.target.innerHTML);
 
             if (roul || tot || poker || fight) {
@@ -8779,7 +8789,7 @@
          * @param   {int}   ind
          */
         this.getRange = function (ind) {
-            var url = this.weapon[ind].parentNode.href,
+            var url = this.weapon[ind],
                 _this = this;
 
             new AjaxQuery().init(url, 'GET', null, true, function (xml) {
@@ -8791,7 +8801,7 @@
                 ind++;
                 if (_this.weapon[ind] &&
                         // в правой и левой руке разное оружие
-                        _this.weapon[ind - 1].src !== _this.weapon[ind].src) {
+                        _this.weapon[ind - 1] !== _this.weapon[ind]) {
                     general.root.setTimeout(function () {
                         _this.getRange(ind);
                     }, 1000);
@@ -8815,14 +8825,20 @@
         this.init = function () {
             if (this.equipment &&
                     (/(Левая|Правая) рука/.test(this.equipment.innerHTML))) {
+                var itemLink = 'a[href*="/item.php?item_id="]';
+                // новое оформление страницы информации о персонаже
                 this.weapon = this.equipment.
-                        querySelectorAll('a[href*="/item.php?item_id="]>img');
+                        querySelectorAll('td[valign="top"]>' + itemLink);
+                // примитивное оформление страницы информации о персонаже
+                if (!this.weapon.length) {
+                    this.weapon = this.equipment.querySelectorAll(itemLink);
+                }
 
                 var txt = this.equipment.innerHTML;
                 if (/Левая/.test(txt) && (/Правая/.test(txt))) {
-                    this.weapon = [this.weapon[0], this.weapon[1]];
+                    this.weapon = [this.weapon[0].href, this.weapon[1].href];
                 } else {
-                    this.weapon = [this.weapon[0]];
+                    this.weapon = [this.weapon[0].href];
                 }
 
                 this.getRange(0);
@@ -12147,8 +12163,19 @@
                     'style="color:#007700; text-decoration: none;" ' +
                     'href="http://www.ganjawars.ru/help/index.php?' +
                     'sid=102&pid=45">Накоплено</a>:</span> ' + acQuests;
-                general.doc.querySelector('#namespan').parentNode.
-                        appendChild(div);
+
+                var target = general.doc.querySelector('#namespan');
+                if (target) {
+                    // новое оформление страницы информации о персонаже
+                    target = target.parentNode;
+                } else {
+                    // примитивное оформление страницы информации о персонаже
+                    target = general.doc.querySelector('td[class="wb"]' +
+                        '[align="left"][valign="middle"][width="100%"]' +
+                            '[style="padding-top:3px;"]');
+                }
+
+                target.appendChild(div);
             }, function () {
                 general.root.setTimeout(function () {
                     _this.showQuest(url);
@@ -12162,7 +12189,6 @@
             }
         };
     };
-
 
     /**
      * @class CommonBattleFilter
@@ -12892,7 +12918,7 @@
             }
         }
 
-        if (/\/market(\-p)?.php/.test(general.loc)) {
+        if (/\/market(-p)?.php/.test(general.loc)) {
             if (initScript[21]) {
                 try {
                     new DoFilter().init();
