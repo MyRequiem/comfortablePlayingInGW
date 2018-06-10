@@ -1,3 +1,10 @@
+2018-06-10[1.96-100618]
+--------------------------------------
+	- Исправлены скрипты:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/RangeWeapon
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
+
+
 2018-04-23[1.95-230418]
 --------------------------------------
 	- Обновлен скрипт:
