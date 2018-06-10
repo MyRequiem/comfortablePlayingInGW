@@ -8,15 +8,16 @@
 // @include         http://www.ganjawars.ru/info.php*
 // @grant           none
 // @license         MIT
-// @version         2.02-121216
+// @version         2.03-100618
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
 /*jslint browser: true, maxlen: 80, vars: true, plusplus: true, nomen: true */
 
+
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -155,10 +156,9 @@
          * @param   {int}   ind
          */
         this.getRange = function (ind) {
-            var url = this.weapon[ind].parentNode.href,
-                _this = this;
+            var _this = this;
 
-            new AjaxQuery().init(url, function (xml) {
+            new AjaxQuery().init(this.weapon[ind], function (xml) {
                 var reg = /Дальность стрельбы: (\d+) ход/i;
 
                 _this.range.push(reg.test(xml.responseText) ?
@@ -167,7 +167,7 @@
                 ind++;
                 if (_this.weapon[ind] &&
                         // в правой и левой руке разное оружие
-                        _this.weapon[ind - 1].src !== _this.weapon[ind].src) {
+                        _this.weapon[ind - 1] !== _this.weapon[ind]) {
                     general.root.setTimeout(function () {
                         _this.getRange(ind);
                     }, 1000);
@@ -175,6 +175,7 @@
                     if (_this.weapon[ind]) {
                         _this.range.push(_this.range[0]);
                     }
+
                     _this.showRange();
                 }
 
@@ -191,14 +192,20 @@
         this.init = function () {
             if (this.equipment &&
                     (/(Левая|Правая) рука/.test(this.equipment.innerHTML))) {
+                var itemLink = 'a[href*="/item.php?item_id="]';
+                // новое оформление страницы информации о персонаже
                 this.weapon = this.equipment.
-                        querySelectorAll('a[href*="/item.php?item_id="]>img');
+                        querySelectorAll('td[valign="top"]>' + itemLink);
+                // примитивное оформление страницы информации о персонаже
+                if (!this.weapon.length) {
+                    this.weapon = this.equipment.querySelectorAll(itemLink);
+                }
 
                 var txt = this.equipment.innerHTML;
                 if (/Левая/.test(txt) && (/Правая/.test(txt))) {
-                    this.weapon = [this.weapon[0], this.weapon[1]];
+                    this.weapon = [this.weapon[0].href, this.weapon[1].href];
                 } else {
-                    this.weapon = [this.weapon[0]];
+                    this.weapon = [this.weapon[0].href];
                 }
 
                 this.getRange(0);
