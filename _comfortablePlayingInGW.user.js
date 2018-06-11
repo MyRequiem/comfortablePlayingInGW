@@ -12,7 +12,7 @@
 // @include         *ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.95-230418
+// @version         1.96-110618
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -82,7 +82,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.95-230418';
+        this.version = '1.96-110618';
         /**
          * @property stString
          * @type {String}
