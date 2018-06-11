@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.02-200418
+// @version         1.03-100618
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458], идея kaa
 // ==/UserScript==
 
@@ -125,8 +125,19 @@
                     'style="color:#007700; text-decoration: none;" ' +
                     'href="http://www.ganjawars.ru/help/index.php?' +
                     'sid=102&pid=45">Накоплено</a>:</span> ' + acQuests;
-                _this.doc.querySelector('#namespan').parentNode.
-                        appendChild(div);
+
+                var target = _this.doc.querySelector('#namespan');
+                if (target) {
+                    // новое оформление страницы информации о персонаже
+                    target = target.parentNode;
+                } else {
+                    // примитивное оформление страницы информации о персонаже
+                    target = _this.doc.querySelector('td[class="wb"]' +
+                        '[align="left"][valign="middle"][width="100%"]' +
+                            '[style="padding-top:3px;"]');
+                }
+
+                target.appendChild(div);
             }, function () {
                 _this.root.setTimeout(function () {
                     _this.showQuest(url);
