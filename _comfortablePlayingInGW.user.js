@@ -12,10 +12,9 @@
 // @include         *ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.96-110618
+// @version         1.97-250618
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
-
 
 //     ______                ____           __        __    __
 //    / ____/___  ____ ___  / __/___  _____/ /_____ _/ /_  / /__
@@ -82,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.96-110618';
+        this.version = '1.97-250618';
         /**
          * @property stString
          * @type {String}
@@ -12307,10 +12306,14 @@
             // основная таблица общих заявок
             this.battleTable = general.doc.querySelector('table[border="0"]' +
                 '[cellpadding="5"][cellspacing="1"][style="padding-left:10px;' +
-                'padding-right:10px;"]');
+                'padding-right:10px;min-width:500px;"]');
 
-            // нет общих заявок или таблица вообще не найдена
-            if (!this.battleTable || this.battleTable.rows.length === 1) {
+            // сообщение о причине невозможности зайти в заявку
+            // (нет оружия, недостаточно HP),  нет общих заявок или
+            // таблица с заявками вообще не найдена
+            if (general.doc.querySelector('table[class="panelfloat"]') ||
+                    !this.battleTable ||
+                    this.battleTable.rows.length === 1) {
                 return;
             }
 

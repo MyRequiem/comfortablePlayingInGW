@@ -8,6 +8,6 @@
 // @include         http://www.ganjawars.ru/wargroup.php?war=armed*
 // @grant           none
 // @license         MIT
-// @version         1.10-060318
+// @version         1.11-250618
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
