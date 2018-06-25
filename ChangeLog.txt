@@ -1,3 +1,9 @@
+2018-06-25[1.97-250618]
+--------------------------------------
+	- Исправлен скрипт:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CommonBattleFilter
+
+
 2018-06-11[1.96-110618]
 --------------------------------------
 	- Исправлены скрипты:
