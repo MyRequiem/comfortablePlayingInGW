@@ -2834,21 +2834,31 @@
                 // подходим или нет
                 this.setWalk(9);
             } else {    // случайный ход
-                // куда уходим
-                this.clickElem(general.$('defence' + this.getRandom1to3()));
-                // правая, левая
-                var x = this.getRandom1to3(),
-                    y = this.getRandom1to3();
                 // если две руки и отмечен чебокс "не дублировать цель"
                 if (!general.$('span_two_hand').style.display &&
-                        general.$('repeat_two_hand').checked && x === y) {
-                    while (x === y) {
-                        x = this.getRandom1to3();
-                    }
-                }
+                        general.$('repeat_two_hand').checked) {
 
-                this.clickElem(general.$('right_attack' + x));
-                this.clickElem(general.$('left_attack' + y));
+                    var rightAttack = general.doc.querySelector('input' +
+                            '[type="radio"][name^="right_attack"]:checked'),
+                        leftAttack = general.doc.querySelector('input' +
+                            '[type="radio"][name^="left_attack"]:checked');
+
+                    if (rightAttack && leftAttack) {
+                        var x = /\d/.exec(rightAttack.id)[0],
+                            y = /\d/.exec(leftAttack.id)[0];
+
+                        if (x === y) {
+                            while (x === y) {
+                                x = this.getRandom1to3();
+                                y = this.getRandom1to3();
+                            }
+
+                            this.clickElem(general.$('right_attack' + x));
+                            this.clickElem(general.$('left_attack' + y));
+                        }
+                    }
+
+                }
             }
         };
 
@@ -2941,49 +2951,25 @@
             }
 
             divGenerator.innerHTML = '<input type="checkbox" ' +
-                'id="rand_stroke"> <span id="set_rand_stroke" ' +
-                'style="text-decoration: underline; cursor: pointer; ' +
-                'vertical-align: top;">случайный ход</span><br>' +
-                '<input type="checkbox" id="save_stroke">  <label ' +
-                'for="save_stroke" style="vertical-align: top;">запомнить ход' +
-                '</label><br><span id="span_two_hand" style="display: ' + vis +
+                'id="save_stroke">  <label for="save_stroke" ' +
+                'style="vertical-align: top;">запомнить ход</label><br>' +
+                '<span id="span_two_hand" style="display: ' + vis +
                 ';"><input type="checkbox" id="repeat_two_hand"> <label ' +
                 'for="repeat_two_hand" style="vertical-align: top;">не ' +
                 'дублировать цель</label></span>';
             bf.appendChild(divGenerator);
 
-            var chkRandomStroke = general.$('rand_stroke'),
-                chkRememberStroke = general.$('save_stroke'),
+            var chkRememberStroke = general.$('save_stroke'),
                 chkNoDuplicateTarget = general.$('repeat_two_hand'),
-                linkSetRandomStroke = general.$('set_rand_stroke'),
                 goButton = general.doc.querySelector('a[href^=' +
                         '"javascript:void(fight"]');
 
             var _this = this;
-            chkRandomStroke.addEventListener('click', function () {
-                var dataSt = general.getData(4),
-                    thischk = this;
-
-                if (thischk.checked) {
-                    chkRememberStroke.checked = false;
-                    goButton.setAttribute('href',
-                            ['javascript', ':', 'void(fight())'].join(''));
-                    dataSt[3] = '1';
-                    general.setData(dataSt, 4);
-                    _this.setStroke();
-                } else {
-                    dataSt[3] = '';
-                    general.setData(dataSt, 4);
-                }
-
-            }, false);
-
             chkRememberStroke.addEventListener('click', function () {
                 var dataSt = general.getData(4),
                     thischk = this;
 
                 if (thischk.checked) {
-                    chkRandomStroke.checked = false;
                     goButton.setAttribute('href',
                             ['javascript', ':', 'void(fight_mod())'].join(''));
                     dataSt[3] = '2';
@@ -3005,14 +2991,6 @@
                 general.setData(dataSt, 4);
             }, false);
 
-            linkSetRandomStroke.addEventListener('click', function () {
-                if (!chkRandomStroke.checked) {
-                    chkRandomStroke.click();
-                } else {
-                    _this.setStroke();
-                }
-            }, false);
-
             // установим свой обработчик нажатия кнопки "Сделать ход"
             // fight_mod(); (если флажок "запомнить ход" установлен, то
             // будет запоминаться  последний ход)
@@ -3026,10 +3004,7 @@
             // если сказали ход, то будет запись в хранилище
             if (dataSt[11]) {
                 this.setStroke();
-                chkRandomStroke.checked = dataSt[3] === '1';
                 chkRememberStroke.checked = dataSt[3] === '2';
-            } else if (dataSt[3] === '1') {
-                chkRandomStroke.click();
             } else if (dataSt[3] === '2') {
                 chkRememberStroke.click();
             }
