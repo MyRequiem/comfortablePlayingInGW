@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            AdvBattleAll
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     Генератор ходов, расширенная информация в списке выбора противника, сортировка списка, ДЦ, продвинутое расположение бойцов на поле боя как в бою, так и в режиме наблюдения за боем, полный лог боя в НЕ JS-версии, кнопка "Сказать ход", быстрая вставка ника в поле чата. Информация вверху о набитом HP, вашем здоровье и т.д. При щелчке на картинке противника происходит его выбор в качестве цели. Кнопка "Обновить" на поле боя. В JS-версии боя подсвечивает зеленым цветом тех персонажей, которые уже сделали ход. В обоих версиях выводит количество персонажей, сделавших ход. Таймаут обновления заявки после входа в нее и таймаут обновления данных в бою.
+// @description     Расширенная информация в списке выбора противника, сортировка списка, ДЦ, продвинутое расположение бойцов на поле боя как в бою, так и в режиме наблюдения за боем, полный лог боя в НЕ JS-версии, кнопка "Сказать ход", быстрая вставка ника в поле чата. Информация вверху о набитом HP, вашем здоровье и т.д. При щелчке на картинке противника происходит его выбор в качестве цели. Кнопка "Обновить" на поле боя. В JS-версии боя подсвечивает зеленым цветом тех персонажей, которые уже сделали ход. В обоих версиях выводит количество персонажей, сделавших ход. Таймаут обновления заявки после входа в нее и таймаут обновления данных в бою.
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js
@@ -11,7 +11,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         3.84-100418
+// @version         3.90-050718
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -47,10 +47,9 @@
     //============= КОНЕЦ НАСТРОЕК ===============
 
 /* localStorage data
-    # настройки генератора ходов
-    [0]  - метод сортировки списка врагов ('', 1 - 5)
-    [1]  - случайный ход или запоминать ход ('', 1, 2)
-    [2]  - дублировать противника или нет
+    [0]  - метод сортировки списка врагов (0 - 5)
+    [1]  - чекбокс "запомнить ход"
+    [2]  - чекбокс "не дублировать цель" (для двуруких)
     # последний сделаный ход (если включено "запомнить ход")
     [3]  - левая
     [4]  - правая
@@ -834,7 +833,7 @@
             }
 
             // устанавливаем последний сохраненный ход
-            if (dataSt[1] === '2') {
+            if (dataSt[1]) {
                 this.clickElem(general.$('left_attack' + dataSt[3]));
                 // если нет гранаты, то отмечаем правую руку
                 if (!dataSt[6] || !general.$('bagaboom')) {
@@ -853,7 +852,6 @@
                 // если две руки и отмечен чебокс "не дублировать цель"
                 if (!general.$('span_two_hand').style.display &&
                         general.$('repeat_two_hand').checked) {
-
                     var rightAttack = general.doc.querySelector('input' +
                             '[type="radio"][name^="right_attack"]:checked'),
                         leftAttack = general.doc.querySelector('input' +
@@ -973,9 +971,12 @@
                     thischk = this;
 
                 if (thischk.checked) {
+                    chkNoDuplicateTarget.checked = false;
+                    dataSt[2] = '';
+
                     goButton.setAttribute('href',
                             ['javascript', ':', 'void(fight_mod())'].join(''));
-                    dataSt[1] = '2';
+                    dataSt[1] = '1';
                     general.setData(dataSt);
                     _this.setStroke();
                 } else {
@@ -990,26 +991,25 @@
                 var dataSt = general.getData(),
                     thischk = this;
 
+                if (thischk.checked) {
+                    chkRememberStroke.checked = false;
+                    dataSt[1] = '';
+                }
+
                 dataSt[2] = thischk.checked ? '1' : '';
                 general.setData(dataSt);
+                _this.setStroke();
             }, false);
 
             // установим свой обработчик нажатия кнопки "Сделать ход"
-            // fight_mod(); (если флажок "запомнить ход" установлен, то
-            // будет запоминаться  последний ход)
+            // fight_mod(); (будет запоминать последний ход, если нужно)
             this.setHandlerSubmit();
 
             var dataSt = general.getData();
-            if (dataSt[2]) {
-                chkNoDuplicateTarget.click();
-            }
-
-            // если сказали ход, то будет запись в хранилище
-            if (dataSt[9]) {
-                this.setStroke();
-                chkRememberStroke.checked = dataSt[1] === '2';
-            } else if (dataSt[1] === '2') {
+            if (dataSt[1]) {
                 chkRememberStroke.click();
+            } else if (dataSt[2]) {
+                chkNoDuplicateTarget.click();
             }
         };
 
