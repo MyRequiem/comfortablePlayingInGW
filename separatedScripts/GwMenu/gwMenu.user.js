@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru*
 // @grant           none
 // @license         MIT
-// @version         2.34-110418
+// @version         2.35-120718
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -676,7 +676,12 @@
                 ], prnt: 'shop_1', arrow: 'shop_rent', offsetY: -30},
                 {divm: 0, lines: [
                     ['Гранаты', '/sshop.php?tshop=grenades'],
-                    ['Чипсеты', '/sshop.php?tshop=chipsets'],
+                    ['Чипы на урон',
+                        'http://www.ganjawars.ru/sshop.php?tshop=chipsets'],
+                    ['Чипы защитные',
+                        'http://www.ganjawars.ru/sshop.php?tshop=chipsets1'],
+                    ['Чипы специальные',
+                        'http://www.ganjawars.ru/sshop.php?tshop=chipsets2'],
                     ['Турели', '/sshop.php?tshop=turrels']
                 ], prnt: 'shop_1', arrow: 'shop_synd', offsetY: -15},
                 {divm: 'pay_grenades_1', lines: [
