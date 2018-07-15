@@ -2854,9 +2854,7 @@
                 this.setWalk(9);
 
             // отмечен чебокс "не дублировать цель" и две руки
-            } else if (dataSt[4] &&
-                    !general.$('span_two_hand').style.display) {
-
+            } else if (dataSt[4] && !general.$('span_two_hand').style.display) {
                 var rightAttack = general.doc.querySelector('input' +
                         '[type="radio"][name^="right_attack"]:checked'),
                     leftAttack = general.doc.querySelector('input' +

@@ -11,7 +11,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         3.90-050718
+// @version         3.90-150718
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -423,22 +423,18 @@
                 specialSkill = ' + ' + dataSt[18];
             }
 
-            // кнопка отправки сообщения в чат
-            var writeOnChatButton = general.doc.querySelector('input' +
-                    '[type="submit"][value="Написать"]'),
-                str = '~';
+            var str = '~';
 
             // граната
+            var isGren = false;
             if (general.doc.querySelector('input[type="checkbox"]' +
                     '[name="use_grenade"]:checked')) {
                 str += general.doc.querySelector('label[for="bagaboom"]').
                     innerHTML.replace(/: бросить/, '');
                 dataSt[13] = '1';
-                general.setData(dataSt);
                 _this.inpTextChat.value = str + ' в ' + enemy[1] +
                     ' [' + enemy[2] + ']' + generalSkill + specialSkill;
-                writeOnChatButton.click();
-                return;
+                isGren = true;
             }
 
             var leftAttack = general.doc.querySelector('input[type="radio"]' +
@@ -455,23 +451,29 @@
             dataSt[11] = rightAttack ? (/\d/.exec(rightAttack.id)[0]) : '';
 
             general.setData(dataSt);
-            str += enemy[1];
-            // правая рука (если не установлен чекбокс
-            // "Говорить только левую руку (для БЩ)")
-            if (dataSt[11] && !dataSt[16]) {
-                str += dataSt[11] === '1' ? ' ле' :
-                        dataSt[11] === '2' ? ' ц' : ' пр';
+            if (!isGren) {
+                str += enemy[1];
+
+                // правая рука (если не установлен чекбокс
+                // "Говорить только левую руку (для БЩ)")
+                if (dataSt[11] && !dataSt[16]) {
+                    str += dataSt[11] === '1' ? ' ле' :
+                            dataSt[11] === '2' ? ' ц' : ' пр';
+                }
+
+                // левая рука
+                if (dataSt[10]) {
+                    str += dataSt[10] === '1' ? ' ле' :
+                            dataSt[10] === '2' ? ' ц' : ' пр';
+                }
+
+                _this.inpTextChat.value = str + ' [' + enemy[2] + ']' +
+                    generalSkill + specialSkill;
             }
 
-            // левая рука
-            if (dataSt[10]) {
-                str += dataSt[10] === '1' ? ' ле' :
-                        dataSt[10] === '2' ? ' ц' : ' пр';
-            }
-
-            _this.inpTextChat.value = str + ' [' + enemy[2] + ']' +
-                generalSkill + specialSkill;
-            writeOnChatButton.click();
+            // отправляем сообщение в чат
+            general.doc.querySelector('input[type="submit"]' +
+                '[value="Написать"]').click();
         };
 
         /**
@@ -803,18 +805,26 @@
                     }
                 }
 
-                // если грена
-                if (dataSt[13]) {
-                    this.clickElem(general.$('bagaboom'));
-                } else {
-                    // правая рука
-                    this.clickElem(general.$('right_attack' + dataSt[11]));
-                    // левая рука
+                // левая рука
+                if (dataSt[10]) {
                     this.clickElem(general.$('left_attack' + dataSt[10]));
                 }
 
+                // правая рука
+                if (dataSt[11]) {
+                    this.clickElem(general.$('right_attack' + dataSt[11]));
+                }
+
                 // куда отходим
-                this.clickElem(general.$('defence' + dataSt[12]));
+                if (dataSt[12]) {
+                    this.clickElem(general.$('defence' + dataSt[12]));
+                }
+
+                // если грена
+                if (dataSt[13]) {
+                    this.clickElem(general.$('bagaboom'));
+                }
+
                 // подходим или нет
                 this.setWalk(14);
 
@@ -829,48 +839,53 @@
                 }
 
                 this.clearSavedStrokeAfterSay();
+
                 return;
             }
 
-            // устанавливаем последний сохраненный ход
+            // отмечен чекбокс "запомнить ход"
             if (dataSt[1]) {
-                this.clickElem(general.$('left_attack' + dataSt[3]));
-                // если нет гранаты, то отмечаем правую руку
-                if (!dataSt[6] || !general.$('bagaboom')) {
+                // левая рука
+                if (dataSt[3]) {
+                    this.clickElem(general.$('left_attack' + dataSt[3]));
+                }
+
+                // правая рука
+                if (dataSt[4]) {
                     this.clickElem(general.$('right_attack' + dataSt[4]));
                 }
 
-                this.clickElem(general.$('defence' + dataSt[5]));
+                // куда отходим
+                if (dataSt[5]) {
+                    this.clickElem(general.$('defence' + dataSt[5]));
+                }
 
-                if (dataSt[6]) {
+                // граната
+                if (dataSt[6] && general.$('bagaboom')) {
                     this.clickElem(general.$('bagaboom'));
                 }
 
                 // подходим или нет
                 this.setWalk(7);
-            } else {    // случайный ход
-                // если две руки и отмечен чебокс "не дублировать цель"
-                if (!general.$('span_two_hand').style.display &&
-                        general.$('repeat_two_hand').checked) {
-                    var rightAttack = general.doc.querySelector('input' +
-                            '[type="radio"][name^="right_attack"]:checked'),
-                        leftAttack = general.doc.querySelector('input' +
-                            '[type="radio"][name^="left_attack"]:checked');
 
-                    if (rightAttack && leftAttack) {
-                        var x = /\d/.exec(rightAttack.id)[0],
-                            y = /\d/.exec(leftAttack.id)[0];
+            // отмечен чебокс "не дублировать цель" и две руки
+            } else if (dataSt[2] && !general.$('span_two_hand').style.display) {
+                var rightAttack = general.doc.querySelector('input' +
+                        '[type="radio"][name^="right_attack"]:checked'),
+                    leftAttack = general.doc.querySelector('input' +
+                        '[type="radio"][name^="left_attack"]:checked'),
+                    x = /\d/.exec(rightAttack.id)[0],
+                    y = /\d/.exec(leftAttack.id)[0];
 
-                        if (x === y) {
-                            while (x === y) {
-                                x = this.getRandom1to3();
-                                y = this.getRandom1to3();
-                            }
-
-                            this.clickElem(general.$('right_attack' + x));
-                            this.clickElem(general.$('left_attack' + y));
-                        }
+                // если ход дублируется
+                if (x === y) {
+                    while (x === y) {
+                        x = this.getRandom1to3();
+                        y = this.getRandom1to3();
                     }
+
+                    this.clickElem(general.$('right_attack' + x));
+                    this.clickElem(general.$('left_attack' + y));
                 }
             }
         };
@@ -885,11 +900,11 @@
                                     '\').split(\'|\'),' +
                     'elem;' +
 
-                    'dataSt[3] = \'\';' +
-                    'dataSt[4] = \'\';' +
-                    'dataSt[5] = \'\';' +
-                    'dataSt[6] = \'\';' +
-                    'dataSt[7] = \'\';' +
+                    'dataSt[3] = \'\';' +   // левая
+                    'dataSt[4] = \'\';' +   // правая
+                    'dataSt[5] = \'\';' +   // куда отходим
+                    'dataSt[6] = \'\';' +   // граната
+                    'dataSt[7] = \'\';' +   // подходим или нет
 
                     // левая рука
                     'if (elem = document.querySelector(\'input[type="radio"]' +
@@ -928,9 +943,9 @@
         };
 
         /**
-         * @method setGenerator
+         * @method setControlOfShooting
          */
-        this.setGenerator = function () {
+        this.setControlOfShooting = function () {
             var divGenerator = general.doc.createElement('div'),
                 bf = this.getBattleField(),
                 coord = new GetPos().init(bf);
@@ -962,8 +977,8 @@
 
             var chkRememberStroke = general.$('save_stroke'),
                 chkNoDuplicateTarget = general.$('repeat_two_hand'),
-                goButton = general.doc.querySelector('a[href^=' +
-                        '"javascript:void(fight"]');
+                goButton = general.doc.
+                    querySelector('a[href^="javascript:void(fight"]');
 
             var _this = this;
             chkRememberStroke.addEventListener('click', function () {
@@ -1002,14 +1017,17 @@
             }, false);
 
             // установим свой обработчик нажатия кнопки "Сделать ход"
-            // fight_mod(); (будет запоминать последний ход, если нужно)
+            // (если установлен чекбокс "запомнить ход", то отправленный
+            // ход будет запоминаться в localStorage)
             this.setHandlerSubmit();
 
             var dataSt = general.getData();
-            if (dataSt[1]) {
+            if (dataSt[1]) {                    // чекбокс "запомнить ход"
                 chkRememberStroke.click();
-            } else if (dataSt[2]) {
+            } else if (dataSt[2]) {             // чекбокс "не дублировать цель"
                 chkNoDuplicateTarget.click();
+            } else {                            // все чекбоксы сброшены
+                this.setStroke();
             }
         };
 
@@ -1591,8 +1609,9 @@
                     // сортируем список выбора
                     this.setSortListEnemy();
 
-                    // установка генератора ходов
-                    this.setGenerator();
+                    // установка чекбоксов "запомнить ход" и
+                    // "не дублировать цель"
+                    this.setControlOfShooting();
 
                     // показываем кнопку "Сказать ход"
                     this.sayMoveButton.style.display = '';
@@ -1713,9 +1732,9 @@
                     data[16] = sayOnlyLeftHand.checked ? '1' : '';
                     general.setData(data);
                 }, false);
-                sayOnlyLeftHand.checked = stData[16];
-                sayOnlyMyCommand.parentNode.insertBefore(sayOnlyLeftHand,
-                        sayOnlyMyCommand);
+                sayOnlyLeftHand.checked = !!stData[16];
+                sayOnlyMyCommand.parentNode.
+                    insertBefore(sayOnlyLeftHand, sayOnlyMyCommand);
             }
 
             // добавляем кнопку "Обновить"
