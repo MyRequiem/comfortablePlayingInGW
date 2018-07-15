@@ -15,13 +15,13 @@
 #               /____/        /____/
 
 """
-docstring
+Create service files
 """
 
 
 def main():
     """
-    docstring
+    main
     """
     from pymod.csf import CreateServiceFiles
 
