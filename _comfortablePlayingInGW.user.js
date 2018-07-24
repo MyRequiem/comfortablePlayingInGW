@@ -11226,7 +11226,8 @@
                     querySelectorAll('div[style*="font-size:8pt;"]>' +
                         'span[class="battletags"]+b'),
                 getPos = new GetPos().init,
-                imgPath = 'http://www.gw-rent.h19.ru/pokemon/',
+                imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
+                    'comfortablePlayingInGW/master/imgs/ImgPokemonsOnBattle/',
                 ext = '.png',
                 name,
                 txt,

@@ -9,7 +9,7 @@
 // @include         http://www.ganjawars.ru/warlog.php*
 // @grant           none
 // @license         MIT
-// @version         2.13-260318
+// @version         2.14-240718
 // @author          MyRequiem, идея Buger_man
 // ==/UserScript==
 
@@ -129,7 +129,8 @@
                     querySelectorAll('div[style*="font-size:8pt;"]>' +
                         'span[class="battletags"]+b'),
                 getPos = new GetPos().init,
-                imgPath = 'http://www.gw-rent.h19.ru/pokemon/',
+                imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
+                    'comfortablePlayingInGW/master/imgs/ImgPokemonsOnBattle/',
                 ext = '.png',
                 name,
                 txt,
