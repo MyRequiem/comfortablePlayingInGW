@@ -9,6 +9,6 @@
 // @include         http://www.ganjawars.ru/warlog.php*
 // @grant           none
 // @license         MIT
-// @version         2.13-260318
+// @version         2.14-240718
 // @author          MyRequiem, идея Buger_man
 // ==/UserScript==
