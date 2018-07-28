@@ -4687,6 +4687,63 @@
         };
 
         /**
+         * @method checkSms
+         * @param   {HTMLElement}   chk
+         * @param   {Boolean}       is_check
+         * @param   {Boolean}       load
+         */
+        this.checkSms = function (chk, is_check, load) {
+            var stData = general.getData(8);
+            // [0]  - отмечать синдовые рассылки
+            // [1]  - отмечать рассылки от робота
+            // [2]  - НЕ отмечать письма с пометкой "важное" |)}>#
+
+            if (is_check) {
+                chk.checked = false;
+                return;
+            }
+
+            var markSyndSms = stData[0],
+                markRobotSms = stData[1],
+                noMarkImportantSms = stData[2],
+                no_check_important = this.testSubject(chk, /\[важное\]/) &&
+                    noMarkImportantSms;
+
+            if (this.testSubject(chk, /<b>#\d+<\/b>/)) {
+                // синдрассылка
+                if (!no_check_important) {
+                    chk.checked = !!markSyndSms;
+                } else {
+                    chk.checked = false;
+                }
+            } else if (chk.parentNode.parentNode.
+                    querySelector('a[href="/info.php?id=1"]')) {
+                // сообщение от робота
+                if (!no_check_important) {
+                    chk.checked = !!markRobotSms;
+                } else {
+                    chk.checked = false;
+                }
+            } else {
+                // все остальные сообщения (только при нажатии [+])
+                if (!no_check_important) {
+                    chk.checked = !load;
+                } else {
+                    chk.checked = false;
+                }
+            }
+        };
+
+        /**
+         * @method get_checkbox_checked
+         * @return  {HTMLElement|null}
+         */
+        this.get_checkbox_checked = function () {
+            return general.doc.querySelector('input[type="checkbox"]' +
+                '[name^="kill"]:checked');
+        };
+
+        /**
          * @method init
          */
         this.init = function () {
@@ -4694,14 +4751,21 @@
                         '[href="/sms.php?page=2"]'),
                 del = general.doc.querySelector('input[class="mainbutton"]' +
                     '[type="submit"][value="Удалить отмеченные"]'),
-                smsChk = general.doc.
-                    querySelectorAll('input[type="checkbox"][name^="kill"]');
+                smsChk = general.doc.querySelectorAll('input[type="checkbox"]' +
+                    '[name^="kill"]'),
+                i;
 
             if (!target || !del) {
                 return;
             }
 
+            // отмечаем сообщения в соответствии с настройками скрипта
+            for (i = 0; i < smsChk.length; i++) {
+                this.checkSms(smsChk[i], false, true);
+            }
+
             target = target.parentNode.parentNode;
+            // noinspection JSUndefinedPropertyAssignment
             target.innerHTML += '<td valign="top" class="greengreenbg" ' +
                 'align="center" style="width: 150px;"></td>';
             target = target.lastElementChild;
@@ -4717,43 +4781,32 @@
 
             target.appendChild(delButton);
 
-            // кнопка "Отметить все"
-            var markAll = general.doc.createElement('span');
+            // кнопка "Отметить все/Снять все"
+            var markAll = general.doc.createElement('span'),
+                checkbox_checked = this.get_checkbox_checked(),
+                check_all = 'Отметить все',
+                clear_all = 'Снять все',
+                minus = '[&minus;]',
+                plus = '[+]';
+
             markAll.setAttribute('style', 'margin-left: 5px; ' +
                     'cursor: pointer; color: #990000');
-            markAll.setAttribute('title', 'Отметить все');
-            markAll.innerHTML = '[+]';
+            markAll.innerHTML = checkbox_checked ? minus : plus;
+            markAll.title = checkbox_checked ? clear_all : check_all;
             target.appendChild(markAll);
             var _this = this;
             markAll.addEventListener('click', function () {
                 var but = this,
-                    s = ['[+]', '[&minus;]', 'Отметить все',
-                        'Снять все отметки'],
-                    on = but.innerHTML === s[0];
+                    is_check = _this.get_checkbox_checked();
 
-                but.innerHTML = on ? s[1] : s[0];
-                but.title = on ? s[3] : s[2];
+                but.innerHTML = is_check ? plus : minus;
+                but.title = is_check ? check_all : clear_all;
 
-                var i;
-                for (i = 0; i < smsChk.length; i++) {
-                    smsChk[i].checked = !(!on || (general.getData(8)[2] &&
-                    _this.testSubject(smsChk[i], /\[важное\]/)));
+                var l;
+                for (l = 0; l < smsChk.length; l++) {
+                    _this.checkSms(smsChk[l], is_check, false);
                 }
             }, false);
-
-            // отмечаем нужное
-            var stData = general.getData(8),
-                i;
-
-            for (i = 0; i < smsChk.length; i++) {
-                // noinspection JSUnresolvedFunction
-                if ((stData[0] &&
-                        this.testSubject(smsChk[i], /<b>#\d+<\/b>/)) ||
-                            (stData[1] && smsChk[i].parentNode.parentNode.
-                                querySelector('a[href="/info.php?id=1"]'))) {
-                    smsChk[i].checked = true;
-                }
-            }
         };
     };
 
