@@ -11,7 +11,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         3.90-150718
+// @version         3.91-020818
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -790,6 +790,16 @@
          */
         this.setStroke = function () {
             var dataSt = general.getData();
+
+            // Уличные бои - отходить можно только в центр (чекбоксы лево и
+            // право не активны). Стрелям тоже всегда в центр.
+            if (general.doc.querySelector('#defence1:disabled')) {
+                this.clickElem(general.$('defence2'));
+                this.clickElem(general.$('left_attack2'));
+                this.clickElem(general.$('right_attack2'));
+
+                return;
+            }
 
             // если в хранилище есть запись в кого стреляли
             // (сказали ход), то устанавливаем именно его

@@ -2776,6 +2776,16 @@
         this.setStroke = function () {
             var dataSt = general.getData(4);
 
+            // Уличные бои - отходить можно только в центр (чекбоксы лево и
+            // право не активны). Стрелям тоже всегда в центр.
+            if (general.doc.querySelector('#defence1:disabled')) {
+                this.clickElem(general.$('defence2'));
+                this.clickElem(general.$('left_attack2'));
+                this.clickElem(general.$('right_attack2'));
+
+                return;
+            }
+
             // если в хранилище есть запись в кого стреляли
             // (сказали ход), то устанавливаем именно его
             if (dataSt[11]) {
