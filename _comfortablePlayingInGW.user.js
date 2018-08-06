@@ -184,12 +184,13 @@
                         [15] - кидаем грену или нет
                         [16] - подходим или нет
                         [17] - список выбора врагов (хэш: имя --> номер)
-                        [18] - чекбокс "Говорить только левую руку (для БЩ)"
+                        [18] - чекбокс "Говорить только левую руку"
                         [19] - общий навык
                         [20] - навык специалиста
                         [21] - звук при начале боя
-                        [22] - звук при начале хода */
-                        '@||||||||||||||||||||||' +
+                        [22] - звук при начале хода
+                        [23] - чекбокс "Говорить только правую руку" */
+                        '@|||||||||||||||||||||||' +
                     /*
                     [5]  - BlacklistHighlighting
                         [0]  - ID персов из ЧС ('id1,id2,...')
@@ -1122,23 +1123,26 @@
 
             'Бои': [
                 ['Дополнение для боев', 'Расширенная информация в списке ' +
-                    'выбора противника, сортировка списка, ДЦ, продвинутое ' +
-                    'расположение бойцов на поле боя как в бою, так и в ' +
-                    'режиме наблюдения за боем, кнопка "Сказать ход", ' +
-                    'быстрая вставка ника в поле чата, полный лог боя в ' +
-                    'НЕ JS-версии, информация вверху страницы боя о ' +
-                    'набитом HP, вашем здоровье и т.д. При щелчке на ' +
-                    'картинке противника происходит его выбор в качестве ' +
-                    'цели. Кнопка "Обновить" на поле боя. В JS-версии боя ' +
-                    'подсвечивает зеленым цветом тех персонажей, которые уже ' +
-                    'сделали ход. В обоих версиях выводит количество ' +
-                    'персонажей, сделавших ход.<br><br><span style="color: ' +
-                    '#FF0000;">Не ставьте значения менее 3 секунд.</span>' +
-                    '<br>Таймаут обновления данных в бою:<span ' +
-                    'style="margin-left: 54px;"> </span><input ' +
-                    'id="refreshBattle" maxlength="3" style="width: 30px;" ' +
-                    'value="' + (general.getData(4)[0] || '0') + '" ' +
-                    'disabled /> сек (0 - настройки игры по умолчанию)<br>' +
+                    'выбора противника + сортировка списка по номеру, ' +
+                    'дальности, уровню, видимости и т.д. Динамический центр, ' +
+                    'продвинутое расположение бойцов на поле боя в бою и в ' +
+                    'режиме наблюдения за боем, полный лог боя в НЕ ' +
+                    'JS-версии, кнопка "Сказать ход", чекбоксы "Говорить ' +
+                    'только правую руку" и "Говорить только левую руку", ' +
+                    'быстрая вставка ника в поле чата. Информация вверху ' +
+                    'страницы о набитом HP, вашем здоровье, видимости и т.д. ' +
+                    'При клике по противнику на схеме поля боя происходит ' +
+                    'его выбор в качестве цели. Кнопка "Обновить". ' +
+                    'В JS-версии боя подсвечивает зеленым цветом тех ' +
+                    'персонажей, которые уже сделали ход. В обоих версиях ' +
+                    'выводит количество персонажей, сделавших ход.' +
+                    '<br><br><span style="color: #FF0000;">Не ставьте ' +
+                    'значения менее 3 секунд.</span><br>Таймаут обновления ' +
+                    'данных в бою:<span style="margin-left: 54px;"> ' +
+                    '</span><input id="refreshBattle" maxlength="3" ' +
+                    'style="width: 30px;" value="' +
+                    (general.getData(4)[0] || '0') + '" disabled /> ' +
+                    'сек (0 - настройки игры по умолчанию)<br>' +
                     'Таймаут обновления заявки при входе в нее: <input ' +
                     'id="refreshAppl" maxlength="3" style="width: 30px;" ' +
                     'value="' + (general.getData(4)[1] || '0') +
@@ -2439,15 +2443,16 @@
             if (!isGren) {
                 str += enemy[1];
 
-                // правая рука (если не установлен чекбокс
-                // "Говорить только левую руку (для БЩ)")
+                // правая рука
+                // (если не установлен чекбокс "Говорить только левую руку")
                 if (dataSt[13] && !dataSt[18]) {
                     str += dataSt[13] === '1' ? ' ле' :
                             dataSt[13] === '2' ? ' ц' : ' пр';
                 }
 
                 // левая рука
-                if (dataSt[12]) {
+                // (если не установлен чекбокс "Говорить только правую руку")
+                if (dataSt[12] && !dataSt[23]) {
                     str += dataSt[12] === '1' ? ' ле' :
                             dataSt[12] === '2' ? ' ц' : ' пр';
                 }
@@ -2965,11 +2970,12 @@
             var vis = (general.$('left_attack1') &&
                     general.$('right_attack1')) ? '' : 'none';
 
-            // если одна рука, то сбрасываем чекбокс
-            // "Говорить только левую руку (для БЩ)"
+            // если одна рука, то сбрасываем чекбоксы
+            // "Говорить только левую руку" и "Говорить только правую руку"
             if (vis) {
                 var stData = general.getData(4);
                 stData[18] = '';
+                stData[23] = '';
                 general.setData(stData, 4);
             }
 
@@ -3726,21 +3732,56 @@
             sayOnlyMyCommand.parentNode.insertBefore(this.sayMoveButton,
                     sayOnlyMyCommand);
 
-            // чекбокс "Говорить только левую руку (для БЩ)"
+            // если двурукий, устанавливаем чекбоксы:
+            // "Говорить только правую руку" и "Говорить только левую руку"
             if (general.$('left_attack1') && general.$('right_attack1')) {
+                // "Говорить только левую руку"
                 var sayOnlyLeftHand = general.doc.createElement('input');
                 sayOnlyLeftHand.setAttribute('id', 'sayOnlyLeftHand');
                 sayOnlyLeftHand.type = 'checkbox';
-                sayOnlyLeftHand.setAttribute('title', 'Говорить только левую ' +
-                        'руку (для навыка Баллистический щит)');
-                sayOnlyLeftHand.addEventListener('click', function () {
-                    var data = general.getData(4);
-                    data[18] = sayOnlyLeftHand.checked ? '1' : '';
-                    general.setData(data, 4);
-                }, false);
+                sayOnlyLeftHand.setAttribute('title',
+                    'Говорить только левую руку');
                 sayOnlyLeftHand.checked = !!stData[18];
                 sayOnlyMyCommand.parentNode.
                     insertBefore(sayOnlyLeftHand, sayOnlyMyCommand);
+
+                sayOnlyLeftHand.addEventListener('click', function () {
+                    var data = general.getData(4),
+                        this_checked = sayOnlyLeftHand.checked;
+
+                    data[18] = this_checked ? '1' : '';
+                    general.setData(data, 4);
+
+                    // если отмечен, сбрасываем чекбокс для правой руки
+                    var onlyRightHand = general.$('sayOnlyRightHand');
+                    if (this_checked && onlyRightHand.checked) {
+                        onlyRightHand.click();
+                    }
+                }, false);
+
+                // "Говорить только правую руку"
+                var sayOnlyRightHand = general.doc.createElement('input');
+                sayOnlyRightHand.setAttribute('id', 'sayOnlyRightHand');
+                sayOnlyRightHand.type = 'checkbox';
+                sayOnlyRightHand.setAttribute('title',
+                    'Говорить только правую руку');
+                sayOnlyRightHand.checked = !!stData[23];
+                sayOnlyMyCommand.parentNode.
+                    insertBefore(sayOnlyRightHand, sayOnlyLeftHand);
+
+                sayOnlyRightHand.addEventListener('click', function () {
+                    var data = general.getData(4),
+                        this_checked = sayOnlyRightHand.checked;
+
+                    data[23] =  this_checked ? '1' : '';
+                    general.setData(data, 4);
+
+                    // если отмечен, сбрасываем чекбокс для левой руки
+                    var onlyLeftHand = general.$('sayOnlyLeftHand');
+                    if (this_checked && onlyLeftHand.checked) {
+                        onlyLeftHand.click();
+                    }
+                }, false);
             }
 
             // добавляем кнопку "Обновить"

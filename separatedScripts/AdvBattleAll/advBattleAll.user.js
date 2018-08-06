@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            AdvBattleAll
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     Расширенная информация в списке выбора противника, сортировка списка, ДЦ, продвинутое расположение бойцов на поле боя как в бою, так и в режиме наблюдения за боем, полный лог боя в НЕ JS-версии, кнопка "Сказать ход", быстрая вставка ника в поле чата. Информация вверху о набитом HP, вашем здоровье и т.д. При щелчке на картинке противника происходит его выбор в качестве цели. Кнопка "Обновить" на поле боя. В JS-версии боя подсвечивает зеленым цветом тех персонажей, которые уже сделали ход. В обоих версиях выводит количество персонажей, сделавших ход. Таймаут обновления заявки после входа в нее и таймаут обновления данных в бою.
+// @description     Расширенная информация в списке выбора противника + сортировка списка по номеру, дальности, уровню, видимости и т.д. Динамический центр, продвинутое расположение бойцов на поле боя в бою и в режиме наблюдения за боем, полный лог боя в НЕ JS-версии, кнопка "Сказать ход", чекбоксы "Говорить только правую руку" и "Говорить только левую руку", быстрая вставка ника в поле чата. Информация вверху страницы о набитом HP, вашем здоровье, видимости и т.д. При клике по противнику на схеме поля боя происходит его выбор в качестве цели. Кнопка "Обновить". В JS-версии боя подсвечивает зеленым цветом тех персонажей, которые уже сделали ход. В обоих версиях выводит количество персонажей, сделавших ход. Таймаут обновления заявки после входа в нее и таймаут обновления данных в бою.
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js
@@ -11,7 +11,7 @@
 // @include         http://www.ganjawars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         3.91-020818
+// @version         4.00-060818
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -65,9 +65,10 @@
     [13] - кидаем грену или нет
     [14] - подходим или нет
     [15] - данные из списка выбора врагов (хэш: имя --> номер)
-    [16] - чекбокс "Говорить только левую руку (для БЩ)"
+    [16] - чекбокс "Говорить только левую руку"
     [17] - общий навык
     [18] - навык специалиста
+    [19] - чекбокс "Говорить только правую руку"
 */
 
     /**
@@ -142,8 +143,8 @@
          */
         getData: function () {
             var stData = this.st.getItem(this.STNAME);
-            if (!stData) {
-                stData = '||||||||||||||||||';
+            if (!stData || stData.split('|').length !== 20) {
+                stData = '|||||||||||||||||||';
                 this.st.setItem(this.STNAME, stData);
             }
 
@@ -454,15 +455,16 @@
             if (!isGren) {
                 str += enemy[1];
 
-                // правая рука (если не установлен чекбокс
-                // "Говорить только левую руку (для БЩ)")
+                // правая рука
+                // (если не установлен чекбокс "Говорить только левую руку")
                 if (dataSt[11] && !dataSt[16]) {
                     str += dataSt[11] === '1' ? ' ле' :
                             dataSt[11] === '2' ? ' ц' : ' пр';
                 }
 
                 // левая рука
-                if (dataSt[10]) {
+                // (если не установлен чекбокс "Говорить только правую руку")
+                if (dataSt[10] && !dataSt[19]) {
                     str += dataSt[10] === '1' ? ' ле' :
                             dataSt[10] === '2' ? ' ц' : ' пр';
                 }
@@ -973,6 +975,7 @@
             if (vis) {
                 var stData = general.getData();
                 stData[16] = '';
+                stData[19] = '';
                 general.setData(stData);
             }
 
@@ -1730,21 +1733,56 @@
             sayOnlyMyCommand.parentNode.insertBefore(this.sayMoveButton,
                     sayOnlyMyCommand);
 
-            // чекбокс "Говорить только левую руку (для БЩ)"
+            // если двурукий, устанавливаем чекбоксы:
+            // "Говорить только правую руку" и "Говорить только левую руку"
             if (general.$('left_attack1') && general.$('right_attack1')) {
+                // "Говорить только левую руку"
                 var sayOnlyLeftHand = general.doc.createElement('input');
                 sayOnlyLeftHand.setAttribute('id', 'sayOnlyLeftHand');
                 sayOnlyLeftHand.type = 'checkbox';
-                sayOnlyLeftHand.setAttribute('title', 'Говорить только левую ' +
-                        'руку (для навыка Баллистический щит)');
-                sayOnlyLeftHand.addEventListener('click', function () {
-                    var data = general.getData();
-                    data[16] = sayOnlyLeftHand.checked ? '1' : '';
-                    general.setData(data);
-                }, false);
+                sayOnlyLeftHand.setAttribute('title',
+                    'Говорить только левую руку');
                 sayOnlyLeftHand.checked = !!stData[16];
                 sayOnlyMyCommand.parentNode.
                     insertBefore(sayOnlyLeftHand, sayOnlyMyCommand);
+
+                sayOnlyLeftHand.addEventListener('click', function () {
+                    var data = general.getData(),
+                        this_checked = sayOnlyLeftHand.checked;
+
+                    data[16] = this_checked ? '1' : '';
+                    general.setData(data);
+
+                    // если отмечен, сбрасываем чекбокс для правой руки
+                    var onlyRightHand = general.$('sayOnlyRightHand');
+                    if (this_checked && onlyRightHand.checked) {
+                        onlyRightHand.click();
+                    }
+                }, false);
+
+                // "Говорить только правую руку"
+                var sayOnlyRightHand = general.doc.createElement('input');
+                sayOnlyRightHand.setAttribute('id', 'sayOnlyRightHand');
+                sayOnlyRightHand.type = 'checkbox';
+                sayOnlyRightHand.setAttribute('title',
+                    'Говорить только правую руку');
+                sayOnlyRightHand.checked = !!stData[19];
+                sayOnlyMyCommand.parentNode.
+                    insertBefore(sayOnlyRightHand, sayOnlyLeftHand);
+
+                sayOnlyRightHand.addEventListener('click', function () {
+                    var data = general.getData(),
+                        this_checked = sayOnlyRightHand.checked;
+
+                    data[19] =  this_checked ? '1' : '';
+                    general.setData(data);
+
+                    // если отмечен, сбрасываем чекбокс для левой руки
+                    var onlyLeftHand = general.$('sayOnlyLeftHand');
+                    if (this_checked && onlyLeftHand.checked) {
+                        onlyLeftHand.click();
+                    }
+                }, false);
             }
 
             // добавляем кнопку "Обновить"
