@@ -9457,14 +9457,43 @@
             var author = last.parentNode.previousElementSibling.
                     querySelector('b').innerHTML,
                 lastLink = last.previousElementSibling.querySelector('a').href,
-                tr = last.querySelector('tr:last-child').cloneNode(true);
+                tr = last.querySelector('tr:last-child').cloneNode(true),
+                divMess = tr.querySelector('td>div[style$="overflow:hidden;"]'),
+                messComplete = divMess.innerHTML,
+                // если длина сообщения более 400 символов или в сообщении
+                // более 3 переносов строк ('<br>'), то выводим половину
+                // сообщения если его длина менее 400 или только первые 200
+                // символов если его длина более 400 символов
+                longMess = messComplete.length > 400 ||
+                    divMess.querySelectorAll('br').length > 3,
+                messHeader = author + '&nbsp;&nbsp;&nbsp;<a href="' + lastLink +
+                    '">[&#8593;]</a><br>';
 
-            tr.firstElementChild.setAttribute('style', 'border: 1px dashed ' +
+            divMess.parentNode.setAttribute('style', 'border: 1px dashed ' +
                 '#339933; background: #C2EDC1;');
-            tr.firstElementChild.innerHTML = author + '&nbsp;&nbsp;&nbsp;' +
-                '<a href="' + lastLink + '">[&#8593;]</a><br>' +
-                tr.firstElementChild.innerHTML;
+            divMess.innerHTML = messHeader +
+                (!longMess ? messComplete :
+                        ((messComplete.length > 400 ?
+                                messComplete.substring(0, 200) : messComplete.
+                            substring(0, Math.round(messComplete.length / 2))).
+                            // убираем тэги <br> в конце сокращенного сообщения
+                            replace(/\s*(<b?r?\s*\/?>?\s*)*$/, '').
+                            // убираем незавершенную ссылку
+                            replace(/<a href=[^>]+(>(https?|ftp):\/\/.*)?$/,
+                                '') +
+                        ' ...[<span style="text-decoration: underline; ' +
+                        'color: #007700; cursor: pointer;" name="openMess">' +
+                        'развернуть</span>]'));
             target.parentNode.insertBefore(tr, target);
+
+            if (longMess) {
+                var openLink = divMess.querySelector('span[name="openMess"]');
+                if (openLink) {
+                    openLink.addEventListener('click', function () {
+                        divMess.innerHTML = messHeader + messComplete;
+                    }, false);
+                }
+            }
         };
 
         /**
