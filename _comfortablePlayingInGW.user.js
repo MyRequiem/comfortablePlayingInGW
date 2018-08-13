@@ -9863,21 +9863,27 @@
         this.getLastDate = function (url) {
             var _url = url || 'http://www.ganjawars.ru/syndicate.log.php?id=' +
                     this.syndId + '&ptslog=1&page_id=100500',
+                counter = general.$('analizePTSCounter'),
                 _this = this;
+
+            if (!url) {
+                counter.innerHTML = '2/1';
+            }
 
             new AjaxQuery().init(_url, 'GET', null, true, function (xml) {
                 var spanContent = general.doc.createElement('span');
                 spanContent.innerHTML = xml.responseText;
 
-                var counter = general.$('analizePTSCounter');
                 if (!url) {
+                    counter.innerHTML = '2/2';
                     general.root.setTimeout(function () {
-                        counter.innerHTML = '2/1';
                         _this.getLastDate(spanContent.
-                            querySelector('br+center>b>a:last-child').href);
+                            querySelector('tr>td[class="greenbg"]' +
+                                '[onclick*="window.location=\'' +
+                                '/syndicate.log.php?"]:last-child>' +
+                                'a[href*="/syndicate.log.php?id="]').href);
                     }, _this.tm);
                 } else {
-                    counter.innerHTML = '2/2';
                     var fonts = spanContent.
                             querySelectorAll('nobr>font[color="green"]');
                     _this.lastDate = /\d+.\d+.\d+/.
