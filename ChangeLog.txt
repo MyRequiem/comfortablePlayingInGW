@@ -1,3 +1,9 @@
+2018-08-24[1.105-240818]
+--------------------------------------
+	- Добавлен новый скрипт
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CalculateSyndLvl
+
+
 2018-08-13[1.104-130818]
 --------------------------------------
 	- Исправлены скрипты:
