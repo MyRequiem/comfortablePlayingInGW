@@ -8,7 +8,7 @@
 // @include         http://www.ganjawars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.24-130818
+// @version         2.25-140918
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -224,7 +224,8 @@
          * @property mainTable
          * @type {Element}
          */
-        this.mainTable = general.doc.querySelector('center+br+table');
+        this.mainTable = general.doc.querySelector('center+br+table') ||
+            general.doc.querySelector('center+br+script+table');
         /**
          * @property lastDate
          * @type {String}
@@ -695,6 +696,8 @@
 
                 table.setAttribute('class', 'wb');
                 table.setAttribute('width', '600');
+                table.setAttribute('cellpadding', '0');
+                table.setAttribute('cellspacing', '0');
                 table.setAttribute('style', 'margin-bottom: 50px;');
 
                 var getStrDate = new GetStrDate().init;

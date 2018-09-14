@@ -1,3 +1,10 @@
+2018-09-14[1.106-140918]
+--------------------------------------
+	- Исправлены скрипты:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndAnalyser
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndPtsAnalyser
+
+
 2018-08-24[1.105-240818]
 --------------------------------------
 	- Добавлен новый скрипт

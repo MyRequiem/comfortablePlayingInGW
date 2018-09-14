@@ -12,7 +12,7 @@
 // @include         *ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.105-240818
+// @version         1.106-140918
 // @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.105-240818';
+        this.version = '1.106-140918';
         /**
          * @property stString
          * @type {String}
@@ -9815,7 +9815,8 @@
          * @property mainTable
          * @type {Element}
          */
-        this.mainTable = general.doc.querySelector('center+br+table');
+        this.mainTable = general.doc.querySelector('center+br+table') ||
+            general.doc.querySelector('center+br+script+table');
         /**
          * @property lastDate
          * @type {String}
@@ -10289,6 +10290,8 @@
 
                 table.setAttribute('class', 'wb');
                 table.setAttribute('width', '600');
+                table.setAttribute('cellpadding', '0');
+                table.setAttribute('cellspacing', '0');
                 table.setAttribute('style', 'margin-bottom: 50px;');
 
                 var getStrDate = new GetStrDate().init;
@@ -10358,7 +10361,8 @@
          * @property mainTable
          * @type {Element}
          */
-        this.mainTable = general.doc.querySelector('center+br+table');
+        this.mainTable = general.doc.querySelector('center+br+table') ||
+            general.doc.querySelector('center+br+script+table');
         /**
          * @property tm
          * @type {int}
@@ -10902,6 +10906,8 @@
                 }
 
                 _this.mainTable.setAttribute('class', 'wb');
+                _this.mainTable.setAttribute('cellpadding', '0');
+                _this.mainTable.setAttribute('cellspacing', '0');
                 _this.mainTable.removeAttribute('style');
 
                 var getStrDate = new GetStrDate().init;
