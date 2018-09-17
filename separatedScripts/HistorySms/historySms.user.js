@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/HistorySms/historySms.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/HistorySms/historySms.user.js
-// @include         http://www.ganjawars.ru/sms-read.php?type=*
+// @include         http://www.gwars.ru/sms-read.php?type=*
 // @grant           none
 // @license         MIT
-// @version         2.05-121216
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.06-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -18,7 +18,7 @@
 */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -287,7 +287,7 @@
 
             if (id2 !== null) {
                 counter.innerHTML = !id ? 'входящие...' : 'исходящие...';
-                url = 'http://www.ganjawars.ru/sms.php?page=' + id +
+                url = 'http://www.gwars.ru/sms.php?page=' + id +
                     '&page_id1=' + (!id ? id1 : 0) + '&page_id2=' +
                     (id ? id1 : 0) + '&search=' + this.uncodeNik;
             } else {

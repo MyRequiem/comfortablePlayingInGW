@@ -1,22 +1,22 @@
 // ==UserScript==
 // @name            FilterResOnStat
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     Фильтр ресурсов на странице статистики [http://www.ganjawars.ru/stats.php]
+// @description     Фильтр ресурсов на странице статистики [http://www.gwars.ru/stats.php]
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FilterResOnStat/filterResOnStat.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FilterResOnStat/filterResOnStat.user.js
-// @include         http://www.ganjawars.ru/stats.php
+// @include         http://www.gwars.ru/stats.php
 // @grant           none
 // @license         MIT
-// @version         2.01-121216
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.02-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
 /*jslint browser: true, maxlen: 80, vars: true, regexp: true, plusplus: true */
 
 /*eslint-env browser */
-/*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
+/*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
     quotes: ['error', 'single'], semi: ['error', 'always'],
     eqeqeq: 'error', curly: 'error'
 */
@@ -97,7 +97,7 @@
 
                 res = this.delSpaces(res).split(',');
                 for (i = 1; i < trs.length; i++) {
-                    nameRes = this.delSpaces(/[^\(]+/.exec(trs[i].
+                    nameRes = this.delSpaces(/[^(]+/.exec(trs[i].
                                     firstElementChild.innerHTML)[0]);
                     if (res.indexOf(nameRes) === -1) {
                         trs[i].style.display = 'none';

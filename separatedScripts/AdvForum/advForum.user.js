@@ -5,13 +5,13 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvForum/advForum.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvForum/advForum.user.js
-// @include         http://www.ganjawars.ru/threads.php?fid=*
-// @include         http://www.ganjawars.ru/messages.php?fid=*
-// @include         http://www.ganjawars.ru/forum.php
+// @include         http://www.gwars.ru/threads.php?fid=*
+// @include         http://www.gwars.ru/messages.php?fid=*
+// @include         http://www.gwars.ru/forum.php
 // @grant           none
 // @license         MIT
-// @version         2.23-110418
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.24-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -460,14 +460,14 @@
             var tableContent = table.innerHTML,
                 imgSettins = general.doc.createElement('img');
 
-            imgSettins.src = 'http://images.ganjawars.ru/i/home/properties.gif';
+            imgSettins.src = 'http://images.gwars.ru/i/home/properties.gif';
             imgSettins.setAttribute('style', 'cursor: pointer; ' +
                     'margin-left: 10px;');
             imgSettins.setAttribute('title', 'Настройки');
 
             // кнопка сброса всех данных ветки
             var imgReset = general.doc.createElement('img');
-            imgReset.src = 'http://images.ganjawars.ru/i/home/questlog.gif';
+            imgReset.src = 'http://images.gwars.ru/i/home/questlog.gif';
             imgReset.setAttribute('style', 'cursor: pointer; ' +
                     'margin-left: 10px;');
             imgReset.setAttribute('title', 'Сбросить все данные ветки');
@@ -513,7 +513,7 @@
 
                 for (i = 0; i < themes.length; i++) {
                     str += '<tr><td><a target="_blank" ' +
-                        'href="http://www.ganjawars.ru/threads.php?fid=' +
+                        'href="http://www.gwars.ru/threads.php?fid=' +
                         themes[i][1] + '">' + themes[i][0] + '</a></td>' +
                         '<td><input id="showForum_' + i + '" ' +
                         'type="checkbox"' + (f[i] ? ' checked' : '') +
@@ -541,7 +541,7 @@
                     'bold;"><< Назад</span></td></tr><tr><td colspan="2" ' +
                     'style="font-weight: bold; padding-top: 10px;">' +
                     'Показывать ветки форума на <a target="_blank" ' +
-                    'href="http://www.ganjawars.ru/forum.php">этой странице' +
+                    'href="http://www.gwars.ru/forum.php">этой странице' +
                     '</a>:</td></tr>' + str + '</table></td></tr>';
 
                 // чекбокс "Отмечать закрытые"

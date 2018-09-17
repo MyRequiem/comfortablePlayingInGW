@@ -5,12 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ResourcesAndBonuses/resourcesAndBonuses.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ResourcesAndBonuses/resourcesAndBonuses.user.js
-// @include         http://www.ganjawars.ru/*
-// @exclude         http://www.ganjawars.ru/ferma.php*
+// @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.14-110418
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.15-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -203,7 +202,7 @@
             this.divResult.innerHTML = '<img src="' + this.imgPath +
                 'preloader.gif' + '">';
 
-            var url = 'http://www.ganjawars.ru/info.php?id=' + general.myID,
+            var url = 'http://www.gwars.ru/info.php?id=' + general.myID,
                 idElem = _this.id,
                 ths = this;
 

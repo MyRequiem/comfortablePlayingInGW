@@ -5,12 +5,12 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanPers/scanPers.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanPers/scanPers.user.js
-// @include         http://www.ganjawars.ru/*
-// @exclude         http://www.ganjawars.ru/ferma.php*
+// @include         http://www.gwars.ru/*
+// @exclude         http://www.gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.33-110418
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.34-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -373,7 +373,7 @@ plusplus: true, devel: true */
 
             if (persId) {
                 tdLink.innerHTML = '<a target="_blank" style="color: ' +
-                    '#008000;" href="http://www.ganjawars.ru/info.php?id=' +
+                    '#008000;" href="http://www.gwars.ru/info.php?id=' +
                     persId + '">' + stData[0] + '</a>';
                 tdLink.style.display = '';
                 butReset.disabled = false;
@@ -413,7 +413,7 @@ plusplus: true, devel: true */
             }
 
             this.showHidePreloader();
-            var url = 'http://www.ganjawars.ru/search.php?key=' +
+            var url = 'http://www.gwars.ru/search.php?key=' +
                     new UrlEncode().init(persNik),
                 _this = this;
 
@@ -484,7 +484,7 @@ plusplus: true, devel: true */
                 return;
             }
 
-            var url = 'http://www.ganjawars.ru/syndicate.php?id=' + stData[1] +
+            var url = 'http://www.gwars.ru/syndicate.php?id=' + stData[1] +
                     '&page=online',
                 persNik = stData[0],
                 persId = stData[6],

@@ -5,13 +5,13 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeNpc/timeNpc.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeNpc/timeNpc.user.js
-// @include         http://www.ganjawars.ru/me.php*
-// @include         http://www.ganjawars.ru/me/*
-// @include         http://www.ganjawars.ru/npc.php?id=*
+// @include         http://www.gwars.ru/me.php*
+// @include         http://www.gwars.ru/me/*
+// @include         http://www.gwars.ru/npc.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.25-100418
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.26-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -257,7 +257,7 @@
                 general.$('imgSoundNPC').setAttribute('checkscan', 'yes');
             }
 
-            var url = 'http://www.ganjawars.ru/npc.php?id=' + npcs[ind],
+            var url = 'http://www.gwars.ru/npc.php?id=' + npcs[ind],
                 _this = this,
                 tr,
                 td;
@@ -293,7 +293,7 @@
 
                 general.$('dataNPC').lastElementChild.innerHTML = '<td>' +
                     '<a target="_blank" href="' + syndLink.href +
-                    '"><img src="http://images.ganjawars.ru/img/synds/' +
+                    '"><img src="http://images.gwars.ru/img/synds/' +
                     (/\?id=(\d+)/.exec(syndLink.href)[1]) + '.gif" />' +
                     '</a></td><td><a target="_blank" href="' + url +
                     '" style="font-size: 8pt;">' + nameNPC + '</a></td>' +
@@ -382,7 +382,7 @@
                 '<td><img src="' + general.imgPath + 'preloader.gif" />' +
                 '</td></tr>';
 
-            var url = 'http://www.ganjawars.ru/npc.php?id=' +
+            var url = 'http://www.gwars.ru/npc.php?id=' +
                     general.getData()[1] + '&talk=1',
                 _this = this;
 
@@ -424,7 +424,7 @@
 
             var stData = general.getData();
 
-            if (/www\.ganjawars\.ru\/me(\/|\.php)/.test(general.loc)) {
+            if (/www\.gwars\.ru\/me(\/|\.php)/.test(general.loc)) {
                 var mainDiv = general.doc.createElement('div'),
                     target = general.doc.querySelector('td[rowspan="3"]' +
                         '[valign="top"][bgcolor="#e9ffe9"]>' +

@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CurrentQuestOnInfo/currentQuestOnInfo.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CurrentQuestOnInfo/currentQuestOnInfo.user.js
-// @include         http://www.ganjawars.ru/info.php?id=*
+// @include         http://www.gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.03-100618
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458], идея kaa
+// @version         1.04-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458], идея kaa
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -47,7 +47,7 @@
          * @property questURL
          * @type {String}
          */
-        this.questURL = 'http://www.ganjawars.ru/questlog.php?id=';
+        this.questURL = 'http://www.gwars.ru/questlog.php?id=';
         /**
          * @property persID
          * @type {String}
@@ -123,7 +123,7 @@
                     '</span> ' + questDescr + '<span style="font-weight: ' +
                     'bold; margin-left: 10px;"><a target="_blank" ' +
                     'style="color:#007700; text-decoration: none;" ' +
-                    'href="http://www.ganjawars.ru/help/index.php?' +
+                    'href="http://www.gwars.ru/help/index.php?' +
                     'sid=102&pid=45">Накоплено</a>:</span> ' + acQuests;
 
                 var target = _this.doc.querySelector('#namespan');

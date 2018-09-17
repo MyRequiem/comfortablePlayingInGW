@@ -5,13 +5,14 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NotGiveCannabisLeaf/notGiveCannabisLeaf.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NotGiveCannabisLeaf/notGiveCannabisLeaf.user.js
-// @include         *ganjawars.ru*
-// @include         *ganjafile.ru*
-// @include         *ganjafoto.ru*
+// @include         http://www.gwars.ru*
+// @include         http://photos.gwars.ru*
+// @include         http://www.ganjafile.ru*
+// @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         2.10-081017
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.11-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */

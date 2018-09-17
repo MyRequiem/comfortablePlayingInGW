@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortTimer/portTimer.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortTimer/portTimer.user.js
-// @include         http://www.ganjawars.ru/*
+// @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.11-100418
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458], идея Enemy333
+// @version         1.12-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458], идея Enemy333
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -369,7 +369,7 @@
                 return;
             }
 
-            this.url = 'http://www.ganjawars.ru/object.php?id=11712&' +
+            this.url = 'http://www.gwars.ru/object.php?id=11712&' +
                 'page=oncoming1&sid=' + stData.syndid;
 
             // сегодня запрос не делали, делаем не ранее 7 утра.

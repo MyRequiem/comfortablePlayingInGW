@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FarmExperience/farmExperience.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FarmExperience/farmExperience.user.js
-// @include         http://www.ganjawars.ru/ferma.php*
+// @include         http://www.gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.21-150118
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.22-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */

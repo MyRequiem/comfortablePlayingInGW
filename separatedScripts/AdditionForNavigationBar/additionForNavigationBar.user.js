@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdditionForNavigationBar/additionForNavigationBar.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdditionForNavigationBar/additionForNavigationBar.user.js
-// @include         http://www.ganjawars.ru/*
+// @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.03-150118
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.04-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */

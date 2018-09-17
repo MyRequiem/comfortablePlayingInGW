@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BlacklistHighlighting/blacklistHighlighting.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BlacklistHighlighting/blacklistHighlighting.user.js
-// @include         http://www.ganjawars.ru/*
+// @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.05-110418
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.06-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -234,7 +234,7 @@
             }
 
             if (general.getData()) {
-                if (/www\.ganjawars\.ru\/b0\//.test(general.loc)) {
+                if (/www\.gwars\.ru\/b0\//.test(general.loc)) {
                     general.root.setInterval(this.setHighlighting, 1000);
                 } else if (/\/usertransfers\.php/.test(general.loc)) {
                     general.root.setTimeout(this.setHighlighting, 300);
