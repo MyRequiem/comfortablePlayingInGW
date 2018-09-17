@@ -1,7 +1,7 @@
 Добавляет сылку "Удалить отмеченные" вверху страниц входящих и исходящих сообщений. Отметка синдикатных рассылок и сообщений от робота.
 <br>
 <br>
-Версия: 2.15-280718
+Версия: 2.16-170918
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/DeleteSms/deleteSms.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/DeleteSms/deleteSms.user.js.zip)
 <br>

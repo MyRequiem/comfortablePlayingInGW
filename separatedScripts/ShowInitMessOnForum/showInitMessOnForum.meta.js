@@ -5,9 +5,9 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ShowInitMessOnForum/showInitMessOnForum.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ShowInitMessOnForum/showInitMessOnForum.user.js
-// @include         http://www.ganjawars.ru/messages.php*
+// @include         http://www.gwars.ru/messages.php*
 // @grant           none
 // @license         MIT
-// @version         2.20-100818
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.21-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==

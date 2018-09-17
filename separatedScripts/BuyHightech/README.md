@@ -1,7 +1,7 @@
 В HighTech магазине добавляет ссылки "Продать" и "Купить" для каждого предмета. При клике открывается страница с формой подачи объявления для данного предмета.
 <br>
 <br>
-Версия: 2.03-100418
+Версия: 2.04-170918
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BuyHightech/buyHightech.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BuyHightech/buyHightech.user.js.zip)
 <br>

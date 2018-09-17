@@ -1,7 +1,7 @@
-Фильтр ресурсов на странице статистики [http://www.ganjawars.ru/stats.php]
+Фильтр ресурсов на странице статистики [http://www.gwars.ru/stats.php]
 <br>
 <br>
-Версия: 2.01-121216
+Версия: 2.02-170918
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FilterResOnStat/filterResOnStat.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FilterResOnStat/filterResOnStat.user.js.zip)
 <br>

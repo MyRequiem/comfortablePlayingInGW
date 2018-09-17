@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeNpc/timeNpc.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeNpc/timeNpc.user.js
-// @include         http://www.ganjawars.ru/me.php*
-// @include         http://www.ganjawars.ru/me/*
-// @include         http://www.ganjawars.ru/npc.php?id=*
+// @include         http://www.gwars.ru/me.php*
+// @include         http://www.gwars.ru/me/*
+// @include         http://www.gwars.ru/npc.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.25-100418
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.26-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==

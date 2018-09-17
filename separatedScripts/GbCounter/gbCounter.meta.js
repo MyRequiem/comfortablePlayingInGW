@@ -5,10 +5,10 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/GbCounter/gbCounter.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/GbCounter/gbCounter.user.js
-// @include         http://www.ganjawars.ru/me.php*
-// @include         http://www.ganjawars.ru/me/*
+// @include         http://www.gwars.ru/me.php*
+// @include         http://www.gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.03-250917
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.04-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
