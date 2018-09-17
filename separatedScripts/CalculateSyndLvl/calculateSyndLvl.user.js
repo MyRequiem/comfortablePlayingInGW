@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name            CalculateSyndLvl
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     Рассчет ожидаемого уровня синдиката.
+// @description     Расчет ожидаемого уровня синдиката.
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CalculateSyndLvl/calculateSyndLvl.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CalculateSyndLvl/calculateSyndLvl.user.js
 // @include         http://www.gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.13-170918
+// @version         1.14-170918
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -28,14 +28,14 @@
 
 // Уровень синдиката обновляется 3 раза в месяц: 6, 17 и 28.
 //
-// Рассчет уровня:
+// Расчет уровня:
 // Итоговый_опыт = 5/3 * Боевой_опыт + (2.4 * Экономический_опыт)
 //
 // Таблица рейтинга синдикатов:
 //  http://www.gwars.ru/srating.php
 //  EXP/опыт = экономический/боевой
 //
-//  Рассчетный уровень  Итоговый опыт
+//  Расчетный уровень  Итоговый опыт
 //  ------------------  -------------
 //          0           0        - 50000
 //          1           50000    - 150000

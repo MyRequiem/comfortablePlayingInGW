@@ -1,7 +1,7 @@
 Фильтр по оружию в одиночках. Фильтр по уровням и типу оружия, встроенный в игре, переносится вверх страницы.
 <br>
 <br>
-Версия: 2.04-170918
+Версия: 2.05-170918
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FilterWarlistOne2One/filterWarlistOne2One.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FilterWarlistOne2One/filterWarlistOne2One.user.js.zip)
 <br>

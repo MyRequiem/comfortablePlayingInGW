@@ -11,7 +11,7 @@
 // @include         http://www.ganjafoto.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.107-170918
+// @version         1.108-170918
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -80,7 +80,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.107-170918';
+        this.version = '1.108-170918';
         /**
          * @property stString
          * @type {String}
@@ -1245,7 +1245,7 @@
                     'красного цвета. Так же добавляются конвертики для ' +
                     'отправки сообщений в разделах "Мои друзья" и "Гости".' +
                     this.getGitHubLink('syndOnlineOnMainPage'), '49'],
-                ['Рассчет ожидаемого уровня синдиката', 'Рассчет ожидаемого ' +
+                ['Расчет ожидаемого уровня синдиката', 'Расчет ожидаемого ' +
                     'уровня синдиката (сброс 6, 17 и 28 числа каждого ' +
                     'месяца).' + this.getGitHubLink('calculateSyndLvl'), '60']],
 
@@ -7653,8 +7653,12 @@
          * @method init
          */
         this.init = function () {
+            if (/Подтверждаете бой с/.test(general.doc.body.innerHTML)) {
+                return;
+            }
+
             var filtForm = general.doc.
-                    querySelector('form[action="/warlist.php"]');
+                    querySelector('form[action$="/warlist.php"]');
 
             if (filtForm && this.table) {
                 filtForm = filtForm.cloneNode(false);

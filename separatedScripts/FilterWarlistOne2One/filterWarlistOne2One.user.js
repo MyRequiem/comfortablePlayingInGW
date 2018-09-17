@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         2.04-170918
+// @version         2.05-170918
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -146,6 +146,10 @@
          * @method init
          */
         this.init = function () {
+            if (/Подтверждаете бой с/.test(general.doc.body.innerHTML)) {
+                return;
+            }
+
             if (!general.st) {
                 alert('Ваш браузер не поддерживает технологию localStorage.\n' +
                     'MyRequiеm рекомендует вам скачать и установить один из\n' +
@@ -157,7 +161,7 @@
             }
 
             var filtForm = general.doc.
-                    querySelector('form[action="/warlist.php"]');
+                    querySelector('form[action$="/warlist.php"]');
 
             if (filtForm && this.table) {
                 filtForm = filtForm.cloneNode(false);
