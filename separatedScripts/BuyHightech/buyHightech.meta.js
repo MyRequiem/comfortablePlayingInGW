@@ -5,10 +5,10 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BuyHightech/buyHightech.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BuyHightech/buyHightech.user.js
-// @include         http://www.ganjawars.ru/shopc.php*
-// @include         http://www.ganjawars.ru/market-p.php?stage=2&item_id=*
+// @include         http://www.gwars.ru/shopc.php*
+// @include         http://www.gwars.ru/market-p.php?stage=2&item_id=*
 // @grant           none
 // @license         MIT
-// @version         2.03-100418
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.04-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==

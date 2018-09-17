@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/InventoryPlus/inventoryPlus.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/InventoryPlus/inventoryPlus.user.js
-// @include         http://www.ganjawars.ru/items.php*
+// @include         http://www.gwars.ru/items.php*
 // @grant           none
 // @license         MIT
-// @version         2.42-081017
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.43-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -234,7 +234,6 @@
             /*global $, filteritems, def_filter */
             general.root.postdo = function (url) {
                 /*jslint unparam: true */
-                /*eslint no-unused-vars: true */
                 $('#itemsbody').
                     load(url, function (responseTxt, statusTxt) {
                         if (statusTxt === 'success') {

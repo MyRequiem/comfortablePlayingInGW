@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndPtsAnalyser/syndPtsAnalyser.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndPtsAnalyser/syndPtsAnalyser.user.js
-// @include         http://www.ganjawars.ru/syndicate.php?id=*
+// @include         http://www.gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.25-140918
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.26-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -277,7 +277,7 @@
          * @param   {String}    url
          */
         this.getLastDate = function (url) {
-            var _url = url || 'http://www.ganjawars.ru/syndicate.log.php?id=' +
+            var _url = url || 'http://www.gwars.ru/syndicate.log.php?id=' +
                     this.syndId + '&ptslog=1&page_id=100500',
                 counter = general.$('analizePTSCounter'),
                 _this = this;
@@ -352,7 +352,7 @@
                     this.imgPath + 'rank.png" title="Выдача званий" ' +
                     'alt="Звания"></td><td class="wb1"><img id="sign" ' +
                     'style="cursor: pointer; margin: 2px;" ' +
-                    'src="http://images.ganjawars.ru/img/synds/' + this.syndId +
+                    'src="http://images.gwars.ru/img/synds/' + this.syndId +
                     '.gif" title="Выдача знаков" alt="Знаки"></td>' +
                     '<td class="wb1"><span id="all" style="color: #008000; ' +
                     'cursor: pointer;">Всего</span></td></tr>',
@@ -380,7 +380,7 @@
                 all = setPoints(this.pers[i].all, '\'', false);
 
                 str += '<tr><td class="wb2"><a target="_blank" ' +
-                    'href="http://www.ganjawars.ru/search.php?key=' + name +
+                    'href="http://www.gwars.ru/search.php?key=' + name +
                     '" style="text-decoration: none; font-weight: bold; ' +
                     'color: #004400;">' + name + '</a></td><td class="wb1">' +
                     gren + '</td><td class="wb1">' + chip + '</td>' +
@@ -537,7 +537,7 @@
          */
         this.parsePTSProtocols = function (ind) {
             general.$('analizePTSCounter').innerHTML = ind;
-            var url = 'http://www.ganjawars.ru/syndicate.log.php?id=' +
+            var url = 'http://www.gwars.ru/syndicate.log.php?id=' +
                     this.syndId + '&ptslog=1&page_id=' + ind,
                 _this = this;
 

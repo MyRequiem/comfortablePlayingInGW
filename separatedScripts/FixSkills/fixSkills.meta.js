@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FixSkills/fixSkills.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FixSkills/fixSkills.user.js
-// @include         http://www.ganjawars.ru/info.php?id=*
-// @include         http://www.ganjawars.ru/me.php*
-// @include         http://www.ganjawars.ru/me/*
+// @include         http://www.gwars.ru/info.php?id=*
+// @include         http://www.gwars.ru/me.php*
+// @include         http://www.gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.05-100418
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.06-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==

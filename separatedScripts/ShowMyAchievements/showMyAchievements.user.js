@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ShowMyAchievements/showMyAchievements.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ShowMyAchievements/showMyAchievements.user.js
-// @include         http://www.ganjawars.ru/*
+// @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.03-150118
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458] Идея: Горыныч
+// @version         2.04-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458] Идея: Горыныч
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -257,7 +257,7 @@
                 'preloader.gif' + '">';
 
             var stData = general.getData(),
-                url = 'http://www.ganjawars.ru/info.ach.php?id=' + general.myID;
+                url = 'http://www.gwars.ru/info.ach.php?id=' + general.myID;
 
             if (!stData[0]) {
                 this.divResult.innerHTML = 'Не выбрано ни одной ачивки на ' +

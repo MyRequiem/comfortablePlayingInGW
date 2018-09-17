@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CalculateSyndLvl/calculateSyndLvl.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CalculateSyndLvl/calculateSyndLvl.user.js
-// @include         http://www.ganjawars.ru/syndicate.php?id=*
+// @include         http://www.gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.12-230818
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         1.13-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -32,7 +32,7 @@
 // Итоговый_опыт = 5/3 * Боевой_опыт + (2.4 * Экономический_опыт)
 //
 // Таблица рейтинга синдикатов:
-//  http://www.ganjawars.ru/srating.php
+//  http://www.gwars.ru/srating.php
 //  EXP/опыт = экономический/боевой
 //
 //  Рассчетный уровень  Итоговый опыт
@@ -200,7 +200,7 @@
          * @param   {int}   ind
          */
         this.scan = function (ind) {
-            var url = 'http://www.ganjawars.ru/srating.php?rid=0&page_id=' +
+            var url = 'http://www.gwars.ru/srating.php?rid=0&page_id=' +
                     ind,
                 pageCounter = general.$('pageCounter'),
                 _this = this;
@@ -216,7 +216,7 @@
                 if (!tbl || !tbl.
                         querySelector('td>a[href*="/syndicate.php?id="]')) {
                     pageCounter.innerHTML = 'синдикат в <a target="_blank" ' +
-                        'href="http://www.ganjawars.ru/srating.php?rid=0&' +
+                        'href="http://www.gwars.ru/srating.php?rid=0&' +
                         'page_id=0">рейтинге</a> не найден';
                     _this.preScan(false);
                     return;

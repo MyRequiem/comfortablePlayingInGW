@@ -5,12 +5,12 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BuyHightech/buyHightech.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BuyHightech/buyHightech.user.js
-// @include         http://www.ganjawars.ru/shopc.php*
-// @include         http://www.ganjawars.ru/market-p.php?stage=2&item_id=*
+// @include         http://www.gwars.ru/shopc.php*
+// @include         http://www.gwars.ru/market-p.php?stage=2&item_id=*
 // @grant           none
 // @license         MIT
-// @version         2.03-100418
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.04-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -97,11 +97,11 @@
                     descrTd[i].innerHTML += ' <span style="font-weight: ' +
                         'bold; margin-left: 7px;"> Создать объявление: ' +
                         '</span><a target="_blank" style="color: #0000FF;" ' +
-                        'href="http://www.ganjawars.ru/market-p.php?' +
+                        'href="http://www.gwars.ru/market-p.php?' +
                         'stage=2&item_id=' + id + '&action_id=2&p=' + price +
                         '&s=' + strength + '">[Купить]' + '</a> ' +
                         '<a target="_blank" style="color: #990000;" href=' +
-                        '"http://www.ganjawars.ru/market-p.php?' +
+                        '"http://www.gwars.ru/market-p.php?' +
                         'stage=2&item_id=' + id + '&action_id=1&p=' + price +
                         '&s=' + strength + '">[Продать]</a>';
                 }
@@ -136,7 +136,7 @@
 
                 // срок размещения 3 дня
                 general.doc.
-                    querySelector('select[name="date_len"]').value = '3';
+                    querySelector('select[name="date_len"]').value = '7';
             }
         };
     };

@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/LinksInOne2One/linksInOne2One.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/LinksInOne2One/linksInOne2One.user.js
-// @include         http://www.ganjawars.ru/warlist.php?war=armed*
+// @include         http://www.gwars.ru/warlist.php?war=armed*
 // @grant           none
 // @license         MIT
-// @version         2.01-121216
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.02-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -84,7 +84,7 @@
                     name = /вызван (.*)( \[\d+\])/.exec(last.innerHTML);
                     if (name) {
                         last.innerHTML = 'вызван <a target="_blank" ' +
-                            'href="http://www.ganjawars.ru/search.php?key=' +
+                            'href="http://www.gwars.ru/search.php?key=' +
                             name[1] + '" style="text-decoration: none; ' +
                             'font-weight: bold;">' + name[1] + '</a>' + name[2];
                     }

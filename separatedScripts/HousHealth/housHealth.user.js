@@ -5,12 +5,12 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/HousHealth/housHealth.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/HousHealth/housHealth.user.js
-// @include         http://www.ganjawars.ru/warlog.php?bid=*
-// @include         http://www.ganjawars.ru/b0/*
+// @include         http://www.gwars.ru/warlog.php?bid=*
+// @include         http://www.gwars.ru/b0/*
 // @grant           none
 // @license         MIT
-// @version         2.03-100418
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.04-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -170,7 +170,7 @@
                     sector = spanContent.querySelector(cssSelector).innerHTML;
                     general.root.setTimeout(function () {
                         // на недвижимость перса
-                        _this.showSector('http://www.ganjawars.ru/' +
+                        _this.showSector('http://www.gwars.ru/' +
                             'info.realty.php?id=' + general.myID, sector);
                     }, 1000);
                 } else {
@@ -224,7 +224,7 @@
 
                 // если здоровье менее 80%
                 if (general.doc.querySelector('#hpheader>font')) {
-                    this.showSector('http://www.ganjawars.ru/info.php?id=' +
+                    this.showSector('http://www.gwars.ru/info.php?id=' +
                             general.myID, null);
                 }
             }

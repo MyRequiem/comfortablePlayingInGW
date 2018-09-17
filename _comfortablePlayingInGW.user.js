@@ -1,19 +1,18 @@
 // ==UserScript==
 // @name            ComfortablePlayingInGW
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     Веселые плюшки для ganjawars.ru
+// @description     Веселые плюшки для www.gwars.ru
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js
-// @include         http://www.ganjawars.ru/*
-// @include         https://www.ganjawars.ru/*
-// @include         *ganjafoto.ru*
-// @include         *photos.ganjawars.ru*
-// @include         *ganjafile.ru*
+// @include         http://www.gwars.ru/*
+// @include         http://photos.gwars.ru*
+// @include         http://www.ganjafile.ru/*
+// @include         http://www.ganjafoto.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.106-140918
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         1.107-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 //     ______                ____           __        __    __
@@ -81,7 +80,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.106-140918';
+        this.version = '1.107-170918';
         /**
          * @property stString
          * @type {String}
@@ -437,7 +436,7 @@
          * @property mainDomain
          * @type {Boolean}
          */
-        this.mainDomain = /\/\/www.ganjawars.ru\//.test(this.loc);
+        this.mainDomain = /\/\/www.gwars.ru\//.test(this.loc);
     };
 
     /**
@@ -804,7 +803,7 @@
                     'NotGiveCannabisLeaf/on.gif" width="15" height="15" ' +
                     'title="Настройки" alt="Настройки" />';
                 settingsButton.setAttribute('href',
-                        'http://www.ganjawars.ru/news.php?set=1');
+                        'http://www.gwars.ru/news.php?set=1');
                 target.insertBefore(settingsButton, target.firstChild);
             }
         };
@@ -973,7 +972,7 @@
                     this.getGitHubLink('gwMenu'), '14'],
                 ['Логотип игры', 'На всех страницах заменяет логотип игры ' +
                     '&nbsp;&nbsp;<img style="box-shadow: 2px 3px 3px ' +
-                    'rgba(122,122,122, 0.5);" src="http://images.ganjawars.' +
+                    'rgba(122,122,122, 0.5);" src="http://images.gwars.' +
                     'ru/i/gon.gif" /> &nbsp;&nbsp;на зеленый листик &nbsp;' +
                     '&nbsp;<img style="box-shadow: 2px 3px 3px ' +
                     'rgba(122,122,122,0.5);" src="' + general.imgPath +
@@ -987,7 +986,7 @@
                     ' звук при достижении 100% HP' +
                     this.getGitHubLink('regeneration') +
                     '<span style="margin-left: 15px;">идея: ' +
-                    '<a href="http://www.ganjawars.ru/info.php?id=73295" ' +
+                    '<a href="http://www.gwars.ru/info.php?id=73295" ' +
                     'style="font-weight: bold;" target="_blank">W_or_M' +
                     '</a></span>', '56'],
                 ['Дополнение для панели навигации',
@@ -999,7 +998,7 @@
                     'игры. Делает неактивной ссылку принятия боя c ' +
                     'персонажем из черного списка в одиночных боях.<br><br>' +
                     '&nbsp;&nbsp;<a target="_blank" href=' +
-                    '"http://www.ganjawars.ru/home.friends.php">Запомнить ' +
+                    '"http://www.gwars.ru/home.friends.php">Запомнить ' +
                     'черный список</a> (скрипт должен быть включен)<br>' +
                     '<input type="checkbox" id="blockBLOne2One" disabled> ' +
                     'блокировать ссылку принятия боя с персонажем из ЧС в ' +
@@ -1058,7 +1057,7 @@
                     'выводится описание бонуса.' +
                     this.getGitHubLink('bonusInfo') +
                     '<span style="margin-left: 15px;">идея: ' +
-                    '<a href="http://www.ganjawars.ru/info.php?id=1845550" ' +
+                    '<a href="http://www.gwars.ru/info.php?id=1845550" ' +
                     'style="font-weight: bold;" target="_blank">signed' +
                     '</a></span>', '18'],
                 ['Новости и приглашения в синдикаты', 'Выделение и мигание ' +
@@ -1102,11 +1101,11 @@
                     '"Достижения" в верхней части страниц игры при нажатии ' +
                     'на которую выводятся Ваши ачивки, но только те, ' +
                     'которые были отмечены на <a target="_blank" ' +
-                    'href="http://www.ganjawars.ru/info.ach.php?id=' +
+                    'href="http://www.gwars.ru/info.ach.php?id=' +
                     general.myID + '">странице достижений</a>.' +
                     this.getGitHubLink('showMyAchievements') +
                     '<span style="margin-left: 15px;">идея: ' +
-                    '<a href="http://www.ganjawars.ru/info.php?id=134292" ' +
+                    '<a href="http://www.gwars.ru/info.php?id=134292" ' +
                     'style="font-weight: bold;" target="_blank">Горыныч' +
                     '</a></span>', '47'],
                 ['Время до возможности выставить карму', 'На странице ' +
@@ -1122,7 +1121,7 @@
                     'информации персонажа.' +
                     this.getGitHubLink('currentQuestOnInfo') +
                     '<span style="margin-left: 15px;">идея: ' +
-                    '<a href="http://www.ganjawars.ru/info.php?id=54662" ' +
+                    '<a href="http://www.gwars.ru/info.php?id=54662" ' +
                     'style="font-weight: bold;" target="_blank">kaa</a>' +
                     '</span>', '58']],
 
@@ -1185,7 +1184,7 @@
                     'одиночых заявках. Фильтр по уровням и типу оружия, ' +
                     'встроенный в игре, переносится вверх страницы. Все ' +
                     'настройки находятся на <a target="_blank" ' +
-                    'href="http://www.ganjawars.ru/warlist.php?war=armed">' +
+                    'href="http://www.gwars.ru/warlist.php?war=armed">' +
                     'странице одиночных заявок</a>' +
                     this.getGitHubLink('filterWarlistOne2One'), '23'],
                 ['Ссылки на странице одиночных заявок', 'На странице ' +
@@ -1201,7 +1200,7 @@
                     this.getGitHubLink('one2OneCallerInfo'), '34'],
                 ['Контроль Уранa и ЭC', 'Сортировка объектов по типу, ' +
                     'островам и контролирующим синдикатам на странице ' +
-                    '<a target="_blank" href="http://www.ganjawars.ru/' +
+                    '<a target="_blank" href="http://www.gwars.ru/' +
                     'info.realty.php?id=2">ГосЭнегоАтом</a>' +
                     this.getGitHubLink('gosEnergoAtomFilter'), '29'],
                 ['Проверка сектора после боя', 'Выводит сообщение после боя, ' +
@@ -1213,14 +1212,14 @@
                     'прибрежная зона) показывает изображения для каждого ' +
                     'пока.' + this.getGitHubLink('imgPokemonsOnBattle') +
                     '<span style="margin-left: 15px;">идея: ' +
-                    '<a href="http://www.ganjawars.ru/info.php?id=436429" ' +
+                    '<a href="http://www.gwars.ru/info.php?id=436429" ' +
                     'style="font-weight: bold;" target="_blank">Buger_man</a>' +
                     '</span>', '51'],
                 ['Таймер для боев за порты', 'Вывод точного/оставшегося ' +
                     'времени до боя за порт в верхней части страницы.' +
                     this.getGitHubLink('portTimer') +
                     '<span style="margin-left: 15px;">идея: ' +
-                    '<a href="http://www.ganjawars.ru/info.php?id=205482" ' +
+                    '<a href="http://www.gwars.ru/info.php?id=205482" ' +
                     'style="font-weight: bold;" target="_blank">Enemy333</a>' +
                     '</span>', '36']],
 
@@ -1273,13 +1272,13 @@
                     'форма подачи объявления на ДО для данного предмета.' +
                     this.getGitHubLink('buyHightech'), '19'],
                 ['Быстрый поиск на ДО', 'Быстрый поиск предметов на ' +
-                    '<a target="_blank" href="http://www.ganjawars.ru' +
+                    '<a target="_blank" href="http://www.gwars.ru' +
                     '/market.php">доске объявлений</a>. Поиск осуществляется ' +
                     'по мере ввода названия предмета.' +
                     this.getGitHubLink('doFilter'), '21'],
                 ['Фильтр ресурсов на странице экономической статистики',
                     'Фильтр ресурсов на <a target="_blank" ' +
-                    'href="http://www.ganjawars.ru/stats.php">странице ' +
+                    'href="http://www.gwars.ru/stats.php">странице ' +
                     'экономической статистики</a><br><br>Введите ' +
                     'названия ресурсов через запятую, которые будут ' +
                     'отображаться на вышеуказанной странице. Например: ' +
@@ -1291,7 +1290,7 @@
                     'вооружения добавляет ссылки на вооружение High-tech' +
                     this.getGitHubLink('linksToHighTech') +
                     '<span style="margin-left: 15px;">идея: ' +
-                    '<a href="http://www.ganjawars.ru/info.php?id=436429" ' +
+                    '<a href="http://www.gwars.ru/info.php?id=436429" ' +
                     'style="font-weight: bold;" target="_blank">Buger_man' +
                     '</a></span>', '27'],
                 ['Форма аренды и продажи', 'При передаче предмета в аренду ' +
@@ -1376,7 +1375,7 @@
          * @method checkScriptUpdate
          */
         this.checkScriptUpdate = function () {
-            var url = 'http://www.ganjawars.ru/info.php?id=2095458';
+            var url = 'http://www.gwars.ru/info.php?id=2095458';
             new AjaxQuery().init(url, 'GET', null, true, function (xml) {
                 var ver = /cpingw:(\d+\.\d+-\d+)/.exec(xml.responseText);
                 if (ver && ver[1] !== general.version) {
@@ -1424,8 +1423,9 @@
          * @method init
          */
         this.init = function () {
+            general.doc.title = 'CPIGW :: Настройки';
             var tdStyle = ' style="background-color: #E0FFE0;">',
-                gwImgUrl = 'http://images.ganjawars.ru/i/home/',
+                gwImgUrl = 'http://images.gwars.ru/i/home/',
                 str = '<table style="width: 100%; box-shadow: 8px 10px 7px ' +
                     'rgba(122,122,122,0.5);"><tr><td ' + tdStyle +
                     '<table style="width: 100%;"><tr><td style="width: 23%;">' +
@@ -1450,7 +1450,7 @@
                     '<td style="font-size: 7pt; width: 35%; text-align: ' +
                     'right;"><a target="_blank" style="opacity: 0.5; ' +
                     'text-decoration: none; font-size: 7pt;" ' +
-                    'href="http://www.ganjawars.ru/info.php?id=2095458">' +
+                    'href="http://www.gwars.ru/info.php?id=2095458">' +
                     '<span style="color: #F90332;">developed by</span> ' +
                     '<span style="color: #014305; font-weight: 700;">' +
                     'MyRequiem©</span></a> ' + general.version +
@@ -3936,7 +3936,7 @@
                         querySelector('br+a[href*="/warlog.php?bid="]');
 
                 if (linkFullLog) {
-                    var url = 'http://www.ganjawars.ru/b0/btk.php?bid=' +
+                    var url = 'http://www.gwars.ru/b0/btk.php?bid=' +
                         (/\?bid=(\d+)/.exec(linkFullLog.href)[1]) +
                         '&turn=-1&lines=-1';
 
@@ -4089,7 +4089,7 @@
             }
 
             if (general.getData(5)[0]) {
-                if (/www\.ganjawars\.ru\/b0\//.test(general.loc)) {
+                if (/www\.gwars\.ru\/b0\//.test(general.loc)) {
                     general.root.setInterval(this.setHighlighting, 1000);
                 } else if (/\/usertransfers\.php/.test(general.loc)) {
                     general.root.setTimeout(this.setHighlighting, 300);
@@ -4153,18 +4153,18 @@
          * @return  {String}
          */
         this.addContent = function (sms, gren, broken) {
-            var host = ' [<a href="http://www.ganjawars.ru/',
+            var host = ' [<a href="http://www.gwars.ru/',
                 stData = general.getData(6),
                 str = '';
 
             if (sms[0] && stData[3]) {    // письмо
-                str += host + 'sms.php"><img src="http://www.ganjawars.ru/i/' +
+                str += host + 'sms.php"><img src="http://www.gwars.ru/i/' +
                     'sms.gif" title="' + sms[0].getAttribute('title') +
                     '" alt="Вам письмо"></a>]';
             }
 
             if (sms[1] && stData[3]) {    // посылка
-                str += host + 'items.php"><img src="http://www.ganjawars.ru/' +
+                str += host + 'items.php"><img src="http://www.gwars.ru/' +
                     'i/woodbox.gif" title="Пришла посылка!" ' +
                     'alt="посылка"></a>]';
             }
@@ -4188,7 +4188,7 @@
          */
         this.startWorkPostGrenadesBroken = function (_this) {
             var ajaxQuery = new AjaxQuery(),
-                url = 'http://www.ganjawars.ru/me.php';
+                url = 'http://www.gwars.ru/me.php';
 
             _this = _this || this;
             ajaxQuery.init(url, 'GET', null, true, function (xml) {
@@ -4376,7 +4376,7 @@
             this.divResult.innerHTML = '<img src="' + general.imgPath +
                 'preloader.gif' + '">';
 
-            var url = 'http://www.ganjawars.ru/info.php?id=' + general.myID,
+            var url = 'http://www.gwars.ru/info.php?id=' + general.myID,
                 idElem = _this.id,
                 ths = this;
 
@@ -4546,7 +4546,7 @@
 
                     // noinspection JSUndefinedPropertyAssignment
                     b[i].innerHTML = '<a target="_blank" style="' + linkStyle +
-                        '"  href="http://www.ganjawars.ru/search.php?key=' +
+                        '"  href="http://www.gwars.ru/search.php?key=' +
                         nik + '">' + nik + '</a>';
                 }
 
@@ -5131,7 +5131,7 @@
                 this.farmLink = general.doc.createElement('a');
                 this.farmLink.setAttribute('style', 'color: #0000FF; ' +
                         'text-decoration: none;');
-                this.farmLink.href = 'http://www.ganjawars.ru/ferma.php?id=' +
+                this.farmLink.href = 'http://www.gwars.ru/ferma.php?id=' +
                     general.myID;
                 this.farmLink.setAttribute('target', '_blank');
                 // noinspection JSCheckFunctionSignatures
@@ -5287,7 +5287,7 @@
                 general.$('imgSoundNPC').setAttribute('checkscan', 'yes');
             }
 
-            var url = 'http://www.ganjawars.ru/npc.php?id=' + npcs[ind],
+            var url = 'http://www.gwars.ru/npc.php?id=' + npcs[ind],
                 _this = this,
                 tr,
                 td;
@@ -5323,7 +5323,7 @@
 
                 general.$('dataNPC').lastElementChild.innerHTML = '<td>' +
                     '<a target="_blank" href="' + syndLink.href +
-                    '"><img src="http://images.ganjawars.ru/img/synds/' +
+                    '"><img src="http://images.gwars.ru/img/synds/' +
                     (/\?id=(\d+)/.exec(syndLink.href)[1]) + '.gif" />' +
                     '</a></td><td><a target="_blank" href="' + url +
                     '" style="font-size: 8pt;">' + nameNPC + '</a></td>' +
@@ -5412,7 +5412,7 @@
                 '<td><img src="' + general.imgPath + 'preloader.gif" />' +
                 '</td></tr>';
 
-            var url = 'http://www.ganjawars.ru/npc.php?id=' +
+            var url = 'http://www.gwars.ru/npc.php?id=' +
                     general.getData(10)[1] + '&talk=1',
                 _this = this;
 
@@ -5437,7 +5437,7 @@
         this.init = function () {
             var stData = general.getData(10);
 
-            if (/www\.ganjawars\.ru\/me(\/|\.php)/.test(general.loc)) {
+            if (/www\.gwars\.ru\/me(\/|\.php)/.test(general.loc)) {
                 var mainDiv = general.doc.createElement('div'),
                     target = general.doc.querySelector('td[rowspan="3"]' +
                         '[valign="top"][bgcolor="#e9ffe9"]>' +
@@ -5677,7 +5677,7 @@
             if (val !== '0') {
                 var i;
                 for (i = 3; i < 7; i++) {
-                    str += '<img src="http://images.ganjawars.ru/' +
+                    str += '<img src="http://images.gwars.ru/' +
                         'img/ferma/' + val + i + '.png" />';
                 }
 
@@ -6151,7 +6151,7 @@
                     ['<td class="center"><a target="_blank" id="op" ' +
                         'href="/info.php?id=2095458"><span id="c1">' +
                         'developed by</span> <span id="c2">MyRequiem&#169;' +
-                        '</span><br><span id="c3">for GanjaWars fighters' +
+                        '</span><br><span id="c3">for GWars fighters' +
                         '</span></a></td><td class="center" id="exit" ' +
                         'style="cursor: pointer;"><img src="' + this.imgPath +
                         'hide.gif" alt="Закрыть" title="Закрыть"></td>',
@@ -6226,7 +6226,7 @@
                 ], prnt: 'battles_1', arrow: 'battles_1_group', offsetY: -15},
                 {divm: 0, lines: [
                     ['ГосЭнергоАтом', '/info.realty.php?id=2'],
-                    ['Статистика GanjaWars.Ru от vasena',
+                    ['Статистика GWars.ru от vasena',
                         'http://gw-utils.ru/'],
                     ['GWTools от Bas', 'https://www.gwtools.ru/']
                 ], prnt: 'gw_menu', arrow: 'real_estate'},
@@ -6460,11 +6460,11 @@
                 {divm: 0, lines: [
                     ['Гранаты', '/sshop.php?tshop=grenades'],
                     ['Чипы на урон',
-                        'http://www.ganjawars.ru/sshop.php?tshop=chipsets'],
+                        'http://www.gwars.ru/sshop.php?tshop=chipsets'],
                     ['Чипы защитные',
-                        'http://www.ganjawars.ru/sshop.php?tshop=chipsets1'],
+                        'http://www.gwars.ru/sshop.php?tshop=chipsets1'],
                     ['Чипы специальные',
-                        'http://www.ganjawars.ru/sshop.php?tshop=chipsets2'],
+                        'http://www.gwars.ru/sshop.php?tshop=chipsets2'],
                     ['Турели', '/sshop.php?tshop=turrels']
                 ], prnt: 'shop_1', arrow: 'shop_synd', offsetY: -15},
                 {divm: 'pay_grenades_1', lines: [
@@ -6912,7 +6912,7 @@
                     this.showReault();
                 }
             } else {
-                var url = 'http://www.ganjawars.ru/info.warstats.php?id=' +
+                var url = 'http://www.gwars.ru/info.warstats.php?id=' +
                     this.persId + '&page_id=' + ind,
                     _this = this;
 
@@ -7307,11 +7307,11 @@
                     descrTd[i].innerHTML += ' <span style="font-weight: ' +
                         'bold; margin-left: 7px;"> Создать объявление: ' +
                         '</span><a target="_blank" style="color: #0000FF;" ' +
-                        'href="http://www.ganjawars.ru/market-p.php?' +
+                        'href="http://www.gwars.ru/market-p.php?' +
                         'stage=2&item_id=' + id + '&action_id=2&p=' + price +
                         '&s=' + strength + '">[Купить]' + '</a> ' +
                         '<a target="_blank" style="color: #990000;" href=' +
-                        '"http://www.ganjawars.ru/market-p.php?' +
+                        '"http://www.gwars.ru/market-p.php?' +
                         'stage=2&item_id=' + id + '&action_id=1&p=' + price +
                         '&s=' + strength + '">[Продать]</a>';
                 }
@@ -7346,7 +7346,7 @@
 
                 // срок размещения 3 дня
                 general.doc.
-                    querySelector('select[name="date_len"]').value = '3';
+                    querySelector('select[name="date_len"]').value = '7';
             }
         };
     };
@@ -7463,7 +7463,7 @@
                 itemId = sel.value;
 
             if (itemId !== '#') {
-                a.href = 'http://www.ganjawars.ru/item.php?item_id=' + itemId;
+                a.href = 'http://www.gwars.ru/item.php?item_id=' + itemId;
                 a.setAttribute('target', '_blank');
             } else {
                 a.href = itemId;
@@ -7814,7 +7814,7 @@
             var link;
 
             if (/\/me(\/|\.php)/.test(general.loc)) {
-                link = general.doc.querySelector('[src$="images.ganjawars.' +
+                link = general.doc.querySelector('[src$="images.gwars.' +
                         'ru/i/home/farm.gif"]').parentNode;
                 var lparent = link.parentNode;
                 lparent.removeChild(link.previousElementSibling);
@@ -7958,7 +7958,7 @@
 
             if (id2 !== null) {
                 counter.innerHTML = !id ? 'входящие...' : 'исходящие...';
-                url = 'http://www.ganjawars.ru/sms.php?page=' + id +
+                url = 'http://www.gwars.ru/sms.php?page=' + id +
                     '&page_id1=' + (!id ? id1 : 0) + '&page_id2=' +
                     (id ? id1 : 0) + '&search=' + this.uncodeNik;
             } else {
@@ -8572,7 +8572,7 @@
                     sector = spanContent.querySelector(cssSelector).innerHTML;
                     general.root.setTimeout(function () {
                         // на недвижимость перса
-                        _this.showSector('http://www.ganjawars.ru/' +
+                        _this.showSector('http://www.gwars.ru/' +
                             'info.realty.php?id=' + general.myID, sector);
                     }, 1000);
                 } else {
@@ -8617,7 +8617,7 @@
 
                 // если здоровье менее 80%
                 if (general.doc.querySelector('#hpheader>font')) {
-                    this.showSector('http://www.ganjawars.ru/info.php?id=' +
+                    this.showSector('http://www.gwars.ru/info.php?id=' +
                             general.myID, '');
                 }
             }
@@ -8647,7 +8647,7 @@
                     name = /вызван (.*)( \[\d+\])/.exec(last.innerHTML);
                     if (name) {
                         last.innerHTML = 'вызван <a target="_blank" ' +
-                            'href="http://www.ganjawars.ru/search.php?key=' +
+                            'href="http://www.gwars.ru/search.php?key=' +
                             name[1] + '" style="text-decoration: none; ' +
                             'font-weight: bold;">' + name[1] + '</a>' + name[2];
                     }
@@ -9115,7 +9115,7 @@
 
             if (persId) {
                 tdLink.innerHTML = '<a target="_blank" style="color: ' +
-                    '#008000;" href="http://www.ganjawars.ru/info.php?id=' +
+                    '#008000;" href="http://www.gwars.ru/info.php?id=' +
                     persId + '">' + stData[0] + '</a>';
                 tdLink.style.display = '';
                 butReset.disabled = false;
@@ -9155,7 +9155,7 @@
             }
 
             this.showHidePreloader();
-            var url = 'http://www.ganjawars.ru/search.php?key=' +
+            var url = 'http://www.gwars.ru/search.php?key=' +
                     new UrlEncode().init(persNik),
                 _this = this;
 
@@ -9226,7 +9226,7 @@
                 return;
             }
 
-            var url = 'http://www.ganjawars.ru/syndicate.php?id=' + stData[1] +
+            var url = 'http://www.gwars.ru/syndicate.php?id=' + stData[1] +
                     '&page=online',
                 persNik = stData[0],
                 persId = stData[6],
@@ -9870,7 +9870,7 @@
          * @param   {String}    url
          */
         this.getLastDate = function (url) {
-            var _url = url || 'http://www.ganjawars.ru/syndicate.log.php?id=' +
+            var _url = url || 'http://www.gwars.ru/syndicate.log.php?id=' +
                     this.syndId + '&ptslog=1&page_id=100500',
                 counter = general.$('analizePTSCounter'),
                 _this = this;
@@ -9945,7 +9945,7 @@
                     this.imgPath + 'rank.png" title="Выдача званий" ' +
                     'alt="Звания"></td><td class="wb1"><img id="sign" ' +
                     'style="cursor: pointer; margin: 2px;" ' +
-                    'src="http://images.ganjawars.ru/img/synds/' + this.syndId +
+                    'src="http://images.gwars.ru/img/synds/' + this.syndId +
                     '.gif" title="Выдача знаков" alt="Знаки"></td>' +
                     '<td class="wb1"><span id="all" style="color: #008000; ' +
                     'cursor: pointer;">Всего</span></td></tr>',
@@ -9973,7 +9973,7 @@
                 all = setPoints(this.pers[i].all, '\'', false);
 
                 str += '<tr><td class="wb2"><a target="_blank" ' +
-                    'href="http://www.ganjawars.ru/search.php?key=' + name +
+                    'href="http://www.gwars.ru/search.php?key=' + name +
                     '" style="text-decoration: none; font-weight: bold; ' +
                     'color: #004400;">' + name + '</a></td><td class="wb1">' +
                     gren + '</td><td class="wb1">' + chip + '</td>' +
@@ -10131,7 +10131,7 @@
          */
         this.parsePTSProtocols = function (ind) {
             general.$('analizePTSCounter').innerHTML = ind;
-            var url = 'http://www.ganjawars.ru/syndicate.log.php?id=' +
+            var url = 'http://www.gwars.ru/syndicate.log.php?id=' +
                     this.syndId + '&ptslog=1&page_id=' + ind,
                 _this = this;
 
@@ -10447,7 +10447,7 @@
          * @param   {String}    url
          */
         this.getLastDate = function (url) {
-            var _url = url || 'http://www.ganjawars.ru/syndicate.log.php?id=' +
+            var _url = url || 'http://www.gwars.ru/syndicate.log.php?id=' +
                     this.syndId + '&page_id=100500',
                 counter = general.$('syndAnalyseCounter'),
                 _this = this;
@@ -10682,7 +10682,7 @@
 
             var str4 = '<tr><td colspan="2" class="wb"><a target="_blank" ' +
                     'style="text-decoration: none; font-weight: bold; color: ' +
-                    '#004400;" href="http://www.ganjawars.ru/search.php?key=',
+                    '#004400;" href="http://www.gwars.ru/search.php?key=',
                 strDismissedSynd = '',
                 strTakenSynd = '';
 
@@ -10762,7 +10762,7 @@
          */
         this.parseSyndProtocols = function (ind) {
             general.$('syndAnalyseCounter').innerHTML = ind;
-            var url = 'http://www.ganjawars.ru/syndicate.log.php?id=' +
+            var url = 'http://www.gwars.ru/syndicate.log.php?id=' +
                     this.syndId + '&page_id=' + ind,
                 _this = this;
 
@@ -11006,7 +11006,7 @@
                 'preloader.gif' + '">';
 
             var stData = general.getData(26),
-                url = 'http://www.ganjawars.ru/info.ach.php?id=' + general.myID;
+                url = 'http://www.gwars.ru/info.ach.php?id=' + general.myID;
 
             if (!stData[0]) {
                 this.divResult.innerHTML = 'Не выбрано ни одной ачивки на ' +
@@ -11149,7 +11149,7 @@
                         nobrs[i].innerHTML += '<a target="_blank" ' +
                             'href="/sms-create.php?mailto=' +
                             pLink.firstElementChild.innerHTML + '"><img ' +
-                            'src="http://images.ganjawars.ru/i/sms.gif" /></a>';
+                            'src="http://images.gwars.ru/i/sms.gif" /></a>';
                     }
                 }
 
@@ -11181,7 +11181,7 @@
                 spanContent.innerHTML = xml.responseText;
 
                 target.innerHTML = '<a href="' + url + '">' +
-                    '<img src="http://images.ganjawars.ru/img/synds/' +
+                    '<img src="http://images.gwars.ru/img/synds/' +
                     (/\?id=(\d+)/.exec(url)[1]) + '.gif" /></a> (' +
                     (/<b>(\d+) бойцов онлайн<\/b>/.
                         exec(spanContent.innerHTML)[1]) + ')<br>';
@@ -11210,9 +11210,9 @@
 
                         nobr.appendChild(pers);
                         nobr.innerHTML += ' <a target="_blank" ' +
-                            'href="http://www.ganjawars.ru/sms-create.php?' +
+                            'href="http://www.gwars.ru/sms-create.php?' +
                             'mailto=' + pers.firstElementChild.innerHTML +
-                            '"><img src="http://images.ganjawars.ru/i/' +
+                            '"><img src="http://images.gwars.ru/i/' +
                             'sms.gif" /></a>';
 
                         target.appendChild(nobr);
@@ -11775,14 +11775,14 @@
             var tableContent = table.innerHTML,
                 imgSettins = general.doc.createElement('img');
 
-            imgSettins.src = 'http://images.ganjawars.ru/i/home/properties.gif';
+            imgSettins.src = 'http://images.gwars.ru/i/home/properties.gif';
             imgSettins.setAttribute('style', 'cursor: pointer; ' +
                     'margin-left: 10px;');
             imgSettins.setAttribute('title', 'Настройки');
 
             // кнопка сброса всех данных ветки
             var imgReset = general.doc.createElement('img');
-            imgReset.src = 'http://images.ganjawars.ru/i/home/questlog.gif';
+            imgReset.src = 'http://images.gwars.ru/i/home/questlog.gif';
             imgReset.setAttribute('style', 'cursor: pointer; ' +
                     'margin-left: 10px;');
             imgReset.setAttribute('title', 'Сбросить все данные ветки');
@@ -11828,7 +11828,7 @@
 
                 for (i = 0; i < themes.length; i++) {
                     str += '<tr><td><a target="_blank" ' +
-                        'href="http://www.ganjawars.ru/threads.php?fid=' +
+                        'href="http://www.gwars.ru/threads.php?fid=' +
                         themes[i][1] + '">' + themes[i][0] + '</a></td>' +
                         '<td><input id="showForum_' + i + '" ' +
                         'type="checkbox"' + (f[i] ? ' checked' : '') +
@@ -11856,7 +11856,7 @@
                     'bold;"><< Назад</span></td></tr><tr><td colspan="2" ' +
                     'style="font-weight: bold; padding-top: 10px;">' +
                     'Показывать ветки форума на <a target="_blank" ' +
-                    'href="http://www.ganjawars.ru/forum.php">этой странице' +
+                    'href="http://www.gwars.ru/forum.php">этой странице' +
                     '</a>:</td></tr>' + str + '</table></td></tr>';
 
                 // чекбокс "Отмечать закрытые"
@@ -12282,7 +12282,7 @@
          * @property questURL
          * @type {String}
          */
-        this.questURL = 'http://www.ganjawars.ru/questlog.php?id=';
+        this.questURL = 'http://www.gwars.ru/questlog.php?id=';
         /**
          * @property persID
          * @type {String}
@@ -12319,7 +12319,7 @@
                     '</span> ' + questDescr + '<span style="font-weight: ' +
                     'bold; margin-left: 10px;"><a target="_blank" ' +
                     'style="color:#007700; text-decoration: none;" ' +
-                    'href="http://www.ganjawars.ru/help/index.php?' +
+                    'href="http://www.gwars.ru/help/index.php?' +
                     'sid=102&pid=45">Накоплено</a>:</span> ' + acQuests;
 
                 var target = general.doc.querySelector('#namespan');
@@ -12736,7 +12736,7 @@
                 return;
             }
 
-            this.url = 'http://www.ganjawars.ru/object.php?id=11712&' +
+            this.url = 'http://www.gwars.ru/object.php?id=11712&' +
                 'page=oncoming1&sid=' + stData.syndid;
 
             // сегодня запрос не делали, делаем не ранее 7 утра.
@@ -12804,7 +12804,7 @@
          * @param   {int}   ind
          */
         this.scan = function (ind) {
-            var url = 'http://www.ganjawars.ru/srating.php?rid=0&page_id=' +
+            var url = 'http://www.gwars.ru/srating.php?rid=0&page_id=' +
                     ind,
                 pageCounter = general.$('pageCounter'),
                 _this = this;
@@ -12820,7 +12820,7 @@
                 if (!tbl || !tbl.
                         querySelector('td>a[href*="/syndicate.php?id="]')) {
                     pageCounter.innerHTML = 'синдикат в <a target="_blank" ' +
-                        'href="http://www.ganjawars.ru/srating.php?rid=0&' +
+                        'href="http://www.gwars.ru/srating.php?rid=0&' +
                         'page_id=0">рейтинге</a> не найден';
                     _this.preScan(false);
                     return;
@@ -12919,10 +12919,8 @@
 
     initScript = general.getInitScript();
 
-    // не в игре, на ganjafoto или ganjafile меняем фавикон
-    if (general.doc.querySelector('a[href*="/regform.php"]') ||
-            /ganjafoto\.ru|ganjafile\.ru|photos.ganjawars.ru/.
-                test(general.loc)) {
+    // на ganjafoto или ganjafile меняем фавикон
+    if (/ganjafoto\.ru|ganjafile\.ru|photos\.gwars\.ru/.test(general.loc)) {
         try {
             new NotGiveCannabisLeaf().init();
         } catch (e) {
@@ -12932,7 +12930,7 @@
         return;
     }
 
-    // везде на www.ganjawars.ru
+    // везде на www.gwars.ru
     if (initScript[0]) {
         try {
             new NotGiveCannabisLeaf().init();

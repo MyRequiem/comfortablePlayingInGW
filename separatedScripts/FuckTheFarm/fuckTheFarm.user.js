@@ -5,13 +5,13 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FuckTheFarm/fuckTheFarm.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FuckTheFarm/fuckTheFarm.user.js
-// @include         http://www.ganjawars.ru/me.php*
-// @include         http://www.ganjawars.ru/me/*
-// @include         http://www.ganjawars.ru/info.php?*
+// @include         http://www.gwars.ru/me.php*
+// @include         http://www.gwars.ru/me/*
+// @include         http://www.gwars.ru/info.php?*
 // @grant           none
 // @license         MIT
-// @version         2.03-250917
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.04-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -80,7 +80,7 @@
             var link;
 
             if (/\/me(\/|\.php)/.test(general.loc)) {
-                link = general.doc.querySelector('[src$="images.ganjawars.' +
+                link = general.doc.querySelector('[src$="images.gwars.' +
                         'ru/i/home/farm.gif"]').parentNode;
                 var lparent = link.parentNode;
                 lparent.removeChild(link.previousElementSibling);

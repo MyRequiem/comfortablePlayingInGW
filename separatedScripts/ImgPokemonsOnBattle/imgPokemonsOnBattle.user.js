@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ImgPokemonsOnBattle/imgPokemonsOnBattle.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ImgPokemonsOnBattle/imgPokemonsOnBattle.user.js
-// @include         http://www.ganjawars.ru/b0/*
-// @include         http://www.ganjawars.ru/warlog.php*
+// @include         http://www.gwars.ru/b0/*
+// @include         http://www.gwars.ru/warlog.php*
 // @grant           none
 // @license         MIT
-// @version         2.14-240718
+// @version         2.15-170918
 // @author          MyRequiem, идея Buger_man
 // ==/UserScript==
 

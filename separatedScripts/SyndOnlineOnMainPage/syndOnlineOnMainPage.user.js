@@ -5,12 +5,12 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndOnlineOnMainPage/syndOnlineOnMainPage.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndOnlineOnMainPage/syndOnlineOnMainPage.user.js
-// @include         http://www.ganjawars.ru/me.php*
-// @include         http://www.ganjawars.ru/me/*
+// @include         http://www.gwars.ru/me.php*
+// @include         http://www.gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.22-100418
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.23-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -149,7 +149,7 @@
                         nobrs[i].innerHTML += '<a target="_blank" ' +
                             'href="/sms-create.php?mailto=' +
                             pLink.firstElementChild.innerHTML + '"><img ' +
-                            'src="http://images.ganjawars.ru/i/sms.gif" /></a>';
+                            'src="http://images.gwars.ru/i/sms.gif" /></a>';
                     }
                 }
 
@@ -181,7 +181,7 @@
                 spanContent.innerHTML = xml.responseText;
 
                 target.innerHTML = '<a href="' + url + '">' +
-                    '<img src="http://images.ganjawars.ru/img/synds/' +
+                    '<img src="http://images.gwars.ru/img/synds/' +
                     (/\?id=(\d+)/.exec(url)[1]) + '.gif" /></a> (' +
                     (/<b>(\d+) бойцов онлайн<\/b>/.
                         exec(spanContent.innerHTML)[1]) + ')<br>';
@@ -210,9 +210,9 @@
 
                         nobr.appendChild(pers);
                         nobr.innerHTML += ' <a target="_blank" ' +
-                            'href="http://www.ganjawars.ru/sms-create.php?' +
+                            'href="http://www.gwars.ru/sms-create.php?' +
                             'mailto=' + pers.firstElementChild.innerHTML +
-                            '"><img src="http://images.ganjawars.ru/i/' +
+                            '"><img src="http://images.gwars.ru/i/' +
                             'sms.gif" /></a>';
 
                         target.appendChild(nobr);

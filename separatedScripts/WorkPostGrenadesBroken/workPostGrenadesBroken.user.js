@@ -5,15 +5,15 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.user.js
-// @include         http://www.ganjawars.ru/me.php*
-// @include         http://www.ganjawars.ru/me/*
-// @include         http://www.ganjawars.ru/warlog.php?bid=*
-// @include         http://www.ganjawars.ru/warlist.php*
-// @include         http://www.ganjawars.ru/wargroup.php*
+// @include         http://www.gwars.ru/me.php*
+// @include         http://www.gwars.ru/me/*
+// @include         http://www.gwars.ru/warlog.php?bid=*
+// @include         http://www.gwars.ru/warlist.php*
+// @include         http://www.gwars.ru/wargroup.php*
 // @grant           none
 // @license         MIT
-// @version         2.35-100418
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.36-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -270,17 +270,17 @@
          * @return  {String}
          */
         this.addContent = function (sms, gren, broken) {
-            var host = ' [<a href="http://www.ganjawars.ru/',
+            var host = ' [<a href="http://www.gwars.ru/',
                 str = '';
 
             if (sms[0] && showSms) {    // письмо
-                str += host + 'sms.php"><img src="http://www.ganjawars.ru/i/' +
+                str += host + 'sms.php"><img src="http://www.gwars.ru/i/' +
                     'sms.gif" title="' + sms[0].getAttribute('title') +
                     '" alt="Вам письмо"></a>]';
             }
 
             if (sms[1] && showSms) {    // посылка
-                str += host + 'items.php"><img src="http://www.ganjawars.ru/' +
+                str += host + 'items.php"><img src="http://www.gwars.ru/' +
                     'i/woodbox.gif" title="Пришла посылка!" ' +
                     'alt="посылка"></a>]';
             }
@@ -306,7 +306,7 @@
             var ajaxQuery = new AjaxQuery();
 
             _this = _this || this;
-            ajaxQuery.init('http://www.ganjawars.ru/me.php', function (xml) {
+            ajaxQuery.init('http://www.gwars.ru/me.php', function (xml) {
                 var spanContent = general.doc.createElement('span');
                 spanContent.innerHTML = xml.responseText;
                 _this.wpgbContainer.innerHTML = '';

@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GwMenu/gwMenu.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GwMenu/gwMenu.user.js
-// @include         http://www.ganjawars.ru*
+// @include         http://www.gwars.ru*
 // @grant           none
 // @license         MIT
-// @version         2.35-120718
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.36-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -364,7 +364,7 @@
                     ['<td class="center"><a target="_blank" id="op" ' +
                         'href="/info.php?id=2095458"><span id="c1">' +
                         'developed by</span> <span id="c2">MyRequiem&#169;' +
-                        '</span><br><span id="c3">for GanjaWars fighters' +
+                        '</span><br><span id="c3">for GWars fighters' +
                         '</span></a></td><td class="center" id="exit" ' +
                         'style="cursor: pointer;"><img src="' + this.imgPath +
                         'hide.gif" alt="Закрыть" title="Закрыть"></td>',
@@ -442,7 +442,7 @@
                 ], prnt: 'battles_1', arrow: 'battles_1_group', offsetY: -15},
                 {divm: 0, lines: [
                     ['ГосЭнергоАтом', '/info.realty.php?id=2'],
-                    ['Статистика GanjaWars.Ru от vasena',
+                    ['Статистика GWars.ru от vasena',
                         'http://gw-utils.ru/'],
                     ['GWTools от Bas', 'https://www.gwtools.ru/']
                 ], prnt: 'gw_menu', arrow: 'real_estate'},
@@ -677,11 +677,11 @@
                 {divm: 0, lines: [
                     ['Гранаты', '/sshop.php?tshop=grenades'],
                     ['Чипы на урон',
-                        'http://www.ganjawars.ru/sshop.php?tshop=chipsets'],
+                        'http://www.gwars.ru/sshop.php?tshop=chipsets'],
                     ['Чипы защитные',
-                        'http://www.ganjawars.ru/sshop.php?tshop=chipsets1'],
+                        'http://www.gwars.ru/sshop.php?tshop=chipsets1'],
                     ['Чипы специальные',
-                        'http://www.ganjawars.ru/sshop.php?tshop=chipsets2'],
+                        'http://www.gwars.ru/sshop.php?tshop=chipsets2'],
                     ['Турели', '/sshop.php?tshop=turrels']
                 ], prnt: 'shop_1', arrow: 'shop_synd', offsetY: -15},
                 {divm: 'pay_grenades_1', lines: [

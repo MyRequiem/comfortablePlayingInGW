@@ -1,7 +1,7 @@
 При просмотре входящего/исходящего сообщения устанавливает ссылку для вывода предыдущей переписки с персонажем.
 <br>
 <br>
-Версия: 2.05-121216
+Версия: 2.06-170918
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/HistorySms/historySms.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/HistorySms/historySms.user.js.zip)
 <br>

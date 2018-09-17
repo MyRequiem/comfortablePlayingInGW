@@ -5,9 +5,9 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ComfortableLinksForFarm/comfortableLinksForFarm.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ComfortableLinksForFarm/comfortableLinksForFarm.user.js
-// @include         http://www.ganjawars.ru/ferma.php*
+// @include         http://www.gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.14-280718
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.15-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==

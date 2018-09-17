@@ -1,3 +1,9 @@
+2018-09-17[1.107-170918]
+--------------------------------------
+	- В связи с изменением адреса и названия игры все скрипты пропатчены для
+		работы на домене gwars.ru
+
+
 2018-09-14[1.106-140918]
 --------------------------------------
 	- Исправлены скрипты:
@@ -87,7 +93,7 @@
 	- Обновлен скрипт:
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
 		Ссылка "Накоплено" ведет на страницу описания ежедневных мини-квестов.
-		[http://www.ganjawars.ru/help/index.php?sid=102&pid=45]
+		[http://www.gwars.ru/help/index.php?sid=102&pid=45]
 
 
 2018-04-11[1.93-110418]
@@ -100,7 +106,7 @@
 2018-03-26[1.92-260318]
 --------------------------------------
 	- Изменились страницы боев и страницы наблюдения за боем
-		(новость: http://www.ganjawars.ru/messages.php?fid=1&tid=1451)
+		(новость: http://www.gwars.ru/messages.php?fid=1&tid=1451)
 		В скрипте AdvBattleAll удалены порядковые номера персонажей
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
 		а так же исправлен скрипт:
@@ -114,7 +120,7 @@
 	- Исправлены настройки скрипта:
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvForum
 		(со страницы списка форумов удалена ссылка на форум "Тотализатор"
-		[http://www.ganjawars.ru/threads.php?fid=5])
+		[http://www.gwars.ru/threads.php?fid=5])
 
 
 2018-03-20[1.90-200318]
@@ -125,7 +131,7 @@
 
 2018-03-12[1.89-120318]
 --------------------------------------
-	- в связи с выходом новости http://www.ganjawars.ru/messages.php?fid=1&tid=1445
+	- в связи с выходом новости http://www.gwars.ru/messages.php?fid=1&tid=1445
 		"В общих групповых боях теперь разрешен только симметричный формат
 		заявки: ограничения по количеству и боевым уровням бойцов теперь будет
 		одинаковым для обеих сторон."
@@ -141,7 +147,7 @@
 	- В скрипт
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BonusInfo
 		добавлен новый бонус: "Бонус точности"
-		(ссылка на новость: http://www.ganjawars.ru/messages.php?fid=1&tid=1443)
+		(ссылка на новость: http://www.gwars.ru/messages.php?fid=1&tid=1443)
 
 
 2018-02-18[1.87-180218]
@@ -182,7 +188,7 @@
 			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AllPlantsOnFarm
 
 	- В связи с изменениями главной страницы персонажа исправлены скрипты:
-		(ссылка на новость: http://www.ganjawars.ru/messages.php?fid=1&tid=1423)
+		(ссылка на новость: http://www.gwars.ru/messages.php?fid=1&tid=1423)
 			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SkillCounters
 			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/TimeNpc
 			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FixSkills
@@ -399,7 +405,7 @@
 2016-06-06[1.43-060616]
 --------------------------------------
 	В связи с выходом новости
-	http://www.ganjawars.ru/messages.php?fid=1&tid=1333
+	http://www.gwars.ru/messages.php?fid=1&tid=1333
 	в скриптах были сделаны некоторые изменения:
 		- удален скрипт	AutRefreshLink: обновление страниц на ауте теперь
 			происходит при нажатии на пробел.

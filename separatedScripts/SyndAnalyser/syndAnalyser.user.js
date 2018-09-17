@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndAnalyser/syndAnalyser.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndAnalyser/syndAnalyser.user.js
-// @include         http://www.ganjawars.ru/syndicate.php?id=*
+// @include         http://www.gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.17-140918
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.18-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -303,7 +303,7 @@
          * @param   {String}    url
          */
         this.getLastDate = function (url) {
-            var _url = url || 'http://www.ganjawars.ru/syndicate.log.php?id=' +
+            var _url = url || 'http://www.gwars.ru/syndicate.log.php?id=' +
                     this.syndId + '&page_id=100500',
                 counter = general.$('syndAnalyseCounter'),
                 _this = this;
@@ -538,7 +538,7 @@
 
             var str4 = '<tr><td colspan="2" class="wb"><a target="_blank" ' +
                     'style="text-decoration: none; font-weight: bold; color: ' +
-                    '#004400;" href="http://www.ganjawars.ru/search.php?key=',
+                    '#004400;" href="http://www.gwars.ru/search.php?key=',
                 strDismissedSynd = '',
                 strTakenSynd = '';
 
@@ -618,7 +618,7 @@
          */
         this.parseSyndProtocols = function (ind) {
             general.$('syndAnalyseCounter').innerHTML = ind;
-            var url = 'http://www.ganjawars.ru/syndicate.log.php?id=' +
+            var url = 'http://www.gwars.ru/syndicate.log.php?id=' +
                     this.syndId + '&page_id=' + ind,
                 _this = this;
 

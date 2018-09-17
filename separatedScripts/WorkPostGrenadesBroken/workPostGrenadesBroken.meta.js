@@ -5,13 +5,13 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.user.js
-// @include         http://www.ganjawars.ru/me.php*
-// @include         http://www.ganjawars.ru/me/*
-// @include         http://www.ganjawars.ru/warlog.php?bid=*
-// @include         http://www.ganjawars.ru/warlist.php*
-// @include         http://www.ganjawars.ru/wargroup.php*
+// @include         http://www.gwars.ru/me.php*
+// @include         http://www.gwars.ru/me/*
+// @include         http://www.gwars.ru/warlog.php?bid=*
+// @include         http://www.gwars.ru/warlist.php*
+// @include         http://www.gwars.ru/wargroup.php*
 // @grant           none
 // @license         MIT
-// @version         2.35-100418
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         2.36-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
