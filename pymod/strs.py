@@ -11,11 +11,11 @@ def getstrings():
     """
     docstring
     """
-    mainreadme1 = '''![Ganjawars.ru](http://images.ganjawars.ru/img/\
+    mainreadme1 = '''![GWars.ru](http://images.gwars.ru/img/\
 apple144.png)
 
 #### Many buns for a comfortable game in \
-[Ganjawars.ru](http://www.ganjawars.ru/index.php)
+[GWars.ru](http://www.gwars.ru/index.php)
 ![OperaLogo]({1}imgs/operaLogo.png)
 ![FirefoxLogo]({1}imgs/firefoxLogo.png)
 ![ChromeLogo]({1}imgs/chromeLogo.png)
@@ -23,7 +23,7 @@ apple144.png)
 
 Версия: {0}
 
-Нашли ошибку? Пожалуйста, [сообщите](http://www.ganjawars.ru/\
+Нашли ошибку? Пожалуйста, [сообщите](http://www.gwars.ru/\
 sms-create.php?mailto=MyRequiem)
 
 * [Установить]({1}_comfortablePlayingInGW.user.js)
