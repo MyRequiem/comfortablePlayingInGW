@@ -29,19 +29,18 @@
             <pre class="prettyprint source linenums"><code>// ==UserScript==
 // @name            ComfortablePlayingInGW
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     Веселые плюшки для ganjawars.ru
+// @description     Веселые плюшки для www.gwars.ru
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js
-// @include         http://www.ganjawars.ru/*
-// @include         https://www.ganjawars.ru/*
-// @include         *ganjafoto.ru*
-// @include         *photos.ganjawars.ru*
-// @include         *ganjafile.ru*
+// @include         http://www.gwars.ru/*
+// @include         http://photos.gwars.ru*
+// @include         http://www.ganjafile.ru/*
+// @include         http://www.ganjafoto.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.100-280718
-// @author          MyRequiem [http://www.ganjawars.ru/info.php?id=2095458]
+// @version         1.107-170918
+// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 //     ______                ____           __        __    __
@@ -109,7 +108,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.100-280718';
+        this.version = '1.107-170918';
         /**
          * @property stString
          * @type {String}
@@ -176,9 +175,14 @@
                         [56] - Regeneration
                         [57] - ProfColor
                         [58] - CurrentQuestOnInfo
-                        [59] - CommonBattleFilter */
-                        '@||||||||||||||||||||||||||||||||||||||||' +
-                        '|||||||||||||||||||' +
+                        [59] - CommonBattleFilter
+                        [60] - CalculateSyndLvl */
+                        '@||||||||||' +
+                        '||||||||||' +
+                        '||||||||||' +
+                        '||||||||||' +
+                        '||||||||||' +
+                        '||||||||||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -212,12 +216,13 @@
                         [15] - кидаем грену или нет
                         [16] - подходим или нет
                         [17] - список выбора врагов (хэш: имя --> номер)
-                        [18] - чекбокс "Говорить только левую руку (для БЩ)"
+                        [18] - чекбокс "Говорить только левую руку"
                         [19] - общий навык
                         [20] - навык специалиста
                         [21] - звук при начале боя
-                        [22] - звук при начале хода */
-                        '@||||||||||||||||||||||' +
+                        [22] - звук при начале хода
+                        [23] - чекбокс "Говорить только правую руку" */
+                        '@|||||||||||||||||||||||' +
                     /*
                     [5]  - BlacklistHighlighting
                         [0]  - ID персов из ЧС ('id1,id2,...')
@@ -459,7 +464,7 @@
          * @property mainDomain
          * @type {Boolean}
          */
-        this.mainDomain = /\/\/www.ganjawars.ru\//.test(this.loc);
+        this.mainDomain = /\/\/www.gwars.ru\//.test(this.loc);
     };
 
     /**
@@ -826,7 +831,7 @@
                     'NotGiveCannabisLeaf/on.gif" width="15" height="15" ' +
                     'title="Настройки" alt="Настройки" />';
                 settingsButton.setAttribute('href',
-                        'http://www.ganjawars.ru/news.php?set=1');
+                        'http://www.gwars.ru/news.php?set=1');
                 target.insertBefore(settingsButton, target.firstChild);
             }
         };
@@ -995,7 +1000,7 @@
                     this.getGitHubLink('gwMenu'), '14'],
                 ['Логотип игры', 'На всех страницах заменяет логотип игры ' +
                     '&amp;nbsp;&amp;nbsp;&lt;img style="box-shadow: 2px 3px 3px ' +
-                    'rgba(122,122,122, 0.5);" src="http://images.ganjawars.' +
+                    'rgba(122,122,122, 0.5);" src="http://images.gwars.' +
                     'ru/i/gon.gif" /> &amp;nbsp;&amp;nbsp;на зеленый листик &amp;nbsp;' +
                     '&amp;nbsp;&lt;img style="box-shadow: 2px 3px 3px ' +
                     'rgba(122,122,122,0.5);" src="' + general.imgPath +
@@ -1009,7 +1014,7 @@
                     ' звук при достижении 100% HP' +
                     this.getGitHubLink('regeneration') +
                     '&lt;span style="margin-left: 15px;">идея: ' +
-                    '&lt;a href="http://www.ganjawars.ru/info.php?id=73295" ' +
+                    '&lt;a href="http://www.gwars.ru/info.php?id=73295" ' +
                     'style="font-weight: bold;" target="_blank">W_or_M' +
                     '&lt;/a>&lt;/span>', '56'],
                 ['Дополнение для панели навигации',
@@ -1021,7 +1026,7 @@
                     'игры. Делает неактивной ссылку принятия боя c ' +
                     'персонажем из черного списка в одиночных боях.&lt;br>&lt;br>' +
                     '&amp;nbsp;&amp;nbsp;&lt;a target="_blank" href=' +
-                    '"http://www.ganjawars.ru/home.friends.php">Запомнить ' +
+                    '"http://www.gwars.ru/home.friends.php">Запомнить ' +
                     'черный список&lt;/a> (скрипт должен быть включен)&lt;br>' +
                     '&lt;input type="checkbox" id="blockBLOne2One" disabled> ' +
                     'блокировать ссылку принятия боя с персонажем из ЧС в ' +
@@ -1080,7 +1085,7 @@
                     'выводится описание бонуса.' +
                     this.getGitHubLink('bonusInfo') +
                     '&lt;span style="margin-left: 15px;">идея: ' +
-                    '&lt;a href="http://www.ganjawars.ru/info.php?id=1845550" ' +
+                    '&lt;a href="http://www.gwars.ru/info.php?id=1845550" ' +
                     'style="font-weight: bold;" target="_blank">signed' +
                     '&lt;/a>&lt;/span>', '18'],
                 ['Новости и приглашения в синдикаты', 'Выделение и мигание ' +
@@ -1124,11 +1129,11 @@
                     '"Достижения" в верхней части страниц игры при нажатии ' +
                     'на которую выводятся Ваши ачивки, но только те, ' +
                     'которые были отмечены на &lt;a target="_blank" ' +
-                    'href="http://www.ganjawars.ru/info.ach.php?id=' +
+                    'href="http://www.gwars.ru/info.ach.php?id=' +
                     general.myID + '">странице достижений&lt;/a>.' +
                     this.getGitHubLink('showMyAchievements') +
                     '&lt;span style="margin-left: 15px;">идея: ' +
-                    '&lt;a href="http://www.ganjawars.ru/info.php?id=134292" ' +
+                    '&lt;a href="http://www.gwars.ru/info.php?id=134292" ' +
                     'style="font-weight: bold;" target="_blank">Горыныч' +
                     '&lt;/a>&lt;/span>', '47'],
                 ['Время до возможности выставить карму', 'На странице ' +
@@ -1144,29 +1149,32 @@
                     'информации персонажа.' +
                     this.getGitHubLink('currentQuestOnInfo') +
                     '&lt;span style="margin-left: 15px;">идея: ' +
-                    '&lt;a href="http://www.ganjawars.ru/info.php?id=54662" ' +
+                    '&lt;a href="http://www.gwars.ru/info.php?id=54662" ' +
                     'style="font-weight: bold;" target="_blank">kaa&lt;/a>' +
                     '&lt;/span>', '58']],
 
             'Бои': [
                 ['Дополнение для боев', 'Расширенная информация в списке ' +
-                    'выбора противника, сортировка списка, ДЦ, продвинутое ' +
-                    'расположение бойцов на поле боя как в бою, так и в ' +
-                    'режиме наблюдения за боем, кнопка "Сказать ход", ' +
-                    'быстрая вставка ника в поле чата, полный лог боя в ' +
-                    'НЕ JS-версии, информация вверху страницы боя о ' +
-                    'набитом HP, вашем здоровье и т.д. При щелчке на ' +
-                    'картинке противника происходит его выбор в качестве ' +
-                    'цели. Кнопка "Обновить" на поле боя. В JS-версии боя ' +
-                    'подсвечивает зеленым цветом тех персонажей, которые уже ' +
-                    'сделали ход. В обоих версиях выводит количество ' +
-                    'персонажей, сделавших ход.&lt;br>&lt;br>&lt;span style="color: ' +
-                    '#FF0000;">Не ставьте значения менее 3 секунд.&lt;/span>' +
-                    '&lt;br>Таймаут обновления данных в бою:&lt;span ' +
-                    'style="margin-left: 54px;"> &lt;/span>&lt;input ' +
-                    'id="refreshBattle" maxlength="3" style="width: 30px;" ' +
-                    'value="' + (general.getData(4)[0] || '0') + '" ' +
-                    'disabled /> сек (0 - настройки игры по умолчанию)&lt;br>' +
+                    'выбора противника + сортировка списка по номеру, ' +
+                    'дальности, уровню, видимости и т.д. Динамический центр, ' +
+                    'продвинутое расположение бойцов на поле боя в бою и в ' +
+                    'режиме наблюдения за боем, полный лог боя в НЕ ' +
+                    'JS-версии, кнопка "Сказать ход", чекбоксы "Говорить ' +
+                    'только правую руку" и "Говорить только левую руку", ' +
+                    'быстрая вставка ника в поле чата. Информация вверху ' +
+                    'страницы о набитом HP, вашем здоровье, видимости и т.д. ' +
+                    'При клике по противнику на схеме поля боя происходит ' +
+                    'его выбор в качестве цели. Кнопка "Обновить". ' +
+                    'В JS-версии боя подсвечивает зеленым цветом тех ' +
+                    'персонажей, которые уже сделали ход. В обоих версиях ' +
+                    'выводит количество персонажей, сделавших ход.' +
+                    '&lt;br>&lt;br>&lt;span style="color: #FF0000;">Не ставьте ' +
+                    'значения менее 3 секунд.&lt;/span>&lt;br>Таймаут обновления ' +
+                    'данных в бою:&lt;span style="margin-left: 54px;"> ' +
+                    '&lt;/span>&lt;input id="refreshBattle" maxlength="3" ' +
+                    'style="width: 30px;" value="' +
+                    (general.getData(4)[0] || '0') + '" disabled /> ' +
+                    'сек (0 - настройки игры по умолчанию)&lt;br>' +
                     'Таймаут обновления заявки при входе в нее: &lt;input ' +
                     'id="refreshAppl" maxlength="3" style="width: 30px;" ' +
                     'value="' + (general.getData(4)[1] || '0') +
@@ -1204,7 +1212,7 @@
                     'одиночых заявках. Фильтр по уровням и типу оружия, ' +
                     'встроенный в игре, переносится вверх страницы. Все ' +
                     'настройки находятся на &lt;a target="_blank" ' +
-                    'href="http://www.ganjawars.ru/warlist.php?war=armed">' +
+                    'href="http://www.gwars.ru/warlist.php?war=armed">' +
                     'странице одиночных заявок&lt;/a>' +
                     this.getGitHubLink('filterWarlistOne2One'), '23'],
                 ['Ссылки на странице одиночных заявок', 'На странице ' +
@@ -1220,7 +1228,7 @@
                     this.getGitHubLink('one2OneCallerInfo'), '34'],
                 ['Контроль Уранa и ЭC', 'Сортировка объектов по типу, ' +
                     'островам и контролирующим синдикатам на странице ' +
-                    '&lt;a target="_blank" href="http://www.ganjawars.ru/' +
+                    '&lt;a target="_blank" href="http://www.gwars.ru/' +
                     'info.realty.php?id=2">ГосЭнегоАтом&lt;/a>' +
                     this.getGitHubLink('gosEnergoAtomFilter'), '29'],
                 ['Проверка сектора после боя', 'Выводит сообщение после боя, ' +
@@ -1232,14 +1240,14 @@
                     'прибрежная зона) показывает изображения для каждого ' +
                     'пока.' + this.getGitHubLink('imgPokemonsOnBattle') +
                     '&lt;span style="margin-left: 15px;">идея: ' +
-                    '&lt;a href="http://www.ganjawars.ru/info.php?id=436429" ' +
+                    '&lt;a href="http://www.gwars.ru/info.php?id=436429" ' +
                     'style="font-weight: bold;" target="_blank">Buger_man&lt;/a>' +
                     '&lt;/span>', '51'],
                 ['Таймер для боев за порты', 'Вывод точного/оставшегося ' +
                     'времени до боя за порт в верхней части страницы.' +
                     this.getGitHubLink('portTimer') +
                     '&lt;span style="margin-left: 15px;">идея: ' +
-                    '&lt;a href="http://www.ganjawars.ru/info.php?id=205482" ' +
+                    '&lt;a href="http://www.gwars.ru/info.php?id=205482" ' +
                     'style="font-weight: bold;" target="_blank">Enemy333&lt;/a>' +
                     '&lt;/span>', '36']],
 
@@ -1264,7 +1272,10 @@
                     'сообщения каждому бойцу. Если персонаж в бою, то ссылка ' +
                     'красного цвета. Так же добавляются конвертики для ' +
                     'отправки сообщений в разделах "Мои друзья" и "Гости".' +
-                    this.getGitHubLink('syndOnlineOnMainPage'), '49']],
+                    this.getGitHubLink('syndOnlineOnMainPage'), '49'],
+                ['Рассчет ожидаемого уровня синдиката', 'Рассчет ожидаемого ' +
+                    'уровня синдиката (сброс 6, 17 и 28 числа каждого ' +
+                    'месяца).' + this.getGitHubLink('calculateSyndLvl'), '60']],
 
             'Форум': [
                 ['Отображение сообщения, на которое отвечают', 'В ответе на ' +
@@ -1289,13 +1300,13 @@
                     'форма подачи объявления на ДО для данного предмета.' +
                     this.getGitHubLink('buyHightech'), '19'],
                 ['Быстрый поиск на ДО', 'Быстрый поиск предметов на ' +
-                    '&lt;a target="_blank" href="http://www.ganjawars.ru' +
+                    '&lt;a target="_blank" href="http://www.gwars.ru' +
                     '/market.php">доске объявлений&lt;/a>. Поиск осуществляется ' +
                     'по мере ввода названия предмета.' +
                     this.getGitHubLink('doFilter'), '21'],
                 ['Фильтр ресурсов на странице экономической статистики',
                     'Фильтр ресурсов на &lt;a target="_blank" ' +
-                    'href="http://www.ganjawars.ru/stats.php">странице ' +
+                    'href="http://www.gwars.ru/stats.php">странице ' +
                     'экономической статистики&lt;/a>&lt;br>&lt;br>Введите ' +
                     'названия ресурсов через запятую, которые будут ' +
                     'отображаться на вышеуказанной странице. Например: ' +
@@ -1307,7 +1318,7 @@
                     'вооружения добавляет ссылки на вооружение High-tech' +
                     this.getGitHubLink('linksToHighTech') +
                     '&lt;span style="margin-left: 15px;">идея: ' +
-                    '&lt;a href="http://www.ganjawars.ru/info.php?id=436429" ' +
+                    '&lt;a href="http://www.gwars.ru/info.php?id=436429" ' +
                     'style="font-weight: bold;" target="_blank">Buger_man' +
                     '&lt;/a>&lt;/span>', '27'],
                 ['Форма аренды и продажи', 'При передаче предмета в аренду ' +
@@ -1392,7 +1403,7 @@
          * @method checkScriptUpdate
          */
         this.checkScriptUpdate = function () {
-            var url = 'http://www.ganjawars.ru/info.php?id=2095458';
+            var url = 'http://www.gwars.ru/info.php?id=2095458';
             new AjaxQuery().init(url, 'GET', null, true, function (xml) {
                 var ver = /cpingw:(\d+\.\d+-\d+)/.exec(xml.responseText);
                 if (ver &amp;&amp; ver[1] !== general.version) {
@@ -1440,8 +1451,9 @@
          * @method init
          */
         this.init = function () {
+            general.doc.title = 'CPIGW :: Настройки';
             var tdStyle = ' style="background-color: #E0FFE0;">',
-                gwImgUrl = 'http://images.ganjawars.ru/i/home/',
+                gwImgUrl = 'http://images.gwars.ru/i/home/',
                 str = '&lt;table style="width: 100%; box-shadow: 8px 10px 7px ' +
                     'rgba(122,122,122,0.5);">&lt;tr>&lt;td ' + tdStyle +
                     '&lt;table style="width: 100%;">&lt;tr>&lt;td style="width: 23%;">' +
@@ -1466,7 +1478,7 @@
                     '&lt;td style="font-size: 7pt; width: 35%; text-align: ' +
                     'right;">&lt;a target="_blank" style="opacity: 0.5; ' +
                     'text-decoration: none; font-size: 7pt;" ' +
-                    'href="http://www.ganjawars.ru/info.php?id=2095458">' +
+                    'href="http://www.gwars.ru/info.php?id=2095458">' +
                     '&lt;span style="color: #F90332;">developed by&lt;/span> ' +
                     '&lt;span style="color: #014305; font-weight: 700;">' +
                     'MyRequiem©&lt;/span>&lt;/a> ' + general.version +
@@ -2467,15 +2479,16 @@
             if (!isGren) {
                 str += enemy[1];
 
-                // правая рука (если не установлен чекбокс
-                // "Говорить только левую руку (для БЩ)")
+                // правая рука
+                // (если не установлен чекбокс "Говорить только левую руку")
                 if (dataSt[13] &amp;&amp; !dataSt[18]) {
                     str += dataSt[13] === '1' ? ' ле' :
                             dataSt[13] === '2' ? ' ц' : ' пр';
                 }
 
                 // левая рука
-                if (dataSt[12]) {
+                // (если не установлен чекбокс "Говорить только правую руку")
+                if (dataSt[12] &amp;&amp; !dataSt[23]) {
                     str += dataSt[12] === '1' ? ' ле' :
                             dataSt[12] === '2' ? ' ц' : ' пр';
                 }
@@ -2804,6 +2817,16 @@
         this.setStroke = function () {
             var dataSt = general.getData(4);
 
+            // Уличные бои - отходить можно только в центр (чекбоксы лево и
+            // право не активны). Стрелям тоже всегда в центр.
+            if (general.doc.querySelector('#defence1:disabled')) {
+                this.clickElem(general.$('defence2'));
+                this.clickElem(general.$('left_attack2'));
+                this.clickElem(general.$('right_attack2'));
+
+                return;
+            }
+
             // если в хранилище есть запись в кого стреляли
             // (сказали ход), то устанавливаем именно его
             if (dataSt[11]) {
@@ -2983,11 +3006,12 @@
             var vis = (general.$('left_attack1') &amp;&amp;
                     general.$('right_attack1')) ? '' : 'none';
 
-            // если одна рука, то сбрасываем чекбокс
-            // "Говорить только левую руку (для БЩ)"
+            // если одна рука, то сбрасываем чекбоксы
+            // "Говорить только левую руку" и "Говорить только правую руку"
             if (vis) {
                 var stData = general.getData(4);
                 stData[18] = '';
+                stData[23] = '';
                 general.setData(stData, 4);
             }
 
@@ -3744,21 +3768,56 @@
             sayOnlyMyCommand.parentNode.insertBefore(this.sayMoveButton,
                     sayOnlyMyCommand);
 
-            // чекбокс "Говорить только левую руку (для БЩ)"
+            // если двурукий, устанавливаем чекбоксы:
+            // "Говорить только правую руку" и "Говорить только левую руку"
             if (general.$('left_attack1') &amp;&amp; general.$('right_attack1')) {
+                // "Говорить только левую руку"
                 var sayOnlyLeftHand = general.doc.createElement('input');
                 sayOnlyLeftHand.setAttribute('id', 'sayOnlyLeftHand');
                 sayOnlyLeftHand.type = 'checkbox';
-                sayOnlyLeftHand.setAttribute('title', 'Говорить только левую ' +
-                        'руку (для навыка Баллистический щит)');
-                sayOnlyLeftHand.addEventListener('click', function () {
-                    var data = general.getData(4);
-                    data[18] = sayOnlyLeftHand.checked ? '1' : '';
-                    general.setData(data, 4);
-                }, false);
+                sayOnlyLeftHand.setAttribute('title',
+                    'Говорить только левую руку');
                 sayOnlyLeftHand.checked = !!stData[18];
                 sayOnlyMyCommand.parentNode.
                     insertBefore(sayOnlyLeftHand, sayOnlyMyCommand);
+
+                sayOnlyLeftHand.addEventListener('click', function () {
+                    var data = general.getData(4),
+                        this_checked = sayOnlyLeftHand.checked;
+
+                    data[18] = this_checked ? '1' : '';
+                    general.setData(data, 4);
+
+                    // если отмечен, сбрасываем чекбокс для правой руки
+                    var onlyRightHand = general.$('sayOnlyRightHand');
+                    if (this_checked &amp;&amp; onlyRightHand.checked) {
+                        onlyRightHand.click();
+                    }
+                }, false);
+
+                // "Говорить только правую руку"
+                var sayOnlyRightHand = general.doc.createElement('input');
+                sayOnlyRightHand.setAttribute('id', 'sayOnlyRightHand');
+                sayOnlyRightHand.type = 'checkbox';
+                sayOnlyRightHand.setAttribute('title',
+                    'Говорить только правую руку');
+                sayOnlyRightHand.checked = !!stData[23];
+                sayOnlyMyCommand.parentNode.
+                    insertBefore(sayOnlyRightHand, sayOnlyLeftHand);
+
+                sayOnlyRightHand.addEventListener('click', function () {
+                    var data = general.getData(4),
+                        this_checked = sayOnlyRightHand.checked;
+
+                    data[23] =  this_checked ? '1' : '';
+                    general.setData(data, 4);
+
+                    // если отмечен, сбрасываем чекбокс для левой руки
+                    var onlyLeftHand = general.$('sayOnlyLeftHand');
+                    if (this_checked &amp;&amp; onlyLeftHand.checked) {
+                        onlyLeftHand.click();
+                    }
+                }, false);
             }
 
             // добавляем кнопку "Обновить"
@@ -3905,7 +3964,7 @@
                         querySelector('br+a[href*="/warlog.php?bid="]');
 
                 if (linkFullLog) {
-                    var url = 'http://www.ganjawars.ru/b0/btk.php?bid=' +
+                    var url = 'http://www.gwars.ru/b0/btk.php?bid=' +
                         (/\?bid=(\d+)/.exec(linkFullLog.href)[1]) +
                         '&amp;turn=-1&amp;lines=-1';
 
@@ -4058,7 +4117,7 @@
             }
 
             if (general.getData(5)[0]) {
-                if (/www\.ganjawars\.ru\/b0\//.test(general.loc)) {
+                if (/www\.gwars\.ru\/b0\//.test(general.loc)) {
                     general.root.setInterval(this.setHighlighting, 1000);
                 } else if (/\/usertransfers\.php/.test(general.loc)) {
                     general.root.setTimeout(this.setHighlighting, 300);
@@ -4122,18 +4181,18 @@
          * @return  {String}
          */
         this.addContent = function (sms, gren, broken) {
-            var host = ' [&lt;a href="http://www.ganjawars.ru/',
+            var host = ' [&lt;a href="http://www.gwars.ru/',
                 stData = general.getData(6),
                 str = '';
 
             if (sms[0] &amp;&amp; stData[3]) {    // письмо
-                str += host + 'sms.php">&lt;img src="http://www.ganjawars.ru/i/' +
+                str += host + 'sms.php">&lt;img src="http://www.gwars.ru/i/' +
                     'sms.gif" title="' + sms[0].getAttribute('title') +
                     '" alt="Вам письмо">&lt;/a>]';
             }
 
             if (sms[1] &amp;&amp; stData[3]) {    // посылка
-                str += host + 'items.php">&lt;img src="http://www.ganjawars.ru/' +
+                str += host + 'items.php">&lt;img src="http://www.gwars.ru/' +
                     'i/woodbox.gif" title="Пришла посылка!" ' +
                     'alt="посылка">&lt;/a>]';
             }
@@ -4157,7 +4216,7 @@
          */
         this.startWorkPostGrenadesBroken = function (_this) {
             var ajaxQuery = new AjaxQuery(),
-                url = 'http://www.ganjawars.ru/me.php';
+                url = 'http://www.gwars.ru/me.php';
 
             _this = _this || this;
             ajaxQuery.init(url, 'GET', null, true, function (xml) {
@@ -4345,7 +4404,7 @@
             this.divResult.innerHTML = '&lt;img src="' + general.imgPath +
                 'preloader.gif' + '">';
 
-            var url = 'http://www.ganjawars.ru/info.php?id=' + general.myID,
+            var url = 'http://www.gwars.ru/info.php?id=' + general.myID,
                 idElem = _this.id,
                 ths = this;
 
@@ -4515,7 +4574,7 @@
 
                     // noinspection JSUndefinedPropertyAssignment
                     b[i].innerHTML = '&lt;a target="_blank" style="' + linkStyle +
-                        '"  href="http://www.ganjawars.ru/search.php?key=' +
+                        '"  href="http://www.gwars.ru/search.php?key=' +
                         nik + '">' + nik + '&lt;/a>';
                 }
 
@@ -5100,7 +5159,7 @@
                 this.farmLink = general.doc.createElement('a');
                 this.farmLink.setAttribute('style', 'color: #0000FF; ' +
                         'text-decoration: none;');
-                this.farmLink.href = 'http://www.ganjawars.ru/ferma.php?id=' +
+                this.farmLink.href = 'http://www.gwars.ru/ferma.php?id=' +
                     general.myID;
                 this.farmLink.setAttribute('target', '_blank');
                 // noinspection JSCheckFunctionSignatures
@@ -5256,7 +5315,7 @@
                 general.$('imgSoundNPC').setAttribute('checkscan', 'yes');
             }
 
-            var url = 'http://www.ganjawars.ru/npc.php?id=' + npcs[ind],
+            var url = 'http://www.gwars.ru/npc.php?id=' + npcs[ind],
                 _this = this,
                 tr,
                 td;
@@ -5292,7 +5351,7 @@
 
                 general.$('dataNPC').lastElementChild.innerHTML = '&lt;td>' +
                     '&lt;a target="_blank" href="' + syndLink.href +
-                    '">&lt;img src="http://images.ganjawars.ru/img/synds/' +
+                    '">&lt;img src="http://images.gwars.ru/img/synds/' +
                     (/\?id=(\d+)/.exec(syndLink.href)[1]) + '.gif" />' +
                     '&lt;/a>&lt;/td>&lt;td>&lt;a target="_blank" href="' + url +
                     '" style="font-size: 8pt;">' + nameNPC + '&lt;/a>&lt;/td>' +
@@ -5381,7 +5440,7 @@
                 '&lt;td>&lt;img src="' + general.imgPath + 'preloader.gif" />' +
                 '&lt;/td>&lt;/tr>';
 
-            var url = 'http://www.ganjawars.ru/npc.php?id=' +
+            var url = 'http://www.gwars.ru/npc.php?id=' +
                     general.getData(10)[1] + '&amp;talk=1',
                 _this = this;
 
@@ -5406,7 +5465,7 @@
         this.init = function () {
             var stData = general.getData(10);
 
-            if (/www\.ganjawars\.ru\/me(\/|\.php)/.test(general.loc)) {
+            if (/www\.gwars\.ru\/me(\/|\.php)/.test(general.loc)) {
                 var mainDiv = general.doc.createElement('div'),
                     target = general.doc.querySelector('td[rowspan="3"]' +
                         '[valign="top"][bgcolor="#e9ffe9"]>' +
@@ -5646,7 +5705,7 @@
             if (val !== '0') {
                 var i;
                 for (i = 3; i &lt; 7; i++) {
-                    str += '&lt;img src="http://images.ganjawars.ru/' +
+                    str += '&lt;img src="http://images.gwars.ru/' +
                         'img/ferma/' + val + i + '.png" />';
                 }
 
@@ -6120,7 +6179,7 @@
                     ['&lt;td class="center">&lt;a target="_blank" id="op" ' +
                         'href="/info.php?id=2095458">&lt;span id="c1">' +
                         'developed by&lt;/span> &lt;span id="c2">MyRequiem&amp;#169;' +
-                        '&lt;/span>&lt;br>&lt;span id="c3">for GanjaWars fighters' +
+                        '&lt;/span>&lt;br>&lt;span id="c3">for GWars fighters' +
                         '&lt;/span>&lt;/a>&lt;/td>&lt;td class="center" id="exit" ' +
                         'style="cursor: pointer;">&lt;img src="' + this.imgPath +
                         'hide.gif" alt="Закрыть" title="Закрыть">&lt;/td>',
@@ -6195,7 +6254,7 @@
                 ], prnt: 'battles_1', arrow: 'battles_1_group', offsetY: -15},
                 {divm: 0, lines: [
                     ['ГосЭнергоАтом', '/info.realty.php?id=2'],
-                    ['Статистика GanjaWars.Ru от vasena',
+                    ['Статистика GWars.ru от vasena',
                         'http://gw-utils.ru/'],
                     ['GWTools от Bas', 'https://www.gwtools.ru/']
                 ], prnt: 'gw_menu', arrow: 'real_estate'},
@@ -6429,11 +6488,11 @@
                 {divm: 0, lines: [
                     ['Гранаты', '/sshop.php?tshop=grenades'],
                     ['Чипы на урон',
-                        'http://www.ganjawars.ru/sshop.php?tshop=chipsets'],
+                        'http://www.gwars.ru/sshop.php?tshop=chipsets'],
                     ['Чипы защитные',
-                        'http://www.ganjawars.ru/sshop.php?tshop=chipsets1'],
+                        'http://www.gwars.ru/sshop.php?tshop=chipsets1'],
                     ['Чипы специальные',
-                        'http://www.ganjawars.ru/sshop.php?tshop=chipsets2'],
+                        'http://www.gwars.ru/sshop.php?tshop=chipsets2'],
                     ['Турели', '/sshop.php?tshop=turrels']
                 ], prnt: 'shop_1', arrow: 'shop_synd', offsetY: -15},
                 {divm: 'pay_grenades_1', lines: [
@@ -6881,7 +6940,7 @@
                     this.showReault();
                 }
             } else {
-                var url = 'http://www.ganjawars.ru/info.warstats.php?id=' +
+                var url = 'http://www.gwars.ru/info.warstats.php?id=' +
                     this.persId + '&amp;page_id=' + ind,
                     _this = this;
 
@@ -7276,11 +7335,11 @@
                     descrTd[i].innerHTML += ' &lt;span style="font-weight: ' +
                         'bold; margin-left: 7px;"> Создать объявление: ' +
                         '&lt;/span>&lt;a target="_blank" style="color: #0000FF;" ' +
-                        'href="http://www.ganjawars.ru/market-p.php?' +
+                        'href="http://www.gwars.ru/market-p.php?' +
                         'stage=2&amp;item_id=' + id + '&amp;action_id=2&amp;p=' + price +
                         '&amp;s=' + strength + '">[Купить]' + '&lt;/a> ' +
                         '&lt;a target="_blank" style="color: #990000;" href=' +
-                        '"http://www.ganjawars.ru/market-p.php?' +
+                        '"http://www.gwars.ru/market-p.php?' +
                         'stage=2&amp;item_id=' + id + '&amp;action_id=1&amp;p=' + price +
                         '&amp;s=' + strength + '">[Продать]&lt;/a>';
                 }
@@ -7315,7 +7374,7 @@
 
                 // срок размещения 3 дня
                 general.doc.
-                    querySelector('select[name="date_len"]').value = '3';
+                    querySelector('select[name="date_len"]').value = '7';
             }
         };
     };
@@ -7432,7 +7491,7 @@
                 itemId = sel.value;
 
             if (itemId !== '#') {
-                a.href = 'http://www.ganjawars.ru/item.php?item_id=' + itemId;
+                a.href = 'http://www.gwars.ru/item.php?item_id=' + itemId;
                 a.setAttribute('target', '_blank');
             } else {
                 a.href = itemId;
@@ -7783,7 +7842,7 @@
             var link;
 
             if (/\/me(\/|\.php)/.test(general.loc)) {
-                link = general.doc.querySelector('[src$="images.ganjawars.' +
+                link = general.doc.querySelector('[src$="images.gwars.' +
                         'ru/i/home/farm.gif"]').parentNode;
                 var lparent = link.parentNode;
                 lparent.removeChild(link.previousElementSibling);
@@ -7927,7 +7986,7 @@
 
             if (id2 !== null) {
                 counter.innerHTML = !id ? 'входящие...' : 'исходящие...';
-                url = 'http://www.ganjawars.ru/sms.php?page=' + id +
+                url = 'http://www.gwars.ru/sms.php?page=' + id +
                     '&amp;page_id1=' + (!id ? id1 : 0) + '&amp;page_id2=' +
                     (id ? id1 : 0) + '&amp;search=' + this.uncodeNik;
             } else {
@@ -8541,7 +8600,7 @@
                     sector = spanContent.querySelector(cssSelector).innerHTML;
                     general.root.setTimeout(function () {
                         // на недвижимость перса
-                        _this.showSector('http://www.ganjawars.ru/' +
+                        _this.showSector('http://www.gwars.ru/' +
                             'info.realty.php?id=' + general.myID, sector);
                     }, 1000);
                 } else {
@@ -8586,7 +8645,7 @@
 
                 // если здоровье менее 80%
                 if (general.doc.querySelector('#hpheader>font')) {
-                    this.showSector('http://www.ganjawars.ru/info.php?id=' +
+                    this.showSector('http://www.gwars.ru/info.php?id=' +
                             general.myID, '');
                 }
             }
@@ -8616,7 +8675,7 @@
                     name = /вызван (.*)( \[\d+\])/.exec(last.innerHTML);
                     if (name) {
                         last.innerHTML = 'вызван &lt;a target="_blank" ' +
-                            'href="http://www.ganjawars.ru/search.php?key=' +
+                            'href="http://www.gwars.ru/search.php?key=' +
                             name[1] + '" style="text-decoration: none; ' +
                             'font-weight: bold;">' + name[1] + '&lt;/a>' + name[2];
                     }
@@ -9084,7 +9143,7 @@
 
             if (persId) {
                 tdLink.innerHTML = '&lt;a target="_blank" style="color: ' +
-                    '#008000;" href="http://www.ganjawars.ru/info.php?id=' +
+                    '#008000;" href="http://www.gwars.ru/info.php?id=' +
                     persId + '">' + stData[0] + '&lt;/a>';
                 tdLink.style.display = '';
                 butReset.disabled = false;
@@ -9124,7 +9183,7 @@
             }
 
             this.showHidePreloader();
-            var url = 'http://www.ganjawars.ru/search.php?key=' +
+            var url = 'http://www.gwars.ru/search.php?key=' +
                     new UrlEncode().init(persNik),
                 _this = this;
 
@@ -9195,7 +9254,7 @@
                 return;
             }
 
-            var url = 'http://www.ganjawars.ru/syndicate.php?id=' + stData[1] +
+            var url = 'http://www.gwars.ru/syndicate.php?id=' + stData[1] +
                     '&amp;page=online',
                 persNik = stData[0],
                 persId = stData[6],
@@ -9434,14 +9493,43 @@
             var author = last.parentNode.previousElementSibling.
                     querySelector('b').innerHTML,
                 lastLink = last.previousElementSibling.querySelector('a').href,
-                tr = last.querySelector('tr:last-child').cloneNode(true);
+                tr = last.querySelector('tr:last-child').cloneNode(true),
+                divMess = tr.querySelector('td>div[style$="overflow:hidden;"]'),
+                messComplete = divMess.innerHTML,
+                // если длина сообщения более 400 символов или в сообщении
+                // более 3 переносов строк ('&lt;br>'), то выводим половину
+                // сообщения если его длина менее 400 или только первые 200
+                // символов если его длина более 400 символов
+                longMess = messComplete.length > 400 ||
+                    divMess.querySelectorAll('br').length > 3,
+                messHeader = author + '&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;a href="' + lastLink +
+                    '">[&amp;#8593;]&lt;/a>&lt;br>';
 
-            tr.firstElementChild.setAttribute('style', 'border: 1px dashed ' +
+            divMess.parentNode.setAttribute('style', 'border: 1px dashed ' +
                 '#339933; background: #C2EDC1;');
-            tr.firstElementChild.innerHTML = author + '&amp;nbsp;&amp;nbsp;&amp;nbsp;' +
-                '&lt;a href="' + lastLink + '">[&amp;#8593;]&lt;/a>&lt;br>' +
-                tr.firstElementChild.innerHTML;
+            divMess.innerHTML = messHeader +
+                (!longMess ? messComplete :
+                        ((messComplete.length > 400 ?
+                                messComplete.substring(0, 200) : messComplete.
+                            substring(0, Math.round(messComplete.length / 2))).
+                            // убираем тэги &lt;br> в конце сокращенного сообщения
+                            replace(/\s*(&lt;b?r?\s*\/?>?\s*)*$/, '').
+                            // убираем незавершенную ссылку
+                            replace(/&lt;a href=[^>]+(>(https?|ftp):\/\/.*)?$/,
+                                '') +
+                        ' ...[&lt;span style="text-decoration: underline; ' +
+                        'color: #007700; cursor: pointer;" name="openMess">' +
+                        'развернуть&lt;/span>]'));
             target.parentNode.insertBefore(tr, target);
+
+            if (longMess) {
+                var openLink = divMess.querySelector('span[name="openMess"]');
+                if (openLink) {
+                    openLink.addEventListener('click', function () {
+                        divMess.innerHTML = messHeader + messComplete;
+                    }, false);
+                }
+            }
         };
 
         /**
@@ -9755,7 +9843,8 @@
          * @property mainTable
          * @type {Element}
          */
-        this.mainTable = general.doc.querySelector('center+br+table');
+        this.mainTable = general.doc.querySelector('center+br+table') ||
+            general.doc.querySelector('center+br+script+table');
         /**
          * @property lastDate
          * @type {String}
@@ -9809,23 +9898,29 @@
          * @param   {String}    url
          */
         this.getLastDate = function (url) {
-            var _url = url || 'http://www.ganjawars.ru/syndicate.log.php?id=' +
+            var _url = url || 'http://www.gwars.ru/syndicate.log.php?id=' +
                     this.syndId + '&amp;ptslog=1&amp;page_id=100500',
+                counter = general.$('analizePTSCounter'),
                 _this = this;
+
+            if (!url) {
+                counter.innerHTML = '2/1';
+            }
 
             new AjaxQuery().init(_url, 'GET', null, true, function (xml) {
                 var spanContent = general.doc.createElement('span');
                 spanContent.innerHTML = xml.responseText;
 
-                var counter = general.$('analizePTSCounter');
                 if (!url) {
+                    counter.innerHTML = '2/2';
                     general.root.setTimeout(function () {
-                        counter.innerHTML = '2/1';
                         _this.getLastDate(spanContent.
-                            querySelector('br+center>b>a:last-child').href);
+                            querySelector('tr>td[class="greenbg"]' +
+                                '[onclick*="window.location=\'' +
+                                '/syndicate.log.php?"]:last-child>' +
+                                'a[href*="/syndicate.log.php?id="]').href);
                     }, _this.tm);
                 } else {
-                    counter.innerHTML = '2/2';
                     var fonts = spanContent.
                             querySelectorAll('nobr>font[color="green"]');
                     _this.lastDate = /\d+.\d+.\d+/.
@@ -9878,7 +9973,7 @@
                     this.imgPath + 'rank.png" title="Выдача званий" ' +
                     'alt="Звания">&lt;/td>&lt;td class="wb1">&lt;img id="sign" ' +
                     'style="cursor: pointer; margin: 2px;" ' +
-                    'src="http://images.ganjawars.ru/img/synds/' + this.syndId +
+                    'src="http://images.gwars.ru/img/synds/' + this.syndId +
                     '.gif" title="Выдача знаков" alt="Знаки">&lt;/td>' +
                     '&lt;td class="wb1">&lt;span id="all" style="color: #008000; ' +
                     'cursor: pointer;">Всего&lt;/span>&lt;/td>&lt;/tr>',
@@ -9906,7 +10001,7 @@
                 all = setPoints(this.pers[i].all, '\'', false);
 
                 str += '&lt;tr>&lt;td class="wb2">&lt;a target="_blank" ' +
-                    'href="http://www.ganjawars.ru/search.php?key=' + name +
+                    'href="http://www.gwars.ru/search.php?key=' + name +
                     '" style="text-decoration: none; font-weight: bold; ' +
                     'color: #004400;">' + name + '&lt;/a>&lt;/td>&lt;td class="wb1">' +
                     gren + '&lt;/td>&lt;td class="wb1">' + chip + '&lt;/td>' +
@@ -10064,7 +10159,7 @@
          */
         this.parsePTSProtocols = function (ind) {
             general.$('analizePTSCounter').innerHTML = ind;
-            var url = 'http://www.ganjawars.ru/syndicate.log.php?id=' +
+            var url = 'http://www.gwars.ru/syndicate.log.php?id=' +
                     this.syndId + '&amp;ptslog=1&amp;page_id=' + ind,
                 _this = this;
 
@@ -10223,6 +10318,8 @@
 
                 table.setAttribute('class', 'wb');
                 table.setAttribute('width', '600');
+                table.setAttribute('cellpadding', '0');
+                table.setAttribute('cellspacing', '0');
                 table.setAttribute('style', 'margin-bottom: 50px;');
 
                 var getStrDate = new GetStrDate().init;
@@ -10292,7 +10389,8 @@
          * @property mainTable
          * @type {Element}
          */
-        this.mainTable = general.doc.querySelector('center+br+table');
+        this.mainTable = general.doc.querySelector('center+br+table') ||
+            general.doc.querySelector('center+br+script+table');
         /**
          * @property tm
          * @type {int}
@@ -10377,23 +10475,29 @@
          * @param   {String}    url
          */
         this.getLastDate = function (url) {
-            var _url = url || 'http://www.ganjawars.ru/syndicate.log.php?id=' +
+            var _url = url || 'http://www.gwars.ru/syndicate.log.php?id=' +
                     this.syndId + '&amp;page_id=100500',
+                counter = general.$('syndAnalyseCounter'),
                 _this = this;
+
+            if (!url) {
+                counter.innerHTML = '2/1';
+            }
 
             new AjaxQuery().init(_url, 'GET', null, true, function (xml) {
                 var spanContent = general.doc.createElement('span');
                 spanContent.innerHTML = xml.responseText;
 
-                var counter = general.$('syndAnalyseCounter');
                 if (!url) {
+                    counter.innerHTML = '2/2';
                     general.root.setTimeout(function () {
-                        counter.innerHTML = '2/1';
                         _this.getLastDate(spanContent.
-                            querySelector('br+center>b>a:last-child').href);
+                            querySelector('tr>td[class="greenbg"]' +
+                                '[onclick*="window.location=\'' +
+                                '/syndicate.log.php?"]:last-child>' +
+                                'a[href*="/syndicate.log.php?id="]').href);
                     }, _this.tm);
                 } else {
-                    counter.innerHTML = '2/2';
                     var fonts = spanContent.
                             querySelectorAll('nobr>font[color="green"]');
                     _this.lastDate = /\d+.\d+.\d+/.
@@ -10606,7 +10710,7 @@
 
             var str4 = '&lt;tr>&lt;td colspan="2" class="wb">&lt;a target="_blank" ' +
                     'style="text-decoration: none; font-weight: bold; color: ' +
-                    '#004400;" href="http://www.ganjawars.ru/search.php?key=',
+                    '#004400;" href="http://www.gwars.ru/search.php?key=',
                 strDismissedSynd = '',
                 strTakenSynd = '';
 
@@ -10686,7 +10790,7 @@
          */
         this.parseSyndProtocols = function (ind) {
             general.$('syndAnalyseCounter').innerHTML = ind;
-            var url = 'http://www.ganjawars.ru/syndicate.log.php?id=' +
+            var url = 'http://www.gwars.ru/syndicate.log.php?id=' +
                     this.syndId + '&amp;page_id=' + ind,
                 _this = this;
 
@@ -10830,6 +10934,8 @@
                 }
 
                 _this.mainTable.setAttribute('class', 'wb');
+                _this.mainTable.setAttribute('cellpadding', '0');
+                _this.mainTable.setAttribute('cellspacing', '0');
                 _this.mainTable.removeAttribute('style');
 
                 var getStrDate = new GetStrDate().init;
@@ -10928,7 +11034,7 @@
                 'preloader.gif' + '">';
 
             var stData = general.getData(26),
-                url = 'http://www.ganjawars.ru/info.ach.php?id=' + general.myID;
+                url = 'http://www.gwars.ru/info.ach.php?id=' + general.myID;
 
             if (!stData[0]) {
                 this.divResult.innerHTML = 'Не выбрано ни одной ачивки на ' +
@@ -11071,7 +11177,7 @@
                         nobrs[i].innerHTML += '&lt;a target="_blank" ' +
                             'href="/sms-create.php?mailto=' +
                             pLink.firstElementChild.innerHTML + '">&lt;img ' +
-                            'src="http://images.ganjawars.ru/i/sms.gif" />&lt;/a>';
+                            'src="http://images.gwars.ru/i/sms.gif" />&lt;/a>';
                     }
                 }
 
@@ -11103,7 +11209,7 @@
                 spanContent.innerHTML = xml.responseText;
 
                 target.innerHTML = '&lt;a href="' + url + '">' +
-                    '&lt;img src="http://images.ganjawars.ru/img/synds/' +
+                    '&lt;img src="http://images.gwars.ru/img/synds/' +
                     (/\?id=(\d+)/.exec(url)[1]) + '.gif" />&lt;/a> (' +
                     (/&lt;b>(\d+) бойцов онлайн&lt;\/b>/.
                         exec(spanContent.innerHTML)[1]) + ')&lt;br>';
@@ -11132,9 +11238,9 @@
 
                         nobr.appendChild(pers);
                         nobr.innerHTML += ' &lt;a target="_blank" ' +
-                            'href="http://www.ganjawars.ru/sms-create.php?' +
+                            'href="http://www.gwars.ru/sms-create.php?' +
                             'mailto=' + pers.firstElementChild.innerHTML +
-                            '">&lt;img src="http://images.ganjawars.ru/i/' +
+                            '">&lt;img src="http://images.gwars.ru/i/' +
                             'sms.gif" />&lt;/a>';
 
                         target.appendChild(nobr);
@@ -11697,14 +11803,14 @@
             var tableContent = table.innerHTML,
                 imgSettins = general.doc.createElement('img');
 
-            imgSettins.src = 'http://images.ganjawars.ru/i/home/properties.gif';
+            imgSettins.src = 'http://images.gwars.ru/i/home/properties.gif';
             imgSettins.setAttribute('style', 'cursor: pointer; ' +
                     'margin-left: 10px;');
             imgSettins.setAttribute('title', 'Настройки');
 
             // кнопка сброса всех данных ветки
             var imgReset = general.doc.createElement('img');
-            imgReset.src = 'http://images.ganjawars.ru/i/home/questlog.gif';
+            imgReset.src = 'http://images.gwars.ru/i/home/questlog.gif';
             imgReset.setAttribute('style', 'cursor: pointer; ' +
                     'margin-left: 10px;');
             imgReset.setAttribute('title', 'Сбросить все данные ветки');
@@ -11750,7 +11856,7 @@
 
                 for (i = 0; i &lt; themes.length; i++) {
                     str += '&lt;tr>&lt;td>&lt;a target="_blank" ' +
-                        'href="http://www.ganjawars.ru/threads.php?fid=' +
+                        'href="http://www.gwars.ru/threads.php?fid=' +
                         themes[i][1] + '">' + themes[i][0] + '&lt;/a>&lt;/td>' +
                         '&lt;td>&lt;input id="showForum_' + i + '" ' +
                         'type="checkbox"' + (f[i] ? ' checked' : '') +
@@ -11778,7 +11884,7 @@
                     'bold;">&lt;&lt; Назад&lt;/span>&lt;/td>&lt;/tr>&lt;tr>&lt;td colspan="2" ' +
                     'style="font-weight: bold; padding-top: 10px;">' +
                     'Показывать ветки форума на &lt;a target="_blank" ' +
-                    'href="http://www.ganjawars.ru/forum.php">этой странице' +
+                    'href="http://www.gwars.ru/forum.php">этой странице' +
                     '&lt;/a>:&lt;/td>&lt;/tr>' + str + '&lt;/table>&lt;/td>&lt;/tr>';
 
                 // чекбокс "Отмечать закрытые"
@@ -12204,7 +12310,7 @@
          * @property questURL
          * @type {String}
          */
-        this.questURL = 'http://www.ganjawars.ru/questlog.php?id=';
+        this.questURL = 'http://www.gwars.ru/questlog.php?id=';
         /**
          * @property persID
          * @type {String}
@@ -12241,7 +12347,7 @@
                     '&lt;/span> ' + questDescr + '&lt;span style="font-weight: ' +
                     'bold; margin-left: 10px;">&lt;a target="_blank" ' +
                     'style="color:#007700; text-decoration: none;" ' +
-                    'href="http://www.ganjawars.ru/help/index.php?' +
+                    'href="http://www.gwars.ru/help/index.php?' +
                     'sid=102&amp;pid=45">Накоплено&lt;/a>:&lt;/span> ' + acQuests;
 
                 var target = general.doc.querySelector('#namespan');
@@ -12658,7 +12764,7 @@
                 return;
             }
 
-            this.url = 'http://www.ganjawars.ru/object.php?id=11712&amp;' +
+            this.url = 'http://www.gwars.ru/object.php?id=11712&amp;' +
                 'page=oncoming1&amp;sid=' + stData.syndid;
 
             // сегодня запрос не делали, делаем не ранее 7 утра.
@@ -12677,6 +12783,162 @@
         };
     };
 
+    /**
+     * @class CalculateSyndLvl
+     * @constructor
+     */
+    var CalculateSyndLvl = function () {
+        /**
+         * @property syndID
+         * @type {String}
+         */
+        this.syndID = /\?id=(\d+)/.exec(general.loc)[1];
+        /**
+         * @property spanContent
+         * @type {Element}
+         */
+        this.spanContent = general.doc.createElement('span');
+        /**
+         * @property lvls
+         * @type {Array}
+         */
+        this.lvls = [50000, 150000, 250000, 350000, 450000, 550000, 650000,
+            750000, 850000, 950000, 1350000, 1750000, 2150000, 2550000, 2950000,
+            3350000, 3750000, 4150000, 4550000, 4950000, 6550000, 8150000,
+            9750000, 11350000, 12950000, 14550000, 16150000, 17750000, 19350000,
+            20950000];
+        /**
+         * @property tm
+         * @type {int}
+         */
+        this.tm = 1500;
+        /**
+         * @property ajax
+         * @type {Object}
+         */
+        this.ajax = new AjaxQuery();
+
+        /**
+         * @method preScan
+         * @param   {Boolean}   mode
+         */
+        this.preScan = function (mode) {
+            general.$('calcSyndLvl').style.color = mode ? '#AAAAAA' : '#004400';
+            general.$('preloader').style.display = mode ? '' : 'none';
+        };
+
+        /**
+         * @method scan
+         * @param   {int}   ind
+         */
+        this.scan = function (ind) {
+            var url = 'http://www.gwars.ru/srating.php?rid=0&amp;page_id=' +
+                    ind,
+                pageCounter = general.$('pageCounter'),
+                _this = this;
+
+            pageCounter.innerHTML = '(' + (ind + 1) + ')';
+
+            this.ajax.init(url, 'GET', null, true,  function (xhr) {
+                _this.spanContent.innerHTML = xhr.responseText;
+                var tbl = _this.spanContent.querySelector('table' +
+                    '[class="bordersupdown"][width="600"]');
+
+                // нет таблицы или таблица пустая, выходим
+                if (!tbl || !tbl.
+                        querySelector('td>a[href*="/syndicate.php?id="]')) {
+                    pageCounter.innerHTML = 'синдикат в &lt;a target="_blank" ' +
+                        'href="http://www.gwars.ru/srating.php?rid=0&amp;' +
+                        'page_id=0">рейтинге&lt;/a> не найден';
+                    _this.preScan(false);
+                    return;
+                }
+
+                var synd = tbl.querySelector('td>' +
+                        'a[href*="/syndicate.php?id=' + _this.syndID + '"]');
+                if (synd) {
+                    var tds = synd.parentNode.parentNode.querySelectorAll('td'),
+                        currLvl = +tds[3].querySelector('font').innerHTML,
+                        current = tds[4].innerHTML.replace(/k/g, '000').
+                            replace(/,/g, '').split(' / '),
+                        eExp = +/\d+/.exec(current[0])[0],
+                        bExp = +/\d+/.exec(current[1])[0],
+                        experience = 5 / 3 * bExp + (2.4 * eExp),
+                        syndLvl,
+                        i;
+
+                    for (i = 0; i &lt; _this.lvls.length; i++) {
+                        if (experience &lt; _this.lvls[i]) {
+                            syndLvl = i;
+                            break;
+                        }
+                    }
+
+                        // разница текущего и рассчитанного уровня
+                    var diff = currLvl - syndLvl,
+                        // добавка за понижение уровня
+                        add = 0;
+
+                    if (diff > 2) {
+                        add = Math.ceil(diff / 2);
+                        syndLvl += add;
+                    }
+
+                    pageCounter.innerHTML = '&lt;a target="_blank" ' +
+                        'style="color: #990000; font-weight: bold;" ' +
+                        'href="' + url + '">' + syndLvl + '&lt;/a>' +
+                        (add ? '(&lt;span style="color: #FF0000;">+' +
+                            add + '&lt;/span>)' : '') +
+                        ' (&lt;a target="_blank" href="http://www.ganjawiki.ru/' +
+                        'Боевой_синдикат#.D0.A3.D0.A1">' +
+                        Math.round(experience) + '&lt;/a>)' +
+                        '&lt;span style="margin-left: 5px; color: #555555;">' +
+                        tds[5].innerHTML.replace(/\s+/g, '') + ' >>> ' +
+                        tds[4].innerHTML.replace(/\s+/g, '') + '&lt;/span>';
+                    _this.preScan(false);
+                } else {
+                    general.root.setTimeout(function () {
+                        _this.scan(ind + 1);
+                    }, _this.tm);
+                }
+            }, function () {
+                general.root.setTimeout(function () {
+                    _this.scan(ind);
+                }, _this.tm);
+            });
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var target = general.doc.querySelector('td[class="greengreenbg"]' +
+                    '[colspan="3"]');
+
+            if (!target) {
+                return;
+            }
+
+            var span = general.doc.createElement('span');
+            span.innerHTML = '&lt;span id="calcSyndLvl" ' +
+                'style="margin-left: 10px; cursor: pointer; color: #004400; ' +
+                'text-decoration: underline;">Уровень&lt;/span>' +
+                '&lt;img id="preloader" src="' + general.imgPath +
+                'preloader.gif" style="margin-left: 10px; display: none;" />' +
+                '&lt;span id="pageCounter" style="margin-left: 10px;">&lt;/span>';
+            target.insertBefore(span, target.querySelector('br'));
+
+            var _this = this;
+            general.$('calcSyndLvl').addEventListener('click', function () {
+                if (general.$('preloader').style.display) {
+                    _this.preScan(true);
+                    _this.scan(0);
+                }
+            }, false);
+        };
+    };
+
+
     general = new General();
 
     if (!general.checkMainData()) {
@@ -12685,10 +12947,8 @@
 
     initScript = general.getInitScript();
 
-    // не в игре, на ganjafoto или ganjafile меняем фавикон
-    if (general.doc.querySelector('a[href*="/regform.php"]') ||
-            /ganjafoto\.ru|ganjafile\.ru|photos.ganjawars.ru/.
-                test(general.loc)) {
+    // на ganjafoto или ganjafile меняем фавикон
+    if (/ganjafoto\.ru|ganjafile\.ru|photos\.gwars\.ru/.test(general.loc)) {
         try {
             new NotGiveCannabisLeaf().init();
         } catch (e) {
@@ -12698,7 +12958,7 @@
         return;
     }
 
-    // везде на www.ganjawars.ru
+    // везде на www.gwars.ru
     if (initScript[0]) {
         try {
             new NotGiveCannabisLeaf().init();
@@ -13124,6 +13384,14 @@
                     general.cons.log(e);
                 }
             }
+
+            if (initScript[60]) {
+                try {
+                    new CalculateSyndLvl().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
         }
 
         if (/\/map.php/.test(general.loc)) {
@@ -13246,13 +13514,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="-_anonymous_-CritShotsAndLinksBtlLog_CriticalShots.html">CriticalShots</a></li><li><a href="-_anonymous_-SyndAnalyser-MainData.html">MainData</a></li></ul><h3>Namespaces</h3><ul><li><a href="general.root.bf1.html">bf1</a></li><li><a href="general.root.bf2.html">bf2</a></li><li><a href="general.root.bf3.html">bf3</a></li><li><a href="general.root.bfndl.html">bfndl</a></li><li><a href="general.root.frames.bsrc.html">bsrc</a></li><li><a href="general.root.hp_max_h.html">hp_max_h</a></li><li><a href="general.root.hp_speed_h.html">hp_speed_h</a></li><li><a href="general.root.hp_start_h.html">hp_start_h</a></li><li><a href="general.root.waitforturn.html">waitforturn</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#addCloseButton">addCloseButton</a></li><li><a href="global.html#addContent">addContent</a></li><li><a href="global.html#addData">addData</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#advSetBonusInfo">advSetBonusInfo</a></li><li><a href="global.html#blink">blink</a></li><li><a href="global.html#calc">calc</a></li><li><a href="global.html#calculateFarm">calculateFarm</a></li><li><a href="global.html#calculatePerHour">calculatePerHour</a></li><li><a href="global.html#change_updatechatlines">change_updatechatlines</a></li><li><a href="global.html#changeColor">changeColor</a></li><li><a href="global.html#changeCurrentTime">changeCurrentTime</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#changeLocationFighters">changeLocationFighters</a></li><li><a href="global.html#changeMakebf">changeMakebf</a></li><li><a href="global.html#changeSelect">changeSelect</a></li><li><a href="global.html#changeSelectEnemies">changeSelectEnemies</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#checkScriptUpdate">checkScriptUpdate</a></li><li><a href="global.html#checkSms">checkSms</a></li><li><a href="global.html#checkState">checkState</a></li><li><a href="global.html#cleanStorage">cleanStorage</a></li><li><a href="global.html#clearClick">clearClick</a></li><li><a href="global.html#clearCounter">clearCounter</a></li><li><a href="global.html#clearFields">clearFields</a></li><li><a href="global.html#clearNPCData">clearNPCData</a></li><li><a href="global.html#clearSavedStrokeAfterSay">clearSavedStrokeAfterSay</a></li><li><a href="global.html#clickElem">clickElem</a></li><li><a href="global.html#clickImageFighters">clickImageFighters</a></li><li><a href="global.html#compareLines">compareLines</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#createDivSms">createDivSms</a></li><li><a href="global.html#createGwMenuDiv">createGwMenuDiv</a></li><li><a href="global.html#createGWMenuItems">createGWMenuItems</a></li><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createSelectList">createSelectList</a></li><li><a href="global.html#deleteImagePoks">deleteImagePoks</a></li><li><a href="global.html#delSpaces">delSpaces</a></li><li><a href="global.html#enterPress">enterPress</a></li><li><a href="global.html#fillData">fillData</a></li><li><a href="global.html#findItem">findItem</a></li><li><a href="global.html#fixSkills">fixSkills</a></li><li><a href="global.html#formatTime">formatTime</a></li><li><a href="global.html#fOut">fOut</a></li><li><a href="global.html#fOver">fOver</a></li><li><a href="global.html#get_checkbox_checked">get_checkbox_checked</a></li><li><a href="global.html#getAchievNow">getAchievNow</a></li><li><a href="global.html#getAllCrits">getAllCrits</a></li><li><a href="global.html#getBattleField">getBattleField</a></li><li><a href="global.html#getBattles">getBattles</a></li><li><a href="global.html#getCrits">getCrits</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataFighters">getDataFighters</a></li><li><a href="global.html#getDataNow">getDataNow</a></li><li><a href="global.html#getForumTable">getForumTable</a></li><li><a href="global.html#getGitHubLink">getGitHubLink</a></li><li><a href="global.html#getHourTime">getHourTime</a></li><li><a href="global.html#getHtime">getHtime</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getLastDate">getLastDate</a></li><li><a href="global.html#getLeftRightCommands">getLeftRightCommands</a></li><li><a href="global.html#getLineMenu">getLineMenu</a></li><li><a href="global.html#getLvl">getLvl</a></li><li><a href="global.html#getMessagesOnPages">getMessagesOnPages</a></li><li><a href="global.html#getNewsId">getNewsId</a></li><li><a href="global.html#getOnline">getOnline</a></li><li><a href="global.html#getPers">getPers</a></li><li><a href="global.html#getPersLink">getPersLink</a></li><li><a href="global.html#getRange">getRange</a></li><li><a href="global.html#getRealEstateStr">getRealEstateStr</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#getSelect">getSelect</a></li><li><a href="global.html#getStrGameRez">getStrGameRez</a></li><li><a href="global.html#getTimeDiff">getTimeDiff</a></li><li><a href="global.html#getTimeNow">getTimeNow</a></li><li><a href="global.html#getTrsTable">getTrsTable</a></li><li><a href="global.html#getTypeLine">getTypeLine</a></li><li><a href="global.html#getValue">getValue</a></li><li><a href="global.html#goQuest">goQuest</a></li><li><a href="global.html#gwMenuInit">gwMenuInit</a></li><li><a href="global.html#hideTooltip">hideTooltip</a></li><li><a href="global.html#hpupdate">hpupdate</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#insertMess">insertMess</a></li><li><a href="global.html#isEven">isEven</a></li><li><a href="global.html#isForumPage">isForumPage</a></li><li><a href="global.html#listenSound">listenSound</a></li><li><a href="global.html#modifyData">modifyData</a></li><li><a href="global.html#nextAjaxQuery">nextAjaxQuery</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#openCloseItem">openCloseItem</a></li><li><a href="global.html#parseLine">parseLine</a></li><li><a href="global.html#parseMessages">parseMessages</a></li><li><a href="global.html#parsePTSProtocols">parsePTSProtocols</a></li><li><a href="global.html#parseSyndProtocols">parseSyndProtocols</a></li><li><a href="global.html#processingThemesList">processingThemesList</a></li><li><a href="global.html#rememberClick">rememberClick</a></li><li><a href="global.html#rememberTime">rememberTime</a></li><li><a href="global.html#resetGBCounter">resetGBCounter</a></li><li><a href="global.html#resetGosEnergoAtom">resetGosEnergoAtom</a></li><li><a href="global.html#resetStorage">resetStorage</a></li><li><a href="global.html#saveData">saveData</a></li><li><a href="global.html#scan">scan</a></li><li><a href="global.html#scanNPC">scanNPC</a></li><li><a href="global.html#selectChange">selectChange</a></li><li><a href="global.html#selectChangeHandler">selectChangeHandler</a></li><li><a href="global.html#setBonusInfo">setBonusInfo</a></li><li><a href="global.html#setButton">setButton</a></li><li><a href="global.html#setChatInterface">setChatInterface</a></li><li><a href="global.html#setCheckboxes">setCheckboxes</a></li><li><a href="global.html#setChkHandler">setChkHandler</a></li><li><a href="global.html#setCloseButton">setCloseButton</a></li><li><a href="global.html#setColorFighters">setColorFighters</a></li><li><a href="global.html#setControlOfShooting">setControlOfShooting</a></li><li><a href="global.html#setCounter">setCounter</a></li><li><a href="global.html#setCounters">setCounters</a></li><li><a href="global.html#setCountStroke">setCountStroke</a></li><li><a href="global.html#setCSSGwMenu">setCSSGwMenu</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setDataDiv">setDataDiv</a></li><li><a href="global.html#setEnvelope">setEnvelope</a></li><li><a href="global.html#setFilter">setFilter</a></li><li><a href="global.html#setGBCounter">setGBCounter</a></li><li><a href="global.html#setHandlersGWMenu">setHandlersGWMenu</a></li><li><a href="global.html#setHandlerSubmit">setHandlerSubmit</a></li><li><a href="global.html#setHighlighting">setHighlighting</a></li><li><a href="global.html#setHrefItem">setHrefItem</a></li><li><a href="global.html#setInterface">setInterface</a></li><li><a href="global.html#setLeftToLevel">setLeftToLevel</a></li><li><a href="global.html#setLink">setLink</a></li><li><a href="global.html#setMainPanel">setMainPanel</a></li><li><a href="global.html#setMyInfo">setMyInfo</a></li><li><a href="global.html#setNameInChat">setNameInChat</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setPlantData">setPlantData</a></li><li><a href="global.html#setRange">setRange</a></li><li><a href="global.html#setRedLink">setRedLink</a></li><li><a href="global.html#setReminder">setReminder</a></li><li><a href="global.html#setSettingsForAdvBattleAll">setSettingsForAdvBattleAll</a></li><li><a href="global.html#setSettins">setSettins</a></li><li><a href="global.html#setSms">setSms</a></li><li><a href="global.html#setSortListEnemy">setSortListEnemy</a></li><li><a href="global.html#setStroke">setStroke</a></li><li><a href="global.html#setTime">setTime</a></li><li><a href="global.html#setTimer">setTimer</a></li><li><a href="global.html#setTooltipsFighters">setTooltipsFighters</a></li><li><a href="global.html#showCrits">showCrits</a></li><li><a href="global.html#showData">showData</a></li><li><a href="global.html#showHideForum">showHideForum</a></li><li><a href="global.html#showHideLink">showHideLink</a></li><li><a href="global.html#showHidePreloader">showHidePreloader</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li><li><a href="global.html#showHistory">showHistory</a></li><li><a href="global.html#showImagePoks">showImagePoks</a></li><li><a href="global.html#showOfSyndLinks">showOfSyndLinks</a></li><li><a href="global.html#showQuest">showQuest</a></li><li><a href="global.html#showRange">showRange</a></li><li><a href="global.html#showRezult">showRezult</a></li><li><a href="global.html#showSector">showSector</a></li><li><a href="global.html#showSettings">showSettings</a></li><li><a href="global.html#showSms">showSms</a></li><li><a href="global.html#showTimer">showTimer</a></li><li><a href="global.html#showTimerNPC">showTimerNPC</a></li><li><a href="global.html#showTooltip">showTooltip</a></li><li><a href="global.html#sortBattles">sortBattles</a></li><li><a href="global.html#sortBattleTable">sortBattleTable</a></li><li><a href="global.html#sortEnemyList">sortEnemyList</a></li><li><a href="global.html#sortGosEnergoAtom">sortGosEnergoAtom</a></li><li><a href="global.html#sortGosEnergoAtomBySynd">sortGosEnergoAtomBySynd</a></li><li><a href="global.html#sortMess">sortMess</a></li><li><a href="global.html#sortPers">sortPers</a></li><li><a href="global.html#sortWeapon">sortWeapon</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startCountBattles">startCountBattles</a></li><li><a href="global.html#startInventoryPlus">startInventoryPlus</a></li><li><a href="global.html#startWorkPostGrenadesBroken">startWorkPostGrenadesBroken</a></li><li><a href="global.html#syndAlert">syndAlert</a></li><li><a href="global.html#testSound">testSound</a></li><li><a href="global.html#testSubject">testSubject</a></li><li><a href="global.html#titleClick">titleClick</a></li><li><a href="global.html#toDec">toDec</a></li><li><a href="global.html#toHex">toHex</a></li><li><a href="global.html#tryStart">tryStart</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="-_anonymous_-CritShotsAndLinksBtlLog_CriticalShots.html">CriticalShots</a></li><li><a href="-_anonymous_-SyndAnalyser-MainData.html">MainData</a></li></ul><h3>Namespaces</h3><ul><li><a href="general.root.bf1.html">bf1</a></li><li><a href="general.root.bf2.html">bf2</a></li><li><a href="general.root.bf3.html">bf3</a></li><li><a href="general.root.bfndl.html">bfndl</a></li><li><a href="general.root.frames.bsrc.html">bsrc</a></li><li><a href="general.root.hp_max_h.html">hp_max_h</a></li><li><a href="general.root.hp_speed_h.html">hp_speed_h</a></li><li><a href="general.root.hp_start_h.html">hp_start_h</a></li><li><a href="general.root.waitforturn.html">waitforturn</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#addCloseButton">addCloseButton</a></li><li><a href="global.html#addContent">addContent</a></li><li><a href="global.html#addData">addData</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#advSetBonusInfo">advSetBonusInfo</a></li><li><a href="global.html#blink">blink</a></li><li><a href="global.html#calc">calc</a></li><li><a href="global.html#calculateFarm">calculateFarm</a></li><li><a href="global.html#calculatePerHour">calculatePerHour</a></li><li><a href="global.html#change_updatechatlines">change_updatechatlines</a></li><li><a href="global.html#changeColor">changeColor</a></li><li><a href="global.html#changeCurrentTime">changeCurrentTime</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#changeLocationFighters">changeLocationFighters</a></li><li><a href="global.html#changeMakebf">changeMakebf</a></li><li><a href="global.html#changeSelect">changeSelect</a></li><li><a href="global.html#changeSelectEnemies">changeSelectEnemies</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#checkScriptUpdate">checkScriptUpdate</a></li><li><a href="global.html#checkSms">checkSms</a></li><li><a href="global.html#checkState">checkState</a></li><li><a href="global.html#cleanStorage">cleanStorage</a></li><li><a href="global.html#clearClick">clearClick</a></li><li><a href="global.html#clearCounter">clearCounter</a></li><li><a href="global.html#clearFields">clearFields</a></li><li><a href="global.html#clearNPCData">clearNPCData</a></li><li><a href="global.html#clearSavedStrokeAfterSay">clearSavedStrokeAfterSay</a></li><li><a href="global.html#clickElem">clickElem</a></li><li><a href="global.html#clickImageFighters">clickImageFighters</a></li><li><a href="global.html#compareLines">compareLines</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#createDivSms">createDivSms</a></li><li><a href="global.html#createGwMenuDiv">createGwMenuDiv</a></li><li><a href="global.html#createGWMenuItems">createGWMenuItems</a></li><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createSelectList">createSelectList</a></li><li><a href="global.html#deleteImagePoks">deleteImagePoks</a></li><li><a href="global.html#delSpaces">delSpaces</a></li><li><a href="global.html#enterPress">enterPress</a></li><li><a href="global.html#fillData">fillData</a></li><li><a href="global.html#findItem">findItem</a></li><li><a href="global.html#fixSkills">fixSkills</a></li><li><a href="global.html#formatTime">formatTime</a></li><li><a href="global.html#fOut">fOut</a></li><li><a href="global.html#fOver">fOver</a></li><li><a href="global.html#get_checkbox_checked">get_checkbox_checked</a></li><li><a href="global.html#getAchievNow">getAchievNow</a></li><li><a href="global.html#getAllCrits">getAllCrits</a></li><li><a href="global.html#getBattleField">getBattleField</a></li><li><a href="global.html#getBattles">getBattles</a></li><li><a href="global.html#getCrits">getCrits</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataFighters">getDataFighters</a></li><li><a href="global.html#getDataNow">getDataNow</a></li><li><a href="global.html#getForumTable">getForumTable</a></li><li><a href="global.html#getGitHubLink">getGitHubLink</a></li><li><a href="global.html#getHourTime">getHourTime</a></li><li><a href="global.html#getHtime">getHtime</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getLastDate">getLastDate</a></li><li><a href="global.html#getLeftRightCommands">getLeftRightCommands</a></li><li><a href="global.html#getLineMenu">getLineMenu</a></li><li><a href="global.html#getLvl">getLvl</a></li><li><a href="global.html#getMessagesOnPages">getMessagesOnPages</a></li><li><a href="global.html#getNewsId">getNewsId</a></li><li><a href="global.html#getOnline">getOnline</a></li><li><a href="global.html#getPers">getPers</a></li><li><a href="global.html#getPersLink">getPersLink</a></li><li><a href="global.html#getRange">getRange</a></li><li><a href="global.html#getRealEstateStr">getRealEstateStr</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#getSelect">getSelect</a></li><li><a href="global.html#getStrGameRez">getStrGameRez</a></li><li><a href="global.html#getTimeDiff">getTimeDiff</a></li><li><a href="global.html#getTimeNow">getTimeNow</a></li><li><a href="global.html#getTrsTable">getTrsTable</a></li><li><a href="global.html#getTypeLine">getTypeLine</a></li><li><a href="global.html#getValue">getValue</a></li><li><a href="global.html#goQuest">goQuest</a></li><li><a href="global.html#gwMenuInit">gwMenuInit</a></li><li><a href="global.html#hideTooltip">hideTooltip</a></li><li><a href="global.html#hpupdate">hpupdate</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#insertMess">insertMess</a></li><li><a href="global.html#isEven">isEven</a></li><li><a href="global.html#isForumPage">isForumPage</a></li><li><a href="global.html#listenSound">listenSound</a></li><li><a href="global.html#modifyData">modifyData</a></li><li><a href="global.html#nextAjaxQuery">nextAjaxQuery</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#openCloseItem">openCloseItem</a></li><li><a href="global.html#parseLine">parseLine</a></li><li><a href="global.html#parseMessages">parseMessages</a></li><li><a href="global.html#parsePTSProtocols">parsePTSProtocols</a></li><li><a href="global.html#parseSyndProtocols">parseSyndProtocols</a></li><li><a href="global.html#preScan">preScan</a></li><li><a href="global.html#processingThemesList">processingThemesList</a></li><li><a href="global.html#rememberClick">rememberClick</a></li><li><a href="global.html#rememberTime">rememberTime</a></li><li><a href="global.html#resetGBCounter">resetGBCounter</a></li><li><a href="global.html#resetGosEnergoAtom">resetGosEnergoAtom</a></li><li><a href="global.html#resetStorage">resetStorage</a></li><li><a href="global.html#saveData">saveData</a></li><li><a href="global.html#scan">scan</a></li><li><a href="global.html#scanNPC">scanNPC</a></li><li><a href="global.html#selectChange">selectChange</a></li><li><a href="global.html#selectChangeHandler">selectChangeHandler</a></li><li><a href="global.html#setBonusInfo">setBonusInfo</a></li><li><a href="global.html#setButton">setButton</a></li><li><a href="global.html#setChatInterface">setChatInterface</a></li><li><a href="global.html#setCheckboxes">setCheckboxes</a></li><li><a href="global.html#setChkHandler">setChkHandler</a></li><li><a href="global.html#setCloseButton">setCloseButton</a></li><li><a href="global.html#setColorFighters">setColorFighters</a></li><li><a href="global.html#setControlOfShooting">setControlOfShooting</a></li><li><a href="global.html#setCounter">setCounter</a></li><li><a href="global.html#setCounters">setCounters</a></li><li><a href="global.html#setCountStroke">setCountStroke</a></li><li><a href="global.html#setCSSGwMenu">setCSSGwMenu</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setDataDiv">setDataDiv</a></li><li><a href="global.html#setEnvelope">setEnvelope</a></li><li><a href="global.html#setFilter">setFilter</a></li><li><a href="global.html#setGBCounter">setGBCounter</a></li><li><a href="global.html#setHandlersGWMenu">setHandlersGWMenu</a></li><li><a href="global.html#setHandlerSubmit">setHandlerSubmit</a></li><li><a href="global.html#setHighlighting">setHighlighting</a></li><li><a href="global.html#setHrefItem">setHrefItem</a></li><li><a href="global.html#setInterface">setInterface</a></li><li><a href="global.html#setLeftToLevel">setLeftToLevel</a></li><li><a href="global.html#setLink">setLink</a></li><li><a href="global.html#setMainPanel">setMainPanel</a></li><li><a href="global.html#setMyInfo">setMyInfo</a></li><li><a href="global.html#setNameInChat">setNameInChat</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setPlantData">setPlantData</a></li><li><a href="global.html#setRange">setRange</a></li><li><a href="global.html#setRedLink">setRedLink</a></li><li><a href="global.html#setReminder">setReminder</a></li><li><a href="global.html#setSettingsForAdvBattleAll">setSettingsForAdvBattleAll</a></li><li><a href="global.html#setSettins">setSettins</a></li><li><a href="global.html#setSms">setSms</a></li><li><a href="global.html#setSortListEnemy">setSortListEnemy</a></li><li><a href="global.html#setStroke">setStroke</a></li><li><a href="global.html#setTime">setTime</a></li><li><a href="global.html#setTimer">setTimer</a></li><li><a href="global.html#setTooltipsFighters">setTooltipsFighters</a></li><li><a href="global.html#showCrits">showCrits</a></li><li><a href="global.html#showData">showData</a></li><li><a href="global.html#showHideForum">showHideForum</a></li><li><a href="global.html#showHideLink">showHideLink</a></li><li><a href="global.html#showHidePreloader">showHidePreloader</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li><li><a href="global.html#showHistory">showHistory</a></li><li><a href="global.html#showImagePoks">showImagePoks</a></li><li><a href="global.html#showOfSyndLinks">showOfSyndLinks</a></li><li><a href="global.html#showQuest">showQuest</a></li><li><a href="global.html#showRange">showRange</a></li><li><a href="global.html#showRezult">showRezult</a></li><li><a href="global.html#showSector">showSector</a></li><li><a href="global.html#showSettings">showSettings</a></li><li><a href="global.html#showSms">showSms</a></li><li><a href="global.html#showTimer">showTimer</a></li><li><a href="global.html#showTimerNPC">showTimerNPC</a></li><li><a href="global.html#showTooltip">showTooltip</a></li><li><a href="global.html#sortBattles">sortBattles</a></li><li><a href="global.html#sortBattleTable">sortBattleTable</a></li><li><a href="global.html#sortEnemyList">sortEnemyList</a></li><li><a href="global.html#sortGosEnergoAtom">sortGosEnergoAtom</a></li><li><a href="global.html#sortGosEnergoAtomBySynd">sortGosEnergoAtomBySynd</a></li><li><a href="global.html#sortMess">sortMess</a></li><li><a href="global.html#sortPers">sortPers</a></li><li><a href="global.html#sortWeapon">sortWeapon</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startCountBattles">startCountBattles</a></li><li><a href="global.html#startInventoryPlus">startInventoryPlus</a></li><li><a href="global.html#startWorkPostGrenadesBroken">startWorkPostGrenadesBroken</a></li><li><a href="global.html#syndAlert">syndAlert</a></li><li><a href="global.html#testSound">testSound</a></li><li><a href="global.html#testSubject">testSubject</a></li><li><a href="global.html#titleClick">titleClick</a></li><li><a href="global.html#toDec">toDec</a></li><li><a href="global.html#toHex">toHex</a></li><li><a href="global.html#tryStart">tryStart</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Jul 28 2018 22:06:13 GMT+0400 (+04)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Sep 17 2018 14:05:31 GMT+0400 (+04)
 </footer>
 
 <script> prettyPrint(); </script>
