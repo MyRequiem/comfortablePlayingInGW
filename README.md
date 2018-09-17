@@ -1,6 +1,6 @@
-![Ganjawars.ru](http://images.ganjawars.ru/img/apple144.png)
+![GWars.ru](http://images.gwars.ru/img/apple144.png)
 
-#### Many buns for a comfortable game in [Ganjawars.ru](http://www.ganjawars.ru/index.php)
+#### Many buns for a comfortable game in [GWars.ru](http://www.gwars.ru/index.php)
 ![OperaLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/operaLogo.png)
 ![FirefoxLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/firefoxLogo.png)
 ![ChromeLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/chromeLogo.png)
@@ -8,7 +8,7 @@
 
 Версия: 1.107-170918
 
-Нашли ошибку? Пожалуйста, [сообщите](http://www.ganjawars.ru/sms-create.php?mailto=MyRequiem)
+Нашли ошибку? Пожалуйста, [сообщите](http://www.gwars.ru/sms-create.php?mailto=MyRequiem)
 
 * [Установить](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js)
 * [Скачать zip-архив](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js.zip)
