@@ -7653,8 +7653,12 @@
          * @method init
          */
         this.init = function () {
+            if (/Подтверждаете бой с/.test(general.doc.body.innerHTML)) {
+                return;
+            }
+
             var filtForm = general.doc.
-                    querySelector('form[action="/warlist.php"]');
+                    querySelector('form[action$="/warlist.php"]');
 
             if (filtForm && this.table) {
                 filtForm = filtForm.cloneNode(false);
