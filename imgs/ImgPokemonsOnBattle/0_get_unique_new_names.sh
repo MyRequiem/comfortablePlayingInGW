@@ -1,7 +1,7 @@
 #! /bin/bash
 
 ### Usage:
-#   Add lines from http://www.ganjawars.ru/war.php to ./0_new_names like this:
+#   Add lines from http://www.gwars.ru/war.php to ./0_new_names like this:
 #
 #   ....
 #   Amdub
