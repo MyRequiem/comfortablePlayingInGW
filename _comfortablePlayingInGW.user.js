@@ -5,10 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js
-// @include         http://www.gwars.ru/*
+// @include         http://www.gwars.ru*
+// @include         http://quest.gwars.ru*
 // @include         http://photos.gwars.ru*
-// @include         http://www.ganjafile.ru/*
-// @include         http://www.ganjafoto.ru/*
+// @include         http://www.ganjafile.ru*
+// @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
 // @version         1.108-170918
@@ -12923,8 +12924,8 @@
 
     initScript = general.getInitScript();
 
-    // на ganjafoto или ganjafile меняем фавикон
-    if (/ganjafoto\.ru|ganjafile\.ru|photos\.gwars\.ru/.test(general.loc)) {
+    // на ganjafoto, ganjafile или на ауте меняем фавикон
+    if (/ganjafoto|ganjafile|photos|quest\.gwars/.test(general.loc)) {
         try {
             new NotGiveCannabisLeaf().init();
         } catch (e) {
