@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/warlog.php*
 // @grant           none
 // @license         MIT
-// @version         2.45-170918
+// @version         2.46-250918
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -163,7 +163,8 @@
                 }
 
                 // делаем ссылки на персов, если ссылка еще не установлена
-                if (!b[i].querySelector('a:first-child')) {
+                if (!b[i].querySelector('a:first-child') &&
+                        !b[i].getAttribute('style')) {
                     linkStyle = 'text-decoration: none; font-weight: 700; ' +
                         'font-size: ' + (general.viewMode ? '12px;' : '11px;');
 
