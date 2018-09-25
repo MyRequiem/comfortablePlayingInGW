@@ -9,6 +9,6 @@
 // @include         http://www.gwars.ru/warlog.php*
 // @grant           none
 // @license         MIT
-// @version         2.45-170918
+// @version         2.46-250918
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
