@@ -3,6 +3,8 @@
 	- Исправлен скрипт:
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CritShotsAndLinksBtlLog
 		Спасибо Wrait за найденный баг.
+	- Обновлен скрипт:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/NotGiveCannabisLeaf
 
 
 2018-09-17[1.108-170918]
