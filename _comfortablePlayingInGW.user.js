@@ -4526,7 +4526,8 @@
                 }
 
                 // делаем ссылки на персов, если ссылка еще не установлена
-                if (!b[i].querySelector('a:first-child')) {
+                if (!b[i].querySelector('a:first-child') &&
+                        !b[i].getAttribute('style')) {
                     linkStyle = 'text-decoration: none; font-weight: 700; ' +
                         'font-size: ' + (general.viewMode ? '12px;' : '11px;');
 
