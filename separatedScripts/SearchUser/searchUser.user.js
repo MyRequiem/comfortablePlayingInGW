@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.02-170918
+// @version         2.03-300918
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -89,7 +89,7 @@
         this.init = function () {
             if (general.DESIGN_VERSION === 'v2') {  // новый дизайн
                 return general.doc.querySelector('td.gw-header-col2 ' +
-                        'div:first-child nobr:first-child');
+                            'td[width="50%"][valign="middle"]');
             }
 
             return general.doc.
@@ -114,9 +114,8 @@
                     'method="GET" action="/search.php"><input id="skey" ' +
                     'name="key" value="" style="width: 130px;" ' +
                     'title="Введите ник и нажмите Enter" /></form>';
-                topPanel = topPanel.parentNode.parentNode;
                 topPanel = general.DESIGN_VERSION === 'v2' ?
-                        topPanel.parentNode : topPanel;
+                        topPanel.parentNode : topPanel.parentNode.parentNode;
                 topPanel.appendChild(td);
 
                 general.$('skey').addEventListener('keypress', function (e) {

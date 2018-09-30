@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.109-250918
+// @version         1.110-300918
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.109-250918';
+        this.version = '1.110-300918';
         /**
          * @property stString
          * @type {String}
@@ -775,7 +775,7 @@
             // ищем верхнюю панель "Новости | Об игре | Форум"
             if (general.DESIGN_VERSION === 'v2') {  // новый дизайн
                 return general.doc.querySelector('td.gw-header-col2 ' +
-                        'div:first-child nobr:first-child');
+                        'td[width="50%"][valign="middle"]');
             }
 
             return general.doc.
@@ -797,15 +797,17 @@
             if (topPanel) {
                 // noinspection JSUnresolvedVariable
                 var settingsButton = general.doc.createElement('a'),
-                    target = topPanel.parentNode.nextElementSibling;
+                    target = topPanel.nextElementSibling ||
+                        topPanel.parentNode.nextElementSibling;
 
-                target = target.firstElementChild || target;
                 settingsButton.innerHTML = '<img src="' + general.imgPath +
                     'NotGiveCannabisLeaf/on.gif" width="15" height="15" ' +
                     'title="Настройки" alt="Настройки" />';
                 settingsButton.setAttribute('href',
                         'http://www.gwars.ru/news.php?set=1');
-                target.insertBefore(settingsButton, target.firstChild);
+                settingsButton.setAttribute('style', 'margin-left: 7px;');
+                target.querySelector('table td:last-child>nobr').
+                    appendChild(settingsButton);
             }
         };
     };
@@ -6191,7 +6193,6 @@
                     ['Моя карма', '/info.vote.php?id=' + general.myID, 0, 1],
                     ['Ферма', '/ferma.php?id=' + general.myID, 0, 1],
                     ['Суперсеты', '/sets.php', 0, 1],
-                    ['Сайты', '/sites.php', 0, 1],
                     ['GanjaWiki.ru: Энциклопедия игры',
                         'http://www.ganjawiki.ru/', 0, 1],
                     ['Выход из игры', '/logout.php', 'red', 1],
@@ -6607,12 +6608,16 @@
          */
         this.init = function () {
             // ссылка в главном меню игры
-            var mainLink = general.doc.querySelector('a[href$="/sites.php"]');
-            if (mainLink) {
+            var target = general.doc.querySelector('a[href$="/ratings.php"]');
+            if (target) {
+                var mainLink = general.doc.createElement('span');
                 mainLink.setAttribute('style', 'font-weight: bold; ' +
                     'cursor: pointer;');
-                mainLink.removeAttribute('href');
                 mainLink.innerHTML = 'GW-Меню';
+                target.parentNode.insertBefore(mainLink, target);
+                target.parentNode.
+                    insertBefore(general.doc.createTextNode(' | '), target);
+
                 var _this = this;
                 mainLink.addEventListener('click', function () {
                     _this.gwMenuInit(_this);
@@ -9611,9 +9616,8 @@
                     '<input id="skey" name="key" value="" ' +
                     'style="width: 130px;" ' +
                     'title="Введите ник и нажмите Enter" /></form>';
-                topPanel = topPanel.parentNode.parentNode;
                 topPanel = general.DESIGN_VERSION === 'v2' ?
-                        topPanel.parentNode : topPanel;
+                        topPanel.parentNode : topPanel.parentNode.parentNode;
                 topPanel.appendChild(td);
 
                 general.$('skey').addEventListener('keypress', function (e) {
