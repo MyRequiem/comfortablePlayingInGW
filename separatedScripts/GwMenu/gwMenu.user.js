@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru*
 // @grant           none
 // @license         MIT
-// @version         2.36-170918
+// @version         2.37-300918
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -94,7 +94,7 @@
          */
         getData: function () {
             var stData = this.st.getItem(this.STNAME);
-            if (stData !== null) {
+            if (stData) {
                 return stData;
             }
 
@@ -402,7 +402,6 @@
                     ['Моя карма', '/info.vote.php?id=' + general.myID, 0, 1],
                     ['Ферма', '/ferma.php?id=' + general.myID, 0, 1],
                     ['Суперсеты', '/sets.php', 0, 1],
-                    ['Сайты', '/sites.php', 0, 1],
                     ['GanjaWiki.ru: Энциклопедия игры',
                         'http://www.ganjawiki.ru/', 0, 1],
                     ['Выход из игры', '/logout.php', 'red', 1],
@@ -831,12 +830,16 @@
             }
 
             // ссылка в главном меню игры
-            var mainLink = general.doc.querySelector('a[href$="/sites.php"]');
-            if (mainLink) {
+            var target = general.doc.querySelector('a[href$="/ratings.php"]');
+            if (target) {
+                var mainLink = general.doc.createElement('span');
                 mainLink.setAttribute('style', 'font-weight: bold; ' +
                     'cursor: pointer;');
-                mainLink.removeAttribute('href');
                 mainLink.innerHTML = 'GW-Меню';
+                target.parentNode.insertBefore(mainLink, target);
+                target.parentNode.
+                    insertBefore(general.doc.createTextNode(' | '), target);
+
                 var _this = this;
                 mainLink.addEventListener('click', function () {
                     _this.gwMenuInit(_this);
