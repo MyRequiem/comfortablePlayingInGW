@@ -1,3 +1,10 @@
+2018-09-30[1.110-300918]
+--------------------------------------
+	- Исправлены скрипты:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SearchUser
+
+
 2018-09-25[1.109-250918]
 --------------------------------------
 	- Исправлен скрипт:
