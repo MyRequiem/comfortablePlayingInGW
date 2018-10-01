@@ -1,3 +1,15 @@
+2018-10-01[1.111-011018]
+--------------------------------------
+	- Исправлены скрипты:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FarmTimer
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PortTimer
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ResourcesAndBonuses
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ScanPers
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SearchUser
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ShowMyAchievements
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/WorkPostGrenadesBroken
+
+
 2018-09-30[1.110-300918]
 --------------------------------------
 	- Исправлены скрипты:
