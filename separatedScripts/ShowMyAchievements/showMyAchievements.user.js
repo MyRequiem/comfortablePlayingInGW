@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.04-170918
+// @version         2.05-011018
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458] Идея: Горыныч
 // ==/UserScript==
 
@@ -175,13 +175,24 @@
          * @return  {HTMLElement|null}
          */
         this.init = function () {
-            if (general.DESIGN_VERSION === 'v2') {
-                return general.doc.querySelector('td.gw-header-col2 ' +
-                        'div:first-child nobr:first-child');
+            // ищем верхнюю панель "MyRequiem [603/603] ... 21:01, 3095 онлайн"
+            var topPanel;
+
+            if (general.DESIGN_VERSION === 'v2') {  // новый дизайн
+                topPanel = general.doc.querySelector('td.gw-header-col2 ' +
+                        'td[width="50%"][valign="middle"]');
+                if (topPanel) {
+                    topPanel.setAttribute('style', 'width: 70%;');
+                }
+            } else {
+                topPanel = general.doc.
+                    querySelector('td.txt[align="left"] nobr:first-child');
+                if (topPanel) {
+                    topPanel.parentNode.setAttribute('style', 'width: 70%;');
+                }
             }
 
-            return general.doc.
-                querySelector('td.txt[align="left"] nobr:first-child');
+            return topPanel;
         };
     };
 

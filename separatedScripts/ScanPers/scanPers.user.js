@@ -9,7 +9,7 @@
 // @exclude         http://www.gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.34-170918
+// @version         2.35-011018
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -165,14 +165,24 @@ plusplus: true, devel: true */
          * @return  {HTMLElement|null}
          */
         this.init = function () {
-            // ищем верхнюю панель "Новости | Об игре | Форум"
+            // ищем верхнюю панель "MyRequiem [603/603] ... 21:01, 3095 онлайн"
+            var topPanel;
+
             if (general.DESIGN_VERSION === 'v2') {  // новый дизайн
-                return general.doc.querySelector('td.gw-header-col2 ' +
-                        'div:first-child nobr:first-child');
+                topPanel = general.doc.querySelector('td.gw-header-col2 ' +
+                        'td[width="50%"][valign="middle"]');
+                if (topPanel) {
+                    topPanel.setAttribute('style', 'width: 70%;');
+                }
+            } else {
+                topPanel = general.doc.
+                    querySelector('td.txt[align="left"] nobr:first-child');
+                if (topPanel) {
+                    topPanel.parentNode.setAttribute('style', 'width: 70%;');
+                }
             }
 
-            return general.doc.
-                querySelector('td.txt[align="left"] nobr:first-child');
+            return topPanel;
         };
     };
 
