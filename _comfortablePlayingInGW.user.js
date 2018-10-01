@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.110-300918
+// @version         1.111-011018
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.110-300918';
+        this.version = '1.111-011018';
         /**
          * @property stString
          * @type {String}
@@ -772,14 +772,24 @@
          * @return  {HTMLElement|null}
          */
         this.init = function () {
-            // ищем верхнюю панель "Новости | Об игре | Форум"
+            // ищем верхнюю панель "MyRequiem [603/603] ... 21:01, 3095 онлайн"
+            var topPanel;
+
             if (general.DESIGN_VERSION === 'v2') {  // новый дизайн
-                return general.doc.querySelector('td.gw-header-col2 ' +
+                topPanel = general.doc.querySelector('td.gw-header-col2 ' +
                         'td[width="50%"][valign="middle"]');
+                if (topPanel) {
+                    topPanel.setAttribute('style', 'width: 70%;');
+                }
+            } else {
+                topPanel = general.doc.
+                    querySelector('td.txt[align="left"] nobr:first-child');
+                if (topPanel) {
+                    topPanel.parentNode.setAttribute('style', 'width: 70%;');
+                }
             }
 
-            return general.doc.
-                querySelector('td.txt[align="left"] nobr:first-child');
+            return topPanel;
         };
     };
 

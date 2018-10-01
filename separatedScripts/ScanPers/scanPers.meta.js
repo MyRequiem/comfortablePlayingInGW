@@ -9,6 +9,6 @@
 // @exclude         http://www.gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.34-170918
+// @version         2.35-011018
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
