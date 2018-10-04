@@ -12340,7 +12340,11 @@
 
                 var span = general.doc.createElement('span');
                 span.setAttribute('style', 'margin-left: 7px; font-size: 8pt;');
-                span.innerHTML = reg[1] + ' [' + reg[2] + '/' + reg[3] + '] ' +
+                span.innerHTML = reg[1] + ' [' +
+                    '<a href="/questlog.php" style="color: ' +
+                    (+reg[2] < (+reg[3]) ? '#AA5500' : '#008700') + '; ' +
+                    'text-decoration: none; font-size: 8pt;" target="_blank">' +
+                    reg[2] + '</a>/' + reg[3] + '] ' +
                     '(<a target="_blank" style="color:#007700; ' +
                     'font-weight: bold; text-decoration: none;" ' +
                     'href="http://www.gwars.ru/help/index.php?' +
