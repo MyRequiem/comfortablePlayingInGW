@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.111-011018
+// @version         1.112-081018
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.111-011018';
+        this.version = '1.112-081018';
         /**
          * @property stString
          * @type {String}
@@ -12322,30 +12322,38 @@
             var _this = this;
 
             new AjaxQuery().init(url, 'GET', null, true, function (xhr) {
-                var span = general.doc.createElement('span');
-                span.innerHTML = xhr.responseText;
+                var spanContent = general.doc.createElement('span');
+                spanContent.innerHTML = xhr.responseText;
 
                 // noinspection JSUnresolvedVariable
                 var cssSelector = 'td[valign="top"][align="right"]>' +
                         'a[href*="/help/index.php?sid="]',
-                    td = span.querySelector(cssSelector).parentNode.
+                    td = spanContent.querySelector(cssSelector).parentNode.
                         previousElementSibling,
                     questDescr = td.firstElementChild.nextSibling.nodeValue,
-                    acQuests = /-квестов:<\/b>\s?(\d+)/.exec(td.innerHTML)[1],
-                    div = general.doc.createElement('div');
+                    reg = /(.*):\s*(\d+) из (\d+)/.exec(questDescr),
+                    acQuests = /-квестов:<\/b>\s?(\d+)/.exec(td.innerHTML);
 
-                div.setAttribute('style', 'margin-left: 10px;');
-                div.innerHTML = '<span style="font-weight: bold;">Мини-квест:' +
-                    '</span> ' + questDescr + '<span style="font-weight: ' +
-                    'bold; margin-left: 10px;"><a target="_blank" ' +
-                    'style="color:#007700; text-decoration: none;" ' +
+                if (!reg || !acQuests) {
+                    return;
+                }
+
+                var span = general.doc.createElement('span');
+                span.setAttribute('style', 'margin-left: 7px; font-size: 8pt;');
+                span.innerHTML = reg[1] + ' [' +
+                    '<a href="/questlog.php" style="color: ' +
+                    (+reg[2] < (+reg[3]) ? '#AA5500' : '#008700') + '; ' +
+                    'text-decoration: none; font-size: 8pt;" target="_blank">' +
+                    reg[2] + '</a>/' + reg[3] + '] ' +
+                    '(<a target="_blank" style="color:#007700; ' +
+                    'font-weight: bold; text-decoration: none;" ' +
                     'href="http://www.gwars.ru/help/index.php?' +
-                    'sid=102&pid=45">Накоплено</a>:</span> ' + acQuests;
+                    'sid=102&pid=45">' + acQuests[1] + '</a>)';
 
-                var target = general.doc.querySelector('#namespan');
+                var target = general.doc.querySelector('#actiondivin');
                 if (target) {
                     // новое оформление страницы информации о персонаже
-                    target = target.parentNode;
+                    target = target.firstElementChild;
                 } else {
                     // примитивное оформление страницы информации о персонаже
                     target = general.doc.querySelector('td[class="wb"]' +
@@ -12353,7 +12361,7 @@
                             '[style="padding-top:3px;"]');
                 }
 
-                target.appendChild(div);
+                target.appendChild(span);
             }, function () {
                 general.root.setTimeout(function () {
                     _this.showQuest(url);
