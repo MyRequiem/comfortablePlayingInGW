@@ -12353,7 +12353,9 @@
                 var target = general.doc.querySelector('#actiondivin');
                 if (target) {
                     // новое оформление страницы информации о персонаже
-                    target = target.firstElementChild;
+                    target.parentNode.setAttribute('width', '100%');
+                    target.parentNode.nextElementSibling.
+                        removeAttribute('width');
                 } else {
                     // примитивное оформление страницы информации о персонаже
                     target = general.doc.querySelector('td[class="wb"]' +
