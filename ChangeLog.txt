@@ -1,3 +1,10 @@
+2018-10-10[1.113-101018]
+--------------------------------------
+	- Поправлен скрипт:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
+		Спасибо Wrait
+
+
 2018-10-08[1.112-081018]
 --------------------------------------
 	- Обновлен скрипт:

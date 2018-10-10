@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.112-081018
+// @version         1.113-101018
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.112-081018';
+        this.version = '1.113-101018';
         /**
          * @property stString
          * @type {String}
@@ -12353,7 +12353,9 @@
                 var target = general.doc.querySelector('#actiondivin');
                 if (target) {
                     // новое оформление страницы информации о персонаже
-                    target = target.firstElementChild;
+                    target.parentNode.setAttribute('width', '100%');
+                    target.parentNode.nextElementSibling.
+                        removeAttribute('width');
                 } else {
                     // примитивное оформление страницы информации о персонаже
                     target = general.doc.querySelector('td[class="wb"]' +

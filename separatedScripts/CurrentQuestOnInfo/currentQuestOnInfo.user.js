@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.06-041018
+// @version         1.07-101018
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458], идея kaa
 // ==/UserScript==
 
@@ -137,7 +137,9 @@
                 var target = _this.doc.querySelector('#actiondivin');
                 if (target) {
                     // новое оформление страницы информации о персонаже
-                    target = target.firstElementChild;
+                    target.parentNode.setAttribute('width', '100%');
+                    target.parentNode.nextElementSibling.
+                        removeAttribute('width');
                 } else {
                     // примитивное оформление страницы информации о персонаже
                     target = _this.doc.querySelector('td[class="wb"]' +
