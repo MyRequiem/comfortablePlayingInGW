@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         2.15-170918
+// @version         2.16-131018
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -129,7 +129,8 @@
                 }
 
                 audio.volume = 0.3;
-                audio.src = '/sounds/' + sound + '.ogg';
+                audio.src = 'https://raw.githubusercontent.com/MyRequiem/' +
+                    'comfortablePlayingInGW/master/sounds/' + sound + '.ogg';
                 // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
