@@ -353,9 +353,9 @@
 
                 // в игре
                 if (pers && !stData[6]) {
+                    _this.playSound(stData[4]);
                     stData[6] = '1';
                     general.setData(stData);
-                    _this.playSound(stData[4]);
 
                     if (stData[3]) {
                         alert('Персонаж ' + stData[7] + ' в игре');
@@ -364,9 +364,9 @@
 
                 // вышел
                 if (!pers && stData[6]) {
+                    _this.playSound(stData[5]);
                     stData[6] = '';
                     general.setData(stData);
-                    _this.playSound(stData[5]);
 
                     if (stData[3]) {
                         alert('Персонаж ' + stData[7] + ' вышел из игры');
