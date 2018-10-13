@@ -200,7 +200,7 @@
                     'Я делаю особую магию&nbsp;&nbsp;', 'Prepare for battle!',
                     'Pick up your weapons'
                 ],
-                str = '<select id="' + id + '" disabled>',
+                str = '<select id="' + id + '">',
                 i;
 
             for (i = 0; i < sounds.length; i++) {
@@ -209,7 +209,7 @@
 
             return str + '</select> ' +
                 '<input type="button" id="l' + id + '" ' +
-                'value="»" disabled>';
+                'value="»">';
         };
     };
 
