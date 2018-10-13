@@ -740,7 +740,8 @@
                 }
 
                 audio.volume = 0.3;
-                audio.src = '/sounds/' + sound + '.ogg';
+                audio.src = 'https://raw.githubusercontent.com/MyRequiem/' +
+                    'comfortablePlayingInGW/master/sounds/' + sound + '.ogg';
                 // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
