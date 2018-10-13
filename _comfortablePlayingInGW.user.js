@@ -9263,7 +9263,7 @@
                 _this = this;
 
             preloader.style.visibility = 'visible';
-            this.ajax(url, function (xml) {
+            this.ajax(url, 'GET', null, true, function (xml) {
                 _this.spanContent.innerHTML = xml.responseText;
                 var pers = _this.getPers(persID);
 
