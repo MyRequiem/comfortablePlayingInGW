@@ -111,9 +111,8 @@
                 [6] - звук(сообщение) проигран или нет
                 [7] - ник персонажа
                 [8] - timestamp последнего сканирования
-                [9] - null (для совместимости с ранними версиями)
             */
-            stData = ['', '', '', '', '', '', '', '', '', ''];
+            stData = ['', '', '', '', '', '', '', '', ''];
             this.setData(stData);
             return stData;
         },
@@ -478,7 +477,7 @@
 
             var stData = general.getData();
             // совместимость с прошлыми версиями
-            if (stData.length !== 10) {
+            if (stData[0] && !/^\d+$/.test(stData[0])) {
                 general.st.removeItem(general.STORAGENAME);
                 stData = general.getData();
             }
