@@ -317,9 +317,8 @@
                         [5] - id звука при выходе
                         [6] - звук(сообщение) проигран или нет
                         [7] - ник персонажа
-                        [8] - timestamp последнего сканирования
-                        [9] - null (для совместимости с ранними версиями) */
-                        '@|||||||||' +
+                        [8] - timestamp последнего сканирования */
+                        '@||||||||' +
                     /*
                      [25] - SkillCounters
                         [0] - боевой
@@ -9082,16 +9081,52 @@
      */
     var ScanPers = function () {
         /**
+         * @property interval
+         * @type {int}
+         */
+        this.interval = 7;
+        /**
+         * @property spanContent
+         * @type {Element|null}
+         */
+        this.spanContent = general.doc.createElement('span');
+        /**
+         * @property ajax
+         * @type {Function}
+         */
+        this.ajax = new AjaxQuery().init;
+        /**
+         * @property playSound
+         * @type {Function}
+         */
+        this.playSound = new PlaySound().init;
+
+        /**
          * @method showSettings
          */
         this.showSettings = function () {
-            var settings = general.$('settingsWin'),
-                pos = new GetPos().init(this);
+            return function () {
+                var settings = general.$('spSettings'),
+                    vis = settings.style.visibility,
+                    pos = new GetPos().init(this);
 
-            settings.style.top = String(pos.y + 28);
-            settings.style.left = String(pos.x - 120);
-            settings.style.visibility = settings.style.visibility === 'hidden' ?
-                    'visible' : 'hidden';
+                settings.style.top = (pos.y + 25).toString();
+                settings.style.left = (pos.x - 80).toString();
+                settings.style.visibility = vis === 'hidden' ?
+                        'visible' : 'hidden';
+            };
+        };
+
+        /**
+         * @method changeSelect
+         * @param   {int}   ind
+         */
+        this.changeSelect = function (ind) {
+            return function () {
+                var stData = general.getData(24);
+                stData[ind] = this.value !== '0' ? this.value : '';
+                general.setData(stData, 24);
+            };
         };
 
         /**
@@ -9099,19 +9134,9 @@
          */
         this.listenSound = function () {
             var _this = this;
-            new PlaySound().init(_this.previousElementSibling.value);
-        };
-
-        /**
-         * @method changeSelect
-         */
-        this.changeSelect = function () {
-            var _this = this,
-                ind = _this.id === 'scan_sel1' ? 4 : 5,
-                stData = general.getData(24);
-
-            stData[ind] = _this.value !== '0' ? _this.value : '';
-            general.setData(stData, 24);
+            return function () {
+                _this.playSound(this.previousElementSibling.value);
+            };
         };
 
         /**
@@ -9119,108 +9144,147 @@
          */
         this.showHideLink = function () {
             var stData = general.getData(24),
-                persId = stData[6],
-                tdLink = general.$('td_link'),
-                butReset = general.$('scan_reset'),
-                butCheckNow = general.$('scan_checknow'),
-                butSave = general.$('scan_save');
+                persID = stData[0],
+                tdLink = general.$('spPersLink'),
+                butReset = general.$('spReset'),
+                butSave = general.$('spSave');
 
-            if (persId) {
-                tdLink.innerHTML = '<a target="_blank" style="color: ' +
-                    '#008000;" href="http://www.gwars.ru/info.php?id=' +
-                    persId + '">' + stData[0] + '</a>';
+            if (persID) {
+                tdLink.innerHTML = '<a target="_blank" ' +
+                    'style="color: #008000;" ' +
+                    'href="http://www.gwars.ru/info.php?id=' + persID + '">' +
+                    stData[7] + '</a>';
                 tdLink.style.display = '';
                 butReset.disabled = false;
-                butCheckNow.disabled = false;
                 butSave.disabled = true;
             } else {
                 tdLink.style.display = 'none';
                 butReset.disabled = true;
-                butCheckNow.disabled = true;
                 butSave.disabled = false;
             }
         };
 
         /**
-         * @method showHidePreloader
+         * @method scan
          */
-        this.showHidePreloader = function () {
-            var preloader = general.$('img_load');
-            preloader.style.display = preloader.style.display === 'none' ?
-                    '' : 'none';
+        this.scan = function () {
+            var stData = general.getData(24),
+                url = 'http://www.gwars.ru/syndicate.php?id=' + stData[1] +
+                    '&page=online',
+                _this = this;
+
+            this.ajax(url, 'GET', null, true, function (xml) {
+                _this.spanContent.innerHTML = xml.responseText;
+                var pers = _this.getPers(stData[0]);
+
+                // в игре
+                if (pers && !stData[6]) {
+                    stData[6] = '1';
+                    general.setData(stData, 24);
+                    _this.playSound(stData[4]);
+
+                    if (stData[3]) {
+                        alert('Персонаж ' + stData[7] + ' в игре');
+                    }
+                }
+
+                // вышел
+                if (!pers && stData[6]) {
+                    stData[6] = '';
+                    general.setData(stData, 24);
+                    _this.playSound(stData[5]);
+
+                    if (stData[3]) {
+                        alert('Персонаж ' + stData[7] + ' вышел из игры');
+                    }
+                }
+            }, function () {
+                general.root.setTimeout(function () {
+                    _this.scan();
+                }, 1000);
+            });
+        };
+
+        /**
+         * @method start
+         */
+        this.start = function () {
+            var _this = this;
+            general.root.setInterval(function () {
+                var stData = general.getData(24),
+                    lastQuery = +stData[8],
+                    now = new Date().getTime();
+                if (stData[0] && now - lastQuery > _this.interval * 1000) {
+                    stData[8] = now;
+                    general.setData(stData, 24);
+                    _this.scan();
+                }
+            }, Math.round(this.interval * 1000 + 3000 * Math.random()));
+        };
+
+        /**
+         * @method getPers
+         * @param   {String}    id
+         * @return  {Element|null}
+         */
+        this.getPers = function (id) {
+            var css1 = 'center+br+table[align="center"]',
+                css2 = 'center+br+script+table[align="center"]',
+                table = this.spanContent.querySelector(css1) ||
+                            this.spanContent.querySelector(css2);
+
+            css1 = 'a[href$="/info.php?id=' + id + '"]>b';
+            return table ? table.querySelector(css1) : null;
         };
 
         /**
          * @method saveData
          */
         this.saveData = function () {
-            var persNik = general.$('scan_nik').value;
-            if (!persNik) {
-                alert('Введите ник персонажа');
+            var reg = /^\d+$/,
+                persID = general.$('spID').value,
+                syndID = general.$('spSyndID').value,
+                str;
+
+            if (!reg.test(persID)) {
+                str = 'персонажа';
+            } else if (!reg.test(syndID)) {
+                str = 'синдиката';
+            }
+
+            if (str) {
+                alert('Не верно введен ID ' + str);
                 return;
             }
 
-            var syndId = general.$('scan_synd_id').value;
-            if (!syndId || isNaN(syndId) || +syndId < 0) {
-                alert('Не верно введен номер синдиката');
-                return;
-            }
-
-            this.showHidePreloader();
-            var url = 'http://www.gwars.ru/search.php?key=' +
-                    new UrlEncode().init(persNik),
+            var preloader = general.$('spPreloader'),
+                url = 'http://www.gwars.ru/syndicate.php?id=' + syndID +
+                    '&page=members',
                 _this = this;
 
-            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
-                var spanContent = general.doc.createElement('span');
-                spanContent.innerHTML = xml.responseText;
+            preloader.style.visibility = 'visible';
+            this.ajax(url, function (xml) {
+                _this.spanContent.innerHTML = xml.responseText;
+                var pers = _this.getPers(persID);
 
-                if (/Персонаж с таким именем не найден/.
-                        test(spanContent.innerHTML)) {
-                    _this.showHidePreloader();
-                    alert('Персонаж с именем ' + persNik + ' не найден');
+                if (!pers) {
+                    alert('Персонаж с ID ' + persID + ' в синдикате #' +
+                        syndID + ' не найден');
+                    preloader.style.visibility = 'hidden';
                     return;
                 }
 
-                // новое и старое оформление страницы персонажа
-                var cssSelector1 = 'table+br+table[width="730"]',
-                    cssSelector2 = 'table+br+table[width="600"]' +
-                        '[cellpadding="1"][align="center"]',
-                    cssSelector3 = 'a[href*="/syndicate.php?id=' +
-                        syndId + '"]',
-                    target = spanContent.querySelector(cssSelector1) ||
-                        spanContent.querySelector(cssSelector2);
-
-                if (!target.querySelector(cssSelector3)) {
-                    _this.showHidePreloader();
-                    alert('Персонаж ' + persNik + ' не состоит в синдикате #' +
-                        syndId + ',\nили его список синдикатов скрыт. Если ' +
-                        'список скрыт, то введите номер основного синдиката.');
-                    return;
-                }
-
-                var cssSelector = 'a[href*="/usertransfers.php?id="]',
-                    stData = general.getData(24);
-                stData[0] = persNik;
-                stData[1] = syndId;
-                stData[6] = /\?id=(\d+)/.
-                    exec(target.querySelector(cssSelector).href)[1];
-                stData[7] = '';
-
-                var interval = general.$('scan_interval').value;
-                interval = interval && !isNaN(interval) && +interval > 19 ?
-                        interval : '60';
-                stData[8] = interval;
-                general.$('scan_interval').value = interval;
+                var stData = general.getData(24);
+                stData[0] = persID;
+                stData[1] = syndID;
+                stData[7] = pers.innerHTML;
+                stData[8] = '';
                 general.setData(stData, 24);
 
-                general.$('scan_save').disabled = true;
                 _this.showHideLink();
-                _this.showHidePreloader();
+                preloader.style.visibility = 'hidden';
 
-                general.root.setTimeout(function () {
-                    _this.scan(false);
-                }, 1000);
+                _this.start();
             }, function () {
                 general.root.setTimeout(function () {
                     _this.saveData();
@@ -9229,140 +9293,99 @@
         };
 
         /**
-         * @method scan
-         * @param   {Boolean}   now
-         */
-        this.scan = function (now) {
-            var stData = general.getData(24);
-            if (!stData[0]) {
-                return;
-            }
-
-            var url = 'http://www.gwars.ru/syndicate.php?id=' + stData[1] +
-                    '&page=online',
-                persNik = stData[0],
-                persId = stData[6],
-                _this = this;
-
-            this.showHidePreloader();
-
-            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
-                var spanContent = general.doc.createElement('span');
-                spanContent.innerHTML = xml.responseText;
-
-                var cssSelector = 'a[href*="/info.php?id=' + persId + '"]',
-                    online = spanContent.querySelector('center+br+table').
-                        querySelector(cssSelector);
-
-                _this.showHidePreloader();
-                if (now) { //нажали кнопу "Узнать сейчас"
-                    var str = online ? ' в игре' : ' не в игре';
-                    alert('Персонаж ' + persNik + str);
-                    return;
-                }
-
-                var playSound = new PlaySound().init;
-
-                // в игре
-                if (online && !stData[7]) {
-                    stData[7] = '1';
-                    general.setData(stData, 24);
-                    playSound(stData[4]);
-
-                    if (stData[3]) {
-                        alert('Персонаж ' + persNik + ' в игре');
-                    }
-                }
-
-                // вышел
-                if (!online && stData[7]) {
-                    stData[7] = '';
-                    general.setData(stData, 24);
-                    playSound(stData[5]);
-
-                    if (stData[3]) {
-                        alert('Персонаж ' + persNik + ' вышел из игры');
-                    }
-                }
-            }, function () {
-                general.root.setTimeout(function () {
-                    _this.scan(now);
-                }, 1000);
-            });
-        };
-
-        /**
          * @method init
          */
         this.init = function () {
-            var stData = general.getData(24);
-
             var topPanel = new GetTopPanel().init();
             if (!topPanel) {
                 return;
             }
 
-            var settingsBut = general.doc.createElement('span');
-            settingsBut.setAttribute('style', 'cursor: pointer;');
-            settingsBut.innerHTML = 'ScanPers';
-            // noinspection JSCheckFunctionSignatures
-            topPanel.appendChild(general.doc.createTextNode(' | '));
-            topPanel.appendChild(settingsBut);
-            settingsBut.addEventListener('click', this.showSettings, false);
-
-            var settingsWin = general.doc.createElement('div'),
-                brd = 'border: solid 1px #339933;';
-
-            settingsWin.setAttribute('id', 'settingsWin');
-            settingsWin.setAttribute('style', 'visibility: hidden; ' +
-                    'position: absolute; padding: 5px; ' + brd +
-                    ' background: #D7F4D8;');
-
-            var getSelectSound = new GetSelectSound().init;
-            settingsWin.innerHTML = '<table><tr><td>Ник персонажа:</td><td>' +
-                '<input id="scan_nik" value="" style="' + brd +
-                '"></td><tr><td>Номер синдиката:</td><td><input ' +
-                'id="scan_synd_id" size="5" maxlength="6" ' +
-                'value="" style="' + brd + '"> <span style="font-size: 11px;' +
-                '">(без #)</span></td><tr><td>Интервал сканирования:</td><td>' +
-                '<input id="scan_interval" size="4" ' +
-                'maxlength="3" value="' + (stData[8] || '60') + '" style="' +
-                brd + '" /> сек (не менее 20)</td></tr><tr><td colspan="2" ' +
-                'style="padding-top: 10px;"><input id="scan_chksound" type=' +
-                '"checkbox" style="margin: 0;"><label for="scan_chksound"> ' +
-                'Проигрывать звук при:</label></td><tr><td colspan="2">входе ' +
-                '&nbsp;&nbsp;&nbsp;' + getSelectSound('scan_sel1') +
-                '<br>выходе ' + getSelectSound('scan_sel2') + '</td><tr>' +
-                '<td colspan="2" style="padding-top: 10px;"><input ' +
-                'id="scan_chkallert" type="checkbox" style="margin: 0;">' +
-                '<label for="scan_chkallert"> Выдавать сообщение' +
-                '</label><img id="img_load" style="margin-left: 30px; ' +
-                'display: none;" src="' + general.imgPath + 'preloader.gif">' +
-                '</td><tr><td colspan="2" style="padding-top: 10px; ' +
-                'text-align: center;"><input type="button" id="scan_save" ' +
-                'value="Принять"> <input type="button" id="scan_reset" ' +
-                'value="Сброс"> <input type="button" id="scan_checknow" ' +
-                'value="Узнать сейчас"></td><tr><td id="td_link" colspan="2" ' +
-                'style="padding-top: 10px; text-align: center; display: ' +
-                'none;"></td></table>';
-            general.doc.body.appendChild(settingsWin);
-
-            // ник перса и синд
-            var inpPersNik = general.$('scan_nik'),
-                inpSyndId = general.$('scan_synd_id');
-
-            if (stData[0]) {
-                inpPersNik.value = stData[0];
-                inpSyndId.value = stData[1];
+            var stData = general.getData(24);
+            // совместимость с прошлыми версиями
+            if (stData[0] && !/^\d+$/.test(stData[0])) {
+                stData = ['', '', '', '', '', '', '', '', ''];
+                general.setData(stData, 24);
             }
 
-            // чекбокс звук
-            var chkSound = general.$('scan_chksound'),
-                sel1 = general.$('scan_sel1'),
-                sel2 = general.$('scan_sel2'),
-                listen1 = general.$('lscan_sel1'),
-                listen2 = general.$('lscan_sel2');
+            // кнопка настроек
+            var scanPersBut = general.doc.createElement('span');
+            scanPersBut.setAttribute('style', 'cursor: pointer;');
+            scanPersBut.innerHTML = 'ScanPers';
+            topPanel.appendChild(general.doc.createTextNode(' | '));
+            topPanel.appendChild(scanPersBut);
+            scanPersBut.addEventListener('click', this.showSettings(), false);
 
+            // окно настроек
+            var scanPersSettings = general.doc.createElement('div');
+            scanPersSettings.setAttribute('id', 'spSettings');
+            scanPersSettings.setAttribute('style', 'visibility: hidden; ' +
+                'position: absolute; padding: 3px; border: solid 1px #339933;' +
+                ' background: #D7F4D8; border-radius: 4px;');
+
+            var getSelectSound = new GetSelectSound().init;
+            scanPersSettings.innerHTML = '<table>' +
+                '<tr>' +
+                    '<td>ID персонажа:</td>' +
+                    '<td><input id="spID" value="" size="10" maxlength="7" ' +
+                    'style="border: solid 1px #339933;"></td></tr>' +
+                '<tr>' +
+                    '<td>ID синдиката:</td>' +
+                    '<td><input id="spSyndID" size="10" maxlength="5" ' +
+                        'value="" style="border: solid 1px #339933;">' +
+                    '</td></tr>' +
+                '<tr>' +
+                    '<td colspan="2">' +
+                        '<input id="spChkSound" type="checkbox">' +
+                        '<label for="spChkSound"> Проигрывать звук при:' +
+                        '</label></td></tr>' +
+                '<tr>' +
+                    '<td colspan="2">входе&nbsp;&nbsp;&nbsp;&nbsp;' +
+                        getSelectSound('spSound1') + '<br>' +
+                    'выходе ' + getSelectSound('spSound2') + '</td></tr>' +
+                '<tr>' +
+                    '<td colspan="2">' +
+                        '<input id="spChkAllert" type="checkbox">' +
+                        '<label for="spChkAllert"> Выдавать сообщение' +
+                        '</label></td></tr>' +
+                '<tr>' +
+                    '<td colspan="2" style="text-align: center;">' +
+                        '<input type="button" id="spSave" value="Сохранить">' +
+                        '<img id="spPreloader" src="' + general.imgPath +
+                        'preloader.gif" style="margin-left: 10px; ' +
+                        'visibility: hidden;">' +
+                        '<input type="button" id="spReset" value="Сброс" ' +
+                        'style="margin-left: 20px;"></td></tr>' +
+                '<tr>' +
+                    '<td id="spPersLink" colspan="2" style="text-align: ' +
+                        'center; display: none;"></td></tr>' +
+                '</table>';
+            general.doc.body.appendChild(scanPersSettings);
+
+            // ID перса и синда
+            var inpPersID = general.$('spID'),
+                inpSyndID = general.$('spSyndID');
+
+            if (stData[0]) {
+                inpPersID.value = stData[0];
+                inpSyndID.value = stData[1];
+            }
+
+            // звук
+            var chkSound = general.$('spChkSound'),
+                sel1 = general.$('spSound1'),
+                sel2 = general.$('spSound2'),
+                listen1 = general.$('lspSound1'),
+                listen2 = general.$('lspSound2');
+
+            if (stData[2]) {
+                sel1.disabled = false;
+                sel2.disabled = false;
+                listen1.disabled = false;
+                listen2.disabled = false;
+            }
+
+            chkSound.checked = !!stData[2];
             chkSound.addEventListener('click', function () {
                 var data = general.getData(24),
                     _this = this;
@@ -9375,35 +9398,28 @@
                 general.setData(data, 24);
             }, false);
 
-            if (stData[2]) {
-                chkSound.click();
-            }
-
-            // списки выбора звуков
             sel1.value = stData[4] || '0';
             sel2.value = stData[5] || '0';
-            sel1.addEventListener('change', this.changeSelect, false);
-            sel2.addEventListener('change', this.changeSelect, false);
+            sel1.addEventListener('change', this.changeSelect(4), false);
+            sel2.addEventListener('change', this.changeSelect(5), false);
 
             // кнопки проигрывания звука
-            listen1.addEventListener('click', this.listenSound, false);
-            listen2.addEventListener('click', this.listenSound, false);
+            listen1.addEventListener('click', this.listenSound(listen1), false);
+            listen2.addEventListener('click', this.listenSound(listen2), false);
 
-            //чекбокс сообщение
-            var chkAllert = general.$('scan_chkallert');
+            // чекбокс "Выдавать сообщение"
+            var chkAllert = general.$('spChkAllert');
+            chkAllert.checked = !!stData[3];
             chkAllert.addEventListener('click', function () {
                 var data = general.getData(24),
                     _this = this;
-
                 data[3] = _this.checked ? '1' : '';
                 general.setData(data, 24);
-            }, false);
-
-            chkAllert.checked = stData[3];
+            });
 
             // кнопка сброса
             var _this = this;
-            general.$('scan_reset').addEventListener('click', function () {
+            general.$('spReset').addEventListener('click', function () {
                 if (confirm('Сбросить данные?')) {
                     var data = general.getData(24);
                     data[0] = '';
@@ -9412,28 +9428,35 @@
                     data[7] = '';
                     data[8] = '';
                     general.setData(data, 24);
-                    inpPersNik.value = '';
-                    inpSyndId.value = '';
+                    inpPersID.value = '';
+                    inpSyndID.value = '';
                     _this.showHideLink();
                 }
             }, false);
 
             // кнопка сохранения данных
-            general.$('scan_save').addEventListener('click', function () {
+            var spSave = general.$('spSave');
+            spSave.addEventListener('click', function () {
                 _this.saveData();
             }, false);
 
-            // кнопка "Узнать сейчас"
-            general.$('scan_checknow').addEventListener('click', function () {
-                _this.scan(true);
+            // нажатие <Enter> в полях ввода
+            inpPersID.addEventListener('keypress', function (e) {
+                var ev = e || general.root.event;
+                if (ev.keyCode === 13 || ev.keyCode === 10) {
+                    spSave.click();
+                }
+            }, false);
+
+            inpSyndID.addEventListener('keypress', function (e) {
+                var ev = e || general.root.event;
+                if (ev.keyCode === 13 || ev.keyCode === 10) {
+                    spSave.click();
+                }
             }, false);
 
             this.showHideLink();
-            if (stData[8]) {
-                general.root.setInterval(function () {
-                    _this.scan(false);
-                }, +stData[8] * 1000);
-            }
+            this.start();
         };
     };
 
