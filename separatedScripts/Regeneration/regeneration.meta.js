@@ -9,6 +9,6 @@
 // @include         http://www.gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.45-170918
+// @version         2.46-131018
 // @author          W_or_M (редакция MyRequiem)
 // ==/UserScript==

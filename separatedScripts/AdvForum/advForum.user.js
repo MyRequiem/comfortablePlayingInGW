@@ -10,7 +10,7 @@
 // @include         http://www.gwars.ru/forum.php
 // @grant           none
 // @license         MIT
-// @version         2.24-170918
+// @version         2.25-131018
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -168,7 +168,8 @@
                 }
 
                 audio.volume = 0.3;
-                audio.src = '/sounds/' + sound + '.ogg';
+                audio.src = 'https://raw.githubusercontent.com/MyRequiem/' +
+                    'comfortablePlayingInGW/master/sounds/' + sound + '.ogg';
                 // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
@@ -186,40 +187,29 @@
          * @return  {String}
          */
         this.init = function (id) {
-            return '<select id="' + id + '" disabled>' +
-                '<option value="0">Без звука</option>' +
-                '<option value="1">Перезарядка</option>' +
-                '<option value="2">Выстрел дробовика</option>' +
-                '<option value="3">Открытие двери</option>' +
-                '<option value="4">Взрыв бочки</option>' +
-                '<option value="5">Выстрел BFG</option>' +
-                '<option value="6">Радио-зуммер</option>' +
-                '<option value="7">Подтверждение цели</option>' +
-                '<option value="8">Ion Cannon Ready!</option>' +
-                '<option value="9">Select target!</option>' +
-                '<option value="10">Звук тревоги</option>' +
-                '<option value="11">I`m alive!</option>' +
-                '<option value="12">Орки смеются</option>' +
-                '<option value="13">Unholy Armor</option>' +
-                '<option value="14">We`ve been attacked!</option>' +
-                '<option value="15">Кот мяукает</option>' +
-                '<option value="16">Кот мяукает #2</option>' +
-                '<option value="17">Take cover!</option>' +
-                '<option value="18">Stupid!</option>' +
-                '<option value="19">Hello!</option>' +
-                '<option value="20">hehehehe!</option>' +
-                '<option value="21">Chimes</option>' +
-                '<option value="22">Ding</option>' +
-                '<option value="23">Ошибка</option>' +
-                '<option value="24">Отказ оборудования</option>' +
-                '<option value="25">А, вот эти ребята</option>' +
-                '<option value="26">Не-не-не-не!</option>' +
-                '<option value="27">нет, Девид Блейн, нет!</option>' +
-                '<option value="28">Я делаю особую магию</option>' +
-                '<option value="29">Prepare for battle!</option>' +
-                '<option value="30">Pick up your weapons</option>' +
-                '</select> <input type="button" id="l' + id + '" ' +
-                'value="»" disabled>';
+            var sounds = [
+                    'Без звука', 'Перезарядка', 'Выстрел дробовика',
+                    'Открытие двери', 'Взрыв бочки', 'Выстрел BFG',
+                    'Радио-зуммер', 'Подтверждение цели', 'Ion Cannon Ready!',
+                    'Select target!', 'Звук тревоги', 'I`m alive!',
+                    'Орки смеются', 'Unholy Armor', 'We`ve been attacked!',
+                    'Кот мяукает', 'Кот мяукает #2', 'Take cover!', 'Stupid!',
+                    'Hello!', 'hehehehe!', 'Chimes', 'Ding', 'Ошибка',
+                    'Отказ оборудования', 'А, вот эти ребята', 'Не-не-не-не!',
+                    'нет, Девид Блейн, нет!',
+                    'Я делаю особую магию&nbsp;&nbsp;', 'Prepare for battle!',
+                    'Pick up your weapons'
+                ],
+                str = '<select id="' + id + '">',
+                i;
+
+            for (i = 0; i < sounds.length; i++) {
+                str += '<option value="' + i + '">' + sounds[i] + '</option>';
+            }
+
+            return str + '</select> ' +
+                '<input type="button" id="l' + id + '" ' +
+                'value="»">';
         };
     };
 
