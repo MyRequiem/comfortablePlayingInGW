@@ -1,7 +1,7 @@
 Таймер выздоровления персонажа на главной странице.
 <br>
 <br>
-Версия: 2.45-170918
+Версия: 2.46-131018
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/Regeneration/regeneration.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/Regeneration/regeneration.user.js.zip)
 <br>

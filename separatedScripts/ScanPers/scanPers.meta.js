@@ -7,8 +7,9 @@
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanPers/scanPers.user.js
 // @include         http://www.gwars.ru/*
 // @exclude         http://www.gwars.ru/ferma.php*
+// @exclude         http://www.gwars.ru/b0/*
 // @grant           none
 // @license         MIT
-// @version         2.35-011018
+// @version         3.02-131018
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
