@@ -12957,6 +12957,12 @@
 
     general = new General();
 
+    // не в игре
+    if (general.doc.querySelector('a[href$="/login.php"]') ||
+            general.doc.querySelector('a[href$="/regform.php"]')) {
+        return;
+    }
+
     if (!general.checkMainData()) {
         return;
     }
