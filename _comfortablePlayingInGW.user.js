@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.114-151018
+// @version         1.115-291018
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.114-151018';
+        this.version = '1.115-291018';
         /**
          * @property stString
          * @type {String}
@@ -9707,8 +9707,8 @@
          * @return  {String}
          */
         this.getValue = function (obj, fix) {
-            return parseFloat(/\((\d+.?\d*)\)/.
-                    exec(obj.innerHTML)[1]).toFixed(fix);
+            return parseFloat(/\((\s?<span [^>]+>)?(\d+.?\d*)(\s?<\/span>)?\)/.
+                exec(obj.innerHTML)[2]).toFixed(fix);
         };
 
         /**
@@ -12956,6 +12956,12 @@
 
 
     general = new General();
+
+    // не в игре
+    if (general.doc.querySelector('a[href$="/login.php"]') ||
+            general.doc.querySelector('a[href$="/regform.php"]')) {
+        return;
+    }
 
     if (!general.checkMainData()) {
         return;

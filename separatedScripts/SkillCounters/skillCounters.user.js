@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.09-170918
+// @version         2.10-291018
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -152,8 +152,8 @@
          * @return  {String}
          */
         this.getValue = function (obj, fix) {
-            return parseFloat(/\((\d+.?\d*)\)/.
-                    exec(obj.innerHTML)[1]).toFixed(fix);
+            return parseFloat(/\((\s?<span [^>]+>)?(\d+.?\d*)(\s?<\/span>)?\)/.
+                exec(obj.innerHTML)[2]).toFixed(fix);
         };
 
         /**
