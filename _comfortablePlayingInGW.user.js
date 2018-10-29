@@ -9707,8 +9707,8 @@
          * @return  {String}
          */
         this.getValue = function (obj, fix) {
-            return parseFloat(/\((\d+.?\d*)\)/.
-                    exec(obj.innerHTML)[1]).toFixed(fix);
+            return parseFloat(/\((\s?<span [^>]+>)?(\d+.?\d*)(\s?<\/span>)?\)/.
+                exec(obj.innerHTML)[2]).toFixed(fix);
         };
 
         /**
