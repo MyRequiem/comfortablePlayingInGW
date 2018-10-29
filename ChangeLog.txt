@@ -1,3 +1,11 @@
+2018-10-29[1.115-291018]
+--------------------------------------
+	- В связи с изменением главной страницы персонажа
+		(ссылка на новость: http://www.gwars.ru/messages.php?fid=1&tid=1482)
+		поправлен скрипт:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SkillCounters
+
+
 2018-10-15[1.114-151018]
 --------------------------------------
 	- Обновлен скрипт:
