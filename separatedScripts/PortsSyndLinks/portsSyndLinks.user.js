@@ -67,10 +67,6 @@
          * @method init
          */
         init: function () {
-            if (!/&page=(oncoming|complete)/.test(this.loc)) {
-                return;
-            }
-
             var css = 'td>table[cellspacing="1"][cellpadding="5"]' +
                     '[width="100%"]',
                 table = this.doc.querySelector(css);
