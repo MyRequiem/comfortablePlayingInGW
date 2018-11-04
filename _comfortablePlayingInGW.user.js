@@ -149,13 +149,15 @@
                         [57] - ProfColor
                         [58] - CurrentQuestOnInfo
                         [59] - CommonBattleFilter
-                        [60] - CalculateSyndLvl */
+                        [60] - CalculateSyndLvl
+                        [61] - PortsSyndLinks */
                         '@||||||||||' +
                         '||||||||||' +
                         '||||||||||' +
                         '||||||||||' +
                         '||||||||||' +
                         '||||||||||' +
+                        '|' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -1224,7 +1226,12 @@
                     '<span style="margin-left: 15px;">идея: ' +
                     '<a href="http://www.gwars.ru/info.php?id=205482" ' +
                     'style="font-weight: bold;" target="_blank">Enemy333</a>' +
-                    '</span>', '36']],
+                    '</span>', '36'],
+                ['Знаки синдикатов на страницах списков ближайших/прошедших ' +
+                    'боев за порты', 'На страницах списков ближайших/' +
+                    'прошедших боев за порты добавляет знаки синдикатов, ' +
+                    'являющиеся ссылками на их онлайн.' +
+                    this.getGitHubLink('portsSyndLinks'), '61']],
 
             'Синдикаты': [
                 ['Сортировка на странице онлайна синдиката', 'Сортировка ' +
@@ -12954,6 +12961,46 @@
         };
     };
 
+    /**
+     * @class PortsSyndLinks
+     * @constructor
+     */
+    var PortsSyndLinks = function () {
+        /**
+         * @method init
+         */
+        this.init = function () {
+            var css = 'td>table[cellspacing="1"][cellpadding="5"]' +
+                    '[width="100%"]',
+                table = general.doc.querySelector(css);
+
+            if (table) {
+                var syndLinks = table.querySelectorAll('a[href*="&page="]'),
+                    link,
+                    sign,
+                    reg,
+                    i;
+
+                for (i = 0; i < syndLinks.length; i++) {
+                    link = syndLinks[i];
+                    reg = /&sid=(\d+)$/.exec(link.href);
+
+                    if (reg) {
+                        sign = general.doc.createElement('a');
+                        sign.setAttribute('href', 'http://www.gwars.ru/' +
+                            'syndicate.php?id=' + reg[1] + '&page=online');
+                        sign.setAttribute('target', '_blank');
+                        sign.setAttribute('style', 'margin-right: 2px;');
+                        sign.innerHTML = '<img src="http://images.gwars.ru/' +
+                            'img/synds/' + reg[1] + '.gif" width="20" ' +
+                            'height="14" border="0" />';
+
+                        link.parentNode.insertBefore(sign, link);
+                    }
+                }
+            }
+        };
+    };
 
     general = new General();
 
@@ -13440,6 +13487,16 @@
             if (initScript[50]) {
                 try {
                     new TimeKarma().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+        }
+
+        if (/\/object\.php\?id=/.test(general.loc)) {
+            if (initScript[61]) {
+                try {
+                    new PortsSyndLinks().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
