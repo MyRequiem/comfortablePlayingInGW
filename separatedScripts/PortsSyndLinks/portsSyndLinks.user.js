@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/object.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.00-031118
+// @version         1.01-041118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -73,25 +73,27 @@
 
             if (table) {
                 var syndLinks = table.querySelectorAll('a[href*="&page="]'),
-                    syndId,
                     link,
                     sign,
+                    reg,
                     i;
 
                 for (i = 0; i < syndLinks.length; i++) {
                     link = syndLinks[i];
-                    syndId = /&sid=(\d+)$/.exec(link.href)[1];
+                    reg = /&sid=(\d+)$/.exec(link.href);
 
-                    sign = this.doc.createElement('a');
-                    sign.setAttribute('target', '_blank');
-                    sign.setAttribute('style', 'margin-right: 2px;');
-                    sign.href = 'http://www.gwars.ru/syndicate.php?id=' +
-                        syndId + '&page=online';
-                    sign.innerHTML = '<img src="http://images.gwars.ru/img/' +
-                        'synds/' + syndId + '.gif" width="20" height="14" ' +
-                        'border="0" />';
+                    if (reg) {
+                        sign = this.doc.createElement('a');
+                        sign.setAttribute('href', 'http://www.gwars.ru/' +
+                            'syndicate.php?id=' + reg[1] + '&page=online');
+                        sign.setAttribute('target', '_blank');
+                        sign.setAttribute('style', 'margin-right: 2px;');
+                        sign.innerHTML = '<img src="http://images.gwars.ru/' +
+                            'img/synds/' + reg[1] + '.gif" width="20" ' +
+                            'height="14" border="0" />';
 
-                    link.parentNode.insertBefore(sign, link);
+                        link.parentNode.insertBefore(sign, link);
+                    }
                 }
             }
         }
