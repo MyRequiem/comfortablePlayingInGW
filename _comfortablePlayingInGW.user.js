@@ -7757,7 +7757,7 @@
 
         /**
          * @method fixSkills
-         * @param   {Array}   nbrs
+         * @param   {NodeList}  nbrs
          */
         this.fixSkills = function (nbrs) {
             var residue,
@@ -7768,7 +7768,7 @@
                 j;
 
             for (i = 0; i < nbrs.length; i++) {
-                x = /\((\d+.?\d*)\)\s*.*\+-\d+.?\d*<\/font>/.
+                x = /\([^>]+>(\d+.?\d*)<\/span>\s?\)\s*.*\+-\d+.?\d*<\/font>/.
                     exec(nbrs[i].innerHTML);
 
                 if (x) {
