@@ -10,7 +10,7 @@
 // @include         http://www.gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.06-170918
+// @version         2.08-191118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -89,7 +89,7 @@
 
         /**
          * @method fixSkills
-         * @param   {Array}   nbrs
+         * @param   {NodeList}  nbrs
          */
         this.fixSkills = function (nbrs) {
             var residue,
@@ -100,7 +100,7 @@
                 j;
 
             for (i = 0; i < nbrs.length; i++) {
-                x = /\((\d+.?\d*)\)\s*.*\+-\d+.?\d*<\/font>/.
+                x = /\([^>]+>(\d+.?\d*)<\/span>\s?\)\s*.*\+-\d+.?\d*<\/font>/.
                     exec(nbrs[i].innerHTML);
 
                 if (x) {
@@ -136,16 +136,15 @@
          * @method init
          */
         this.init = function () {
-            var nobrs;
+            var nobrs, css;
             if (/\/info\.php\?id=/.test(general.loc)) {
-                // noinspection JSUnresolvedFunction
-                nobrs = general.doc.querySelector('td[class="txt"]' +
-                        '[align="right"][style="font-size:10px"]').
-                            parentNode.parentNode.querySelectorAll('nobr');
+                css = 'td[class="greenbrightbg"][align="right"]' +
+                    '[valign="top"]>table:not([align="center"])';
+                nobrs = general.doc.querySelector(css).querySelectorAll('nobr');
             } else {
-                nobrs = general.doc.querySelector('td[valign="top"]' +
-                    '[align="center"]>table[cellspacing="0"][cellpadding="0"]' +
-                    '[border="0"]').querySelectorAll('nobr');
+                css = 'td[valign="top"][align="center"]>' +
+                    'table[cellspacing="0"][cellpadding="0"][border="0"]';
+                nobrs = general.doc.querySelector(css).querySelectorAll('nobr');
             }
 
             this.fixSkills(nobrs);

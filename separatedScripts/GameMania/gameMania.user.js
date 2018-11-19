@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.34-170918
+// @version         2.35-191118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -105,8 +105,8 @@
          * @property target
          * @type {HTMLTableCellElement}
          */
-        this.target = general.doc.querySelector('a[href*="/info.ach.php?id="]' +
-                '+br+a[href*="/ferma.php?id="]').parentNode.nextElementSibling;
+        this.target = general.doc.querySelector('td[class="greenbrightbg"]' +
+            '[valign="top"][align="left"]');
         /**
          * @property total
          * @type {int}
@@ -155,6 +155,11 @@
          * @method init
          */
         this.init = function () {
+            if (!this.target ||
+                    !/Отработано часов/.test(this.target.innerHTML)) {
+                return;
+            }
+
             var roul = this.calc(/Потрачено в казино: <b>\$([^<]*)/i,
                     /Выигрыш в казино: <b>\$([^<]*)/i),
                 tot = this.calc(/Потрачено в тотализаторе: <b>\$([^<]*)/i,

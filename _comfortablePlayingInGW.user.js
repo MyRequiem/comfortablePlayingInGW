@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.116-041118
+// @version         1.117-191118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.116-041118';
+        this.version = '1.117-191118';
         /**
          * @property stString
          * @type {String}
@@ -4393,16 +4393,10 @@
             new AjaxQuery().init(url, 'GET', null, true, function (xml) {
                 var spanContent = general.doc.createElement('span');
                 spanContent.innerHTML = xml.responseText;
-                var cssSelector = 'td[class="wb"][bgcolor="#f0fff0"]' +
-                        '[align="center"][valign="top"]',
+                var cssSelector = 'td[class="greenbrightbg"][align="center"]' +
+                        '[valign="top"]',
                     tables = spanContent.querySelectorAll(cssSelector),
                     data;
-
-                if (!tables.length) {   // новый стиль оформления страницы инфы
-                    cssSelector = 'td[class="greenbrightbg"][align="center"]' +
-                        '[valign="top"]';
-                    tables = spanContent.querySelectorAll(cssSelector);
-                }
 
                 data = idElem === 'res' ?
                         tables[0].innerHTML : tables[2].innerHTML;
@@ -6693,16 +6687,11 @@
                     '[cellspacing="1"][cellpadding="5"][align="center"]' +
                     '[width="700"] tr[id^="item_tr"]');
 
-            if (tbody) {
-                // новое оформление экипировки
-                tbody = tbody.parentNode;
-            } else {
-                // старое оформление экипировки
-                tbody = general.doc.querySelector('table[border="0"]' +
-                    '[cellspacing="1"][cellpadding="3"][align="center"]' +
-                    '[width="700"]>tbody');
+            if (!tbody) {
+                return;
             }
 
+            tbody = tbody.parentNode;
             if (!tbody.firstElementChild) {
                 return;
             }
@@ -7061,7 +7050,8 @@
          * @property target
          * @type {HTMLTableCellElement|null}
          */
-        this.target = null;
+        this.target = general.doc.querySelector('td[class="greenbrightbg"]' +
+            '[align="center"][valign="top"]:last-child');
         /**
          * @property savecontent
          * @type {String}
@@ -7272,18 +7262,6 @@
          * @method init
          */
         this.init = function () {
-            var td = general.doc.querySelectorAll('td'),
-                i;
-
-            for (i = 0; i < td.length; i++) {
-                if (td[i].innerHTML === '<b>Бонусы</b>') {
-                    // noinspection JSUnresolvedVariable
-                    this.target = td[i].parentNode.
-                                nextElementSibling.lastElementChild;
-                    break;
-                }
-            }
-
             if (this.target) {
                 this.savecontent = this.target.innerHTML;
                 this.setBonusInfo();
@@ -7757,7 +7735,7 @@
 
         /**
          * @method fixSkills
-         * @param   {Array}   nbrs
+         * @param   {NodeList}  nbrs
          */
         this.fixSkills = function (nbrs) {
             var residue,
@@ -7768,7 +7746,7 @@
                 j;
 
             for (i = 0; i < nbrs.length; i++) {
-                x = /\((\d+.?\d*)\)\s*.*\+-\d+.?\d*<\/font>/.
+                x = /\([^>]+>(\d+.?\d*)<\/span>\s?\)\s*.*\+-\d+.?\d*<\/font>/.
                     exec(nbrs[i].innerHTML);
 
                 if (x) {
@@ -7804,16 +7782,15 @@
          * @method init
          */
         this.init = function () {
-            var nobrs;
+            var nobrs, css;
             if (/\/info\.php\?id=/.test(general.loc)) {
-                // noinspection JSUnresolvedFunction
-                nobrs = general.doc.querySelector('td[class="txt"]' +
-                        '[align="right"][style="font-size:10px"]').
-                            parentNode.parentNode.querySelectorAll('nobr');
+                css = 'td[class="greenbrightbg"][align="right"]' +
+                    '[valign="top"]>table:not([align="center"])';
+                nobrs = general.doc.querySelector(css).querySelectorAll('nobr');
             } else {
-                nobrs = general.doc.querySelector('td[valign="top"]' +
-                    '[align="center"]>table[cellspacing="0"][cellpadding="0"]' +
-                    '[border="0"]').querySelectorAll('nobr');
+                css = 'td[valign="top"][align="center"]>' +
+                    'table[cellspacing="0"][cellpadding="0"][border="0"]';
+                nobrs = general.doc.querySelector(css).querySelectorAll('nobr');
             }
 
             this.fixSkills(nobrs);
@@ -8179,8 +8156,8 @@
          * @property target
          * @type {HTMLTableCellElement}
          */
-        this.target = general.doc.querySelector('a[href*="/info.ach.php?id="]' +
-                '+br+a[href*="/ferma.php?id="]').parentNode.nextElementSibling;
+        this.target = general.doc.querySelector('td[class="greenbrightbg"]' +
+            '[valign="top"][align="left"]');
         // noinspection JSUnusedGlobalSymbols
         /**
          * @property total
@@ -8231,6 +8208,11 @@
          * @method init
          */
         this.init = function () {
+            if (!this.target ||
+                    !/Отработано часов/.test(this.target.innerHTML)) {
+                return;
+            }
+
             var roul = this.calc(/Потрачено в казино: <b>\$([^<]*)/i,
                     /Выигрыш в казино: <b>\$([^<]*)/i),
                 tot = this.calc(/Потрачено в тотализаторе: <b>\$([^<]*)/i,
@@ -8953,16 +8935,10 @@
         this.init = function () {
             if (this.equipment &&
                     (/(Левая|Правая) рука/.test(this.equipment.innerHTML))) {
-                var itemLink = 'a[href*="/item.php?item_id="]';
-                // новое оформление страницы информации о персонаже
-                this.weapon = this.equipment.
-                        querySelectorAll('td[valign="top"]>' + itemLink);
-                // примитивное оформление страницы информации о персонаже
-                if (!this.weapon.length) {
-                    this.weapon = this.equipment.querySelectorAll(itemLink);
-                }
+                var css = 'td[valign="top"]>a[href*="/item.php?item_id="]',
+                    txt = this.equipment.innerHTML;
 
-                var txt = this.equipment.innerHTML;
+                this.weapon = this.equipment.querySelectorAll(css);
                 if (/Левая/.test(txt) && (/Правая/.test(txt))) {
                     this.weapon = [this.weapon[0].href, this.weapon[1].href];
                 } else {
@@ -11390,13 +11366,18 @@
                 span.innerHTML = '» Вы сможете выставить карму через ' +
                     '<span id="karmaTimer" style="color: #056802;"></span>';
 
-                var target = general.doc.
-                        querySelector('td[colspan="3"]>table[width="100%"]'),
-                    prnt = target.parentNode;
+                var css = 'td[colspan="3"][class="greenbrightbg"]>' +
+                        'table[width="100%"]',
+                    target = general.doc.querySelector(css);
 
-                prnt.removeChild(target.nextElementSibling);
-                prnt.insertBefore(span, target.nextElementSibling);
-                this.formatTime(+((1800000 - difference) / 1000).toFixed(0));
+                if (target) {
+                    var prnt = target.parentNode;
+                    prnt.removeChild(target.nextElementSibling);
+                    prnt.insertBefore(span, target.nextElementSibling);
+
+                    var tm = +((1800000 - difference) / 1000).toFixed(0);
+                    this.formatTime(tm);
+                }
             }
         };
     };
@@ -12334,6 +12315,11 @@
          * @type {int}
          */
         this.tm = 1200;
+        /**
+         * @property target
+         * @type {Element|null}
+         */
+        this.target = general.doc.querySelector('#actiondivin');
 
         /**
          * @method showQuest
@@ -12341,7 +12327,6 @@
          */
         this.showQuest = function (url) {
             var _this = this;
-
             new AjaxQuery().init(url, 'GET', null, true, function (xhr) {
                 var spanContent = general.doc.createElement('span');
                 spanContent.innerHTML = xhr.responseText;
@@ -12371,20 +12356,10 @@
                     'href="http://www.gwars.ru/help/index.php?' +
                     'sid=102&pid=45">' + acQuests[1] + '</a>)';
 
-                var target = general.doc.querySelector('#actiondivin');
-                if (target) {
-                    // новое оформление страницы информации о персонаже
-                    target.parentNode.setAttribute('width', '100%');
-                    target.parentNode.nextElementSibling.
-                        removeAttribute('width');
-                } else {
-                    // примитивное оформление страницы информации о персонаже
-                    target = general.doc.querySelector('td[class="wb"]' +
-                        '[align="left"][valign="middle"][width="100%"]' +
-                            '[style="padding-top:3px;"]');
-                }
-
-                target.appendChild(span);
+                _this.target.parentNode.setAttribute('width', '100%');
+                _this.target.parentNode.nextElementSibling.
+                    removeAttribute('width');
+                _this.target.appendChild(span);
             }, function () {
                 general.root.setTimeout(function () {
                     _this.showQuest(url);
@@ -12393,7 +12368,7 @@
         };
 
         this.init = function () {
-            if (this.persID) {
+            if (this.persID && this.target) {
                 this.showQuest(this.questURL + this.persID);
             }
         };

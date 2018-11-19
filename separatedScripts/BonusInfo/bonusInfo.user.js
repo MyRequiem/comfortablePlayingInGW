@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.06-170918
+// @version         2.07-191118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -74,7 +74,9 @@
          * @property target
          * @type {HTMLTableCellElement|null}
          */
-        this.target = null;
+        this.target = general.doc.querySelector('td[class="greenbrightbg"]' +
+            '[align="center"][valign="top"]:last-child');
+
         /**
          * @property savecontent
          * @type {String}
@@ -285,19 +287,6 @@
          * @method init
          */
         this.init = function () {
-            var td = general.doc.querySelectorAll('td'),
-                i;
-
-            for (i = 0; i < td.length; i++) {
-                if (td[i].innerHTML === '<b>Бонусы</b>') {
-                    // noinspection JSUnresolvedVariable
-                    this.target = td[i].parentNode.
-                                nextElementSibling.lastElementChild;
-                    break;
-                }
-            }
-
-
             if (this.target) {
                 this.savecontent = this.target.innerHTML;
                 this.setBonusInfo();

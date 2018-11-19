@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php*
 // @grant           none
 // @license         MIT
-// @version         2.04-170918
+// @version         2.05-191118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -192,16 +192,10 @@
         this.init = function () {
             if (this.equipment &&
                     (/(Левая|Правая) рука/.test(this.equipment.innerHTML))) {
-                var itemLink = 'a[href*="/item.php?item_id="]';
-                // новое оформление страницы информации о персонаже
-                this.weapon = this.equipment.
-                        querySelectorAll('td[valign="top"]>' + itemLink);
-                // примитивное оформление страницы информации о персонаже
-                if (!this.weapon.length) {
-                    this.weapon = this.equipment.querySelectorAll(itemLink);
-                }
+                var css = 'td[valign="top"]>a[href*="/item.php?item_id="]',
+                    txt = this.equipment.innerHTML;
 
-                var txt = this.equipment.innerHTML;
+                this.weapon = this.equipment.querySelectorAll(css);
                 if (/Левая/.test(txt) && (/Правая/.test(txt))) {
                     this.weapon = [this.weapon[0].href, this.weapon[1].href];
                 } else {
