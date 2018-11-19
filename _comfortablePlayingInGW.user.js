@@ -11374,13 +11374,18 @@
                 span.innerHTML = '» Вы сможете выставить карму через ' +
                     '<span id="karmaTimer" style="color: #056802;"></span>';
 
-                var target = general.doc.
-                        querySelector('td[colspan="3"]>table[width="100%"]'),
-                    prnt = target.parentNode;
+                var css = 'td[colspan="3"][class="greenbrightbg"]>' +
+                        'table[width="100%"]',
+                    target = general.doc.querySelector(css);
 
-                prnt.removeChild(target.nextElementSibling);
-                prnt.insertBefore(span, target.nextElementSibling);
-                this.formatTime(+((1800000 - difference) / 1000).toFixed(0));
+                if (target) {
+                    var prnt = target.parentNode;
+                    prnt.removeChild(target.nextElementSibling);
+                    prnt.insertBefore(span, target.nextElementSibling);
+
+                    var tm = +((1800000 - difference) / 1000).toFixed(0);
+                    this.formatTime(tm);
+                }
             }
         };
     };

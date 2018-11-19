@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/info.vote.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.04-170918
+// @version         2.05-191118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -135,15 +135,6 @@
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.\n' +
-                    'MyRequiеm рекомендует вам скачать и установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'TimeKarma:\n\nFireFox 4+\nOpera 11+\nChrome 12+');
-
-                return;
-            }
-
             // поставили карму, запоминаем время
             if (/vote/.test(general.loc) &&
                     (/Спасибо, Ваше мнение учтено/.
@@ -168,13 +159,18 @@
                 span.innerHTML = '» Вы сможете выставить карму через ' +
                     '<span id="karmaTimer" style="color: #056802;"></span>';
 
-                var target = general.doc.
-                        querySelector('td[colspan="3"]>table[width="100%"]'),
-                    prnt = target.parentNode;
+                var css = 'td[colspan="3"][class="greenbrightbg"]>' +
+                        'table[width="100%"]',
+                    target = general.doc.querySelector(css);
 
-                prnt.removeChild(target.nextElementSibling);
-                prnt.insertBefore(span, target.nextElementSibling);
-                this.formatTime(+((1800000 - difference) / 1000).toFixed(0));
+                if (target) {
+                    var prnt = target.parentNode;
+                    prnt.removeChild(target.nextElementSibling);
+                    prnt.insertBefore(span, target.nextElementSibling);
+
+                    var tm = +((1800000 - difference) / 1000).toFixed(0);
+                    this.formatTime(tm);
+                }
             }
         };
     };
