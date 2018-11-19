@@ -6,7 +6,7 @@
 ![ChromeLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/chromeLogo.png)
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
 
-Версия: 1.116-041118
+Версия: 1.117-191118
 
 Нашли ошибку? Пожалуйста, [сообщите](http://www.gwars.ru/sms-create.php?mailto=MyRequiem)
 
@@ -74,7 +74,7 @@
 
 **BonusInfo**
 <br>
-Версия: 2.06-170918
+Версия: 2.07-191118
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BonusInfo/bonusInfo.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BonusInfo/bonusInfo.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BonusInfo)
 <br>
@@ -123,7 +123,7 @@
 
 **CurrentQuestOnInfo**
 <br>
-Версия: 1.07-101018
+Версия: 1.08-191118
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CurrentQuestOnInfo/currentQuestOnInfo.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CurrentQuestOnInfo/currentQuestOnInfo.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo)
 <br>
@@ -179,7 +179,7 @@
 
 **FixSkills**
 <br>
-Версия: 2.06-170918
+Версия: 2.08-191118
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FixSkills/fixSkills.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FixSkills/fixSkills.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FixSkills)
 <br>
@@ -193,7 +193,7 @@
 
 **GameMania**
 <br>
-Версия: 2.34-170918
+Версия: 2.35-191118
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GameMania/gameMania.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GameMania/gameMania.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GameMania)
 <br>
@@ -242,7 +242,7 @@
 
 **InventoryPlus**
 <br>
-Версия: 2.43-170918
+Версия: 2.44-191118
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/InventoryPlus/inventoryPlus.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/InventoryPlus/inventoryPlus.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/InventoryPlus)
 <br>
@@ -312,7 +312,7 @@
 
 **RangeWeapon**
 <br>
-Версия: 2.04-170918
+Версия: 2.05-191118
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/RangeWeapon/rangeWeapon.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/RangeWeapon/rangeWeapon.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/RangeWeapon)
 <br>
@@ -333,7 +333,7 @@
 
 **ResourcesAndBonuses**
 <br>
-Версия: 2.16-011018
+Версия: 2.17-191118
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ResourcesAndBonuses/resourcesAndBonuses.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ResourcesAndBonuses/resourcesAndBonuses.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ResourcesAndBonuses)
 <br>
@@ -417,7 +417,7 @@
 
 **TimeKarma**
 <br>
-Версия: 2.04-170918
+Версия: 2.05-191118
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeKarma/timeKarma.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeKarma/timeKarma.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/TimeKarma)
 <br>
