@@ -7056,7 +7056,8 @@
          * @property target
          * @type {HTMLTableCellElement|null}
          */
-        this.target = null;
+        this.target = general.doc.querySelector('td[class="greenbrightbg"]' +
+            '[align="center"][valign="top"]:last-child');
         /**
          * @property savecontent
          * @type {String}
@@ -7267,18 +7268,6 @@
          * @method init
          */
         this.init = function () {
-            var td = general.doc.querySelectorAll('td'),
-                i;
-
-            for (i = 0; i < td.length; i++) {
-                if (td[i].innerHTML === '<b>Бонусы</b>') {
-                    // noinspection JSUnresolvedVariable
-                    this.target = td[i].parentNode.
-                                nextElementSibling.lastElementChild;
-                    break;
-                }
-            }
-
             if (this.target) {
                 this.savecontent = this.target.innerHTML;
                 this.setBonusInfo();
