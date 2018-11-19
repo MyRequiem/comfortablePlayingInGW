@@ -7788,16 +7788,15 @@
          * @method init
          */
         this.init = function () {
-            var nobrs;
+            var nobrs, css;
             if (/\/info\.php\?id=/.test(general.loc)) {
-                // noinspection JSUnresolvedFunction
-                nobrs = general.doc.querySelector('td[class="txt"]' +
-                        '[align="right"][style="font-size:10px"]').
-                            parentNode.parentNode.querySelectorAll('nobr');
+                css = 'td[class="greenbrightbg"][align="right"]' +
+                    '[valign="top"]>table:not([align="center"])';
+                nobrs = general.doc.querySelector(css).querySelectorAll('nobr');
             } else {
-                nobrs = general.doc.querySelector('td[valign="top"]' +
-                    '[align="center"]>table[cellspacing="0"][cellpadding="0"]' +
-                    '[border="0"]').querySelectorAll('nobr');
+                css = 'td[valign="top"][align="center"]>' +
+                    'table[cellspacing="0"][cellpadding="0"][border="0"]';
+                nobrs = general.doc.querySelector(css).querySelectorAll('nobr');
             }
 
             this.fixSkills(nobrs);
