@@ -4393,16 +4393,10 @@
             new AjaxQuery().init(url, 'GET', null, true, function (xml) {
                 var spanContent = general.doc.createElement('span');
                 spanContent.innerHTML = xml.responseText;
-                var cssSelector = 'td[class="wb"][bgcolor="#f0fff0"]' +
-                        '[align="center"][valign="top"]',
+                var cssSelector = 'td[class="greenbrightbg"][align="center"]' +
+                        '[valign="top"]',
                     tables = spanContent.querySelectorAll(cssSelector),
                     data;
-
-                if (!tables.length) {   // новый стиль оформления страницы инфы
-                    cssSelector = 'td[class="greenbrightbg"][align="center"]' +
-                        '[valign="top"]';
-                    tables = spanContent.querySelectorAll(cssSelector);
-                }
 
                 data = idElem === 'res' ?
                         tables[0].innerHTML : tables[2].innerHTML;
