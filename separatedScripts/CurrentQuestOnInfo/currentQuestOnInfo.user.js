@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.07-101018
+// @version         1.08-191118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458], идея kaa
 // ==/UserScript==
 
@@ -53,6 +53,11 @@
          * @type {String}
          */
         this.persID = /\?id=(\d+)/.exec(this.root.location.href)[1];
+        /**
+         * @property target
+         * @type {Element|null}
+         */
+        this.target = this.doc.querySelector('#actiondivin');
     };
 
     /**
@@ -104,7 +109,6 @@
          */
         showQuest: function (url) {
             var _this = this;
-
             this.ajax(url, function (xhr) {
                 var spanContent = _this.doc.createElement('span');
                 spanContent.innerHTML = xhr.responseText;
@@ -134,20 +138,10 @@
                     'href="http://www.gwars.ru/help/index.php?' +
                     'sid=102&pid=45">' + acQuests[1] + '</a>)';
 
-                var target = _this.doc.querySelector('#actiondivin');
-                if (target) {
-                    // новое оформление страницы информации о персонаже
-                    target.parentNode.setAttribute('width', '100%');
-                    target.parentNode.nextElementSibling.
-                        removeAttribute('width');
-                } else {
-                    // примитивное оформление страницы информации о персонаже
-                    target = _this.doc.querySelector('td[class="wb"]' +
-                        '[align="left"][valign="middle"][width="100%"]' +
-                            '[style="padding-top:3px;"]');
-                }
-
-                target.appendChild(span);
+                _this.target.parentNode.setAttribute('width', '100%');
+                _this.target.parentNode.nextElementSibling.
+                    removeAttribute('width');
+                _this.target.appendChild(span);
             }, function () {
                 _this.root.setTimeout(function () {
                     _this.showQuest(url);
@@ -159,7 +153,7 @@
          * @method init
          */
         init: function () {
-            if (this.persID) {
+            if (this.persID && this.target) {
                 this.showQuest(this.questURL + this.persID);
             }
         }

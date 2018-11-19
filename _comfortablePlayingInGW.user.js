@@ -12318,6 +12318,11 @@
          * @type {int}
          */
         this.tm = 1200;
+        /**
+         * @property target
+         * @type {Element|null}
+         */
+        this.target = general.doc.querySelector('#actiondivin');
 
         /**
          * @method showQuest
@@ -12325,7 +12330,6 @@
          */
         this.showQuest = function (url) {
             var _this = this;
-
             new AjaxQuery().init(url, 'GET', null, true, function (xhr) {
                 var spanContent = general.doc.createElement('span');
                 spanContent.innerHTML = xhr.responseText;
@@ -12355,20 +12359,10 @@
                     'href="http://www.gwars.ru/help/index.php?' +
                     'sid=102&pid=45">' + acQuests[1] + '</a>)';
 
-                var target = general.doc.querySelector('#actiondivin');
-                if (target) {
-                    // новое оформление страницы информации о персонаже
-                    target.parentNode.setAttribute('width', '100%');
-                    target.parentNode.nextElementSibling.
-                        removeAttribute('width');
-                } else {
-                    // примитивное оформление страницы информации о персонаже
-                    target = general.doc.querySelector('td[class="wb"]' +
-                        '[align="left"][valign="middle"][width="100%"]' +
-                            '[style="padding-top:3px;"]');
-                }
-
-                target.appendChild(span);
+                _this.target.parentNode.setAttribute('width', '100%');
+                _this.target.parentNode.nextElementSibling.
+                    removeAttribute('width');
+                _this.target.appendChild(span);
             }, function () {
                 general.root.setTimeout(function () {
                     _this.showQuest(url);
@@ -12377,7 +12371,7 @@
         };
 
         this.init = function () {
-            if (this.persID) {
+            if (this.persID && this.target) {
                 this.showQuest(this.questURL + this.persID);
             }
         };
