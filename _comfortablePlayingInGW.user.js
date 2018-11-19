@@ -8163,8 +8163,8 @@
          * @property target
          * @type {HTMLTableCellElement}
          */
-        this.target = general.doc.querySelector('a[href*="/info.ach.php?id="]' +
-                '+br+a[href*="/ferma.php?id="]').parentNode.nextElementSibling;
+        this.target = general.doc.querySelector('td[class="greenbrightbg"]' +
+            '[valign="top"][align="left"]');
         // noinspection JSUnusedGlobalSymbols
         /**
          * @property total
@@ -8215,6 +8215,11 @@
          * @method init
          */
         this.init = function () {
+            if (!this.target ||
+                    !/Отработано часов/.test(this.target.innerHTML)) {
+                return;
+            }
+
             var roul = this.calc(/Потрачено в казино: <b>\$([^<]*)/i,
                     /Выигрыш в казино: <b>\$([^<]*)/i),
                 tot = this.calc(/Потрачено в тотализаторе: <b>\$([^<]*)/i,
