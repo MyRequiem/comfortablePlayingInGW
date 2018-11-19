@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/items.php*
 // @grant           none
 // @license         MIT
-// @version         2.43-170918
+// @version         2.44-191118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -117,16 +117,11 @@
                     '[cellspacing="1"][cellpadding="5"][align="center"]' +
                     '[width="700"] tr[id^="item_tr"]');
 
-            if (tbody) {
-                // новое оформление экипировки
-                tbody = tbody.parentNode;
-            } else {
-                // старое оформление экипировки
-                tbody = general.doc.querySelector('table[border="0"]' +
-                    '[cellspacing="1"][cellpadding="3"][align="center"]' +
-                    '[width="700"]>tbody');
+            if (!tbody) {
+                return;
             }
 
+            tbody = tbody.parentNode;
             if (!tbody.firstElementChild) {
                 return;
             }

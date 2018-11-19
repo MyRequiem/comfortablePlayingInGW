@@ -6693,16 +6693,11 @@
                     '[cellspacing="1"][cellpadding="5"][align="center"]' +
                     '[width="700"] tr[id^="item_tr"]');
 
-            if (tbody) {
-                // новое оформление экипировки
-                tbody = tbody.parentNode;
-            } else {
-                // старое оформление экипировки
-                tbody = general.doc.querySelector('table[border="0"]' +
-                    '[cellspacing="1"][cellpadding="3"][align="center"]' +
-                    '[width="700"]>tbody');
+            if (!tbody) {
+                return;
             }
 
+            tbody = tbody.parentNode;
             if (!tbody.firstElementChild) {
                 return;
             }
