@@ -83,8 +83,13 @@
         this.setCss = function () {
             // css-ботва для ссылки на главную страницу NPC
             var npcLinkStyle = general.doc.createElement('style');
-            npcLinkStyle.innerHTML = '@keyframes pulsate {' +
-                    '15% { color: #009900; text-shadow: 1 1 ' +
+            npcLinkStyle.innerHTML = '@-webkit-keyframes pulsate {' +
+                    '15% { color: #009900; text-shadow: 0 -1px ' +
+                        'rgba(0,0,0,.3), 0 0 5px #FFFFFF, 0 0 7px #009900; }' +
+                '}' +
+
+                '@keyframes pulsate {' +
+                    '15% { color: #009900; text-shadow: 0 -1 ' +
                         'rgba(0,0,0,.3), 0 0 5px #FFFFFF, 0 0 7px #009900; }' +
                 '}' +
 
