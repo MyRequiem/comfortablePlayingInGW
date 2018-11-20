@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            PersonalNPCNotifications
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     Если личный NPC "Ожидает распоряжений" и его здоровье более 79%, то на главной странице персонажа ссылка на NPC будет "пульсировать".
+// @description     Если личный NPC ожидает распоряжений и его здоровье более 79%, то на главной странице персонажа ссылка на NPC начинает "пульсировать". Если NPC находится на Аутленде и его здоровье менее 30%, то фон ссылки становится розовый.
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PersonalNPCNotifications/personalNPCNotifications.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PersonalNPCNotifications/personalNPCNotifications.user.js
@@ -173,20 +173,23 @@
 
                 this.ajax(url, function (xhr) {
                     _this.spanContent.innerHTML = xhr.responseText;
-                    var showNpcControl = _this.spanContent.
-                            querySelector('a[onclick^="show_npc_control"]');
+                    var link = _this.spanContent.
+                            querySelector('a[onclick^="show_npc_control"]'),
+                        div = _this.spanContent.
+                            querySelector('#namespan').parentNode,
+                        health = /\[(\d+) \/ (\d+)\]/.exec(div.innerHTML);
 
-                    if (showNpcControl.innerHTML === 'Ожидает распоряжений') {
-                        var div = _this.spanContent.
-                                querySelector('#namespan').parentNode,
-                            health = /\[(\d+) \/ (\d+)\]/.exec(div.innerHTML);
+                    health = Math.floor(+health[1] * 100 / (+health[2]));
 
-                        health = Math.floor(+health[1] * 100 / (+health[2]));
-                        if (health >= 80) {
-                            npcLink.setAttribute('id', 'npcBlink');
-                        }
+                    if (link.innerHTML === 'Ожидает распоряжений' &&
+                            health >= 80) {
+                        npcLink.setAttribute('id', 'npcBlink');
+                    } else if (link.innerHTML === 'Путешествует по Аутленду'
+                            && health < 30) {
+                        npcLink.setAttribute('style', 'background: #FFE3E3');
                     } else {
                         npcLink.removeAttribute('id');
+                        npcLink.removeAttribute('style');
                     }
 
                     general.root.setTimeout(function () {
