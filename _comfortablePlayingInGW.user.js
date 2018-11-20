@@ -11361,6 +11361,11 @@
          * @method init
          */
         this.init = function () {
+            // на странице личных NPC не работает
+            if (general.$('npc_log_book')) {
+                return;
+            }
+
             // поставили карму, запоминаем время
             if (/vote/.test(general.loc) &&
                     (/Спасибо, Ваше мнение учтено/.
