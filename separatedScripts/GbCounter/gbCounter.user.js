@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.04-170918
+// @version         2.05-201118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -179,13 +179,8 @@
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.' +
-                    '\nMyRequiеm рекомендует вам установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'GbCounter\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
-
+            // на главной странице личного NPC
+            if (/\?nid=\d+/.test(general.loc)) {
                 return;
             }
 

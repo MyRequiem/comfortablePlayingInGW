@@ -5382,26 +5382,30 @@
          * @param   {int}   sec
          */
         this.showTimerNPC = function (sec) {
-            var s = sec,
-                h = Math.floor(s / 3600);
+            var timer = general.$('spanTimer');
+            // при переходе на личного NPC таймера не будет
+            if (timer) {
+                var s = sec,
+                    h = Math.floor(s / 3600);
 
-            s -= h * 3600;
-            var min = Math.floor(s / 60);
-            s -= min * 60;
+                s -= h * 3600;
+                var min = Math.floor(s / 60);
+                s -= min * 60;
 
-            h = h < 10 ? '0' + h : h;
-            min = min < 10 ? '0' + min : min;
-            s = s < 10 ? '0' + s : s;
-            general.$('spanTimer').innerHTML = h + ':' + min + ':' + s;
+                h = h < 10 ? '0' + h : h;
+                min = min < 10 ? '0' + min : min;
+                s = s < 10 ? '0' + s : s;
+                timer.innerHTML = h + ':' + min + ':' + s;
 
-            sec -= 1;
-            var _this = this;
-            if (sec > -1) {
-                general.root.setTimeout(function () {
-                    _this.showTimerNPC(sec);
-                }, 1000);
-            } else {
-                this.goQuest();
+                sec -= 1;
+                var _this = this;
+                if (sec > -1) {
+                    general.root.setTimeout(function () {
+                        _this.showTimerNPC(sec);
+                    }, 1000);
+                } else {
+                    this.goQuest();
+                }
             }
         };
 
@@ -5440,6 +5444,11 @@
          * @method init
          */
         this.init = function () {
+            // на главной странице личного NPC
+            if (/\?nid=\d+/.test(general.loc)) {
+                return;
+            }
+
             var stData = general.getData(10);
 
             if (/www\.gwars\.ru\/me(\/|\.php)/.test(general.loc)) {
@@ -7020,6 +7029,11 @@
          * @method init
          */
         this.init = function () {
+            // на главной странице личного NPC
+            if (/\?nid=\d+/.test(general.loc)) {
+                return;
+            }
+
             var divGB = general.doc.querySelector('td>b>div[id="cdiv"]');
             if (divGB) {
                 this.countGbNow = +divGB.innerHTML.replace(/,/g, '');
@@ -9779,6 +9793,11 @@
          * @method init
          */
         this.init = function () {
+            // на главной странице личного NPC
+            if (/\?nid=\d+/.test(general.loc)) {
+                return;
+            }
+
             this.getDataNow(true);
             var stData = general.getData(25);
 
@@ -12239,6 +12258,11 @@
          * @method init
          */
         this.init = function () {
+            // на главной странице личного NPC
+            if (/\?nid=\d+/.test(general.loc)) {
+                return;
+            }
+
             var target = general.doc.querySelector('div#hpdiv');
             if (target) {
                 var divHealth = general.doc.createElement('div');

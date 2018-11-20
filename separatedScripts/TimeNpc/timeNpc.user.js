@@ -10,7 +10,7 @@
 // @include         http://www.gwars.ru/npc.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.27-131018
+// @version         2.28-201118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -348,26 +348,30 @@
          * @param   {int}   sec
          */
         this.showTimerNPC = function (sec) {
-            var s = sec,
-                h = Math.floor(s / 3600);
+            var timer = general.$('spanTimer');
+            // при переходе на личного NPC таймера не будет
+            if (timer) {
+                var s = sec,
+                    h = Math.floor(s / 3600);
 
-            s -= h * 3600;
-            var min = Math.floor(s / 60);
-            s -= min * 60;
+                s -= h * 3600;
+                var min = Math.floor(s / 60);
+                s -= min * 60;
 
-            h = h < 10 ? '0' + h : h;
-            min = min < 10 ? '0' + min : min;
-            s = s < 10 ? '0' + s : s;
-            general.$('spanTimer').innerHTML = h + ':' + min + ':' + s;
+                h = h < 10 ? '0' + h : h;
+                min = min < 10 ? '0' + min : min;
+                s = s < 10 ? '0' + s : s;
+                general.$('spanTimer').innerHTML = h + ':' + min + ':' + s;
 
-            sec -= 1;
-            var _this = this;
-            if (sec > -1) {
-                general.root.setTimeout(function () {
-                    _this.showTimerNPC(sec);
-                }, 1000);
-            } else {
-                this.goQuest();
+                sec -= 1;
+                var _this = this;
+                if (sec > -1) {
+                    general.root.setTimeout(function () {
+                        _this.showTimerNPC(sec);
+                    }, 1000);
+                } else {
+                    this.goQuest();
+                }
             }
         };
 
@@ -406,13 +410,8 @@
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.' +
-                    '\nMyRequiеm рекомендует вам установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'TimeNpc\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
-
+            // на главной странице личного NPC
+            if (/\?nid=\d+/.test(general.loc)) {
                 return;
             }
 
