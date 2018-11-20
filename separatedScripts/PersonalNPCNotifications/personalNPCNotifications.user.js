@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            PersonalNPCNotifications
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     Если личный NPC "Ожидает распоряжений", то на главной странице персонажа ссылка на NPC будет "пульсировать".
+// @description     Если личный NPC "Ожидает распоряжений" и его здоровье более 79%, то на главной странице персонажа ссылка на NPC будет "пульсировать".
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PersonalNPCNotifications/personalNPCNotifications.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PersonalNPCNotifications/personalNPCNotifications.user.js
@@ -177,14 +177,21 @@
                             querySelector('a[onclick^="show_npc_control"]');
 
                     if (showNpcControl.innerHTML === 'Ожидает распоряжений') {
-                        npcLink.setAttribute('id', 'npcBlink');
+                        var div = _this.spanContent.
+                                querySelector('#namespan').parentNode,
+                            health = /\[(\d+) \/ (\d+)\]/.exec(div.innerHTML);
+
+                        health = Math.floor(+health[1] * 100 / (+health[2]));
+                        if (health >= 80) {
+                            npcLink.setAttribute('id', 'npcBlink');
+                        }
                     } else {
                         npcLink.removeAttribute('id');
                     }
 
                     general.root.setTimeout(function () {
                         _this.start();
-                    }, 7000);
+                    }, 15000);
                 }, function () {
                     general.root.setTimeout(function () {
                         _this.start();
