@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.117-191118
+// @version         1.118-211118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.117-191118';
+        this.version = '1.118-211118';
         /**
          * @property stString
          * @type {String}
@@ -124,7 +124,7 @@
                         [32] - SortSyndWars (удален)
                         [33] - LinksInOne2One
                         [34] - One2OneCallerInfo
-                        [35] - MinBetAtRoulette (удален)
+                        [35] - PersonalNPCNotifications
                         [36] - PortTimer
                         [37] - PortsAndTerminals
                         [38] - RangeWeapon
@@ -1129,6 +1129,16 @@
                     '<a href="http://www.gwars.ru/info.php?id=54662" ' +
                     'style="font-weight: bold;" target="_blank">kaa</a>' +
                     '</span>', '58']],
+
+            'Персональный NPC': [
+                ['Оповещения', 'Если личный NPC ожидает распоряжений и его ' +
+                    'здоровье более 79%, то на главной странице персонажа ' +
+                    'ссылка на NPC начинает "пульсировать". Если NPC ' +
+                    'находится на Аутленде и его здоровье менее 30%, то фон ' +
+                    'ссылки становится розовый. Статус NPC проверяется один ' +
+                    'раз в 15 секунд, перезагрузки главной страницы ' +
+                    'персонажа не требуется.' +
+                    this.getGitHubLink('personalNPCNotifications'), '35']],
 
             'Бои': [
                 ['Дополнение для боев', 'Расширенная информация в списке ' +
@@ -5382,26 +5392,30 @@
          * @param   {int}   sec
          */
         this.showTimerNPC = function (sec) {
-            var s = sec,
-                h = Math.floor(s / 3600);
+            var timer = general.$('spanTimer');
+            // при переходе на личного NPC таймера не будет
+            if (timer) {
+                var s = sec,
+                    h = Math.floor(s / 3600);
 
-            s -= h * 3600;
-            var min = Math.floor(s / 60);
-            s -= min * 60;
+                s -= h * 3600;
+                var min = Math.floor(s / 60);
+                s -= min * 60;
 
-            h = h < 10 ? '0' + h : h;
-            min = min < 10 ? '0' + min : min;
-            s = s < 10 ? '0' + s : s;
-            general.$('spanTimer').innerHTML = h + ':' + min + ':' + s;
+                h = h < 10 ? '0' + h : h;
+                min = min < 10 ? '0' + min : min;
+                s = s < 10 ? '0' + s : s;
+                timer.innerHTML = h + ':' + min + ':' + s;
 
-            sec -= 1;
-            var _this = this;
-            if (sec > -1) {
-                general.root.setTimeout(function () {
-                    _this.showTimerNPC(sec);
-                }, 1000);
-            } else {
-                this.goQuest();
+                sec -= 1;
+                var _this = this;
+                if (sec > -1) {
+                    general.root.setTimeout(function () {
+                        _this.showTimerNPC(sec);
+                    }, 1000);
+                } else {
+                    this.goQuest();
+                }
             }
         };
 
@@ -5440,6 +5454,11 @@
          * @method init
          */
         this.init = function () {
+            // на главной странице личного NPC
+            if (/\?nid=\d+/.test(general.loc)) {
+                return;
+            }
+
             var stData = general.getData(10);
 
             if (/www\.gwars\.ru\/me(\/|\.php)/.test(general.loc)) {
@@ -7020,6 +7039,11 @@
          * @method init
          */
         this.init = function () {
+            // на главной странице личного NPC
+            if (/\?nid=\d+/.test(general.loc)) {
+                return;
+            }
+
             var divGB = general.doc.querySelector('td>b>div[id="cdiv"]');
             if (divGB) {
                 this.countGbNow = +divGB.innerHTML.replace(/,/g, '');
@@ -9779,6 +9803,11 @@
          * @method init
          */
         this.init = function () {
+            // на главной странице личного NPC
+            if (/\?nid=\d+/.test(general.loc)) {
+                return;
+            }
+
             this.getDataNow(true);
             var stData = general.getData(25);
 
@@ -11342,6 +11371,11 @@
          * @method init
          */
         this.init = function () {
+            // на странице личных NPC не работает
+            if (general.$('npc_log_book')) {
+                return;
+            }
+
             // поставили карму, запоминаем время
             if (/vote/.test(general.loc) &&
                     (/Спасибо, Ваше мнение учтено/.
@@ -12239,6 +12273,11 @@
          * @method init
          */
         this.init = function () {
+            // на главной странице личного NPC
+            if (/\?nid=\d+/.test(general.loc)) {
+                return;
+            }
+
             var target = general.doc.querySelector('div#hpdiv');
             if (target) {
                 var divHealth = general.doc.createElement('div');
@@ -12977,6 +13016,141 @@
         };
     };
 
+    /**
+     * @class PersonalNPCNotifications
+     * @constructor
+     */
+    var PersonalNPCNotifications = function () {
+        /**
+         * @property isCssSet
+         * @type {Boolean}
+         */
+        this.isCssSet = false;
+        /**
+         * @property spanContent
+         * @type {Element}
+         */
+        this.spanContent = general.doc.createElement('span');
+        /**
+         * @property ajax
+         * @type {Function}
+         */
+        this.ajax = new AjaxQuery().init;
+
+        /**
+         * @method setCss
+         */
+        this.setCss = function () {
+            // css-ботва для ссылки на главную страницу NPC
+            var npcLinkStyle = general.doc.createElement('style');
+            npcLinkStyle.innerHTML = '@-webkit-keyframes pulsate {' +
+                    '15% { color: #009900; text-shadow: 0 -1px ' +
+                        'rgba(0,0,0,.3), 0 0 5px #FFFFFF, 0 0 7px #009900; }' +
+                '}' +
+
+                '@keyframes pulsate {' +
+                    '15% { color: #009900; text-shadow: 0 -1 ' +
+                        'rgba(0,0,0,.3), 0 0 5px #FFFFFF, 0 0 7px #009900; }' +
+                '}' +
+
+                '#npcBlink {' +
+                    'color: #004400;' +
+                    'text-shadow: 0 -1px rgba(0,0,0,.1);' +
+                    '-webkit-animation: pulsate 0.7s linear infinite;' +
+                    'animation: pulsate 0.7s linear infinite;' +
+                '}';
+
+            general.doc.querySelector('head').appendChild(npcLinkStyle);
+            this.isCssSet = true;
+        };
+
+        /**
+         * @method changepostdo
+         */
+        this.changepostdo = function () {
+            var _this = this;
+            general.root.postdo = function (url) {
+                var url_loaded = url,
+                    my_main_div = $('#my_main_div');
+
+                my_main_div.css('opacity', '0.6');
+
+                /*jslint unparam: true */
+                /*eslint no-unused-vars: 0 */
+                my_main_div.load(url,
+                    function (responseTxt, statusTxt, xhr) {
+                        if (statusTxt === 'success') {
+                            $('#my_main_div').css('opacity', '1');
+                            window.history.
+                                replaceState({}, null, url_loaded);
+                            _this.init();
+                        } else {
+                            $('#my_main_div').css('opacity', '0.3');
+                            window.location.href = url_loaded;
+                        }
+                    });
+
+                return false;
+            };
+        };
+
+        /**
+         * @method start
+         */
+        this.start = function () {
+            var npcLink = general.doc.querySelector('a[href*="/me.php?nid="]' +
+                '[onclick^="dolink"]');
+
+            if (npcLink) {
+                var url = 'http://www.gwars.ru/info.php?id=' +
+                        /\?nid=(\d+)/.exec(npcLink.href)[1],
+                    _this = this;
+
+                this.ajax(url, 'GET', null, true, function (xhr) {
+                    _this.spanContent.innerHTML = xhr.responseText;
+                    var link = _this.spanContent.
+                            querySelector('a[onclick^="show_npc_control"]'),
+                        div = _this.spanContent.
+                            querySelector('#namespan').parentNode,
+                        health = /\[(\d+) \/ (\d+)\]/.exec(div.innerHTML);
+
+                    health = Math.floor(+health[1] * 100 / (+health[2]));
+
+                    if (link.innerHTML === 'Ожидает распоряжений' &&
+                            health >= 80) {
+                        npcLink.setAttribute('id', 'npcBlink');
+                    } else if (link.innerHTML === 'Путешествует по Аутленду'
+                            && health < 30) {
+                        npcLink.setAttribute('style', 'background: #FFE3E3');
+                    } else {
+                        npcLink.removeAttribute('id');
+                        npcLink.removeAttribute('style');
+                    }
+
+                    general.root.setTimeout(function () {
+                        _this.start();
+                    }, 15000);
+                }, function () {
+                    general.root.setTimeout(function () {
+                        _this.start();
+                    }, 1000);
+                });
+            }
+        };
+
+        /**
+         * @method init
+         */
+        this.init = function () {
+            if (!this.isCssSet) {
+                this.setCss();
+            }
+
+            this.changepostdo();
+            this.start();
+        };
+    };
+
     general = new General();
 
     // не в игре
@@ -13227,6 +13401,14 @@
                 if (initScript[56]) {
                     try {
                         new Regeneration().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[35]) {
+                    try {
+                        new PersonalNPCNotifications().init();
                     } catch (e) {
                         general.cons.log(e);
                     }

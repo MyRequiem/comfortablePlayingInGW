@@ -177,7 +177,7 @@ class CreateServiceFiles(object):
         imgs_path = path.join(self.root, 'imgs/', self.meta['dname'])
         if path.isdir(imgs_path):
             for img in sorted(listdir(imgs_path)):
-                if fnmatch(img, 'screen*.png'):
+                if fnmatch(img, 'screen*.png') or fnmatch(img, 'screen*.gif'):
                     print(readme_templ[1].format(self.meta['dname'],
                                                  raw.replace(self.meta['sdir'],
                                                              'imgs'),

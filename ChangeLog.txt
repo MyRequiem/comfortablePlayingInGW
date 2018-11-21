@@ -1,3 +1,18 @@
+2018-11-21[1.118-211118]
+--------------------------------------
+	- Добавлен новый скрипт для персональных NPC:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PersonalNPCNotifications
+
+	- Следующие скрипты больше не будут работать на главной странице персонального NPC:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GbCounter
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/Regeneration
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SkillCounters
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/TimeNpc
+
+	- Скрипт не будет наботать на странице информации персонального NPC:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/TimeKarma
+
+
 2018-11-19[1.117-191118]
 --------------------------------------
 	- Исправлен скрипт:
@@ -5,6 +20,7 @@
 	- Удален код для примитивного оформления страниц информации о персонаже и
 		экипировки. C 01.11.18 примитивное оформление отключено:
 			http://www.gwars.ru/messages.php?fid=1&tid=1481
+
 
 2018-11-04[1.116-041118]
 --------------------------------------

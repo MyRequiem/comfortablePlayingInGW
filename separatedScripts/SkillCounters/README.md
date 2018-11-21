@@ -1,7 +1,7 @@
 Счетчики опыта и умений на главной странице персонажа.
 <br>
 <br>
-Версия: 2.10-291018
+Версия: 2.11-201118
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SkillCounters/skillCounters.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SkillCounters/skillCounters.user.js.zip)
 <br>

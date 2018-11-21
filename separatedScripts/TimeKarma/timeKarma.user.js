@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/info.vote.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.05-191118
+// @version         2.06-201118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -135,6 +135,11 @@
          * @method init
          */
         this.init = function () {
+            // на странице личных NPC не работает
+            if (general.$('npc_log_book')) {
+                return;
+            }
+
             // поставили карму, запоминаем время
             if (/vote/.test(general.loc) &&
                     (/Спасибо, Ваше мнение учтено/.
