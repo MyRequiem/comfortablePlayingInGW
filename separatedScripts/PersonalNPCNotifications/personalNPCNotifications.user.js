@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/me.php*
 // @grant           none
 // @license         MIT
-// @version         1.00-201118
+// @version         1.07-211118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -110,12 +110,14 @@
         this.changepostdo = function () {
             var _this = this;
             general.root.postdo = function (url) {
-                var url_loaded = url;
-                $('#my_main_div').css('opacity', '0.6');
+                var url_loaded = url,
+                    my_main_div = $('#my_main_div');
+
+                my_main_div.css('opacity', '0.6');
 
                 /*jslint unparam: true */
                 /*eslint no-unused-vars: 0 */
-                $('#my_main_div').load(url,
+                my_main_div.load(url,
                     function (responseTxt, statusTxt, xhr) {
                         if (statusTxt === 'success') {
                             $('#my_main_div').css('opacity', '1');
