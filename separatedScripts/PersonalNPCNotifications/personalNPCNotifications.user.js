@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            PersonalNPCNotifications
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     Если личный NPC ожидает распоряжений и его здоровье более 79%, то на главной странице персонажа ссылка на NPC начинает "пульсировать". Если NPC находится на Аутленде и его здоровье менее 30%, то фон ссылки становится розовый.
+// @description     Если личный NPC ожидает распоряжений и его здоровье более 79%, то на главной странице персонажа ссылка на NPC начинает "пульсировать". Если NPC находится на Аутленде и его здоровье менее 30%, то фон ссылки становится розовый. Статус NPC проверяется один раз в 15 секунд, перезагрузки главной страницы персонажа не требуется.
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PersonalNPCNotifications/personalNPCNotifications.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PersonalNPCNotifications/personalNPCNotifications.user.js
@@ -210,6 +210,7 @@
             if (!this.isCssSet) {
                 this.setCss();
             }
+
             this.changepostdo();
             this.start();
         };
