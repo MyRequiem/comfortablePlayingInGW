@@ -415,16 +415,28 @@
         this.DESIGN_VERSION = /(^|;) ?version=([^;]*)(;|$)/.
                 exec(this.doc.cookie);
         /**
+         * @property selfName
+         * @type {String}
+         */
+        this.selfName = 'comfortablePlayingInGW';
+        /**
          * @property STORAGENAME
          * @type {String}
          */
-        this.STORAGENAME = (this.myID ? this.myID[2] : '') +
-                '_comfortablePlayingInGW';
+        this.STORAGENAME = (this.myID ? this.myID[2] : '') + '_' +
+            this.selfName;
+        /**
+         * @property mainPath
+         * @type {String}
+         */
+        this.mainPath = 'https://raw.githubusercontent.com/MyRequiem/' +
+            this.selfName + '/master/';
         /**
          * @property imgPath
          * @type {String}
          */
-        this.imgPath = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/imgs/';
+        this.imgPath = this.mainPath + 'imgs/';
+        // this.imgPath = 'http://127.0.0.1/imgs/gwScripts/';
         /**
          * @property viewMode
          * @type {Boolean}
@@ -741,8 +753,8 @@
                 }
 
                 audio.volume = 0.3;
-                audio.src = 'https://raw.githubusercontent.com/MyRequiem/' +
-                    'comfortablePlayingInGW/master/sounds/' + sound + '.ogg';
+                audio.src = general.mainPath + 'sounds/' + sound + '.ogg';
+                // audio.src = 'http://127.0.0.1/sounds/' + sound + '.ogg';
                 // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
@@ -960,7 +972,7 @@
          */
         this.getGitHubLink = function (scriptName) {
             var gitHubPage = 'https://github.com/MyRequiem/' +
-                'comfortablePlayingInGW/tree/master/separatedScripts/';
+                    general.selfName + '/tree/master/separatedScripts/';
 
             return '<br><a target="_blank" href="' + gitHubPage +
                 scriptName[0].toUpperCase() + scriptName.substr(1) +
@@ -1462,10 +1474,9 @@
                     'alt="Сбросить"  /></td>' +
                     '<td style="font-size: 8pt; text-align: center;">' +
                     '<a id="linkNewVerScript" target="_blank" ' +
-                    'style="color: #FF0000; visibility: hidden;" ' +
-                    'href="https://raw.githubusercontent.com/MyRequiem/' +
-                    'comfortablePlayingInGW/master/_comfortablePlayingInGW.' +
-                    'user.js">Доступна новая версия</a> ' +
+                    'style="color: #FF0000; visibility: hidden;" href="' +
+                    general.mainPath + '_' + general.selfName + '.user.js">' +
+                    'Доступна новая версия</a> ' +
                     '<span id="refreshVer"></span></td>' +
                     '<td style="font-size: 7pt; width: 35%; text-align: ' +
                     'right;"><a target="_blank" style="opacity: 0.5; ' +
@@ -1475,8 +1486,7 @@
                     '<span style="color: #014305; font-weight: 700;">' +
                     'MyRequiem©</span></a> ' + general.version +
                     '<a target="_blank" title="История изменений" ' +
-                    'href="https://raw.githubusercontent.com/MyRequiem/' +
-                    'comfortablePlayingInGW/master/ChangeLog.txt" ' +
+                    'href="' + general.mainPath + 'ChangeLog.txt" ' +
                     'style="text-decoration: none; margin: 0 5px 0 3px;">' +
                     '<img src="' + gwImgUrl + 'wlog.gif" border="0" ' +
                     'width="12" height="10" tile="Лог" alt="Лог" /></a></td>' +
@@ -2634,9 +2644,9 @@
                     }
 
                     span = general.doc.createElement('span');
-                    span.innerHTML = ' <img src="' + general.imgPath +
-                        'AdvBattleAll/envelope.gif" style="width: 15px; ' +
-                        'cursor: pointer; margin-right: 5px;">';
+                    span.innerHTML = ' <img src="' + this.imgPath +
+                        'envelope.gif" style="width: 15px; cursor: pointer; ' +
+                        'margin-right: 5px;">';
                     before = !i ? mass[i][j].nextElementSibling :
                             mass[i][j].previousElementSibling;
                     mass[i][j].parentNode.insertBefore(span, before);
@@ -6259,6 +6269,8 @@
                         'http://ganjascript.ucoz.com/'],
                     ['Скрипты на gwscripts.ucoz.net',
                         'http://gwscripts.ucoz.net/'],
+                    ['ComfortablePlayingInGW',
+                        'https://github.com/MyRequiem/comfortablePlayingInGW'],
                     ['Скрипты на born2kill.clan.su',
                         'http://born2kill.clan.su/load/9'],
                     ['Скрипты от W_or_M',
@@ -11441,9 +11453,6 @@
                     querySelectorAll('div[style*="font-size:8pt;"]>' +
                         'span[class="battletags"]+b'),
                 getPos = new GetPos().init,
-                imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
-                    'comfortablePlayingInGW/master/imgs/ImgPokemonsOnBattle/',
-                ext = '.png',
                 name,
                 txt,
                 pos,
@@ -11463,8 +11472,9 @@
                     div.style.left = String(pos.x > 200 ?
                             pos.x - 70 : pos.x + 130);
                     div.style.top = String(pos.y);
-                    div.innerHTML = '<img src="' + imgPath + name[1] + ext +
-                        '" style="width: 70px; height: 80px;" ' +
+                    div.innerHTML = '<img src="' + general.imgPath +
+                        'ImgPokemonsOnBattle/' + name[1] + '.png" ' +
+                        'style="width: 70px; height: 80px;" ' +
                         'title="' + name[1] + '" alt="' + name[1] + '" />';
                 }
             }
