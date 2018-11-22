@@ -1,7 +1,7 @@
 Звуковые и визуальные оповещения при появлении новых тем или смене верхней темы, новых сообщений в темах, скрытие закрытых тем и прикрепленок, отметка закрытых тем, скрытие ненужных веток форума.
 <br>
 <br>
-Версия: 2.25-131018
+Версия: 2.26-221118
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvForum/advForum.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvForum/advForum.user.js.zip)
 <br>
