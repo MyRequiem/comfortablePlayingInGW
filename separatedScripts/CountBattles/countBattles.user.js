@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.warstats.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.26-170918
+// @version         2.27-221118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -52,7 +52,8 @@
          * @property imgPath
          * @type {String}
          */
-        this.imgPath = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/imgs/';
+        this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
+            'comfortablePlayingInGW/master/imgs/';
     };
 
     /**

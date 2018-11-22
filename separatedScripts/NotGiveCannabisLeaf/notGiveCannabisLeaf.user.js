@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         2.12-200918
+// @version         2.13-221118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -51,8 +51,8 @@
          * @property imgPath
          * @type {String}
          */
-        this.imgPath = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'imgs/NotGiveCannabisLeaf/';
+        this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
+            'comfortablePlayingInGW/master/imgs/NotGiveCannabisLeaf/';
     };
 
     /**
