@@ -10,7 +10,7 @@
 // @include         http://www.gwars.ru/forum.php
 // @grant           none
 // @license         MIT
-// @version         2.25-131018
+// @version         2.26-221118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -66,7 +66,8 @@
          * @property imgPath
          * @type {String}
          */
-        this.imgPath = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/imgs/';
+        this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
+            'comfortablePlayingInGW/master/imgs/';
         /**
          * @property myID
          * @type {String}
