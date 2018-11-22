@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru*
 // @grant           none
 // @license         MIT
-// @version         2.37-300918
+// @version         2.38-221118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -64,7 +64,8 @@
          * @property imgPath
          * @type {String}
          */
-        this.imgPath = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/imgs/';
+        this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
+            'comfortablePlayingInGW/master/imgs/';
     };
 
     /**
@@ -451,6 +452,8 @@
                         'http://ganjascript.ucoz.com/'],
                     ['Скрипты на gwscripts.ucoz.net',
                         'http://gwscripts.ucoz.net/'],
+                    ['ComfortablePlayingInGW',
+                        'https://github.com/MyRequiem/comfortablePlayingInGW'],
                     ['Скрипты на born2kill.clan.su',
                         'http://born2kill.clan.su/load/9'],
                     ['Скрипты от W_or_M',
