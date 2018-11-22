@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         1.33-170918
+// @version         1.34-221118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -71,11 +71,6 @@
          * @type {String}
          */
         this.STNAME = 'allPlantsOnFarm';
-        /**
-         * @property imgPath
-         * @type {String}
-         */
-        this.imgPath = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/imgs/';
     };
 
     /**
