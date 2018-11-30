@@ -11454,6 +11454,7 @@
                         'span[class="battletags"]+b'),
                 getPos = new GetPos().init,
                 name,
+                size,
                 txt,
                 pos,
                 div,
@@ -11461,21 +11462,31 @@
 
             for (i = 0; i < enemies.length; i++) {
                 txt = enemies[i].innerHTML;
-                name = txt === 'Боец ОМОН' ?
-                        ['', 'omon']  : /(^[^\s]+)\s/.exec(txt);
-                if (name && (name[1] === 'omon' || (/\[/.test(txt)))) {
+                name = null;
+                if (txt === 'Боец ОМОН') {
+                    name = 'omon';
+                    size = [50, 60];
+                } else if (/\s\[NPC\]$/.test(txt)) {
+                    name = 'personalnpc';
+                    size = [30, 30];
+                } else if (/(^[^\s]+)\s\[/.test(txt)) {
+                    name = /(^[^\s]+)\s\[/.exec(txt)[1];
+                    size = [70, 80];
+                }
+
+                if (name) {
                     pos = getPos(enemies[i].parentNode);
                     div = general.doc.createElement('div');
                     general.doc.body.appendChild(div);
                     div.setAttribute('style', 'position: absolute;');
                     div.setAttribute('name', 'imagepokemon');
                     div.style.left = String(pos.x > 200 ?
-                            pos.x - 70 : pos.x + 130);
+                            pos.x - size[0] - 5 : pos.x + 140);
                     div.style.top = String(pos.y);
                     div.innerHTML = '<img src="' + general.imgPath +
-                        'ImgPokemonsOnBattle/' + name[1] + '.png" ' +
-                        'style="width: 70px; height: 80px;" ' +
-                        'title="' + name[1] + '" alt="' + name[1] + '" />';
+                        'ImgPokemonsOnBattle/' + name + '.png" ' +
+                        'style="width: ' + size[0] + 'px; height: ' + size[1] +
+                        'px;" title="' + name + '" alt="' + name + '" />';
                 }
             }
         };
