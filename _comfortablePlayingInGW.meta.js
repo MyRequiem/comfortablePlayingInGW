@@ -12,6 +12,6 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.119-221118
+// @version         1.120-301118
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
