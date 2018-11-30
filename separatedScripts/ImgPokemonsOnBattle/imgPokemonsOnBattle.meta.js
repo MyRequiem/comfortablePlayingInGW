@@ -9,6 +9,6 @@
 // @include         http://www.gwars.ru/warlog.php*
 // @grant           none
 // @license         MIT
-// @version         2.15-170918
+// @version         2.16-301118
 // @author          MyRequiem, идея Buger_man
 // ==/UserScript==

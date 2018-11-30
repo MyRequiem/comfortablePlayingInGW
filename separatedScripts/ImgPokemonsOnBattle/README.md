@@ -1,14 +1,10 @@
 В боях с покемонами и в режиме наблюдения за боем (Ejection Point, Overlord Point, прибрежная зона) показывает изображения для каждого пока.
 <br>
 <br>
-Версия: 2.15-170918
+Версия: 2.16-301118
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ImgPokemonsOnBattle/imgPokemonsOnBattle.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ImgPokemonsOnBattle/imgPokemonsOnBattle.user.js.zip)
 <br>
 <br>
-![ImgPokemonsOnBattle](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/ImgPokemonsOnBattle/screen1.png)
-<br>
-![ImgPokemonsOnBattle](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/ImgPokemonsOnBattle/screen2.png)
-<br>
-![ImgPokemonsOnBattle](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/ImgPokemonsOnBattle/screen3.png)
+![ImgPokemonsOnBattle](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/ImgPokemonsOnBattle/screen.png)
 <br>
