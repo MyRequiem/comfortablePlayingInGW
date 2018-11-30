@@ -1,3 +1,10 @@
+2018-11-30[1.120-301118]
+--------------------------------------
+	- В скрипт ImgPokemonsOnBattle добавлено отображение изображений для
+		личных NPC:
+			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ImgPokemonsOnBattle
+
+
 2018-11-22[1.119-221118]
 --------------------------------------
 	- Измененны все ссылки на изображения с
