@@ -142,6 +142,7 @@
                 return 'NaN';
             }
 
+            // noinspection JSValidateTypes
             x = x.toString().split('').reverse();
             for (i = 2; i < x.length; i += 3) {
                 if (x[i] === '-' || !x[i + 1] || x[i + 1] === '-') {
@@ -400,6 +401,7 @@
 
                 // количесво Гб на ферме с учетом схрона
                 // Счет: $85 + урожай на $6.6 в схроне, 1 шт.
+                // noinspection RegExpSingleCharAlternation
                 gb = +gb[0].innerHTML.replace(/\$|,/g, '') + (gb[1] ?
                         Math.round(parseFloat(gb[1].innerHTML.
                             replace(/\$|,/g, ''))) : 0);
@@ -479,6 +481,7 @@
                 return;
             }
 
+            // noinspection RegExpSingleCharAlternation
             var farmId = /(\?|&)id=(\d+)/.exec(general.loc),
                 capcha = general.doc.querySelector('input[type="hidden"]' +
                     '[name="captcha_question"]');

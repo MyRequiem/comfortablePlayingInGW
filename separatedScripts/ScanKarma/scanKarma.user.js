@@ -122,6 +122,7 @@
                         exec(general.doc.body.textContent);
 
                 if (karma) {
+                    // noinspection JSValidateTypes
                     karma = karma[1];
                     if (!general.getData()) {
                         general.setData(karma);
@@ -139,6 +140,7 @@
                     oldKarma[0] = +oldKarma[0];
                     oldKarma[1] = +oldKarma[1];
 
+                    // noinspection JSValidateTypes
                     karma = karma.split('/');
                     // noinspection JSValidateTypes
                     karma[0] = +karma[0];

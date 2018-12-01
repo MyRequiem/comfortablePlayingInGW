@@ -114,7 +114,7 @@
 
         /**
          * @method getPos
-         * @param   {HTMLElement}   obj
+         * @param   {Element}   obj
          * @return  {Object}
          */
         getPos: function (obj) {

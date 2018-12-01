@@ -68,7 +68,7 @@
     var GetPos = function () {
         /**
          * @method init
-         * @param   {HTMLElement}   obj
+         * @param   {Element}   obj
          * @return  {Object}
          */
         this.init = function (obj) {

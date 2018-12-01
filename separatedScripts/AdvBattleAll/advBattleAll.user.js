@@ -530,6 +530,7 @@
             var pers = obj.querySelectorAll('a[href*="/info.php?id="]');
             // поки
             if (!pers.length) {
+                // noinspection JSValidateTypes
                 pers = [];
                 var divs = obj.querySelectorAll('div'),
                     i;
@@ -1681,6 +1682,7 @@
 
                 if (thisChk.checked) {
                     dataSt[8] = '1';
+                    // noinspection RegExpSingleCharAlternation
                     if (!(/^(~|\*|@)/.test(chatMessage))) {
                         _this.inpTextChat.value = '~' + chatMessage;
                     }
@@ -1696,6 +1698,7 @@
                     }
                 } else {
                     dataSt[8] = '';
+                    // noinspection RegExpSingleCharAlternation
                     _this.inpTextChat.value = _this.inpTextChat.value.
                         replace(/^(~|\*|@)+/, '');
 
