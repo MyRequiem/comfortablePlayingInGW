@@ -205,6 +205,7 @@
             var reg = /^\s*\+?\s*(\d+)(,\D+|\.\D+|\)|\s|:|\+\D+)/,
                 numReply = reg.exec(messDiv.innerHTML);
 
+            // noinspection JSValidateTypes
             numReply = numReply ? +numReply[1] : 0;
 
             // нет номера/номер === 0 или число > текущего сообщения

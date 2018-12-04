@@ -82,6 +82,7 @@
                 return 'NaN';
             }
 
+            // noinspection JSValidateTypes
             x = x.toString().split('').reverse();
             for (i = 2; i < x.length; i += 3) {
                 if (x[i] === '-' || !x[i + 1] || x[i + 1] === '-') {
@@ -160,6 +161,7 @@
                 return;
             }
 
+            // noinspection RegExpRedundantEscape
             var roul = this.calc(/Потрачено в казино: <b>\$([^<]*)/i,
                     /Выигрыш в казино: <b>\$([^<]*)/i),
                 tot = this.calc(/Потрачено в тотализаторе: <b>\$([^<]*)/i,

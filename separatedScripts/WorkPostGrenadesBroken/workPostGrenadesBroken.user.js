@@ -378,6 +378,7 @@
 
                 // время до окончания работы
                 var time;
+                // noinspection Annotator
                 if (/[Вы сможете устроиться на|осталось][^\d]*\d+ минут/i.
                         test(content)) {
                     time = +(/(\d+) минут/i.exec(content)[1]);

@@ -125,6 +125,7 @@
                     'method="GET" action="/search.php"><input id="skey" ' +
                     'name="key" value="" style="width: 130px;" ' +
                     'title="Введите ник и нажмите Enter" /></form>';
+                // noinspection JSValidateTypes
                 topPanel = general.DESIGN_VERSION === 'v2' ?
                         topPanel.parentNode : topPanel.parentNode.parentNode;
                 topPanel.appendChild(td);

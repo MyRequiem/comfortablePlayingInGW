@@ -192,6 +192,7 @@
                 return 'NaN';
             }
 
+            // noinspection JSValidateTypes
             x = x.toString().split('').reverse();
             for (i = 2; i < x.length; i += 3) {
                 if (x[i] === '-' || !x[i + 1] || x[i + 1] === '-') {

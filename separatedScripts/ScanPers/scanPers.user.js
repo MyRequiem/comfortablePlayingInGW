@@ -173,7 +173,7 @@
 
         /**
          * @method getPos
-         * @param   {HTMLElement}   obj
+         * @param   {Element}   obj
          * @return  {Object}
          */
         this.getPos = function (obj) {

@@ -1850,6 +1850,7 @@
                 return 'NaN';
             }
 
+            // noinspection JSValidateTypes
             x = x.toString().split('').reverse();
             for (i = 2; i < x.length; i += 3) {
                 if (x[i] === '-' || !x[i + 1] || x[i + 1] === '-') {
@@ -2555,6 +2556,7 @@
             var pers = obj.querySelectorAll('a[href*="/info.php?id="]');
             // поки
             if (!pers.length) {
+                // noinspection JSValidateTypes
                 pers = [];
                 var divs = obj.querySelectorAll('div'),
                     i;
@@ -3717,6 +3719,7 @@
 
                 if (thisChk.checked) {
                     dataSt[10] = '1';
+                    // noinspection RegExpSingleCharAlternation
                     if (!(/^(~|\*|@)/.test(chatMessage))) {
                         _this.inpTextChat.value = '~' + chatMessage;
                     }
@@ -3732,6 +3735,7 @@
                     }
                 } else {
                     dataSt[10] = '';
+                    // noinspection RegExpSingleCharAlternation
                     _this.inpTextChat.value = _this.inpTextChat.value.
                         replace(/^(~|\*|@)+/, '');
 
@@ -4282,6 +4286,7 @@
 
                 // время до окончания работы
                 var time;
+                // noinspection Annotator
                 if (/[Вы сможете устроиться на|осталось][^\d]*\d+ минут/i.
                         test(content)) {
                     time = +(/(\d+) минут/i.exec(content)[1]);
@@ -5125,6 +5130,7 @@
                     return;
                 }
 
+                // noinspection Annotator
                 var actionStr = /Ближайшее действие:.*[собрать|полить].*\(.*\)/.
                         exec(general.doc.querySelector('td[width="400"]' +
                                 '[valign="top"]').innerHTML);
@@ -5202,6 +5208,7 @@
             if (!txt) {
                 a.setAttribute('style', 'display: none;');
             } else {
+                // noinspection JSUndefinedPropertyAssignment
                 link.innerHTML = txt;
             }
 
@@ -5817,6 +5824,7 @@
 
                 // количесво Гб на ферме с учетом схрона
                 // Счет: $85 + урожай на $6.6 в схроне, 1 шт.
+                // noinspection RegExpSingleCharAlternation
                 gb = +gb[0].innerHTML.replace(/\$|,/g, '') + (gb[1] ?
                         Math.round(parseFloat(gb[1].innerHTML.
                             replace(/\$|,/g, ''))) : 0);
@@ -5888,6 +5896,7 @@
          * @method init
          */
         this.init = function () {
+            // noinspection RegExpSingleCharAlternation
             var farmId = /(\?|&)id=(\d+)/.exec(general.loc),
                 capcha = general.doc.querySelector('input[type="hidden"]' +
                     '[name="captcha_question"]');
@@ -7630,6 +7639,7 @@
 
                 for (i = 1; i < trs.length; i++) {
                     // eslint-disable-next-line no-useless-escape
+                    // noinspection RegExpRedundantEscape
                     nameRes = this.delSpaces(/[^\(]+/.exec(trs[i].
                                     firstElementChild.innerHTML)[0]);
                     if (res.indexOf(nameRes) === -1) {
@@ -8249,6 +8259,7 @@
                 return;
             }
 
+            // noinspection RegExpRedundantEscape
             var roul = this.calc(/Потрачено в казино: <b>\$([^<]*)/i,
                     /Выигрыш в казино: <b>\$([^<]*)/i),
                 tot = this.calc(/Потрачено в тотализаторе: <b>\$([^<]*)/i,
@@ -9044,6 +9055,7 @@
                         exec(general.doc.body.textContent);
 
                 if (karma) {
+                    // noinspection JSValidateTypes
                     karma = karma[1];
                     if (!general.getData(23)[0]) {
                         general.setData(karma, 23);
@@ -9061,6 +9073,7 @@
                     oldKarma[0] = +oldKarma[0];
                     oldKarma[1] = +oldKarma[1];
 
+                    // noinspection JSValidateTypes
                     karma = karma.split('/');
                     // noinspection JSValidateTypes
                     karma[0] = +karma[0];
@@ -9577,6 +9590,7 @@
             var reg = /^\s*\+?\s*(\d+)(,\D+|\.\D+|\)|\s|:|\+\D+)/,
                 numReply = reg.exec(messDiv.innerHTML);
 
+            // noinspection JSValidateTypes
             numReply = numReply ? +numReply[1] : 0;
 
             // нет номера/номер === 0 или число > текущего сообщения
@@ -9659,6 +9673,7 @@
                     '<input id="skey" name="key" value="" ' +
                     'style="width: 130px;" ' +
                     'title="Введите ник и нажмите Enter" /></form>';
+                // noinspection JSValidateTypes
                 topPanel = general.DESIGN_VERSION === 'v2' ?
                         topPanel.parentNode : topPanel.parentNode.parentNode;
                 topPanel.appendChild(td);
@@ -13135,6 +13150,7 @@
                             querySelector('#namespan').parentNode,
                         health = /\[(\d+) \/ (\d+)\]/.exec(div.innerHTML);
 
+                    // noinspection JSValidateTypes
                     health = Math.floor(+health[1] * 100 / (+health[2]));
 
                     if (link.innerHTML === 'Ожидает распоряжений' &&

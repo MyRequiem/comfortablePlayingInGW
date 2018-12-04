@@ -181,6 +181,7 @@
                             querySelector('#namespan').parentNode,
                         health = /\[(\d+) \/ (\d+)\]/.exec(div.innerHTML);
 
+                    // noinspection JSValidateTypes
                     health = Math.floor(+health[1] * 100 / (+health[2]));
 
                     if (link.innerHTML === 'Ожидает распоряжений' &&

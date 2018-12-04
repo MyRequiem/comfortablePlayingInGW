@@ -378,6 +378,7 @@
                     return;
                 }
 
+                // noinspection Annotator
                 var actionStr = /Ближайшее действие:.*[собрать|полить].*\(.*\)/.
                         exec(general.doc.querySelector('td[width="400"]' +
                                 '[valign="top"]').innerHTML);
