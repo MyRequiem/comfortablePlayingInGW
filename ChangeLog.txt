@@ -7,7 +7,7 @@
 
 2018-11-22[1.119-221118]
 --------------------------------------
-	- Измененны все ссылки на изображения с
+	- Изменены все ссылки на изображения с
 		http://gwscripts.ucoz.net/comfortablePlayingInGW/imgs/
 		на
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/imgs/
