@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name            PersonalNPCNotifications
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     Если личный NPC ожидает распоряжений и его здоровье более 79%, то на главной странице персонажа ссылка на NPC начинает "пульсировать". Если NPC находится на Аутленде и его здоровье менее 30%, то фон ссылки становится розовый. Статус NPC проверяется один раз в 15 секунд, перезагрузки главной страницы персонажа не требуется.
+// @description     Если личный NPC ожидает распоряжений и его здоровье более 79%, то на главной странице персонажа ссылка на NPC начинает "пульсировать". Если NPC находится на Аутленде и его здоровье менее 30%, то фон ссылки становится розовый. Звуковые оповещения. Статус NPC проверяется один раз в 10 секунд, перезагрузки главной страницы персонажа не требуется.
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PersonalNPCNotifications/personalNPCNotifications.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PersonalNPCNotifications/personalNPCNotifications.user.js
 // @include         http://www.gwars.ru/me.php*
 // @grant           none
 // @license         MIT
-// @version         1.07-211118
+// @version         1.10-051218
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -27,6 +27,13 @@
 
 (function () {
     'use strict';
+
+    // ======================= НАСТРОЙКИ ===========================
+        // звук,когда NPC ожидает распоряжений
+    var sound1 = 20,
+        // звук, когда NPC находится на Аутленде и его здоровье менее 30%
+        sound2 = 18;
+    // ==================== КОНЕЦ НАСТРОЕК =========================
 
     /**
      * @class General
@@ -56,6 +63,15 @@
         getRoot: function () {
             var rt = typeof unsafeWindow;
             return rt !== 'undefined' ? unsafeWindow : window;
+        },
+
+        /**
+         * @method $
+         * @param   {String}    id
+         * @return  {HTMLElement|null}
+         */
+        $: function (id) {
+            return this.doc.querySelector('#' + id);
         }
     };
 
@@ -76,6 +92,31 @@
          * @type {Element}
          */
         this.spanContent = general.doc.createElement('span');
+
+        /**
+         * @method playSound
+         * @param   {int}   sound
+         */
+        this.playSound = function (sound) {
+            if (sound) {
+                var audio = general.$('cpingw_audio');
+                if (!audio) {
+                    audio = general.doc.createElement('audio');
+                    audio.setAttribute('id', 'cpingw_audio');
+                    var divAudio = general.doc.createElement('div');
+                    divAudio.setAttribute('style', 'display: none;');
+                    divAudio.appendChild(audio);
+                    general.doc.body.appendChild(divAudio);
+                }
+
+                audio.volume = 0.3;
+                audio.src = 'https://raw.githubusercontent.com/MyRequiem/' +
+                    'comfortablePlayingInGW/master/sounds/' + sound + '.ogg';
+                // audio.src = 'http://127.0.0.1/sounds/' + sound + '.ogg';
+                // noinspection JSIgnoredPromiseFromCall
+                audio.play();
+            }
+        };
 
         /**
          * @method setCss
@@ -187,9 +228,11 @@
                     if (link.innerHTML === 'Ожидает распоряжений' &&
                             health >= 80) {
                         npcLink.setAttribute('id', 'npcBlink');
+                        _this.playSound(sound1);
                     } else if (link.innerHTML === 'Путешествует по Аутленду'
                             && health < 30) {
                         npcLink.setAttribute('style', 'background: #FFE3E3');
+                        _this.playSound(sound2);
                     } else {
                         npcLink.removeAttribute('id');
                         npcLink.removeAttribute('style');
@@ -197,11 +240,11 @@
 
                     general.root.setTimeout(function () {
                         _this.start();
-                    }, 15000);
+                    }, 10000);
                 }, function () {
                     general.root.setTimeout(function () {
                         _this.start();
-                    }, 1000);
+                    }, 3000);
                 });
             }
         };
