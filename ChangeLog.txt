@@ -1,3 +1,10 @@
+2018-12-05[1.121-051218]
+--------------------------------------
+	- Обновлен скрипт
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ImgPokemonsOnBattle
+			Добавлены звуковые уведомления.
+
+
 2018-11-30[1.120-301118]
 --------------------------------------
 	- В скрипт ImgPokemonsOnBattle добавлено отображение изображений для
