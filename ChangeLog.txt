@@ -1,7 +1,7 @@
 2018-12-05[1.121-051218]
 --------------------------------------
 	- Обновлен скрипт
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ImgPokemonsOnBattle
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PersonalNPCNotifications
 			Добавлены звуковые уведомления.
 
 
