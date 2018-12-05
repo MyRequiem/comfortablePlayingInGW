@@ -40,7 +40,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.120-301118
+// @version         1.121-051218
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -109,7 +109,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.120-301118';
+        this.version = '1.121-051218';
         /**
          * @property stString
          * @type {String}
@@ -306,10 +306,11 @@
                         [2] - синдикат ('', '0' - ничейки, 'xxx' - ID синда) */
                         '@' +
                     /*
-                     [18] - SortSyndOnline (настройки удалены с версии 1.84)
-                        [0] - сортировать по боям
-                        [1] - показывать онлайн союза
-                        [2] - сортировать вместе с союзом */
+                     [18] - PersonalNPCNotifications
+                        [0] - звук,когда NPC ожидает распоряжений
+                        [1] - звук, когда NPC находится на Аутленде и его
+                                здоровье менее 30%
+                        [2] - null (осталось от SortSyndOnline) */
                         '@||' +
                     /*
                      [19] - HousHealth
@@ -1175,9 +1176,13 @@
                     'здоровье более 79%, то на главной странице персонажа ' +
                     'ссылка на NPC начинает "пульсировать". Если NPC ' +
                     'находится на Аутленде и его здоровье менее 30%, то фон ' +
-                    'ссылки становится розовый. Статус NPC проверяется один ' +
-                    'раз в 15 секунд, перезагрузки главной страницы ' +
-                    'персонажа не требуется.' +
+                    'ссылки становится розовый. Звуковые оповещения. Статус ' +
+                    'NPC проверяется один раз в 10 секунд, перезагрузки ' +
+                    'главной страницы персонажа не требуется.&lt;br>&lt;br>' +
+                    'Звук при ожидании распоряжений: ' +
+                    this.getSelectSound('soundPersNPC1') +
+                    '&lt;br>Звук, если здоровье на Ауте &lt; 30%: ' +
+                    this.getSelectSound('soundPersNPC2') +
                     this.getGitHubLink('personalNPCNotifications'), '35']],
 
             'Бои': [
@@ -1774,6 +1779,25 @@
                         '' : soundTimerNPC.value);
             }, false);
 
+            // PersonalNPCNotifications
+            general.$('lsoundPersNPC1').
+                addEventListener('click', this.testSound, false);
+            var soundPersNPC1 = general.$('soundPersNPC1');
+            soundPersNPC1.value = general.getData(18)[0] || '0';
+            soundPersNPC1.addEventListener('change', function () {
+                _this.modifyData(18, 0, soundPersNPC1.value === '0' ?
+                        '' : soundPersNPC1.value);
+            }, false);
+
+            general.$('lsoundPersNPC2').
+                addEventListener('click', this.testSound, false);
+            var soundPersNPC2 = general.$('soundPersNPC2');
+            soundPersNPC2.value = general.getData(18)[1] || '0';
+            soundPersNPC2.addEventListener('change', function () {
+                _this.modifyData(18, 1, soundPersNPC2.value === '0' ?
+                        '' : soundPersNPC2.value);
+            }, false);
+
             // AllPlantsOnFarm
             var showGbFarmCounter = general.$('showGbFarmCounter');
             showGbFarmCounter.checked = general.getData(11)[4];
@@ -1878,6 +1902,7 @@
                 return 'NaN';
             }
 
+            // noinspection JSValidateTypes
             x = x.toString().split('').reverse();
             for (i = 2; i &lt; x.length; i += 3) {
                 if (x[i] === '-' || !x[i + 1] || x[i + 1] === '-') {
@@ -2583,6 +2608,7 @@
             var pers = obj.querySelectorAll('a[href*="/info.php?id="]');
             // поки
             if (!pers.length) {
+                // noinspection JSValidateTypes
                 pers = [];
                 var divs = obj.querySelectorAll('div'),
                     i;
@@ -3745,6 +3771,7 @@
 
                 if (thisChk.checked) {
                     dataSt[10] = '1';
+                    // noinspection RegExpSingleCharAlternation
                     if (!(/^(~|\*|@)/.test(chatMessage))) {
                         _this.inpTextChat.value = '~' + chatMessage;
                     }
@@ -3760,6 +3787,7 @@
                     }
                 } else {
                     dataSt[10] = '';
+                    // noinspection RegExpSingleCharAlternation
                     _this.inpTextChat.value = _this.inpTextChat.value.
                         replace(/^(~|\*|@)+/, '');
 
@@ -4310,6 +4338,7 @@
 
                 // время до окончания работы
                 var time;
+                // noinspection Annotator
                 if (/[Вы сможете устроиться на|осталось][^\d]*\d+ минут/i.
                         test(content)) {
                     time = +(/(\d+) минут/i.exec(content)[1]);
@@ -5153,6 +5182,7 @@
                     return;
                 }
 
+                // noinspection Annotator
                 var actionStr = /Ближайшее действие:.*[собрать|полить].*\(.*\)/.
                         exec(general.doc.querySelector('td[width="400"]' +
                                 '[valign="top"]').innerHTML);
@@ -5230,6 +5260,7 @@
             if (!txt) {
                 a.setAttribute('style', 'display: none;');
             } else {
+                // noinspection JSUndefinedPropertyAssignment
                 link.innerHTML = txt;
             }
 
@@ -5845,6 +5876,7 @@
 
                 // количесво Гб на ферме с учетом схрона
                 // Счет: $85 + урожай на $6.6 в схроне, 1 шт.
+                // noinspection RegExpSingleCharAlternation
                 gb = +gb[0].innerHTML.replace(/\$|,/g, '') + (gb[1] ?
                         Math.round(parseFloat(gb[1].innerHTML.
                             replace(/\$|,/g, ''))) : 0);
@@ -5916,6 +5948,7 @@
          * @method init
          */
         this.init = function () {
+            // noinspection RegExpSingleCharAlternation
             var farmId = /(\?|&amp;)id=(\d+)/.exec(general.loc),
                 capcha = general.doc.querySelector('input[type="hidden"]' +
                     '[name="captcha_question"]');
@@ -7657,8 +7690,7 @@
                     i;
 
                 for (i = 1; i &lt; trs.length; i++) {
-                    // eslint-disable-next-line no-useless-escape
-                    nameRes = this.delSpaces(/[^\(]+/.exec(trs[i].
+                    nameRes = this.delSpaces(/[^(]+/.exec(trs[i].
                                     firstElementChild.innerHTML)[0]);
                     if (res.indexOf(nameRes) === -1) {
                         trs[i].style.display = 'none';
@@ -8277,6 +8309,7 @@
                 return;
             }
 
+            // noinspection RegExpRedundantEscape
             var roul = this.calc(/Потрачено в казино: &lt;b>\$([^&lt;]*)/i,
                     /Выигрыш в казино: &lt;b>\$([^&lt;]*)/i),
                 tot = this.calc(/Потрачено в тотализаторе: &lt;b>\$([^&lt;]*)/i,
@@ -9072,6 +9105,7 @@
                         exec(general.doc.body.textContent);
 
                 if (karma) {
+                    // noinspection JSValidateTypes
                     karma = karma[1];
                     if (!general.getData(23)[0]) {
                         general.setData(karma, 23);
@@ -9089,6 +9123,7 @@
                     oldKarma[0] = +oldKarma[0];
                     oldKarma[1] = +oldKarma[1];
 
+                    // noinspection JSValidateTypes
                     karma = karma.split('/');
                     // noinspection JSValidateTypes
                     karma[0] = +karma[0];
@@ -9605,6 +9640,7 @@
             var reg = /^\s*\+?\s*(\d+)(,\D+|\.\D+|\)|\s|:|\+\D+)/,
                 numReply = reg.exec(messDiv.innerHTML);
 
+            // noinspection JSValidateTypes
             numReply = numReply ? +numReply[1] : 0;
 
             // нет номера/номер === 0 или число > текущего сообщения
@@ -9687,6 +9723,7 @@
                     '&lt;input id="skey" name="key" value="" ' +
                     'style="width: 130px;" ' +
                     'title="Введите ник и нажмите Enter" />&lt;/form>';
+                // noinspection JSValidateTypes
                 topPanel = general.DESIGN_VERSION === 'v2' ?
                         topPanel.parentNode : topPanel.parentNode.parentNode;
                 topPanel.appendChild(td);
@@ -13085,6 +13122,11 @@
          * @type {Function}
          */
         this.ajax = new AjaxQuery().init;
+        /**
+         * @property playSound
+         * @type {Function}
+         */
+        this.playSound = new PlaySound().init;
 
         /**
          * @method setCss
@@ -13163,14 +13205,17 @@
                             querySelector('#namespan').parentNode,
                         health = /\[(\d+) \/ (\d+)\]/.exec(div.innerHTML);
 
+                    // noinspection JSValidateTypes
                     health = Math.floor(+health[1] * 100 / (+health[2]));
 
                     if (link.innerHTML === 'Ожидает распоряжений' &amp;&amp;
                             health >= 80) {
                         npcLink.setAttribute('id', 'npcBlink');
+                        _this.playSound(general.getData(18)[0]);
                     } else if (link.innerHTML === 'Путешествует по Аутленду'
                             &amp;&amp; health &lt; 30) {
                         npcLink.setAttribute('style', 'background: #FFE3E3');
+                        _this.playSound(general.getData(18)[1]);
                     } else {
                         npcLink.removeAttribute('id');
                         npcLink.removeAttribute('style');
@@ -13178,11 +13223,11 @@
 
                     general.root.setTimeout(function () {
                         _this.start();
-                    }, 15000);
+                    }, 10000);
                 }, function () {
                     general.root.setTimeout(function () {
                         _this.start();
-                    }, 1000);
+                    }, 3000);
                 });
             }
         };
@@ -13805,7 +13850,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Nov 30 2018 14:50:07 GMT+0400 (+04)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Dec 05 2018 18:17:31 GMT+0400 (+04)
 </footer>
 
 <script> prettyPrint(); </script>
