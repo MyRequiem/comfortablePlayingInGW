@@ -278,10 +278,11 @@
                         [2] - синдикат ('', '0' - ничейки, 'xxx' - ID синда) */
                         '@' +
                     /*
-                     [18] - SortSyndOnline (настройки удалены с версии 1.84)
-                        [0] - сортировать по боям
-                        [1] - показывать онлайн союза
-                        [2] - сортировать вместе с союзом */
+                     [18] - PersonalNPCNotifications
+                        [0] - звук,когда NPC ожидает распоряжений
+                        [1] - звук, когда NPC находится на Аутленде и его
+                                здоровье менее 30%
+                        [2] - null (осталось от SortSyndOnline) */
                         '@||' +
                     /*
                      [19] - HousHealth
@@ -1147,9 +1148,13 @@
                     'здоровье более 79%, то на главной странице персонажа ' +
                     'ссылка на NPC начинает "пульсировать". Если NPC ' +
                     'находится на Аутленде и его здоровье менее 30%, то фон ' +
-                    'ссылки становится розовый. Статус NPC проверяется один ' +
-                    'раз в 15 секунд, перезагрузки главной страницы ' +
-                    'персонажа не требуется.' +
+                    'ссылки становится розовый. Звуковые оповещения. Статус ' +
+                    'NPC проверяется один раз в 10 секунд, перезагрузки ' +
+                    'главной страницы персонажа не требуется.<br><br>' +
+                    'Звук при ожидании распоряжений: ' +
+                    this.getSelectSound('soundPersNPC1') +
+                    '<br>Звук, если здоровье на Ауте < 30%: ' +
+                    this.getSelectSound('soundPersNPC2') +
                     this.getGitHubLink('personalNPCNotifications'), '35']],
 
             'Бои': [
@@ -1744,6 +1749,25 @@
             soundTimerNPC.addEventListener('change', function () {
                 _this.modifyData(10, 3, soundTimerNPC.value === '0' ?
                         '' : soundTimerNPC.value);
+            }, false);
+
+            // PersonalNPCNotifications
+            general.$('lsoundPersNPC1').
+                addEventListener('click', this.testSound, false);
+            var soundPersNPC1 = general.$('soundPersNPC1');
+            soundPersNPC1.value = general.getData(18)[0] || '0';
+            soundPersNPC1.addEventListener('change', function () {
+                _this.modifyData(18, 0, soundPersNPC1.value === '0' ?
+                        '' : soundPersNPC1.value);
+            }, false);
+
+            general.$('lsoundPersNPC2').
+                addEventListener('click', this.testSound, false);
+            var soundPersNPC2 = general.$('soundPersNPC2');
+            soundPersNPC2.value = general.getData(18)[1] || '0';
+            soundPersNPC2.addEventListener('change', function () {
+                _this.modifyData(18, 1, soundPersNPC2.value === '0' ?
+                        '' : soundPersNPC2.value);
             }, false);
 
             // AllPlantsOnFarm
@@ -7638,9 +7662,7 @@
                     i;
 
                 for (i = 1; i < trs.length; i++) {
-                    // eslint-disable-next-line no-useless-escape
-                    // noinspection RegExpRedundantEscape
-                    nameRes = this.delSpaces(/[^\(]+/.exec(trs[i].
+                    nameRes = this.delSpaces(/[^(]+/.exec(trs[i].
                                     firstElementChild.innerHTML)[0]);
                     if (res.indexOf(nameRes) === -1) {
                         trs[i].style.display = 'none';
@@ -13072,6 +13094,11 @@
          * @type {Function}
          */
         this.ajax = new AjaxQuery().init;
+        /**
+         * @property playSound
+         * @type {Function}
+         */
+        this.playSound = new PlaySound().init;
 
         /**
          * @method setCss
@@ -13156,9 +13183,11 @@
                     if (link.innerHTML === 'Ожидает распоряжений' &&
                             health >= 80) {
                         npcLink.setAttribute('id', 'npcBlink');
+                        _this.playSound(general.getData(18)[0]);
                     } else if (link.innerHTML === 'Путешествует по Аутленду'
                             && health < 30) {
                         npcLink.setAttribute('style', 'background: #FFE3E3');
+                        _this.playSound(general.getData(18)[1]);
                     } else {
                         npcLink.removeAttribute('id');
                         npcLink.removeAttribute('style');
@@ -13166,11 +13195,11 @@
 
                     general.root.setTimeout(function () {
                         _this.start();
-                    }, 15000);
+                    }, 10000);
                 }, function () {
                     general.root.setTimeout(function () {
                         _this.start();
-                    }, 1000);
+                    }, 3000);
                 });
             }
         };
