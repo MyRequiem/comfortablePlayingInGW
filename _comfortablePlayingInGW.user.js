@@ -13106,21 +13106,17 @@
         this.setCss = function () {
             // css-ботва для ссылки на главную страницу NPC
             var npcLinkStyle = general.doc.createElement('style');
-            npcLinkStyle.innerHTML = '@-webkit-keyframes pulsate {' +
-                    '15% { color: #009900; text-shadow: 0 -1px ' +
-                        'rgba(0,0,0,.3), 0 0 5px #FFFFFF, 0 0 7px #009900; }' +
+            npcLinkStyle.innerHTML = '@-webkit-keyframes npcBlink {' +
+                    '100% { color: rgba(34, 34, 34, 0);}' +
                 '}' +
 
-                '@keyframes pulsate {' +
-                    '15% { color: #009900; text-shadow: 0 -1 ' +
-                        'rgba(0,0,0,.3), 0 0 5px #FFFFFF, 0 0 7px #009900; }' +
+                '@keyframes npcBlink {' +
+                    '100% { color: rgba(34, 34, 34, 0); }' +
                 '}' +
 
                 '#npcBlink {' +
-                    'color: #004400;' +
-                    'text-shadow: 0 -1px rgba(0,0,0,.1);' +
-                    '-webkit-animation: pulsate 0.7s linear infinite;' +
-                    'animation: pulsate 0.7s linear infinite;' +
+                    '-webkit-animation: npcBlink 1s linear infinite;' +
+                    'animation: npcBlink 1s linear infinite;' +
                 '}';
 
             general.doc.querySelector('head').appendChild(npcLinkStyle);
