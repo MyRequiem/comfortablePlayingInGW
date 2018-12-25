@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.03-221118
+// @version         4.04-251218
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -1868,6 +1868,11 @@
                     'AdvBattleAll\n\nFireFox 4+\nOpera 11+\n' +
                     'Chrome 12+');
 
+                return;
+            }
+
+            // графическое оформление боев
+            if (general.doc.querySelector('table[style*="battleground"]')) {
                 return;
             }
 

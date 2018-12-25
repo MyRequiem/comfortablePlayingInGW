@@ -3922,6 +3922,11 @@
          * @method init
          */
         this.init = function () {
+            // графическое оформление боев
+            if (general.doc.querySelector('table[style*="battleground"]')) {
+                return;
+            }
+
             if (general.root.self !== general.root.top) {
                 return;
             }
