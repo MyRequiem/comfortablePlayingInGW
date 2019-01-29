@@ -12,7 +12,7 @@
 // @include         http://www.gwars.ru/wargroup.php*
 // @grant           none
 // @license         MIT
-// @version         2.39-221118
+// @version         2.40-290119
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -256,10 +256,10 @@
          */
         this.grenades = [
             // гос
-            'rgd5', 'grenade_f1', 'rgd2', 'lightst', 'lights', 'rkg3', 'mdn',
-            'rgd2m', 'rgo', 'm84', 'rgn', 'emp_ir', 'fg3l', 'l83a1', 'emp_s',
-            'm67', 'm3', 'hg78', 'hg84', 'fg6', 'anm14', 'm34ph', 'fg7',
-            'fg8bd',
+            'emp_irs', 'emp_a', 'rgd5', 'grenade_f1', 'rgd2', 'lightst',
+            'lights', 'rkg3', 'mdn', 'rgd2m', 'rgo', 'm84', 'rgn', 'emp_ir',
+            'fg3l', 'l83a1', 'emp_s', 'm67', 'm3', 'hg78', 'hg84', 'fg6',
+            'anm14', 'm34ph', 'fg7', 'fg8bd',
             //синдовые
             'lightss', 'lightsm', 'rgd2s', 'grenade_dg1', 'fg5', 'molotov',
             'hellsbreath', 'napalm', 'ghtb', 'me85',
@@ -268,9 +268,9 @@
             //гранатометы
             /* гос */
             'rpg', 'ptrk', 'glauncher', 'grg', 'paw20', 'rpgu', 'grom2',
-            'ags30', 'gm94', 'gl06', 'gmg', 'balkan', 'rg6', 'im202',
+            'ags30', 'gm94', 'gl06', 'gmg', 'balkan', 'rg6', 'm202', 'mm1',
             /* арт */
-            'milkor', 'mk47'
+            'milkor', 'm32', 'mk47'
         ];
 
         /**
