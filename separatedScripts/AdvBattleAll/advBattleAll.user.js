@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            AdvBattleAll
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     Расширенная информация в списке выбора противника + сортировка списка по номеру, дальности, уровню, видимости и т.д. Динамический центр, продвинутое расположение бойцов на поле боя в бою и в режиме наблюдения за боем, полный лог боя в НЕ JS-версии, кнопка "Сказать ход", чекбоксы "Говорить только правую руку" и "Говорить только левую руку", быстрая вставка ника в поле чата. Информация вверху страницы о набитом HP, вашем здоровье, видимости и т.д. При клике по противнику на схеме поля боя происходит его выбор в качестве цели. Кнопка "Обновить". В JS-версии боя подсвечивает зеленым цветом тех персонажей, которые уже сделали ход. В обоих версиях выводит количество персонажей, сделавших ход. Таймаут обновления заявки после входа в нее и таймаут обновления данных в бою.
+// @description     Расширенная информация в списке выбора противника + сортировка списка по номеру, дальности, уровню, видимости и т.д. Динамический центр, продвинутое расположение бойцов на поле боя в бою и в режиме наблюдения за боем, кнопка "Сказать ход", чекбоксы "Говорить только правую руку" и "Говорить только левую руку", быстрая вставка ника в поле чата. Информация вверху страницы о набитом HP, вашем здоровье, видимости и т.д. При клике по противнику на схеме поля боя происходит его выбор в качестве цели. Кнопка "Обновить". Подсвечивает зеленым цветом тех персонажей, которые уже сделали ход. Выводит общее количество персонажей и количество персонажей сделавших ход. Таймаут обновления заявки после входа в нее и таймаут обновления данных в бою. Параметры в настройках персонажа для правильной работы скрипта: оформление боя в desktop-версии игры - упрощенное, расположение в бою - примитивное, JavaScript-версия - использовать.
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js
@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.04-251218
+// @version         4.10-290119
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -111,11 +111,6 @@
          * @type {Boolean}
          */
         this.viewMode = /\/warlog\.php/.test(this.loc);
-        /**
-         * @property nojs
-         * @type {Boolean}
-         */
-        this.nojs = /\/b0\/b\.php/.test(this.loc);
         /**
          * @property imgPath
          * @type {String}
@@ -487,38 +482,22 @@
                 return;
             }
 
-            if (general.nojs || general.viewMode) {
-                var str = general.nojs ? '[class="txt"]' : '[width="15%"]';
+            if (general.viewMode) {
                 this.leftRightCommands.push(general.doc.
-                        querySelector('tr>td[valign="top"]' + str +
+                        querySelector('tr>td[valign="top"][width="15%"]' +
                             ':first-child'));
                 this.leftRightCommands.push(general.doc.
-                        querySelector('tr>td[valign="top"]' + str +
+                        querySelector('tr>td[valign="top"][width="15%"]' +
                             ':last-child'));
                 return;
             }
 
-            // в JS версии боя ищем DIV'ы с бойцами явно,
-            // т.к.они меняются местами по ID
-            this.leftRightCommands.push(general.doc.querySelector('#listleft,' +
-                        '#listright'));
+            // в бою ищем DIV'ы с бойцами явно, т.к.они меняются местами по ID
+            this.leftRightCommands.push(general.doc.
+                    querySelector('#listleft,#listright'));
             this.leftRightCommands[1] =
                 this.leftRightCommands[0].id === 'listleft' ?
-                        general.doc.querySelector('#listright') :
-                            general.doc.querySelector('#listleft');
-        };
-
-        /**
-         * @method getBattleField
-         * @return  {HTMLElement}
-         */
-        this.getBattleField = function () {
-            if (general.nojs) {
-                return general.doc.querySelector('tr>td[valign="top"]' +
-                    '[class="txt"]>div[align="center"]');
-            }
-
-            return general.$('bf');
+                        general.$('listright') : general.$('listleft');
         };
 
         /**
@@ -961,7 +940,7 @@
          */
         this.setControlOfShooting = function () {
             var divGenerator = general.doc.createElement('div'),
-                bf = this.getBattleField(),
+                bf = general.$('bf'),
                 coord = new GetPos().init(bf);
 
             divGenerator.setAttribute('style', 'position: absolute; top: ' +
@@ -1083,20 +1062,17 @@
          */
         this.showTooltip = function (ttl, _this) {
             return function () {
-                var bf = _this.getBattleField(),
-                    getPos = new GetPos(),
+                var getPos = new GetPos(),
                     obj;
 
                 // относительно чего будем выравнивать тултип
                 if (general.viewMode) {
                     obj = {
-                        x: _this.leftRightCommands[0].
-                                nextElementSibling.lastElementChild,
+                        x: general.doc.querySelector('table[background$=' +
+                            '"/battleField.gif"]').nextElementSibling.
+                                nextElementSibling,
                         y: 14
                     };
-                } else if (general.nojs &&
-                        (/Ждём ход противника/.test(bf.innerHTML))) {
-                    obj = {x: bf, y: 0};
                 } else {
                     obj = {x: _this.inpTextChat, y: 20};
                 }
@@ -1229,11 +1205,12 @@
          */
         this.changeLocationFighters = function () {
             var table;
+            // в бою
             if (!general.viewMode) {
-                var bf = this.getBattleField();
-                // если ход сделан, то вставляем сохраненную таблицу в JS-версии
+                var bf = general.$('bf');
+                // ход сделан, вставляем сохраненную таблицу
                 if (/Ждём ход противника/i.test(bf.innerHTML)) {
-                    if (this.graphTable && !general.nojs) {
+                    if (this.graphTable) {
                         var target = bf.querySelector('a').parentNode;
                         // noinspection JSCheckFunctionSignatures
                         target.appendChild(general.doc.createElement('br'));
@@ -1245,20 +1222,10 @@
                         this.setTooltipsFighters(this.graphTable);
                         return;
                     }
-
-                    if (general.nojs) {
-                        table = bf.previousElementSibling.
-                                    previousElementSibling;
-                    }
-                } else {    // ход не сделан
-                    if (general.nojs) {
-                        table = bf.querySelector('table').
-                            nextElementSibling.nextElementSibling;
-                    } else {
-                        table = bf.querySelector('div>table:last-child');
-                    }
+                } else {    // ход еще не сделан
+                    table = bf.querySelector('div>table:last-child');
                 }
-            } else {
+            } else {    // режим наблюдения за боем
                 table = this.leftRightCommands[0].nextElementSibling.
                     lastElementChild.previousElementSibling;
 
@@ -1272,11 +1239,10 @@
                     'battleField.gif');
 
             // вставим пустую строку после таблицы
-            // (в НЕ JS-версии уже есть)
-            if (!general.viewMode && !general.nojs) {   // JS-версия
+            if (!general.viewMode) {    // в бою
                 // noinspection JSCheckFunctionSignatures
                 table.parentNode.appendChild(general.doc.createElement('br'));
-            } else if (general.viewMode) {
+            } else {    // режим наблюдения за боем
                 // noinspection JSCheckFunctionSignatures
                 table.parentNode.insertBefore(general.doc.createElement('br'),
                     table.nextElementSibling);
@@ -1443,7 +1409,7 @@
                 }
             }
 
-            if (!general.viewMode && !general.nojs) {
+            if (!general.viewMode) {
                 this.graphTable = table.cloneNode(true);
             }
 
@@ -1460,14 +1426,8 @@
                     querySelectorAll('a[href*="/info.php?id="]' +
                             '[style*="#008800"]');
 
-            // нет персонажей, сделавших ход
-            if (!greenPersLinks.length) {
-                return;
-            }
-
-            // JS-версия
-            var persLinkInBattle, i;
-            if (!general.nojs) {
+            if (greenPersLinks.length) {
+                var persLinkInBattle, i;
                 for (i = 0; i < greenPersLinks.length; i++) {
                     persLinkInBattle = general.doc.
                         querySelector('a[href="' + greenPersLinks[i].href +
@@ -1476,9 +1436,9 @@
                         persLinkInBattle.style.color = '#008800';
                     }
                 }
-            }
 
-            this.setMyInfo(greenPersLinks.length);
+                this.setMyInfo(greenPersLinks.length);
+            }
         };
 
         /**
@@ -1487,27 +1447,20 @@
          */
         this.setColorFighters = function (_this) {
             return function () {
-                // ход не сделан, ничего не делаем
-                if (!(/Ждём ход противника/i.
-                        test(_this.getBattleField().innerHTML))) {
-                    return;
+                // ход сделан
+                if (/Ждём ход противника/i.test(general.$('bf').innerHTML)) {
+                    // ссылка на страницу НЕ JS-версии боя
+                    var url = general.loc.replace('btl.php', 'b.php'),
+                        ajax = new AjaxQuery();
+
+                    ajax.init(url, function (xhr) {
+                        var span = general.doc.createElement('span');
+                        span.innerHTML = xhr.responseText;
+                        _this.setCountStroke(span);
+                    }, function () {
+                        general.root.console.log('Error XHR to: ' + url);
+                    });
                 }
-
-                if (general.nojs) {
-                    _this.setCountStroke(general.doc);
-                    return;
-                }
-
-                var url = general.loc.replace('btl.php', 'b.php'),
-                    ajax = new AjaxQuery();
-
-                ajax.init(url, function (xhr) {
-                    var span = general.doc.createElement('span');
-                    span.innerHTML = xhr.responseText;
-                    _this.setCountStroke(span);
-                }, function () {
-                    general.root.console.log('Error XHR to: ' + url);
-                });
             };
         };
 
@@ -1543,20 +1496,7 @@
                             this.enemies[tmp[2].replace(/&amp;/, '&')] = tmp[1];
                         }
                     }
-
-                    if (general.nojs) {
-                        dataSt[15] = JSON.stringify(this.enemies);
-                        general.setData(dataSt);
-                    }
-                // НЕ JS-версия, ход сделан
-                } else if (general.nojs) {
-                    this.enemies = dataSt[15] ? JSON.parse(dataSt[15]) : null;
-                    // нет записи в хранилище
-                    if (!this.enemies) {
-                        return;
-                    }
-                // JS-версия, ход сделан
-                } else {
+                } else {    // ход сделан
                     this.checkSound = false;
                     if (!this.enemies) {
                         return;
@@ -1638,9 +1578,8 @@
                         this.tmRefreshBattle = general.root.
                             setInterval(function () {
                                 var updLink = general.doc.
-                                        querySelector('a[href*="' +
-                                            (general.nojs ? 'b.php?bid=' :
-                                                    'updatedata()') + '"]');
+                                        querySelector('a[href*=' +
+                                            '"updatedata()"]');
 
                                 if (updLink) {
                                     updLink.click();
@@ -1653,9 +1592,8 @@
             // изменяем расположение бойцов, ставим тултипы...
             this.changeLocationFighters();
 
-            // в JS-версии боя подсвечиваем персонажей, которые уже
-            // сделали ход. В ОБОИХ весиях боя устанавливаем вверху
-            // количество персонажей, сделавших ход
+            // подсвечиваем персонажей, которые уже сделали ход,
+            // устанавливаем количество персонажей, сделавших ход
             if (!general.viewMode && !this.tmHighlightPers) {
                 this.setColorFighters(this);
                 this.tmHighlightPers = general.root.
@@ -1687,15 +1625,13 @@
                         _this.inpTextChat.value = '~' + chatMessage;
                     }
 
-                    // костыль после отправки сообщения в чат в JS-версии
-                    if (!general.nojs) {
-                        _this.intervalUpdateInpTextChat = general.root.
-                            setInterval(function () {
-                                if (!_this.inpTextChat.value) {
-                                    _this.inpTextChat.value = '~';
-                                }
-                            }, 1000);
-                    }
+                    // костыль после отправки сообщения в чат
+                    _this.intervalUpdateInpTextChat = general.root.
+                        setInterval(function () {
+                            if (!_this.inpTextChat.value) {
+                                _this.inpTextChat.value = '~';
+                            }
+                        }, 1000);
                 } else {
                     dataSt[8] = '';
                     // noinspection RegExpSingleCharAlternation
@@ -1794,15 +1730,8 @@
             buttonUpdate.type = 'button';
             buttonUpdate.value = 'Обновить';
             buttonUpdate.setAttribute('style', 'background-color: #D0EED0;');
-
-            if (!general.nojs) {
-                buttonUpdate.setAttribute('onclick',
-                        ['javascript', ':', 'void(updatedata())'].join(''));
-            } else {
-                buttonUpdate.addEventListener('click', function () {
-                    general.root.location.reload();
-                }, false);
-            }
+            buttonUpdate.setAttribute('onclick',
+                    ['javascript', ':', 'void(updatedata())'].join(''));
 
             this.inpTextChat.parentNode.appendChild(buttonUpdate);
         };
@@ -1830,18 +1759,14 @@
          * @method tryStart
          */
         this.tryStart = function () {
-            if (general.viewMode || general.nojs) {
-                if (general.nojs) {
-                    this.setChatInterface();
-                }
-
+            if (general.viewMode) {
                 this.start();
                 return;
             }
 
             this.inpTextChat = general.doc.querySelector('input[name="oldm"]');
             // основное поле боя
-            var bf = this.getBattleField();
+            var bf = general.$('bf');
 
             if (this.inpTextChat && bf &&
                     !(/Загружаются данные/.test(bf.innerHTML))) {
@@ -1849,7 +1774,7 @@
                 this.setChatInterface();
                 this.start();
             } else {
-                // в JS версии боя ждем загрузки фрейма с данными
+                // ждем загрузки фрейма с данными
                 var _this = this;
                 general.root.setTimeout(function () {
                     _this.tryStart();
@@ -1871,12 +1796,10 @@
                 return;
             }
 
-            // графическое оформление боев
-            if (general.doc.querySelector('table[style*="battleground"]')) {
-                return;
-            }
-
-            if (general.root.self !== general.root.top) {
+            // графическое оформление боев или НЕ JS-версия боя
+            if (general.doc.querySelector('table[style*="battleground"]') ||
+                    /\/b0\/b\.php/.test(general.loc) ||
+                    general.root.self !== general.root.top) {
                 return;
             }
 
@@ -1906,9 +1829,6 @@
                 if (!this.inpTextChat) {
                     return;
                 }
-            } else if (general.nojs) {
-                this.inpTextChat = general.doc.
-                    querySelector('input[name="newmessage"]');
             }
 
             // в бою
@@ -1940,35 +1860,6 @@
             }, false);
 
             this.tryStart();
-
-            // в НЕ JS-версии боя делаем полный лог
-            if (general.nojs) {
-                var linkFullLog = general.doc.
-                        querySelector('br+a[href*="/warlog.php?bid="]');
-
-                if (linkFullLog) {
-                    var url = 'http://www.gwars.ru/b0/btk.php?bid=' +
-                        (/\?bid=(\d+)/.exec(linkFullLog.href)[1]) +
-                        '&turn=-1&lines=-1';
-
-                    // удаляем все что после таблицы с логом
-                    var parnt = linkFullLog.parentNode;
-                    while (parnt.lastChild.nodeName !== 'TABLE') {
-                        parnt.removeChild(parnt.lastChild);
-                    }
-
-                    var ajax = new AjaxQuery();
-                    ajax.init(url,  function (xhr) {
-                        var span = general.doc.createElement('span');
-                        span.innerHTML = xhr.responseText;
-                        general.doc.querySelector('tr>td>div[style=' +
-                            '"font-size:8pt"]').innerHTML =
-                            span.querySelector('#log').innerHTML;
-                    }, function () {
-                        general.root.console.log('Error XHR to: ' + url);
-                    });
-                }
-            }
         };
     };
 
