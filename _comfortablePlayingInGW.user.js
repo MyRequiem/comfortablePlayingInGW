@@ -2537,38 +2537,22 @@
                 return;
             }
 
-            if (general.nojs || general.viewMode) {
-                var str = general.nojs ? '[class="txt"]' : '[width="15%"]';
+            if (general.viewMode) {
                 this.leftRightCommands.push(general.doc.
-                        querySelector('tr>td[valign="top"]' + str +
+                        querySelector('tr>td[valign="top"][width="15%"]' +
                             ':first-child'));
                 this.leftRightCommands.push(general.doc.
-                        querySelector('tr>td[valign="top"]' + str +
+                        querySelector('tr>td[valign="top"][width="15%"]' +
                             ':last-child'));
                 return;
             }
 
-            // в JS версии боя ищем DIV'ы с бойцами явно,
-            // т.к.они меняются местами по ID
-            this.leftRightCommands.push(general.doc.querySelector('#listleft,' +
-                        '#listright'));
+            // в бою ищем DIV'ы с бойцами явно, т.к.они меняются местами по ID
+            this.leftRightCommands.push(general.doc.
+                    querySelector('#listleft,#listright'));
             this.leftRightCommands[1] =
                 this.leftRightCommands[0].id === 'listleft' ?
-                        general.doc.querySelector('#listright') :
-                            general.doc.querySelector('#listleft');
-        };
-
-        /**
-         * @method getBattleField
-         * @return  {HTMLElement}
-         */
-        this.getBattleField = function () {
-            if (general.nojs) {
-                return general.doc.querySelector('tr>td[valign="top"]' +
-                    '[class="txt"]>div[align="center"]');
-            }
-
-            return general.$('bf');
+                        general.$('listright') : general.$('listleft');
         };
 
         /**
@@ -3023,7 +3007,7 @@
          */
         this.setControlOfShooting = function () {
             var divGenerator = general.doc.createElement('div'),
-                bf = this.getBattleField(),
+                bf = general.$('bf'),
                 coord = new GetPos().init(bf);
 
             divGenerator.setAttribute('style', 'position: absolute; top: ' +
@@ -3145,20 +3129,17 @@
          */
         this.showTooltip = function (ttl, _this) {
             return function () {
-                var bf = _this.getBattleField(),
-                    getPos = new GetPos(),
+                var getPos = new GetPos(),
                     obj;
 
                 // относительно чего будем выравнивать тултип
                 if (general.viewMode) {
                     obj = {
-                        x: _this.leftRightCommands[0].
-                                nextElementSibling.lastElementChild,
+                        x: general.doc.querySelector('table[background$=' +
+                            '"/battleField.gif"]').nextElementSibling.
+                                nextElementSibling,
                         y: 14
                     };
-                } else if (general.nojs &&
-                        (/Ждём ход противника/.test(bf.innerHTML))) {
-                    obj = {x: bf, y: 0};
                 } else {
                     obj = {x: _this.inpTextChat, y: 20};
                 }
@@ -3291,11 +3272,12 @@
          */
         this.changeLocationFighters = function () {
             var table;
+            // в бою
             if (!general.viewMode) {
-                var bf = this.getBattleField();
-                // если ход сделан, то вставляем сохраненную таблицу в JS-версии
+                var bf = general.$('bf');
+                // ход сделан, вставляем сохраненную таблицу
                 if (/Ждём ход противника/i.test(bf.innerHTML)) {
-                    if (this.graphTable && !general.nojs) {
+                    if (this.graphTable) {
                         var target = bf.querySelector('a').parentNode;
                         // noinspection JSCheckFunctionSignatures
                         target.appendChild(general.doc.createElement('br'));
@@ -3307,20 +3289,10 @@
                         this.setTooltipsFighters(this.graphTable);
                         return;
                     }
-
-                    if (general.nojs) {
-                        table = bf.previousElementSibling.
-                                    previousElementSibling;
-                    }
-                } else {    // ход не сделан
-                    if (general.nojs) {
-                        table = bf.querySelector('table').
-                            nextElementSibling.nextElementSibling;
-                    } else {
-                        table = bf.querySelector('div>table:last-child');
-                    }
+                } else {    // ход еще не сделан
+                    table = bf.querySelector('div>table:last-child');
                 }
-            } else {
+            } else {    // режим наблюдения за боем
                 table = this.leftRightCommands[0].nextElementSibling.
                     lastElementChild.previousElementSibling;
 
@@ -3333,11 +3305,10 @@
             table.setAttribute('background', this.imgPath + 'battleField.gif');
 
             // вставим пустую строку после таблицы
-            // (в НЕ JS-версии уже есть)
-            if (!general.viewMode && !general.nojs) {   // JS-версия
+            if (!general.viewMode) {    // в бою
                 // noinspection JSCheckFunctionSignatures
                 table.parentNode.appendChild(general.doc.createElement('br'));
-            } else if (general.viewMode) {
+            } else {    // режим наблюдения за боем
                 // noinspection JSCheckFunctionSignatures
                 table.parentNode.insertBefore(general.doc.createElement('br'),
                     table.nextElementSibling);
@@ -3504,7 +3475,7 @@
                 }
             }
 
-            if (!general.viewMode && !general.nojs) {
+            if (!general.viewMode) {
                 this.graphTable = table.cloneNode(true);
             }
 
@@ -3521,14 +3492,8 @@
                     querySelectorAll('a[href*="/info.php?id="]' +
                             '[style*="#008800"]');
 
-            // нет персонажей, сделавших ход
-            if (!greenPersLinks.length) {
-                return;
-            }
-
-            // JS-версия
-            var persLinkInBattle, i;
-            if (!general.nojs) {
+            if (greenPersLinks.length) {
+                var persLinkInBattle, i;
                 for (i = 0; i < greenPersLinks.length; i++) {
                     persLinkInBattle = general.doc.
                         querySelector('a[href="' + greenPersLinks[i].href +
@@ -3537,9 +3502,9 @@
                         persLinkInBattle.style.color = '#008800';
                     }
                 }
-            }
 
-            this.setMyInfo(greenPersLinks.length);
+                this.setMyInfo(greenPersLinks.length);
+            }
         };
 
         /**
@@ -3548,27 +3513,20 @@
          */
         this.setColorFighters = function (_this) {
             return function () {
-                // ход не сделан, ничего не делаем
-                if (!(/Ждём ход противника/i.
-                        test(_this.getBattleField().innerHTML))) {
-                    return;
+                // ход сделан
+                if (/Ждём ход противника/i.test(general.$('bf').innerHTML)) {
+                    // ссылка на страницу НЕ JS-версии боя
+                    var url = general.loc.replace('btl.php', 'b.php'),
+                        ajax = new AjaxQuery();
+
+                    ajax.init(url, function (xhr) {
+                        var span = general.doc.createElement('span');
+                        span.innerHTML = xhr.responseText;
+                        _this.setCountStroke(span);
+                    }, function () {
+                        general.root.console.log('Error XHR to: ' + url);
+                    });
                 }
-
-                if (general.nojs) {
-                    _this.setCountStroke(general.doc);
-                    return;
-                }
-
-                var url = general.loc.replace('btl.php', 'b.php'),
-                    ajax = new AjaxQuery();
-
-                ajax.init(url, 'GET', null, true, function (xhr) {
-                    var span = general.doc.createElement('span');
-                    span.innerHTML = xhr.responseText;
-                    _this.setCountStroke(span);
-                }, function () {
-                    general.cons.log('Error XHR to: ' + url);
-                });
             };
         };
 
@@ -3604,20 +3562,7 @@
                             this.enemies[tmp[2].replace(/&amp;/, '&')] = tmp[1];
                         }
                     }
-
-                    if (general.nojs) {
-                        dataSt[17] = JSON.stringify(this.enemies);
-                        general.setData(dataSt, 4);
-                    }
-                // НЕ JS-версия, ход сделан
-                } else if (general.nojs) {
-                    this.enemies = dataSt[17] ? JSON.parse(dataSt[17]) : null;
-                    // нет записи в хранилище
-                    if (!this.enemies) {
-                        return;
-                    }
-                // JS-версия, ход сделан
-                } else {
+                } else {    // ход сделан
                     this.checkSound = false;
                     if (!this.enemies) {
                         return;
@@ -3699,10 +3644,8 @@
                         this.tmRefreshBattle = general.root.
                             setInterval(function () {
                                 var updLink = general.doc.
-                                        querySelector('a[href*="' +
-                                            (general.nojs ? 'b.php?bid=' :
-                                                    'updatedata()') + '"]');
-
+                                        querySelector('a[href*=' +
+                                            '"updatedata()"]');
                                 if (updLink) {
                                     updLink.click();
                                 }
@@ -3714,9 +3657,8 @@
             // изменяем расположение бойцов, ставим тултипы...
             this.changeLocationFighters();
 
-            // в JS-версии боя подсвечиваем персонажей, которые уже
-            // сделали ход. В ОБОИХ весиях боя устанавливаем вверху
-            // количество персонажей, сделавших ход
+            // подсвечиваем персонажей, которые уже сделали ход,
+            // устанавливаем количество персонажей, сделавших ход
             if (!general.viewMode && !this.tmHighlightPers) {
                 this.setColorFighters(this);
                 this.tmHighlightPers = general.root.
@@ -3748,15 +3690,13 @@
                         _this.inpTextChat.value = '~' + chatMessage;
                     }
 
-                    // костыль после отправки сообщения в чат в JS-версии
-                    if (!general.nojs) {
-                        _this.intervalUpdateInpTextChat = general.root.
-                            setInterval(function () {
-                                if (!_this.inpTextChat.value) {
-                                    _this.inpTextChat.value = '~';
-                                }
-                            }, 1000);
-                    }
+                    // костыль после отправки сообщения в чат
+                    _this.intervalUpdateInpTextChat = general.root.
+                        setInterval(function () {
+                            if (!_this.inpTextChat.value) {
+                                _this.inpTextChat.value = '~';
+                            }
+                        }, 1000);
                 } else {
                     dataSt[10] = '';
                     // noinspection RegExpSingleCharAlternation
@@ -3856,14 +3796,8 @@
             buttonUpdate.value = 'Обновить';
             buttonUpdate.setAttribute('style', 'background-color: #D0EED0;');
 
-            if (!general.nojs) {
-                buttonUpdate.setAttribute('onclick',
-                        ['javascript', ':', 'void(updatedata())'].join(''));
-            } else {
-                buttonUpdate.addEventListener('click', function () {
-                    general.root.location.reload();
-                }, false);
-            }
+            buttonUpdate.setAttribute('onclick',
+                    ['javascript', ':', 'void(updatedata())'].join(''));
 
             this.inpTextChat.parentNode.appendChild(buttonUpdate);
         };
@@ -3891,18 +3825,14 @@
          * @method tryStart
          */
         this.tryStart = function () {
-            if (general.viewMode || general.nojs) {
-                if (general.nojs) {
-                    this.setChatInterface();
-                }
-
+            if (general.viewMode) {
                 this.start();
                 return;
             }
 
             this.inpTextChat = general.doc.querySelector('input[name="oldm"]');
             // основное поле боя
-            var bf = this.getBattleField();
+            var bf = general.$('bf');
 
             if (this.inpTextChat && bf &&
                     !(/Загружаются данные/.test(bf.innerHTML))) {
@@ -3910,7 +3840,7 @@
                 this.setChatInterface();
                 this.start();
             } else {
-                // в JS версии боя ждем загрузки фрейма с данными
+                // ждем загрузки фрейма с данными
                 var _this = this;
                 general.root.setTimeout(function () {
                     _this.tryStart();
@@ -3922,12 +3852,10 @@
          * @method init
          */
         this.init = function () {
-            // графическое оформление боев
-            if (general.doc.querySelector('table[style*="battleground"]')) {
-                return;
-            }
-
-            if (general.root.self !== general.root.top) {
+            // графическое оформление боев или НЕ JS-версия боя
+            if (general.doc.querySelector('table[style*="battleground"]') ||
+                    /\/b0\/b\.php/.test(general.loc) ||
+                    general.root.self !== general.root.top) {
                 return;
             }
 
@@ -3958,9 +3886,6 @@
                 if (!this.inpTextChat) {
                     return;
                 }
-            } else if (general.nojs) {
-                this.inpTextChat = general.doc.
-                    querySelector('input[name="newmessage"]');
             }
 
             // в бою
@@ -3992,35 +3917,6 @@
             }, false);
 
             this.tryStart();
-
-            // в НЕ JS-версии боя делаем полный лог
-            if (general.nojs) {
-                var linkFullLog = general.doc.
-                        querySelector('br+a[href*="/warlog.php?bid="]');
-
-                if (linkFullLog) {
-                    var url = 'http://www.gwars.ru/b0/btk.php?bid=' +
-                        (/\?bid=(\d+)/.exec(linkFullLog.href)[1]) +
-                        '&turn=-1&lines=-1';
-
-                    // удаляем все что после таблицы с логом
-                    var parnt = linkFullLog.parentNode;
-                    while (parnt.lastChild.nodeName !== 'TABLE') {
-                        parnt.removeChild(parnt.lastChild);
-                    }
-
-                    var ajax = new AjaxQuery();
-                    ajax.init(url, 'GET', null, true,  function (xhr) {
-                        var span = general.doc.createElement('span');
-                        span.innerHTML = xhr.responseText;
-                        general.doc.querySelector('tr>td>div[style=' +
-                            '"font-size:8pt"]').innerHTML =
-                            span.querySelector('#log').innerHTML;
-                    }, function () {
-                        general.cons.log('Error XHR to: ' + url);
-                    });
-                }
-            }
         };
     };
 
@@ -4203,9 +4099,9 @@
             //гранатометы
             /* гос */
             'rpg', 'ptrk', 'glauncher', 'grg', 'paw20', 'rpgu', 'grom2',
-            'ags30', 'gm94', 'gl06', 'gmg', 'balkan', 'rg6', 'im202',
+            'ags30', 'gm94', 'gl06', 'gmg', 'balkan', 'rg6', 'm202', 'mm1',
             /* арт */
-            'milkor', 'mk47'
+            'milkor', 'm32', 'mk47'
         ];
 
         /**
@@ -12963,7 +12859,7 @@
                             replace(/,/g, '').split(' / '),
                         eExp = +/\d+/.exec(current[0])[0],
                         bExp = +/\d+/.exec(current[1])[0],
-                        experience = 5 / 3 * bExp + (2.4 * eExp),
+                        experience = 4 / 3 * bExp + (3 * eExp),
                         syndLvl,
                         i;
 
