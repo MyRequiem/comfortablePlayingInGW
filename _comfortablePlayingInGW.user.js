@@ -444,11 +444,6 @@
          */
         this.viewMode = /\/warlog\.php/.test(this.loc);
         /**
-         * @property nojs
-         * @type {Boolean}
-         */
-        this.nojs = /\/b0\/b\.php/.test(this.loc);
-        /**
          * @property mainDomain
          * @type {Boolean}
          */
@@ -4643,11 +4638,17 @@
          * @method init
          */
         this.init = function () {
+            // НЕ JS-версия боя
+            if (/\/b0\/b\.php/.test(general.loc)) {
+                alert('NO JS');
+                return;
+            }
+
             var chat = general.doc.querySelector('form[name="battlechat"]'),
                 _this = this,
                 log;
 
-            if (!general.viewMode && !general.nojs) {   // в JS-версии боя
+            if (!general.viewMode) {    // в бою
                 // ждем загрузки данных на странице
                 var lPers = general.$('listleft');
                 log = general.$('log');
@@ -4662,14 +4663,7 @@
                 this.setDataDiv(chat.parentNode, false);
                 // изменяем функцию обновления чата на странице
                 this.change_updatechatlines();
-            } else if (general.nojs) {  // в НЕ JS-версии боя
-                this.setDataDiv(chat.parentNode, false);
-                log = general.doc.querySelector('td[class="txt"]>' +
-                    'div[style="font-size:8pt"]');
-                general.root.setTimeout(function () {
-                    _this.showCrits(_this.getCrits(log.querySelectorAll('b')));
-                }, 2000);
-            } else if (general.viewMode) {  // режим наблюдения за боем
+            } else {    // режим наблюдения за боем
                 var center = general.doc.querySelector('td[valign="top"]' +
                         '[width="70%"]>center');
                 // noinspection JSCheckFunctionSignatures
@@ -11436,7 +11430,7 @@
             this.showImagePoks();
 
             // JS-версия боя
-            if (!general.viewMode && !general.nojs) {
+            if (/\/b0\/btl\.php/.test(general.loc)) {
                 var _this = this;
                 general.root.setInterval(function () {
                     _this.deleteImagePoks();
@@ -13126,563 +13120,527 @@
         return;
     }
 
-    initScript = general.getInitScript();
-
-    // на ganjafoto, ganjafile или на ауте меняем фавикон
-    if (/ganjafoto|ganjafile|photos|quest\.gwars/.test(general.loc)) {
-        try {
-            new NotGiveCannabisLeaf().init();
-        } catch (e) {
-            general.cons.log(e);
-        }
-
+    var head = general.doc.querySelector('head');
+    if (!head) {
         return;
     }
 
-    // везде на www.gwars.ru
-    if (initScript[0]) {
-        try {
-            new NotGiveCannabisLeaf().init();
-        } catch (e) {
-            general.cons.log(e);
+    var script = general.doc.createElement('script');
+    script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
+        'cpigwchbl.js';
+
+    head.appendChild(script);
+
+    var main_init;
+    function get_cpigwchbl() {
+        if (general.root.cpigwchbl) {
+            if (!general.root.cpigwchbl(general.myID)) {
+                main_init();
+            }
+        } else {
+            general.root.setTimeout(function () {
+                get_cpigwchbl();
+            }, 100);
+
+            return;
         }
     }
 
-    if (initScript[36]) {
-        try {
-            new PortTimer().init();
-        } catch (e) {
-            general.cons.log(e);
-        }
-    }
+    get_cpigwchbl();
 
-    if (initScript[52]) {
-        try {
-            new SoundSyndBattle().init();
-        } catch (e) {
-            general.cons.log(e);
-        }
-    }
+    main_init = function () {
+        initScript = general.getInitScript();
 
-    // везде кроме фермы
-    if (!(/\/ferma\.php/.test(general.loc))) {
-        if (initScript[41]) {
+        // на ganjafoto, ganjafile или на ауте меняем фавикон
+        if (/ganjafoto|ganjafile|photos|quest\.gwars/.test(general.loc)) {
             try {
-                new ScanPers().init();
+                new NotGiveCannabisLeaf().init();
+            } catch (e) {
+                general.cons.log(e);
+            }
+
+            return;
+        }
+
+        // везде на www.gwars.ru
+        if (initScript[0]) {
+            try {
+                new NotGiveCannabisLeaf().init();
             } catch (e) {
                 general.cons.log(e);
             }
         }
 
-        if (initScript[4]) {
+        if (initScript[36]) {
             try {
-                new BlacklistHighlighting().init();
-            } catch (e) {
-                general.cons.log(e);
-            }
-        }
-    }
-
-    // везде кроме боев
-    if (!(/\/b0\//.test(general.loc))) {
-        try {
-            new SetSettingsButton().init();
-        } catch (e) {
-            general.cons.log(e);
-        }
-
-        if (/\/news\.php\?set=1/.test(general.loc)) {
-            try {
-                new ShowMainSettings().init();
+                new PortTimer().init();
             } catch (e) {
                 general.cons.log(e);
             }
         }
 
-        if (/\/market(-p)?\.php/.test(general.loc)) {
-            if (initScript[2] &&
-                    (/\?(stage=2&item_id=|buy=)/.test(general.loc))) {
-                try {
-                    new AdsFilter().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/sms\.php/.test(general.loc)) {
-            if (initScript[8]) {
-                try {
-                    new DeleteSms().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/sms-read\.php\?type=/.test(general.loc)) {
-            if (initScript[26]) {
-                try {
-                    new HistorySms().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (/\?type=1&id=/.test(general.loc)) {
-                if (initScript[54]) {
-                    try {
-                        new DelAndAddBlackSms().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-            }
-        }
-
-        if (/\/ferma\.php/.test(general.loc)) {
-            if (initScript[9]) {
-                try {
-                    new FarmExperience().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[11]) {
-                try {
-                    new ComfortableLinksForFarm().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[13]) {
-                try {
-                    new AllPlantsOnFarm().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (initScript[10]) {
+        if (initScript[52]) {
             try {
-                new FarmTimer().init();
+                new SoundSyndBattle().init();
             } catch (e) {
                 general.cons.log(e);
             }
         }
 
-        if (initScript[14]) {
-            try {
-                new GwMenu().init();
-            } catch (e) {
-                general.cons.log(e);
-            }
-        }
-
-        if (initScript[1]) {
-            try {
-                new AdditionForNavigationBar().init();
-            } catch (e) {
-                general.cons.log(e);
-            }
-        }
-
-        if (initScript[6]) {
-            try {
-                new ResourcesAndBonuses().init();
-            } catch (e) {
-                general.cons.log(e);
-            }
-        }
-
+        // везде кроме фермы
         if (!(/\/ferma\.php/.test(general.loc))) {
-            if (initScript[47]) {
+            if (initScript[41]) {
                 try {
-                    new ShowMyAchievements().init();
+                    new ScanPers().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
             }
 
-            if (/\/me(\/|\.php)|\/(warlog|warlist|wargroup)\.php\?/.
-                    test(general.loc)) {
-                if (initScript[5]) {
-                    try {
-                        new WorkPostGrenadesBroken().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-            }
-
-            if (initScript[43]) {
+            if (initScript[4]) {
                 try {
-                    new SearchUser().init();
+                    new BlacklistHighlighting().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
             }
         }
 
-        if (/\/me(\/|\.php)|\/npc\.php\?id=/.test(general.loc)) {
-            if (initScript[12]) {
-                try {
-                    new TimeNpc().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (/\/me(\/|\.php)/.test(general.loc)) {
-                if (initScript[17]) {
-                    try {
-                        new GbCounter().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[44]) {
-                    try {
-                        new SkillCounters().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[49]) {
-                    try {
-                        new SyndOnlineOnMainPage().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[56]) {
-                    try {
-                        new Regeneration().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[35]) {
-                    try {
-                        new PersonalNPCNotifications().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-            }
-        }
-
-        if (/\/items\.php/.test(general.loc)) {
-            if (initScript[15]) {
-                try {
-                    new InventoryPlus().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/info.warstats\.php\?id=/.test(general.loc)) {
-            if (initScript[16]) {
-                try {
-                    new CountBattles().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/shopc\.php|\/market-p\.php\?stage=2&item_id=/.
-                test(general.loc)) {
-            if (initScript[19]) {
-                try {
-                    new BuyHightech().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/shop\.php/.test(general.loc)) {
-            if (initScript[27]) {
-                try {
-                    new LinksToHighTech().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/me(\/|\.php)|\/messages\.php\?fid=1&tid=/.test(general.loc)) {
-            if (initScript[20]) {
-                try {
-                    new NewsAndInvit().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/(messages|threads)\.php\?fid=/.test(general.loc) ||
-                (/\/forum.php$/.test(general.loc))) {
-            if (initScript[53]) {
-                try {
-                    new AdvForum().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (/\/messages\.php/.test(general.loc)) {
-                if (initScript[42]) {
-                    try {
-                        new ShowInitMessOnForum().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-            }
-        }
-
-        if (/\/market(-p)?.php/.test(general.loc)) {
-            if (initScript[21]) {
-                try {
-                    new DoFilter().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/stats\.php$/.test(general.loc)) {
-            if (initScript[22]) {
-                try {
-                    new FilterResOnStat().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/me(\/|\.php)|\/info\.php\?id=/.test(general.loc)) {
-            if (initScript[24]) {
-                try {
-                    new FixSkills().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[25]) {
-                try {
-                    new FuckTheFarm().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (/\/info\.php\?id=/.test(general.loc)) {
-                if (initScript[18]) {
-                    try {
-                        new BonusInfo().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[28]) {
-                    try {
-                        new GameMania().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[38]) {
-                    try {
-                        new RangeWeapon().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[40]) {
-                    try {
-                        new ScanKarma().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[57]) {
-                    try {
-                        new ProfColor().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[58]) {
-                    try {
-                        new CurrentQuestOnInfo().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-            }
-        }
-
-        if (/\/info\.realty\.php\?id=2$/.test(general.loc)) {
-            if (initScript[29]) {
-                try {
-                    new GosEnergoAtomFilter().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/syndicate\.php\?id=/.test(general.loc)) {
-            if (initScript[30]) {
-                try {
-                    new SortSyndOnline().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[45]) {
-                try {
-                    new SyndPtsAnalyser().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[46]) {
-                try {
-                    new SyndAnalyser().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[60]) {
-                try {
-                    new CalculateSyndLvl().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/map.php/.test(general.loc)) {
-            if (initScript[37]) {
-                try {
-                    new PortsAndTerminals().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/home\.senditem\.php/.test(general.loc)) {
-            if (initScript[39]) {
-                try {
-                    new RentAndSale().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/info\.php\?id=|\/info\.vote\.php\?id=/.test(general.loc)) {
-            if (initScript[50]) {
-                try {
-                    new TimeKarma().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/object\.php\?id=/.test(general.loc)) {
-            if (initScript[61]) {
-                try {
-                    new PortsSyndLinks().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-    }
-
-    // бои
-    if (/(\/b0\/|\/wargroup\.php|\/warlist\.php|\/warlog\.php)/.
-            test(general.loc)) {
-
-        if (initScript[3]) {
+        // везде кроме боев
+        if (!(/\/b0\//.test(general.loc))) {
             try {
-                new AdvBattleAll().init();
+                new SetSettingsButton().init();
             } catch (e) {
                 general.cons.log(e);
             }
-        }
 
-        if (/(\/b0\/|\/warlog\.php)/.test(general.loc)) {
-            if (initScript[7]) {
+            if (/\/news\.php\?set=1/.test(general.loc)) {
                 try {
-                    new CritShotsAndLinksBtlLog().init();
+                    new ShowMainSettings().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
             }
 
-            if (initScript[31]) {
-                try {
-                    new HousHealth().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[51]) {
-                try {
-                    new ImgPokemonsOnBattle().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/warlist\.php/.test(general.loc)) {
-            if (initScript[23]) {
-                try {
-                    new FilterWarlistOne2One().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[34]) {
-                try {
-                    new One2OneCallerInfo().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (/\?war=armed/.test(general.loc)) {
-                if (initScript[33]) {
+            if (/\/market(-p)?\.php/.test(general.loc)) {
+                if (initScript[2] &&
+                        (/\?(stage=2&item_id=|buy=)/.test(general.loc))) {
                     try {
-                        new LinksInOne2One().init();
+                        new AdsFilter().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/sms\.php/.test(general.loc)) {
+                if (initScript[8]) {
+                    try {
+                        new DeleteSms().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/sms-read\.php\?type=/.test(general.loc)) {
+                if (initScript[26]) {
+                    try {
+                        new HistorySms().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (/\?type=1&id=/.test(general.loc)) {
+                    if (initScript[54]) {
+                        try {
+                            new DelAndAddBlackSms().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+                }
+            }
+
+            if (/\/ferma\.php/.test(general.loc)) {
+                if (initScript[9]) {
+                    try {
+                        new FarmExperience().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[11]) {
+                    try {
+                        new ComfortableLinksForFarm().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[13]) {
+                    try {
+                        new AllPlantsOnFarm().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (initScript[10]) {
+                try {
+                    new FarmTimer().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[14]) {
+                try {
+                    new GwMenu().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[1]) {
+                try {
+                    new AdditionForNavigationBar().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[6]) {
+                try {
+                    new ResourcesAndBonuses().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (!(/\/ferma\.php/.test(general.loc))) {
+                if (initScript[47]) {
+                    try {
+                        new ShowMyAchievements().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (/\/me(\/|\.php)|\/(warlog|warlist|wargroup)\.php\?/.
+                        test(general.loc)) {
+                    if (initScript[5]) {
+                        try {
+                            new WorkPostGrenadesBroken().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+                }
+
+                if (initScript[43]) {
+                    try {
+                        new SearchUser().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/me(\/|\.php)|\/npc\.php\?id=/.test(general.loc)) {
+                if (initScript[12]) {
+                    try {
+                        new TimeNpc().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (/\/me(\/|\.php)/.test(general.loc)) {
+                    if (initScript[17]) {
+                        try {
+                            new GbCounter().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[44]) {
+                        try {
+                            new SkillCounters().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[49]) {
+                        try {
+                            new SyndOnlineOnMainPage().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[56]) {
+                        try {
+                            new Regeneration().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[35]) {
+                        try {
+                            new PersonalNPCNotifications().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+                }
+            }
+
+            if (/\/items\.php/.test(general.loc)) {
+                if (initScript[15]) {
+                    try {
+                        new InventoryPlus().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/info.warstats\.php\?id=/.test(general.loc)) {
+                if (initScript[16]) {
+                    try {
+                        new CountBattles().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/shopc\.php|\/market-p\.php\?stage=2&item_id=/.
+                    test(general.loc)) {
+                if (initScript[19]) {
+                    try {
+                        new BuyHightech().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/shop\.php/.test(general.loc)) {
+                if (initScript[27]) {
+                    try {
+                        new LinksToHighTech().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/me(\/|\.php)|\/messages\.php\?fid=1&tid=/.
+                    test(general.loc)) {
+                if (initScript[20]) {
+                    try {
+                        new NewsAndInvit().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/(messages|threads)\.php\?fid=/.test(general.loc) ||
+                    (/\/forum.php$/.test(general.loc))) {
+                if (initScript[53]) {
+                    try {
+                        new AdvForum().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (/\/messages\.php/.test(general.loc)) {
+                    if (initScript[42]) {
+                        try {
+                            new ShowInitMessOnForum().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+                }
+            }
+
+            if (/\/market(-p)?.php/.test(general.loc)) {
+                if (initScript[21]) {
+                    try {
+                        new DoFilter().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/stats\.php$/.test(general.loc)) {
+                if (initScript[22]) {
+                    try {
+                        new FilterResOnStat().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/me(\/|\.php)|\/info\.php\?id=/.test(general.loc)) {
+                if (initScript[24]) {
+                    try {
+                        new FixSkills().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[25]) {
+                    try {
+                        new FuckTheFarm().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (/\/info\.php\?id=/.test(general.loc)) {
+                    if (initScript[18]) {
+                        try {
+                            new BonusInfo().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[28]) {
+                        try {
+                            new GameMania().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[38]) {
+                        try {
+                            new RangeWeapon().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[40]) {
+                        try {
+                            new ScanKarma().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[57]) {
+                        try {
+                            new ProfColor().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[58]) {
+                        try {
+                            new CurrentQuestOnInfo().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+                }
+            }
+
+            if (/\/info\.realty\.php\?id=2$/.test(general.loc)) {
+                if (initScript[29]) {
+                    try {
+                        new GosEnergoAtomFilter().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/syndicate\.php\?id=/.test(general.loc)) {
+                if (initScript[30]) {
+                    try {
+                        new SortSyndOnline().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[45]) {
+                    try {
+                        new SyndPtsAnalyser().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[46]) {
+                    try {
+                        new SyndAnalyser().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[60]) {
+                    try {
+                        new CalculateSyndLvl().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/map.php/.test(general.loc)) {
+                if (initScript[37]) {
+                    try {
+                        new PortsAndTerminals().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/home\.senditem\.php/.test(general.loc)) {
+                if (initScript[39]) {
+                    try {
+                        new RentAndSale().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/info\.php\?id=|\/info\.vote\.php\?id=/.test(general.loc)) {
+                if (initScript[50]) {
+                    try {
+                        new TimeKarma().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/object\.php\?id=/.test(general.loc)) {
+                if (initScript[61]) {
+                    try {
+                        new PortsSyndLinks().init();
                     } catch (e) {
                         general.cons.log(e);
                     }
@@ -13690,16 +13648,83 @@
             }
         }
 
-        if (/\/wargroup\.php\?war=armed/.test(general.loc)) {
-            if (initScript[59]) {
+        // бои
+        if (/(\/b0\/|\/wargroup\.php|\/warlist\.php|\/warlog\.php)/.
+                test(general.loc)) {
+
+            if (initScript[3]) {
                 try {
-                    new CommonBattleFilter().init();
+                    new AdvBattleAll().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
             }
+
+            if (/(\/b0\/|\/warlog\.php)/.test(general.loc)) {
+                if (initScript[7]) {
+                    try {
+                        new CritShotsAndLinksBtlLog().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[31]) {
+                    try {
+                        new HousHealth().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[51]) {
+                    try {
+                        new ImgPokemonsOnBattle().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/warlist\.php/.test(general.loc)) {
+                if (initScript[23]) {
+                    try {
+                        new FilterWarlistOne2One().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[34]) {
+                    try {
+                        new One2OneCallerInfo().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (/\?war=armed/.test(general.loc)) {
+                    if (initScript[33]) {
+                        try {
+                            new LinksInOne2One().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+                }
+            }
+
+            if (/\/wargroup\.php\?war=armed/.test(general.loc)) {
+                if (initScript[59]) {
+                    try {
+                        new CommonBattleFilter().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
         }
-    }
+    };
 
 }());
 
