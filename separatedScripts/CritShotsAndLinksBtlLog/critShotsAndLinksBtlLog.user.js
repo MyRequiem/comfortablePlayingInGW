@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            CritShotsAndLinksBtlLog
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     В бою и на страницax логов боев делает все ники персонажей ссылками. Показывает критические выстрелы вашего персонажа и их общее количество (опционально).
+// @description     В JS-версии боя и на страницax логов боев делает все ники персонажей ссылками. Показывает критические выстрелы вашего персонажа и их общее количество (опционально).
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CritShotsAndLinksBtlLog/critShotsAndLinksBtlLog.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CritShotsAndLinksBtlLog/critShotsAndLinksBtlLog.user.js
@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/warlog.php*
 // @grant           none
 // @license         MIT
-// @version         2.46-250918
+// @version         2.47-310119
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -65,11 +65,6 @@
          * @type {Boolean}
          */
         this.viewMode = /\/warlog\.php/.test(this.loc);
-        /**
-         * @property nojs
-         * @type {Boolean}
-         */
-        this.nojs = /\/b0\/b\.php/.test(this.loc);
     };
 
     /**
@@ -327,11 +322,16 @@
          * @method init
          */
         this.init = function () {
+            // НЕ JS-версия боя
+            if (/\/b0\/b\.php/.test(general.loc)) {
+                return;
+            }
+
             var chat = general.doc.querySelector('form[name="battlechat"]'),
                 _this = this,
                 log;
 
-            if (!general.viewMode && !general.nojs) {   // в JS-версии боя
+            if (!general.viewMode) {    // в бою
                 // ждем загрузки данных на странице
                 var lPers = general.$('listleft');
                 log = general.$('log');
@@ -346,14 +346,7 @@
                 this.setDataDiv(chat.parentNode, false);
                 // изменяем функцию обновления чата на странице
                 this.change_updatechatlines();
-            } else if (general.nojs) {  // в НЕ JS-версии боя
-                this.setDataDiv(chat.parentNode, false);
-                log = general.doc.querySelector('td[class="txt"]>' +
-                    'div[style="font-size:8pt"]');
-                general.root.setTimeout(function () {
-                    _this.showCrits(_this.getCrits(log.querySelectorAll('b')));
-                }, 2000);
-            } else if (general.viewMode) {  // режим наблюдения за боем
+            } else {    // режим наблюдения за боем
                 var center = general.doc.querySelector('td[valign="top"]' +
                         '[width="70%"]>center');
                 // noinspection JSCheckFunctionSignatures
