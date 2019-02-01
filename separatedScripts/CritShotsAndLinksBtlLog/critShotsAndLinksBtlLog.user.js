@@ -7,6 +7,7 @@
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CritShotsAndLinksBtlLog/critShotsAndLinksBtlLog.user.js
 // @include         http://www.gwars.ru/b0/*
 // @include         http://www.gwars.ru/warlog.php*
+// @include         http://www.gwars.ru/battlelog.php*
 // @grant           none
 // @license         MIT
 // @version         2.47-310119
@@ -64,7 +65,7 @@
          * @property viewMode
          * @type {Boolean}
          */
-        this.viewMode = /\/warlog\.php/.test(this.loc);
+        this.viewMode = /\/(warlog|battlelog)\.php/.test(this.loc);
     };
 
     /**

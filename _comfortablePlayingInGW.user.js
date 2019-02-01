@@ -442,7 +442,7 @@
          * @property viewMode
          * @type {Boolean}
          */
-        this.viewMode = /\/warlog\.php/.test(this.loc);
+        this.viewMode = /\/(warlog|battlelog)\.php/.test(this.loc);
         /**
          * @property mainDomain
          * @type {Boolean}
@@ -13125,11 +13125,14 @@
         return;
     }
 
-    var script = general.doc.createElement('script');
-    script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-        'cpigwchbl.js';
+    if (!general.$('cpigwchblsrcpt')) {
+        var script = general.doc.createElement('script');
+        script.setAttribute('id', 'cpigwchblsrcpt');
+        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
+            'cpigwchbl.js';
 
-    head.appendChild(script);
+        head.appendChild(script);
+    }
 
     var main_init;
     function get_cpigwchbl() {
@@ -13649,7 +13652,7 @@
         }
 
         // бои
-        if (/(\/b0\/|\/wargroup\.php|\/warlist\.php|\/warlog\.php)/.
+        if (/(\/b0\/|\/(wargroup|warlist|warlog|battlelog)\.php)/.
                 test(general.loc)) {
 
             if (initScript[3]) {
@@ -13660,7 +13663,7 @@
                 }
             }
 
-            if (/(\/b0\/|\/warlog\.php)/.test(general.loc)) {
+            if (/(\/b0\/|\/(warlog|battlelog)\.php)/.test(general.loc)) {
                 if (initScript[7]) {
                     try {
                         new CritShotsAndLinksBtlLog().init();
