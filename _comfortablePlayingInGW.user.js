@@ -1167,16 +1167,14 @@
                     'В JS-версии боя подсвечивает зеленым цветом тех ' +
                     'персонажей, которые уже сделали ход. В обоих версиях ' +
                     'выводит количество персонажей, сделавших ход.' +
-                    '<br><br><span style="color: #FF0000;">Не ставьте ' +
-                    'значения менее 3 секунд.</span><br>Таймаут обновления ' +
-                    'данных в бою:<span style="margin-left: 54px;"> ' +
-                    '</span><input id="refreshBattle" maxlength="3" ' +
-                    'style="width: 30px;" value="' +
-                    (general.getData(4)[0] || '0') + '" disabled /> ' +
-                    'сек (0 - настройки игры по умолчанию)<br>' +
-                    'Таймаут обновления заявки при входе в нее: <input ' +
-                    'id="refreshAppl" maxlength="3" style="width: 30px;" ' +
-                    'value="' + (general.getData(4)[1] || '0') +
+                    '<br><br>Таймаут обновления данных в бою:' +
+                    '<span style="margin-left: 54px;"> </span>' +
+                    '<input id="refreshBattle" maxlength="2" style="width: ' +
+                    '30px;" value="' + (general.getData(4)[0] || '0') +
+                    '" disabled /> сек (0 - настройки игры по умолчанию)<br>' +
+                    'Таймаут обновления заявки при входе в нее: ' +
+                    '<input id="refreshAppl" maxlength="2" style="width: ' +
+                    '30px;" value="' + (general.getData(4)[1] || '0') +
                     '" disabled /> сек (0 - настройки игры по умолчанию)<br>' +
                     'Звук при начале боя:&nbsp;&nbsp;&nbsp;&nbsp;' +
                     this.getSelectSound('advBattleSound1') + '<br>' +
@@ -1426,7 +1424,7 @@
                 ind = _this.id === 'refreshBattle' ? 0 : 1,
                 data = general.getData(4);
 
-            data[ind] = new CheckInputText().init(_this, 3) ?
+            data[ind] = new CheckInputText().init(_this, 0) ?
                     _this.value : '';
             general.setData(data, 4);
         };
@@ -3514,7 +3512,7 @@
                     var url = general.loc.replace('btl.php', 'b.php'),
                         ajax = new AjaxQuery();
 
-                    ajax.init(url, function (xhr) {
+                    ajax.init(url, 'GET', null, true, function (xhr) {
                         var span = general.doc.createElement('span');
                         span.innerHTML = xhr.responseText;
                         _this.setCountStroke(span);
@@ -3633,32 +3631,34 @@
                 } else {    //уже сходили
                     // прячем кнопку "Сказать ход"
                     this.sayMoveButton.style.display = 'none';
-                    // обновляем данные в бою
-                    var refreshBattle = general.getData(4)[0];
-                    if (refreshBattle && !this.tmRefreshBattle) {
-                        this.tmRefreshBattle = general.root.
-                            setInterval(function () {
-                                var updLink = general.doc.
-                                        querySelector('a[href*=' +
-                                            '"updatedata()"]');
-                                if (updLink) {
-                                    updLink.click();
-                                }
-                            }, (+refreshBattle) * 1000);
-                    }
+                }
+
+                // обновление данных в бою
+                var refreshBattle = general.getData(4)[0];
+                if (refreshBattle && !this.tmRefreshBattle) {
+                    this.tmRefreshBattle = general.root.
+                        setInterval(function () {
+                            var updLink = general.doc.
+                                    querySelector('a[href*="updatedata()"], ' +
+                                        'input[onclick$="void(updatedata())"]');
+
+                            if (updLink) {
+                                updLink.click();
+                            }
+                        }, (+refreshBattle) * 1000);
+                }
+
+                // подсвечиваем персонажей, которые уже сделали ход,
+                // устанавливаем количество персонажей, сделавших ход
+                if (!this.tmHighlightPers) {
+                    this.setColorFighters(this);
+                    this.tmHighlightPers = general.root.
+                        setInterval(this.setColorFighters(this), 3000);
                 }
             }
 
             // изменяем расположение бойцов, ставим тултипы...
             this.changeLocationFighters();
-
-            // подсвечиваем персонажей, которые уже сделали ход,
-            // устанавливаем количество персонажей, сделавших ход
-            if (!general.viewMode && !this.tmHighlightPers) {
-                this.setColorFighters(this);
-                this.tmHighlightPers = general.root.
-                    setInterval(this.setColorFighters(this), 3000);
-            }
         };
 
         /**
@@ -4640,7 +4640,6 @@
         this.init = function () {
             // НЕ JS-версия боя
             if (/\/b0\/b\.php/.test(general.loc)) {
-                alert('NO JS');
                 return;
             }
 
