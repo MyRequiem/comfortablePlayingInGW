@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.10-290119
+// @version         4.11-020219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -34,16 +34,16 @@
     'use strict';
 
     //============= НАСТРОЙКИ ====================
-        /* НЕ СТАВИТЬ ЗНАЧЕНИЯ МЕНЕЕ 3 СЕКУНД !!!
-
-        обновление заявки после входа в нее (в секундах)
-        0 - таймаут обновления игровой по умолчанию (20 сек) */
+        // обновление заявки после входа в нее (в секундах)
+        // 0 - таймаут по умолчанию (20 сек)
     var refreshAppl = 0,
-        /* обновление страницы после того, как сделали ход (в секундах)
-        0 - таймаут по умолчанию, который выставлен в настройках персонажа */
+        // таймаут обновления данных в бою (в секундах)
+        // 0 - таймаут по умолчанию, который выставлен в настройках персонажа
         refreshBattle = 0,
-        sound1 = 0, // звук при начале боя (0 - без звука)
-        sound2 = 0; // звук при начале хода (0 - без звука)
+        // звук при начале боя (0 - без звука)
+        sound1 = 0,
+        // звук при начале хода (0 - без звука)
+        sound2 = 0;
     //============= КОНЕЦ НАСТРОЕК ===============
 
 /* localStorage data
@@ -1570,35 +1570,36 @@
 
                     // показываем кнопку "Сказать ход"
                     this.sayMoveButton.style.display = '';
-                } else {    //уже сходили
+                } else {    // уже сходили
                     // прячем кнопку "Сказать ход"
                     this.sayMoveButton.style.display = 'none';
-                    // обновляем данные в бою
-                    if (refreshBattle > 2 && !this.tmRefreshBattle) {
-                        this.tmRefreshBattle = general.root.
-                            setInterval(function () {
-                                var updLink = general.doc.
-                                        querySelector('a[href*=' +
-                                            '"updatedata()"]');
+                }
 
-                                if (updLink) {
-                                    updLink.click();
-                                }
-                            }, refreshBattle * 1000);
-                    }
+                // обновление данных в бою
+                if (refreshBattle && !this.tmRefreshBattle) {
+                    this.tmRefreshBattle = general.root.
+                        setInterval(function () {
+                            var updLink = general.doc.
+                                    querySelector('a[href*="updatedata()"], ' +
+                                        'input[onclick$="void(updatedata())"]');
+
+                            if (updLink) {
+                                updLink.click();
+                            }
+                        }, refreshBattle * 1000);
+                }
+
+                // подсвечиваем персонажей, которые уже сделали ход,
+                // устанавливаем количество персонажей, сделавших ход
+                if (!this.tmHighlightPers) {
+                    this.setColorFighters(this);
+                    this.tmHighlightPers = general.root.
+                        setInterval(this.setColorFighters(this), 3000);
                 }
             }
 
             // изменяем расположение бойцов, ставим тултипы...
             this.changeLocationFighters();
-
-            // подсвечиваем персонажей, которые уже сделали ход,
-            // устанавливаем количество персонажей, сделавших ход
-            if (!general.viewMode && !this.tmHighlightPers) {
-                this.setColorFighters(this);
-                this.tmHighlightPers = general.root.
-                    setInterval(this.setColorFighters(this), 3000);
-            }
         };
 
         /**
