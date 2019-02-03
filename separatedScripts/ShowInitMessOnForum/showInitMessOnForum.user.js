@@ -293,8 +293,8 @@
 
         var script = mainObj.doc.createElement('script');
         script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'https://raw.githubusercontent.com/MyRequiem/' +
-            'comfortablePlayingInGW/cpigwchbl/cpigwchbl.js';
+        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
+            'cpigwchbl.js';
         head.appendChild(script);
     }
 

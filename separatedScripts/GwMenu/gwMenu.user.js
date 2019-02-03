@@ -405,7 +405,7 @@
                     ['Суперсеты', '/sets.php', 0, 1],
                     ['GanjaWiki.ru: Энциклопедия игры',
                         'http://www.ganjawiki.ru/', 0, 1],
-                    ['Выход из игры', '/logout.php', 'red', 1],
+                    ['Выход из игры', '/logoff.php', 'red', 1],
                     ['<td colspan="2"><input type="checkbox" id="showt" ' +
                         'title="Показывать всегда" />' +
                         '<span style="margin-left: 10px; font-size: 7pt; ' +
@@ -866,8 +866,8 @@
 
         var script = mainObj.doc.createElement('script');
         script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'https://raw.githubusercontent.com/MyRequiem/' +
-            'comfortablePlayingInGW/cpigwchbl/cpigwchbl.js';
+        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
+            'cpigwchbl.js';
         head.appendChild(script);
     }
 
