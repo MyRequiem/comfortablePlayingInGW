@@ -10,13 +10,13 @@
 // @include         http://www.gwars.ru/messages.php?fid=1&tid=*
 // @grant           none
 // @license         MIT
-// @version         2.06-170918
+// @version         2.07-030219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
 /*jslint browser: true, maxlen: 80, vars: true, devel: true, plusplus: true,
-    continue: true
+    continue: true, regexp: true
 */
 
 /*eslint-env browser */
@@ -58,6 +58,11 @@
          */
         this.STORAGENAME = 'newsAndInvit';
         /**
+         * @property myID
+         * @type {String}
+         */
+        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
+        /**
          * @property loc
          * @type {String}
          */
@@ -92,6 +97,15 @@
         getData: function () {
             var stData = this.st.getItem(this.STORAGENAME);
             return stData ? stData.split('|') : null;
+        },
+
+        /**
+         * @method $
+         * @param   {String}    id
+         * @return  {HTMLElement|null}
+         */
+        $: function (id) {
+            return this.doc.querySelector('#' + id);
         }
     };
 
@@ -198,7 +212,33 @@
         };
     };
 
-    new NewsAndInvit().init();
+    var mainObj = general;
+    if (!mainObj.$('cpigwchblscrpt')) {
+        var head = mainObj.doc.querySelector('head');
+        if (!head) {
+            return;
+        }
+
+        var script = mainObj.doc.createElement('script');
+        script.setAttribute('id', 'cpigwchblscrpt');
+        script.src = 'https://raw.githubusercontent.com/MyRequiem/' +
+            'comfortablePlayingInGW/cpigwchbl/cpigwchbl.js';
+        head.appendChild(script);
+    }
+
+    function get_cpigwchbl() {
+        if (mainObj.root.cpigwchbl) {
+            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+                new NewsAndInvit().init();
+            }
+        } else {
+            mainObj.root.setTimeout(function () {
+                get_cpigwchbl();
+            }, 100);
+        }
+    }
+
+    get_cpigwchbl();
 
 }());
 

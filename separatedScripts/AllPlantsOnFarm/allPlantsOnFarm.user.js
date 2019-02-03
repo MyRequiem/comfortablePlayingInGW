@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         1.34-221118
+// @version         1.35-030219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -542,7 +542,33 @@
      * [2] - количество гб
      * [3] - количество производа
      */
-    new AllPlantsOnFarm().init();
+    var mainObj = general;
+    if (!mainObj.$('cpigwchblscrpt')) {
+        var head = mainObj.doc.querySelector('head');
+        if (!head) {
+            return;
+        }
+
+        var script = mainObj.doc.createElement('script');
+        script.setAttribute('id', 'cpigwchblscrpt');
+        script.src = 'https://raw.githubusercontent.com/MyRequiem/' +
+            'comfortablePlayingInGW/cpigwchbl/cpigwchbl.js';
+        head.appendChild(script);
+    }
+
+    function get_cpigwchbl() {
+        if (mainObj.root.cpigwchbl) {
+            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+                new AllPlantsOnFarm().init();
+            }
+        } else {
+            mainObj.root.setTimeout(function () {
+                get_cpigwchbl();
+            }, 100);
+        }
+    }
+
+    get_cpigwchbl();
 
 }());
 

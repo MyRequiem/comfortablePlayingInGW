@@ -1864,7 +1864,33 @@
         };
     };
 
-    new AdvBattleAll().init();
+    var mainObj = general;
+    if (!mainObj.$('cpigwchblscrpt')) {
+        var head = mainObj.doc.querySelector('head');
+        if (!head) {
+            return;
+        }
+
+        var script = mainObj.doc.createElement('script');
+        script.setAttribute('id', 'cpigwchblscrpt');
+        script.src = 'https://raw.githubusercontent.com/MyRequiem/' +
+            'comfortablePlayingInGW/cpigwchbl/cpigwchbl.js';
+        head.appendChild(script);
+    }
+
+    function get_cpigwchbl() {
+        if (mainObj.root.cpigwchbl) {
+            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+                new AdvBattleAll().init();
+            }
+        } else {
+            mainObj.root.setTimeout(function () {
+                get_cpigwchbl();
+            }, 100);
+        }
+    }
+
+    get_cpigwchbl();
 
 }());
 

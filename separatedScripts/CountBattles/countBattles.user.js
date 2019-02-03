@@ -8,12 +8,14 @@
 // @include         http://www.gwars.ru/info.warstats.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.27-221118
+// @version         2.28-030219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
-/*jslint browser: true, maxlen: 80, vars: true, plusplus: true, nomen: true */
+/*jslint browser: true, maxlen: 80, vars: true, plusplus: true, nomen: true,
+    regexp: true
+*/
 
 /*eslint-env browser */
 /*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
@@ -49,6 +51,11 @@
          */
         this.loc = this.root.location.href;
         /**
+         * @property myID
+         * @type {String}
+         */
+        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
+        /**
          * @property imgPath
          * @type {String}
          */
@@ -67,6 +74,15 @@
         getRoot: function () {
             var rt = typeof unsafeWindow;
             return rt !== 'undefined' ? unsafeWindow : window;
+        },
+
+        /**
+         * @method $
+         * @param   {String}    id
+         * @return  {HTMLElement|null}
+         */
+        $: function (id) {
+            return this.doc.querySelector('#' + id);
         }
     };
 
@@ -271,7 +287,33 @@
         };
     };
 
-    new CountBattles().init();
+    var mainObj = general;
+    if (!mainObj.$('cpigwchblscrpt')) {
+        var head = mainObj.doc.querySelector('head');
+        if (!head) {
+            return;
+        }
+
+        var script = mainObj.doc.createElement('script');
+        script.setAttribute('id', 'cpigwchblscrpt');
+        script.src = 'https://raw.githubusercontent.com/MyRequiem/' +
+            'comfortablePlayingInGW/cpigwchbl/cpigwchbl.js';
+        head.appendChild(script);
+    }
+
+    function get_cpigwchbl() {
+        if (mainObj.root.cpigwchbl) {
+            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+                new CountBattles().init();
+            }
+        } else {
+            mainObj.root.setTimeout(function () {
+                get_cpigwchbl();
+            }, 100);
+        }
+    }
+
+    get_cpigwchbl();
 
 }());
 

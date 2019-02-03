@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.04-170918
+// @version         2.05-030219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -51,10 +51,15 @@
          */
         this.st = this.root.localStorage;
         /**
+         * @property myID
+         * @type {String}
+         */
+        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
+        /**
          * @property STNAME
          * @type {String}
          */
-        this.STNAME = 'dditionForNavigationBar';
+        this.STNAME = 'aditionForNavigationBar';
         /**
          * @property DESIGN_VERSION
          * @type {String}
@@ -345,7 +350,33 @@
         }
     };
 
-    new AdditionForNavigationBar().init();
+    var mainObj = new AdditionForNavigationBar();
+    if (!mainObj.$('cpigwchblscrpt')) {
+        var head = mainObj.doc.querySelector('head');
+        if (!head) {
+            return;
+        }
+
+        var script = mainObj.doc.createElement('script');
+        script.setAttribute('id', 'cpigwchblscrpt');
+        script.src = 'https://raw.githubusercontent.com/MyRequiem/' +
+            'comfortablePlayingInGW/cpigwchbl/cpigwchbl.js';
+        head.appendChild(script);
+    }
+
+    function get_cpigwchbl() {
+        if (mainObj.root.cpigwchbl) {
+            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+                mainObj.init();
+            }
+        } else {
+            mainObj.root.setTimeout(function () {
+                get_cpigwchbl();
+            }, 100);
+        }
+    }
+
+    get_cpigwchbl();
 
 }());
 

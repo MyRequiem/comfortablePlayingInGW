@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/warlog.php*
 // @grant           none
 // @license         MIT
-// @version         2.16-301118
+// @version         2.17-030219
 // @author          MyRequiem, идея Buger_man
 // ==/UserScript==
 
@@ -57,6 +57,11 @@
          */
         this.viewMode = /\/warlog\.php/.test(this.loc);
         /**
+         * @property myID
+         * @type {String}
+         */
+        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
+        /**
          * @property nojs
          * @type {Boolean}
          */
@@ -74,6 +79,15 @@
         getRoot: function () {
             var rt = typeof unsafeWindow;
             return rt !== 'undefined' ? unsafeWindow : window;
+        },
+
+        /**
+         * @method $
+         * @param   {String}    id
+         * @return  {HTMLElement|null}
+         */
+        $: function (id) {
+            return this.doc.querySelector('#' + id);
         }
     };
 
@@ -185,7 +199,33 @@
         };
     };
 
-    new ImgPokemonsOnBattle().init();
+    var mainObj = general;
+    if (!mainObj.$('cpigwchblscrpt')) {
+        var head = mainObj.doc.querySelector('head');
+        if (!head) {
+            return;
+        }
+
+        var script = mainObj.doc.createElement('script');
+        script.setAttribute('id', 'cpigwchblscrpt');
+        script.src = 'https://raw.githubusercontent.com/MyRequiem/' +
+            'comfortablePlayingInGW/cpigwchbl/cpigwchbl.js';
+        head.appendChild(script);
+    }
+
+    function get_cpigwchbl() {
+        if (mainObj.root.cpigwchbl) {
+            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+                new ImgPokemonsOnBattle().init();
+            }
+        } else {
+            mainObj.root.setTimeout(function () {
+                get_cpigwchbl();
+            }, 100);
+        }
+    }
+
+    get_cpigwchbl();
 
 }());
 

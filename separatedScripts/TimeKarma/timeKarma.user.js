@@ -9,12 +9,14 @@
 // @include         http://www.gwars.ru/info.vote.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.06-201118
+// @version         2.07-030219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
-/*jslint browser: true, maxlen: 80, vars: true, nomen: true, devel: true */
+/*jslint browser: true, maxlen: 80, vars: true, nomen: true, devel: true,
+    regexp: true
+*/
 
 /*eslint-env browser */
 /*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
@@ -49,6 +51,11 @@
          * @type {String}
          */
         this.loc = this.root.location.href;
+        /**
+         * @property myID
+         * @type {String}
+         */
+        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
         /**
          * @property st
          * @type {Object}
@@ -180,7 +187,33 @@
         };
     };
 
-    new TimeKarma().init();
+    var mainObj = general;
+    if (!mainObj.$('cpigwchblscrpt')) {
+        var head = mainObj.doc.querySelector('head');
+        if (!head) {
+            return;
+        }
+
+        var script = mainObj.doc.createElement('script');
+        script.setAttribute('id', 'cpigwchblscrpt');
+        script.src = 'https://raw.githubusercontent.com/MyRequiem/' +
+            'comfortablePlayingInGW/cpigwchbl/cpigwchbl.js';
+        head.appendChild(script);
+    }
+
+    function get_cpigwchbl() {
+        if (mainObj.root.cpigwchbl) {
+            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+                new TimeKarma().init();
+            }
+        } else {
+            mainObj.root.setTimeout(function () {
+                get_cpigwchbl();
+            }, 100);
+        }
+    }
+
+    get_cpigwchbl();
 
 }());
 
