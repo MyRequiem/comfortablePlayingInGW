@@ -436,8 +436,8 @@
          * @property imgPath
          * @type {String}
          */
-        this.imgPath = this.mainPath + 'imgs/';
-        // this.imgPath = 'http://127.0.0.1/imgs/gwScripts/';
+        this.imgPath = this.myID && this.myID[2] === '2095458' ?
+                'http://127.0.0.1/imgs/gwScripts/' : this.mainPath + 'imgs/';
         /**
          * @property viewMode
          * @type {Boolean}
@@ -749,8 +749,9 @@
                 }
 
                 audio.volume = 0.3;
-                audio.src = general.mainPath + 'sounds/' + sound + '.ogg';
-                // audio.src = 'http://127.0.0.1/sounds/' + sound + '.ogg';
+                audio.src = (general.myID === '2095458' ?
+                        'http://127.0.0.1/' : general.mainPath) + 'sounds/' +
+                            sound + '.ogg';
                 // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
@@ -7274,12 +7275,13 @@
                 return;
             }
 
-            //на странице подачи объявлений
+            // на странице подачи объявлений
             var param = /&p=(\d+)&s=(\d+)$/.exec(general.loc);
             if (param) {
-                general.doc.querySelector('td[colspan="3"][class="wb"]').
-                    innerHTML += ' <span style="color: #990000;">' +
-                    '[Стоимость в магазине: ' + param[1] + ' EUN]</span>';
+                general.doc.querySelector('td[colspan="3"]' +
+                    '[class="greenlightbg"]').innerHTML += ' <span ' +
+                    'style="color: #990000;">[Стоимость в магазине: ' +
+                    param[1] + ' EUN]</span>';
 
                 //остров любой
                 general.doc.querySelector('select[name="island"]').value = '-1';
@@ -7299,7 +7301,7 @@
                     dur2.value = '1';
                 }
 
-                // срок размещения 3 дня
+                // срок размещения 7 дней
                 general.doc.
                     querySelector('select[name="date_len"]').value = '7';
             }
@@ -13124,11 +13126,11 @@
         return;
     }
 
-    if (!general.$('cpigwchblsrcpt')) {
+    if (!general.$('cpigwchblscrpt')) {
         var script = general.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblsrcpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js';
+        script.setAttribute('id', 'cpigwchblscrpt');
+        script.src = 'https://raw.githubusercontent.com/MyRequiem/' +
+            'comfortablePlayingInGW/cpigwchbl/cpigwchbl.js';
 
         head.appendChild(script);
     }
@@ -13136,15 +13138,13 @@
     var main_init;
     function get_cpigwchbl() {
         if (general.root.cpigwchbl) {
-            if (!general.root.cpigwchbl(general.myID)) {
+            if (general.myID && !general.root.cpigwchbl(general.myID)) {
                 main_init();
             }
         } else {
             general.root.setTimeout(function () {
                 get_cpigwchbl();
             }, 100);
-
-            return;
         }
     }
 
