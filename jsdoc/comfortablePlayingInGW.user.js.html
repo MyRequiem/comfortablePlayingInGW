@@ -40,7 +40,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.122-151218
+// @version         1.123-030219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -109,7 +109,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.122-151218';
+        this.version = '1.123-030219';
         /**
          * @property stString
          * @type {String}
@@ -464,18 +464,13 @@
          * @property imgPath
          * @type {String}
          */
-        this.imgPath = this.mainPath + 'imgs/';
-        // this.imgPath = 'http://127.0.0.1/imgs/gwScripts/';
+        this.imgPath = this.myID &amp;&amp; this.myID[2] === '2095458' ?
+                'http://127.0.0.1/imgs/gwScripts/' : this.mainPath + 'imgs/';
         /**
          * @property viewMode
          * @type {Boolean}
          */
-        this.viewMode = /\/warlog\.php/.test(this.loc);
-        /**
-         * @property nojs
-         * @type {Boolean}
-         */
-        this.nojs = /\/b0\/b\.php/.test(this.loc);
+        this.viewMode = /\/(warlog|battlelog)\.php/.test(this.loc);
         /**
          * @property mainDomain
          * @type {Boolean}
@@ -782,8 +777,9 @@
                 }
 
                 audio.volume = 0.3;
-                audio.src = general.mainPath + 'sounds/' + sound + '.ogg';
-                // audio.src = 'http://127.0.0.1/sounds/' + sound + '.ogg';
+                audio.src = (general.myID === '2095458' ?
+                        'http://127.0.0.1/' : general.mainPath) + 'sounds/' +
+                            sound + '.ogg';
                 // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
@@ -1200,16 +1196,14 @@
                     'В JS-версии боя подсвечивает зеленым цветом тех ' +
                     'персонажей, которые уже сделали ход. В обоих версиях ' +
                     'выводит количество персонажей, сделавших ход.' +
-                    '&lt;br>&lt;br>&lt;span style="color: #FF0000;">Не ставьте ' +
-                    'значения менее 3 секунд.&lt;/span>&lt;br>Таймаут обновления ' +
-                    'данных в бою:&lt;span style="margin-left: 54px;"> ' +
-                    '&lt;/span>&lt;input id="refreshBattle" maxlength="3" ' +
-                    'style="width: 30px;" value="' +
-                    (general.getData(4)[0] || '0') + '" disabled /> ' +
-                    'сек (0 - настройки игры по умолчанию)&lt;br>' +
-                    'Таймаут обновления заявки при входе в нее: &lt;input ' +
-                    'id="refreshAppl" maxlength="3" style="width: 30px;" ' +
-                    'value="' + (general.getData(4)[1] || '0') +
+                    '&lt;br>&lt;br>Таймаут обновления данных в бою:' +
+                    '&lt;span style="margin-left: 54px;"> &lt;/span>' +
+                    '&lt;input id="refreshBattle" maxlength="2" style="width: ' +
+                    '30px;" value="' + (general.getData(4)[0] || '0') +
+                    '" disabled /> сек (0 - настройки игры по умолчанию)&lt;br>' +
+                    'Таймаут обновления заявки при входе в нее: ' +
+                    '&lt;input id="refreshAppl" maxlength="2" style="width: ' +
+                    '30px;" value="' + (general.getData(4)[1] || '0') +
                     '" disabled /> сек (0 - настройки игры по умолчанию)&lt;br>' +
                     'Звук при начале боя:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;' +
                     this.getSelectSound('advBattleSound1') + '&lt;br>' +
@@ -1459,7 +1453,7 @@
                 ind = _this.id === 'refreshBattle' ? 0 : 1,
                 data = general.getData(4);
 
-            data[ind] = new CheckInputText().init(_this, 3) ?
+            data[ind] = new CheckInputText().init(_this, 0) ?
                     _this.value : '';
             general.setData(data, 4);
         };
@@ -2565,38 +2559,22 @@
                 return;
             }
 
-            if (general.nojs || general.viewMode) {
-                var str = general.nojs ? '[class="txt"]' : '[width="15%"]';
+            if (general.viewMode) {
                 this.leftRightCommands.push(general.doc.
-                        querySelector('tr>td[valign="top"]' + str +
+                        querySelector('tr>td[valign="top"][width="15%"]' +
                             ':first-child'));
                 this.leftRightCommands.push(general.doc.
-                        querySelector('tr>td[valign="top"]' + str +
+                        querySelector('tr>td[valign="top"][width="15%"]' +
                             ':last-child'));
                 return;
             }
 
-            // в JS версии боя ищем DIV'ы с бойцами явно,
-            // т.к.они меняются местами по ID
-            this.leftRightCommands.push(general.doc.querySelector('#listleft,' +
-                        '#listright'));
+            // в бою ищем DIV'ы с бойцами явно, т.к.они меняются местами по ID
+            this.leftRightCommands.push(general.doc.
+                    querySelector('#listleft,#listright'));
             this.leftRightCommands[1] =
                 this.leftRightCommands[0].id === 'listleft' ?
-                        general.doc.querySelector('#listright') :
-                            general.doc.querySelector('#listleft');
-        };
-
-        /**
-         * @method getBattleField
-         * @return  {HTMLElement}
-         */
-        this.getBattleField = function () {
-            if (general.nojs) {
-                return general.doc.querySelector('tr>td[valign="top"]' +
-                    '[class="txt"]>div[align="center"]');
-            }
-
-            return general.$('bf');
+                        general.$('listright') : general.$('listleft');
         };
 
         /**
@@ -3051,7 +3029,7 @@
          */
         this.setControlOfShooting = function () {
             var divGenerator = general.doc.createElement('div'),
-                bf = this.getBattleField(),
+                bf = general.$('bf'),
                 coord = new GetPos().init(bf);
 
             divGenerator.setAttribute('style', 'position: absolute; top: ' +
@@ -3173,20 +3151,17 @@
          */
         this.showTooltip = function (ttl, _this) {
             return function () {
-                var bf = _this.getBattleField(),
-                    getPos = new GetPos(),
+                var getPos = new GetPos(),
                     obj;
 
                 // относительно чего будем выравнивать тултип
                 if (general.viewMode) {
                     obj = {
-                        x: _this.leftRightCommands[0].
-                                nextElementSibling.lastElementChild,
+                        x: general.doc.querySelector('table[background$=' +
+                            '"/battleField.gif"]').nextElementSibling.
+                                nextElementSibling,
                         y: 14
                     };
-                } else if (general.nojs &amp;&amp;
-                        (/Ждём ход противника/.test(bf.innerHTML))) {
-                    obj = {x: bf, y: 0};
                 } else {
                     obj = {x: _this.inpTextChat, y: 20};
                 }
@@ -3319,11 +3294,12 @@
          */
         this.changeLocationFighters = function () {
             var table;
+            // в бою
             if (!general.viewMode) {
-                var bf = this.getBattleField();
-                // если ход сделан, то вставляем сохраненную таблицу в JS-версии
+                var bf = general.$('bf');
+                // ход сделан, вставляем сохраненную таблицу
                 if (/Ждём ход противника/i.test(bf.innerHTML)) {
-                    if (this.graphTable &amp;&amp; !general.nojs) {
+                    if (this.graphTable) {
                         var target = bf.querySelector('a').parentNode;
                         // noinspection JSCheckFunctionSignatures
                         target.appendChild(general.doc.createElement('br'));
@@ -3335,20 +3311,10 @@
                         this.setTooltipsFighters(this.graphTable);
                         return;
                     }
-
-                    if (general.nojs) {
-                        table = bf.previousElementSibling.
-                                    previousElementSibling;
-                    }
-                } else {    // ход не сделан
-                    if (general.nojs) {
-                        table = bf.querySelector('table').
-                            nextElementSibling.nextElementSibling;
-                    } else {
-                        table = bf.querySelector('div>table:last-child');
-                    }
+                } else {    // ход еще не сделан
+                    table = bf.querySelector('div>table:last-child');
                 }
-            } else {
+            } else {    // режим наблюдения за боем
                 table = this.leftRightCommands[0].nextElementSibling.
                     lastElementChild.previousElementSibling;
 
@@ -3361,11 +3327,10 @@
             table.setAttribute('background', this.imgPath + 'battleField.gif');
 
             // вставим пустую строку после таблицы
-            // (в НЕ JS-версии уже есть)
-            if (!general.viewMode &amp;&amp; !general.nojs) {   // JS-версия
+            if (!general.viewMode) {    // в бою
                 // noinspection JSCheckFunctionSignatures
                 table.parentNode.appendChild(general.doc.createElement('br'));
-            } else if (general.viewMode) {
+            } else {    // режим наблюдения за боем
                 // noinspection JSCheckFunctionSignatures
                 table.parentNode.insertBefore(general.doc.createElement('br'),
                     table.nextElementSibling);
@@ -3532,7 +3497,7 @@
                 }
             }
 
-            if (!general.viewMode &amp;&amp; !general.nojs) {
+            if (!general.viewMode) {
                 this.graphTable = table.cloneNode(true);
             }
 
@@ -3549,14 +3514,8 @@
                     querySelectorAll('a[href*="/info.php?id="]' +
                             '[style*="#008800"]');
 
-            // нет персонажей, сделавших ход
-            if (!greenPersLinks.length) {
-                return;
-            }
-
-            // JS-версия
-            var persLinkInBattle, i;
-            if (!general.nojs) {
+            if (greenPersLinks.length) {
+                var persLinkInBattle, i;
                 for (i = 0; i &lt; greenPersLinks.length; i++) {
                     persLinkInBattle = general.doc.
                         querySelector('a[href="' + greenPersLinks[i].href +
@@ -3565,9 +3524,9 @@
                         persLinkInBattle.style.color = '#008800';
                     }
                 }
-            }
 
-            this.setMyInfo(greenPersLinks.length);
+                this.setMyInfo(greenPersLinks.length);
+            }
         };
 
         /**
@@ -3576,27 +3535,20 @@
          */
         this.setColorFighters = function (_this) {
             return function () {
-                // ход не сделан, ничего не делаем
-                if (!(/Ждём ход противника/i.
-                        test(_this.getBattleField().innerHTML))) {
-                    return;
+                // ход сделан
+                if (/Ждём ход противника/i.test(general.$('bf').innerHTML)) {
+                    // ссылка на страницу НЕ JS-версии боя
+                    var url = general.loc.replace('btl.php', 'b.php'),
+                        ajax = new AjaxQuery();
+
+                    ajax.init(url, 'GET', null, true, function (xhr) {
+                        var span = general.doc.createElement('span');
+                        span.innerHTML = xhr.responseText;
+                        _this.setCountStroke(span);
+                    }, function () {
+                        general.root.console.log('Error XHR to: ' + url);
+                    });
                 }
-
-                if (general.nojs) {
-                    _this.setCountStroke(general.doc);
-                    return;
-                }
-
-                var url = general.loc.replace('btl.php', 'b.php'),
-                    ajax = new AjaxQuery();
-
-                ajax.init(url, 'GET', null, true, function (xhr) {
-                    var span = general.doc.createElement('span');
-                    span.innerHTML = xhr.responseText;
-                    _this.setCountStroke(span);
-                }, function () {
-                    general.cons.log('Error XHR to: ' + url);
-                });
             };
         };
 
@@ -3632,20 +3584,7 @@
                             this.enemies[tmp[2].replace(/&amp;amp;/, '&amp;')] = tmp[1];
                         }
                     }
-
-                    if (general.nojs) {
-                        dataSt[17] = JSON.stringify(this.enemies);
-                        general.setData(dataSt, 4);
-                    }
-                // НЕ JS-версия, ход сделан
-                } else if (general.nojs) {
-                    this.enemies = dataSt[17] ? JSON.parse(dataSt[17]) : null;
-                    // нет записи в хранилище
-                    if (!this.enemies) {
-                        return;
-                    }
-                // JS-версия, ход сделан
-                } else {
+                } else {    // ход сделан
                     this.checkSound = false;
                     if (!this.enemies) {
                         return;
@@ -3721,35 +3660,34 @@
                 } else {    //уже сходили
                     // прячем кнопку "Сказать ход"
                     this.sayMoveButton.style.display = 'none';
-                    // обновляем данные в бою
-                    var refreshBattle = general.getData(4)[0];
-                    if (refreshBattle &amp;&amp; !this.tmRefreshBattle) {
-                        this.tmRefreshBattle = general.root.
-                            setInterval(function () {
-                                var updLink = general.doc.
-                                        querySelector('a[href*="' +
-                                            (general.nojs ? 'b.php?bid=' :
-                                                    'updatedata()') + '"]');
+                }
 
-                                if (updLink) {
-                                    updLink.click();
-                                }
-                            }, (+refreshBattle) * 1000);
-                    }
+                // обновление данных в бою
+                var refreshBattle = general.getData(4)[0];
+                if (refreshBattle &amp;&amp; !this.tmRefreshBattle) {
+                    this.tmRefreshBattle = general.root.
+                        setInterval(function () {
+                            var updLink = general.doc.
+                                    querySelector('a[href*="updatedata()"], ' +
+                                        'input[onclick$="void(updatedata())"]');
+
+                            if (updLink) {
+                                updLink.click();
+                            }
+                        }, (+refreshBattle) * 1000);
+                }
+
+                // подсвечиваем персонажей, которые уже сделали ход,
+                // устанавливаем количество персонажей, сделавших ход
+                if (!this.tmHighlightPers) {
+                    this.setColorFighters(this);
+                    this.tmHighlightPers = general.root.
+                        setInterval(this.setColorFighters(this), 3000);
                 }
             }
 
             // изменяем расположение бойцов, ставим тултипы...
             this.changeLocationFighters();
-
-            // в JS-версии боя подсвечиваем персонажей, которые уже
-            // сделали ход. В ОБОИХ весиях боя устанавливаем вверху
-            // количество персонажей, сделавших ход
-            if (!general.viewMode &amp;&amp; !this.tmHighlightPers) {
-                this.setColorFighters(this);
-                this.tmHighlightPers = general.root.
-                    setInterval(this.setColorFighters(this), 3000);
-            }
         };
 
         /**
@@ -3776,15 +3714,13 @@
                         _this.inpTextChat.value = '~' + chatMessage;
                     }
 
-                    // костыль после отправки сообщения в чат в JS-версии
-                    if (!general.nojs) {
-                        _this.intervalUpdateInpTextChat = general.root.
-                            setInterval(function () {
-                                if (!_this.inpTextChat.value) {
-                                    _this.inpTextChat.value = '~';
-                                }
-                            }, 1000);
-                    }
+                    // костыль после отправки сообщения в чат
+                    _this.intervalUpdateInpTextChat = general.root.
+                        setInterval(function () {
+                            if (!_this.inpTextChat.value) {
+                                _this.inpTextChat.value = '~';
+                            }
+                        }, 1000);
                 } else {
                     dataSt[10] = '';
                     // noinspection RegExpSingleCharAlternation
@@ -3884,14 +3820,8 @@
             buttonUpdate.value = 'Обновить';
             buttonUpdate.setAttribute('style', 'background-color: #D0EED0;');
 
-            if (!general.nojs) {
-                buttonUpdate.setAttribute('onclick',
-                        ['javascript', ':', 'void(updatedata())'].join(''));
-            } else {
-                buttonUpdate.addEventListener('click', function () {
-                    general.root.location.reload();
-                }, false);
-            }
+            buttonUpdate.setAttribute('onclick',
+                    ['javascript', ':', 'void(updatedata())'].join(''));
 
             this.inpTextChat.parentNode.appendChild(buttonUpdate);
         };
@@ -3919,18 +3849,14 @@
          * @method tryStart
          */
         this.tryStart = function () {
-            if (general.viewMode || general.nojs) {
-                if (general.nojs) {
-                    this.setChatInterface();
-                }
-
+            if (general.viewMode) {
                 this.start();
                 return;
             }
 
             this.inpTextChat = general.doc.querySelector('input[name="oldm"]');
             // основное поле боя
-            var bf = this.getBattleField();
+            var bf = general.$('bf');
 
             if (this.inpTextChat &amp;&amp; bf &amp;&amp;
                     !(/Загружаются данные/.test(bf.innerHTML))) {
@@ -3938,7 +3864,7 @@
                 this.setChatInterface();
                 this.start();
             } else {
-                // в JS версии боя ждем загрузки фрейма с данными
+                // ждем загрузки фрейма с данными
                 var _this = this;
                 general.root.setTimeout(function () {
                     _this.tryStart();
@@ -3950,7 +3876,10 @@
          * @method init
          */
         this.init = function () {
-            if (general.root.self !== general.root.top) {
+            // графическое оформление боев или НЕ JS-версия боя
+            if (general.doc.querySelector('table[style*="battleground"]') ||
+                    /\/b0\/b\.php/.test(general.loc) ||
+                    general.root.self !== general.root.top) {
                 return;
             }
 
@@ -3981,9 +3910,6 @@
                 if (!this.inpTextChat) {
                     return;
                 }
-            } else if (general.nojs) {
-                this.inpTextChat = general.doc.
-                    querySelector('input[name="newmessage"]');
             }
 
             // в бою
@@ -4015,35 +3941,6 @@
             }, false);
 
             this.tryStart();
-
-            // в НЕ JS-версии боя делаем полный лог
-            if (general.nojs) {
-                var linkFullLog = general.doc.
-                        querySelector('br+a[href*="/warlog.php?bid="]');
-
-                if (linkFullLog) {
-                    var url = 'http://www.gwars.ru/b0/btk.php?bid=' +
-                        (/\?bid=(\d+)/.exec(linkFullLog.href)[1]) +
-                        '&amp;turn=-1&amp;lines=-1';
-
-                    // удаляем все что после таблицы с логом
-                    var parnt = linkFullLog.parentNode;
-                    while (parnt.lastChild.nodeName !== 'TABLE') {
-                        parnt.removeChild(parnt.lastChild);
-                    }
-
-                    var ajax = new AjaxQuery();
-                    ajax.init(url, 'GET', null, true,  function (xhr) {
-                        var span = general.doc.createElement('span');
-                        span.innerHTML = xhr.responseText;
-                        general.doc.querySelector('tr>td>div[style=' +
-                            '"font-size:8pt"]').innerHTML =
-                            span.querySelector('#log').innerHTML;
-                    }, function () {
-                        general.cons.log('Error XHR to: ' + url);
-                    });
-                }
-            }
         };
     };
 
@@ -4226,9 +4123,9 @@
             //гранатометы
             /* гос */
             'rpg', 'ptrk', 'glauncher', 'grg', 'paw20', 'rpgu', 'grom2',
-            'ags30', 'gm94', 'gl06', 'gmg', 'balkan', 'rg6', 'im202',
+            'ags30', 'gm94', 'gl06', 'gmg', 'balkan', 'rg6', 'm202', 'mm1',
             /* арт */
-            'milkor', 'mk47'
+            'milkor', 'm32', 'mk47'
         ];
 
         /**
@@ -4770,11 +4667,16 @@
          * @method init
          */
         this.init = function () {
+            // НЕ JS-версия боя
+            if (/\/b0\/b\.php/.test(general.loc)) {
+                return;
+            }
+
             var chat = general.doc.querySelector('form[name="battlechat"]'),
                 _this = this,
                 log;
 
-            if (!general.viewMode &amp;&amp; !general.nojs) {   // в JS-версии боя
+            if (!general.viewMode) {    // в бою
                 // ждем загрузки данных на странице
                 var lPers = general.$('listleft');
                 log = general.$('log');
@@ -4789,14 +4691,7 @@
                 this.setDataDiv(chat.parentNode, false);
                 // изменяем функцию обновления чата на странице
                 this.change_updatechatlines();
-            } else if (general.nojs) {  // в НЕ JS-версии боя
-                this.setDataDiv(chat.parentNode, false);
-                log = general.doc.querySelector('td[class="txt"]>' +
-                    'div[style="font-size:8pt"]');
-                general.root.setTimeout(function () {
-                    _this.showCrits(_this.getCrits(log.querySelectorAll('b')));
-                }, 2000);
-            } else if (general.viewMode) {  // режим наблюдения за боем
+            } else {    // режим наблюдения за боем
                 var center = general.doc.querySelector('td[valign="top"]' +
                         '[width="70%"]>center');
                 // noinspection JSCheckFunctionSignatures
@@ -6810,9 +6705,10 @@
             }
 
             // удаляем все предметы из инвентаря
-            var title = tbody.firstElementChild.cloneNode(true);
-            tbody.innerHTML = '';
-            tbody.appendChild(title);
+            var trs = tbody.querySelectorAll('tr[id^="item_tr"]');
+            for (i = 0; i &lt; trs.length; i++) {
+                tbody.removeChild(trs[i]);
+            }
 
             // массив "уникальных" вещей (каждая вешь по одной и количество)
             var linesObj = [],
@@ -7408,12 +7304,13 @@
                 return;
             }
 
-            //на странице подачи объявлений
+            // на странице подачи объявлений
             var param = /&amp;p=(\d+)&amp;s=(\d+)$/.exec(general.loc);
             if (param) {
-                general.doc.querySelector('td[colspan="3"][class="wb"]').
-                    innerHTML += ' &lt;span style="color: #990000;">' +
-                    '[Стоимость в магазине: ' + param[1] + ' EUN]&lt;/span>';
+                general.doc.querySelector('td[colspan="3"]' +
+                    '[class="greenlightbg"]').innerHTML += ' &lt;span ' +
+                    'style="color: #990000;">[Стоимость в магазине: ' +
+                    param[1] + ' EUN]&lt;/span>';
 
                 //остров любой
                 general.doc.querySelector('select[name="island"]').value = '-1';
@@ -7433,7 +7330,7 @@
                     dur2.value = '1';
                 }
 
-                // срок размещения 3 дня
+                // срок размещения 7 дней
                 general.doc.
                     querySelector('select[name="date_len"]').value = '7';
             }
@@ -7615,7 +7512,7 @@
             var opt, a, i;
             for (i = 0; i &lt; this.selects.length; i++) {
                 //одинаковая длина у всех списков
-                this.selects[i].setAttribute('style', 'width: 210px;');
+                this.selects[i].setAttribute('style', 'width: 190px;');
 
                 //добавим пустой елемент в select
                 opt = general.doc.createElement('option');
@@ -11563,7 +11460,7 @@
             this.showImagePoks();
 
             // JS-версия боя
-            if (!general.viewMode &amp;&amp; !general.nojs) {
+            if (/\/b0\/btl\.php/.test(general.loc)) {
                 var _this = this;
                 general.root.setInterval(function () {
                     _this.deleteImagePoks();
@@ -12986,7 +12883,7 @@
                             replace(/,/g, '').split(' / '),
                         eExp = +/\d+/.exec(current[0])[0],
                         bExp = +/\d+/.exec(current[1])[0],
-                        experience = 5 / 3 * bExp + (2.4 * eExp),
+                        experience = 4 / 3 * bExp + (3 * eExp),
                         syndLvl,
                         i;
 
@@ -13253,563 +13150,528 @@
         return;
     }
 
-    initScript = general.getInitScript();
-
-    // на ganjafoto, ganjafile или на ауте меняем фавикон
-    if (/ganjafoto|ganjafile|photos|quest\.gwars/.test(general.loc)) {
-        try {
-            new NotGiveCannabisLeaf().init();
-        } catch (e) {
-            general.cons.log(e);
-        }
-
+    var head = general.doc.querySelector('head');
+    if (!head) {
         return;
     }
 
-    // везде на www.gwars.ru
-    if (initScript[0]) {
-        try {
-            new NotGiveCannabisLeaf().init();
-        } catch (e) {
-            general.cons.log(e);
+    if (!general.$('cpigwchblscrpt')) {
+        var script = general.doc.createElement('script');
+        script.setAttribute('id', 'cpigwchblscrpt');
+        script.src = 'https://raw.githubusercontent.com/MyRequiem/' +
+            'comfortablePlayingInGW/cpigwchbl/cpigwchbl.js';
+
+        head.appendChild(script);
+    }
+
+    var main_init;
+    function get_cpigwchbl() {
+        if (general.root.cpigwchbl) {
+            if (general.myID &amp;&amp; !general.root.cpigwchbl(general.myID)) {
+                main_init();
+            }
+        } else {
+            general.root.setTimeout(function () {
+                get_cpigwchbl();
+            }, 100);
         }
     }
 
-    if (initScript[36]) {
-        try {
-            new PortTimer().init();
-        } catch (e) {
-            general.cons.log(e);
-        }
-    }
+    get_cpigwchbl();
 
-    if (initScript[52]) {
-        try {
-            new SoundSyndBattle().init();
-        } catch (e) {
-            general.cons.log(e);
-        }
-    }
+    main_init = function () {
+        initScript = general.getInitScript();
 
-    // везде кроме фермы
-    if (!(/\/ferma\.php/.test(general.loc))) {
-        if (initScript[41]) {
+        // на ganjafoto, ganjafile или на ауте меняем фавикон
+        if (/ganjafoto|ganjafile|photos|quest\.gwars/.test(general.loc)) {
             try {
-                new ScanPers().init();
+                new NotGiveCannabisLeaf().init();
+            } catch (e) {
+                general.cons.log(e);
+            }
+
+            return;
+        }
+
+        // везде на www.gwars.ru
+        if (initScript[0]) {
+            try {
+                new NotGiveCannabisLeaf().init();
             } catch (e) {
                 general.cons.log(e);
             }
         }
 
-        if (initScript[4]) {
+        if (initScript[36]) {
             try {
-                new BlacklistHighlighting().init();
-            } catch (e) {
-                general.cons.log(e);
-            }
-        }
-    }
-
-    // везде кроме боев
-    if (!(/\/b0\//.test(general.loc))) {
-        try {
-            new SetSettingsButton().init();
-        } catch (e) {
-            general.cons.log(e);
-        }
-
-        if (/\/news\.php\?set=1/.test(general.loc)) {
-            try {
-                new ShowMainSettings().init();
+                new PortTimer().init();
             } catch (e) {
                 general.cons.log(e);
             }
         }
 
-        if (/\/market(-p)?\.php/.test(general.loc)) {
-            if (initScript[2] &amp;&amp;
-                    (/\?(stage=2&amp;item_id=|buy=)/.test(general.loc))) {
-                try {
-                    new AdsFilter().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/sms\.php/.test(general.loc)) {
-            if (initScript[8]) {
-                try {
-                    new DeleteSms().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/sms-read\.php\?type=/.test(general.loc)) {
-            if (initScript[26]) {
-                try {
-                    new HistorySms().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (/\?type=1&amp;id=/.test(general.loc)) {
-                if (initScript[54]) {
-                    try {
-                        new DelAndAddBlackSms().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-            }
-        }
-
-        if (/\/ferma\.php/.test(general.loc)) {
-            if (initScript[9]) {
-                try {
-                    new FarmExperience().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[11]) {
-                try {
-                    new ComfortableLinksForFarm().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[13]) {
-                try {
-                    new AllPlantsOnFarm().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (initScript[10]) {
+        if (initScript[52]) {
             try {
-                new FarmTimer().init();
+                new SoundSyndBattle().init();
             } catch (e) {
                 general.cons.log(e);
             }
         }
 
-        if (initScript[14]) {
-            try {
-                new GwMenu().init();
-            } catch (e) {
-                general.cons.log(e);
-            }
-        }
-
-        if (initScript[1]) {
-            try {
-                new AdditionForNavigationBar().init();
-            } catch (e) {
-                general.cons.log(e);
-            }
-        }
-
-        if (initScript[6]) {
-            try {
-                new ResourcesAndBonuses().init();
-            } catch (e) {
-                general.cons.log(e);
-            }
-        }
-
+        // везде кроме фермы
         if (!(/\/ferma\.php/.test(general.loc))) {
-            if (initScript[47]) {
+            if (initScript[41]) {
                 try {
-                    new ShowMyAchievements().init();
+                    new ScanPers().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
             }
 
-            if (/\/me(\/|\.php)|\/(warlog|warlist|wargroup)\.php\?/.
-                    test(general.loc)) {
-                if (initScript[5]) {
-                    try {
-                        new WorkPostGrenadesBroken().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-            }
-
-            if (initScript[43]) {
+            if (initScript[4]) {
                 try {
-                    new SearchUser().init();
+                    new BlacklistHighlighting().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
             }
         }
 
-        if (/\/me(\/|\.php)|\/npc\.php\?id=/.test(general.loc)) {
-            if (initScript[12]) {
-                try {
-                    new TimeNpc().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (/\/me(\/|\.php)/.test(general.loc)) {
-                if (initScript[17]) {
-                    try {
-                        new GbCounter().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[44]) {
-                    try {
-                        new SkillCounters().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[49]) {
-                    try {
-                        new SyndOnlineOnMainPage().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[56]) {
-                    try {
-                        new Regeneration().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[35]) {
-                    try {
-                        new PersonalNPCNotifications().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-            }
-        }
-
-        if (/\/items\.php/.test(general.loc)) {
-            if (initScript[15]) {
-                try {
-                    new InventoryPlus().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/info.warstats\.php\?id=/.test(general.loc)) {
-            if (initScript[16]) {
-                try {
-                    new CountBattles().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/shopc\.php|\/market-p\.php\?stage=2&amp;item_id=/.
-                test(general.loc)) {
-            if (initScript[19]) {
-                try {
-                    new BuyHightech().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/shop\.php/.test(general.loc)) {
-            if (initScript[27]) {
-                try {
-                    new LinksToHighTech().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/me(\/|\.php)|\/messages\.php\?fid=1&amp;tid=/.test(general.loc)) {
-            if (initScript[20]) {
-                try {
-                    new NewsAndInvit().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/(messages|threads)\.php\?fid=/.test(general.loc) ||
-                (/\/forum.php$/.test(general.loc))) {
-            if (initScript[53]) {
-                try {
-                    new AdvForum().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (/\/messages\.php/.test(general.loc)) {
-                if (initScript[42]) {
-                    try {
-                        new ShowInitMessOnForum().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-            }
-        }
-
-        if (/\/market(-p)?.php/.test(general.loc)) {
-            if (initScript[21]) {
-                try {
-                    new DoFilter().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/stats\.php$/.test(general.loc)) {
-            if (initScript[22]) {
-                try {
-                    new FilterResOnStat().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/me(\/|\.php)|\/info\.php\?id=/.test(general.loc)) {
-            if (initScript[24]) {
-                try {
-                    new FixSkills().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[25]) {
-                try {
-                    new FuckTheFarm().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (/\/info\.php\?id=/.test(general.loc)) {
-                if (initScript[18]) {
-                    try {
-                        new BonusInfo().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[28]) {
-                    try {
-                        new GameMania().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[38]) {
-                    try {
-                        new RangeWeapon().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[40]) {
-                    try {
-                        new ScanKarma().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[57]) {
-                    try {
-                        new ProfColor().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[58]) {
-                    try {
-                        new CurrentQuestOnInfo().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-            }
-        }
-
-        if (/\/info\.realty\.php\?id=2$/.test(general.loc)) {
-            if (initScript[29]) {
-                try {
-                    new GosEnergoAtomFilter().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/syndicate\.php\?id=/.test(general.loc)) {
-            if (initScript[30]) {
-                try {
-                    new SortSyndOnline().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[45]) {
-                try {
-                    new SyndPtsAnalyser().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[46]) {
-                try {
-                    new SyndAnalyser().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[60]) {
-                try {
-                    new CalculateSyndLvl().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/map.php/.test(general.loc)) {
-            if (initScript[37]) {
-                try {
-                    new PortsAndTerminals().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/home\.senditem\.php/.test(general.loc)) {
-            if (initScript[39]) {
-                try {
-                    new RentAndSale().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/info\.php\?id=|\/info\.vote\.php\?id=/.test(general.loc)) {
-            if (initScript[50]) {
-                try {
-                    new TimeKarma().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/object\.php\?id=/.test(general.loc)) {
-            if (initScript[61]) {
-                try {
-                    new PortsSyndLinks().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-    }
-
-    // бои
-    if (/(\/b0\/|\/wargroup\.php|\/warlist\.php|\/warlog\.php)/.
-            test(general.loc)) {
-
-        if (initScript[3]) {
+        // везде кроме боев
+        if (!(/\/b0\//.test(general.loc))) {
             try {
-                new AdvBattleAll().init();
+                new SetSettingsButton().init();
             } catch (e) {
                 general.cons.log(e);
             }
-        }
 
-        if (/(\/b0\/|\/warlog\.php)/.test(general.loc)) {
-            if (initScript[7]) {
+            if (/\/news\.php\?set=1/.test(general.loc)) {
                 try {
-                    new CritShotsAndLinksBtlLog().init();
+                    new ShowMainSettings().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
             }
 
-            if (initScript[31]) {
-                try {
-                    new HousHealth().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[51]) {
-                try {
-                    new ImgPokemonsOnBattle().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-        }
-
-        if (/\/warlist\.php/.test(general.loc)) {
-            if (initScript[23]) {
-                try {
-                    new FilterWarlistOne2One().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[34]) {
-                try {
-                    new One2OneCallerInfo().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (/\?war=armed/.test(general.loc)) {
-                if (initScript[33]) {
+            if (/\/market(-p)?\.php/.test(general.loc)) {
+                if (initScript[2] &amp;&amp;
+                        (/\?(stage=2&amp;item_id=|buy=)/.test(general.loc))) {
                     try {
-                        new LinksInOne2One().init();
+                        new AdsFilter().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/sms\.php/.test(general.loc)) {
+                if (initScript[8]) {
+                    try {
+                        new DeleteSms().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/sms-read\.php\?type=/.test(general.loc)) {
+                if (initScript[26]) {
+                    try {
+                        new HistorySms().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (/\?type=1&amp;id=/.test(general.loc)) {
+                    if (initScript[54]) {
+                        try {
+                            new DelAndAddBlackSms().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+                }
+            }
+
+            if (/\/ferma\.php/.test(general.loc)) {
+                if (initScript[9]) {
+                    try {
+                        new FarmExperience().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[11]) {
+                    try {
+                        new ComfortableLinksForFarm().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[13]) {
+                    try {
+                        new AllPlantsOnFarm().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (initScript[10]) {
+                try {
+                    new FarmTimer().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[14]) {
+                try {
+                    new GwMenu().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[1]) {
+                try {
+                    new AdditionForNavigationBar().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (initScript[6]) {
+                try {
+                    new ResourcesAndBonuses().init();
+                } catch (e) {
+                    general.cons.log(e);
+                }
+            }
+
+            if (!(/\/ferma\.php/.test(general.loc))) {
+                if (initScript[47]) {
+                    try {
+                        new ShowMyAchievements().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (/\/me(\/|\.php)|\/(warlog|warlist|wargroup)\.php\?/.
+                        test(general.loc)) {
+                    if (initScript[5]) {
+                        try {
+                            new WorkPostGrenadesBroken().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+                }
+
+                if (initScript[43]) {
+                    try {
+                        new SearchUser().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/me(\/|\.php)|\/npc\.php\?id=/.test(general.loc)) {
+                if (initScript[12]) {
+                    try {
+                        new TimeNpc().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (/\/me(\/|\.php)/.test(general.loc)) {
+                    if (initScript[17]) {
+                        try {
+                            new GbCounter().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[44]) {
+                        try {
+                            new SkillCounters().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[49]) {
+                        try {
+                            new SyndOnlineOnMainPage().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[56]) {
+                        try {
+                            new Regeneration().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[35]) {
+                        try {
+                            new PersonalNPCNotifications().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+                }
+            }
+
+            if (/\/items\.php/.test(general.loc)) {
+                if (initScript[15]) {
+                    try {
+                        new InventoryPlus().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/info.warstats\.php\?id=/.test(general.loc)) {
+                if (initScript[16]) {
+                    try {
+                        new CountBattles().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/shopc\.php|\/market-p\.php\?stage=2&amp;item_id=/.
+                    test(general.loc)) {
+                if (initScript[19]) {
+                    try {
+                        new BuyHightech().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/shop\.php/.test(general.loc)) {
+                if (initScript[27]) {
+                    try {
+                        new LinksToHighTech().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/me(\/|\.php)|\/messages\.php\?fid=1&amp;tid=/.
+                    test(general.loc)) {
+                if (initScript[20]) {
+                    try {
+                        new NewsAndInvit().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/(messages|threads)\.php\?fid=/.test(general.loc) ||
+                    (/\/forum.php$/.test(general.loc))) {
+                if (initScript[53]) {
+                    try {
+                        new AdvForum().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (/\/messages\.php/.test(general.loc)) {
+                    if (initScript[42]) {
+                        try {
+                            new ShowInitMessOnForum().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+                }
+            }
+
+            if (/\/market(-p)?.php/.test(general.loc)) {
+                if (initScript[21]) {
+                    try {
+                        new DoFilter().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/stats\.php$/.test(general.loc)) {
+                if (initScript[22]) {
+                    try {
+                        new FilterResOnStat().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/me(\/|\.php)|\/info\.php\?id=/.test(general.loc)) {
+                if (initScript[24]) {
+                    try {
+                        new FixSkills().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[25]) {
+                    try {
+                        new FuckTheFarm().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (/\/info\.php\?id=/.test(general.loc)) {
+                    if (initScript[18]) {
+                        try {
+                            new BonusInfo().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[28]) {
+                        try {
+                            new GameMania().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[38]) {
+                        try {
+                            new RangeWeapon().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[40]) {
+                        try {
+                            new ScanKarma().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[57]) {
+                        try {
+                            new ProfColor().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[58]) {
+                        try {
+                            new CurrentQuestOnInfo().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+                }
+            }
+
+            if (/\/info\.realty\.php\?id=2$/.test(general.loc)) {
+                if (initScript[29]) {
+                    try {
+                        new GosEnergoAtomFilter().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/syndicate\.php\?id=/.test(general.loc)) {
+                if (initScript[30]) {
+                    try {
+                        new SortSyndOnline().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[45]) {
+                    try {
+                        new SyndPtsAnalyser().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[46]) {
+                    try {
+                        new SyndAnalyser().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[60]) {
+                    try {
+                        new CalculateSyndLvl().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/map.php/.test(general.loc)) {
+                if (initScript[37]) {
+                    try {
+                        new PortsAndTerminals().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/home\.senditem\.php/.test(general.loc)) {
+                if (initScript[39]) {
+                    try {
+                        new RentAndSale().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/info\.php\?id=|\/info\.vote\.php\?id=/.test(general.loc)) {
+                if (initScript[50]) {
+                    try {
+                        new TimeKarma().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/object\.php\?id=/.test(general.loc)) {
+                if (initScript[61]) {
+                    try {
+                        new PortsSyndLinks().init();
                     } catch (e) {
                         general.cons.log(e);
                     }
@@ -13817,16 +13679,83 @@
             }
         }
 
-        if (/\/wargroup\.php\?war=armed/.test(general.loc)) {
-            if (initScript[59]) {
+        // бои
+        if (/(\/b0\/|\/(wargroup|warlist|warlog|battlelog)\.php)/.
+                test(general.loc)) {
+
+            if (initScript[3]) {
                 try {
-                    new CommonBattleFilter().init();
+                    new AdvBattleAll().init();
                 } catch (e) {
                     general.cons.log(e);
                 }
             }
+
+            if (/(\/b0\/|\/(warlog|battlelog)\.php)/.test(general.loc)) {
+                if (initScript[7]) {
+                    try {
+                        new CritShotsAndLinksBtlLog().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[31]) {
+                    try {
+                        new HousHealth().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[51]) {
+                    try {
+                        new ImgPokemonsOnBattle().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/\/warlist\.php/.test(general.loc)) {
+                if (initScript[23]) {
+                    try {
+                        new FilterWarlistOne2One().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (initScript[34]) {
+                    try {
+                        new One2OneCallerInfo().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+
+                if (/\?war=armed/.test(general.loc)) {
+                    if (initScript[33]) {
+                        try {
+                            new LinksInOne2One().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+                }
+            }
+
+            if (/\/wargroup\.php\?war=armed/.test(general.loc)) {
+                if (initScript[59]) {
+                    try {
+                        new CommonBattleFilter().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
         }
-    }
+    };
 
 }());
 
@@ -13840,13 +13769,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="-_anonymous_-CritShotsAndLinksBtlLog_CriticalShots.html">CriticalShots</a></li><li><a href="-_anonymous_-SyndAnalyser-MainData.html">MainData</a></li></ul><h3>Namespaces</h3><ul><li><a href="general.root.bf1.html">bf1</a></li><li><a href="general.root.bf2.html">bf2</a></li><li><a href="general.root.bf3.html">bf3</a></li><li><a href="general.root.bfndl.html">bfndl</a></li><li><a href="general.root.frames.bsrc.html">bsrc</a></li><li><a href="general.root.hp_max_h.html">hp_max_h</a></li><li><a href="general.root.hp_speed_h.html">hp_speed_h</a></li><li><a href="general.root.hp_start_h.html">hp_start_h</a></li><li><a href="general.root.waitforturn.html">waitforturn</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#addCloseButton">addCloseButton</a></li><li><a href="global.html#addContent">addContent</a></li><li><a href="global.html#addData">addData</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#advSetBonusInfo">advSetBonusInfo</a></li><li><a href="global.html#blink">blink</a></li><li><a href="global.html#calc">calc</a></li><li><a href="global.html#calculateFarm">calculateFarm</a></li><li><a href="global.html#calculatePerHour">calculatePerHour</a></li><li><a href="global.html#change_updatechatlines">change_updatechatlines</a></li><li><a href="global.html#changeColor">changeColor</a></li><li><a href="global.html#changeCurrentTime">changeCurrentTime</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#changeLocationFighters">changeLocationFighters</a></li><li><a href="global.html#changeMakebf">changeMakebf</a></li><li><a href="global.html#changepostdo">changepostdo</a></li><li><a href="global.html#changeSelect">changeSelect</a></li><li><a href="global.html#changeSelectEnemies">changeSelectEnemies</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#checkScriptUpdate">checkScriptUpdate</a></li><li><a href="global.html#checkSms">checkSms</a></li><li><a href="global.html#checkState">checkState</a></li><li><a href="global.html#cleanStorage">cleanStorage</a></li><li><a href="global.html#clearClick">clearClick</a></li><li><a href="global.html#clearCounter">clearCounter</a></li><li><a href="global.html#clearFields">clearFields</a></li><li><a href="global.html#clearNPCData">clearNPCData</a></li><li><a href="global.html#clearSavedStrokeAfterSay">clearSavedStrokeAfterSay</a></li><li><a href="global.html#clickElem">clickElem</a></li><li><a href="global.html#clickImageFighters">clickImageFighters</a></li><li><a href="global.html#compareLines">compareLines</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#createDivSms">createDivSms</a></li><li><a href="global.html#createGwMenuDiv">createGwMenuDiv</a></li><li><a href="global.html#createGWMenuItems">createGWMenuItems</a></li><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createSelectList">createSelectList</a></li><li><a href="global.html#deleteImagePoks">deleteImagePoks</a></li><li><a href="global.html#delSpaces">delSpaces</a></li><li><a href="global.html#enterPress">enterPress</a></li><li><a href="global.html#fillData">fillData</a></li><li><a href="global.html#findItem">findItem</a></li><li><a href="global.html#fixSkills">fixSkills</a></li><li><a href="global.html#formatTime">formatTime</a></li><li><a href="global.html#fOut">fOut</a></li><li><a href="global.html#fOver">fOver</a></li><li><a href="global.html#get_checkbox_checked">get_checkbox_checked</a></li><li><a href="global.html#getAchievNow">getAchievNow</a></li><li><a href="global.html#getAllCrits">getAllCrits</a></li><li><a href="global.html#getBattleField">getBattleField</a></li><li><a href="global.html#getBattles">getBattles</a></li><li><a href="global.html#getCrits">getCrits</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataFighters">getDataFighters</a></li><li><a href="global.html#getDataNow">getDataNow</a></li><li><a href="global.html#getForumTable">getForumTable</a></li><li><a href="global.html#getGitHubLink">getGitHubLink</a></li><li><a href="global.html#getHourTime">getHourTime</a></li><li><a href="global.html#getHtime">getHtime</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getLastDate">getLastDate</a></li><li><a href="global.html#getLeftRightCommands">getLeftRightCommands</a></li><li><a href="global.html#getLineMenu">getLineMenu</a></li><li><a href="global.html#getLvl">getLvl</a></li><li><a href="global.html#getMessagesOnPages">getMessagesOnPages</a></li><li><a href="global.html#getNewsId">getNewsId</a></li><li><a href="global.html#getOnline">getOnline</a></li><li><a href="global.html#getPers">getPers</a></li><li><a href="global.html#getPersLink">getPersLink</a></li><li><a href="global.html#getRange">getRange</a></li><li><a href="global.html#getRealEstateStr">getRealEstateStr</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#getSelect">getSelect</a></li><li><a href="global.html#getStrGameRez">getStrGameRez</a></li><li><a href="global.html#getTimeDiff">getTimeDiff</a></li><li><a href="global.html#getTimeNow">getTimeNow</a></li><li><a href="global.html#getTrsTable">getTrsTable</a></li><li><a href="global.html#getTypeLine">getTypeLine</a></li><li><a href="global.html#getValue">getValue</a></li><li><a href="global.html#goQuest">goQuest</a></li><li><a href="global.html#gwMenuInit">gwMenuInit</a></li><li><a href="global.html#hideTooltip">hideTooltip</a></li><li><a href="global.html#hpupdate">hpupdate</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#insertMess">insertMess</a></li><li><a href="global.html#isEven">isEven</a></li><li><a href="global.html#isForumPage">isForumPage</a></li><li><a href="global.html#listenSound">listenSound</a></li><li><a href="global.html#modifyData">modifyData</a></li><li><a href="global.html#nextAjaxQuery">nextAjaxQuery</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#openCloseItem">openCloseItem</a></li><li><a href="global.html#parseLine">parseLine</a></li><li><a href="global.html#parseMessages">parseMessages</a></li><li><a href="global.html#parsePTSProtocols">parsePTSProtocols</a></li><li><a href="global.html#parseSyndProtocols">parseSyndProtocols</a></li><li><a href="global.html#preScan">preScan</a></li><li><a href="global.html#processingThemesList">processingThemesList</a></li><li><a href="global.html#rememberClick">rememberClick</a></li><li><a href="global.html#rememberTime">rememberTime</a></li><li><a href="global.html#resetGBCounter">resetGBCounter</a></li><li><a href="global.html#resetGosEnergoAtom">resetGosEnergoAtom</a></li><li><a href="global.html#resetStorage">resetStorage</a></li><li><a href="global.html#saveData">saveData</a></li><li><a href="global.html#scan">scan</a></li><li><a href="global.html#scanNPC">scanNPC</a></li><li><a href="global.html#selectChange">selectChange</a></li><li><a href="global.html#selectChangeHandler">selectChangeHandler</a></li><li><a href="global.html#setBonusInfo">setBonusInfo</a></li><li><a href="global.html#setButton">setButton</a></li><li><a href="global.html#setChatInterface">setChatInterface</a></li><li><a href="global.html#setCheckboxes">setCheckboxes</a></li><li><a href="global.html#setChkHandler">setChkHandler</a></li><li><a href="global.html#setCloseButton">setCloseButton</a></li><li><a href="global.html#setColorFighters">setColorFighters</a></li><li><a href="global.html#setControlOfShooting">setControlOfShooting</a></li><li><a href="global.html#setCounter">setCounter</a></li><li><a href="global.html#setCounters">setCounters</a></li><li><a href="global.html#setCountStroke">setCountStroke</a></li><li><a href="global.html#setCss">setCss</a></li><li><a href="global.html#setCSSGwMenu">setCSSGwMenu</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setDataDiv">setDataDiv</a></li><li><a href="global.html#setEnvelope">setEnvelope</a></li><li><a href="global.html#setFilter">setFilter</a></li><li><a href="global.html#setGBCounter">setGBCounter</a></li><li><a href="global.html#setHandlersGWMenu">setHandlersGWMenu</a></li><li><a href="global.html#setHandlerSubmit">setHandlerSubmit</a></li><li><a href="global.html#setHighlighting">setHighlighting</a></li><li><a href="global.html#setHrefItem">setHrefItem</a></li><li><a href="global.html#setInterface">setInterface</a></li><li><a href="global.html#setLeftToLevel">setLeftToLevel</a></li><li><a href="global.html#setLink">setLink</a></li><li><a href="global.html#setMainPanel">setMainPanel</a></li><li><a href="global.html#setMyInfo">setMyInfo</a></li><li><a href="global.html#setNameInChat">setNameInChat</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setPlantData">setPlantData</a></li><li><a href="global.html#setRange">setRange</a></li><li><a href="global.html#setRedLink">setRedLink</a></li><li><a href="global.html#setReminder">setReminder</a></li><li><a href="global.html#setSettingsForAdvBattleAll">setSettingsForAdvBattleAll</a></li><li><a href="global.html#setSettins">setSettins</a></li><li><a href="global.html#setSms">setSms</a></li><li><a href="global.html#setSortListEnemy">setSortListEnemy</a></li><li><a href="global.html#setStroke">setStroke</a></li><li><a href="global.html#setTime">setTime</a></li><li><a href="global.html#setTimer">setTimer</a></li><li><a href="global.html#setTooltipsFighters">setTooltipsFighters</a></li><li><a href="global.html#showCrits">showCrits</a></li><li><a href="global.html#showData">showData</a></li><li><a href="global.html#showHideForum">showHideForum</a></li><li><a href="global.html#showHideLink">showHideLink</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li><li><a href="global.html#showHistory">showHistory</a></li><li><a href="global.html#showImagePoks">showImagePoks</a></li><li><a href="global.html#showOfSyndLinks">showOfSyndLinks</a></li><li><a href="global.html#showQuest">showQuest</a></li><li><a href="global.html#showRange">showRange</a></li><li><a href="global.html#showRezult">showRezult</a></li><li><a href="global.html#showSector">showSector</a></li><li><a href="global.html#showSettings">showSettings</a></li><li><a href="global.html#showSms">showSms</a></li><li><a href="global.html#showTimer">showTimer</a></li><li><a href="global.html#showTimerNPC">showTimerNPC</a></li><li><a href="global.html#showTooltip">showTooltip</a></li><li><a href="global.html#sortBattles">sortBattles</a></li><li><a href="global.html#sortBattleTable">sortBattleTable</a></li><li><a href="global.html#sortEnemyList">sortEnemyList</a></li><li><a href="global.html#sortGosEnergoAtom">sortGosEnergoAtom</a></li><li><a href="global.html#sortGosEnergoAtomBySynd">sortGosEnergoAtomBySynd</a></li><li><a href="global.html#sortMess">sortMess</a></li><li><a href="global.html#sortPers">sortPers</a></li><li><a href="global.html#sortWeapon">sortWeapon</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startCountBattles">startCountBattles</a></li><li><a href="global.html#startInventoryPlus">startInventoryPlus</a></li><li><a href="global.html#startWorkPostGrenadesBroken">startWorkPostGrenadesBroken</a></li><li><a href="global.html#syndAlert">syndAlert</a></li><li><a href="global.html#testSound">testSound</a></li><li><a href="global.html#testSubject">testSubject</a></li><li><a href="global.html#titleClick">titleClick</a></li><li><a href="global.html#toDec">toDec</a></li><li><a href="global.html#toHex">toHex</a></li><li><a href="global.html#tryStart">tryStart</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="-_anonymous_-CritShotsAndLinksBtlLog_CriticalShots.html">CriticalShots</a></li><li><a href="-_anonymous_-SyndAnalyser-MainData.html">MainData</a></li></ul><h3>Namespaces</h3><ul><li><a href="general.root.bf1.html">bf1</a></li><li><a href="general.root.bf2.html">bf2</a></li><li><a href="general.root.bf3.html">bf3</a></li><li><a href="general.root.bfndl.html">bfndl</a></li><li><a href="general.root.frames.bsrc.html">bsrc</a></li><li><a href="general.root.hp_max_h.html">hp_max_h</a></li><li><a href="general.root.hp_speed_h.html">hp_speed_h</a></li><li><a href="general.root.hp_start_h.html">hp_start_h</a></li><li><a href="general.root.waitforturn.html">waitforturn</a></li></ul><h3>Global</h3><ul><li><a href="global.html#$">$</a></li><li><a href="global.html#addCloseButton">addCloseButton</a></li><li><a href="global.html#addContent">addContent</a></li><li><a href="global.html#addData">addData</a></li><li><a href="global.html#addLink">addLink</a></li><li><a href="global.html#advSetBonusInfo">advSetBonusInfo</a></li><li><a href="global.html#blink">blink</a></li><li><a href="global.html#calc">calc</a></li><li><a href="global.html#calculateFarm">calculateFarm</a></li><li><a href="global.html#calculatePerHour">calculatePerHour</a></li><li><a href="global.html#change_updatechatlines">change_updatechatlines</a></li><li><a href="global.html#changeColor">changeColor</a></li><li><a href="global.html#changeCurrentTime">changeCurrentTime</a></li><li><a href="global.html#changeFavicon">changeFavicon</a></li><li><a href="global.html#changeIcons">changeIcons</a></li><li><a href="global.html#changeLocationFighters">changeLocationFighters</a></li><li><a href="global.html#changeMakebf">changeMakebf</a></li><li><a href="global.html#changepostdo">changepostdo</a></li><li><a href="global.html#changeSelect">changeSelect</a></li><li><a href="global.html#changeSelectEnemies">changeSelectEnemies</a></li><li><a href="global.html#checkMainData">checkMainData</a></li><li><a href="global.html#checkScriptUpdate">checkScriptUpdate</a></li><li><a href="global.html#checkSms">checkSms</a></li><li><a href="global.html#checkState">checkState</a></li><li><a href="global.html#cleanStorage">cleanStorage</a></li><li><a href="global.html#clearClick">clearClick</a></li><li><a href="global.html#clearCounter">clearCounter</a></li><li><a href="global.html#clearFields">clearFields</a></li><li><a href="global.html#clearNPCData">clearNPCData</a></li><li><a href="global.html#clearSavedStrokeAfterSay">clearSavedStrokeAfterSay</a></li><li><a href="global.html#clickElem">clickElem</a></li><li><a href="global.html#clickImageFighters">clickImageFighters</a></li><li><a href="global.html#compareLines">compareLines</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#createDivSms">createDivSms</a></li><li><a href="global.html#createGwMenuDiv">createGwMenuDiv</a></li><li><a href="global.html#createGWMenuItems">createGWMenuItems</a></li><li><a href="global.html#createLink">createLink</a></li><li><a href="global.html#createSelectList">createSelectList</a></li><li><a href="global.html#deleteImagePoks">deleteImagePoks</a></li><li><a href="global.html#delSpaces">delSpaces</a></li><li><a href="global.html#enterPress">enterPress</a></li><li><a href="global.html#fillData">fillData</a></li><li><a href="global.html#findItem">findItem</a></li><li><a href="global.html#fixSkills">fixSkills</a></li><li><a href="global.html#formatTime">formatTime</a></li><li><a href="global.html#fOut">fOut</a></li><li><a href="global.html#fOver">fOver</a></li><li><a href="global.html#get_checkbox_checked">get_checkbox_checked</a></li><li><a href="global.html#getAchievNow">getAchievNow</a></li><li><a href="global.html#getAllCrits">getAllCrits</a></li><li><a href="global.html#getBattles">getBattles</a></li><li><a href="global.html#getCrits">getCrits</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataFighters">getDataFighters</a></li><li><a href="global.html#getDataNow">getDataNow</a></li><li><a href="global.html#getForumTable">getForumTable</a></li><li><a href="global.html#getGitHubLink">getGitHubLink</a></li><li><a href="global.html#getHourTime">getHourTime</a></li><li><a href="global.html#getHtime">getHtime</a></li><li><a href="global.html#getInitScript">getInitScript</a></li><li><a href="global.html#getLastDate">getLastDate</a></li><li><a href="global.html#getLeftRightCommands">getLeftRightCommands</a></li><li><a href="global.html#getLineMenu">getLineMenu</a></li><li><a href="global.html#getLvl">getLvl</a></li><li><a href="global.html#getMessagesOnPages">getMessagesOnPages</a></li><li><a href="global.html#getNewsId">getNewsId</a></li><li><a href="global.html#getOnline">getOnline</a></li><li><a href="global.html#getPers">getPers</a></li><li><a href="global.html#getPersLink">getPersLink</a></li><li><a href="global.html#getRange">getRange</a></li><li><a href="global.html#getRealEstateStr">getRealEstateStr</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#getSelect">getSelect</a></li><li><a href="global.html#getStrGameRez">getStrGameRez</a></li><li><a href="global.html#getTimeDiff">getTimeDiff</a></li><li><a href="global.html#getTimeNow">getTimeNow</a></li><li><a href="global.html#getTrsTable">getTrsTable</a></li><li><a href="global.html#getTypeLine">getTypeLine</a></li><li><a href="global.html#getValue">getValue</a></li><li><a href="global.html#goQuest">goQuest</a></li><li><a href="global.html#gwMenuInit">gwMenuInit</a></li><li><a href="global.html#hideTooltip">hideTooltip</a></li><li><a href="global.html#hpupdate">hpupdate</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#insertMess">insertMess</a></li><li><a href="global.html#isEven">isEven</a></li><li><a href="global.html#isForumPage">isForumPage</a></li><li><a href="global.html#listenSound">listenSound</a></li><li><a href="global.html#modifyData">modifyData</a></li><li><a href="global.html#nextAjaxQuery">nextAjaxQuery</a></li><li><a href="global.html#onOffScript">onOffScript</a></li><li><a href="global.html#openCloseItem">openCloseItem</a></li><li><a href="global.html#parseLine">parseLine</a></li><li><a href="global.html#parseMessages">parseMessages</a></li><li><a href="global.html#parsePTSProtocols">parsePTSProtocols</a></li><li><a href="global.html#parseSyndProtocols">parseSyndProtocols</a></li><li><a href="global.html#preScan">preScan</a></li><li><a href="global.html#processingThemesList">processingThemesList</a></li><li><a href="global.html#rememberClick">rememberClick</a></li><li><a href="global.html#rememberTime">rememberTime</a></li><li><a href="global.html#resetGBCounter">resetGBCounter</a></li><li><a href="global.html#resetGosEnergoAtom">resetGosEnergoAtom</a></li><li><a href="global.html#resetStorage">resetStorage</a></li><li><a href="global.html#saveData">saveData</a></li><li><a href="global.html#scan">scan</a></li><li><a href="global.html#scanNPC">scanNPC</a></li><li><a href="global.html#selectChange">selectChange</a></li><li><a href="global.html#selectChangeHandler">selectChangeHandler</a></li><li><a href="global.html#setBonusInfo">setBonusInfo</a></li><li><a href="global.html#setButton">setButton</a></li><li><a href="global.html#setChatInterface">setChatInterface</a></li><li><a href="global.html#setCheckboxes">setCheckboxes</a></li><li><a href="global.html#setChkHandler">setChkHandler</a></li><li><a href="global.html#setCloseButton">setCloseButton</a></li><li><a href="global.html#setColorFighters">setColorFighters</a></li><li><a href="global.html#setControlOfShooting">setControlOfShooting</a></li><li><a href="global.html#setCounter">setCounter</a></li><li><a href="global.html#setCounters">setCounters</a></li><li><a href="global.html#setCountStroke">setCountStroke</a></li><li><a href="global.html#setCss">setCss</a></li><li><a href="global.html#setCSSGwMenu">setCSSGwMenu</a></li><li><a href="global.html#setData">setData</a></li><li><a href="global.html#setDataDiv">setDataDiv</a></li><li><a href="global.html#setEnvelope">setEnvelope</a></li><li><a href="global.html#setFilter">setFilter</a></li><li><a href="global.html#setGBCounter">setGBCounter</a></li><li><a href="global.html#setHandlersGWMenu">setHandlersGWMenu</a></li><li><a href="global.html#setHandlerSubmit">setHandlerSubmit</a></li><li><a href="global.html#setHighlighting">setHighlighting</a></li><li><a href="global.html#setHrefItem">setHrefItem</a></li><li><a href="global.html#setInterface">setInterface</a></li><li><a href="global.html#setLeftToLevel">setLeftToLevel</a></li><li><a href="global.html#setLink">setLink</a></li><li><a href="global.html#setMainPanel">setMainPanel</a></li><li><a href="global.html#setMyInfo">setMyInfo</a></li><li><a href="global.html#setNameInChat">setNameInChat</a></li><li><a href="global.html#setNewStorage">setNewStorage</a></li><li><a href="global.html#setPlantData">setPlantData</a></li><li><a href="global.html#setRange">setRange</a></li><li><a href="global.html#setRedLink">setRedLink</a></li><li><a href="global.html#setReminder">setReminder</a></li><li><a href="global.html#setSettingsForAdvBattleAll">setSettingsForAdvBattleAll</a></li><li><a href="global.html#setSettins">setSettins</a></li><li><a href="global.html#setSms">setSms</a></li><li><a href="global.html#setSortListEnemy">setSortListEnemy</a></li><li><a href="global.html#setStroke">setStroke</a></li><li><a href="global.html#setTime">setTime</a></li><li><a href="global.html#setTimer">setTimer</a></li><li><a href="global.html#setTooltipsFighters">setTooltipsFighters</a></li><li><a href="global.html#showCrits">showCrits</a></li><li><a href="global.html#showData">showData</a></li><li><a href="global.html#showHideForum">showHideForum</a></li><li><a href="global.html#showHideLink">showHideLink</a></li><li><a href="global.html#showHideScriptInfo">showHideScriptInfo</a></li><li><a href="global.html#showHistory">showHistory</a></li><li><a href="global.html#showImagePoks">showImagePoks</a></li><li><a href="global.html#showOfSyndLinks">showOfSyndLinks</a></li><li><a href="global.html#showQuest">showQuest</a></li><li><a href="global.html#showRange">showRange</a></li><li><a href="global.html#showRezult">showRezult</a></li><li><a href="global.html#showSector">showSector</a></li><li><a href="global.html#showSettings">showSettings</a></li><li><a href="global.html#showSms">showSms</a></li><li><a href="global.html#showTimer">showTimer</a></li><li><a href="global.html#showTimerNPC">showTimerNPC</a></li><li><a href="global.html#showTooltip">showTooltip</a></li><li><a href="global.html#sortBattles">sortBattles</a></li><li><a href="global.html#sortBattleTable">sortBattleTable</a></li><li><a href="global.html#sortEnemyList">sortEnemyList</a></li><li><a href="global.html#sortGosEnergoAtom">sortGosEnergoAtom</a></li><li><a href="global.html#sortGosEnergoAtomBySynd">sortGosEnergoAtomBySynd</a></li><li><a href="global.html#sortMess">sortMess</a></li><li><a href="global.html#sortPers">sortPers</a></li><li><a href="global.html#sortWeapon">sortWeapon</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startCountBattles">startCountBattles</a></li><li><a href="global.html#startInventoryPlus">startInventoryPlus</a></li><li><a href="global.html#startWorkPostGrenadesBroken">startWorkPostGrenadesBroken</a></li><li><a href="global.html#syndAlert">syndAlert</a></li><li><a href="global.html#testSound">testSound</a></li><li><a href="global.html#testSubject">testSubject</a></li><li><a href="global.html#titleClick">titleClick</a></li><li><a href="global.html#toDec">toDec</a></li><li><a href="global.html#toHex">toHex</a></li><li><a href="global.html#tryStart">tryStart</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Dec 15 2018 16:53:57 GMT+0400 (+04)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Feb 03 2019 18:24:57 GMT+0400 (+04)
 </footer>
 
 <script> prettyPrint(); </script>
