@@ -1,7 +1,7 @@
 Анализ расхода PTS синдиката. Сортировка данных по купленным гранатам, чипам, выданным званиям и знакам, общему количеству PTS. Вывод переводов синдикатного опыта за PTS.
 <br>
 <br>
-Версия: 2.27-221118
+Версия: 2.28-030219
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndPtsAnalyser/syndPtsAnalyser.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndPtsAnalyser/syndPtsAnalyser.user.js.zip)
 <br>
