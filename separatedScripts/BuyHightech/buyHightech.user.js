@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/market-p.php?stage=2&item_id=*
 // @grant           none
 // @license         MIT
-// @version         2.04-170918
+// @version         2.05-030219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -49,6 +49,11 @@
          * @type {String}
          */
         this.loc = this.root.location.href;
+        /**
+         * @property myID
+         * @type {String}
+         */
+        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
     };
 
     /**
@@ -62,6 +67,15 @@
         getRoot: function () {
             var rt = typeof unsafeWindow;
             return rt !== 'undefined' ? unsafeWindow : window;
+        },
+
+        /**
+         * @method $
+         * @param   {String}    id
+         * @return  {HTMLElement|null}
+         */
+        $: function (id) {
+            return this.doc.querySelector('#' + id);
         }
     };
 
@@ -109,12 +123,13 @@
                 return;
             }
 
-            //на странице подачи объявлений
+            // на странице подачи объявлений
             var param = /&p=(\d+)&s=(\d+)$/.exec(general.loc);
             if (param) {
-                general.doc.querySelector('td[colspan="3"][class="wb"]').
-                    innerHTML += ' <span style="color: #990000;">' +
-                    '[Стоимость в магазине: ' + param[1] + ' EUN]</span>';
+                general.doc.querySelector('td[colspan="3"]' +
+                    '[class="greenlightbg"]').innerHTML += ' <span ' +
+                    'style="color: #990000;">[Стоимость в магазине: ' +
+                    param[1] + ' EUN]</span>';
 
                 //остров любой
                 general.doc.querySelector('select[name="island"]').value = '-1';
@@ -134,14 +149,40 @@
                     dur2.value = '1';
                 }
 
-                // срок размещения 3 дня
+                // срок размещения 7 дней
                 general.doc.
                     querySelector('select[name="date_len"]').value = '7';
             }
         };
     };
 
-    new BuyHightech().init();
+    var mainObj = general;
+    if (!mainObj.$('cpigwchblscrpt')) {
+        var head = mainObj.doc.querySelector('head');
+        if (!head) {
+            return;
+        }
+
+        var script = mainObj.doc.createElement('script');
+        script.setAttribute('id', 'cpigwchblscrpt');
+        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
+            'cpigwchbl.js';
+        head.appendChild(script);
+    }
+
+    function get_cpigwchbl() {
+        if (mainObj.root.cpigwchbl) {
+            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+                new BuyHightech().init();
+            }
+        } else {
+            mainObj.root.setTimeout(function () {
+                get_cpigwchbl();
+            }, 100);
+        }
+    }
+
+    get_cpigwchbl();
 
 }());
 

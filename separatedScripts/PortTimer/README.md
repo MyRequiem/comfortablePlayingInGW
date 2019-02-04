@@ -1,7 +1,7 @@
 Вывод точного/оставшегося времени до боя за порт в верхней части страницы.
 <br>
 <br>
-Версия: 1.13-011018
+Версия: 1.14-030219
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortTimer/portTimer.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortTimer/portTimer.user.js.zip)
 <br>

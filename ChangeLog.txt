@@ -1,3 +1,28 @@
+2019-02-04[1.123-040219]
+--------------------------------------
+	- Обновлены скрипты:
+			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CritShotsAndLinksBtlLog
+
+		Параметры в настройках персонажа для правильной работы указанных
+		скриптов:
+			оформление боя в desktop-версии игры - упрощенное
+			расположение в бою - примитивное
+			JavaScript-версия - использовать
+
+	- Обновлен список гранат и гранатометов в скрипте
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/WorkPostGrenadesBroken
+		Спасибо Зазулька :)
+
+	- Исправлен скрипт
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BuyHightech
+
+	- В связи с изменением формулы расчета уровня синдиката
+		(ссылка на новость: http://www.gwars.ru/messages.php?fid=1&tid=1498)
+		поправлен скрипт
+			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CalculateSyndLvl
+
+
 2018-12-15[1.122-151218]
 --------------------------------------
 	- Поправлен скрипт

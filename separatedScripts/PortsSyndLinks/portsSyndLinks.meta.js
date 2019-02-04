@@ -8,6 +8,6 @@
 // @include         http://www.gwars.ru/object.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.01-041118
+// @version         1.02-030219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==

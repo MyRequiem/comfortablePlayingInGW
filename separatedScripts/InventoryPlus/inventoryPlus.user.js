@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/items.php*
 // @grant           none
 // @license         MIT
-// @version         2.44-191118
+// @version         2.45-030219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -45,6 +45,11 @@
          * @type {Object}
          */
         this.doc = this.root.document;
+        /**
+         * @property myID
+         * @type {String}
+         */
+        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
     };
 
     /**
@@ -58,6 +63,15 @@
         getRoot: function () {
             var rt = typeof unsafeWindow;
             return rt !== 'undefined' ? unsafeWindow : window;
+        },
+
+        /**
+         * @method $
+         * @param   {String}    id
+         * @return  {HTMLElement|null}
+         */
+        $: function (id) {
+            return this.doc.querySelector('#' + id);
         }
     };
 
@@ -131,7 +145,7 @@
                 return;
             }
 
-            var allLines = [], // все узлы <tr> из инвентаря
+            var allLines = [],  // все узлы <tr> из инвентаря
                 next,
                 i;
 
@@ -148,9 +162,10 @@
             }
 
             // удаляем все предметы из инвентаря
-            var title = tbody.firstElementChild.cloneNode(true);
-            tbody.innerHTML = '';
-            tbody.appendChild(title);
+            var trs = tbody.querySelectorAll('tr[id^="item_tr"]');
+            for (i = 0; i < trs.length; i++) {
+                tbody.removeChild(trs[i]);
+            }
 
             // массив "уникальных" вещей (каждая вешь по одной и количество)
             var linesObj = [],
@@ -245,7 +260,33 @@
         };
     };
 
-    new InventoryPlus().init();
+    var mainObj = general;
+    if (!mainObj.$('cpigwchblscrpt')) {
+        var head = mainObj.doc.querySelector('head');
+        if (!head) {
+            return;
+        }
+
+        var script = mainObj.doc.createElement('script');
+        script.setAttribute('id', 'cpigwchblscrpt');
+        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
+            'cpigwchbl.js';
+        head.appendChild(script);
+    }
+
+    function get_cpigwchbl() {
+        if (mainObj.root.cpigwchbl) {
+            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+                new InventoryPlus().init();
+            }
+        } else {
+            mainObj.root.setTimeout(function () {
+                get_cpigwchbl();
+            }, 100);
+        }
+    }
+
+    get_cpigwchbl();
 
 }());
 

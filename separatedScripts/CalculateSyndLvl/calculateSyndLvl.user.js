@@ -8,12 +8,14 @@
 // @include         http://www.gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.15-221118
+// @version         1.17-030219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
-/*jslint browser: true, maxlen: 80, vars: true, nomen: true, plusplus: true */
+/*jslint browser: true, maxlen: 80, vars: true, nomen: true, plusplus: true,
+    regexp: true
+*/
 
 /*eslint-env browser */
 /*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
@@ -29,7 +31,7 @@
 // Уровень синдиката обновляется 3 раза в месяц: 6, 17 и 28.
 //
 // Расчет уровня:
-// Итоговый_опыт = 5/3 * Боевой_опыт + (2.4 * Экономический_опыт)
+// Итоговый_опыт = 4/3 * Боевой_опыт + (3 * Экономический_опыт)
 //
 // Таблица рейтинга синдикатов:
 //  http://www.gwars.ru/srating.php
@@ -97,6 +99,11 @@
          * @type {String}
          */
         this.loc = this.root.location.href;
+        /**
+         * @property myID
+         * @type {String}
+         */
+        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
         /**
          * @property imgPath
          * @type {String}
@@ -232,7 +239,7 @@
                             replace(/,/g, '').split(' / '),
                         eExp = +/\d+/.exec(current[0])[0],
                         bExp = +/\d+/.exec(current[1])[0],
-                        experience = 5 / 3 * bExp + (2.4 * eExp),
+                        experience = 4 / 3 * bExp + (3 * eExp),
                         syndLvl,
                         i;
 
@@ -307,7 +314,33 @@
         };
     };
 
-    new CalculateSyndLvl().init();
+    var mainObj = general;
+    if (!mainObj.$('cpigwchblscrpt')) {
+        var head = mainObj.doc.querySelector('head');
+        if (!head) {
+            return;
+        }
+
+        var script = mainObj.doc.createElement('script');
+        script.setAttribute('id', 'cpigwchblscrpt');
+        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
+            'cpigwchbl.js';
+        head.appendChild(script);
+    }
+
+    function get_cpigwchbl() {
+        if (mainObj.root.cpigwchbl) {
+            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+                new CalculateSyndLvl().init();
+            }
+        } else {
+            mainObj.root.setTimeout(function () {
+                get_cpigwchbl();
+            }, 100);
+        }
+    }
+
+    get_cpigwchbl();
 
 }());
 
