@@ -1,4 +1,4 @@
-2019-02-03[1.123-030219]
+2019-02-04[1.123-040219]
 --------------------------------------
 	- Обновлены скрипты:
 			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
