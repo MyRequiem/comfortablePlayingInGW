@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.11-020219
+// @version         4.12-040219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -1665,9 +1665,11 @@
             // кнопа "Сказать ход"
             this.sayMoveButton = general.doc.createElement('input');
             this.sayMoveButton.type = 'button';
+            this.sayMoveButton.setAttribute('class', 'mainbutton');
+            this.sayMoveButton.setAttribute('style', 'background: #F5FFF5; ' +
+                'border-radius: 3px; cursor: pointer; box-shadow: ' +
+                '1px 1px 2px rgba(122,122,122,0.5);');
             this.sayMoveButton.value = 'Сказать ход';
-            this.sayMoveButton.setAttribute('style', 'display: none; ' +
-                    'background-color: #D0EED0; margin-right: 10px;');
             this.sayMoveButton.addEventListener('click', function () {
                 _this.sayMove(_this);
             }, false);
@@ -1729,8 +1731,11 @@
             // добавляем кнопку "Обновить"
             var buttonUpdate = general.doc.createElement('input');
             buttonUpdate.type = 'button';
+            buttonUpdate.setAttribute('class', 'mainbutton');
+            buttonUpdate.setAttribute('style', 'background: #F5FFF5; ' +
+                'border-radius: 3px; cursor: pointer; box-shadow: ' +
+                '1px 1px 2px rgba(122,122,122,0.5);');
             buttonUpdate.value = 'Обновить';
-            buttonUpdate.setAttribute('style', 'background-color: #D0EED0;');
             buttonUpdate.setAttribute('onclick',
                     ['javascript', ':', 'void(updatedata())'].join(''));
 
