@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.123-040219
+// @version         1.124-060219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.123-040219';
+        this.version = '1.124-060219';
         /**
          * @property stString
          * @type {String}
@@ -3725,9 +3725,11 @@
             // кнопа "Сказать ход"
             this.sayMoveButton = general.doc.createElement('input');
             this.sayMoveButton.type = 'button';
+            this.sayMoveButton.setAttribute('class', 'mainbutton');
+            this.sayMoveButton.setAttribute('style', 'background: #F5FFF5; ' +
+                'border-radius: 3px; cursor: pointer; box-shadow: ' +
+                '1px 1px 2px rgba(122,122,122,0.5);');
             this.sayMoveButton.value = 'Сказать ход';
-            this.sayMoveButton.setAttribute('style', 'display: none; ' +
-                    'background-color: #D0EED0; margin-right: 10px;');
             this.sayMoveButton.addEventListener('click', function () {
                 _this.sayMove(_this);
             }, false);
@@ -3789,9 +3791,11 @@
             // добавляем кнопку "Обновить"
             var buttonUpdate = general.doc.createElement('input');
             buttonUpdate.type = 'button';
+            buttonUpdate.setAttribute('class', 'mainbutton');
+            buttonUpdate.setAttribute('style', 'background: #F5FFF5; ' +
+                'border-radius: 3px; cursor: pointer; box-shadow: ' +
+                '1px 1px 2px rgba(122,122,122,0.5);');
             buttonUpdate.value = 'Обновить';
-            buttonUpdate.setAttribute('style', 'background-color: #D0EED0;');
-
             buttonUpdate.setAttribute('onclick',
                     ['javascript', ':', 'void(updatedata())'].join(''));
 
@@ -12855,7 +12859,7 @@
                             replace(/,/g, '').split(' / '),
                         eExp = +/\d+/.exec(current[0])[0],
                         bExp = +/\d+/.exec(current[1])[0],
-                        experience = 4 / 3 * bExp + (3 * eExp),
+                        experience = 4 / 3 * bExp + (6.4 * eExp),
                         syndLvl,
                         i;
 

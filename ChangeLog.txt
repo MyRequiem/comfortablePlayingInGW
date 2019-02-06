@@ -1,8 +1,16 @@
+2019-02-06[1.124-060219]
+--------------------------------------
+	- Обновлен скрипт
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CalculateSyndLvl
+		В который раз исправлена формула расчета уровня синдиката:
+			http://www.ganjawiki.ru/Боевой_синдикат#.D0.A3.D0.A1
+
+
 2019-02-04[1.123-040219]
 --------------------------------------
 	- Обновлены скрипты:
-			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
-			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CritShotsAndLinksBtlLog
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CritShotsAndLinksBtlLog
 
 		Параметры в настройках персонажа для правильной работы указанных
 		скриптов:
