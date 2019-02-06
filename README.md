@@ -6,7 +6,7 @@
 ![ChromeLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/chromeLogo.png)
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
 
-Версия: 1.123-040219
+Версия: 1.124-060219
 
 Нашли ошибку? Пожалуйста, [сообщите](http://www.gwars.ru/sms-create.php?mailto=MyRequiem)
 
@@ -46,7 +46,7 @@
 
 **AdvBattleAll**
 <br>
-Версия: 4.11-020219
+Версия: 4.12-040219
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll)
 <br>
@@ -88,7 +88,7 @@
 
 **CalculateSyndLvl**
 <br>
-Версия: 1.17-030219
+Версия: 1.18-060219
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CalculateSyndLvl/calculateSyndLvl.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CalculateSyndLvl/calculateSyndLvl.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CalculateSyndLvl)
 <br>
