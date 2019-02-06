@@ -12859,7 +12859,7 @@
                             replace(/,/g, '').split(' / '),
                         eExp = +/\d+/.exec(current[0])[0],
                         bExp = +/\d+/.exec(current[1])[0],
-                        experience = 4 / 3 * bExp + (3 * eExp),
+                        experience = 4 / 3 * bExp + (6.4 * eExp),
                         syndLvl,
                         i;
 
