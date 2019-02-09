@@ -9,6 +9,7 @@
 // @include         http://www.gwars.ru/warlog.php*
 // @include         http://www.gwars.ru/wargroup.php*
 // @include         http://www.gwars.ru/warlist.php*
+// @include         http://127.0.0.3/html/battle-js/battle-js.html
 // @grant           none
 // @license         MIT
 // @version         4.12-040219
@@ -36,14 +37,14 @@
     //============= НАСТРОЙКИ ====================
         // обновление заявки после входа в нее (в секундах)
         // 0 - таймаут по умолчанию (20 сек)
-    var refreshAppl = 0,
+    var refreshAppl = 3,
         // таймаут обновления данных в бою (в секундах)
         // 0 - таймаут по умолчанию, который выставлен в настройках персонажа
-        refreshBattle = 0,
+        refreshBattle = 2,
         // звук при начале боя (0 - без звука)
-        sound1 = 0,
+        sound1 = 4,
         // звук при начале хода (0 - без звука)
-        sound2 = 0;
+        sound2 = 1;
     //============= КОНЕЦ НАСТРОЕК ===============
 
 /* localStorage data
@@ -342,6 +343,17 @@
          * @type {Boolean}
          */
         this.checkSound = true;
+        /**
+         * @property weapon
+         * @type {Object}
+         */
+        this.rangeWeapon = {
+            'colt636': '20',
+            'pm': '0',
+            'hawk': '2',
+            'scorpionevo': '22',
+            'ghtb': '12/1'
+        };
 
         /**
          * @metod getRandom1to3
@@ -546,6 +558,7 @@
             objPers.allWeapon = '';
             var allAmmunition = prnt.querySelectorAll('a[href*=' +
                     '"/item.php?item_id="]'),
+                itemID,
                 i;
 
             // у поков ссылок на амуницию нет
@@ -553,6 +566,11 @@
                 objPers.weapon = allAmmunition[0].innerHTML;
                 for (i = 0; i < allAmmunition.length; i++) {
                     objPers.allWeapon += '<li>' + allAmmunition[i].innerHTML;
+                    itemID = /\?item_id=([^&$]+)/.exec(allAmmunition[i]);
+                    if (itemID && this.rangeWeapon[itemID[1]]) {
+                        objPers.allWeapon += ' <span style="color: #0000FF;">' +
+                            '(' + this.rangeWeapon[itemID[1]] + ')</span>';
+                    }
                 }
             }
 
