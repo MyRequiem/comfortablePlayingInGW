@@ -951,7 +951,7 @@
                 getSw = function (range) {
                     return '<span style="color: #FF0000; font-size: 7pt; ' +
                         'margin-left: 7px; float: right;">(' + range + ')' +
-                        '</span>' + indent + '<span style="color: #FF0000;">' +
+                        '</span>' + indent + '<span style="color: #FF5555;">' +
                         'Подствол</span><br>';
                 },
                 // для некоторых предметов установка модуля дальности
@@ -984,12 +984,14 @@
                     itemLink = allAmmunition[i];
                     itemId = /\?item_id=([^&$]+)/.exec(itemLink.href)[1];
                     range = this.rangeWeapon[itemId];
-                    color = this.art.indexOf(itemId) !== -1 ? '#007700' :
-                                this.rent.indexOf(itemId) !== -1 ? '#660000' :
+                    color = this.art.indexOf(itemId) !== -1 ? '#009900' :
+                                this.rent.indexOf(itemId) !== -1 ? '#870000' :
                                     '#000000';
 
-                    // красим ссылки на странице
+                    // красим ссылки на странице,
+                    // открываем их в отдельной вкладке
                     itemLink.style.color = color;
+                    itemLink.setAttribute('target', '_blank');
 
                     if (range) {
                         // наличие встроенного подствола, например thales_grl
@@ -1011,11 +1013,9 @@
                         }
 
                         // модификаторы на дальность
-                        // if (/&m=(27|43)(&|$)/.test(itemLink.href)) {
-                        if (/&m=43(&|$)/.test(itemLink.href)) {
+                        if (/&m=(27|43)(&|$)/.test(itemLink.href)) {
                             splt[0] += 1;
-                        // } else if (/&m=(8|11)(&|$)/.test(itemLink.href)) {
-                        } else if (/&m=8(&|$)/.test(itemLink.href)) {
+                        } else if (/&m=(8|16)(&|$)/.test(itemLink.href)) {
                             splt[0] += 2;
                         }
 
@@ -1025,7 +1025,7 @@
                         // граната или гранатомет
                         isGrenade = /\//.test(range);
                         objPers.allWeapon += '<span style="color: ' +
-                            (isGrenade ? '#FF0000' : '#0000FF') + '; ' +
+                            (isGrenade ? '#870000' : '#0000FF') + '; ' +
                             'font-size: 7pt; margin-left: 7px; ' +
                             'float: right;">(' + range + ')' +
                             '</span>' + indent + '<span style="color: ' +
