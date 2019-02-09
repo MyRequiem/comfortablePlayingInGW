@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru*
 // @grant           none
 // @license         MIT
-// @version         2.39-030219
+// @version         2.40-090219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -121,11 +121,6 @@
      * @constructor
      */
     var GwMenu = function () {
-        /**
-         * @property scriptVersion
-         * @type {String}
-         */
-        this.scriptVersion = 'v. 2.32-061117';
         /**
          * @property imgPath
          * @type {String}
@@ -407,10 +402,7 @@
                         'http://www.ganjawiki.ru/', 0, 1],
                     ['Выход из игры', '/logoff.php', 'red', 1],
                     ['<td colspan="2"><input type="checkbox" id="showt" ' +
-                        'title="Показывать всегда" />' +
-                        '<span style="margin-left: 10px; font-size: 7pt; ' +
-                        'color: #585858;">' + this.scriptVersion +
-                        '</span></td>', 'gw_menu']
+                        'title="Показывать всегда" /></td>', 'gw_menu']
                 ]},
                 {divm: 0, lines: [
                     ['Все ресурсы', '/stats.php', '#935805'],
