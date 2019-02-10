@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.12-040219
+// @version         4.13-100219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -342,6 +342,406 @@
          * @type {Boolean}
          */
         this.checkSound = true;
+        /**
+         * @property weapon
+         * @type {Object}
+         */
+        this.rangeWeapon = {
+            // Пистолеты
+            'magnum': '1',
+            'pm': '0',
+            'rbcat': '0',
+            'ttgun': '0',
+            'eagle': '0',
+            // Штурмовые винтовки гос
+            'ak47': '2',
+            'schmeisser': '2',
+            'm16': '2',
+            'ak_74': '2',
+            'l1a1': '4',
+            'aks': '0',
+            'hk53': '4',
+            'sg541': '6',
+            'xm8': '6',
+            'steyr': '7',
+            'trw': '8',
+            'sig': '10',
+            'stg44': '8',
+            'm14': '10',
+            'sar': '12',
+            'cz_sa': '12',
+            'g3': '10',
+            'fara83': '12',
+            'g3aa': '10',
+            'arx160': '12',
+            'sr88': '12',
+            'fnfal': '12',
+            'm82': '13',
+            'fs2000': '14',
+            'fnscar': '15',
+            'aps95': '16',
+            'bofors': '16',
+            'm17s': '18',
+            'hk417': '20',
+            'vektor': '22',
+            'sw_m203': '20/1',
+            'tiger': '24',
+            'soar': '28',
+            'sw_gl1': '26/2',
+            'hk762': '21',
+            'enfield80': '26',
+            'cz805': '28',
+            'm468': '29',
+            // Штурмовые винтовки арт
+            'g11': '4',
+            'oicw': '6',
+            'an94': '10',
+            'f2000': '12',
+            'fnfnc': '13',
+            'hk_416': '14',
+            'groza': '14',
+            'ka90': '15',
+            'taiga': '16',
+            'xcr': '17',
+            'tkb517': '18',
+            'steyr_a3': '20',
+            'ak103': '20',
+            'g36': '22',
+            'g41': '24',
+            'sig552': '26',
+            'sw_gp34': '24/1',
+            'ace': '28',
+            'sc2010': '32',
+            'sw_m6': '28/3',
+            'colt692': '24',
+            'thales': '30',
+            // встроенный подствол:
+            // дальность оружия, подствола и радиус поражения подствола
+            'thales_grl': '30/28/1',
+            'rec7': '32',
+            'sigmcx': '34',
+            // Штурмовые винтовки аренда
+            'colt_extreme': '26',
+            'lr300': '30',
+            'sig750': '34',
+            // Снайперское оружие гос
+            'svdmini': '4',
+            'l96': '8',
+            '149s': '8',
+            'cz527': '10',
+            'm40': '12',
+            'police': '14',
+            'mauser': '12',
+            'remington700': '14',
+            'psg': '15',
+            'ssg': '14',
+            'm76': '16',
+            'svd': '16',
+            'om50': '16',
+            'ssg2000': '16',
+            'b94': '15',
+            'ssg3000': '18',
+            'falcon': '16',
+            'f2': '18',
+            'm24': '20',
+            'savage10fp': '18',
+            'steyr_iws': '20',
+            'ulr338': '20',
+            'savage100fp': '22',
+            'tikka': '24',
+            'cz700': '26',
+            'bora': '26',
+            'ksv': '28',
+            'amr2': '30',
+            'fd308': '25',
+            'r11': '28',
+            'bor762': '30',
+            'ultima': '30',
+            'gepard': '31',
+            // Снайперское оружие арт
+            'barret': '18',
+            'bfg': '20',
+            'tactical600': '20',
+            'pgm': '18',
+            'm89sr': '20',
+            'm107': '20',
+            'vssk': '22',
+            'rt20': '22',
+            'cs5': '22',
+            'barret_xm500': '24',
+            'm85': '26',
+            'steyr_ste': '28',
+            'rangemaster': '28',
+            'mauser93': '30',
+            'sateravi': '34',
+            'ar10': '28',
+            'thor': '32',
+            'awm': '34',
+            'm110': '34',
+            'msr': '35',
+            // Снайперское оружие аренда
+            'blaser_93': '30',
+            'blaser-t': '32',
+            'sharpshooter': '36',
+            // Пистолеты-пулемёты гос
+            'uzi': '0',
+            'calico': '0',
+            'lf57': '1',
+            'ump': '0',
+            'gg95': '3',
+            'm4': '4',
+            'mas38': '4',
+            'kashtan': '8',
+            'suomi': '8',
+            'ingram': '8',
+            'colt': '8',
+            'walther': '10',
+            'fmk3': '10',
+            'vihr': '10',
+            'saf': '7',
+            'mpi81': '10',
+            'agram': '12',
+            'bizon': '14',
+            'kedr': '16',
+            'colt636': '20',
+            'scorpionevo': '22',
+            'berettamx4': '24',
+            'fmg9': '26',
+            'gilboa': '28',
+            'pmx': '30',
+            // Пистолеты-пулемёты арт
+            'mp5': '4',
+            'berettam12': '10',
+            'scorpion': '12',
+            'stkinetics': '10',
+            'p90': '12',
+            '90m1': '13',
+            'mp7': '15',
+            'kriss2': '22',
+            'mtar21': '24',
+            'pm06': '26',
+            'uzipro': '28',
+            'apc9': '30',
+            'mpx': '32',
+            // Пулемёты гос
+            'fn_min': '1',
+            'lewis': '2',
+            'type95': '2',
+            'fnmag': '4',
+            'bren': '6',
+            'l86': '4',
+            'm16a2': '6',
+            'mg3': '6',
+            'type62': '6',
+            'ar70': '6',
+            'p41': '6',
+            'saw': '6',
+            'zb53': '7',
+            'nsv': '6',
+            'type67': '7',
+            'galil': '7',
+            'sig710': '8',
+            'm60': '8',
+            'vickers': '10',
+            'vz59': '12',
+            'mg4': '12',
+            'mg36': '12',
+            'm61': '14',
+            'aat': '14',
+            'xm312': '16',
+            'sturm': '18',
+            'sw_ubl37': '20/1',
+            'venom': '20',
+            'zastava': '24',
+            'fort401': '16',
+            'vektorss77': '22',
+            'xm806': '24',
+            'kord': '26',
+            // Пулемёты арт
+            'pkp': '6',
+            'ameli': '8',
+            'hk21': '8',
+            'rpk74': '10',
+            'pkm': '9',
+            'm16lmg': '10',
+            'aa52': '11',
+            'mg43': '13',
+            'pssg': '14',
+            'ares16': '14',
+            'spitfire': '15',
+            'pkms': '16',
+            'minigun762': '18',
+            'mg50': '20',
+            'ultimax': '22',
+            'sw_agc': '25/1',
+            'shrike': '24',
+            'mg5': '28',
+            'ng7': '20',
+            'lwmmg': '26',
+            'hk121': '28',
+            'ukm': '30',
+            // Пулемёты аренда
+            'minigun_heavy': '24',
+            'sigmg': '28',
+            'hk221': '32',
+            // Дробовики гос
+            'winchester1200': '0',
+            'hunter': '0',
+            'remington': '2',
+            'sgun2': '3',
+            'm37': '4',
+            'toz': '7',
+            'jackhammer': '1',
+            'spas12': '0',
+            'striker': '2',
+            'saiga': '10',
+            'rmb93': '4',
+            'neostead': '6',
+            'xm26': '20',
+            'hawk': '2',
+            'benelli': '12',
+            'liberator': '16',
+            'spas15': '18',
+            'r8': '22',
+            'sw_gl1_sg': '26/2',
+            'versamax': '22',
+            'fnslp': '24',
+            'srm1216': '26',
+            // Дробовики арт
+            'mossberg': '12',
+            'vepr': '12',
+            'mag7': '7',
+            'usas12': '14',
+            'ksg': '18',
+            'usas15': '22',
+            'uts15': '26',
+            'sw_m6_sg': '28/3',
+            'fabarm': '28',
+            'origin12s': '30',
+            'xtr12': '32',
+            // Гранатометы гос
+            'rpg': '5/1',
+            'ptrk': '12/2',
+            'glauncher': '8/1',
+            'grg': '10/1',
+            'paw20': '12/2',
+            'rpgu': '14/3',
+            'grom2': '10/1',
+            'ags30': '16/1',
+            'gm94': '8/2',
+            'gl06': '8/2',
+            'gmg': '17/2',
+            'balkan': '20/2',
+            'rg6': '24/2',
+            'm202': '20/5',
+            'mm1': '24/4',
+            // Гранатометы арт
+            'mk47': '27/3',
+            'm32': '28/4',
+            // Гранаты гос
+            'emp_irs': '10/0',
+            'emp_a': '20/0',
+            'rgd5': '5/1',
+            'grenade_f1': '3/2',
+            'rgd2': '10/0',
+            'lightst': '10/0',
+            'lights': '10/0',
+            'rkg3': '6/0',
+            'mdn': '5/3',
+            'rgd2m': '10/0',
+            'rgo': '6/2',
+            'm84': '16/0',
+            'rgn': '8/0',
+            'emp_ir': '10/0',
+            'fg3l': '6/2',
+            'l83a1': '20/0',
+            'emp_s': '10/0',
+            'm67': '8/0',
+            'm3': '8/2',
+            'hg78': '10/1',
+            'hg84': '12/1',
+            'fg6': '10/1',
+            'anm14': '8/1',
+            'm34ph': '8/2',
+            'fg7': '12/1',
+            'fg8bd': '16/2',
+            // Гранаты синдовые
+            'lightsm': '20/0',
+            'grenade_dg1': '20/0',
+            'ghtb': '12/1',
+            'lightss': '12/0',
+            'rgd2s': '15/0',
+            'fg5': '6/2',
+            'molotov': '6/1',
+            'hellsbreath': '10/1',
+            'napalm': '10/2',
+            'me85': '17/2',
+            // Гранаты лут
+            'old_rgd5': '5/1',
+            // Специальное оружие
+            'rogatka': '0',
+            'saw_airsoft': '0',
+            'pb_marker': '2',
+            'potato2': '0',
+            // Турели
+            'heavysg': '60',
+            'tavor': '60',
+            'larue': '60',
+            'ga2gl': '60',
+            // другое
+            '11y_revolver': '0'
+        };
+        /**
+         * @property art
+         * @type {Array}
+         */
+        this.art = [
+            'g11', 'oicw', 'an94', 'f2000', 'fnfnc', 'hk_416', 'groza', 'ka90',
+            'taiga', 'xcr', 'tkb517', 'steyr_a3', 'ak103', 'g36', 'g41',
+            'sig552', 'sw_gp34', 'ace', 'sc2010', 'sw_m6', 'colt692', 'thales',
+            'thales_grl', 'rec7', 'sigmcx', 'pkp', 'ameli', 'hk21', 'rpk74',
+            'pkm', 'm16lmg', 'aa52', 'mg43', 'pssg', 'ares16', 'spitfire',
+            'pkms', 'minigun762', 'mg50', 'ultimax', 'sw_agc', 'shrike',
+            'mg5', 'ng7', 'lwmmg', 'hk121', 'ukm', 'barret', 'bfg',
+            'tactical600', 'pgm', 'm89sr', 'm107', 'vssk', 'rt20', 'cs5',
+            'barret_xm500', 'm85', 'steyr_ste', 'rangemaster', 'mauser93',
+            'sateravi', 'ar10', 'thor', 'awm', 'm110', 'msr', 'mp5',
+            'berettam12', 'scorpion', 'stkinetics', 'p90', '90m1', 'mp7',
+            'kriss2', 'mtar21', 'pm06', 'uzipro', 'apc9', 'mpx', 'mossberg',
+            'vepr', 'mag7', 'usas12', 'ksg', 'usas15', 'uts15', 'sw_m6_sg',
+            'fabarm', 'origin12s', 'xtr12', 'mk47', 'm32', 'bronik3c',
+            'bronik4c', 'bronik5c', 'bronik6c', 'blackhawk', 'armour_p300',
+            'blackcell', 'rbr', 'armour_patrol', 'delta5', 'mr1_armour',
+            'delta7', 'fav', 'protector', 'sandsarmour', 'ar500', 'lwhelmet',
+            'empires', 'sas_helmet', 'chelmet', 'spectra', 'arhelmet',
+            'fasthelmet', 'helmetmk6', 'mpas', 'g15helmet', 'ksfhelmet',
+            'predatorhelmet', 'mwshelmet', 'lowshieldc', 'cboots', 'shields_la',
+            'hboots', 'dboots', 'swatboots', 'cobraboots', 'officerboots',
+            'bootspec', 'spiderboots', 'dwboots', 'sandsboots', 'maskl',
+            'rockycamo', 'predator', 'mesh', 'forester', 'jackpyke', 'swatcamo',
+            'deltamask', 'woodsman', 'ilight', 'deye', 'nighthawk', 'atn14',
+            'edge', 'nvg1', 'pvs21', 'irgs1', 'nyx7', 'nokia9500', 'fieldcomp',
+            'attackbelt', 'ammobelt', 'bomberbelt', 'mealpack', 'eaglebag',
+            'cbelt', 'commandobelt', 'loadbelt', 'armybag', 'fan', 'brelok',
+            'cigar', 'clocks', 'gift_wallet', 'gift_watch', 'lighter',
+            'saperka3', 'watch_ganjarmani', 'armyknife', 'uniknife', 'nrs2',
+            'gt_multitool', 'ctactical', 'flask_gt', 'nokia9500', 'n81', 'n95',
+            'armygps', 'gwatch', 'ganjapad', 'radio_srx', 'gwsat45',
+            'tacticalgps', 'oldcompass', 'bottleopener', 'ganjacup', 'pendant',
+            'flashlight', 'heartglasses', 'radio_gw148', 'bors', 'ganjacola2',
+            'mentats2', 'minimedikit', 'medikit', 'bigmedikit', 'slr', 'apache',
+            'mi8', 'cadillac', 'chinook', 'harley', 'ch148'
+        ];
+        /**
+         * @property rent
+         * @type {Array}
+         */
+        this.rent = [
+            'minigun_heavy', 'sigmg', 'hk221', 'colt_extreme', 'lr300',
+            'sig750', 'blaser_93', 'blaser-t', 'sharpshooter', 'irlights',
+            'mask_hawster', 'mask_hawster1', 'nokia8800', 'nokia8800_se',
+            'tesla_armour'
+        ];
 
         /**
          * @metod getRandom1to3
@@ -370,8 +770,20 @@
         /**
          * @metod sayMove
          * @param   {Object}    _this
+         * @param   {Boolean}   fake
          */
-        this.sayMove = function (_this) {
+        this.sayMove = function (_this, fake) {
+            /** fake - если нажали <Enter> в поле ввода или кнопку "Написать",
+             *          (т.е. отправляем обычное сообщение), то реально не
+             *          говорим ход, а просто сохраняем его для восстановления
+             *          после отправки сооощения.
+             */
+
+            // ход сделан
+            if (/Ждём ход противника/i.test(general.$('bf').innerHTML)) {
+                return;
+            }
+
             // куда отходим
             var def = general.doc.querySelector('input[type="radio"]' +
                     '[name="defence"]:checked'),
@@ -429,8 +841,12 @@
                 str += general.doc.querySelector('label[for="bagaboom"]').
                     innerHTML.replace(/: бросить/, '');
                 dataSt[13] = '1';
-                _this.inpTextChat.value = str + ' в ' + enemy[1] +
-                    ' [' + enemy[2] + ']' + generalSkill + specialSkill;
+
+                if (!fake) {
+                    _this.inpTextChat.value = str + ' в ' + enemy[1] +
+                        ' [' + enemy[2] + ']' + generalSkill + specialSkill;
+                }
+
                 isGren = true;
             }
 
@@ -465,8 +881,10 @@
                             dataSt[10] === '2' ? ' ц' : ' пр';
                 }
 
-                _this.inpTextChat.value = str + ' [' + enemy[2] + ']' +
-                    generalSkill + specialSkill;
+                if (!fake) {
+                    _this.inpTextChat.value = str + ' [' + enemy[2] + ']' +
+                        generalSkill + specialSkill;
+                }
             }
 
             // отправляем сообщение в чат
@@ -544,15 +962,107 @@
             objPers.weapon = '';
             // оружие и амуниция
             objPers.allWeapon = '';
-            var allAmmunition = prnt.querySelectorAll('a[href*=' +
-                    '"/item.php?item_id="]'),
+            var allAmmunition = prnt.
+                    querySelectorAll('a[href*="/item.php?item_id="]'),
+                indent = '<span style="font-weight: bold; ' +
+                            'margin: 0 3px 0 3px;">&bull;</span>',
+                getSw = function (range) {
+                    return '<span style="color: #FF0000; font-size: 7pt; ' +
+                        'margin-left: 7px; float: right;">(' + range + ')' +
+                        '</span>' + indent + '<span style="color: #FF5555;">' +
+                        'Подствол</span><br>';
+                },
+                // для некоторых предметов установка модуля дальности
+                // увеличивает дальность больше чем на 1
+                modeUpgRange = {
+                    'hk762': 3,
+                    'colt692': 3,
+                    'fd308': 2,
+                    'ar10': 2,
+                    'saf': 2,
+                    'fort401': 3,
+                    'ng7': 2,
+                    'grom2': 2
+                },
+                builtinSw = '',
+                baseUpgRange,
+                isGrenade,
+                itemLink,
+                itemId,
+                range,
+                color,
+                splt,
+                sw,
                 i;
 
             // у поков ссылок на амуницию нет
             if (allAmmunition.length) {
                 objPers.weapon = allAmmunition[0].innerHTML;
                 for (i = 0; i < allAmmunition.length; i++) {
-                    objPers.allWeapon += '<li>' + allAmmunition[i].innerHTML;
+                    itemLink = allAmmunition[i];
+                    itemId = /\?item_id=([^&$]+)/.exec(itemLink.href)[1];
+                    range = this.rangeWeapon[itemId];
+                    color = this.art.indexOf(itemId) !== -1 ? '#009900' :
+                                this.rent.indexOf(itemId) !== -1 ? '#870000' :
+                                    '#000000';
+
+                    // красим ссылки на странице,
+                    // открываем их в отдельной вкладке
+                    itemLink.style.color = color;
+                    itemLink.setAttribute('target', '_blank');
+
+                    if (range) {
+                        // наличие встроенного подствола, например thales_grl
+                        builtinSw = '';
+                        splt = range.split('/');
+                        if (splt.length > 2) {
+                            builtinSw = splt[1] + '/' + splt[2];
+                        }
+
+                        splt[0] = +splt[0];
+                        // установленные модули на дальность
+                        baseUpgRange = modeUpgRange[itemId] || 1;
+                        if (/&upg=1(&|$)/.test(itemLink.href)) {
+                            splt[0] += baseUpgRange;
+                        } else if (/&upg=11(&|$)/.test(itemLink.href)) {
+                            splt[0] += baseUpgRange + 1;
+                        } else if (/&upg=(12|13)(&|$)/.test(itemLink.href)) {
+                            splt[0] += 1;
+                        }
+
+                        // модификаторы на дальность
+                        if (/&m=(27|43)(&|$)/.test(itemLink.href)) {
+                            splt[0] += 1;
+                        } else if (/&m=(8|16)(&|$)/.test(itemLink.href)) {
+                            splt[0] += 2;
+                        }
+
+                        range = builtinSw ? splt[0] : splt[0] +
+                            (splt[1] ? '/' + splt[1] : '');
+
+                        // граната или гранатомет
+                        isGrenade = /\//.test(range);
+                        objPers.allWeapon += '<span style="color: ' +
+                            (isGrenade ? '#870000' : '#0000FF') + '; ' +
+                            'font-size: 7pt; margin-left: 7px; ' +
+                            'float: right;">(' + range + ')' +
+                            '</span>' + indent + '<span style="color: ' +
+                            color + ';">' + itemLink.innerHTML + '</span><br>';
+
+                        // подствол (или встроенный, или установленный)
+                        if (builtinSw) {
+                            objPers.allWeapon += getSw(builtinSw);
+                        } else {
+                            sw = /&sw=([^&$]+)/.exec(itemLink.href);
+                            range = sw ? this.rangeWeapon[sw[1]] : '';
+                            if (range) {
+                                objPers.allWeapon += getSw(range);
+                            }
+                        }
+                    } else {
+                        objPers.allWeapon += indent + '<span style="color: ' +
+                            color + ';">' + itemLink.innerHTML + '</span><br>';
+                    }
                 }
             }
 
@@ -774,7 +1284,7 @@
         this.setStroke = function () {
             var dataSt = general.getData();
 
-            // Уличные бои - отходить можно только в центр (чекбоксы лево и
+            // Дуэли - отходить можно только в центр (чекбоксы лево и
             // право не активны). Стрелям тоже всегда в центр.
             if (general.doc.querySelector('#defence1:disabled')) {
                 this.clickElem(general.$('defence2'));
@@ -1162,7 +1672,7 @@
                             '<span style="color: #0000FF;">' + pers.lvl +
                             '</span>' + name + ' [' + pers.hp[1] + '/' +
                             pers.hp[2] + ']</span><div style="color: ' +
-                            '#b85006; margin-left: 15px;">Видимость: ' +
+                            '#B85006; margin-left: 10px;">Видимость: ' +
                             pers.visib + '<br><span style="color: #000000;">' +
                             'Мощность: ' + pers.power + '</span></div><div>' +
                             pers.allWeapon + '</div>';
@@ -1655,11 +2165,26 @@
             }
 
             // если отмечен чекбокс, символ '~' стереть будет нельзя
-            this.inpTextChat.addEventListener('input', function () {
+            this.inpTextChat.addEventListener('input', function (e) {
                 var thisInp = this;
                 if (sayOnlyMyCommand.checked && !thisInp.value) {
                     thisInp.value = '~';
                 }
+
+                // при нажатии <Enter> сохраняем установленный ход
+                var ev = e || general.root.event,
+                    key = ev.keyCode;
+
+                if (key === 13 || key === 10) {
+                    _this.sayMove(_this, true);
+                }
+            }, false);
+
+            // при клике на "Написать" сохраняем установленный ход
+            var writeButton = general.doc.querySelector('input[type="submit"]' +
+                '[value="Написать"]');
+            writeButton.addEventListener('click', function () {
+                _this.sayMove(_this, true);
             }, false);
 
             // кнопа "Сказать ход"
@@ -1671,7 +2196,7 @@
                 '1px 1px 2px rgba(122,122,122,0.5);');
             this.sayMoveButton.value = 'Сказать ход';
             this.sayMoveButton.addEventListener('click', function () {
-                _this.sayMove(_this);
+                _this.sayMove(_this, false);
             }, false);
             sayOnlyMyCommand.parentNode.insertBefore(this.sayMoveButton,
                     sayOnlyMyCommand);
