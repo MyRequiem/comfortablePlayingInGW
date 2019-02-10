@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.13-090219
+// @version         4.13-100219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -770,8 +770,20 @@
         /**
          * @metod sayMove
          * @param   {Object}    _this
+         * @param   {Boolean}   fake
          */
-        this.sayMove = function (_this) {
+        this.sayMove = function (_this, fake) {
+            /** fake - если нажали <Enter> в поле ввода или кнопку "Написать",
+             *          (т.е. отправляем обычное сообщение), то реально не
+             *          говорим ход, а просто сохраняем его для восстановления
+             *          после отправки сооощения.
+             */
+
+            // ход сделан
+            if (/Ждём ход противника/i.test(general.$('bf').innerHTML)) {
+                return;
+            }
+
             // куда отходим
             var def = general.doc.querySelector('input[type="radio"]' +
                     '[name="defence"]:checked'),
@@ -829,8 +841,12 @@
                 str += general.doc.querySelector('label[for="bagaboom"]').
                     innerHTML.replace(/: бросить/, '');
                 dataSt[13] = '1';
-                _this.inpTextChat.value = str + ' в ' + enemy[1] +
-                    ' [' + enemy[2] + ']' + generalSkill + specialSkill;
+
+                if (!fake) {
+                    _this.inpTextChat.value = str + ' в ' + enemy[1] +
+                        ' [' + enemy[2] + ']' + generalSkill + specialSkill;
+                }
+
                 isGren = true;
             }
 
@@ -865,8 +881,10 @@
                             dataSt[10] === '2' ? ' ц' : ' пр';
                 }
 
-                _this.inpTextChat.value = str + ' [' + enemy[2] + ']' +
-                    generalSkill + specialSkill;
+                if (!fake) {
+                    _this.inpTextChat.value = str + ' [' + enemy[2] + ']' +
+                        generalSkill + specialSkill;
+                }
             }
 
             // отправляем сообщение в чат
@@ -1266,7 +1284,7 @@
         this.setStroke = function () {
             var dataSt = general.getData();
 
-            // Уличные бои - отходить можно только в центр (чекбоксы лево и
+            // Дуэли - отходить можно только в центр (чекбоксы лево и
             // право не активны). Стрелям тоже всегда в центр.
             if (general.doc.querySelector('#defence1:disabled')) {
                 this.clickElem(general.$('defence2'));
@@ -2147,11 +2165,26 @@
             }
 
             // если отмечен чекбокс, символ '~' стереть будет нельзя
-            this.inpTextChat.addEventListener('input', function () {
+            this.inpTextChat.addEventListener('input', function (e) {
                 var thisInp = this;
                 if (sayOnlyMyCommand.checked && !thisInp.value) {
                     thisInp.value = '~';
                 }
+
+                // при нажатии <Enter> сохраняем установленный ход
+                var ev = e || general.root.event,
+                    key = ev.keyCode;
+
+                if (key === 13 || key === 10) {
+                    _this.sayMove(_this, true);
+                }
+            }, false);
+
+            // при клике на "Написать" сохраняем установленный ход
+            var writeButton = general.doc.querySelector('input[type="submit"]' +
+                '[value="Написать"]');
+            writeButton.addEventListener('click', function () {
+                _this.sayMove(_this, true);
             }, false);
 
             // кнопа "Сказать ход"
@@ -2163,7 +2196,7 @@
                 '1px 1px 2px rgba(122,122,122,0.5);');
             this.sayMoveButton.value = 'Сказать ход';
             this.sayMoveButton.addEventListener('click', function () {
-                _this.sayMove(_this);
+                _this.sayMove(_this, false);
             }, false);
             sayOnlyMyCommand.parentNode.insertBefore(this.sayMoveButton,
                     sayOnlyMyCommand);
