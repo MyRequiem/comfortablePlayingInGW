@@ -957,6 +957,24 @@
                     (/видимость: (\d+%)/.exec(allText)[1]) : '';
             objPers.power = /мощность: \d+/.test(allText) ?
                     (/мощность: (\d+)/.exec(allText)[1]) : '';
+            objPers.skill = '';
+
+            // добавляем умелку
+            var skill = prnt.querySelectorAll('img[src*="/skill_"]+b>' +
+                    'font[style="font-size:8px;"]'),
+                i;
+
+            if (skill.length) {
+                objPers.skill = '<br>' +
+                    '<span style="color: #0087FF; font-size:9px;">';
+
+                for (i = 0; i < skill.length; i++) {
+                    objPers.skill += skill[i].innerHTML +
+                        (i !== skill.length - 1 ? ', ' : '');
+                }
+
+                objPers.skill += '</span>';
+            }
 
             // оружие (для заполнения списка выбора врагов)
             objPers.weapon = '';
@@ -990,11 +1008,9 @@
                 itemLink,
                 itemId,
                 range,
-                skill,
                 color,
                 splt,
-                sw,
-                i;
+                sw;
 
             // у поков ссылок на амуницию нет
             if (allAmmunition.length) {
@@ -1011,18 +1027,6 @@
                     // открываем их в отдельной вкладке
                     itemLink.style.color = color;
                     itemLink.setAttribute('target', '_blank');
-
-                    // первая ссылка - ссылка на оружие, добавляем умелку
-                    skill = '';
-                    if (!i) {
-                        skill = prnt.querySelector('img[src*="/skill_"]+b>' +
-                            'font[style="font-size:8px;"]');
-                        if (skill) {
-                            skill = '<span style="color: #005FFF; ' +
-                                'margin-left: 2px; font-size: 9px;">[' +
-                                skill.innerHTML + ']</span>';
-                        }
-                    }
 
                     if (range) {
                         // наличие встроенного подствола, например thales_grl
@@ -1060,8 +1064,7 @@
                             'font-size: 7pt; margin-left: 7px; ' +
                             'float: right;">(' + range + ')' +
                             '</span>' + indent + '<span style="color: ' +
-                            color + ';">' + itemLink.innerHTML + skill +
-                            '</span><br>';
+                            color + ';">' + itemLink.innerHTML + '</span><br>';
 
                         // подствол (или встроенный, или установленный)
                         if (builtinSw) {
@@ -1075,8 +1078,7 @@
                         }
                     } else {
                         objPers.allWeapon += indent + '<span style="color: ' +
-                            color + ';">' + itemLink.innerHTML + skill +
-                            '</span><br>';
+                            color + ';">' + itemLink.innerHTML + '</span><br>';
                     }
                 }
             }
@@ -1689,7 +1691,8 @@
                             pers.hp[2] + ']</span><div style="color: ' +
                             '#B85006; margin-left: 10px;">Видимость: ' +
                             pers.visib + '<br><span style="color: #000000;">' +
-                            'Мощность: ' + pers.power + '</span></div><div>' +
+                            'Мощность: ' + pers.power + '</span>' + pers.skill +
+                            '</div><div>' +
                             pers.allWeapon + '</div>';
 
                         // прозрачность перса в зависимости от его видимости
