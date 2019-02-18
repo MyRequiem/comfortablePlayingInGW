@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.14-030219
+// @version         1.15-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458], идея Enemy333
 // ==/UserScript==
 
@@ -309,11 +309,12 @@
          */
         this.setInterface = function () {
             var mainTimer = general.doc.createElement('span');
-            mainTimer.innerHTML = '<a href="' + this.url +
-                '" style="text-decoration: none;" target="_blank">' +
-                'Порты</a> ' +
-                '<span id="portTime" style="font-weight: bold;"></span> ' +
-                '[<span id="portTimer" style=""></span>]';
+            if (general.root.iul3) {
+                mainTimer.innerHTML = '<a href="' + this.url +
+                    '" style="text-decoration: none;" target="_blank">' +
+                    'Порты</a> <span id="portTime" style="font-weight: ' +
+                    'bold;"></span> [<span id="portTimer" style=""></span>]';
+            }
             // noinspection JSCheckFunctionSignatures
             this.topPanel.appendChild(general.doc.createTextNode(' | '));
             this.topPanel.appendChild(mainTimer);
@@ -414,7 +415,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new PortTimer().init();
             }
         } else {

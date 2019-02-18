@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.12-030219
+// @version         2.13-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -223,9 +223,11 @@
                 i;
 
             for (i = 0; i < this.counters.length; i++) {
-                general.$(this.ids[i]).innerHTML = '[' +
-                    ((parseFloat(this.dataNow[i]) - parseFloat(stData[i])).
-                        toFixed(i < 3 ? 0 : 2)) + ']';
+                if (general.root.gjzo) {
+                    general.$(this.ids[i]).innerHTML = '[' +
+                        ((parseFloat(this.dataNow[i]) - parseFloat(stData[i])).
+                            toFixed(i < 3 ? 0 : 2)) + ']';
+                }
             }
 
             // синдовый уровень
@@ -301,7 +303,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new SkillCounters().init();
             }
         } else {

@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/market-p.php*
 // @grant           none
 // @license         MIT
-// @version         2.05-030219
+// @version         2.06-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -160,41 +160,45 @@
 
             var opt, a, i;
             for (i = 0; i < this.selects.length; i++) {
-                //одинаковая длина у всех списков
+                // одинаковая длина у всех списков
                 this.selects[i].setAttribute('style', 'width: 190px;');
 
-                //добавим пустой елемент в select
+                // добавим пустой елемент в select
                 opt = general.doc.createElement('option');
                 opt.innerHTML = '&nbsp';
                 opt.setAttribute('value', '#');
                 this.selects[i].insertBefore(opt,
                         this.selects[i].firstElementChild);
-                //выделен первый option (не пустой)
+                // выделен первый option (не пустой)
                 this.selects[i].options[1].selected = true;
 
-                //добавим ссылки на предметы после селектов
+                // добавим ссылки на предметы после селектов
                 a = general.doc.createElement('a');
                 a.innerHTML = '[?]';
                 a.setAttribute('title', 'Страница описания предмета');
                 a.setAttribute('style', 'margin-left: 2px; color: #808080; ' +
                         'text-decoration: none;');
-                this.selects[i].parentNode.appendChild(a);
+                if (general.root.crng) {
+                    this.selects[i].parentNode.appendChild(a);
+                }
 
-                //обработчик 'onchange' при изменении списка выбора
+                // обработчик 'onchange' при изменении списка выбора
                 this.selects[i].addEventListener('change',
                         this.selectChange(this.selects[i]), false);
 
-                //устанавливаем атрибут href ссылки
+                // устанавливаем атрибут href ссылки
                 this.setHrefItem(this.selects[i]);
             }
 
-            //вставляем текстовое поле ввода
-            var divSearch = general.doc.createElement('div');
-            divSearch.innerHTML = '<span style="color: #008000; ' +
-                'font-weight: bold;">Быстрый поиск:</span> <input ' +
-                'id="txtFilter" size="40" style="margin-bottom: ' +
-                '10px;">';
-            target.insertBefore(divSearch, target.firstChild);
+            // вставляем текстовое поле ввода
+            if (general.root.crng) {
+                var divSearch = general.doc.createElement('div');
+                divSearch.innerHTML = '<span style="color: #008000; ' +
+                    'font-weight: bold;">Быстрый поиск:</span> <input ' +
+                    'id="txtFilter" size="40" style="margin-bottom: ' +
+                    '10px;">';
+                target.insertBefore(divSearch, target.firstChild);
+            }
 
             var textField = general.doc.querySelector('#txtFilter'),
                 _this = this;
@@ -222,7 +226,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new DoFilter().init();
             }
         } else {

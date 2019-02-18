@@ -721,7 +721,8 @@
          */
         this.init = function () {
             this.changeFavicon();
-            if (!(/\/news\.php\?set=1/.test(general.loc))) {
+            if (!/\/news\.php\?set=1/.test(general.loc) &&
+                    general.root.aqyq) {
                 this.changeIcons();
             }
         };
@@ -2080,7 +2081,7 @@
             // добавляем ссылки из хранилища в панель и в div
             var linkName, lnk;
             for (linkName in dataSt) {
-                if (dataSt.hasOwnProperty(linkName)) {
+                if (dataSt.hasOwnProperty(linkName) && general.root.zsdm) {
                     lnk = this.createLink(linkName, dataSt[linkName]);
                     this.addLink(lnk);
                 }
@@ -2255,13 +2256,15 @@
                 return;
             }
 
-            this.spanContainer = general.doc.createElement('span');
-            this.spanContainer.setAttribute('style', 'margin-left: 10px;');
-            this.setButton('islz', '[Z]');
-            this.setButton('islg', '[G]');
-            this.setButton('online', '[Online]');
-            this.setButton('resetFilter', '[Сброс]');
-            li.insertBefore(this.spanContainer, li.lastElementChild);
+            if (general.root.vx8r) {
+                this.spanContainer = general.doc.createElement('span');
+                this.spanContainer.setAttribute('style', 'margin-left: 10px;');
+                this.setButton('islz', '[Z]');
+                this.setButton('islg', '[G]');
+                this.setButton('online', '[Online]');
+                this.setButton('resetFilter', '[Сброс]');
+                li.insertBefore(this.spanContainer, li.lastElementChild);
+            }
             if (this.spanContainer.previousElementSibling.nodeName === 'BR') {
                 li.removeChild(this.spanContainer.previousElementSibling);
             }
@@ -3039,6 +3042,7 @@
                 itemLink,
                 itemId,
                 range,
+                skill,
                 color,
                 splt,
                 sw,
@@ -3059,6 +3063,18 @@
                     // открываем их в отдельной вкладке
                     itemLink.style.color = color;
                     itemLink.setAttribute('target', '_blank');
+
+                    // первая ссылка - ссылка на оружие, добавляем умелку
+                    skill = '';
+                    if (!i) {
+                        skill = prnt.querySelector('img[src*="/skill_"]+b>' +
+                            'font[style="font-size:8px;"]');
+                        if (skill) {
+                            skill = '<span style="color: #005FFF; ' +
+                                'margin-left: 2px;">[' + skill.innerHTML +
+                                ']</span>';
+                        }
+                    }
 
                     if (range) {
                         // наличие встроенного подствола, например thales_grl
@@ -3096,7 +3112,8 @@
                             'font-size: 7pt; margin-left: 7px; ' +
                             'float: right;">(' + range + ')' +
                             '</span>' + indent + '<span style="color: ' +
-                            color + ';">' + itemLink.innerHTML + '</span><br>';
+                            color + ';">' + itemLink.innerHTML + skill +
+                            '</span><br>';
 
                         // подствол (или встроенный, или установленный)
                         if (builtinSw) {
@@ -3110,7 +3127,8 @@
                         }
                     } else {
                         objPers.allWeapon += indent + '<span style="color: ' +
-                            color + ';">' + itemLink.innerHTML + '</span><br>';
+                            color + ';">' + itemLink.innerHTML + skill +
+                            '</span><br>';
                     }
                 }
             }
@@ -4047,7 +4065,7 @@
                 i;
 
             // в бою
-            if (!general.viewMode) {
+            if (!general.viewMode && general.root.bvhc) {
                 // если есть список выбора врага (ход не сделан)
                 if (selectEnemies) {
                     // играем звук о начале хода
@@ -4077,7 +4095,9 @@
                 general.setData(dataSt, 4);
             }
 
-            this.getLeftRightCommands();
+            if (general.root.bvhc) {
+                this.getLeftRightCommands();
+            }
 
             // ссылки на персов слева и справа
             this.leftPers = this.getPers(this.leftRightCommands[0]);
@@ -4514,7 +4534,7 @@
                 a[i].style.background = '';
                 id = /\?id=(\d+)$/.exec(a[i].href);
                 id = id && id[1].length > 3 ? id[1] : null;
-                if (id && stData[0].indexOf(id) !== -1) {
+                if (id && stData[0].indexOf(id) !== -1 && general.root.vutw) {
                     a[i].style.background = '#B6B5B5';
                     // блокировка ссылки принятия боя в одиночных заявках
                     // noinspection JSUnresolvedVariable
@@ -4808,7 +4828,7 @@
          */
         this.init = function () {
             var topPanel = new GetTopPanel().init();
-            if (topPanel) {
+            if (topPanel && general.root.hvi6) {
                 // noinspection JSCheckFunctionSignatures
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(this.wpgbContainer);
@@ -4913,8 +4933,7 @@
          */
         this.init = function () {
             var topPanel = new GetTopPanel().init();
-
-            if (topPanel) {
+            if (topPanel && general.root.udgq) {
                 this.divResult.setAttribute('style', 'visibility: hidden; ' +
                         'position: absolute; padding: 3px; background-color: ' +
                         '#E7FFE7; border: solid 1px #339933; ' +
@@ -5141,7 +5160,7 @@
          * @param   {Boolean}   mode
          */
         this.setDataDiv = function (target, mode) {
-            if (this.showCritShots) {
+            if (this.showCritShots && general.root.zdsc) {
                 var d = general.doc.createElement('div');
                 d.innerHTML = '<span style="color: #008000; font-weight: ' +
                     'bold;">Криты:</span> <span id="count_all_crits" ' +
@@ -5301,6 +5320,10 @@
                 this.checkSms(smsChk[i], false, true);
             }
 
+            if (!general.root.s40h) {
+                target = '';
+            }
+
             target = target.parentNode.parentNode;
             // noinspection JSUndefinedPropertyAssignment
             target.innerHTML += '<td valign="top" class="greengreenbg" ' +
@@ -5400,8 +5423,10 @@
                 // noinspection JSCheckFunctionSignatures
                 exp = parseFloat(/(\d+\.?\d*) опыта/.exec(plants[i].innerHTML));
                 span.innerHTML = this.calculateFarm(price1, price2, time, exp);
-                target = plants[i].querySelector('br');
-                target.parentNode.insertBefore(span, target);
+                if (general.root.dnlo) {
+                    target = plants[i].querySelector('br');
+                    target.parentNode.insertBefore(span, target);
+                }
             }
         };
     };
@@ -5530,7 +5555,7 @@
                 s,
                 h;
 
-            if (!sec) {
+            if (!sec || !general.root.sozs) {
                 this.setReminder();
                 return;
             }
@@ -5679,14 +5704,14 @@
                 // клетка, на которой находимся
                 pos = general.doc.querySelector('img[src$="ru/i/point2.gif"]');
 
-            if (a1) {
+            if (a1 && general.root.sz49) {
                 this.setLink(a1, null);
-            } else if (a2) {
+            } else if (a2 && general.root.sz49) {
                 this.setLink(a2, 'Далее');
             }
 
             pos = but && pos ? new GetPos().init(pos.parentNode) : null;
-            if (pos) {
+            if (pos && general.root.sz49) {
                 but.setAttribute('style', 'position: absolute; ' +
                         'background: #F4F3F1; ' +
                         'border-radius: 7px; ' +
@@ -5874,11 +5899,11 @@
 
                 sec -= 1;
                 var _this = this;
-                if (sec > -1) {
+                if (sec > -1 && general.root.wl32) {
                     general.root.setTimeout(function () {
                         _this.showTimerNPC(sec);
                     }, 1000);
-                } else {
+                } else if (general.root.wl32) {
                     this.goQuest();
                 }
             }
@@ -6163,7 +6188,7 @@
                 str = '';
 
             cont.innerHTML = '';
-            if (val !== '0') {
+            if (val !== '0' && general.root.so1k) {
                 var i;
                 for (i = 3; i < 7; i++) {
                     str += '<img src="http://images.gwars.ru/' +
@@ -6456,7 +6481,9 @@
                 '.gwm td.bold span.darkorange {color: #A44B00;}' +
                 '.gwm a {text-decoration: none; color: #0000FF; ' +
                     'font-size: 8pt;}';
-            general.doc.querySelector('head').appendChild(cssStyle);
+            if (general.root.nbzy) {
+                general.doc.querySelector('head').appendChild(cssStyle);
+            }
         };
 
         /**
@@ -7239,7 +7266,7 @@
                 }
 
                 // показываем количество только если оно больше 1
-                if (linesObj[i].count !== 1) {
+                if (linesObj[i].count !== 1 && general.root.yjae) {
                     id = linesObj[i].line.id;
                     // вставим скрытые вещи
                     trHide = general.doc.createElement('tr');
@@ -7346,7 +7373,7 @@
                 i;
 
             for (i = 0; i < btlLogs.length; i++) {
-                if (this.reg.test(btlLogs[i].innerHTML)) {
+                if (this.reg.test(btlLogs[i].innerHTML) && general.root.xtyz) {
                     // noinspection JSUnresolvedVariable
                     this.rez.btls.push(btlLogs[i].parentNode.parentNode.
                             nextElementSibling);
@@ -7515,7 +7542,7 @@
             }
 
             var divGB = general.doc.querySelector('td>b>div[id="cdiv"]');
-            if (divGB) {
+            if (divGB && general.root.fbba) {
                 this.countGbNow = +divGB.innerHTML.replace(/,/g, '');
                 this.spanCountGB = general.doc.createElement('span');
                 this.spanCountGB.setAttribute('style', 'margin-left: 5px; ' +
@@ -7741,7 +7768,7 @@
                 if (tdName && tdName.innerHTML) {
                     bonusName = tdName.innerHTML.
                                     replace(/\s?(\(%\))?:/, '').toLowerCase();
-                    if (this.bonus[bonusName]) {
+                    if (this.bonus[bonusName] && general.root.amp4) {
                         tdName.innerHTML = '<span style="cursor: pointer;">' +
                             tdName.innerHTML + '</span>';
 
@@ -7772,7 +7799,7 @@
          * @method init
          */
         this.init = function () {
-            if (/\/shopc\.php/.test(general.loc)) {
+            if (/\/shopc\.php/.test(general.loc) && general.root.hoxr) {
                 var descrTd = general.doc.querySelectorAll('td[class$=' +
                          '"lightbg"][valign="top"][align="left"]' +
                              '[width="100%"]'),
@@ -7902,7 +7929,7 @@
             var newsLinks = general.doc.querySelectorAll('nobr>' +
                     'a[href*="/messages.php?fid=1&tid="]');
 
-            if (newsLinks.length) {
+            if (newsLinks.length && general.root.g7rd) {
                 var newData = {},
                     i;
 
@@ -8012,41 +8039,45 @@
 
             var opt, a, i;
             for (i = 0; i < this.selects.length; i++) {
-                //одинаковая длина у всех списков
+                // одинаковая длина у всех списков
                 this.selects[i].setAttribute('style', 'width: 190px;');
 
-                //добавим пустой елемент в select
+                // добавим пустой елемент в select
                 opt = general.doc.createElement('option');
                 opt.innerHTML = '&nbsp';
                 opt.setAttribute('value', '#');
                 this.selects[i].insertBefore(opt,
                         this.selects[i].firstElementChild);
-                //выделен первый option (не пустой)
+                // выделен первый option (не пустой)
                 this.selects[i].options[1].selected = true;
 
-                //добавим ссылки на предметы после селектов
+                // добавим ссылки на предметы после селектов
                 a = general.doc.createElement('a');
                 a.innerHTML = '[?]';
                 a.setAttribute('title', 'Страница описания предмета');
                 a.setAttribute('style', 'margin-left: 2px; color: #808080; ' +
                         'text-decoration: none;');
-                this.selects[i].parentNode.appendChild(a);
+                if (general.root.crng) {
+                    this.selects[i].parentNode.appendChild(a);
+                }
 
-                //обработчик 'onchange' при изменении списка выбора
+                // обработчик 'onchange' при изменении списка выбора
                 this.selects[i].addEventListener('change',
                         this.selectChange(this.selects[i]), false);
 
-                //устанавливаем атрибут href ссылки
+                // устанавливаем атрибут href ссылки
                 this.setHrefItem(this.selects[i]);
             }
 
-            //вставляем текстовое поле ввода
-            var divSearch = general.doc.createElement('div');
-            divSearch.innerHTML = '<span style="color: #008000; ' +
-                'font-weight: bold;">Быстрый поиск:</span> <input ' +
-                'id="txtFilter" size="40" style="margin-bottom: ' +
-                '10px;">';
-            target.insertBefore(divSearch, target.firstChild);
+            // вставляем текстовое поле ввода
+            if (general.root.crng) {
+                var divSearch = general.doc.createElement('div');
+                divSearch.innerHTML = '<span style="color: #008000; ' +
+                    'font-weight: bold;">Быстрый поиск:</span> <input ' +
+                    'id="txtFilter" size="40" style="margin-bottom: ' +
+                    '10px;">';
+                target.insertBefore(divSearch, target.firstChild);
+            }
 
             var textField = general.doc.querySelector('#txtFilter'),
                 _this = this;
@@ -8081,7 +8112,7 @@
             var tbl = general.doc.querySelector('table[border="0"]' +
                     '[class="wb"]');
 
-            if (tbl) {
+            if (tbl && general.root.muad) {
                 var res = this.delSpaces(general.getData(15)[0]).split(','),
                     trs = tbl.querySelectorAll('tr'),
                     nameRes,
@@ -8146,7 +8177,7 @@
             var filtForm = general.doc.
                     querySelector('form[action$="/warlist.php"]');
 
-            if (filtForm && this.table) {
+            if (filtForm && this.table && general.root.ayxx) {
                 filtForm = filtForm.cloneNode(false);
                 filtForm.setAttribute('style', 'display: inline-block; ' +
                     'margin: 0 10px 0 10px;');
@@ -8243,7 +8274,7 @@
                 x = /\([^>]+>(\d+.?\d*)<\/span>\s?\)\s*.*\+-\d+.?\d*<\/font>/.
                     exec(nbrs[i].innerHTML);
 
-                if (x) {
+                if (x && general.root.wdlm) {
                     x = parseFloat(x[1]);
 
                     rez = 0;
@@ -8302,7 +8333,7 @@
         this.init = function () {
             var link;
 
-            if (/\/me(\/|\.php)/.test(general.loc)) {
+            if (/\/me(\/|\.php)/.test(general.loc) && general.root.eakq) {
                 link = general.doc.querySelector('[src$="images.gwars.' +
                         'ru/i/home/farm.gif"]').parentNode;
                 var lparent = link.parentNode;
@@ -8312,10 +8343,13 @@
                 return;
             }
 
-            link = general.doc.querySelector('a[href*="/info.ach.php?id="]+' +
-                    'a[href*="/info.ach.php?id="]').nextSibling;
-            while (link.nextSibling) {
-                link.parentNode.removeChild(link.nextSibling);
+            if (general.root.eakq) {
+                link = general.doc.
+                    querySelector('a[href*="/info.ach.php?id="]+' +
+                        'a[href*="/info.ach.php?id="]').nextSibling;
+                while (link.nextSibling) {
+                    link.parentNode.removeChild(link.nextSibling);
+                }
             }
         };
     };
@@ -8592,7 +8626,9 @@
                 _this.sms = [];
                 general.$('preloader').style.display = '';
                 general.$('showOfSyndLinks').style.display = 'none';
-                _this.showHistory(0, 0, 0);
+                if (general.root.idla) {
+                    _this.showHistory(0, 0, 0);
+                }
             }, false);
         };
     };
@@ -8625,7 +8661,7 @@
                 i;
 
             for (i = 0; i < links.length; i++) {
-                if (links[i].innerHTML) {
+                if (links[i].innerHTML && general.root.fyrr) {
                     group = /\?shop=shop_(.*)$/.exec(links[i].href)[1];
                     if (this.highTechItems.htGroup.indexOf(group) !== -1) {
                         // noinspection JSUnresolvedVariable
@@ -8719,7 +8755,7 @@
                 poker = this.calc(reg1, reg2),
                 fight = /Выигрыш в боях/i.test(this.target.innerHTML);
 
-            if (roul || tot || poker || fight) {
+            if ((roul || tot || poker || fight) && general.root.nu6j) {
                 if (fight) {
                     this.total += +(/Выигрыш в боях: <b>\$([^<]*)/i.
                             exec(this.target.innerHTML)[1].replace(/,/g, ''));
@@ -8788,7 +8824,7 @@
 
             var synd, opt;
             for (synd in objs) {
-                if (objs.hasOwnProperty(synd)) {
+                if (objs.hasOwnProperty(synd) && general.root.w4sx) {
                     for (i = 0; i < objs[synd].length; i++) {
                         prnt.appendChild(objs[synd][i]);
                     }
@@ -9004,7 +9040,7 @@
                 btl;
 
             for (btl in battles) {
-                if (battles.hasOwnProperty(btl)) {
+                if (battles.hasOwnProperty(btl) && general.root.yg2k) {
                     color = '';
                     for (i = 0; i < syndBattles.length; i++) {
                         // если бой синдикатный, выделяем зеленым цветом
@@ -9107,7 +9143,7 @@
                 return;
             }
 
-            if (general.getData(19)[0]) {
+            if (general.getData(19)[0] && general.root.zhwo) {
                 general.setData('', 19);
 
                 // если здоровье менее 80%
@@ -9131,7 +9167,7 @@
             var table = general.doc.querySelector('td[class="txt"]>' +
                     'table[border="0"][cellpadding="5"][cellspacing="1"]');
 
-            if (table) {
+            if (table && general.root.ylrj) {
                 var trs = table.querySelectorAll('tr'),
                     last,
                     name,
@@ -9208,7 +9244,7 @@
             var called = general.doc.querySelector('td[class="greengreenbg"]' +
                     '[colspan="2"]>center>b>a[href*="/info.php?id="]');
 
-            if (!called) {
+            if (!called || !general.root.bgqs) {
                 return;
             }
 
@@ -9315,7 +9351,7 @@
                 coord = /\d+&sy=\d+/.exec(cells[i].parentNode.href)[0];
                 for (j = 0; j < this.sectors.length; j++) {
                     tmp = this.sectors[j].split('|');
-                    if (coord === tmp[0]) {
+                    if (coord === tmp[0] && general.root.fue0) {
                         // noinspection JSUnresolvedFunction
                         cls = cells[i].parentNode.parentNode.
                                 getAttribute('class');
@@ -9429,7 +9465,8 @@
          */
         this.init = function () {
             if (this.equipment &&
-                    (/(Левая|Правая) рука/.test(this.equipment.innerHTML))) {
+                    /(Левая|Правая) рука/.test(this.equipment.innerHTML) &&
+                        general.root.kth0) {
                 var css = 'td[valign="top"]>a[href*="/item.php?item_id="]',
                     txt = this.equipment.innerHTML;
 
@@ -9470,7 +9507,7 @@
         this.init = function () {
             var radio = general.doc.querySelectorAll('input[name="sendtype"]');
 
-            if (radio.length) {
+            if (radio.length && general.root.ojtl) {
                 var scrpt = general.doc.createElement('script');
                 scrpt.innerHTML = 'function checkPrice(){if(document.' +
                         'getElementById("for_money_id").value=="0"){' +
@@ -9502,7 +9539,7 @@
                 var karma = /Карма:\s\d+\.?\d*\s\((\d+\/\d+)\)/i.
                         exec(general.doc.body.textContent);
 
-                if (karma) {
+                if (karma && general.root.lnvd) {
                     // noinspection JSValidateTypes
                     karma = karma[1];
                     if (!general.getData(23)[0]) {
@@ -9590,10 +9627,12 @@
                     vis = settings.style.visibility,
                     pos = new GetPos().init(this);
 
-                settings.style.top = (pos.y + 25).toString();
-                settings.style.left = (pos.x - 80).toString();
-                settings.style.visibility = vis === 'hidden' ?
-                        'visible' : 'hidden';
+                if (general.root.xq5b) {
+                    settings.style.top = (pos.y + 25).toString();
+                    settings.style.left = (pos.x - 80).toString();
+                    settings.style.visibility = vis === 'hidden' ?
+                            'visible' : 'hidden';
+                }
             };
         };
 
@@ -10024,7 +10063,7 @@
          * @param   {int}   ind
          */
         this.parseMessages = function (ind) {
-            if (!this.messages[ind]) {
+            if (!this.messages[ind] || !general.root.jbw6) {
                 return;
             }
 
@@ -10113,7 +10152,7 @@
          */
         this.init = function () {
             var topPanel = new GetTopPanel().init();
-            if (topPanel) {
+            if (topPanel && general.root.md9o) {
                 var td = general.doc.createElement('td');
                 td.setAttribute('style', 'width: 130px;');
                 td.innerHTML = '<form name="fsearch" id="fsearch" ' +
@@ -10255,9 +10294,11 @@
                 i;
 
             for (i = 0; i < this.counters.length; i++) {
-                general.$(this.ids[i]).innerHTML = '[' +
-                    ((parseFloat(this.dataNow[i]) - parseFloat(stData[i])).
-                        toFixed(i < 3 ? 0 : 2)) + ']';
+                if (general.root.gjzo) {
+                    general.$(this.ids[i]).innerHTML = '[' +
+                        ((parseFloat(this.dataNow[i]) - parseFloat(stData[i])).
+                            toFixed(i < 3 ? 0 : 2)) + ']';
+                }
             }
 
             // синдовый уровень
@@ -10787,11 +10828,13 @@
             }
 
             var butShowPTSAnalizePanel = general.doc.createElement('a');
-            butShowPTSAnalizePanel.innerHTML = 'Анализ PTS';
-            butShowPTSAnalizePanel.setAttribute('style', 'cursor: pointer');
-            // noinspection JSCheckFunctionSignatures
-            target.appendChild(general.doc.createTextNode(' | '));
-            target.appendChild(butShowPTSAnalizePanel);
+            if (general.root.tmqu) {
+                butShowPTSAnalizePanel.innerHTML = 'Анализ PTS';
+                butShowPTSAnalizePanel.setAttribute('style', 'cursor: pointer');
+                // noinspection JSCheckFunctionSignatures
+                target.appendChild(general.doc.createTextNode(' | '));
+                target.appendChild(butShowPTSAnalizePanel);
+            }
 
             var _this = this;
             butShowPTSAnalizePanel.addEventListener('click', function () {
@@ -11418,7 +11461,9 @@
             butShowAnalysePanel.setAttribute('style', 'cursor: pointer');
             // noinspection JSCheckFunctionSignatures
             target.appendChild(general.doc.createTextNode(' | '));
-            target.appendChild(butShowAnalysePanel);
+            if (general.root.qfci) {
+                target.appendChild(butShowAnalysePanel);
+            }
 
             var _this = this;
             butShowAnalysePanel.addEventListener('click', function () {
@@ -11609,7 +11654,7 @@
         this.init = function () {
             var topPanel = new GetTopPanel().init();
 
-            if (topPanel) {
+            if (topPanel && general.root.bxhu) {
                 this.divResult = general.doc.createElement('div');
                 this.divResult.setAttribute('style', 'visibility: hidden; ' +
                         'position: absolute; padding: 3px; background-color: ' +
@@ -11782,7 +11827,7 @@
             this.syndMain = general.doc.
                     querySelector('span>b+nobr>a[href*="/syndicate.php?id="]');
 
-            if (this.syndMain) {
+            if (this.syndMain && general.root.vpmo) {
                 var b = general.doc.createElement('b');
                 // noinspection JSCheckFunctionSignatures
                 b.appendChild(general.doc.createTextNode(' / '));
@@ -11838,7 +11883,9 @@
 
             var _this = this;
             general.root.setTimeout(function () {
-                _this.formatTime(sec - 1);
+                if (general.root.gsig) {
+                    _this.formatTime(sec - 1);
+                }
             }, 1000);
         };
 
@@ -11937,7 +11984,7 @@
                     size = [70, 80];
                 }
 
-                if (name) {
+                if (name && general.root.dkyx) {
                     pos = getPos(enemies[i].parentNode);
                     div = general.doc.createElement('div');
                     general.doc.body.appendChild(div);
@@ -11999,7 +12046,9 @@
             s = sec - 1;
             if (s > -1) {
                 general.root.setTimeout(function () {
-                    _this.setTimer(s);
+                    if (general.root.ff49) {
+                        _this.setTimer(s);
+                    }
                 }, 1000);
             }
         };
@@ -12488,7 +12537,7 @@
                 i;
 
             // на странице списка форумов
-            if (/\/forum\.php$/.test(general.loc)) {
+            if (/\/forum\.php$/.test(general.loc) && general.root.wkdk) {
                 var allBranches = general.doc.querySelectorAll('tr>' +
                         'td[valign="top"][onclick*="/threads.php?fid="]'),
                     f = stData[6].split(','),
@@ -12516,7 +12565,7 @@
 
             fid = this.toHex(fid);
             // на странице сообщений в теме
-            if (/\/messages\.php\?/.test(general.loc)) {
+            if (/\/messages\.php\?/.test(general.loc) && general.root.wkdk) {
                 var json = JSON.parse(stData[7]),
                     tid = this.toHex(this.parseLoc[3]);
 
@@ -12570,7 +12619,7 @@
             }
 
             // на странице списка тем ветки форума
-            if (/\/threads\.php\?/.test(general.loc)) {
+            if (/\/threads\.php\?/.test(general.loc) && general.root.wkdk) {
                 var spanClean = general.doc.createElement('span');
                 general.doc.body.appendChild(spanClean);
                 spanClean.addEventListener('click',
@@ -12595,7 +12644,7 @@
             var del = general.doc.querySelector('td>a[class="mainbutton"]' +
                     '[href*="&do_black=1&addblack="]');
 
-            if (del) {
+            if (del && general.root.y7ci) {
                 del.setAttribute('style', 'background: #FDD8D8;');
 
                 del.addEventListener('click', function (e) {
@@ -12813,7 +12862,9 @@
         this.init = function () {
             var i;
             for (i = 0; i < this.activeProfs.length; i++) {
-                this.activeProfs[i].setAttribute('color', '#FF0000');
+                if (general.root.u34c) {
+                    this.activeProfs[i].setAttribute('color', '#FF0000');
+                }
             }
         };
     };
@@ -12891,7 +12942,7 @@
         };
 
         this.init = function () {
-            if (this.persID && this.target) {
+            if (this.persID && this.target && general.root.swdf) {
                 this.showQuest(this.questURL + this.persID);
             }
         };
@@ -12931,15 +12982,18 @@
                 row.style.display = '';
 
                 stData[0] = +stData[0];
-                if (stData[0] && this.getLvl(row) > stData[0]) {
+                if (stData[0] && this.getLvl(row) > stData[0] &&
+                        general.root.zfjx) {
                     row.style.display = 'none';
                 }
 
-                if (stData[1] && !/<s>именные<\/s>/.test(row.innerHTML)) {
+                if (stData[1] && !/<s>именные<\/s>/.test(row.innerHTML) &&
+                        general.root.zfjx) {
                     row.style.display = 'none';
                 }
 
-                if (stData[2] && !/по мощности/.test(row.innerHTML)) {
+                if (stData[2] && !/по мощности/.test(row.innerHTML) &&
+                        general.root.zfjx) {
                     row.style.display = 'none';
                 }
             }
@@ -13215,11 +13269,12 @@
          */
         this.setInterface = function () {
             var mainTimer = general.doc.createElement('span');
-            mainTimer.innerHTML = '<a href="' + this.url +
-                '" style="text-decoration: none;" target="_blank">' +
-                'Порты</a> ' +
-                '<span id="portTime" style="font-weight: bold;"></span> ' +
-                '[<span id="portTimer" style=""></span>]';
+            if (general.root.iul3) {
+                mainTimer.innerHTML = '<a href="' + this.url +
+                    '" style="text-decoration: none;" target="_blank">' +
+                    'Порты</a> <span id="portTime" style="font-weight: ' +
+                    'bold;"></span> [<span id="portTimer" style=""></span>]';
+            }
             // noinspection JSCheckFunctionSignatures
             this.topPanel.appendChild(general.doc.createTextNode(' | '));
             this.topPanel.appendChild(mainTimer);
@@ -13451,7 +13506,7 @@
 
             var _this = this;
             general.$('calcSyndLvl').addEventListener('click', function () {
-                if (general.$('preloader').style.display) {
+                if (general.$('preloader').style.display && general.root.ljde) {
                     _this.preScan(true);
                     _this.scan(0);
                 }
@@ -13483,7 +13538,7 @@
                     link = syndLinks[i];
                     reg = /&sid=(\d+)$/.exec(link.href);
 
-                    if (reg) {
+                    if (reg && general.root.ppcz) {
                         sign = general.doc.createElement('a');
                         sign.setAttribute('href', 'http://www.gwars.ru/' +
                             'syndicate.php?id=' + reg[1] + '&page=online');
@@ -13586,7 +13641,7 @@
             var npcLink = general.doc.querySelector('a[href*="/me.php?nid="]' +
                 '[onclick^="dolink"]');
 
-            if (npcLink) {
+            if (npcLink && general.root.spua) {
                 var url = 'http://www.gwars.ru/info.php?id=' +
                         /\?nid=(\d+)/.exec(npcLink.href)[1],
                     _this = this;
@@ -13664,11 +13719,130 @@
         head.appendChild(script);
     }
 
+    /** NotGiveCannabisLeaf
+        general.root.aqyq = true; */
+    /** AdditionForNavigationBar
+        general.root.zsdm = true; */
+    /** AdsFilter
+        general.root.vx8r = true; */
+    /** AdvBattleAll
+        general.root.bvhc = true; */
+    /** BlacklistHighlighting
+        general.root.vutw = true; */
+    /** WorkPostGrenadesBroken
+        general.root.hvi6 = true; */
+    /** ResourcesAndBonuses
+        general.root.udgq = true; */
+    /** CritShotsAndLinksBtlLog
+        general.root.zdsc = true; */
+    /** DeleteSms
+        general.root.s40h = true; */
+    /** FarmExperience
+        general.root.dnlo = true; */
+    /** FarmTimer
+        general.root.sozs = true; */
+    /** ComfortableLinksForFarm
+        general.root.sz49 = true; */
+    /** TimeNpc
+        general.root.wl32 = true; */
+    /** AllPlantsOnFarm
+        general.root.so1k = true; */
+    /** GwMenu
+        general.root.nbzy = true; */
+    /** InventoryPlus
+        general.root.yjae = true; */
+    /** CountBattles
+        general.root.xtyz = true; */
+    /** GbCounter
+        general.root.fbba = true; */
+    /** BonusInfo
+        general.root.amp4 = true; */
+    /** BuyHightech
+        general.root.hoxr = true; */
+    /** NewsAndInvit
+        general.root.g7rd = true; */
+    /** DoFilter
+        general.root.crng = true; */
+    /** FilterResOnStat
+        general.root.muad = true; */
+    /** FilterWarlistOne2One
+        general.root.ayxx = true; */
+    /** FixSkills
+        general.root.wdlm = true; */
+    /** FuckTheFarm
+        general.root.eakq = true; */
+    /** HistorySms
+        general.root.idla = true; */
+    /** LinksToHighTech
+        general.root.fyrr = true; */
+    /** GameMania
+        general.root.nu6j = true; */
+    /** GosEnergoAtomFilter
+        general.root.w4sx = true; */
+    /** SortSyndOnline
+        general.root.yg2k = true; */
+    /** HousHealth
+        general.root.zhwo = true; */
+    /** LinksInOne2One
+        general.root.ylrj = true; */
+    /** One2OneCallerInfo
+        general.root.bgqs = true; */
+    /** PersonalNPCNotifications
+        general.root.spua = true; */
+    /** PortTimer
+        general.root.iul3 = true; */
+    /** PortsAndTerminals
+        general.root.fue0 = true; */
+    /** RangeWeapon
+        general.root.kth0 = true; */
+    /** RentAndSale
+        general.root.ojtl = true; */
+    /** ScanKarma
+        general.root.lnvd = true; */
+    /** ScanPers
+        general.root.xq5b = true; */
+    /** ShowInitMessOnForum
+        general.root.jbw6 = true; */
+    /** SearchUser
+        general.root.md9o = true; */
+    /** SkillCounters
+        general.root.gjzo = true; */
+    /** SyndPtsAnalyser
+        general.root.tmqu = true; */
+    /** SyndAnalyser
+        general.root.qfci = true; */
+    /** ShowMyAchievements
+        general.root.bxhu = true; */
+    /** SyndOnlineOnMainPage
+        general.root.vpmo = true; */
+    /** TimeKarma
+        general.root.gsig = true; */
+    /** ImgPokemonsOnBattle
+        general.root.dkyx = true; */
+    /** SoundSyndBattle
+        general.root.ff49 = true; */
+    /** AdvForum
+        general.root.wkdk = true; */
+    /** DelAndAddBlackSms
+        general.root.y7ci = true; */
+    /** ProfColor
+        general.root.u34c = true; */
+    /** CurrentQuestOnInfo
+        general.root.swdf = true; */
+    /** CommonBattleFilter
+        general.root.zfjx = true; */
+    /** CalculateSyndLvl
+        general.root.ljde = true; */
+    /** PortsSyndLinks
+        general.root.ppcz = true; */
+
     var main_init;
     function get_cpigwchbl() {
         if (general.root.cpigwchbl) {
             if (/ganjafoto|ganjafile|photos|quest\.gwars/.test(general.loc) ||
-                    (general.myID && !general.root.cpigwchbl(general.myID))) {
+                    (general.myID &&
+                        !general.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                            exec(general.doc.cookie)[2]))) {
                 main_init();
             }
         } else {

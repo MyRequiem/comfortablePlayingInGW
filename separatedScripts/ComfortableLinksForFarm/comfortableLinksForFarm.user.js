@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.16-030219
+// @version         2.17-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -147,14 +147,14 @@
                 // клетка, на которой находимся
                 pos = general.doc.querySelector('img[src$="ru/i/point2.gif"]');
 
-            if (a1) {
+            if (a1 && general.root.sz49) {
                 this.setLink(a1, null);
-            } else if (a2) {
+            } else if (a2 && general.root.sz49) {
                 this.setLink(a2, 'Далее');
             }
 
             pos = but && pos ? new GetPos().init(pos.parentNode) : null;
-            if (pos) {
+            if (pos && general.root.sz49) {
                 but.setAttribute('style', 'position: absolute; ' +
                         'background: #F4F3F1; ' +
                         'border-radius: 7px; ' +
@@ -183,7 +183,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new ComfortableLinksForFarm().init();
             }
         } else {

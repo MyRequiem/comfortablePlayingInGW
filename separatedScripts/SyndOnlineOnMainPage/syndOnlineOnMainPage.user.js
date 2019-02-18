@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.25-030219
+// @version         2.26-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -270,7 +270,7 @@
             this.syndMain = general.doc.
                     querySelector('span>b+nobr>a[href*="/syndicate.php?id="]');
 
-            if (this.syndMain) {
+            if (this.syndMain && general.root.vpmo) {
                 var b = general.doc.createElement('b');
                 // noinspection JSCheckFunctionSignatures
                 b.appendChild(general.doc.createTextNode(' / '));
@@ -317,7 +317,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new SyndOnlineOnMainPage().init();
             }
         } else {

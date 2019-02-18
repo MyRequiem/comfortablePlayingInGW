@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.05-030219
+// @version         2.06-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -301,7 +301,7 @@
             // добавляем ссылки из хранилища в панель и в div
             var linkName, lnk;
             for (linkName in dataSt) {
-                if (dataSt.hasOwnProperty(linkName)) {
+                if (dataSt.hasOwnProperty(linkName) && this.root.zsdm) {
                     lnk = this.createLink(linkName, dataSt[linkName]);
                     this.addLink(lnk);
                 }
@@ -366,7 +366,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 mainObj.init();
             }
         } else {

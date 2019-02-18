@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.18-060219
+// @version         1.19-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -306,7 +306,7 @@
 
             var _this = this;
             general.$('calcSyndLvl').addEventListener('click', function () {
-                if (general.$('preloader').style.display) {
+                if (general.$('preloader').style.display && general.root.ljde) {
                     _this.preScan(true);
                     _this.scan(0);
                 }
@@ -330,7 +330,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new CalculateSyndLvl().init();
             }
         } else {

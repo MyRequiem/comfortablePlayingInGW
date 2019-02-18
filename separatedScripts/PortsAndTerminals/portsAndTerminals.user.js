@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/map.php*
 // @grant           none
 // @license         MIT
-// @version         2.16-030219
+// @version         2.17-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -120,7 +120,7 @@
                 coord = /\d+&sy=\d+/.exec(cells[i].parentNode.href)[0];
                 for (j = 0; j < this.sectors.length; j++) {
                     tmp = this.sectors[j].split('|');
-                    if (coord === tmp[0]) {
+                    if (coord === tmp[0] && general.root.fue0) {
                         // noinspection JSUnresolvedFunction
                         cls = cells[i].parentNode.parentNode.
                                 getAttribute('class');
@@ -160,7 +160,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new PortsAndTerminals().init();
             }
         } else {

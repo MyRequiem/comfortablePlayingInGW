@@ -12,7 +12,7 @@
 // @include         http://www.gwars.ru/wargroup.php*
 // @grant           none
 // @license         MIT
-// @version         2.40-290119
+// @version         2.41-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -473,7 +473,7 @@
             }
 
             var topPanel = new GetTopPanel().init();
-            if (topPanel) {
+            if (topPanel && general.root.hvi6) {
                 // noinspection JSCheckFunctionSignatures
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(this.wpgbContainer);
@@ -503,7 +503,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new WorkPostGrenadesBroken().init();
             }
         } else {

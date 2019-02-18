@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/wargroup.php?war=armed*
 // @grant           none
 // @license         MIT
-// @version         1.13-030219
+// @version         1.14-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -150,15 +150,18 @@
                 row.style.display = '';
 
                 stData[0] = +stData[0];
-                if (stData[0] && this.getLvl(row) > stData[0]) {
+                if (stData[0] && this.getLvl(row) > stData[0] &&
+                        general.root.zfjx) {
                     row.style.display = 'none';
                 }
 
-                if (stData[1] && !/<s>именные<\/s>/.test(row.innerHTML)) {
+                if (stData[1] && !/<s>именные<\/s>/.test(row.innerHTML) &&
+                        general.root.zfjx) {
                     row.style.display = 'none';
                 }
 
-                if (stData[2] && !/по мощности/.test(row.innerHTML)) {
+                if (stData[2] && !/по мощности/.test(row.innerHTML) &&
+                        general.root.zfjx) {
                     row.style.display = 'none';
                 }
             }
@@ -323,7 +326,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new CommonBattleFilter().init();
             }
         } else {

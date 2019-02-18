@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/market.php?buy=*
 // @grant           none
 // @license         MIT
-// @version         2.23-030219
+// @version         2.24-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -238,13 +238,15 @@
                 this.setData(['', '']);
             }
 
-            this.spanContainer = this.doc.createElement('span');
-            this.spanContainer.setAttribute('style', 'margin-left: 10px;');
-            this.setButton('islZ', '[Z]');
-            this.setButton('islG', '[G]');
-            this.setButton('online', '[Online]');
-            this.setButton('resetFilter', '[Сброс]');
-            li.insertBefore(this.spanContainer, li.lastElementChild);
+            if (this.root.vx8r) {
+                this.spanContainer = this.doc.createElement('span');
+                this.spanContainer.setAttribute('style', 'margin-left: 10px;');
+                this.setButton('islZ', '[Z]');
+                this.setButton('islG', '[G]');
+                this.setButton('online', '[Online]');
+                this.setButton('resetFilter', '[Сброс]');
+                li.insertBefore(this.spanContainer, li.lastElementChild);
+            }
             if (this.spanContainer.previousElementSibling.
                     nodeName === 'BR') {
                 li.removeChild(this.spanContainer.previousElementSibling);
@@ -299,7 +301,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 mainObj.init();
             }
         } else {

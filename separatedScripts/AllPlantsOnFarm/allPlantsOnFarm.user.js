@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         1.35-030219
+// @version         1.36-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -292,7 +292,7 @@
                 str = '';
 
             cont.innerHTML = '';
-            if (val !== '0') {
+            if (val !== '0' && general.root.so1k) {
                 var i;
                 for (i = 3; i < 7; i++) {
                     str += '<img src="http://images.gwars.ru/' +
@@ -558,7 +558,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new AllPlantsOnFarm().init();
             }
         } else {

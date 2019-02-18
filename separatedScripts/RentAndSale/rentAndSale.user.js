@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/home.senditem.php*
 // @grant           none
 // @license         MIT
-// @version         2.05-030219
+// @version         2.06-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -102,7 +102,7 @@
         this.init = function () {
             var radio = general.doc.querySelectorAll('input[name="sendtype"]');
 
-            if (radio.length) {
+            if (radio.length && general.root.ojtl) {
                 var scrpt = general.doc.createElement('script');
                 scrpt.innerHTML = 'function checkPrice(){if(document.' +
                         'getElementById("for_money_id").value=="0"){' +
@@ -137,7 +137,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new RentAndSale().init();
             }
         } else {

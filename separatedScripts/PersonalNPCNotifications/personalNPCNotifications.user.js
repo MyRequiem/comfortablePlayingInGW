@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/me.php*
 // @grant           none
 // @license         MIT
-// @version         1.12-030219
+// @version         1.13-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -210,7 +210,7 @@
             var npcLink = general.doc.querySelector('a[href*="/me.php?nid="]' +
                 '[onclick^="dolink"]');
 
-            if (npcLink) {
+            if (npcLink && general.root.spua) {
                 var url = 'http://www.gwars.ru/info.php?id=' +
                         /\?nid=(\d+)/.exec(npcLink.href)[1],
                     _this = this;
@@ -279,7 +279,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new PersonalNPCNotifications().init();
             }
         } else {

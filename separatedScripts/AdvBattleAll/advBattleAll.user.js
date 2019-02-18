@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.13-100219
+// @version         4.14-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -990,6 +990,7 @@
                 itemLink,
                 itemId,
                 range,
+                skill,
                 color,
                 splt,
                 sw,
@@ -1010,6 +1011,18 @@
                     // открываем их в отдельной вкладке
                     itemLink.style.color = color;
                     itemLink.setAttribute('target', '_blank');
+
+                    // первая ссылка - ссылка на оружие, добавляем умелку
+                    skill = '';
+                    if (!i) {
+                        skill = prnt.querySelector('img[src*="/skill_"]+b>' +
+                            'font[style="font-size:8px;"]');
+                        if (skill) {
+                            skill = '<span style="color: #005FFF; ' +
+                                'margin-left: 2px; font-size: 9px;">[' +
+                                skill.innerHTML + ']</span>';
+                        }
+                    }
 
                     if (range) {
                         // наличие встроенного подствола, например thales_grl
@@ -1047,7 +1060,8 @@
                             'font-size: 7pt; margin-left: 7px; ' +
                             'float: right;">(' + range + ')' +
                             '</span>' + indent + '<span style="color: ' +
-                            color + ';">' + itemLink.innerHTML + '</span><br>';
+                            color + ';">' + itemLink.innerHTML + skill +
+                            '</span><br>';
 
                         // подствол (или встроенный, или установленный)
                         if (builtinSw) {
@@ -1061,7 +1075,8 @@
                         }
                     } else {
                         objPers.allWeapon += indent + '<span style="color: ' +
-                            color + ';">' + itemLink.innerHTML + '</span><br>';
+                            color + ';">' + itemLink.innerHTML + skill +
+                            '</span><br>';
                     }
                 }
             }
@@ -1987,7 +2002,7 @@
                 i;
 
             // в бою
-            if (!general.viewMode) {
+            if (!general.viewMode && general.root.bvhc) {
                 // если есть список выбора врага (ход не сделан)
                 if (selectEnemies) {
                     // играем звук о начале хода
@@ -2017,7 +2032,9 @@
                 general.setData(dataSt);
             }
 
-            this.getLeftRightCommands();
+            if (general.root.bvhc) {
+                this.getLeftRightCommands();
+            }
 
             // ссылки на персов слева и справа
             this.leftPers = this.getPers(this.leftRightCommands[0]);
@@ -2410,7 +2427,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new AdvBattleAll().init();
             }
         } else {

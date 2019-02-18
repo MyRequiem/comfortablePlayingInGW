@@ -10,7 +10,7 @@
 // @include         http://www.gwars.ru/battlelog.php*
 // @grant           none
 // @license         MIT
-// @version         2.47-310119
+// @version         2.48-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -296,7 +296,7 @@
          * @param   {Boolean}   mode
          */
         this.setDataDiv = function (target, mode) {
-            if (showCritShots) {
+            if (showCritShots && general.root.zdsc) {
                 var d = general.doc.createElement('div');
                 d.innerHTML = '<span style="color: #008000; font-weight: ' +
                     'bold;">Криты:</span> <span id="count_all_crits" ' +
@@ -378,7 +378,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new CritShotsLinksOnBattleLog().init();
             }
         } else {

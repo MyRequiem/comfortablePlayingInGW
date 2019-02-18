@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.19-030219
+// @version         2.20-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -275,8 +275,7 @@
          */
         this.init = function () {
             var topPanel = new GetTopPanel().init();
-
-            if (topPanel) {
+            if (topPanel && general.root.udgq) {
                 this.divResult.setAttribute('style', 'visibility: hidden; ' +
                         'position: absolute; padding: 3px; background-color: ' +
                         '#E7FFE7; border: solid 1px #339933; ' +
@@ -310,7 +309,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new ResourcesAndBonuses().init();
             }
         } else {

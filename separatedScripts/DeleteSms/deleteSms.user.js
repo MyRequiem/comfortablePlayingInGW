@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/sms.php*
 // @grant           none
 // @license         MIT
-// @version         2.17-030219
+// @version         2.18-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -175,6 +175,10 @@
                 this.checkSms(smsChk[i], false, true);
             }
 
+            if (!general.root.s40h) {
+                target = '';
+            }
+
             target = target.parentNode.parentNode;
             // noinspection JSUndefinedPropertyAssignment
             target.innerHTML += '<td valign="top" class="greengreenbg" ' +
@@ -238,7 +242,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new DeleteSms().init();
             }
         } else {

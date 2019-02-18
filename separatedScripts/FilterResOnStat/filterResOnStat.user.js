@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/stats.php
 // @grant           none
 // @license         MIT
-// @version         2.03-030219
+// @version         2.04-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -104,7 +104,7 @@
             var tbl = general.doc.querySelector('table[border="0"]' +
                     '[class="wb"]');
 
-            if (tbl) {
+            if (tbl && general.root.muad) {
                 var trs = tbl.querySelectorAll('tr'),
                     nameRes,
                     i;
@@ -137,7 +137,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new FilterResOnStat().init();
             }
         } else {

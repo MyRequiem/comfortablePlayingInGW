@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/sms-read.php?type=*
 // @grant           none
 // @license         MIT
-// @version         2.08-030219
+// @version         2.09-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -438,7 +438,9 @@
                 _this.sms = [];
                 general.$('preloader').style.display = '';
                 general.$('showOfSyndLinks').style.display = 'none';
-                _this.showHistory(0, 0, 0);
+                if (general.root.idla) {
+                    _this.showHistory(0, 0, 0);
+                }
             }, false);
         };
     };
@@ -459,7 +461,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new HistorySms().init();
             }
         } else {

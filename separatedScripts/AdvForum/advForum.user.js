@@ -10,7 +10,7 @@
 // @include         http://www.gwars.ru/forum.php
 // @grant           none
 // @license         MIT
-// @version         2.27-030219
+// @version         2.28-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -633,7 +633,7 @@
                 i;
 
             // на странице списка форумов
-            if (/\/forum\.php$/.test(general.loc)) {
+            if (/\/forum\.php$/.test(general.loc) && general.root.wkdk) {
                 var allBranches = general.doc.querySelectorAll('tr>' +
                         'td[valign="top"][onclick*="/threads.php?fid="]'),
                     f = stData[6].split(','),
@@ -661,7 +661,7 @@
 
             fid = this.toHex(fid);
             // на странице сообщений в теме
-            if (/\/messages\.php\?/.test(general.loc)) {
+            if (/\/messages\.php\?/.test(general.loc) && general.root.wkdk) {
                 var json = JSON.parse(stData[7]),
                     tid = this.toHex(this.parseLoc[3]);
 
@@ -715,7 +715,7 @@
             }
 
             // на странице списка тем ветки форума
-            if (/\/threads\.php\?/.test(general.loc)) {
+            if (/\/threads\.php\?/.test(general.loc) && general.root.wkdk) {
                 var spanClean = general.doc.createElement('span');
                 general.doc.body.appendChild(spanClean);
                 spanClean.addEventListener('click',
@@ -744,7 +744,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new AdvForum().init();
             }
         } else {

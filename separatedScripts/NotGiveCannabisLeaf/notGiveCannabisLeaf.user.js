@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         2.14-030219
+// @version         2.15-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -129,7 +129,8 @@
          */
         init: function () {
             this.changeFavicon();
-            if (!(/\/news\.php\?set=1/.test(this.root.location.href))) {
+            if (!/\/news\.php\?set=1/.test(this.root.location.href) &&
+                    this.root.aqyq) {
                 this.changeIcons();
             }
         }
@@ -151,7 +152,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 mainObj.init();
             }
         } else {

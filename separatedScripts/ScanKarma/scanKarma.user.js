@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.07-030219
+// @version         2.08-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -130,7 +130,7 @@
                 var karma = /Карма:\s\d+\.?\d*\s\((\d+\/\d+)\)/i.
                         exec(general.doc.body.textContent);
 
-                if (karma) {
+                if (karma && general.root.lnvd) {
                     // noinspection JSValidateTypes
                     karma = karma[1];
                     if (!general.getData()) {
@@ -199,7 +199,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new ScanKarma().init();
             }
         } else {

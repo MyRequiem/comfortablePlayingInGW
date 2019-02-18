@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/b0/*
 // @grant           none
 // @license         MIT
-// @version         2.05-030219
+// @version         2.06-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -228,7 +228,7 @@
                 return;
             }
 
-            if (general.getData()[0]) {
+            if (general.getData()[0] && general.root.zhwo) {
                 general.setData([]);
 
                 // если здоровье менее 80%
@@ -256,7 +256,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new HousHealth().init();
             }
         } else {

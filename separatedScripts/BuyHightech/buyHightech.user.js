@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/market-p.php?stage=2&item_id=*
 // @grant           none
 // @license         MIT
-// @version         2.05-030219
+// @version         2.06-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -90,7 +90,7 @@
          * @method init
          */
         this.init = function () {
-            if (/\/shopc\.php/.test(general.loc)) {
+            if (/\/shopc\.php/.test(general.loc) && general.root.hoxr) {
                 var descrTd = general.doc.querySelectorAll('td[class$=' +
                          '"lightbg"][valign="top"][align="left"]' +
                              '[width="100%"]'),
@@ -172,7 +172,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new BuyHightech().init();
             }
         } else {

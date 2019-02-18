@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.28-030219
+// @version         2.29-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -679,11 +679,13 @@
             }
 
             var butShowPTSAnalizePanel = general.doc.createElement('a');
-            butShowPTSAnalizePanel.innerHTML = 'Анализ PTS';
-            butShowPTSAnalizePanel.setAttribute('style', 'cursor: pointer');
-            // noinspection JSCheckFunctionSignatures
-            target.appendChild(general.doc.createTextNode(' | '));
-            target.appendChild(butShowPTSAnalizePanel);
+            if (general.root.tmqu) {
+                butShowPTSAnalizePanel.innerHTML = 'Анализ PTS';
+                butShowPTSAnalizePanel.setAttribute('style', 'cursor: pointer');
+                // noinspection JSCheckFunctionSignatures
+                target.appendChild(general.doc.createTextNode(' | '));
+                target.appendChild(butShowPTSAnalizePanel);
+            }
 
             var _this = this;
             butShowPTSAnalizePanel.addEventListener('click', function () {
@@ -776,7 +778,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new SyndPtsAnalyser().init();
             }
         } else {
