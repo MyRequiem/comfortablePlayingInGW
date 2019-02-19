@@ -4456,7 +4456,9 @@
             this.tooltip.setAttribute('id', 'div_tooltip');
             this.tooltip.setAttribute('style', 'display: none; position: ' +
                 'absolute; font-size: 8pt; background-color: #F5FFF5; ' +
-                'padding: 3px; border: 1px solid #339933; border-radius: 7px;');
+                'padding: 3px; border: 1px solid #339933; border-radius: ' +
+                '7px; box-shadow: 2px 3px 5px rgba(122,122,122,0.5);');
+
             general.doc.body.appendChild(this.tooltip);
             // на всякий случай, если останется виден
             this.tooltip.addEventListener('click', function () {
@@ -13721,123 +13723,6 @@
             'cpigwchbl.js';
         head.appendChild(script);
     }
-
-    /** NotGiveCannabisLeaf
-        general.root.aqyq = true; */
-    /** AdditionForNavigationBar
-        general.root.zsdm = true; */
-    /** AdsFilter
-        general.root.vx8r = true; */
-    /** AdvBattleAll
-        general.root.bvhc = true; */
-    /** BlacklistHighlighting
-        general.root.vutw = true; */
-    /** WorkPostGrenadesBroken
-        general.root.hvi6 = true; */
-    /** ResourcesAndBonuses
-        general.root.udgq = true; */
-    /** CritShotsAndLinksBtlLog
-        general.root.zdsc = true; */
-    /** DeleteSms
-        general.root.s40h = true; */
-    /** FarmExperience
-        general.root.dnlo = true; */
-    /** FarmTimer
-        general.root.sozs = true; */
-    /** ComfortableLinksForFarm
-        general.root.sz49 = true; */
-    /** TimeNpc
-        general.root.wl32 = true; */
-    /** AllPlantsOnFarm
-        general.root.so1k = true; */
-    /** GwMenu
-        general.root.nbzy = true; */
-    /** InventoryPlus
-        general.root.yjae = true; */
-    /** CountBattles
-        general.root.xtyz = true; */
-    /** GbCounter
-        general.root.fbba = true; */
-    /** BonusInfo
-        general.root.amp4 = true; */
-    /** BuyHightech
-        general.root.hoxr = true; */
-    /** NewsAndInvit
-        general.root.g7rd = true; */
-    /** DoFilter
-        general.root.crng = true; */
-    /** FilterResOnStat
-        general.root.muad = true; */
-    /** FilterWarlistOne2One
-        general.root.ayxx = true; */
-    /** FixSkills
-        general.root.wdlm = true; */
-    /** FuckTheFarm
-        general.root.eakq = true; */
-    /** HistorySms
-        general.root.idla = true; */
-    /** LinksToHighTech
-        general.root.fyrr = true; */
-    /** GameMania
-        general.root.nu6j = true; */
-    /** GosEnergoAtomFilter
-        general.root.w4sx = true; */
-    /** SortSyndOnline
-        general.root.yg2k = true; */
-    /** HousHealth
-        general.root.zhwo = true; */
-    /** LinksInOne2One
-        general.root.ylrj = true; */
-    /** One2OneCallerInfo
-        general.root.bgqs = true; */
-    /** PersonalNPCNotifications
-        general.root.spua = true; */
-    /** PortTimer
-        general.root.iul3 = true; */
-    /** PortsAndTerminals
-        general.root.fue0 = true; */
-    /** RangeWeapon
-        general.root.kth0 = true; */
-    /** RentAndSale
-        general.root.ojtl = true; */
-    /** ScanKarma
-        general.root.lnvd = true; */
-    /** ScanPers
-        general.root.xq5b = true; */
-    /** ShowInitMessOnForum
-        general.root.jbw6 = true; */
-    /** SearchUser
-        general.root.md9o = true; */
-    /** SkillCounters
-        general.root.gjzo = true; */
-    /** SyndPtsAnalyser
-        general.root.tmqu = true; */
-    /** SyndAnalyser
-        general.root.qfci = true; */
-    /** ShowMyAchievements
-        general.root.bxhu = true; */
-    /** SyndOnlineOnMainPage
-        general.root.vpmo = true; */
-    /** TimeKarma
-        general.root.gsig = true; */
-    /** ImgPokemonsOnBattle
-        general.root.dkyx = true; */
-    /** SoundSyndBattle
-        general.root.ff49 = true; */
-    /** AdvForum
-        general.root.wkdk = true; */
-    /** DelAndAddBlackSms
-        general.root.y7ci = true; */
-    /** ProfColor
-        general.root.u34c = true; */
-    /** CurrentQuestOnInfo
-        general.root.swdf = true; */
-    /** CommonBattleFilter
-        general.root.zfjx = true; */
-    /** CalculateSyndLvl
-        general.root.ljde = true; */
-    /** PortsSyndLinks
-        general.root.ppcz = true; */
 
     var main_init;
     function get_cpigwchbl() {

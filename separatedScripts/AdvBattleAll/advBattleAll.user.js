@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.14-180219
+// @version         4.14-190219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -2402,7 +2402,8 @@
             this.tooltip.setAttribute('id', 'div_tooltip');
             this.tooltip.setAttribute('style', 'display: none; position: ' +
                 'absolute; font-size: 8pt; background-color: #F5FFF5; ' +
-                'padding: 3px; border: 1px solid #339933; border-radius: 7px;');
+                'padding: 3px; border: 1px solid #339933; border-radius: ' +
+                '7px; box-shadow: 2px 3px 5px rgba(122,122,122,0.5);');
             general.doc.body.appendChild(this.tooltip);
             // на всякий случай, если останется виден
             this.tooltip.addEventListener('click', function () {
