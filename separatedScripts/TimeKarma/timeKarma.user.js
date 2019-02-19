@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/info.vote.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.07-030219
+// @version         2.08-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -134,7 +134,9 @@
 
             var _this = this;
             general.root.setTimeout(function () {
-                _this.formatTime(sec - 1);
+                if (general.root.gsig) {
+                    _this.formatTime(sec - 1);
+                }
             }, 1000);
         };
 
@@ -203,7 +205,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new TimeKarma().init();
             }
         } else {

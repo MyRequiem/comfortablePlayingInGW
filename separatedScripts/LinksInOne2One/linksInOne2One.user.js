@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/warlist.php?war=armed*
 // @grant           none
 // @license         MIT
-// @version         2.03-030219
+// @version         2.04-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -87,7 +87,7 @@
             var table = general.doc.querySelector('td[class="txt"]>' +
                     'table[border="0"][cellpadding="5"][cellspacing="1"]');
 
-            if (table) {
+            if (table && general.root.ylrj) {
                 var trs = table.querySelectorAll('tr'),
                     last,
                     name,
@@ -123,7 +123,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new LinksInOne2One().init();
             }
         } else {

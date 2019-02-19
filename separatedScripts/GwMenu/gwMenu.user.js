@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru*
 // @grant           none
 // @license         MIT
-// @version         2.40-090219
+// @version         2.41-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -174,7 +174,9 @@
                 '.gwm td.bold span.darkorange {color: #A44B00;}' +
                 '.gwm a {text-decoration: none; color: #0000FF; ' +
                     'font-size: 8pt;}';
-            general.doc.querySelector('head').appendChild(cssStyle);
+            if (general.root.nbzy) {
+                general.doc.querySelector('head').appendChild(cssStyle);
+            }
         };
 
         /**
@@ -865,7 +867,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new GwMenu().init();
             }
         } else {

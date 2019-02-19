@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.23-030219
+// @version         2.24-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -128,8 +128,10 @@
                 // noinspection JSCheckFunctionSignatures
                 exp = parseFloat(/(\d+\.?\d*) опыта/.exec(plants[i].innerHTML));
                 span.innerHTML = this.calculateFarm(price1, price2, time, exp);
-                target = plants[i].querySelector('br');
-                target.parentNode.insertBefore(span, target);
+                if (general.root.dnlo) {
+                    target = plants[i].querySelector('br');
+                    target.parentNode.insertBefore(span, target);
+                }
             }
         };
     };
@@ -150,7 +152,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new FarmExperience().init();
             }
         } else {

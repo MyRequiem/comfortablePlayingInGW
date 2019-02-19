@@ -10,7 +10,7 @@
 // @include         http://www.gwars.ru/info.php?*
 // @grant           none
 // @license         MIT
-// @version         2.05-030219
+// @version         2.06-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -93,7 +93,7 @@
         this.init = function () {
             var link;
 
-            if (/\/me(\/|\.php)/.test(general.loc)) {
+            if (/\/me(\/|\.php)/.test(general.loc) && general.root.eakq) {
                 link = general.doc.querySelector('[src$="images.gwars.' +
                         'ru/i/home/farm.gif"]').parentNode;
                 var lparent = link.parentNode;
@@ -103,10 +103,13 @@
                 return;
             }
 
-            link = general.doc.querySelector('a[href*="/info.ach.php?id="]+' +
-                    'a[href*="/info.ach.php?id="]').nextSibling;
-            while (link.nextSibling) {
-                link.parentNode.removeChild(link.nextSibling);
+            if (general.root.eakq) {
+                link = general.doc.
+                    querySelector('a[href*="/info.ach.php?id="]+' +
+                        'a[href*="/info.ach.php?id="]').nextSibling;
+                while (link.nextSibling) {
+                    link.parentNode.removeChild(link.nextSibling);
+                }
             }
         };
     };
@@ -127,7 +130,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new FuckTheFarm().init();
             }
         } else {

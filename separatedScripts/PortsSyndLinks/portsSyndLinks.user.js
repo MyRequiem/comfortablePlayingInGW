@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/object.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.02-030219
+// @version         1.03-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -96,7 +96,7 @@
                     link = syndLinks[i];
                     reg = /&sid=(\d+)$/.exec(link.href);
 
-                    if (reg) {
+                    if (reg && this.root.ppcz) {
                         sign = this.doc.createElement('a');
                         sign.setAttribute('href', 'http://www.gwars.ru/' +
                             'syndicate.php?id=' + reg[1] + '&page=online');
@@ -129,7 +129,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 mainObj.init();
             }
         } else {

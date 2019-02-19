@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.15-030219
+// @version         2.16-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -184,7 +184,9 @@
             s = sec - 1;
             if (s > -1) {
                 general.root.setTimeout(function () {
-                    _this.setTimer(s);
+                    if (general.root.ff49) {
+                        _this.setTimer(s);
+                    }
                 }, 1000);
             }
         };
@@ -281,7 +283,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new SoundSyndBattle().init();
             }
         } else {

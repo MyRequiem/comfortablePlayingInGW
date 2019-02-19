@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.02-030219
+// @version         2.03-180219
 // @author          MyRequiem
 // ==/UserScript==
 
@@ -137,7 +137,7 @@
                 btl;
 
             for (btl in battles) {
-                if (battles.hasOwnProperty(btl)) {
+                if (battles.hasOwnProperty(btl) && general.root.yg2k) {
                     color = '';
                     for (i = 0; i < syndBattles.length; i++) {
                         // если бой синдикатный, выделяем зеленым цветом
@@ -192,7 +192,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new SortSyndOnline().init();
             }
         } else {

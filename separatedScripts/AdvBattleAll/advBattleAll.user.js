@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.13-100219
+// @version         4.14-190219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -957,6 +957,24 @@
                     (/видимость: (\d+%)/.exec(allText)[1]) : '';
             objPers.power = /мощность: \d+/.test(allText) ?
                     (/мощность: (\d+)/.exec(allText)[1]) : '';
+            objPers.skill = '';
+
+            // добавляем умелку
+            var skill = prnt.querySelectorAll('img[src*="/skill_"]+b>' +
+                    'font[style="font-size:8px;"]'),
+                i;
+
+            if (skill.length) {
+                objPers.skill = '<br>' +
+                    '<span style="color: #0087FF; font-size:9px;">';
+
+                for (i = 0; i < skill.length; i++) {
+                    objPers.skill += skill[i].innerHTML +
+                        (i !== skill.length - 1 ? ', ' : '');
+                }
+
+                objPers.skill += '</span>';
+            }
 
             // оружие (для заполнения списка выбора врагов)
             objPers.weapon = '';
@@ -992,8 +1010,7 @@
                 range,
                 color,
                 splt,
-                sw,
-                i;
+                sw;
 
             // у поков ссылок на амуницию нет
             if (allAmmunition.length) {
@@ -1674,7 +1691,8 @@
                             pers.hp[2] + ']</span><div style="color: ' +
                             '#B85006; margin-left: 10px;">Видимость: ' +
                             pers.visib + '<br><span style="color: #000000;">' +
-                            'Мощность: ' + pers.power + '</span></div><div>' +
+                            'Мощность: ' + pers.power + '</span>' + pers.skill +
+                            '</div><div>' +
                             pers.allWeapon + '</div>';
 
                         // прозрачность перса в зависимости от его видимости
@@ -1987,7 +2005,7 @@
                 i;
 
             // в бою
-            if (!general.viewMode) {
+            if (!general.viewMode && general.root.bvhc) {
                 // если есть список выбора врага (ход не сделан)
                 if (selectEnemies) {
                     // играем звук о начале хода
@@ -2017,7 +2035,9 @@
                 general.setData(dataSt);
             }
 
-            this.getLeftRightCommands();
+            if (general.root.bvhc) {
+                this.getLeftRightCommands();
+            }
 
             // ссылки на персов слева и справа
             this.leftPers = this.getPers(this.leftRightCommands[0]);
@@ -2382,7 +2402,8 @@
             this.tooltip.setAttribute('id', 'div_tooltip');
             this.tooltip.setAttribute('style', 'display: none; position: ' +
                 'absolute; font-size: 8pt; background-color: #F5FFF5; ' +
-                'padding: 3px; border: 1px solid #339933; border-radius: 7px;');
+                'padding: 3px; border: 1px solid #339933; border-radius: ' +
+                '7px; box-shadow: 2px 3px 5px rgba(122,122,122,0.5);');
             general.doc.body.appendChild(this.tooltip);
             // на всякий случай, если останется виден
             this.tooltip.addEventListener('click', function () {
@@ -2410,7 +2431,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new AdvBattleAll().init();
             }
         } else {

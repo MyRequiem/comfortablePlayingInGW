@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.realty.php?id=2
 // @grant           none
 // @license         MIT
-// @version         4.02-030219
+// @version         4.03-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -144,7 +144,7 @@
 
             var synd, opt;
             for (synd in objs) {
-                if (objs.hasOwnProperty(synd)) {
+                if (objs.hasOwnProperty(synd) && general.root.w4sx) {
                     for (i = 0; i < objs[synd].length; i++) {
                         prnt.appendChild(objs[synd][i]);
                     }
@@ -331,7 +331,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new GosEnergoAtomFilter().init();
             }
         } else {

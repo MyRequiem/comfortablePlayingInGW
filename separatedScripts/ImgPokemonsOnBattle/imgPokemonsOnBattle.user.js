@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/warlog.php*
 // @grant           none
 // @license         MIT
-// @version         2.17-030219
+// @version         2.18-180219
 // @author          MyRequiem, идея Buger_man
 // ==/UserScript==
 
@@ -166,7 +166,7 @@
                     size = [70, 80];
                 }
 
-                if (name) {
+                if (name && general.root.dkyx) {
                     pos = getPos(enemies[i].parentNode);
                     div = general.doc.createElement('div');
                     general.doc.body.appendChild(div);
@@ -215,7 +215,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new ImgPokemonsOnBattle().init();
             }
         } else {

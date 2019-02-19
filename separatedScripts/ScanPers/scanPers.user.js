@@ -10,7 +10,7 @@
 // @exclude         http://www.gwars.ru/b0/*
 // @grant           none
 // @license         MIT
-// @version         3.04-030219
+// @version         3.05-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -268,10 +268,12 @@
                     vis = settings.style.visibility,
                     pos = _this.getPos(this);
 
-                settings.style.top = (pos.y + 25).toString();
-                settings.style.left = (pos.x - 80).toString();
-                settings.style.visibility = vis === 'hidden' ?
-                        'visible' : 'hidden';
+                if (general.root.xq5b) {
+                    settings.style.top = (pos.y + 25).toString();
+                    settings.style.left = (pos.x - 80).toString();
+                    settings.style.visibility = vis === 'hidden' ?
+                            'visible' : 'hidden';
+                }
             };
         };
 
@@ -656,7 +658,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new ScanPers().init();
             }
         } else {

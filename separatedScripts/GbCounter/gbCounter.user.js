@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.06-030219
+// @version         2.07-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -202,7 +202,7 @@
             }
 
             var divGB = general.doc.querySelector('td>b>div[id="cdiv"]');
-            if (divGB) {
+            if (divGB && general.root.fbba) {
                 this.countGbNow = +divGB.innerHTML.replace(/,/g, '');
                 this.spanCountGB = general.doc.createElement('span');
                 this.spanCountGB.setAttribute('style', 'margin-left: 5px; ' +
@@ -238,7 +238,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new GbCounter().init();
             }
         } else {

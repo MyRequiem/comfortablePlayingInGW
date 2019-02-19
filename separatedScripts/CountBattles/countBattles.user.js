@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.warstats.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.28-030219
+// @version         2.29-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -169,7 +169,7 @@
                 i;
 
             for (i = 0; i < btlLogs.length; i++) {
-                if (this.reg.test(btlLogs[i].innerHTML)) {
+                if (this.reg.test(btlLogs[i].innerHTML) && general.root.xtyz) {
                     // noinspection JSUnresolvedVariable
                     this.rez.btls.push(btlLogs[i].parentNode.parentNode.
                             nextElementSibling);
@@ -303,7 +303,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new CountBattles().init();
             }
         } else {

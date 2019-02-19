@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/items.php*
 // @grant           none
 // @license         MIT
-// @version         2.45-030219
+// @version         2.46-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -195,7 +195,7 @@
                 }
 
                 // показываем количество только если оно больше 1
-                if (linesObj[i].count !== 1) {
+                if (linesObj[i].count !== 1 && general.root.yjae) {
                     id = linesObj[i].line.id;
                     // вставим скрытые вещи
                     trHide = general.doc.createElement('tr');
@@ -276,7 +276,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new InventoryPlus().init();
             }
         } else {

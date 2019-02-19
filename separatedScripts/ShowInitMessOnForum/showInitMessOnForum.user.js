@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/messages.php*
 // @grant           none
 // @license         MIT
-// @version         2.22-030219
+// @version         2.23-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -205,7 +205,7 @@
          * @param   {int}   ind
          */
         this.parseMessages = function (ind) {
-            if (!this.messages[ind]) {
+            if (!this.messages[ind] || !general.root.jbw6) {
                 return;
             }
 
@@ -300,7 +300,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new ShowInitMessOnForum().init();
             }
         } else {

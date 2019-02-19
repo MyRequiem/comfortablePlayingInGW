@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.08-030219
+// @version         2.09-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -279,7 +279,7 @@
                 if (tdName && tdName.innerHTML) {
                     bonusName = tdName.innerHTML.
                                     replace(/\s?(\(%\))?:/, '').toLowerCase();
-                    if (this.bonus[bonusName]) {
+                    if (this.bonus[bonusName] && general.root.amp4) {
                         tdName.innerHTML = '<span style="cursor: pointer;">' +
                             tdName.innerHTML + '</span>';
 
@@ -317,7 +317,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new BonusInfo().init();
             }
         } else {

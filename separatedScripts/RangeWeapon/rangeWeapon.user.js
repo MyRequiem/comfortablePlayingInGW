@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php*
 // @grant           none
 // @license         MIT
-// @version         2.06-030219
+// @version         2.07-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -207,7 +207,8 @@
          */
         this.init = function () {
             if (this.equipment &&
-                    (/(Левая|Правая) рука/.test(this.equipment.innerHTML))) {
+                    /(Левая|Правая) рука/.test(this.equipment.innerHTML) &&
+                        general.root.kth0) {
                 var css = 'td[valign="top"]>a[href*="/item.php?item_id="]',
                     txt = this.equipment.innerHTML;
 
@@ -239,7 +240,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new RangeWeapon().init();
             }
         } else {

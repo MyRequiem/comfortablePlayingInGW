@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.36-030219
+// @version         2.37-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -186,7 +186,7 @@
                 /*eslint-enable no-useless-escape */
                 fight = /Выигрыш в боях/i.test(this.target.innerHTML);
 
-            if (roul || tot || poker || fight) {
+            if ((roul || tot || poker || fight) && general.root.nu6j) {
                 if (fight) {
                     this.total += +(/Выигрыш в боях: <b>\$([^<]*)/i.
                             exec(this.target.innerHTML)[1].replace(/,/g, ''));
@@ -237,7 +237,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new GameMania().init();
             }
         } else {

@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/sms-read.php?type=1&id=*
 // @grant           none
 // @license         MIT
-// @version         1.05-030219
+// @version         1.06-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -87,7 +87,7 @@
             var del = general.doc.querySelector('td>a[class="mainbutton"]' +
                     '[href*="&do_black=1&addblack="]');
 
-            if (del) {
+            if (del && general.root.y7ci) {
                 del.setAttribute('style', 'background: #FDD8D8;');
 
                 del.addEventListener('click', function (e) {
@@ -118,7 +118,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new DelAndAddBlackSms().init();
             }
         } else {

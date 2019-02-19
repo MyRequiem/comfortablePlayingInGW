@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.20-030219
+// @version         2.21-180219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -760,7 +760,9 @@
             butShowAnalysePanel.setAttribute('style', 'cursor: pointer');
             // noinspection JSCheckFunctionSignatures
             target.appendChild(general.doc.createTextNode(' | '));
-            target.appendChild(butShowAnalysePanel);
+            if (general.root.qfci) {
+                target.appendChild(butShowAnalysePanel);
+            }
 
             var _this = this;
             butShowAnalysePanel.addEventListener('click', function () {
@@ -838,7 +840,9 @@
 
     function get_cpigwchbl() {
         if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID && !mainObj.root.cpigwchbl(mainObj.myID)) {
+            if (mainObj.myID &&
+                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
+                        exec(mainObj.doc.cookie)[2])) {
                 new SyndAnalyser().init();
             }
         } else {
