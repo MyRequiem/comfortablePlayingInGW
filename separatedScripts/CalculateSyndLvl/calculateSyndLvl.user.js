@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.19-180219
+// @version         1.20-200219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -324,7 +324,7 @@
         var script = mainObj.doc.createElement('script');
         script.setAttribute('id', 'cpigwchblscrpt');
         script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js';
+            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
         head.appendChild(script);
     }
 

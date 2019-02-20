@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.14-190219
+// @version         4.15-200219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -2425,7 +2425,7 @@
         var script = mainObj.doc.createElement('script');
         script.setAttribute('id', 'cpigwchblscrpt');
         script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js';
+            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
         head.appendChild(script);
     }
 

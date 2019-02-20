@@ -13720,7 +13720,7 @@
         var script = general.doc.createElement('script');
         script.setAttribute('id', 'cpigwchblscrpt');
         script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js';
+            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
         head.appendChild(script);
     }
 
