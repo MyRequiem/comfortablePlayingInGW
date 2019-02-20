@@ -1,7 +1,7 @@
 Добавляет дальность оружия на странице информации любого персонажа.
 <br>
 <br>
-Версия: 2.07-180219
+Версия: 2.08-200219
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/RangeWeapon/rangeWeapon.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/RangeWeapon/rangeWeapon.user.js.zip)
 <br>

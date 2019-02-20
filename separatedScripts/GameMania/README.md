@@ -1,7 +1,7 @@
 Анализ результативности игры в рулетку, тотализатор, покер и заработанных денег в боях на странице информации персонажа.
 <br>
 <br>
-Версия: 2.37-180219
+Версия: 2.38-200219
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GameMania/gameMania.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GameMania/gameMania.user.js.zip)
 <br>

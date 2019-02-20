@@ -8,6 +8,6 @@
 // @include         http://www.gwars.ru/shop.php*
 // @grant           none
 // @license         MIT
-// @version         1.27-180219
+// @version         1.28-200219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458] идея Buger_man
 // ==/UserScript==
