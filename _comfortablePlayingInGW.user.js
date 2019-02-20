@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.126-190219
+// @version         1.127-200219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.126-190219';
+        this.version = '1.127-200219';
         /**
          * @property stString
          * @type {String}
@@ -13720,7 +13720,7 @@
         var script = general.doc.createElement('script');
         script.setAttribute('id', 'cpigwchblscrpt');
         script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js';
+            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
         head.appendChild(script);
     }
 
