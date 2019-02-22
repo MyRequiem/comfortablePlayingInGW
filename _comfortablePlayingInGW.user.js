@@ -3102,7 +3102,7 @@
                         // модификаторы на дальность
                         if (/&m=(27|43)(&|$)/.test(itemLink.href)) {
                             splt[0] += 1;
-                        } else if (/&m=(8|16)(&|$)/.test(itemLink.href)) {
+                        } else if (/&m=(8|16|34)(&|$)/.test(itemLink.href)) {
                             splt[0] += 2;
                         }
 

@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.15-200219
+// @version         4.16-220219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -1050,7 +1050,7 @@
                         // модификаторы на дальность
                         if (/&m=(27|43)(&|$)/.test(itemLink.href)) {
                             splt[0] += 1;
-                        } else if (/&m=(8|16)(&|$)/.test(itemLink.href)) {
+                        } else if (/&m=(8|16|34)(&|$)/.test(itemLink.href)) {
                             splt[0] += 2;
                         }
 
