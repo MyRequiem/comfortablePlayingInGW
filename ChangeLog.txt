@@ -1,3 +1,13 @@
+2019-04-15[1.128-150419]
+--------------------------------------
+	- Поправлен скрипт
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+
+	- Изменены пути к новым изображениям растений на ферме в скрипте
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AllPlantsOnFarm
+		(ссылка на новость: http://www.gwars.ru/messages.php?fid=1&tid=1510)
+
+
 2019-02-20[1.127-200219]
 --------------------------------------
 	Service version: prohibition of caching external scripts.
