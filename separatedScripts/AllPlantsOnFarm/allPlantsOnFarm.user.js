@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         1.37-200219
+// @version         1.38-150419
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -296,7 +296,8 @@
                 var i;
                 for (i = 3; i < 7; i++) {
                     str += '<img src="http://images.gwars.ru/' +
-                        'img/ferma/' + val + i + '.png" />';
+                        'img/ferma_hd/' + val + i + '.png" ' +
+                        'style="width: 50px; height: 50px;" />';
                 }
 
                 str += '<br><label for="' + id + '">' +

@@ -6197,7 +6197,8 @@
                 var i;
                 for (i = 3; i < 7; i++) {
                     str += '<img src="http://images.gwars.ru/' +
-                        'img/ferma/' + val + i + '.png" />';
+                        'img/ferma_hd/' + val + i + '.png" ' +
+                        'style="width: 50px; height: 50px;" />';
                 }
 
                 str += '<br><label for="' + id + '">' +
