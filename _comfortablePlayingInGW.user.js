@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.127-200219
+// @version         1.128-150419
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.127-200219';
+        this.version = '1.128-150419';
         /**
          * @property stString
          * @type {String}
@@ -3102,7 +3102,7 @@
                         // модификаторы на дальность
                         if (/&m=(27|43)(&|$)/.test(itemLink.href)) {
                             splt[0] += 1;
-                        } else if (/&m=(8|16)(&|$)/.test(itemLink.href)) {
+                        } else if (/&m=(8|16|34)(&|$)/.test(itemLink.href)) {
                             splt[0] += 2;
                         }
 
@@ -6197,7 +6197,8 @@
                 var i;
                 for (i = 3; i < 7; i++) {
                     str += '<img src="http://images.gwars.ru/' +
-                        'img/ferma/' + val + i + '.png" />';
+                        'img/ferma_hd/' + val + i + '.png" ' +
+                        'style="width: 50px; height: 50px;" />';
                 }
 
                 str += '<br><label for="' + id + '">' +
