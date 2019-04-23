@@ -4943,7 +4943,7 @@
                         'position: absolute; padding: 3px; background-color: ' +
                         '#E7FFE7; border: solid 1px #339933; ' +
                         'border-radius:5px; top:0; left:0; box-shadow: ' +
-                        '5px 6px 6px rgba(122,122,122,0.5);');
+                        '5px 6px 6px rgba(122,122,122,0.5); z-index: 999;');
                 general.doc.body.appendChild(this.divResult);
 
                 // noinspection JSCheckFunctionSignatures
