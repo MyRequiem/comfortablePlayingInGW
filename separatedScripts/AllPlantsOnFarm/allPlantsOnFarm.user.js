@@ -468,6 +468,9 @@
             }
         };
 
+        /**
+         * @method runInit
+         */
         this.runInit = function () {
             var _this = this;
             return function () {
@@ -530,7 +533,7 @@
 
                 this.setMainPanel();
 
-                var a = general.doc.querySelectorAll('a[onclick="return ' +
+                var a = general.doc.querySelectorAll('*[onclick="return ' +
                         'gotourl(this);"]'),
                     l;
 

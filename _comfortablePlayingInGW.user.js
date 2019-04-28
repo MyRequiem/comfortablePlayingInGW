@@ -5695,10 +5695,22 @@
         };
 
         /**
+         * @method runInit
+         */
+        this.runInit = function () {
+            var _this = this;
+            return function () {
+                general.root.setTimeout(function () {
+                    _this.init();
+                }, 700);
+            };
+        };
+
+        /**
          * @method init
          */
         this.init = function () {
-                // ссылка Собрать, Вскопать, Полить
+                // ссылка Собрать, Вскопать, Полить, Покормить
             var a1 = general.doc.querySelector('td[bgcolor="#f0fff0"]' +
                     ':not([align="right"])>a[href^="/ferma.php?"]'),
                 // ссылка ближайшее действие
@@ -5717,14 +5729,24 @@
 
             pos = but && pos ? new GetPos().init(pos.parentNode) : null;
             if (pos && general.root.sz49) {
+                but.removeAttribute('class');
                 but.setAttribute('style', 'position: absolute; ' +
                         'background: #F4F3F1; ' +
                         'border-radius: 7px; ' +
                         'padding: 1px; ' +
                         'top: ' + (pos.y + 15) + 'px; ' +
-                        'left: ' + (pos.x - 7) + 'px;');
+                        'left: ' + (pos.x - 7) + 'px;' +
+                        'z-index: 999;');
 
                 but.focus();
+            }
+
+            var a = general.doc.querySelectorAll('*[onclick="return ' +
+                    'gotourl(this);"]'),
+                l;
+
+            for (l = 0; l < a.length; l++) {
+                a[l].addEventListener('click', this.runInit(), false);
             }
         };
     };
@@ -6371,6 +6393,9 @@
             }
         };
 
+        /**
+         * @method runInit
+         */
         this.runInit = function () {
             var _this = this;
             return function () {
@@ -6434,7 +6459,7 @@
 
                 this.setMainPanel();
 
-                var a = general.doc.querySelectorAll('a[onclick="return ' +
+                var a = general.doc.querySelectorAll('*[onclick="return ' +
                         'gotourl(this);"]'),
                     l;
 
