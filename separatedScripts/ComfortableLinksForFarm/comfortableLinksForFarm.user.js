@@ -182,7 +182,7 @@
             }
 
             var a = general.doc.querySelectorAll('*[onclick="return ' +
-                    'gotourl(this);"]'),
+                        'gotourl(this);"],*[onclick^="plantit"]'),
                 l;
 
             for (l = 0; l < a.length; l++) {
