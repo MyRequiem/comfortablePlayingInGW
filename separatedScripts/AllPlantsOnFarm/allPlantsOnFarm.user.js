@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         1.38-150419
+// @version         1.39-280419
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -468,35 +468,33 @@
             }
         };
 
+        this.runInit = function () {
+            var _this = this;
+            return function () {
+                general.root.setTimeout(function () {
+                    _this.init();
+                }, 700);
+            };
+        };
+
         /**
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.' +
-                    '\nMyRequiеm рекомендует вам установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'AllPlantsOnFarm\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
-
-                return;
-            }
-
             // noinspection RegExpSingleCharAlternation
             var farmId = /(\?|&)id=(\d+)/.exec(general.loc),
                 capcha = general.doc.querySelector('input[type="hidden"]' +
                     '[name="captcha_question"]');
 
-            this.target = general.doc.
-                    querySelector('form[action="/ferma.php"]') ||
-                        general.doc.
-                            querySelector('td[width="400"][valign="top"]');
+            this.target = general.doc.querySelector('td[width="400"]' +
+                    '[valign="top"]');
 
-            // нет капчи, не в постройках, на своей ферме
-            if (!capcha && !(/section=items/.test(general.loc)) &&
-                    !(farmId && farmId[2] !== general.myID) && this.target) {
+            // нет капчи, на своей ферме
+            if (!capcha && !(farmId && farmId[2] !== general.myID) &&
+                    this.target) {
 
-                var canPlant = this.target.nodeName === 'FORM';
+                var canPlant = general.doc.
+                        querySelector('input[type="button"][value="Посадить"]');
 
                 // счетчики Гб и производа
                 if (canPlant && (showGb || showExp)) {
@@ -531,6 +529,14 @@
                 }
 
                 this.setMainPanel();
+
+                var a = general.doc.querySelectorAll('a[onclick="return ' +
+                        'gotourl(this);"]'),
+                    l;
+
+                for (l = 0; l < a.length; l++) {
+                    a[l].addEventListener('click', this.runInit(), false);
+                }
             }
         };
     };

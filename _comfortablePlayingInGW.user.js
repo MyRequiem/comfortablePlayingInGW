@@ -6371,6 +6371,15 @@
             }
         };
 
+        this.runInit = function () {
+            var _this = this;
+            return function () {
+                general.root.setTimeout(function () {
+                    _this.init();
+                }, 700);
+            };
+        };
+
         /**
          * @method init
          */
@@ -6380,16 +6389,15 @@
                 capcha = general.doc.querySelector('input[type="hidden"]' +
                     '[name="captcha_question"]');
 
-            this.target = general.doc.
-                    querySelector('form[action="/ferma.php"]') ||
-                        general.doc.
-                            querySelector('td[width="400"][valign="top"]');
+            this.target = general.doc.querySelector('td[width="400"]' +
+                    '[valign="top"]');
 
-            // нет капчи, не в постройках, на своей ферме
-            if (!capcha && !(/section=items/.test(general.loc)) &&
-                    !(farmId && farmId[2] !== general.myID) && this.target) {
+            // нет капчи, на своей ферме
+            if (!capcha && !(farmId && farmId[2] !== general.myID) &&
+                    this.target) {
 
-                var canPlant = this.target.nodeName === 'FORM';
+                var canPlant = general.doc.
+                        querySelector('input[type="button"][value="Посадить"]');
 
                 // счетчики Гб и производа
                 var stData = general.getData(11);
@@ -6425,6 +6433,14 @@
                 }
 
                 this.setMainPanel();
+
+                var a = general.doc.querySelectorAll('a[onclick="return ' +
+                        'gotourl(this);"]'),
+                    l;
+
+                for (l = 0; l < a.length; l++) {
+                    a[l].addEventListener('click', this.runInit(), false);
+                }
             }
         };
     };
