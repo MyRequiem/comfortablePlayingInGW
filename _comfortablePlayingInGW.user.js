@@ -5620,6 +5620,14 @@
                     return;
                 }
 
+                var a = general.doc.querySelectorAll('*[onclick="return ' +
+                            'gotourl(this);"],*[onclick^="plantit"]'),
+                    l;
+
+                for (l = 0; l < a.length; l++) {
+                    a[l].addEventListener('click', this.runInit(), false);
+                }
+
                 // noinspection Annotator
                 var actionStr = /Ближайшее действие:.*[собрать|полить].*\(.*\)/.
                         exec(general.doc.querySelector('td[width="400"]' +
@@ -5643,14 +5651,6 @@
                 var timeLeft = +(/через (\d+) мин/.exec(aStr)[1]);
                 general.setData([timeNow + timeLeft * 60 * 1000,
                     action, timeNow, '', stData[4], stData[5]], 9);
-
-                var a = general.doc.querySelectorAll('*[onclick="return ' +
-                            'gotourl(this);"],*[onclick^="plantit"]'),
-                    l;
-
-                for (l = 0; l < a.length; l++) {
-                    a[l].addEventListener('click', this.runInit(), false);
-                }
 
                 return;
             }
