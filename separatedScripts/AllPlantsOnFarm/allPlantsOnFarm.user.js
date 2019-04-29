@@ -14,7 +14,7 @@
 
 /*global unsafeWindow */
 /*jslint browser: true, maxlen: 80, vars: true, regexp:true, nomen: true,
-    plusplus: true, devel: true
+    plusplus: true
 */
 
 /*eslint-env browser */

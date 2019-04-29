@@ -5588,6 +5588,18 @@
         };
 
         /**
+         * @method runInit
+         */
+        this.runInit = function () {
+            var _this = this;
+            return function () {
+                general.root.setTimeout(function () {
+                    _this.init();
+                }, 700);
+            };
+        };
+
+        /**
          * @method init
          */
         this.init = function () {
@@ -5631,6 +5643,14 @@
                 var timeLeft = +(/через (\d+) мин/.exec(aStr)[1]);
                 general.setData([timeNow + timeLeft * 60 * 1000,
                     action, timeNow, '', stData[4], stData[5]], 9);
+
+                var a = general.doc.querySelectorAll('*[onclick="return ' +
+                            'gotourl(this);"],*[onclick^="plantit"]'),
+                    l;
+
+                for (l = 0; l < a.length; l++) {
+                    a[l].addEventListener('click', this.runInit(), false);
+                }
 
                 return;
             }
