@@ -8,12 +8,14 @@
 // @include         http://www.gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.25-200219
+// @version         2.26-290419
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
-/*jslint browser: true, maxlen: 80, vars: true, plusplus: true, regexp: true */
+/*jslint browser: true, maxlen: 80, vars: true, plusplus: true, regexp: true,
+    nomen: true
+*/
 
 /*eslint-env browser */
 /*eslint indent: ['error', 4], linebreak-style: ['error', 'unix'],
@@ -97,13 +99,31 @@
         };
 
         /**
+         * @method runInit
+         */
+        this.runInit = function () {
+            var _this = this;
+            return function () {
+                general.root.setTimeout(function () {
+                    _this.init();
+                }, 700);
+            };
+        };
+
+        /**
          * @method init
          */
         this.init = function () {
-            //если в постройках или не на пустрой грядке
-            if (/section=items/.test(general.root.location.href) ||
-                    !general.doc.querySelector('div>' +
-                        'img[src$="/img/ferma/ground.png"]')) {
+            var a = general.doc.querySelectorAll('*[onclick="return ' +
+                        'gotourl(this);"],*[onclick^="plantit"]'),
+                l;
+
+            for (l = 0; l < a.length; l++) {
+                a[l].addEventListener('click', this.runInit(), false);
+            }
+
+            // не на пустрой грядке
+            if (!general.doc.querySelector('input[value="Посадить"]')) {
                 return;
             }
 

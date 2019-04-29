@@ -5397,13 +5397,31 @@
         };
 
         /**
+         * @method runInit
+         */
+        this.runInit = function () {
+            var _this = this;
+            return function () {
+                general.root.setTimeout(function () {
+                    _this.init();
+                }, 700);
+            };
+        };
+
+        /**
          * @method init
          */
         this.init = function () {
-            //если в постройках или не на пустрой грядке
-            if (/section=items/.test(general.root.location.href) ||
-                    !general.doc.querySelector('div>' +
-                        'img[src$="/img/ferma/ground.png"]')) {
+            var a = general.doc.querySelectorAll('*[onclick="return ' +
+                        'gotourl(this);"],*[onclick^="plantit"]'),
+                l;
+
+            for (l = 0; l < a.length; l++) {
+                a[l].addEventListener('click', this.runInit(), false);
+            }
+
+            // не на пустрой грядке
+            if (!general.doc.querySelector('input[value="Посадить"]')) {
                 return;
             }
 
