@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.19-280419
+// @version         2.20-290419
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -181,8 +181,8 @@
                 but.focus();
             }
 
-            var a = general.doc.querySelectorAll('*[onclick="return ' +
-                        'gotourl(this);"],*[onclick^="plantit"]'),
+            var a = general.doc.querySelectorAll('*[onclick*="gotourl("],' +
+                        '*[onclick*="openurl("],*[onclick*="plantit("]'),
                 l;
 
             for (l = 0; l < a.length; l++) {

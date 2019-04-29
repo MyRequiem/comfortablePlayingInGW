@@ -114,8 +114,8 @@
          * @method init
          */
         this.init = function () {
-            var a = general.doc.querySelectorAll('*[onclick="return ' +
-                        'gotourl(this);"],*[onclick^="plantit"]'),
+            var a = general.doc.querySelectorAll('*[onclick*="gotourl("],' +
+                        '*[onclick*="openurl("],*[onclick*="plantit("]'),
                 l;
 
             for (l = 0; l < a.length; l++) {

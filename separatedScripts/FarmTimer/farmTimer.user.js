@@ -31,7 +31,7 @@
     'use strict';
 
     // ============================ НАСТРОЙКИ ==================================
-        // звук когда пора поливать/собирать(0 - без звука)
+        // звук когда пора поливать/собирать (0 - без звука)
     var farmSound = 8,
         // повторять звук не чаще чем один раз в X секунд (0 - не повторять)
         soundInterval = 120;
@@ -389,8 +389,8 @@
                     return;
                 }
 
-                var a = general.doc.querySelectorAll('*[onclick="return ' +
-                            'gotourl(this);"],*[onclick^="plantit"]'),
+                var a = general.doc.querySelectorAll('*[onclick*="gotourl("],' +
+                            '*[onclick*="openurl("],*[onclick*="plantit("]'),
                     l;
 
                 for (l = 0; l < a.length; l++) {
