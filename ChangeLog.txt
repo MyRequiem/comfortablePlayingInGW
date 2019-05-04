@@ -1,4 +1,4 @@
-
+2019-05-04[1.129-040519]
 --------------------------------------
 	- Исправлены скрипты:
 		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FarmExperience
