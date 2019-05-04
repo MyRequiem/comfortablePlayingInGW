@@ -5976,7 +5976,6 @@
                 if (/Ваш ответ:/.test(talkNPC.innerHTML)) {
                     stData[2] = '';
                     general.setData(stData, 10);
-                    return;
                 }
             }
         };
@@ -8434,6 +8433,7 @@
             var counter = general.$('counter'),
                 url;
 
+            // noinspection JSIncompatibleTypesComparison
             if (id2 !== null) {
                 counter.innerHTML = !id ? 'входящие...' : 'исходящие...';
                 url = 'http://www.gwars.ru/sms.php?page=' + id +
@@ -8452,6 +8452,7 @@
             new AjaxQuery().init(url, 'GET', null, true, function (xml) {
                 _this.spanContent.innerHTML = xml.responseText;
 
+                // noinspection JSIncompatibleTypesComparison
                 if (id2 !== null) {
                     var linksSms = _this.spanContent.
                             querySelectorAll('td[width="100%"]>' +

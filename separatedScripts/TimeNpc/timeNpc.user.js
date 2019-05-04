@@ -482,7 +482,6 @@
                 if (/Ваш ответ:/.test(talkNPC.innerHTML)) {
                     stData[2] = '';
                     general.setData(stData);
-                    return;
                 }
             }
         };
