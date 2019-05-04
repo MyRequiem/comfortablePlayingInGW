@@ -100,7 +100,7 @@
                         [8]  - DeleteSms
                         [9]  - FarmExperience
                         [10] - FarmTimer
-                        [11] - ComfortableLinksForFarm
+                        [11] - ComfortableLinksForFarm (удален)
                         [12] - TimeNpc
                         [13] - AllPlantsOnFarm
                         [14] - GwMenu
@@ -1345,9 +1345,6 @@
                     'style="width: 40px;" disabled /> - интервал повторения ' +
                     'звука в секундах (0 - не повторять)' +
                     this.getGitHubLink('farmTimer'), '10'],
-                ['Удобные ссылки на ферме', 'Удобные ссылки для полива, ' +
-                    'сбора, вскапывания, посадки на ферме.' +
-                    this.getGitHubLink('comfortableLinksForFarm'), '11'],
                 ['Все растения на одной странице, счетчики', 'Счетчик гб и ' +
                     'производственного опыта на ферме. Для каждого растения ' +
                     'присутствует изображение, производственный опыт и ' +
@@ -5696,95 +5693,6 @@
                 }
 
                 this.showTimer(+((+stData[0] - timeNow) / 1000).toFixed(0));
-            }
-        };
-    };
-
-    /**
-     * @class ComfortableLinksForFarm
-     * @constructor
-     */
-    var ComfortableLinksForFarm = function () {
-        /**
-         * @method setLink
-         * @param   {Element}       a
-         * @param   {String|null}   txt
-         */
-        this.setLink = function (a, txt) {
-            var target = general.doc.
-                    querySelector('center>b>font[color="#990000"]').parentNode;
-
-            // noinspection JSUnresolvedVariable
-            if (txt && (/\(через \d+/.test(a.parentNode.innerHTML))) {
-                return;
-            }
-
-            var link = a.cloneNode(true);
-
-            if (!txt) {
-                a.setAttribute('style', 'display: none;');
-            } else {
-                // noinspection JSUndefinedPropertyAssignment
-                link.innerHTML = txt;
-            }
-
-            link.setAttribute('style', 'margin-left: 10px;');
-            target.appendChild(link);
-        };
-
-        /**
-         * @method runInit
-         */
-        this.runInit = function () {
-            var _this = this;
-            return function () {
-                general.root.setTimeout(function () {
-                    _this.init();
-                }, 700);
-            };
-        };
-
-        /**
-         * @method init
-         */
-        this.init = function () {
-                // ссылка Собрать, Вскопать, Полить, Покормить
-            var a1 = general.doc.querySelector('td[bgcolor="#f0fff0"]' +
-                    ':not([align="right"])>a[href^="/ferma.php?"]'),
-                // ссылка ближайшее действие
-                a2 = general.doc.querySelector('td[bgcolor="#e0eee0"]>a' +
-                        '[href^="/ferma.php?"]'),
-                // кнопка посадить
-                but = general.doc.querySelector('input[value="Посадить"]'),
-                // клетка, на которой находимся
-                pos = general.doc.querySelector('img[src$="ru/i/point2.gif"]');
-
-            if (a1 && general.root.sz49) {
-                this.setLink(a1, null);
-            } else if (a2 && general.root.sz49) {
-                this.setLink(a2, 'Далее');
-            }
-
-            pos = but && pos ? new GetPos().init(pos.parentNode) : null;
-            if (pos && general.root.sz49) {
-                but.removeAttribute('class');
-                but.setAttribute('style', 'position: absolute; ' +
-                        'background: #F4F3F1; ' +
-                        'border-radius: 7px; ' +
-                        'padding: 1px; ' +
-                        'top: ' + (pos.y + 15) + 'px; ' +
-                        'left: ' + (pos.x - 7) + 'px;' +
-                        'z-index: 999;');
-
-                but.focus();
-            }
-
-            var a = general.doc.querySelectorAll('*[onclick*="gotourl("],' +
-                        '*[onclick*="openurl("],*[onclick*="plantit("]'),
-                l;
-
-            for (l = 0; l < a.length; l++) {
-                a[l].addEventListener('click', this.runInit(), false);
             }
         };
     };
@@ -13898,14 +13806,6 @@
                 if (initScript[9]) {
                     try {
                         new FarmExperience().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[11]) {
-                    try {
-                        new ComfortableLinksForFarm().init();
                     } catch (e) {
                         general.cons.log(e);
                     }
