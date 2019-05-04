@@ -5813,12 +5813,6 @@
          * @type {int}
          */
         this.tm = 1000;
-        /**
-         * @property regStr
-         * @type {String}
-         */
-        this.regStr = 'Спасибо|Замечательно|Как скажешь|Благодарю за|' +
-            'Опыт добавлен|Время для ответа вышло';
 
         /**
          * @method clearNPCData
@@ -5975,37 +5969,6 @@
         };
 
         /**
-         * @method rememberTime
-         * @param   {HTMLElement}  td
-         */
-        this.rememberTime = function (td) {
-            var tableResponseNPC = td.querySelector('table'),
-                responseNPC = tableResponseNPC.innerHTML;
-
-            tableResponseNPC.innerHTML = '<tr style="text-align: center;">' +
-                '<td><img src="' + general.imgPath + 'preloader.gif" />' +
-                '</td></tr>';
-
-            var url = 'http://www.gwars.ru/npc.php?id=' +
-                    general.getData(10)[1] + '&talk=1',
-                _this = this;
-
-            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
-                var time = /\[подождите (\d+) мин/.exec(xml.responseText);
-
-                if (time) {
-                    var stData = general.getData(10);
-                    stData[2] = +time[1] * 60 * 1000 + _this.getTimeNow();
-                    general.setData(stData, 10);
-                }
-
-                tableResponseNPC.innerHTML = responseNPC;
-            }, function () {
-                tableResponseNPC.innerHTML = responseNPC;
-            });
-        };
-
-        /**
          * @method init
          */
         this.init = function () {
@@ -6106,12 +6069,6 @@
                     stData[2] = '';
                     general.setData(stData, 10);
                     return;
-                }
-
-                // квест выполнен/провален/отказ...
-                // смотрим время до следующего квеста
-                if (new RegExp(this.regStr).test(talkNPC.innerHTML)) {
-                    this.rememberTime(talkNPC);
                 }
             }
         };
