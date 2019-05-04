@@ -8,13 +8,13 @@
 // @include         http://www.gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         1.40-290419
+// @version         1.41-040519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
 /*jslint browser: true, maxlen: 80, vars: true, regexp:true, nomen: true,
-    plusplus: true
+    plusplus: true, devel: true
 */
 
 /*eslint-env browser */
@@ -395,8 +395,8 @@
             // опыт виден (на пустой вскопанной клетке)
             if (prod) {
                 // noinspection JSUnresolvedFunction
-                var gb = table.querySelector('a[name="pf"]').parentNode.
-                        querySelectorAll('b'),
+                var target = table.querySelector('a[name="pf"]').parentNode,
+                    gb = target.querySelectorAll('b'),
                     exp = prod[1],
                     stData = general.getData();
 
@@ -434,36 +434,40 @@
 
                 var str = '';
                 if (showGb) {
-                    str += '<b>Счет</b>: <span style="margin-right: 10px; ' +
-                        'color: #' + (diffGb < 0 ? '0000FF' : 'FF0000') +
-                        ';"> ' + setPoint(diffGb, '\'', true) + '$</span>';
+                    str += '<span style="color: #' +
+                        (diffGb < 0 ? '0000FF' : 'FF0000') + ';">' +
+                        setPoint(diffGb, '\'', true) + '$</span>';
                 }
 
                 if (showExp) {
-                    str += '<b>Производ</b>: <span ' +
-                        'style="margin-right: 10px; color: #FF0000;"> +' +
+                    str += '<span' +
+                        (str ? ' style="margin-left: 5px;"' : '') + '>' +
                         setPoint(diffExp[0], '\'', false) +
                         (diffExp[1] ? ',' + diffExp[1] : '') + '</span>';
                 }
 
-                str += '<span style="font-size: 7pt;">' +
-                        '<span id="clearFarmCounter" style="cursor: pointer; ' +
-                        'color: #008000; text-decoration: underline;">Сброс' +
-                        '</span> <span style="color: #0000FF;">(' + time +
-                        ')</span>';
+                str += '<span style="font-size: 7pt; margin-left: 5px;">' +
+                            '<span id="clearFarmCounter" ' +
+                                'style="cursor: pointer; color: #008000; ' +
+                                'text-decoration: underline;">Сброс</span> ' +
+                            '<span style="color: #0000FF;">(' + time + ')' +
+                            '</span>' +
+                        '</span>';
 
-                var divCounters = general.doc.createElement('div');
-                divCounters.setAttribute('style', 'font-size: 8pt;');
-                divCounters.innerHTML = str;
-                table.querySelector('td[bgcolor="#f0fff0"]').
-                    appendChild(divCounters);
+                var spanCounters = general.doc.createElement('span');
+                spanCounters.setAttribute('style', 'font-size: 8pt; ' +
+                    'margin-right: 5px;');
+                spanCounters.innerHTML = str;
+                target.insertBefore(spanCounters, target.firstElementChild);
 
                 var _this = this;
                 general.$('clearFarmCounter').
                     addEventListener('click', function () {
-                        _this.clearCounter(gb.toString(), exp);
-                        divCounters.parentNode.removeChild(divCounters);
-                        _this.setCounter();
+                        if (confirm('Сбросить счетчики ?')) {
+                            _this.clearCounter(gb.toString(), exp);
+                            target.removeChild(spanCounters);
+                            _this.setCounter();
+                        }
                     }, false);
             }
         };
@@ -529,9 +533,9 @@
                             }
                         }
                     }
-                }
 
-                this.setMainPanel();
+                    this.setMainPanel();
+                }
 
                 var a = general.doc.querySelectorAll('*[onclick*="gotourl("],' +
                             '*[onclick*="openurl("],*[onclick*="plantit("]'),
