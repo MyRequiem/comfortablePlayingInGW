@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         1.38-150419
+// @version         1.41-040519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -395,8 +395,8 @@
             // опыт виден (на пустой вскопанной клетке)
             if (prod) {
                 // noinspection JSUnresolvedFunction
-                var gb = table.querySelector('a[name="pf"]').parentNode.
-                        querySelectorAll('b'),
+                var target = table.querySelector('a[name="pf"]').parentNode,
+                    gb = target.querySelectorAll('b'),
                     exp = prod[1],
                     stData = general.getData();
 
@@ -434,69 +434,74 @@
 
                 var str = '';
                 if (showGb) {
-                    str += '<b>Счет</b>: <span style="margin-right: 10px; ' +
-                        'color: #' + (diffGb < 0 ? '0000FF' : 'FF0000') +
-                        ';"> ' + setPoint(diffGb, '\'', true) + '$</span>';
+                    str += '<span style="color: #' +
+                        (diffGb < 0 ? '0000FF' : 'FF0000') + ';">' +
+                        setPoint(diffGb, '\'', true) + '$</span>';
                 }
 
                 if (showExp) {
-                    str += '<b>Производ</b>: <span ' +
-                        'style="margin-right: 10px; color: #FF0000;"> +' +
+                    str += '<span' +
+                        (str ? ' style="margin-left: 5px;"' : '') + '>' +
                         setPoint(diffExp[0], '\'', false) +
                         (diffExp[1] ? ',' + diffExp[1] : '') + '</span>';
                 }
 
-                str += '<span style="font-size: 7pt;">' +
-                        '<span id="clearFarmCounter" style="cursor: pointer; ' +
-                        'color: #008000; text-decoration: underline;">Сброс' +
-                        '</span> <span style="color: #0000FF;">(' + time +
-                        ')</span>';
+                str += '<span style="font-size: 7pt; margin-left: 5px;">' +
+                            '<span id="clearFarmCounter" ' +
+                                'style="cursor: pointer; color: #008000; ' +
+                                'text-decoration: underline;">Сброс</span> ' +
+                            '<span style="color: #0000FF;">(' + time + ')' +
+                            '</span>' +
+                        '</span>';
 
-                var divCounters = general.doc.createElement('div');
-                divCounters.setAttribute('style', 'font-size: 8pt;');
-                divCounters.innerHTML = str;
-                table.querySelector('td[bgcolor="#f0fff0"]').
-                    appendChild(divCounters);
+                var spanCounters = general.doc.createElement('span');
+                spanCounters.setAttribute('style', 'font-size: 8pt; ' +
+                    'margin-right: 5px;');
+                spanCounters.innerHTML = str;
+                target.insertBefore(spanCounters, target.firstElementChild);
 
                 var _this = this;
                 general.$('clearFarmCounter').
                     addEventListener('click', function () {
-                        _this.clearCounter(gb.toString(), exp);
-                        divCounters.parentNode.removeChild(divCounters);
-                        _this.setCounter();
+                        if (confirm('Сбросить счетчики ?')) {
+                            _this.clearCounter(gb.toString(), exp);
+                            target.removeChild(spanCounters);
+                            _this.setCounter();
+                        }
                     }, false);
             }
+        };
+
+        /**
+         * @method runInit
+         */
+        this.runInit = function () {
+            var _this = this;
+            return function () {
+                general.root.setTimeout(function () {
+                    _this.init();
+                }, 700);
+            };
         };
 
         /**
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.' +
-                    '\nMyRequiеm рекомендует вам установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'AllPlantsOnFarm\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
-
-                return;
-            }
-
             // noinspection RegExpSingleCharAlternation
             var farmId = /(\?|&)id=(\d+)/.exec(general.loc),
                 capcha = general.doc.querySelector('input[type="hidden"]' +
                     '[name="captcha_question"]');
 
-            this.target = general.doc.
-                    querySelector('form[action="/ferma.php"]') ||
-                        general.doc.
-                            querySelector('td[width="400"][valign="top"]');
+            this.target = general.doc.querySelector('td[width="400"]' +
+                    '[valign="top"]');
 
-            // нет капчи, не в постройках, на своей ферме
-            if (!capcha && !(/section=items/.test(general.loc)) &&
-                    !(farmId && farmId[2] !== general.myID) && this.target) {
+            // нет капчи, на своей ферме
+            if (!capcha && !(farmId && farmId[2] !== general.myID) &&
+                    this.target) {
 
-                var canPlant = this.target.nodeName === 'FORM';
+                var canPlant = general.doc.
+                        querySelector('input[type="button"][value="Посадить"]');
 
                 // счетчики Гб и производа
                 if (canPlant && (showGb || showExp)) {
@@ -528,9 +533,17 @@
                             }
                         }
                     }
+
+                    this.setMainPanel();
                 }
 
-                this.setMainPanel();
+                var a = general.doc.querySelectorAll('*[onclick*="gotourl("],' +
+                            '*[onclick*="openurl("],*[onclick*="plantit("]'),
+                    l;
+
+                for (l = 0; l < a.length; l++) {
+                    a[l].addEventListener('click', this.runInit(), false);
+                }
             }
         };
     };

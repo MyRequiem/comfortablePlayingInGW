@@ -8,13 +8,13 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.18-200219
+// @version         2.19-290419
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
-/*jslint browser: true, maxlen: 80, vars: true, regexp: true, nomen: true
-    devel: true
+/*jslint browser: true, maxlen: 80, vars: true, regexp: true, nomen: true,
+    plusplus: true
 */
 
 /*eslint-env browser */
@@ -31,7 +31,7 @@
     'use strict';
 
     // ============================ НАСТРОЙКИ ==================================
-        // звук когда пора поливать/собирать(0 - без звука)
+        // звук когда пора поливать/собирать (0 - без звука)
     var farmSound = 8,
         // повторять звук не чаще чем один раз в X секунд (0 - не повторять)
         soundInterval = 120;
@@ -357,19 +357,21 @@
         };
 
         /**
+         * @method runInit
+         */
+        this.runInit = function () {
+            var _this = this;
+            return function () {
+                general.root.setTimeout(function () {
+                    _this.init();
+                }, 700);
+            };
+        };
+
+        /**
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.' +
-                    '\nMyRequiеm рекомендует вам установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'FarmTimer\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
-
-                return;
-            }
-
             /** localStorage:
              * [0] - время полива/сбора
              * [1] - действие (Полить|Собрать)
@@ -385,6 +387,14 @@
                 if ((/id=\d+/.test(general.loc)) &&
                         (/id=(\d+)/.exec(general.loc)[1]) !== general.myID) {
                     return;
+                }
+
+                var a = general.doc.querySelectorAll('*[onclick*="gotourl("],' +
+                            '*[onclick*="openurl("],*[onclick*="plantit("]'),
+                    l;
+
+                for (l = 0; l < a.length; l++) {
+                    a[l].addEventListener('click', this.runInit(), false);
                 }
 
                 // noinspection Annotator

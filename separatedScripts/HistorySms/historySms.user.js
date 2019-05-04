@@ -283,14 +283,15 @@
 
         /**
          * @method showHistory
-         * @param   {int}   id
-         * @param   {int}   id1
-         * @param   {int}   id2
+         * @param   {int}       id
+         * @param   {int}       id1
+         * @param   {int|null}  id2
          */
         this.showHistory = function (id, id1, id2) {
             var counter = general.$('counter'),
                 url;
 
+            // noinspection JSIncompatibleTypesComparison
             if (id2 !== null) {
                 counter.innerHTML = !id ? 'входящие...' : 'исходящие...';
                 url = 'http://www.gwars.ru/sms.php?page=' + id +
@@ -309,6 +310,7 @@
             new AjaxQuery().init(url, function (xml) {
                 _this.spanContent.innerHTML = xml.responseText;
 
+                // noinspection JSIncompatibleTypesComparison
                 if (id2 !== null) {
                     var linksSms = _this.spanContent.
                             querySelectorAll('td[width="100%"]>' +

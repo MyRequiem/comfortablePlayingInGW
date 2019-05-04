@@ -10,7 +10,7 @@
 // @include         http://www.gwars.ru/npc.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.32-200219
+// @version         2.33-040519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -220,12 +220,6 @@
          * @type {int}
          */
         this.tm = 1000;
-        /**
-         * @property regStr
-         * @type {String}
-         */
-        this.regStr = 'Спасибо|Замечательно|Как скажешь|Благодарю за|' +
-            'Опыт добавлен|Время для ответа вышло';
 
         /**
          * @method clearNPCData
@@ -382,37 +376,6 @@
         };
 
         /**
-         * @method rememberTime
-         * @param   {HTMLElement}  td
-         */
-        this.rememberTime = function (td) {
-            var tableResponseNPC = td.querySelector('table'),
-                responseNPC = tableResponseNPC.innerHTML;
-
-            tableResponseNPC.innerHTML = '<tr style="text-align: center;">' +
-                '<td><img src="' + general.imgPath + 'preloader.gif" />' +
-                '</td></tr>';
-
-            var url = 'http://www.gwars.ru/npc.php?id=' +
-                    general.getData()[1] + '&talk=1',
-                _this = this;
-
-            new AjaxQuery().init(url, function (xml) {
-                var time = /\[подождите (\d+) мин/.exec(xml.responseText);
-
-                if (time) {
-                    var stData = general.getData();
-                    stData[2] = +time[1] * 60 * 1000 + _this.getTimeNow();
-                    general.setData(stData);
-                }
-
-                tableResponseNPC.innerHTML = responseNPC;
-            }, function () {
-                tableResponseNPC.innerHTML = responseNPC;
-            });
-        };
-
-        /**
          * @method init
          */
         this.init = function () {
@@ -519,13 +482,6 @@
                 if (/Ваш ответ:/.test(talkNPC.innerHTML)) {
                     stData[2] = '';
                     general.setData(stData);
-                    return;
-                }
-
-                // квест выполнен/провален/отказ...
-                // смотрим время до следующего квеста
-                if (new RegExp(this.regStr).test(talkNPC.innerHTML)) {
-                    this.rememberTime(talkNPC);
                 }
             }
         };

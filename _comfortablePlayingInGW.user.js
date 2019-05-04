@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.128-150419
+// @version         1.129-040519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.128-150419';
+        this.version = '1.129-040519';
         /**
          * @property stString
          * @type {String}
@@ -100,7 +100,7 @@
                         [8]  - DeleteSms
                         [9]  - FarmExperience
                         [10] - FarmTimer
-                        [11] - ComfortableLinksForFarm
+                        [11] - ComfortableLinksForFarm (удален)
                         [12] - TimeNpc
                         [13] - AllPlantsOnFarm
                         [14] - GwMenu
@@ -1345,9 +1345,6 @@
                     'style="width: 40px;" disabled /> - интервал повторения ' +
                     'звука в секундах (0 - не повторять)' +
                     this.getGitHubLink('farmTimer'), '10'],
-                ['Удобные ссылки на ферме', 'Удобные ссылки для полива, ' +
-                    'сбора, вскапывания, посадки на ферме.' +
-                    this.getGitHubLink('comfortableLinksForFarm'), '11'],
                 ['Все растения на одной странице, счетчики', 'Счетчик гб и ' +
                     'производственного опыта на ферме. Для каждого растения ' +
                     'присутствует изображение, производственный опыт и ' +
@@ -4943,7 +4940,7 @@
                         'position: absolute; padding: 3px; background-color: ' +
                         '#E7FFE7; border: solid 1px #339933; ' +
                         'border-radius:5px; top:0; left:0; box-shadow: ' +
-                        '5px 6px 6px rgba(122,122,122,0.5);');
+                        '5px 6px 6px rgba(122,122,122,0.5); z-index: 999;');
                 general.doc.body.appendChild(this.divResult);
 
                 // noinspection JSCheckFunctionSignatures
@@ -5397,13 +5394,31 @@
         };
 
         /**
+         * @method runInit
+         */
+        this.runInit = function () {
+            var _this = this;
+            return function () {
+                general.root.setTimeout(function () {
+                    _this.init();
+                }, 700);
+            };
+        };
+
+        /**
          * @method init
          */
         this.init = function () {
-            //если в постройках или не на пустрой грядке
-            if (/section=items/.test(general.root.location.href) ||
-                    !general.doc.querySelector('div>' +
-                        'img[src$="/img/ferma/ground.png"]')) {
+            var a = general.doc.querySelectorAll('*[onclick*="gotourl("],' +
+                        '*[onclick*="openurl("],*[onclick*="plantit("]'),
+                l;
+
+            for (l = 0; l < a.length; l++) {
+                a[l].addEventListener('click', this.runInit(), false);
+            }
+
+            // не на пустрой грядке
+            if (!general.doc.querySelector('input[value="Посадить"]')) {
                 return;
             }
 
@@ -5588,6 +5603,18 @@
         };
 
         /**
+         * @method runInit
+         */
+        this.runInit = function () {
+            var _this = this;
+            return function () {
+                general.root.setTimeout(function () {
+                    _this.init();
+                }, 700);
+            };
+        };
+
+        /**
          * @method init
          */
         this.init = function () {
@@ -5606,6 +5633,14 @@
                 if ((/id=\d+/.test(general.loc)) &&
                         (/id=(\d+)/.exec(general.loc)[1]) !== general.myID) {
                     return;
+                }
+
+                var a = general.doc.querySelectorAll('*[onclick*="gotourl("],' +
+                            '*[onclick*="openurl("],*[onclick*="plantit("]'),
+                    l;
+
+                for (l = 0; l < a.length; l++) {
+                    a[l].addEventListener('click', this.runInit(), false);
                 }
 
                 // noinspection Annotator
@@ -5663,73 +5698,6 @@
     };
 
     /**
-     * @class ComfortableLinksForFarm
-     * @constructor
-     */
-    var ComfortableLinksForFarm = function () {
-        /**
-         * @method setLink
-         * @param   {Element}       a
-         * @param   {String|null}   txt
-         */
-        this.setLink = function (a, txt) {
-            var target = general.doc.
-                    querySelector('center>b>font[color="#990000"]').parentNode;
-
-            // noinspection JSUnresolvedVariable
-            if (txt && (/\(через \d+/.test(a.parentNode.innerHTML))) {
-                return;
-            }
-
-            var link = a.cloneNode(true);
-
-            if (!txt) {
-                a.setAttribute('style', 'display: none;');
-            } else {
-                // noinspection JSUndefinedPropertyAssignment
-                link.innerHTML = txt;
-            }
-
-            link.setAttribute('style', 'margin-left: 10px;');
-            target.appendChild(link);
-        };
-
-        /**
-         * @method init
-         */
-        this.init = function () {
-                // ссылка Собрать, Вскопать, Полить
-            var a1 = general.doc.querySelector('td[bgcolor="#f0fff0"]' +
-                    ':not([align="right"])>a[href^="/ferma.php?"]'),
-                // ссылка ближайшее действие
-                a2 = general.doc.querySelector('td[bgcolor="#e0eee0"]>a' +
-                        '[href^="/ferma.php?"]'),
-                // кнопка посадить
-                but = general.doc.querySelector('input[value="Посадить"]'),
-                // клетка, на которой находимся
-                pos = general.doc.querySelector('img[src$="ru/i/point2.gif"]');
-
-            if (a1 && general.root.sz49) {
-                this.setLink(a1, null);
-            } else if (a2 && general.root.sz49) {
-                this.setLink(a2, 'Далее');
-            }
-
-            pos = but && pos ? new GetPos().init(pos.parentNode) : null;
-            if (pos && general.root.sz49) {
-                but.setAttribute('style', 'position: absolute; ' +
-                        'background: #F4F3F1; ' +
-                        'border-radius: 7px; ' +
-                        'padding: 1px; ' +
-                        'top: ' + (pos.y + 15) + 'px; ' +
-                        'left: ' + (pos.x - 7) + 'px;');
-
-                but.focus();
-            }
-        };
-    };
-
-    /**
      * @class TimeNpc
      * @constructor
      */
@@ -5753,12 +5721,6 @@
          * @type {int}
          */
         this.tm = 1000;
-        /**
-         * @property regStr
-         * @type {String}
-         */
-        this.regStr = 'Спасибо|Замечательно|Как скажешь|Благодарю за|' +
-            'Опыт добавлен|Время для ответа вышло';
 
         /**
          * @method clearNPCData
@@ -5915,37 +5877,6 @@
         };
 
         /**
-         * @method rememberTime
-         * @param   {HTMLElement}  td
-         */
-        this.rememberTime = function (td) {
-            var tableResponseNPC = td.querySelector('table'),
-                responseNPC = tableResponseNPC.innerHTML;
-
-            tableResponseNPC.innerHTML = '<tr style="text-align: center;">' +
-                '<td><img src="' + general.imgPath + 'preloader.gif" />' +
-                '</td></tr>';
-
-            var url = 'http://www.gwars.ru/npc.php?id=' +
-                    general.getData(10)[1] + '&talk=1',
-                _this = this;
-
-            new AjaxQuery().init(url, 'GET', null, true, function (xml) {
-                var time = /\[подождите (\d+) мин/.exec(xml.responseText);
-
-                if (time) {
-                    var stData = general.getData(10);
-                    stData[2] = +time[1] * 60 * 1000 + _this.getTimeNow();
-                    general.setData(stData, 10);
-                }
-
-                tableResponseNPC.innerHTML = responseNPC;
-            }, function () {
-                tableResponseNPC.innerHTML = responseNPC;
-            });
-        };
-
-        /**
          * @method init
          */
         this.init = function () {
@@ -6045,13 +5976,6 @@
                 if (/Ваш ответ:/.test(talkNPC.innerHTML)) {
                     stData[2] = '';
                     general.setData(stData, 10);
-                    return;
-                }
-
-                // квест выполнен/провален/отказ...
-                // смотрим время до следующего квеста
-                if (new RegExp(this.regStr).test(talkNPC.innerHTML)) {
-                    this.rememberTime(talkNPC);
                 }
             }
         };
@@ -6296,8 +6220,8 @@
             // опыт виден (на пустой вскопанной клетке)
             if (prod) {
                 // noinspection JSUnresolvedFunction
-                var gb = table.querySelector('a[name="pf"]').parentNode.
-                        querySelectorAll('b'),
+                var target = table.querySelector('a[name="pf"]').parentNode,
+                    gb = target.querySelectorAll('b'),
                     exp = prod[1],
                     stData = general.getData(11);
 
@@ -6336,39 +6260,56 @@
 
                 var str = '';
                 if (stData[4]) {
-                    str += '<b>Счет</b>: <span style="margin-right: 10px; ' +
-                        'color: #' + (diffGb < 0 ? '0000FF' : 'FF0000') +
-                        ';"> ' + setPoint(diffGb, '\'', true) + '$</span>';
+                    str += '<span style="color: #' +
+                        (diffGb < 0 ? '0000FF' : 'FF0000') + ';">' +
+                        setPoint(diffGb, '\'', true) + '$</span>';
                 }
 
                 if (stData[5]) {
-                    str += '<b>Производ</b>: <span ' +
-                        'style="margin-right: 10px; color: #FF0000;"> +' +
+                    str += '<span' +
+                        (str ? ' style="margin-left: 5px;"' : '') + '>' +
                         setPoint(diffExp[0], '\'', false) +
                         (diffExp[1] ? ',' + diffExp[1] : '') + '</span>';
+
                 }
 
-                str += '<span style="font-size: 7pt;">' +
-                        '<span id="clearFarmCounter" style="cursor: pointer; ' +
-                        'color: #008000; text-decoration: underline;">Сброс' +
-                        '</span> <span style="color: #0000FF;">(' + time +
-                        ')</span>';
+                str += '<span style="font-size: 7pt; margin-left: 5px;">' +
+                            '<span id="clearFarmCounter" ' +
+                                'style="cursor: pointer; color: #008000; ' +
+                                'text-decoration: underline;">Сброс</span> ' +
+                            '<span style="color: #0000FF;">(' + time + ')' +
+                            '</span>' +
+                        '</span>';
 
-                var divCounters = general.doc.createElement('div');
-                divCounters.setAttribute('style', 'font-size: 8pt;');
-                divCounters.innerHTML = str;
-                table.querySelector('td[bgcolor="#f0fff0"]').
-                    appendChild(divCounters);
+                var spanCounters = general.doc.createElement('span');
+                spanCounters.setAttribute('style', 'font-size: 8pt; ' +
+                    'margin-right: 5px;');
+                spanCounters.innerHTML = str;
+                target.insertBefore(spanCounters, target.firstElementChild);
 
                 // кнопа сброса счетчиков
                 var _this = this;
                 general.$('clearFarmCounter').
                     addEventListener('click', function () {
-                        _this.clearCounter(gb.toString(), exp);
-                        divCounters.parentNode.removeChild(divCounters);
-                        _this.setCounter();
+                        if (confirm('Сбросить счетчики ?')) {
+                            _this.clearCounter(gb.toString(), exp);
+                            target.removeChild(spanCounters);
+                            _this.setCounter();
+                        }
                     }, false);
             }
+        };
+
+        /**
+         * @method runInit
+         */
+        this.runInit = function () {
+            var _this = this;
+            return function () {
+                general.root.setTimeout(function () {
+                    _this.init();
+                }, 700);
+            };
         };
 
         /**
@@ -6380,16 +6321,15 @@
                 capcha = general.doc.querySelector('input[type="hidden"]' +
                     '[name="captcha_question"]');
 
-            this.target = general.doc.
-                    querySelector('form[action="/ferma.php"]') ||
-                        general.doc.
-                            querySelector('td[width="400"][valign="top"]');
+            this.target = general.doc.querySelector('td[width="400"]' +
+                    '[valign="top"]');
 
-            // нет капчи, не в постройках, на своей ферме
-            if (!capcha && !(/section=items/.test(general.loc)) &&
-                    !(farmId && farmId[2] !== general.myID) && this.target) {
+            // нет капчи, на своей ферме
+            if (!capcha && !(farmId && farmId[2] !== general.myID) &&
+                    this.target) {
 
-                var canPlant = this.target.nodeName === 'FORM';
+                var canPlant = general.doc.
+                        querySelector('input[type="button"][value="Посадить"]');
 
                 // счетчики Гб и производа
                 var stData = general.getData(11);
@@ -6422,9 +6362,17 @@
                             }
                         }
                     }
+
+                    this.setMainPanel();
                 }
 
-                this.setMainPanel();
+                var a = general.doc.querySelectorAll('*[onclick*="gotourl("],' +
+                            '*[onclick*="openurl("],*[onclick*="plantit("]'),
+                    l;
+
+                for (l = 0; l < a.length; l++) {
+                    a[l].addEventListener('click', this.runInit(), false);
+                }
             }
         };
     };
@@ -8485,6 +8433,7 @@
             var counter = general.$('counter'),
                 url;
 
+            // noinspection JSIncompatibleTypesComparison
             if (id2 !== null) {
                 counter.innerHTML = !id ? 'входящие...' : 'исходящие...';
                 url = 'http://www.gwars.ru/sms.php?page=' + id +
@@ -8503,6 +8452,7 @@
             new AjaxQuery().init(url, 'GET', null, true, function (xml) {
                 _this.spanContent.innerHTML = xml.responseText;
 
+                // noinspection JSIncompatibleTypesComparison
                 if (id2 !== null) {
                     var linksSms = _this.spanContent.
                             querySelectorAll('td[width="100%"]>' +
@@ -13862,14 +13812,6 @@
                 if (initScript[9]) {
                     try {
                         new FarmExperience().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
-                }
-
-                if (initScript[11]) {
-                    try {
-                        new ComfortableLinksForFarm().init();
                     } catch (e) {
                         general.cons.log(e);
                     }
