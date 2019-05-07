@@ -9796,7 +9796,8 @@
             scanPersSettings.setAttribute('id', 'spSettings');
             scanPersSettings.setAttribute('style', 'visibility: hidden; ' +
                 'position: absolute; padding: 3px; border: solid 1px #339933;' +
-                ' background: #D7F4D8; border-radius: 4px;');
+                ' background: #D7F4D8; border-radius: 4px; box-shadow: ' +
+                '5px 6px 6px rgba(122,122,122,0.5); z-index: 999;');
 
             var getSelectSound = new GetSelectSound().init;
             scanPersSettings.innerHTML = '<table>' +

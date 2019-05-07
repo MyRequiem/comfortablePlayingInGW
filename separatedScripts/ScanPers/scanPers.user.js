@@ -10,7 +10,7 @@
 // @exclude         http://www.gwars.ru/b0/*
 // @grant           none
 // @license         MIT
-// @version         3.06-200219
+// @version         3.07-070519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -504,7 +504,8 @@
             scanPersSettings.setAttribute('id', 'spSettings');
             scanPersSettings.setAttribute('style', 'visibility: hidden; ' +
                 'position: absolute; padding: 3px; border: solid 1px #339933;' +
-                ' background: #D7F4D8; border-radius: 4px;');
+                ' background: #D7F4D8; border-radius: 4px; box-shadow: ' +
+                '5px 6px 6px rgba(122,122,122,0.5); z-index: 999;');
 
             scanPersSettings.innerHTML = '<table>' +
                 '<tr>' +
