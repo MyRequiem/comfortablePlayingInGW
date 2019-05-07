@@ -6409,7 +6409,7 @@
                 '#c2 {color: #014305; font-weight: bold;}' +
                 '#c3 {color: #04830C; font-style: italic;}' +
                 '#op {font-size: 7pt; opacity: 0.5;}' +
-                '.gwm {position: absolute; cursor: default;}' +
+                '.gwm {position: absolute; cursor: default; z-index: 999;}' +
                 '.gwm table {border-collapse: collapse; background-color: ' +
                     '#DBF5E0; min-width: 100px; ' +
                     // тень для таблиц
