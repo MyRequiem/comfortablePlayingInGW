@@ -3208,7 +3208,12 @@
                     '</span></span><span style="margin-left: 20px; ' +
                     'font-weight: bold;"><span style="color: #FF0000;">' +
                     this.leftPers.length + '</span> / <span style="color: ' +
-                    '#0000FF;">' + this.rightPers.length + '</span></span>';
+                    '#0000FF;">' + this.rightPers.length + '</span></span>' +
+                    '<span style="margin-left: 20px;">' +
+                    '<a href="http://www.gwars.ru/warlog.php?bid=' +
+                    (/\?bid=(\d+)/.exec(general.loc)[1]) + '&rev=1" ' +
+                    'target="_blank" style="color: #007700; ' +
+                    'text-decoration: none;">Наблюдение</a></span>';
 
             if (count) {
                 str += '<span style="margin-left: 20px;">Сделали ход: ' +
