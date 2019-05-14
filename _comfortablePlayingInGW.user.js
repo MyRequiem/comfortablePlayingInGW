@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.129-040519
+// @version         1.130-140519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.129-040519';
+        this.version = '1.130-140519';
         /**
          * @property stString
          * @type {String}
@@ -3208,7 +3208,12 @@
                     '</span></span><span style="margin-left: 20px; ' +
                     'font-weight: bold;"><span style="color: #FF0000;">' +
                     this.leftPers.length + '</span> / <span style="color: ' +
-                    '#0000FF;">' + this.rightPers.length + '</span></span>';
+                    '#0000FF;">' + this.rightPers.length + '</span></span>' +
+                    '<span style="margin-left: 20px;">' +
+                    '<a href="http://www.gwars.ru/warlog.php?bid=' +
+                    (/\?bid=(\d+)/.exec(general.loc)[1]) + '&rev=1" ' +
+                    'target="_blank" style="color: #007700; ' +
+                    'text-decoration: none;">Наблюдение</a></span>';
 
             if (count) {
                 str += '<span style="margin-left: 20px;">Сделали ход: ' +
@@ -6409,7 +6414,7 @@
                 '#c2 {color: #014305; font-weight: bold;}' +
                 '#c3 {color: #04830C; font-style: italic;}' +
                 '#op {font-size: 7pt; opacity: 0.5;}' +
-                '.gwm {position: absolute; cursor: default;}' +
+                '.gwm {position: absolute; cursor: default; z-index: 999;}' +
                 '.gwm table {border-collapse: collapse; background-color: ' +
                     '#DBF5E0; min-width: 100px; ' +
                     // тень для таблиц
@@ -9796,7 +9801,8 @@
             scanPersSettings.setAttribute('id', 'spSettings');
             scanPersSettings.setAttribute('style', 'visibility: hidden; ' +
                 'position: absolute; padding: 3px; border: solid 1px #339933;' +
-                ' background: #D7F4D8; border-radius: 4px;');
+                ' background: #D7F4D8; border-radius: 4px; box-shadow: ' +
+                '5px 6px 6px rgba(122,122,122,0.5); z-index: 999;');
 
             var getSelectSound = new GetSelectSound().init;
             scanPersSettings.innerHTML = '<table>' +

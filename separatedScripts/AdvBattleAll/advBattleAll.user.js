@@ -5,13 +5,13 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js
-// @include         http://www.gwars.ru/b0/*
+// @include         http://www.gwars.ru/b0/btl.php?bid=*
 // @include         http://www.gwars.ru/warlog.php*
 // @include         http://www.gwars.ru/wargroup.php*
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.16-220219
+// @version         4.17-090519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -1159,7 +1159,12 @@
                     '</span></span><span style="margin-left: 20px; ' +
                     'font-weight: bold;"><span style="color: #FF0000;">' +
                     this.leftPers.length + '</span> / <span style="color: ' +
-                    '#0000FF;">' + this.rightPers.length + '</span></span>';
+                    '#0000FF;">' + this.rightPers.length + '</span></span>' +
+                    '<span style="margin-left: 20px;">' +
+                    '<a href="http://www.gwars.ru/warlog.php?bid=' +
+                    (/\?bid=(\d+)/.exec(general.loc)[1]) + '&rev=1" ' +
+                    'target="_blank" style="color: #007700; ' +
+                    'text-decoration: none;">Наблюдение</a></span>';
 
             if (count) {
                 str += '<span style="margin-left: 20px;">Сделали ход: ' +
@@ -2347,9 +2352,8 @@
                 return;
             }
 
-            // графическое оформление боев или НЕ JS-версия боя
+            // графическое оформление боев
             if (general.doc.querySelector('table[style*="battleground"]') ||
-                    /\/b0\/b\.php/.test(general.loc) ||
                     general.root.self !== general.root.top) {
                 return;
             }

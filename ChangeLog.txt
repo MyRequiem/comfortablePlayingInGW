@@ -1,3 +1,13 @@
+2019-05-14[1.130-140519]
+--------------------------------------
+	- Исправлен скрипт
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
+
+	- Обновлены скрипты:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ScanPers
+
+
 2019-05-04[1.129-040519]
 --------------------------------------
 	- Исправлены скрипты:
