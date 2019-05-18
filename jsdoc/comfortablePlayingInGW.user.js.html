@@ -40,7 +40,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.130-140519
+// @version         1.131-180519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -109,7 +109,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.130-140519';
+        this.version = '1.131-180519';
         /**
          * @property stString
          * @type {String}
@@ -12901,7 +12901,7 @@
                     td = spanContent.querySelector(cssSelector).parentNode.
                         previousElementSibling,
                     questDescr = td.firstElementChild.nextSibling.nodeValue,
-                    reg = /(.*):\s*(\d+) из (\d+)/.exec(questDescr),
+                    reg = /^\s*(.*):\s*(\d+) из (\d+)/.exec(questDescr),
                     acQuests = /-квестов:&lt;\/b>\s?(\d+)/.exec(td.innerHTML);
 
                 if (!reg || !acQuests) {
@@ -12918,12 +12918,89 @@
                     '(&lt;a target="_blank" style="color:#007700; ' +
                     'font-weight: bold; text-decoration: none;" ' +
                     'href="http://www.gwars.ru/help/index.php?' +
-                    'sid=102&amp;pid=45">' + acQuests[1] + '&lt;/a>)';
+                    'sid=102&amp;pid=45">' + acQuests[1] + '&lt;/a>)' +
+                    '&lt;img src="https://images.gwars.ru/i/home/wlog.gif" ' +
+                    'id="showHideQuestList" border="0" width="12" ' +
+                    'height="10" style="margin-left: 3px; cursor: pointer;">' +
+                    '&lt;div id="questList" style="display: none;">' +
+                    '&lt;ul>' +
+                        '&lt;li>Поймать рыбу 1 раз&lt;br>' +
+                            '&lt;span style="color: #4E4E4E;">(ловить можно не ' +
+                            'чаще, чем раз в 40 минут, с 8 до 11 и с 17 до ' +
+                            '20 часов по серверу)&lt;/span>' +
+                            '&lt;li>Зайти на замену и выжить в 2 боях' +
+                        '&lt;li>Выжить в 5 боях на Outland&lt;br>' +
+                            '&lt;span style="color: #4E4E4E;">(засчитывается и ' +
+                            'в прибрежной зоне)&lt;/span>' +
+                        '&lt;li>Нанести в синдикатных боях суммарный урон в ' +
+                            '820 HP' +
+                        '&lt;li>Убить хотя бы одного врага в 3 синдикатных ' +
+                            'боях&lt;br>&lt;span style="color: #4E4E4E;">(бои за ' +
+                            'бункер не учитываются)&lt;/span>' +
+                        '&lt;li>Сделать 3 критических попадания из снайперской ' +
+                            'винтовки или автомата&lt;br>' +
+                            '&lt;span style="color: #4E4E4E;">(Если после боя ' +
+                            'ломается оружие и персонаж оказывается с ' +
+                            'пустыми руками, то все попадания, сделанные в ' +
+                            'этом бою, не засчитаются. Для двуручного оружия ' +
+                            'криты считаются с левой, при этом в правой ' +
+                            'должен быть тип оружия, на которое в квесте ' +
+                            'запрошены криты.)&lt;/span>' +
+                        '&lt;li>Сделать 30 критических попаданий из пулемета&lt;br>' +
+                            '&lt;span style="color: #4E4E4E;">(если после боя ' +
+                            'ломается оружие и персонаж оказывается с ' +
+                            'пустыми руками, то все попадания, сделанные в ' +
+                            'этом бою, не засчитаются)&lt;/span>' +
+                        '&lt;li>На Outland нанести Z-Lands суммарный урон 820 HP' +
+                        '&lt;li>Убить гранатой 2 Z-Lands&lt;br>' +
+                            '&lt;span style="color: #4E4E4E;">(горение идёт в ' +
+                            'зачёт)&lt;/span>' +
+                        '&lt;li>Привезти 5 предметов с Outland' +
+                        '&lt;li>Сделать 4 критических попаданий из ' +
+                            'пистолетов-пулеметов&lt;br>' +
+                            '&lt;span style="color: #4E4E4E;">(для двуручного ' +
+                            'оружия криты считаются с левой, при этом в ' +
+                            'правой должен быть тип оружия, на которое в ' +
+                            'квесте запрошены криты)&lt;/span>' +
+                            '&lt;li>Выполнить 2 задания NPC' +
+                        '&lt;li>Убить 3 врагов в уличных боях' +
+                        '&lt;li>Выжить в 5 общих групповых боях&lt;br>' +
+                            '&lt;span style="color: #4E4E4E;">(в зачёт идут ' +
+                            'нападения на бункер для всех)&lt;/span>' +
+                        '&lt;li>Убить 7 Z-Lands на Outland&lt;br>' +
+                            '&lt;span style="color: #4E4E4E;">(Засчитывается и ' +
+                            'в прибрежной зоне. Горение идёт в зачёт.)&lt;/span>' +
+                        '&lt;li>5 раз нанести врагу урон гранатой&lt;br>' +
+                            '&lt;span style="color: #4E4E4E;">(Подразумевается, ' +
+                            'что в пяти боях, туз в рукаве не засчитывается. ' +
+                            'Горение идёт в зачёт.)&lt;/span>' +
+                        '&lt;li>Выжить в 4 синдикатных боях&lt;br>' +
+                            '&lt;span style="color: #4E4E4E;">(бои за бункер ' +
+                            'не учитываются)&lt;/span>' +
+                    '&lt;/ul>&lt;/div>';
 
                 _this.target.parentNode.setAttribute('width', '100%');
                 _this.target.parentNode.nextElementSibling.
                     removeAttribute('width');
                 _this.target.appendChild(span);
+
+                var questList = general.$('questList'),
+                    li = questList.querySelectorAll('li'),
+                    i;
+
+                for (i = 0; i &lt; li.length; i++) {
+                    if (li[i].innerHTML.indexOf(reg[1]) !== -1) {
+                        li[i].setAttribute('style', 'border: #000000 1px ' +
+                            'dotted; background: #D0EED0;');
+                        break;
+                    }
+                }
+
+                general.$('showHideQuestList').
+                    addEventListener('click', function () {
+                        var display = questList.style.display;
+                        questList.style.display = display ? '' : 'none';
+                    }, false);
             }, function () {
                 general.root.setTimeout(function () {
                     _this.showQuest(url);
@@ -14315,7 +14392,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue May 14 2019 09:15:40 GMT+0400 (+04)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat May 18 2019 18:32:59 GMT+0400 (+04)
 </footer>
 
 <script> prettyPrint(); </script>
