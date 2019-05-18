@@ -12873,7 +12873,7 @@
                     td = spanContent.querySelector(cssSelector).parentNode.
                         previousElementSibling,
                     questDescr = td.firstElementChild.nextSibling.nodeValue,
-                    reg = /(.*):\s*(\d+) из (\d+)/.exec(questDescr),
+                    reg = /^\s*(.*):\s*(\d+) из (\d+)/.exec(questDescr),
                     acQuests = /-квестов:<\/b>\s?(\d+)/.exec(td.innerHTML);
 
                 if (!reg || !acQuests) {
@@ -12890,12 +12890,89 @@
                     '(<a target="_blank" style="color:#007700; ' +
                     'font-weight: bold; text-decoration: none;" ' +
                     'href="http://www.gwars.ru/help/index.php?' +
-                    'sid=102&pid=45">' + acQuests[1] + '</a>)';
+                    'sid=102&pid=45">' + acQuests[1] + '</a>)' +
+                    '<img src="https://images.gwars.ru/i/home/wlog.gif" ' +
+                    'id="showHideQuestList" border="0" width="12" ' +
+                    'height="10" style="margin-left: 3px; cursor: pointer;">' +
+                    '<div id="questList" style="display: none;">' +
+                    '<ul>' +
+                        '<li>Поймать рыбу 1 раз<br>' +
+                            '<span style="color: #4E4E4E;">(ловить можно не ' +
+                            'чаще, чем раз в 40 минут, с 8 до 11 и с 17 до ' +
+                            '20 часов по серверу)</span>' +
+                            '<li>Зайти на замену и выжить в 2 боях' +
+                        '<li>Выжить в 5 боях на Outland<br>' +
+                            '<span style="color: #4E4E4E;">(засчитывается и ' +
+                            'в прибрежной зоне)</span>' +
+                        '<li>Нанести в синдикатных боях суммарный урон в ' +
+                            '820 HP' +
+                        '<li>Убить хотя бы одного врага в 3 синдикатных ' +
+                            'боях<br><span style="color: #4E4E4E;">(бои за ' +
+                            'бункер не учитываются)</span>' +
+                        '<li>Сделать 3 критических попадания из снайперской ' +
+                            'винтовки или автомата<br>' +
+                            '<span style="color: #4E4E4E;">(Если после боя ' +
+                            'ломается оружие и персонаж оказывается с ' +
+                            'пустыми руками, то все попадания, сделанные в ' +
+                            'этом бою, не засчитаются. Для двуручного оружия ' +
+                            'криты считаются с левой, при этом в правой ' +
+                            'должен быть тип оружия, на которое в квесте ' +
+                            'запрошены криты.)</span>' +
+                        '<li>Сделать 30 критических попаданий из пулемета<br>' +
+                            '<span style="color: #4E4E4E;">(если после боя ' +
+                            'ломается оружие и персонаж оказывается с ' +
+                            'пустыми руками, то все попадания, сделанные в ' +
+                            'этом бою, не засчитаются)</span>' +
+                        '<li>На Outland нанести Z-Lands суммарный урон 820 HP' +
+                        '<li>Убить гранатой 2 Z-Lands<br>' +
+                            '<span style="color: #4E4E4E;">(горение идёт в ' +
+                            'зачёт)</span>' +
+                        '<li>Привезти 5 предметов с Outland' +
+                        '<li>Сделать 4 критических попаданий из ' +
+                            'пистолетов-пулеметов<br>' +
+                            '<span style="color: #4E4E4E;">(для двуручного ' +
+                            'оружия криты считаются с левой, при этом в ' +
+                            'правой должен быть тип оружия, на которое в ' +
+                            'квесте запрошены криты)</span>' +
+                            '<li>Выполнить 2 задания NPC' +
+                        '<li>Убить 3 врагов в уличных боях' +
+                        '<li>Выжить в 5 общих групповых боях<br>' +
+                            '<span style="color: #4E4E4E;">(в зачёт идут ' +
+                            'нападения на бункер для всех)</span>' +
+                        '<li>Убить 7 Z-Lands на Outland<br>' +
+                            '<span style="color: #4E4E4E;">(Засчитывается и ' +
+                            'в прибрежной зоне. Горение идёт в зачёт.)</span>' +
+                        '<li>5 раз нанести врагу урон гранатой<br>' +
+                            '<span style="color: #4E4E4E;">(Подразумевается, ' +
+                            'что в пяти боях, туз в рукаве не засчитывается. ' +
+                            'Горение идёт в зачёт.)</span>' +
+                        '<li>Выжить в 4 синдикатных боях<br>' +
+                            '<span style="color: #4E4E4E;">(бои за бункер ' +
+                            'не учитываются)</span>' +
+                    '</ul></div>';
 
                 _this.target.parentNode.setAttribute('width', '100%');
                 _this.target.parentNode.nextElementSibling.
                     removeAttribute('width');
                 _this.target.appendChild(span);
+
+                var questList = general.$('questList'),
+                    li = questList.querySelectorAll('li'),
+                    i;
+
+                for (i = 0; i < li.length; i++) {
+                    if (li[i].innerHTML.indexOf(reg[1]) !== -1) {
+                        li[i].setAttribute('style', 'border: #000000 1px ' +
+                            'dotted; background: #D0EED0;');
+                        break;
+                    }
+                }
+
+                general.$('showHideQuestList').
+                    addEventListener('click', function () {
+                        var display = questList.style.display;
+                        questList.style.display = display ? '' : 'none';
+                    }, false);
             }, function () {
                 general.root.setTimeout(function () {
                     _this.showQuest(url);
