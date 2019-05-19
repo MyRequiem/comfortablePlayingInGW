@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.12-180519
+// @version         1.14-190519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458], идея kaa
 // ==/UserScript==
 
@@ -45,11 +45,6 @@
          * @type {Object}
          */
         this.doc = this.root.document;
-        /**
-         * @property questURL
-         * @type {String}
-         */
-        this.questURL = 'http://www.gwars.ru/questlog.php?id=';
         /**
          * @property persID
          * @type {String}
@@ -136,19 +131,23 @@
                          previousElementSibling,
                     questDescr = td.firstElementChild.nextSibling.nodeValue,
                     reg = /^\s*(.*):\s*(\d+) из (\d+)/.exec(questDescr),
-                    acQuests = /-квестов:<\/b>\s?(\d+)/.exec(td.innerHTML);
+                    acQuests = /-квестов:<\/b>\s?(\d+)/.exec(td.innerHTML),
+                    bLevel = _this.doc.
+                        querySelector('span[onclick^="return pip_load("]').
+                            previousElementSibling.firstElementChild.innerHTML;
 
-                if (!reg || !acQuests) {
+                if (!reg || !acQuests || !bLevel) {
                     return;
                 }
 
                 var span = _this.doc.createElement('span');
                 span.setAttribute('style', 'margin-left: 7px; font-size: 8pt;');
-                span.innerHTML = reg[1] + ' [' +
-                    '<a href="/questlog.php" style="color: ' +
+                span.innerHTML = '<span id="questDesc">' + reg[1] + ' [' +
+                    '<a href="http://www.gwars.ru/questlog.php?id=' +
+                    _this.persID + '" style="color: ' +
                     (+reg[2] < (+reg[3]) ? '#AA5500' : '#008700') + '; ' +
                     'text-decoration: none; font-size: 8pt;" target="_blank">' +
-                    reg[2] + '</a>/' + reg[3] + '] ' +
+                    reg[2] + '</a>/' + reg[3] + ']</span> ' +
                     '(<a target="_blank" style="color:#007700; ' +
                     'font-weight: bold; text-decoration: none;" ' +
                     'href="http://www.gwars.ru/help/index.php?' +
@@ -167,7 +166,7 @@
                             '<span style="color: #4E4E4E;">(засчитывается и ' +
                             'в прибрежной зоне)</span>' +
                         '<li>Нанести в синдикатных боях суммарный урон в ' +
-                            '820 HP' +
+                            (bLevel * 20) + ' HP' +
                         '<li>Убить хотя бы одного врага в 3 синдикатных ' +
                             'боях<br><span style="color: #4E4E4E;">(бои за ' +
                             'бункер не учитываются)</span>' +
@@ -180,12 +179,14 @@
                             'криты считаются с левой, при этом в правой ' +
                             'должен быть тип оружия, на которое в квесте ' +
                             'запрошены криты.)</span>' +
-                        '<li>Сделать 30 критических попаданий из пулемета<br>' +
+                        '<li>Сделать ' + (bLevel > 35 ? '40' : '30') +
+                            ' критических попаданий из пулемета<br>' +
                             '<span style="color: #4E4E4E;">(если после боя ' +
                             'ломается оружие и персонаж оказывается с ' +
                             'пустыми руками, то все попадания, сделанные в ' +
                             'этом бою, не засчитаются)</span>' +
-                        '<li>На Outland нанести Z-Lands суммарный урон 820 HP' +
+                        '<li>На Outland нанести Z-Lands суммарный урон ' +
+                            (bLevel * 20) + ' HP' +
                         '<li>Убить гранатой 2 Z-Lands<br>' +
                             '<span style="color: #4E4E4E;">(горение идёт в ' +
                             'зачёт)</span>' +
@@ -218,14 +219,33 @@
                     removeAttribute('width');
                 _this.target.appendChild(span);
 
+                var desc = _this.$('questDesc'),
+                    val;
+
+                if (/суммарный урон.* \d+ HP/.test(desc.innerHTML)) {
+                    val = bLevel * 20;
+                    desc.innerHTML = desc.innerHTML.
+                        replace(/\d+ HP/, val + ' HP');
+                    desc.innerHTML = desc.innerHTML.
+                        replace(/\/\d+\]/, '/' + val + ']');
+                } else if (/\d+ критическ.* из пулемета/.test(desc.innerHTML)) {
+                    val = bLevel > 35 ? '40' : '30';
+                    desc.innerHTML = desc.innerHTML.
+                        replace(/\d+ критическ/, val + ' критическ');
+                    desc.innerHTML = desc.innerHTML.
+                        replace(/\/\d+\]/, '/' + val + ']');
+                }
+
                 var questList = _this.$('questList'),
                     li = questList.querySelectorAll('li'),
                     i;
 
+                desc = /^(.*) \[/.exec(desc.innerHTML)[1];
                 for (i = 0; i < li.length; i++) {
-                    if (li[i].innerHTML.indexOf(reg[1]) !== -1) {
+                    if (li[i].innerHTML.indexOf(desc) !== -1) {
                         li[i].setAttribute('style', 'border: #000000 1px ' +
                             'dotted; background: #D0EED0;');
+
                         break;
                     }
                 }
@@ -247,7 +267,8 @@
          */
         init: function () {
             if (this.persID && this.target && this.root.swdf) {
-                this.showQuest(this.questURL + this.persID);
+                this.showQuest('http://www.gwars.ru/questlog.php?id=' +
+                    this.persID);
             }
         }
     };

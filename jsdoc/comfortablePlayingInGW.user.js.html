@@ -40,7 +40,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.131-180519
+// @version         1.132-190519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -109,7 +109,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.131-180519';
+        this.version = '1.132-190519';
         /**
          * @property stString
          * @type {String}
@@ -12865,11 +12865,6 @@
      */
     var CurrentQuestOnInfo = function () {
         /**
-         * @property questURL
-         * @type {String}
-         */
-        this.questURL = 'http://www.gwars.ru/questlog.php?id=';
-        /**
          * @property persID
          * @type {String}
          */
@@ -12902,19 +12897,23 @@
                         previousElementSibling,
                     questDescr = td.firstElementChild.nextSibling.nodeValue,
                     reg = /^\s*(.*):\s*(\d+) из (\d+)/.exec(questDescr),
-                    acQuests = /-квестов:&lt;\/b>\s?(\d+)/.exec(td.innerHTML);
+                    acQuests = /-квестов:&lt;\/b>\s?(\d+)/.exec(td.innerHTML),
+                    bLevel = general.doc.
+                        querySelector('span[onclick^="return pip_load("]').
+                            previousElementSibling.firstElementChild.innerHTML;
 
-                if (!reg || !acQuests) {
+                if (!reg || !acQuests || !bLevel) {
                     return;
                 }
 
                 var span = general.doc.createElement('span');
                 span.setAttribute('style', 'margin-left: 7px; font-size: 8pt;');
-                span.innerHTML = reg[1] + ' [' +
-                    '&lt;a href="/questlog.php" style="color: ' +
+                span.innerHTML = '&lt;span id="questDesc">' + reg[1] + ' [' +
+                    '&lt;a href="http://www.gwars.ru/questlog.php?id=' +
+                    _this.persID + '" style="color: ' +
                     (+reg[2] &lt; (+reg[3]) ? '#AA5500' : '#008700') + '; ' +
                     'text-decoration: none; font-size: 8pt;" target="_blank">' +
-                    reg[2] + '&lt;/a>/' + reg[3] + '] ' +
+                    reg[2] + '&lt;/a>/' + reg[3] + ']&lt;/span> ' +
                     '(&lt;a target="_blank" style="color:#007700; ' +
                     'font-weight: bold; text-decoration: none;" ' +
                     'href="http://www.gwars.ru/help/index.php?' +
@@ -12933,7 +12932,7 @@
                             '&lt;span style="color: #4E4E4E;">(засчитывается и ' +
                             'в прибрежной зоне)&lt;/span>' +
                         '&lt;li>Нанести в синдикатных боях суммарный урон в ' +
-                            '820 HP' +
+                            (bLevel * 20) + ' HP' +
                         '&lt;li>Убить хотя бы одного врага в 3 синдикатных ' +
                             'боях&lt;br>&lt;span style="color: #4E4E4E;">(бои за ' +
                             'бункер не учитываются)&lt;/span>' +
@@ -12946,12 +12945,14 @@
                             'криты считаются с левой, при этом в правой ' +
                             'должен быть тип оружия, на которое в квесте ' +
                             'запрошены криты.)&lt;/span>' +
-                        '&lt;li>Сделать 30 критических попаданий из пулемета&lt;br>' +
+                        '&lt;li>Сделать ' + (bLevel > 35 ? '40' : '30') +
+                            ' критических попаданий из пулемета&lt;br>' +
                             '&lt;span style="color: #4E4E4E;">(если после боя ' +
                             'ломается оружие и персонаж оказывается с ' +
                             'пустыми руками, то все попадания, сделанные в ' +
                             'этом бою, не засчитаются)&lt;/span>' +
-                        '&lt;li>На Outland нанести Z-Lands суммарный урон 820 HP' +
+                        '&lt;li>На Outland нанести Z-Lands суммарный урон ' +
+                            (bLevel * 20) + ' HP' +
                         '&lt;li>Убить гранатой 2 Z-Lands&lt;br>' +
                             '&lt;span style="color: #4E4E4E;">(горение идёт в ' +
                             'зачёт)&lt;/span>' +
@@ -12984,14 +12985,33 @@
                     removeAttribute('width');
                 _this.target.appendChild(span);
 
+                var desc = general.$('questDesc'),
+                    val;
+
+                if (/суммарный урон.* \d+ HP/.test(desc.innerHTML)) {
+                    val = bLevel * 20;
+                    desc.innerHTML = desc.innerHTML.
+                        replace(/\d+ HP/, val + ' HP');
+                    desc.innerHTML = desc.innerHTML.
+                        replace(/\/\d+\]/, '/' + val + ']');
+                } else if (/\d+ критическ.* из пулемета/.test(desc.innerHTML)) {
+                    val = bLevel > 35 ? '40' : '30';
+                    desc.innerHTML = desc.innerHTML.
+                        replace(/\d+ критическ/, val + ' критическ');
+                    desc.innerHTML = desc.innerHTML.
+                        replace(/\/\d+\]/, '/' + val + ']');
+                }
+
                 var questList = general.$('questList'),
                     li = questList.querySelectorAll('li'),
                     i;
 
+                desc = /^(.*) \[/.exec(desc.innerHTML)[1];
                 for (i = 0; i &lt; li.length; i++) {
-                    if (li[i].innerHTML.indexOf(reg[1]) !== -1) {
+                    if (li[i].innerHTML.indexOf(desc) !== -1) {
                         li[i].setAttribute('style', 'border: #000000 1px ' +
                             'dotted; background: #D0EED0;');
+
                         break;
                     }
                 }
@@ -13010,7 +13030,8 @@
 
         this.init = function () {
             if (this.persID &amp;&amp; this.target &amp;&amp; general.root.swdf) {
-                this.showQuest(this.questURL + this.persID);
+                this.showQuest('http://www.gwars.ru/questlog.php?id=' +
+                    this.persID);
             }
         };
     };
@@ -14392,7 +14413,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat May 18 2019 18:32:59 GMT+0400 (+04)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun May 19 2019 23:56:28 GMT+0400 (+04)
 </footer>
 
 <script> prettyPrint(); </script>
