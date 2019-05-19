@@ -12837,11 +12837,6 @@
      */
     var CurrentQuestOnInfo = function () {
         /**
-         * @property questURL
-         * @type {String}
-         */
-        this.questURL = 'http://www.gwars.ru/questlog.php?id=';
-        /**
          * @property persID
          * @type {String}
          */
@@ -12883,7 +12878,8 @@
                 var span = general.doc.createElement('span');
                 span.setAttribute('style', 'margin-left: 7px; font-size: 8pt;');
                 span.innerHTML = reg[1] + ' [' +
-                    '<a href="/questlog.php" style="color: ' +
+                    '<a href="http://www.gwars.ru/questlog.php?id=' +
+                    _this.persID + '" style="color: ' +
                     (+reg[2] < (+reg[3]) ? '#AA5500' : '#008700') + '; ' +
                     'text-decoration: none; font-size: 8pt;" target="_blank">' +
                     reg[2] + '</a>/' + reg[3] + '] ' +
@@ -12982,7 +12978,8 @@
 
         this.init = function () {
             if (this.persID && this.target && general.root.swdf) {
-                this.showQuest(this.questURL + this.persID);
+                this.showQuest('http://www.gwars.ru/questlog.php?id=' +
+                    this.persID);
             }
         };
     };

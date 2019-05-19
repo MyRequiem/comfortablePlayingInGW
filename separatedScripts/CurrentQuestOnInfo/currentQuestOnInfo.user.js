@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.12-180519
+// @version         1.13-190519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458], идея kaa
 // ==/UserScript==
 
@@ -45,11 +45,6 @@
          * @type {Object}
          */
         this.doc = this.root.document;
-        /**
-         * @property questURL
-         * @type {String}
-         */
-        this.questURL = 'http://www.gwars.ru/questlog.php?id=';
         /**
          * @property persID
          * @type {String}
@@ -145,7 +140,8 @@
                 var span = _this.doc.createElement('span');
                 span.setAttribute('style', 'margin-left: 7px; font-size: 8pt;');
                 span.innerHTML = reg[1] + ' [' +
-                    '<a href="/questlog.php" style="color: ' +
+                    '<a href="http://www.gwars.ru/questlog.php?id=' +
+                    _this.persID + '" style="color: ' +
                     (+reg[2] < (+reg[3]) ? '#AA5500' : '#008700') + '; ' +
                     'text-decoration: none; font-size: 8pt;" target="_blank">' +
                     reg[2] + '</a>/' + reg[3] + '] ' +
@@ -247,7 +243,8 @@
          */
         init: function () {
             if (this.persID && this.target && this.root.swdf) {
-                this.showQuest(this.questURL + this.persID);
+                this.showQuest('http://www.gwars.ru/questlog.php?id=' +
+                    this.persID);
             }
         }
     };
