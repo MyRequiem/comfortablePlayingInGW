@@ -12878,12 +12878,14 @@
                     return;
                 }
 
-                var span = general.doc.createElement('span');
+                var isDone = +reg[2] >= (+reg[3]),
+                    span = general.doc.createElement('span');
+
                 span.setAttribute('style', 'margin-left: 7px; font-size: 8pt;');
                 span.innerHTML = '<span id="questDesc">' + reg[1] + ' [' +
                     '<a href="http://www.gwars.ru/questlog.php?id=' +
                     _this.persID + '" style="color: ' +
-                    (+reg[2] < (+reg[3]) ? '#AA5500' : '#008700') + '; ' +
+                    (isDone ? '#008700' : '#AA5500') + '; ' +
                     'text-decoration: none; font-size: 8pt;" target="_blank">' +
                     reg[2] + '</a>/' + reg[3] + ']</span> ' +
                     '(<a target="_blank" style="color:#007700; ' +
@@ -12917,8 +12919,7 @@
                             'криты считаются с левой, при этом в правой ' +
                             'должен быть тип оружия, на которое в квесте ' +
                             'запрошены криты.)</span>' +
-                        '<li>Сделать ' + (bLevel > 35 ? '40' : '30') +
-                            ' критических попаданий из пулемета<br>' +
+                        '<li>Сделать 30 критических попаданий из пулемета<br>' +
                             '<span style="color: #4E4E4E;">(если после боя ' +
                             'ломается оружие и персонаж оказывается с ' +
                             'пустыми руками, то все попадания, сделанные в ' +
@@ -12957,19 +12958,11 @@
                     removeAttribute('width');
                 _this.target.appendChild(span);
 
-                var desc = general.$('questDesc'),
-                    val;
-
+                var desc = general.$('questDesc');
                 if (/суммарный урон.* \d+ HP/.test(desc.innerHTML)) {
-                    val = bLevel * 20;
+                    var val = bLevel * 20;
                     desc.innerHTML = desc.innerHTML.
                         replace(/\d+ HP/, val + ' HP');
-                    desc.innerHTML = desc.innerHTML.
-                        replace(/\/\d+\]/, '/' + val + ']');
-                } else if (/\d+ критическ.* из пулемета/.test(desc.innerHTML)) {
-                    val = bLevel > 35 ? '40' : '30';
-                    desc.innerHTML = desc.innerHTML.
-                        replace(/\d+ критическ/, val + ' критическ');
                     desc.innerHTML = desc.innerHTML.
                         replace(/\/\d+\]/, '/' + val + ']');
                 }
@@ -12982,7 +12975,8 @@
                 for (i = 0; i < li.length; i++) {
                     if (li[i].innerHTML.indexOf(desc) !== -1) {
                         li[i].setAttribute('style', 'border: #000000 1px ' +
-                            'dotted; background: #D0EED0;');
+                            'dotted; background: ' +
+                            (isDone ? '#D0EED0' : '#DADADA') + ';');
 
                         break;
                     }
