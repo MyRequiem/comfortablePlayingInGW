@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.38-200219
+// @version         2.39-250519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -163,7 +163,7 @@
                 (!ttl ? 'color: #008000' : 'font-weight: bold') + ';">' +
                 game + ':</td>' + '<td style="color: #' +
                 (rez < 0 ? '0000FF' : 'FF0000') + ';">$' +
-                new SetPoints().init(rez, ',') + '</td></tr>';
+                new SetPoints().init(rez, ',', false) + '</td></tr>';
         };
 
         /**

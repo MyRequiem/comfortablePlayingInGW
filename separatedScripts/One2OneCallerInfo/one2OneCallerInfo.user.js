@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         2.19-200219
+// @version         2.20-250519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -88,10 +88,11 @@
     var AjaxQuery = function () {
         /**
          * @method init
-         * @param   {String}    url
-         * @param   {Function}  onsuccess
+         * @param   {String}        url
+         * @param   {Function}      onsuccess
+         * @param   {Function|null} onfailure
          */
-        this.init = function (url, onsuccess) {
+        this.init = function (url, onsuccess, onfailure) {
             var xmlHttpRequest = new XMLHttpRequest();
 
             xmlHttpRequest.open('GET', url, true);
@@ -106,6 +107,8 @@
                     clearTimeout(timeout);
                     if (xmlHttpRequest.status === 200) {
                         onsuccess(xmlHttpRequest);
+                    } else {
+                        onfailure();
                     }
                 }
             };
@@ -253,7 +256,7 @@
                 general.root.setTimeout(function () {
                     _this.getRange(0, 'Дальность оружия: ');
                 }, 1000);
-            });
+            }, null);
         };
     };
 

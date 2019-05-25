@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.22-230419
+// @version         2.23-250519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -158,7 +158,7 @@
     var GetPos = function () {
         /**
          * @method init
-         * @param   {Element}   obj
+         * @param   {Object}    obj
          * @return  {Object}
          */
         this.init = function (obj) {

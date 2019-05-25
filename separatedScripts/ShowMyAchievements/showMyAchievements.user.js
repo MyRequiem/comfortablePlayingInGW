@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.09-200219
+// @version         2.10-250519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458] Идея: Горыныч
 // ==/UserScript==
 
@@ -204,7 +204,7 @@
     var GetPos = function () {
         /**
          * @method init
-         * @param   {Element}   obj
+         * @param   {Object}    obj
          * @return  {Object}
          */
         this.init = function (obj) {
@@ -287,6 +287,7 @@
 
                     for (i = 0; i < achievNow.length; i++) {
                         if (new RegExp('(^|,)' + i + '(,|$)').test(stData[0])) {
+                            // noinspection JSUnresolvedVariable
                             str += '<tr>' + achievNow[i].parentNode.parentNode.
                                 innerHTML + '</tr>';
                         }
