@@ -1,7 +1,7 @@
 Быстрый поиск предметов на ДО при введении их названия в текстовое поле.
 <br>
 <br>
-Версия: 2.07-200219
+Версия: 2.08-260519
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/DoFilter/doFilter.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/DoFilter/doFilter.user.js.zip)
 <br>

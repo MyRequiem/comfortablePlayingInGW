@@ -1,7 +1,7 @@
 Показывает на карте терминалы и порты.
 <br>
 <br>
-Версия: 2.18-200219
+Версия: 2.19-260519
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortsAndTerminals/portsAndTerminals.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortsAndTerminals/portsAndTerminals.user.js.zip)
 <br>

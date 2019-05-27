@@ -9,6 +9,6 @@
 // @include         http://www.gwars.ru/info.vote.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.09-200219
+// @version         2.10-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==

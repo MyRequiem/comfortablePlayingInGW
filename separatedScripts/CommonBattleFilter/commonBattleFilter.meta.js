@@ -8,6 +8,6 @@
 // @include         http://www.gwars.ru/wargroup.php?war=armed*
 // @grant           none
 // @license         MIT
-// @version         1.15-200219
+// @version         1.16-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
