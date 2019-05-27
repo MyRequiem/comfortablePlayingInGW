@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         2.16-200219
+// @version         2.17-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -129,6 +129,7 @@
          */
         init: function () {
             this.changeFavicon();
+            // noinspection JSUnresolvedVariable
             if (!/\/news\.php\?set=1/.test(this.root.location.href) &&
                     this.root.aqyq) {
                 this.changeIcons();
@@ -151,7 +152,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

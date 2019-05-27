@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php*
 // @grant           none
 // @license         MIT
-// @version         2.08-200219
+// @version         2.09-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -206,6 +206,7 @@
          * @method init
          */
         this.init = function () {
+            // noinspection JSUnresolvedVariable
             if (this.equipment &&
                     /(Левая|Правая) рука/.test(this.equipment.innerHTML) &&
                         general.root.kth0) {
@@ -213,7 +214,7 @@
                     txt = this.equipment.innerHTML;
 
                 this.weapon = this.equipment.querySelectorAll(css);
-                if (/Левая/.test(txt) && (/Правая/.test(txt))) {
+                if (/Левая/.test(txt) && /Правая/.test(txt)) {
                     this.weapon = [this.weapon[0].href, this.weapon[1].href];
                 } else {
                     this.weapon = [this.weapon[0].href];
@@ -239,7 +240,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

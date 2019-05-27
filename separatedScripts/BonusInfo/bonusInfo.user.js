@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.10-200219
+// @version         2.11-250519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -279,6 +279,7 @@
                 if (tdName && tdName.innerHTML) {
                     bonusName = tdName.innerHTML.
                                     replace(/\s?(\(%\))?:/, '').toLowerCase();
+                    // noinspection JSUnresolvedVariable
                     if (this.bonus[bonusName] && general.root.amp4) {
                         tdName.innerHTML = '<span style="cursor: pointer;">' +
                             tdName.innerHTML + '</span>';
@@ -316,7 +317,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

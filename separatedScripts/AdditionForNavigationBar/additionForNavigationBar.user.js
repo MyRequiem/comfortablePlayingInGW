@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.07-200219
+// @version         2.08-250519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -144,7 +144,6 @@
             // добавление в панель
             var target = this.navigPanel.
                     lastElementChild.previousSibling;
-            // noinspection JSCheckFunctionSignatures
             this.navigPanel.insertBefore(this.doc.createTextNode(' | '),
                     target);
             this.navigPanel.insertBefore(link, target);
@@ -233,16 +232,6 @@
          * @method init
          */
         init: function () {
-            if (!this.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.\n' +
-                    'MyRequiеm рекомендует вам установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'AdditionForNavigationBar\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
-
-                return;
-            }
-
             this.navigPanel = this.DESIGN_VERSION === 'v2' ?
                     this.doc.querySelector('div[style="position: ' +
                         'relative; left: 0; top: 0; width:100%; ' +
@@ -301,6 +290,7 @@
             // добавляем ссылки из хранилища в панель и в div
             var linkName, lnk;
             for (linkName in dataSt) {
+                // noinspection JSUnresolvedVariable
                 if (dataSt.hasOwnProperty(linkName) && this.root.zsdm) {
                     lnk = this.createLink(linkName, dataSt[linkName]);
                     this.addLink(lnk);
@@ -365,6 +355,7 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.

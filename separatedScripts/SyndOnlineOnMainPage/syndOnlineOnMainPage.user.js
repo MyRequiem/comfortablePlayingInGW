@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.27-200219
+// @version         2.28-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -157,8 +157,9 @@
                     if (pLink) {
                         nobrs[i].innerHTML += '<a target="_blank" ' +
                             'href="/sms-create.php?mailto=' +
-                            pLink.firstElementChild.innerHTML + '"><img ' +
-                            'src="http://images.gwars.ru/i/sms.gif" /></a>';
+                            pLink.firstElementChild.innerHTML + '">' +
+                            '<img src="http://images.gwars.ru/i/sms.gif" ' +
+                            'alt="img" /></a>';
                     }
                 }
 
@@ -179,7 +180,7 @@
 
             target = type ? target.lastElementChild : target.firstElementChild;
             target.innerHTML = '<img src="' + general.imgPath +
-                'preloader.gif" />';
+                'preloader.gif" alt="img" />';
 
             var url = (type ? this.syndUnion.href : this.syndMain.href) +
                     '&page=online',
@@ -191,9 +192,9 @@
 
                 target.innerHTML = '<a href="' + url + '">' +
                     '<img src="http://images.gwars.ru/img/synds/' +
-                    (/\?id=(\d+)/.exec(url)[1]) + '.gif" /></a> (' +
-                    (/<b>(\d+) бойцов онлайн<\/b>/.
-                        exec(spanContent.innerHTML)[1]) + ')<br>';
+                    /\?id=(\d+)/.exec(url)[1] + '.gif" alt="img" /></a> (' +
+                    /<b>(\d+) бойцов онлайн<\/b>/.
+                        exec(spanContent.innerHTML)[1] + ')<br>';
 
                 var cssSelector = 'table[class="bordersupdown"][width="100%"]',
                     trs = spanContent.querySelector(cssSelector).
@@ -222,7 +223,7 @@
                             'href="http://www.gwars.ru/sms-create.php?' +
                             'mailto=' + pers.firstElementChild.innerHTML +
                             '"><img src="http://images.gwars.ru/i/' +
-                            'sms.gif" /></a>';
+                            'sms.gif" alt="img" /></a>';
 
                         target.appendChild(nobr);
                         target.innerHTML += i < trs.length - 1 ? ',<wbr>' : '';
@@ -270,9 +271,9 @@
             this.syndMain = general.doc.
                     querySelector('span>b+nobr>a[href*="/syndicate.php?id="]');
 
+            // noinspection JSUnresolvedVariable
             if (this.syndMain && general.root.vpmo) {
                 var b = general.doc.createElement('b');
-                // noinspection JSCheckFunctionSignatures
                 b.appendChild(general.doc.createTextNode(' / '));
                 b.appendChild(this.createLink('Основа', false));
                 guests.parentNode.parentNode.appendChild(b);
@@ -290,7 +291,6 @@
                     _this.syndUnion = spanContent.querySelector(cssSelector);
 
                     if (_this.syndUnion) {
-                        // noinspection JSCheckFunctionSignatures
                         b.appendChild(general.doc.createTextNode(' '));
                         b.appendChild(_this.createLink('Союз', true));
                     }
@@ -316,7 +316,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

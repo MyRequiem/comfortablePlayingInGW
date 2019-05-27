@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.warstats.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.30-200219
+// @version         2.31-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -169,8 +169,8 @@
                 i;
 
             for (i = 0; i < btlLogs.length; i++) {
+                // noinspection JSUnresolvedVariable
                 if (this.reg.test(btlLogs[i].innerHTML) && general.root.xtyz) {
-                    // noinspection JSUnresolvedVariable
                     this.rez.btls.push(btlLogs[i].parentNode.parentNode.
                             nextElementSibling);
                 } else {
@@ -268,7 +268,7 @@
 
             // если перс НЕ в заявке/бою и мы на первой странице протоколов
             if (target && !inBattle && !(pageId && pageId[1] !== '0') &&
-                    !(/\(0 всего\)/.test(general.doc.body.innerHTML))) {
+                    !/\(0 всего\)/.test(general.doc.body.innerHTML)) {
                 this.divContainer = general.doc.createElement('div');
                 this.divContainer.setAttribute('style', 'margin-left: 10px;');
                 target.parentNode.insertBefore(this.divContainer, target);
@@ -302,7 +302,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

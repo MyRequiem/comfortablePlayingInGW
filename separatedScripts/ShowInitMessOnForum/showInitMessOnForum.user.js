@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/messages.php*
 // @grant           none
 // @license         MIT
-// @version         2.24-200219
+// @version         2.25-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -173,11 +173,13 @@
                 messHeader = author + '&nbsp;&nbsp;&nbsp;<a href="' + lastLink +
                     '">[&#8593;]</a><br>';
 
+            // noinspection JSUnresolvedFunction
             divMess.parentNode.setAttribute('style', 'border: 1px dashed ' +
                 '#339933; background: #C2EDC1;');
+            // noinspection HtmlUnknownAttribute
             divMess.innerHTML = messHeader +
                 (!longMess ? messComplete :
-                        ((messComplete.length > 400 ?
+                        (messComplete.length > 400 ?
                                 messComplete.substring(0, 200) : messComplete.
                             substring(0, Math.round(messComplete.length / 2))).
                             // убираем тэги <br> в конце сокращенного сообщения
@@ -187,7 +189,7 @@
                                 '') +
                         ' ...[<span style="text-decoration: underline; ' +
                         'color: #007700; cursor: pointer;" name="openMess">' +
-                        'развернуть</span>]'));
+                        'развернуть</span>]');
             target.parentNode.insertBefore(tr, target);
 
             if (longMess) {
@@ -205,6 +207,7 @@
          * @param   {int}   ind
          */
         this.parseMessages = function (ind) {
+            // noinspection JSUnresolvedVariable
             if (!this.messages[ind] || !general.root.jbw6) {
                 return;
             }
@@ -219,7 +222,6 @@
             var reg = /^\s*\+?\s*(\d+)(,\D+|\.\D+|\)|\s|:|\+\D+)/,
                 numReply = reg.exec(messDiv.innerHTML);
 
-            // noinspection JSValidateTypes
             numReply = numReply ? +numReply[1] : 0;
 
             // нет номера/номер === 0 или число > текущего сообщения
@@ -270,7 +272,7 @@
          */
         this.init = function () {
             if (/&page_id=\d+/.exec(general.loc)) {
-                this.pageNum = +(/&page_id=(\d+)/.exec(general.loc)[1]);
+                this.pageNum = +/&page_id=(\d+)/.exec(general.loc)[1];
             } else if (/page_id=last/.test(general.loc)) {
                 var num = general.doc.querySelector('td[style="cursor:' +
                         'pointer;"][class="greenlightbg"]');
@@ -299,7 +301,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

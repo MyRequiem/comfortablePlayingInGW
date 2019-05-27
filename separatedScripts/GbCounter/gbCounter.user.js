@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.08-200219
+// @version         2.09-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -130,14 +130,13 @@
          */
         this.init = function (num, separator, flagSign) {
             var x = +num,
-                sign = (x > 0 && flagSign) ? '+' : '',
+                sign = x > 0 && flagSign ? '+' : '',
                 i;
 
             if (isNaN(x)) {
                 return 'NaN';
             }
 
-            // noinspection JSValidateTypes
             x = x.toString().split('').reverse();
             for (i = 2; i < x.length; i += 3) {
                 if (x[i] === '-' || !x[i + 1] || x[i + 1] === '-') {
@@ -185,6 +184,7 @@
                 return;
             }
 
+            // noinspection JSRemoveUnnecessaryParentheses
             var diff = this.countGbNow - (+countGbOld);
             this.spanCountGB.innerHTML = '[' +
                 new SetPoints().init(diff, '.', true) + ']';
@@ -202,6 +202,7 @@
             }
 
             var divGB = general.doc.querySelector('td>b>div[id="cdiv"]');
+            // noinspection JSUnresolvedVariable
             if (divGB && general.root.fbba) {
                 this.countGbNow = +divGB.innerHTML.replace(/,/g, '');
                 this.spanCountGB = general.doc.createElement('span');
@@ -237,7 +238,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/b0/*
 // @grant           none
 // @license         MIT
-// @version         2.07-200219
+// @version         2.08-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -214,20 +214,12 @@
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.\n' +
-                    'MyRequiеm рекомендует вам скачать и установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'HousHealth:\n\nFireFox 4+\nOpera 11+\nChrome 12+');
-
-                return;
-            }
-
             if (/b0/.test(general.loc)) {
                 general.setData(['1']);
                 return;
             }
 
+            // noinspection JSUnresolvedVariable
             if (general.getData()[0] && general.root.zhwo) {
                 general.setData([]);
 
@@ -255,7 +247,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

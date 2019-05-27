@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.04-200219
+// @version         1.05-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,6 +81,7 @@
                 i;
 
             for (i = 0; i < activeProfs.length; i++) {
+                // noinspection JSUnresolvedVariable
                 if (this.root.u34c) {
                     activeProfs[i].setAttribute('color', '#FF0000');
                 }
@@ -103,7 +104,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

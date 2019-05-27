@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/market-p.php*
 // @grant           none
 // @license         MIT
-// @version         2.07-200219
+// @version         2.08-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -178,6 +178,7 @@
                 a.setAttribute('title', 'Страница описания предмета');
                 a.setAttribute('style', 'margin-left: 2px; color: #808080; ' +
                         'text-decoration: none;');
+                // noinspection JSUnresolvedVariable
                 if (general.root.crng) {
                     this.selects[i].parentNode.appendChild(a);
                 }
@@ -191,6 +192,7 @@
             }
 
             // вставляем текстовое поле ввода
+            // noinspection JSUnresolvedVariable
             if (general.root.crng) {
                 var divSearch = general.doc.createElement('div');
                 divSearch.innerHTML = '<span style="color: #008000; ' +
@@ -225,7 +227,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

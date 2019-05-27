@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/sms-read.php?type=1&id=*
 // @grant           none
 // @license         MIT
-// @version         1.07-200219
+// @version         1.08-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -87,6 +87,7 @@
             var del = general.doc.querySelector('td>a[class="mainbutton"]' +
                     '[href*="&do_black=1&addblack="]');
 
+            // noinspection JSUnresolvedVariable
             if (del && general.root.y7ci) {
                 del.setAttribute('style', 'background: #FDD8D8;');
 
@@ -117,7 +118,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

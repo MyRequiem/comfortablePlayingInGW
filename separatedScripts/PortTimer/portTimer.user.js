@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.16-200219
+// @version         1.17-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458], идея Enemy333
 // ==/UserScript==
 
@@ -136,6 +136,7 @@
                 topPanel = general.doc.
                     querySelector('td.txt[align="left"] nobr:first-child');
                 if (topPanel) {
+                    // noinspection JSUnresolvedFunction
                     topPanel.parentNode.setAttribute('style', 'width: 70%;');
                 }
             }
@@ -264,6 +265,7 @@
                 now = new Date();
 
             stData.current = stData.current.split(':');
+            // noinspection JSRemoveUnnecessaryParentheses
             return (+stData.current[0] * 60 + (+stData.current[1])) -
                 ((now.getUTCHours() + 3) * 60 + now.getMinutes());
         };
@@ -309,13 +311,14 @@
          */
         this.setInterface = function () {
             var mainTimer = general.doc.createElement('span');
+            // noinspection JSUnresolvedVariable
             if (general.root.iul3) {
                 mainTimer.innerHTML = '<a href="' + this.url +
                     '" style="text-decoration: none;" target="_blank">' +
                     'Порты</a> <span id="portTime" style="font-weight: ' +
                     'bold;"></span> [<span id="portTimer" style=""></span>]';
             }
-            // noinspection JSCheckFunctionSignatures
+
             this.topPanel.appendChild(general.doc.createTextNode(' | '));
             this.topPanel.appendChild(mainTimer);
         };
@@ -389,7 +392,7 @@
 
             serverHour = serverHour > 23 ? serverHour - 24 : serverHour;
             this.date = new Date(now.setHours(now.getHours() +
-                    (now.getTimezoneOffset() / 60) + 3)).getDate();
+                    now.getTimezoneOffset() / 60 + 3)).getDate();
 
             if (+stData.date !== this.date && serverHour >= 7) {
                 this.getBattles();
@@ -414,7 +417,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/object.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.04-200219
+// @version         1.05-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -96,6 +96,7 @@
                     link = syndLinks[i];
                     reg = /&sid=(\d+)$/.exec(link.href);
 
+                    // noinspection JSUnresolvedVariable
                     if (reg && this.root.ppcz) {
                         sign = this.doc.createElement('a');
                         sign.setAttribute('href', 'http://www.gwars.ru/' +
@@ -104,7 +105,7 @@
                         sign.setAttribute('style', 'margin-right: 2px;');
                         sign.innerHTML = '<img src="http://images.gwars.ru/' +
                             'img/synds/' + reg[1] + '.gif" width="20" ' +
-                            'height="14" border="0" />';
+                            'height="14" border="0" alt="img" />';
 
                         link.parentNode.insertBefore(sign, link);
                     }
@@ -128,7 +129,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

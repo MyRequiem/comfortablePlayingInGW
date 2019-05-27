@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.10-250519
+// @version         2.11-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458] Идея: Горыныч
 // ==/UserScript==
 
@@ -189,6 +189,7 @@
                 topPanel = general.doc.
                     querySelector('td.txt[align="left"] nobr:first-child');
                 if (topPanel) {
+                    // noinspection JSUnresolvedFunction
                     topPanel.parentNode.setAttribute('style', 'width: 70%;');
                 }
             }
@@ -239,7 +240,7 @@
         this.addCloseButton = function () {
             this.divResult.innerHTML += '<div style="margin-top: 5px;">' +
                 '<img id="closemyachiev" src="' + general.imgPath +
-                'close.gif" style="cursor: pointer;" /></div>';
+                'close.gif" style="cursor: pointer;" alt="img" /></div>';
 
             var _this = this;
             general.$('closemyachiev').addEventListener('click', function () {
@@ -266,7 +267,7 @@
             this.divResult.style.top = pos.y + 25;
             this.divResult.style.visibility = 'visible';
             this.divResult.innerHTML = '<img src="' + general.imgPath +
-                'preloader.gif' + '">';
+                'preloader.gif' + '" alt="img" />';
 
             var stData = general.getData(),
                 url = 'http://www.gwars.ru/info.ach.php?id=' + general.myID;
@@ -313,7 +314,7 @@
 
             for (i = 0; i < chks.length; i++) {
                 if (chks[i].checked) {
-                    str += (/\d+/.exec(chks[i].id)[0]) + ',';
+                    str += /\d+/.exec(chks[i].id)[0] + ',';
                 }
             }
 
@@ -350,17 +351,9 @@
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.\n' +
-                    'MyRequiеm рекомендует вам скачать и установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'ShowMyAchievements:\n\nFireFox 4+\nOpera 11+\nChrome 12+');
-
-                return;
-            }
-
             var topPanel = new GetTopPanel().init();
 
+            // noinspection JSUnresolvedVariable
             if (topPanel && general.root.bxhu) {
                 this.divResult = general.doc.createElement('div');
                 this.divResult.setAttribute('style', 'visibility: hidden; ' +
@@ -380,7 +373,6 @@
                     _this.showData(this);
                 }, false);
 
-                // noinspection JSCheckFunctionSignatures
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(span);
 
@@ -409,7 +401,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

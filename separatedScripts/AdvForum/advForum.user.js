@@ -10,7 +10,7 @@
 // @include         http://www.gwars.ru/forum.php
 // @grant           none
 // @license         MIT
-// @version         2.29-200219
+// @version         2.30-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -171,7 +171,6 @@
                 audio.volume = 0.3;
                 audio.src = 'https://raw.githubusercontent.com/MyRequiem/' +
                     'comfortablePlayingInGW/master/sounds/' + sound + '.ogg';
-                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -274,7 +273,7 @@
                     continue;
                 }
 
-                tid = this.toHex(+(/&tid=(\d+)/.exec(themeLink.href)[1]));
+                tid = this.toHex(+/&tid=(\d+)/.exec(themeLink.href)[1]);
                 // верхняя тема на первой странице
                 if (/\?fid=\d+(&page_id=0)?$/.test(general.loc) && lastTheme) {
                     lastTheme = false;
@@ -331,8 +330,8 @@
                             this.cleanStorage(fid, tid, tableContent), false);
 
                         // появилось новое сообщение
-                        if (themeDataStorage.c !== (/\d+/.exec(trs[i].
-                                querySelectorAll('td')[2].innerHTML)[0])) {
+                        if (themeDataStorage.c !== /\d+/.exec(trs[i].
+                                querySelectorAll('td')[2].innerHTML)[0]) {
                             imgEyes.src += 'eyesPlus.png';
                         } else {
                             imgEyes.src += 'eyes.png';
@@ -620,19 +619,11 @@
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.\n' +
-                    'MyRequiеm рекомендует вам скачать и установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'AdvForum:\n\nFireFox 4+\nOpera 11+\nChrome 12+');
-
-                return;
-            }
-
             var stData = general.getData(),
                 i;
 
             // на странице списка форумов
+            // noinspection JSUnresolvedVariable
             if (/\/forum\.php$/.test(general.loc) && general.root.wkdk) {
                 var allBranches = general.doc.querySelectorAll('tr>' +
                         'td[valign="top"][onclick*="/threads.php?fid="]'),
@@ -640,8 +631,8 @@
                     j = 0;
 
                 for (i = 0; i < allBranches.length; i++) {
-                    if (!(/Форум синдиката #\d+/.
-                            test(allBranches[i].innerHTML))) {
+                    if (!/Форум синдиката #\d+/.
+                            test(allBranches[i].innerHTML)) {
 
                         // noinspection JSUnresolvedVariable
                         allBranches[i].parentNode.style.display = f[j] ?
@@ -661,6 +652,7 @@
 
             fid = this.toHex(fid);
             // на странице сообщений в теме
+            // noinspection JSUnresolvedVariable
             if (/\/messages\.php\?/.test(general.loc) && general.root.wkdk) {
                 var json = JSON.parse(stData[7]),
                     tid = this.toHex(this.parseLoc[3]);
@@ -686,7 +678,7 @@
 
                 for (i = 0; i < allMess.length; i++) {
                     lastSavedId = this.toDec(json[fid][tid].l);
-                    currMessId = +(/\d+/.exec(allMess[i].id)[0]);
+                    currMessId = +/\d+/.exec(allMess[i].id)[0];
                     // или сообщение новое или еще не заходили в тему
                     if (lastSavedId < currMessId) {
                         // если это сообщение не наше и уже заходили
@@ -715,6 +707,7 @@
             }
 
             // на странице списка тем ветки форума
+            // noinspection JSUnresolvedVariable
             if (/\/threads\.php\?/.test(general.loc) && general.root.wkdk) {
                 var spanClean = general.doc.createElement('span');
                 general.doc.body.appendChild(spanClean);
@@ -743,7 +736,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.19-290419
+// @version         2.20-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -151,6 +151,7 @@
                 topPanel = general.doc.
                     querySelector('td.txt[align="left"] nobr:first-child');
                 if (topPanel) {
+                    // noinspection JSUnresolvedFunction
                     topPanel.parentNode.setAttribute('style', 'width: 70%;');
                 }
             }
@@ -183,7 +184,6 @@
                 audio.volume = 0.3;
                 audio.src = 'https://raw.githubusercontent.com/MyRequiem/' +
                     'comfortablePlayingInGW/master/sounds/' + sound + '.ogg';
-                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -236,7 +236,7 @@
          * @method checkState
          */
         this.checkState = function () {
-            if (!(/bold/.test(this.farmLink.getAttribute('style')))) {
+            if (!/bold/.test(this.farmLink.getAttribute('style'))) {
                 if (this.checkInterval) {
                     general.root.clearInterval(this.checkInterval);
                 }
@@ -329,6 +329,7 @@
                 s,
                 h;
 
+            // noinspection JSUnresolvedVariable
             if (!sec || !general.root.sozs) {
                 this.setReminder();
                 return;
@@ -384,8 +385,8 @@
             // на ферме запоминаем данные, выходим
             if (/\/ferma\.php/.test(general.loc)) {
                 // не на своей ферме
-                if ((/id=\d+/.test(general.loc)) &&
-                        (/id=(\d+)/.exec(general.loc)[1]) !== general.myID) {
+                if (/id=\d+/.test(general.loc) &&
+                        /id=(\d+)/.exec(general.loc)[1] !== general.myID) {
                     return;
                 }
 
@@ -397,8 +398,7 @@
                     a[l].addEventListener('click', this.runInit(), false);
                 }
 
-                // noinspection Annotator
-                var actionStr = /Ближайшее действие:.*[собрать|полить].*\(.*\)/.
+                var actionStr = /Ближайшее действие:.*(собрать|полить).*\(.*\)/.
                         exec(general.doc.querySelector('td[width="400"]' +
                                 '[valign="top"]').innerHTML);
 
@@ -416,7 +416,7 @@
                     return;
                 }
 
-                var timeLeft = +(/через (\d+) мин/.exec(aStr)[1]);
+                var timeLeft = +/через (\d+) мин/.exec(aStr)[1];
                 general.setData([timeNow + timeLeft * 60 * 1000,
                     action, timeNow, '']);
 
@@ -434,7 +434,6 @@
             this.farmLink.href = 'http://www.gwars.ru/ferma.php?id=' +
                 general.myID;
             this.farmLink.setAttribute('target', '_blank');
-            // noinspection JSCheckFunctionSignatures
             topPanel.appendChild(general.doc.createTextNode(' | '));
             topPanel.appendChild(this.farmLink);
 
@@ -467,7 +466,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

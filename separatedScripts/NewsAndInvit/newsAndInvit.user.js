@@ -10,7 +10,7 @@
 // @include         http://www.gwars.ru/messages.php?fid=1&tid=*
 // @grant           none
 // @license         MIT
-// @version         2.09-200219
+// @version         2.10-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -121,6 +121,7 @@
          * @return   {Boolean}
          */
         this.isForumPage = function () {
+            // noinspection JSRemoveUnnecessaryParentheses
             return (/fid=1&tid=\d+/.test(general.loc));
         };
 
@@ -148,15 +149,6 @@
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.\n' +
-                    'MyRequiеm рекомендует вам скачать и установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'newsAndInvit:\n\nFireFox 4+\nOpera 11+\nChrome 12+');
-
-                return;
-            }
-
             var stData = general.getData();
             stData = stData ? JSON.parse(stData[0]) : null;
 
@@ -184,6 +176,7 @@
             var newsLinks = general.doc.querySelectorAll('nobr>' +
                     'a[href*="/messages.php?fid=1&tid="]');
 
+            // noinspection JSUnresolvedVariable
             if (newsLinks.length && general.root.g7rd) {
                 var newData = {},
                     i;
@@ -227,7 +220,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

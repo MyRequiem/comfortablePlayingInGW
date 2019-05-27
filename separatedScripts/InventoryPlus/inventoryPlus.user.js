@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/items.php*
 // @grant           none
 // @license         MIT
-// @version         2.47-200219
+// @version         2.48-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -195,6 +195,7 @@
                 }
 
                 // показываем количество только если оно больше 1
+                // noinspection JSUnresolvedVariable
                 if (linesObj[i].count !== 1 && general.root.yjae) {
                     id = linesObj[i].line.id;
                     // вставим скрытые вещи
@@ -275,7 +276,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

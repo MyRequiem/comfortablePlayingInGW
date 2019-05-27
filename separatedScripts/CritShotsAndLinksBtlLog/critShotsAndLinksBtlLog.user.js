@@ -10,7 +10,7 @@
 // @include         http://www.gwars.ru/battlelog.php*
 // @grant           none
 // @license         MIT
-// @version         2.49-200219
+// @version         2.50-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -153,8 +153,8 @@
 
             for (i = 0; i < b.length; i++) {
                 // если это урон (-XX), 'vs', пок с '['
-                if ((/^-\d+$|vs|\[|,/.test(b[i].innerHTML)) ||
-                        (/может взять предметы/.test(b[i].innerHTML))) {
+                if (/^-\d+$|vs|\[|,/.test(b[i].innerHTML) ||
+                        /может взять предметы/.test(b[i].innerHTML)) {
                     continue;
                 }
 
@@ -213,8 +213,8 @@
                         // считаем криты
                         if (/в пах/.test(str)) {
                             if (/\d+ в пах/.test(str)) {
-                                criticalShots.groin += (+(/(\d+) в пах/.
-                                            exec(str)[1]));
+                                criticalShots.groin += +/(\d+) в пах/.
+                                            exec(str)[1];
                             } else {
                                 criticalShots.groin++;
                             }
@@ -222,8 +222,8 @@
 
                         if (/в шею/.test(str)) {
                             if (/\d+ в шею/.test(str)) {
-                                criticalShots.neck += (+(/(\d+) в шею/.
-                                            exec(str)[1]));
+                                criticalShots.neck += +/(\d+) в шею/.
+                                            exec(str)[1];
                             } else {
                                 criticalShots.neck++;
                             }
@@ -231,8 +231,8 @@
 
                         if (/в ухо/.test(str)) {
                             if (/\d+ в ухо/.test(str)) {
-                                criticalShots.ear += (+(/(\d+) в ухо/.
-                                            exec(str)[1]));
+                                criticalShots.ear += +/(\d+) в ухо/.
+                                            exec(str)[1];
                             } else {
                                 criticalShots.ear++;
                             }
@@ -240,8 +240,8 @@
 
                         if (/в висок/.test(str)) {
                             if (/\d+ в висок/.test(str)) {
-                                criticalShots.temple += (+(/(\d+) в висок/.
-                                            exec(str)[1]));
+                                criticalShots.temple += +/(\d+) в висок/.
+                                            exec(str)[1];
                             } else {
                                 criticalShots.temple++;
                             }
@@ -296,6 +296,7 @@
          * @param   {Boolean}   mode
          */
         this.setDataDiv = function (target, mode) {
+            // noinspection JSUnresolvedVariable
             if (showCritShots && general.root.zdsc) {
                 var d = general.doc.createElement('div');
                 d.innerHTML = '<span style="color: #008000; font-weight: ' +
@@ -336,7 +337,7 @@
                 // ждем загрузки данных на странице
                 var lPers = general.$('listleft');
                 log = general.$('log');
-                if (!lPers || (/загружаются данные/i.test(lPers.innerHTML)) ||
+                if (!lPers || /загружаются данные/i.test(lPers.innerHTML) ||
                         !log || !chat) {
                     general.root.setTimeout(function () {
                         _this.init();
@@ -350,9 +351,7 @@
             } else {    // режим наблюдения за боем
                 var center = general.doc.querySelector('td[valign="top"]' +
                         '[width="70%"]>center');
-                // noinspection JSCheckFunctionSignatures
                 center.appendChild(general.doc.createElement('br'));
-                // noinspection JSCheckFunctionSignatures
                 center.appendChild(general.doc.createElement('br'));
                 this.setDataDiv(center, true);
                 this.showCrits(this.getCrits(general.doc.
@@ -377,7 +376,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

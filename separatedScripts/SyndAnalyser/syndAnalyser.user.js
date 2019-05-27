@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.22-200219
+// @version         2.23-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -143,7 +143,7 @@
 
             return (day < 10 ? '0' + day : day) +  '.' +
                         (month < 10 ? '0' + month : month) + '.' +
-                            (/20(\d+)/.exec(date.getFullYear().toString())[1]);
+                            /20(\d+)/.exec(date.getFullYear().toString())[1];
         };
     };
 
@@ -190,14 +190,13 @@
          */
         this.init = function (num, separator, flagSign) {
             var x = +num,
-                sign = (x > 0 && flagSign) ? '+' : '',
+                sign = x > 0 && flagSign ? '+' : '',
                 i;
 
             if (isNaN(x)) {
                 return 'NaN';
             }
 
-            // noinspection JSValidateTypes
             x = x.toString().split('').reverse();
             for (i = 2; i < x.length; i += 3) {
                 if (x[i] === '-' || !x[i + 1] || x[i + 1] === '-') {
@@ -397,7 +396,7 @@
          */
         this.getTypeLine = function (str) {
             if (/инициировал нападение/i.test(str) &&
-                    !(/контроль/i.test(str))) {
+                    !/контроль/i.test(str)) {
                 return 1;
             }
 
@@ -406,11 +405,11 @@
             }
 
             if (/снято со счета/i.test(str)) {
-                return {takeOff: +(/\$(\d+)/.exec(str)[1])};
+                return {takeOff: +/\$(\d+)/.exec(str)[1]};
             }
 
             if (/переведено на счет/i.test(str)) {
-                return {takeOn: +(/\$(\d+)/.exec(str)[1])};
+                return {takeOn: +/\$(\d+)/.exec(str)[1]};
             }
 
             if (/на нападения на электростанции/i.test(str)) {
@@ -758,8 +757,8 @@
             var butShowAnalysePanel = general.doc.createElement('a');
             butShowAnalysePanel.innerHTML = 'Анализ активности';
             butShowAnalysePanel.setAttribute('style', 'cursor: pointer');
-            // noinspection JSCheckFunctionSignatures
             target.appendChild(general.doc.createTextNode(' | '));
+            // noinspection JSUnresolvedVariable
             if (general.root.qfci) {
                 target.appendChild(butShowAnalysePanel);
             }
@@ -785,9 +784,9 @@
                     '<input type="button" id="goSAnalyse" value=">>" ' +
                     'disabled><span id="syndAnalysePreloader" ' +
                     'style="margin-left: 10px;"><img src="' + general.imgPath +
-                    'preloader.gif" /><span id="syndAnalyseCounter" ' +
-                    'style="color: #0000FF; margin-left: 10px;">2/0</span>' +
-                    '</span></td></tr>';
+                    'preloader.gif" alt="img" />' +
+                    '<span id="syndAnalyseCounter" style="color: #0000FF; ' +
+                    'margin-left: 10px;">2/0</span></span></td></tr>';
 
                 _this.getLastDate('');
 
@@ -839,7 +838,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

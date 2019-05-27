@@ -10,7 +10,7 @@
 // @exclude         http://www.gwars.ru/b0/*
 // @grant           none
 // @license         MIT
-// @version         3.07-070519
+// @version         3.08-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -141,6 +141,7 @@
                 topPanel = this.doc.
                     querySelector('td.txt[align="left"] nobr:first-child');
                 if (topPanel) {
+                    // noinspection JSUnresolvedFunction
                     topPanel.parentNode.setAttribute('style', 'width: 70%;');
                 }
             }
@@ -268,6 +269,7 @@
                     vis = settings.style.visibility,
                     pos = _this.getPos(this);
 
+                // noinspection JSUnresolvedVariable
                 if (general.root.xq5b) {
                     settings.style.top = (pos.y + 25).toString();
                     settings.style.left = (pos.x - 80).toString();
@@ -536,7 +538,7 @@
                         '<input type="button" id="spSave" value="Сохранить">' +
                         '<img id="spPreloader" src="' + general.imgPath +
                         'preloader.gif" style="margin-left: 10px; ' +
-                        'visibility: hidden;">' +
+                        'visibility: hidden;" alt="img" />' +
                         '<input type="button" id="spReset" value="Сброс" ' +
                         'style="margin-left: 20px;"></td></tr>' +
                 '<tr>' +
@@ -658,7 +660,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

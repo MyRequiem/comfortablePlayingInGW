@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         1.41-040519
+// @version         1.42-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -135,14 +135,13 @@
          */
         this.init = function (num, separator, flagSign) {
             var x = +num,
-                sign = (x > 0 && flagSign) ? '+' : '',
+                sign = x > 0 && flagSign ? '+' : '',
                 i;
 
             if (isNaN(x)) {
                 return 'NaN';
             }
 
-            // noinspection JSValidateTypes
             x = x.toString().split('').reverse();
             for (i = 2; i < x.length; i += 3) {
                 if (x[i] === '-' || !x[i + 1] || x[i + 1] === '-') {
@@ -292,12 +291,13 @@
                 str = '';
 
             cont.innerHTML = '';
+            // noinspection JSUnresolvedVariable
             if (val !== '0' && general.root.so1k) {
                 var i;
                 for (i = 3; i < 7; i++) {
                     str += '<img src="http://images.gwars.ru/' +
                         'img/ferma_hd/' + val + i + '.png" ' +
-                        'style="width: 50px; height: 50px;" />';
+                        'style="width: 50px; height: 50px;" alt="img" />';
                 }
 
                 str += '<br><label for="' + id + '">' +
@@ -394,7 +394,6 @@
 
             // опыт виден (на пустой вскопанной клетке)
             if (prod) {
-                // noinspection JSUnresolvedFunction
                 var target = table.querySelector('a[name="pf"]').parentNode,
                     gb = target.querySelectorAll('b'),
                     exp = prod[1],
@@ -428,6 +427,7 @@
                 var min = t.getMinutes();
                 time += min < 10 ? '0' + min : min;
 
+                // noinspection JSRemoveUnnecessaryParentheses
                 var setPoint = new SetPoints().init,
                     diffGb = gb - (+stData[2]),
                     diffExp = (+exp - (+stData[3])).toFixed(3).split('.');
@@ -571,7 +571,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

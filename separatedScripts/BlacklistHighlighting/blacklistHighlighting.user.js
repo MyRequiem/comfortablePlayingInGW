@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.09-200219
+// @version         2.10-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -178,14 +178,15 @@
                 a[i].style.background = '';
                 id = /\?id=(\d+)$/.exec(a[i].href);
                 id = id && id[1].length > 3 ? id[1] : null;
+                // noinspection JSUnresolvedVariable
                 if (id && general.getData().indexOf(id) !== -1 &&
                         general.root.vutw) {
                     a[i].style.background = '#B6B5B5';
                     // блокировка ссылки принятия боя в одиночных заявках
                     // noinspection JSUnresolvedVariable
                     if (blockLinkOne2One &&
-                            (/Подтверждаете бой с/.
-                                test(a[i].parentNode.innerHTML))) {
+                            /Подтверждаете бой с/.
+                                test(a[i].parentNode.innerHTML)) {
                         link = general.doc.
                             querySelector('a[class="mainbutton"]' +
                                 '[href*="/warlist.php?war=armed&do=5&cu="]');
@@ -202,16 +203,6 @@
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.' +
-                    '\nMyRequiеm рекомендует вам установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'Blacklist Highlighting\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
-
-                return;
-            }
-
             if (/home\.friends\.php/.test(general.loc)) {
                 this.blTable = general.doc.querySelectorAll('table' +
                         '[border="0"][cellspacing="0"][cellpadding="3"]' +
@@ -275,7 +266,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {
