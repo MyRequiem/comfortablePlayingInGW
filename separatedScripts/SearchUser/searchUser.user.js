@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.07-200219
+// @version         2.08-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -105,6 +105,7 @@
                 topPanel = general.doc.
                     querySelector('td.txt[align="left"] nobr:first-child');
                 if (topPanel) {
+                    // noinspection JSUnresolvedFunction
                     topPanel.parentNode.setAttribute('style', 'width: 70%;');
                 }
             }
@@ -123,6 +124,7 @@
          */
         this.init = function () {
             var topPanel = new GetTopPanel().init();
+            // noinspection JSUnresolvedVariable
             if (topPanel && general.root.md9o) {
                 var td = general.doc.createElement('td');
                 td.setAttribute('style', 'width: 130px;');
@@ -130,7 +132,6 @@
                     'method="GET" action="/search.php"><input id="skey" ' +
                     'name="key" value="" style="width: 130px;" ' +
                     'title="Введите ник и нажмите Enter" /></form>';
-                // noinspection JSValidateTypes
                 topPanel = general.DESIGN_VERSION === 'v2' ?
                         topPanel.parentNode : topPanel.parentNode.parentNode;
                 topPanel.appendChild(td);
@@ -160,7 +161,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

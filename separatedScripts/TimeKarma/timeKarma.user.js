@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/info.vote.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.09-200219
+// @version         2.10-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -134,6 +134,7 @@
 
             var _this = this;
             general.root.setTimeout(function () {
+                // noinspection JSUnresolvedVariable
                 if (general.root.gsig) {
                     _this.formatTime(sec - 1);
                 }
@@ -151,8 +152,8 @@
 
             // поставили карму, запоминаем время
             if (/vote/.test(general.loc) &&
-                    (/Спасибо, Ваше мнение учтено/.
-                        test(general.doc.body.innerHTML))) {
+                    /Спасибо, Ваше мнение учтено/.
+                        test(general.doc.body.innerHTML)) {
                 general.setData(new Date().getTime().toString());
                 return;
             }
@@ -204,7 +205,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

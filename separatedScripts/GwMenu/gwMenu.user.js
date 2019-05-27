@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru*
 // @grant           none
 // @license         MIT
-// @version         2.43-070519
+// @version         2.44-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -174,6 +174,7 @@
                 '.gwm td.bold span.darkorange {color: #A44B00;}' +
                 '.gwm a {text-decoration: none; color: #0000FF; ' +
                     'font-size: 8pt;}';
+            // noinspection JSUnresolvedVariable
             if (general.root.nbzy) {
                 general.doc.querySelector('head').appendChild(cssStyle);
             }
@@ -817,15 +818,6 @@
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.' +
-                    '\nMyRequiеm рекомендует вам установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'GwMenu\n\nFireFox 4+\nOpera 11+\nChrome 12+');
-
-                return;
-            }
-
             // ссылка в главном меню игры
             var target = general.doc.querySelector('a[href$="/ratings.php"]');
             if (target) {
@@ -866,7 +858,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

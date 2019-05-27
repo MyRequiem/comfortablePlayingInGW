@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.22-230419
+// @version         2.24-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -143,6 +143,7 @@
                 topPanel = general.doc.
                     querySelector('td.txt[align="left"] nobr:first-child');
                 if (topPanel) {
+                    // noinspection JSUnresolvedFunction
                     topPanel.parentNode.setAttribute('style', 'width: 70%;');
                 }
             }
@@ -158,7 +159,7 @@
     var GetPos = function () {
         /**
          * @method init
-         * @param   {Element}   obj
+         * @param   {Object}    obj
          * @return  {Object}
          */
         this.init = function (obj) {
@@ -200,7 +201,7 @@
         this.fillData = function (data) {
             this.divResult.innerHTML = data + '<div style="margin-top: 5px;">' +
                 '<img id="divres_close" style="cursor: pointer;" ' +
-                'src="' + this.imgPath + 'close.gif" /></div>';
+                'src="' + this.imgPath + 'close.gif" alt="img" /></div>';
 
             var _this = this;
             this.divResult.querySelector('#divres_close').
@@ -220,7 +221,7 @@
             this.divResult.style.top = pos.y + 25;
             this.divResult.style.visibility = 'visible';
             this.divResult.innerHTML = '<img src="' + this.imgPath +
-                'preloader.gif' + '">';
+                'preloader.gif' + '" alt="img" />';
 
             var url = 'http://www.gwars.ru/info.php?id=' + general.myID,
                 idElem = _this.id,
@@ -275,6 +276,7 @@
          */
         this.init = function () {
             var topPanel = new GetTopPanel().init();
+            // noinspection JSUnresolvedVariable
             if (topPanel && general.root.udgq) {
                 this.divResult.setAttribute('style', 'visibility: hidden; ' +
                         'position: absolute; padding: 3px; background-color: ' +
@@ -283,10 +285,8 @@
                         '5px 6px 6px rgba(122,122,122,0.5); z-index: 999;');
                 general.doc.body.appendChild(this.divResult);
 
-                // noinspection JSCheckFunctionSignatures
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(this.createButton('Ресурсы', 'res'));
-                // noinspection JSCheckFunctionSignatures
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(this.createButton('Бонусы', 'bonus'));
             }
@@ -308,7 +308,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

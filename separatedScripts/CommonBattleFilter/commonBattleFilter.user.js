@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/wargroup.php?war=armed*
 // @grant           none
 // @license         MIT
-// @version         1.15-200219
+// @version         1.16-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -150,16 +150,19 @@
                 row.style.display = '';
 
                 stData[0] = +stData[0];
+                // noinspection JSUnresolvedVariable
                 if (stData[0] && this.getLvl(row) > stData[0] &&
                         general.root.zfjx) {
                     row.style.display = 'none';
                 }
 
+                // noinspection JSUnresolvedVariable
                 if (stData[1] && !/<s>именные<\/s>/.test(row.innerHTML) &&
                         general.root.zfjx) {
                     row.style.display = 'none';
                 }
 
+                // noinspection JSUnresolvedVariable
                 if (stData[2] && !/по мощности/.test(row.innerHTML) &&
                         general.root.zfjx) {
                     row.style.display = 'none';
@@ -325,7 +328,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

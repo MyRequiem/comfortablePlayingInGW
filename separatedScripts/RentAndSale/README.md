@@ -1,7 +1,7 @@
 При передаче предмета в аренду форма передачи выделяется голубым цветом. Если предмет продается или передается в постоянное пользование, то красным. Так же если указана нулевая цена, выводится сообщение с подтверждением продолжения операции.
 <br>
 <br>
-Версия: 2.07-200219
+Версия: 2.08-260519
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/RentAndSale/rentAndSale.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/RentAndSale/rentAndSale.user.js.zip)
 <br>

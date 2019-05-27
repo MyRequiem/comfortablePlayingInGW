@@ -12,7 +12,7 @@
 // @include         http://www.gwars.ru/wargroup.php*
 // @grant           none
 // @license         MIT
-// @version         2.42-200219
+// @version         2.43-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -158,6 +158,7 @@
                 topPanel = general.doc.
                     querySelector('td.txt[align="left"] nobr:first-child');
                 if (topPanel) {
+                    // noinspection JSUnresolvedFunction
                     topPanel.parentNode.setAttribute('style', 'width: 70%;');
                 }
             }
@@ -229,7 +230,6 @@
                 audio.volume = 0.3;
                 audio.src = 'https://raw.githubusercontent.com/MyRequiem/' +
                     'comfortablePlayingInGW/master/sounds/' + sound + '.ogg';
-                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -383,10 +383,9 @@
 
                 // время до окончания работы
                 var time;
-                // noinspection Annotator
-                if (/[Вы сможете устроиться на|осталось][^\d]*\d+ минут/i.
+                if (/(Вы сможете устроиться на|осталось)[^\d]*\d+ минут/i.
                         test(content)) {
-                    time = +(/(\d+) минут/i.exec(content)[1]);
+                    time = +/(\d+) минут/i.exec(content)[1];
                     time = !time ? 1 : time;
                 } else if (/Последний раз вы работали/i.test(content)) {
                     time = 0;
@@ -410,15 +409,15 @@
                 }
 
                 var ttl = '" title="Объект #' +
-                    (/object\.php\?id=(\d+)/.exec(linkObj.href)[1]) +
-                    '" alt="GW объект" /></a>]';
+                        /object\.php\?id=(\d+)/.exec(linkObj.href)[1] +
+                        '" alt="GW объект" /></a>]';
 
                 if (time) {
                     if (showWorkTime) {
                         _this.wpgbContainer.innerHTML = '[<span style=' +
                             '"color: #0000FF;">' + time + '</span> мин ' +
-                            '<a href="' + linkObj.href + '"><img src="' +
-                            _this.blueFactory + ttl;
+                            '<a href="' + linkObj.href + '"><img alt="img" ' +
+                            'src="' + _this.blueFactory + ttl;
                     }
 
                     stData[1] = '';
@@ -426,8 +425,8 @@
                 } else {
                     if (showWorkTime) {
                         _this.wpgbContainer.innerHTML = '[<a href="' +
-                            linkObj.href + '"><img src="' + _this.redFactory +
-                            ttl;
+                            linkObj.href + '"><img alt="img" src="' +
+                            _this.redFactory + ttl;
                     }
 
                     if (!stData[1]) {
@@ -453,16 +452,6 @@
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.' +
-                    '\nMyRequiеm рекомендует вам установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'Work Post Grenades Broken\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
-
-                return;
-            }
-
             /**
              * localStorage:
              * [0] - звук при получении почты (проигран или нет)
@@ -473,8 +462,8 @@
             }
 
             var topPanel = new GetTopPanel().init();
+            // noinspection JSUnresolvedVariable
             if (topPanel && general.root.hvi6) {
-                // noinspection JSCheckFunctionSignatures
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(this.wpgbContainer);
 
@@ -502,7 +491,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

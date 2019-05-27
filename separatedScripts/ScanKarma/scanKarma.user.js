@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.09-200219
+// @version         2.10-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -117,21 +117,12 @@
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.\n' +
-                    'MyRequiеm рекомендует вам скачать и установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'ScanKarma:\n\nFireFox 4+\nOpera 11+\nChrome 12+');
-
-                return;
-            }
-
             if (/\?id=(\d+)/.exec(general.loc)[1] === general.myID) {
                 var karma = /Карма:\s\d+\.?\d*\s\((\d+\/\d+)\)/i.
                         exec(general.doc.body.textContent);
 
+                // noinspection JSUnresolvedVariable
                 if (karma && general.root.lnvd) {
-                    // noinspection JSValidateTypes
                     karma = karma[1];
                     if (!general.getData()) {
                         general.setData(karma);
@@ -149,11 +140,8 @@
                     oldKarma[0] = +oldKarma[0];
                     oldKarma[1] = +oldKarma[1];
 
-                    // noinspection JSValidateTypes
                     karma = karma.split('/');
-                    // noinspection JSValidateTypes
                     karma[0] = +karma[0];
-                    // noinspection JSValidateTypes
                     karma[1] = +karma[1];
 
                     var str = 'Ваша карма была изменена \n\n';
@@ -198,7 +186,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

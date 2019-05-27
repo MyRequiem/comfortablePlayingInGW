@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/home.senditem.php*
 // @grant           none
 // @license         MIT
-// @version         2.07-200219
+// @version         2.08-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -102,6 +102,7 @@
         this.init = function () {
             var radio = general.doc.querySelectorAll('input[name="sendtype"]');
 
+            // noinspection JSUnresolvedVariable
             if (radio.length && general.root.ojtl) {
                 var scrpt = general.doc.createElement('script');
                 scrpt.innerHTML = 'function checkPrice(){if(document.' +
@@ -136,7 +137,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

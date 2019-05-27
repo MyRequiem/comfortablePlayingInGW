@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.38-200219
+// @version         2.40-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -89,14 +89,13 @@
          */
         this.init = function (num, separator, flagSign) {
             var x = +num,
-                sign = (x > 0 && flagSign) ? '+' : '',
+                sign = x > 0 && flagSign ? '+' : '',
                 i;
 
             if (isNaN(x)) {
                 return 'NaN';
             }
 
-            // noinspection JSValidateTypes
             x = x.toString().split('').reverse();
             for (i = 2; i < x.length; i += 3) {
                 if (x[i] === '-' || !x[i + 1] || x[i + 1] === '-') {
@@ -115,7 +114,6 @@
      * @constructor
      */
     var GameMania = function () {
-        // noinspection JSUnresolvedVariable
         /**
          * @property target
          * @type {HTMLTableCellElement}
@@ -161,9 +159,9 @@
         this.getStrGameRez = function (rez, game, ttl) {
             return '<tr><td style="' +
                 (!ttl ? 'color: #008000' : 'font-weight: bold') + ';">' +
-                game + ':</td>' + '<td style="color: #' +
-                (rez < 0 ? '0000FF' : 'FF0000') + ';">$' +
-                new SetPoints().init(rez, ',') + '</td></tr>';
+                game + ':</td>' + '<td style="color: ' +
+                (rez < 0 ? '#0000FF' : '#FF0000') + ';">$' +
+                new SetPoints().init(rez, ',', false) + '</td></tr>';
         };
 
         /**
@@ -175,21 +173,17 @@
                 return;
             }
 
-            // noinspection RegExpRedundantEscape
             var roul = this.calc(/Потрачено в казино: <b>\$([^<]*)/i,
                     /Выигрыш в казино: <b>\$([^<]*)/i),
                 tot = this.calc(/Потрачено в тотализаторе: <b>\$([^<]*)/i,
                     /Выигрыш в тотализаторе: <b>\$([^<]*)/i),
-                /*eslint-disable no-useless-escape */
-                poker = this.calc(/Потрачено на покер:\s?<b>[^\$]*\$([^<]*)/i,
-                    /Получено с покера:\s?<b>[^\$]*\$([^<]*)/i),
-                /*eslint-enable no-useless-escape */
                 fight = /Выигрыш в боях/i.test(this.target.innerHTML);
 
-            if ((roul || tot || poker || fight) && general.root.nu6j) {
+            // noinspection JSUnresolvedVariable
+            if ((roul || tot || fight) && general.root.nu6j) {
                 if (fight) {
-                    this.total += +(/Выигрыш в боях: <b>\$([^<]*)/i.
-                            exec(this.target.innerHTML)[1].replace(/,/g, ''));
+                    this.total += +/Выигрыш в боях: <b>\$([^<]*)/i.
+                            exec(this.target.innerHTML)[1].replace(/,/g, '');
                 }
 
                 var str = '<hr><table>';
@@ -199,10 +193,6 @@
 
                 if (tot) {
                     str += this.getStrGameRez(tot, 'Тотализатор', false);
-                }
-
-                if (poker) {
-                    str += this.getStrGameRez(poker, 'Покер', false);
                 }
 
                 str += this.getStrGameRez(this.total, 'Всего', true);
@@ -236,7 +226,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

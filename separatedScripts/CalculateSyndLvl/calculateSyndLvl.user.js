@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.20-200219
+// @version         1.21-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -233,6 +233,7 @@
                 var synd = tbl.querySelector('td>' +
                         'a[href*="/syndicate.php?id=' + _this.syndID + '"]');
                 if (synd) {
+                    // noinspection JSRemoveUnnecessaryParentheses
                     var tds = synd.parentNode.parentNode.querySelectorAll('td'),
                         currLvl = +tds[3].querySelector('font').innerHTML,
                         current = tds[4].innerHTML.replace(/k/g, '000').
@@ -300,12 +301,14 @@
                 'style="margin-left: 10px; cursor: pointer; color: #004400; ' +
                 'text-decoration: underline;">Уровень</span>' +
                 '<img id="preloader" src="' + general.imgPath +
-                'preloader.gif" style="margin-left: 10px; display: none;" />' +
+                'preloader.gif" style="margin-left: 10px; display: none;" ' +
+                'alt="img" />' +
                 '<span id="pageCounter" style="margin-left: 10px;"></span>';
             target.insertBefore(span, target.querySelector('br'));
 
             var _this = this;
             general.$('calcSyndLvl').addEventListener('click', function () {
+                // noinspection JSUnresolvedVariable
                 if (general.$('preloader').style.display && general.root.ljde) {
                     _this.preScan(true);
                     _this.scan(0);
@@ -329,7 +332,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

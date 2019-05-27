@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/shop.php*
 // @grant           none
 // @license         MIT
-// @version         1.28-200219
+// @version         1.29-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458] идея Buger_man
 // ==/UserScript==
 
@@ -104,6 +104,7 @@
                 i;
 
             for (i = 0; i < links.length; i++) {
+                // noinspection JSUnresolvedVariable
                 if (links[i].innerHTML && general.root.fyrr) {
                     group = /\?shop=shop_(.*)$/.exec(links[i].href)[1];
                     if (this.highTechItems.htGroup.indexOf(group) !== -1) {
@@ -134,7 +135,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

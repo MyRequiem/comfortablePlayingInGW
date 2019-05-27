@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/market-p.php?stage=2&item_id=*
 // @grant           none
 // @license         MIT
-// @version         2.07-200219
+// @version         2.08-250519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -90,6 +90,7 @@
          * @method init
          */
         this.init = function () {
+            // noinspection JSUnresolvedVariable
             if (/\/shopc\.php/.test(general.loc) && general.root.hoxr) {
                 var descrTd = general.doc.querySelectorAll('td[class$=' +
                          '"lightbg"][valign="top"][align="left"]' +
@@ -100,7 +101,6 @@
                     i;
 
                 for (i = 0; i < descrTd.length; i++) {
-                    // noinspection JSUnresolvedFunction
                     id = /id=(.+)$/.exec(descrTd[i].parentNode.
                             querySelector('a').href)[1];
                     price = /(\d+) EUN/.exec(descrTd[i].innerHTML)[1];
@@ -171,7 +171,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

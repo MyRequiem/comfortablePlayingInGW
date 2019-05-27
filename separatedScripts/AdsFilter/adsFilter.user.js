@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/market.php?buy=*
 // @grant           none
 // @license         MIT
-// @version         2.25-200219
+// @version         2.26-250519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -213,18 +213,9 @@
          * @method init
          */
         init: function () {
-            if (!this.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.\n' +
-                    'MyRequiеm рекомендует вам установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'AdditionForNavigationBar\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
-
-                return;
-            }
-
             var table = this.doc.querySelector('table.wb' +
                     '[align="center"]');
+
             if (!table) {
                 return;
             }
@@ -238,6 +229,7 @@
                 this.setData(['', '']);
             }
 
+            // noinspection JSUnresolvedVariable
             if (this.root.vx8r) {
                 this.spanContainer = this.doc.createElement('span');
                 this.spanContainer.setAttribute('style', 'margin-left: 10px;');
@@ -300,6 +292,7 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.

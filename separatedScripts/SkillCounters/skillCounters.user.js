@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.14-200219
+// @version         2.15-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -145,7 +145,7 @@
             str += month < 10 ? '0' + month : month;
             str += '.';
             var year = /20(\d+)/.exec(date.getFullYear().toString())[1];
-            str += year + ' ' + (/(\d+:\d+):\d+/.exec(date.toString())[1]);
+            str += year + ' ' + /(\d+:\d+):\d+/.exec(date.toString())[1];
 
             return str;
         };
@@ -173,7 +173,6 @@
                     push(this.getValue(this.counters[i], i < 3 ? 0 : 2));
 
                 if (loadPage) {
-                    // noinspection JSUnresolvedVariable
                     this.counters[i].parentNode.parentNode.lastElementChild.
                         innerHTML = '<span id="' + this.ids[i] +
                         '" style="color: #FF0000; font-size: 9px;"></span>';
@@ -223,10 +222,11 @@
                 i;
 
             for (i = 0; i < this.counters.length; i++) {
+                // noinspection JSUnresolvedVariable
                 if (general.root.gjzo) {
                     general.$(this.ids[i]).innerHTML = '[' +
-                        ((parseFloat(this.dataNow[i]) - parseFloat(stData[i])).
-                            toFixed(i < 3 ? 0 : 2)) + ']';
+                        (parseFloat(this.dataNow[i]) - parseFloat(stData[i]).
+                            toFixed(i < 3 ? 0 : 2)).toString() + ']';
                 }
             }
 
@@ -238,6 +238,7 @@
                     general.setData(stData);
                 }
 
+                // noinspection JSRemoveUnnecessaryParentheses
                 general.$('cSyndExp').innerHTML = '[' +
                     (+this.dataNow[9] - (+stData[9])) + ']';
                 this.setLeftToLevel(+this.dataNow[9]);
@@ -302,7 +303,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

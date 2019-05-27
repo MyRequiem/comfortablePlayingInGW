@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/sms-read.php?type=*
 // @grant           none
 // @license         MIT
-// @version         2.10-200219
+// @version         2.11-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -302,7 +302,7 @@
                     this.sortMess();
                 }
 
-                counter.innerHTML = (id + 1) + '/' + this.sms.length;
+                counter.innerHTML = (id + 1).toString() + '/' + this.sms.length;
                 url = this.sms[id].href;
             }
 
@@ -322,21 +322,22 @@
                         return;
                     }
 
-                    var color = '<span style="font-weight: bold; color: #' +
-                                    (outbox ? '008000' : 'AC4311') + ';">',
+                    var color = '<span style="font-weight: bold; color: ' +
+                                    (outbox ? '#008000' : '#AC4311') + ';">',
                         allCountSms = !outbox ?
                                 _this.numberSms : _this.numberSms * 2,
                         i;
 
                     for (i = 0; i < linksSms.length; i++) {
                         _this.sms.push({
-                            id: +(/&id=(\d+)/.exec(linksSms[i].href)[1]),
+                            id: +/&id=(\d+)/.exec(linksSms[i].href)[1],
                             href: linksSms[i].href,
                             mess: color + (outbox ? 'Я' : _this.nik),
                             ofSyndLink: ''
                         });
 
-                        if ((allCountSms === _this.sms.length) ||
+                        // noinspection JSRemoveUnnecessaryParentheses
+                        if (allCountSms === _this.sms.length ||
                                 // последняя ссылка на странице,
                                 // но ссылок меньше 30 => больше страниц нет
                                 // (по 30 сообщений на одной странице)
@@ -397,7 +398,7 @@
                 '" title="Количество исходящих сообщений" /> ' +
                 '<span id="preloader" style="margin: 0 10px 0 10px; ' +
                 'display: none;"><img src="' + general.imgPath +
-                'preloader.gif" /></span><span id="counter"></span>' +
+                'preloader.gif" alt="img" /></span><span id="counter"></span>' +
                 '<span id="showOfSyndLinks" style="cursor: pointer; ' +
                 'display: none; text-decoration: underline;">ссылки</span>';
 
@@ -440,6 +441,7 @@
                 _this.sms = [];
                 general.$('preloader').style.display = '';
                 general.$('showOfSyndLinks').style.display = 'none';
+                // noinspection JSUnresolvedVariable
                 if (general.root.idla) {
                     _this.showHistory(0, 0, 0);
                 }
@@ -462,7 +464,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

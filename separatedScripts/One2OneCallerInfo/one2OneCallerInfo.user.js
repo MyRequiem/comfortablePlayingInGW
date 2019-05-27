@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         2.19-200219
+// @version         2.21-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -88,10 +88,11 @@
     var AjaxQuery = function () {
         /**
          * @method init
-         * @param   {String}    url
-         * @param   {Function}  onsuccess
+         * @param   {String}        url
+         * @param   {Function}      onsuccess
+         * @param   {Function|null} onfailure
          */
-        this.init = function (url, onsuccess) {
+        this.init = function (url, onsuccess, onfailure) {
             var xmlHttpRequest = new XMLHttpRequest();
 
             xmlHttpRequest.open('GET', url, true);
@@ -106,6 +107,8 @@
                     clearTimeout(timeout);
                     if (xmlHttpRequest.status === 200) {
                         onsuccess(xmlHttpRequest);
+                    } else {
+                        onfailure();
                     }
                 }
             };
@@ -147,7 +150,6 @@
                 audio.volume = 0.3;
                 audio.src = 'https://raw.githubusercontent.com/MyRequiem/' +
                     'comfortablePlayingInGW/master/sounds/' + sound + '.ogg';
-                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -167,7 +169,7 @@
                 range = /стрельбы: (\d+) ходов/i.exec(xml.responseText);
                 str += range ? range[1] : 'не найдена';
 
-                if (!_this.twoHand || ind || (a[1].href === url)) {
+                if (!_this.twoHand || ind || a[1].href === url) {
                     var div = general.doc.createElement('div');
                     div.setAttribute('style', 'color: #0000FF; ' +
                         'font-weight: bold;');
@@ -193,6 +195,7 @@
             var called = general.doc.querySelector('td[class="greengreenbg"]' +
                     '[colspan="2"]>center>b>a[href*="/info.php?id="]');
 
+            // noinspection JSUnresolvedVariable
             if (!called || !general.root.bgqs) {
                 return;
             }
@@ -253,7 +256,7 @@
                 general.root.setTimeout(function () {
                     _this.getRange(0, 'Дальность оружия: ');
                 }, 1000);
-            });
+            }, null);
         };
     };
 
@@ -272,7 +275,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.17-200219
+// @version         2.18-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -134,7 +134,6 @@
                 audio.volume = 0.3;
                 audio.src = 'https://raw.githubusercontent.com/MyRequiem/' +
                     'comfortablePlayingInGW/master/sounds/' + sound + '.ogg';
-                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -184,6 +183,7 @@
             s = sec - 1;
             if (s > -1) {
                 general.root.setTimeout(function () {
+                    // noinspection JSUnresolvedVariable
                     if (general.root.ff49) {
                         _this.setTimer(s);
                     }
@@ -211,15 +211,6 @@
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.\n' +
-                    'MyRequiеm рекомендует вам скачать и установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'SoundSyndBattle:\n\nFireFox 4+\nOpera 11+\nChrome 12+');
-
-                return;
-            }
-
             if (!general.doc.querySelector('a[href*="/me.php"]' +
                         '[title^="Наличность"]')) {
                 return;
@@ -241,6 +232,7 @@
 
             var time = /\[(\d+):(\d+)\]/.exec(this.redLink.innerHTML);
             if (time && timeLimit > 14) {
+                // noinspection JSRemoveUnnecessaryParentheses
                 var t = +time[1] * 60 + (+time[2]);
                 this.redLink.href = '/wargroup.php?war=attacks';
                 this.setTimer(t);
@@ -282,7 +274,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

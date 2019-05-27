@@ -10,7 +10,7 @@
 // @include         http://www.gwars.ru/info.php?*
 // @grant           none
 // @license         MIT
-// @version         2.07-200219
+// @version         2.08-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -93,6 +93,7 @@
         this.init = function () {
             var link;
 
+            // noinspection JSUnresolvedVariable
             if (/\/me(\/|\.php)/.test(general.loc) && general.root.eakq) {
                 link = general.doc.querySelector('[src$="images.gwars.' +
                         'ru/i/home/farm.gif"]').parentNode;
@@ -103,6 +104,7 @@
                 return;
             }
 
+            // noinspection JSUnresolvedVariable
             if (general.root.eakq) {
                 link = general.doc.
                     querySelector('a[href*="/info.ach.php?id="]+' +
@@ -129,7 +131,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

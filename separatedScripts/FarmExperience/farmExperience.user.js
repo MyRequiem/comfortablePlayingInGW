@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         2.26-290419
+// @version         2.27-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -145,9 +145,10 @@
                 price2 = +/\$(\d+)/.exec(plants[i].querySelector('font' +
                     '[color="#990000"]>b').innerHTML)[1];
                 time = +/созревания:\s(\d+)/.exec(plants[i].innerHTML)[1];
-                // noinspection JSCheckFunctionSignatures
-                exp = parseFloat(/(\d+\.?\d*) опыта/.exec(plants[i].innerHTML));
+                exp = parseFloat(/(\d+\.?\d*) опыта/.
+                    exec(plants[i].innerHTML)[1]);
                 span.innerHTML = this.calculateFarm(price1, price2, time, exp);
+                // noinspection JSUnresolvedVariable
                 if (general.root.dnlo) {
                     target = plants[i].querySelector('br');
                     target.parentNode.insertBefore(span, target);
@@ -171,7 +172,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.48-221118
+// @version         2.49-260519
 // @author          W_or_M (редакция MyRequiem)
 // ==/UserScript==
 
@@ -176,7 +176,6 @@
                 audio.volume = 0.3;
                 audio.src = 'https://raw.githubusercontent.com/MyRequiem/' +
                     'comfortablePlayingInGW/master/sounds/' + sound + '.ogg';
-                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -243,7 +242,7 @@
             }
 
             if (hpPercent < 80) {
-                sec = Math.floor(((this.maxHp * 0.8) - this.currentHp) /
+                sec = Math.floor((this.maxHp * 0.8 - this.currentHp) /
                         this.speedHpRecovery);
                 this.spanHP.innerHTML += ' <span ' +
                     'style="font-weight: bold; color: #FF0000;"> [' +

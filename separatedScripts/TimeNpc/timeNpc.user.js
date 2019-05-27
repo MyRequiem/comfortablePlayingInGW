@@ -10,7 +10,7 @@
 // @include         http://www.gwars.ru/npc.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.33-040519
+// @version         2.34-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -190,7 +190,6 @@
                 audio.volume = 0.3;
                 audio.src = 'https://raw.githubusercontent.com/MyRequiem/' +
                     'comfortablePlayingInGW/master/sounds/' + sound + '.ogg';
-                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -295,8 +294,8 @@
                 general.$('dataNPC').lastElementChild.innerHTML = '<td>' +
                     '<a target="_blank" href="' + syndLink.href +
                     '"><img src="http://images.gwars.ru/img/synds/' +
-                    (/\?id=(\d+)/.exec(syndLink.href)[1]) + '.gif" />' +
-                    '</a></td><td><a target="_blank" href="' + url +
+                    /\?id=(\d+)/.exec(syndLink.href)[1] + '.gif" ' +
+                    'alt="img" /></a></td><td><a target="_blank" href="' + url +
                     '" style="font-size: 8pt;">' + nameNPC + '</a></td>' +
                     '<td style="font-size: 8pt;">' +
                     syndLink.nextSibling.nodeValue.replace(/^\s*/, '') +
@@ -365,12 +364,15 @@
 
                 sec -= 1;
                 var _this = this;
+                // noinspection JSUnresolvedVariable
                 if (sec > -1 && general.root.wl32) {
                     general.root.setTimeout(function () {
                         _this.showTimerNPC(sec);
                     }, 1000);
-                } else if (general.root.wl32) {
-                    this.goQuest();
+                } else { // noinspection JSUnresolvedVariable
+                    if (general.root.wl32) {
+                        this.goQuest();
+                    }
                 }
             }
         };
@@ -470,7 +472,7 @@
 
                 stData[1] = talk[1];
                 // говорим с NPC, но время квеста еще не пришло
-                var timer = (/\[подождите (\d+) мин/.exec(talkNPC.innerHTML));
+                var timer = /\[подождите (\d+) мин/.exec(talkNPC.innerHTML);
                 if (timer) {
                     stData[2] = +timer[1] * 60 * 1000 + this.getTimeNow();
                     general.setData(stData);
@@ -502,7 +504,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

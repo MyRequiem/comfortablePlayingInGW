@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         2.08-200219
+// @version         2.09-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -133,7 +133,7 @@
             for (i = 0; i < tr.length; i++) {
                 /*eslint-disable no-useless-escape */
                 if (tr[i].firstElementChild &&
-                        (/<b>[^\[]*\[\d+\]/.test(tr[i].innerHTML))) {
+                        /<b>[^\[]*\[\d+\]/.test(tr[i].innerHTML)) {
                     /*eslint-enable no-useless-escape */
                     tr[i].style.display = '';
                     if (weapon) {
@@ -155,19 +155,10 @@
                 return;
             }
 
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.\n' +
-                    'MyRequiеm рекомендует вам скачать и установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'FilterWarlistOne2One:\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
-
-                return;
-            }
-
             var filtForm = general.doc.
                     querySelector('form[action$="/warlist.php"]');
 
+            // noinspection JSUnresolvedVariable
             if (filtForm && this.table && general.root.ayxx) {
                 filtForm = filtForm.cloneNode(false);
                 filtForm.setAttribute('style', 'display: inline-block; ' +
@@ -187,13 +178,10 @@
 
                 filtForm.appendChild(hidden1);
                 filtForm.appendChild(hidden2);
-                // noinspection JSCheckFunctionSignatures
                 filtForm.appendChild(general.doc.createTextNode('от '));
                 filtForm.appendChild(s_lmin);
-                // noinspection JSCheckFunctionSignatures
                 filtForm.appendChild(general.doc.createTextNode(' до '));
                 filtForm.appendChild(s_lmax);
-                // noinspection JSCheckFunctionSignatures
                 filtForm.appendChild(general.doc.createTextNode(' тип '));
                 filtForm.appendChild(s_ltype);
                 var subm = general.doc.createElement('input');
@@ -245,7 +233,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

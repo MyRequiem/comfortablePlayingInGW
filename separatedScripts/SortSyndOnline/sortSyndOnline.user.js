@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.04-200219
+// @version         2.05-260519
 // @author          MyRequiem
 // ==/UserScript==
 
@@ -137,6 +137,7 @@
                 btl;
 
             for (btl in battles) {
+                // noinspection JSUnresolvedVariable
                 if (battles.hasOwnProperty(btl) && general.root.yg2k) {
                     color = '';
                     for (i = 0; i < syndBattles.length; i++) {
@@ -191,7 +192,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

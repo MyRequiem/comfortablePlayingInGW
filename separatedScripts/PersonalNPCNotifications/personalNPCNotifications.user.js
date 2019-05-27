@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/me.php*
 // @grant           none
 // @license         MIT
-// @version         1.14-200219
+// @version         1.15-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -118,7 +118,6 @@
                 audio.src = 'https://raw.githubusercontent.com/MyRequiem/' +
                     'comfortablePlayingInGW/master/sounds/' + sound + '.ogg';
                 // audio.src = 'http://127.0.0.1/sounds/' + sound + '.ogg';
-                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -155,18 +154,22 @@
                 var url_loaded = url,
                     my_main_div = $('#my_main_div');
 
+                // noinspection JSUnresolvedFunction
                 my_main_div.css('opacity', '0.6');
 
                 /*jslint unparam: true */
                 /*eslint no-unused-vars: 0 */
+                // noinspection JSUnusedLocalSymbols
                 my_main_div.load(url,
                     function (responseTxt, statusTxt, xhr) {
                         if (statusTxt === 'success') {
+                            // noinspection JSUnresolvedFunction
                             $('#my_main_div').css('opacity', '1');
                             window.history.
                                 replaceState({}, null, url_loaded);
                             _this.init();
                         } else {
+                            // noinspection JSUnresolvedFunction
                             $('#my_main_div').css('opacity', '0.3');
                             window.location.href = url_loaded;
                         }
@@ -210,6 +213,7 @@
             var npcLink = general.doc.querySelector('a[href*="/me.php?nid="]' +
                 '[onclick^="dolink"]');
 
+            // noinspection JSUnresolvedVariable
             if (npcLink && general.root.spua) {
                 var url = 'http://www.gwars.ru/info.php?id=' +
                         /\?nid=(\d+)/.exec(npcLink.href)[1],
@@ -223,7 +227,7 @@
                             querySelector('#namespan').parentNode,
                         health = /\[(\d+) \/ (\d+)\]/.exec(div.innerHTML);
 
-                    // noinspection JSValidateTypes
+                    // noinspection JSRemoveUnnecessaryParentheses
                     health = Math.floor(+health[1] * 100 / (+health[2]));
 
                     if (link.innerHTML === 'Ожидает распоряжений' &&
@@ -278,7 +282,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

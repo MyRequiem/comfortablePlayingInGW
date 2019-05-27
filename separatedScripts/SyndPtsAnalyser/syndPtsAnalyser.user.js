@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.30-200219
+// @version         2.31-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -141,14 +141,13 @@
          */
         this.init = function (num, separator, flagSign) {
             var x = +num,
-                sign = (x > 0 && flagSign) ? '+' : '',
+                sign = x > 0 && flagSign ? '+' : '',
                 i;
 
             if (isNaN(x)) {
                 return 'NaN';
             }
 
-            // noinspection JSValidateTypes
             x = x.toString().split('').reverse();
             for (i = 2; i < x.length; i += 3) {
                 if (x[i] === '-' || !x[i + 1] || x[i + 1] === '-') {
@@ -208,7 +207,7 @@
 
             return (day < 10 ? '0' + day : day) +  '.' +
                         (month < 10 ? '0' + month : month) + '.' +
-                            (/20(\d+)/.exec(date.getFullYear().toString())[1]);
+                            /20(\d+)/.exec(date.getFullYear().toString())[1];
         };
     };
 
@@ -679,10 +678,10 @@
             }
 
             var butShowPTSAnalizePanel = general.doc.createElement('a');
+            // noinspection JSUnresolvedVariable
             if (general.root.tmqu) {
                 butShowPTSAnalizePanel.innerHTML = 'Анализ PTS';
                 butShowPTSAnalizePanel.setAttribute('style', 'cursor: pointer');
-                // noinspection JSCheckFunctionSignatures
                 target.appendChild(general.doc.createTextNode(' | '));
                 target.appendChild(butShowPTSAnalizePanel);
             }
@@ -718,7 +717,8 @@
                     getStrDate('now')  + '" style="width: 70px;" disabled> ' +
                     '<input type="button" id="goPTS" value=">>" disabled>' +
                     '<span id="ptsPreloader" style="margin-left: 10px;">' +
-                    '<img src="' + general.imgPath + 'preloader.gif" />' +
+                    '<img src="' + general.imgPath + 'preloader.gif" ' +
+                    'alt="img" />' +
                     '<span id="analizePTSCounter" style="color: #0000FF; ' +
                     'margin-left: 10px;">2/0</span></span></td></tr>';
 
@@ -777,7 +777,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

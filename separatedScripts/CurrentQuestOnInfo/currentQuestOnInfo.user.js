@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.15-240519
+// @version         1.16-260519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458], идея kaa
 // ==/UserScript==
 
@@ -140,7 +140,7 @@
                     return;
                 }
 
-                var isDone = +reg[2] >= (+reg[3]),
+                var isDone = +reg[2] >= +reg[3],
                     span = _this.doc.createElement('span');
 
                 span.setAttribute('style', 'margin-left: 7px; font-size: 8pt;');
@@ -156,7 +156,8 @@
                     'sid=102&pid=45">' + acQuests[1] + '</a>)' +
                     '<img src="https://images.gwars.ru/i/home/wlog.gif" ' +
                     'id="showHideQuestList" border="0" width="12" ' +
-                    'height="10" style="margin-left: 3px; cursor: pointer;">' +
+                    'height="10" style="margin-left: 3px; cursor: pointer;" ' +
+                    'alt="img" />' +
                     '<div id="questList" style="display: none;">' +
                     '<ul>' +
                         '<li>Поймать рыбу 1 раз<br>' +
@@ -168,7 +169,7 @@
                             '<span style="color: #4E4E4E;">(засчитывается и ' +
                             'в прибрежной зоне)</span>' +
                         '<li>Нанести в синдикатных боях суммарный урон в ' +
-                            (bLevel * 20) + ' HP' +
+                            (bLevel * 20).toString() + ' HP' +
                         '<li>Убить хотя бы одного врага в 3 синдикатных ' +
                             'боях<br><span style="color: #4E4E4E;">(бои за ' +
                             'бункер не учитываются)</span>' +
@@ -187,7 +188,7 @@
                             'пустыми руками, то все попадания, сделанные в ' +
                             'этом бою, не засчитаются)</span>' +
                         '<li>На Outland нанести Z-Lands суммарный урон ' +
-                            (bLevel * 20) + ' HP' +
+                            (bLevel * 20).toString() + ' HP' +
                         '<li>Убить гранатой 2 Z-Lands<br>' +
                             '<span style="color: #4E4E4E;">(горение идёт в ' +
                             'зачёт)</span>' +
@@ -260,6 +261,7 @@
          * @method init
          */
         init: function () {
+            // noinspection JSUnresolvedVariable
             if (this.persID && this.target && this.root.swdf) {
                 this.showQuest('http://www.gwars.ru/questlog.php?id=' +
                     this.persID);
@@ -282,7 +284,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

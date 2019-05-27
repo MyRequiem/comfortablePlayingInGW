@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/warlog.php*
 // @grant           none
 // @license         MIT
-// @version         2.19-200219
+// @version         2.20-260519
 // @author          MyRequiem, идея Buger_man
 // ==/UserScript==
 
@@ -166,6 +166,7 @@
                     size = [70, 80];
                 }
 
+                // noinspection JSUnresolvedVariable
                 if (name && general.root.dkyx) {
                     pos = getPos(enemies[i].parentNode);
                     div = general.doc.createElement('div');
@@ -214,7 +215,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {
