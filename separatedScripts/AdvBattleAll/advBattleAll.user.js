@@ -1170,7 +1170,7 @@
                     '<a href="http://www.gwars.ru/warlog.php?bid=' +
                     /\?bid=(\d+)/.exec(general.loc)[1] + '&rev=1" ' +
                     'target="_blank" style="margin-left: 15px;"><img src="' +
-                    general.imgPath + 'AdvBattleAll/eyes.png" width="16" ' +
+                    general.imgPath + 'eyes.png" width="16" ' +
                     'height="9" title="Режим наблюдения за боем" alt="img" />' +
                     '</a>';
 
