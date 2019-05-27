@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.17-090519
+// @version         4.18-270519
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -190,7 +190,6 @@
                 audio.volume = 0.3;
                 audio.src = 'https://raw.githubusercontent.com/MyRequiem/' +
                     'comfortablePlayingInGW/master/sounds/' + sound + '.ogg';
-                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -748,7 +747,7 @@
          * @return  {int}
          */
         this.getRandom1to3 = function () {
-            return (Math.round((Math.random() * 1000)) % 3) + 1;
+            return Math.round(Math.random() * 1000) % 3 + 1;
         };
 
         /**
@@ -789,7 +788,7 @@
                     '[name="defence"]:checked'),
                 dataSt = general.getData();
 
-            dataSt[12] = def ? (/\d/.exec(def.id)[0]) : _this.getRandom1to3();
+            dataSt[12] = def ? /\d/.exec(def.id)[0] : _this.getRandom1to3();
 
             // подходим или нет
             dataSt[14] = general.doc.querySelector('input[type="checkbox"]' +
@@ -807,7 +806,7 @@
                     tmps = enemyList[i].innerHTML;
                     // ecли пок то будет
                     // 1. Electrode [Major][20] 182 HP - 13!
-                    enemy = reg.exec(tmps) || (/^(\d+)\. ([^\s]+)/.exec(tmps));
+                    enemy = reg.exec(tmps) || /^(\d+)\. ([^\s]+)/.exec(tmps);
                     break;
                 }
             }
@@ -860,8 +859,8 @@
                 return;
             }
 
-            dataSt[10] = leftAttack ? (/\d/.exec(leftAttack.id)[0]) : '';
-            dataSt[11] = rightAttack ? (/\d/.exec(rightAttack.id)[0]) : '';
+            dataSt[10] = leftAttack ? /\d/.exec(leftAttack.id)[0] : '';
+            dataSt[11] = rightAttack ? /\d/.exec(rightAttack.id)[0] : '';
 
             general.setData(dataSt);
             if (!isGren) {
@@ -927,7 +926,6 @@
             var pers = obj.querySelectorAll('a[href*="/info.php?id="]');
             // поки
             if (!pers.length) {
-                // noinspection JSValidateTypes
                 pers = [];
                 var divs = obj.querySelectorAll('div'),
                     i;
@@ -950,13 +948,13 @@
             objPers.lvl = persLink.nextSibling.textContent;
             var allText = prnt.textContent;
             objPers.hp = /HP: \d+\/\d+/.test(allText) ?
-                    (/HP: (\d+)\/(\d+)/.exec(allText)) : '';
+                    /HP: (\d+)\/(\d+)/.exec(allText) : '';
             objPers.dist = /расстояние: \d+/.test(allText) ?
-                    (/расстояние: (\d+)/.exec(allText)[1]) : '';
+                    /расстояние: (\d+)/.exec(allText)[1] : '';
             objPers.visib = /видимость: \d+%/.test(allText) ?
-                    (/видимость: (\d+%)/.exec(allText)[1]) : '';
+                    /видимость: (\d+%)/.exec(allText)[1] : '';
             objPers.power = /мощность: \d+/.test(allText) ?
-                    (/мощность: (\d+)/.exec(allText)[1]) : '';
+                    /мощность: (\d+)/.exec(allText)[1] : '';
             objPers.skill = '';
 
             // добавляем умелку
@@ -1091,7 +1089,8 @@
                     persLink.href.indexOf('?id=' + general.myID) !== -1) {
                 this.myPers = objPers;
                 this.myPers.name = name;
-                this.myPers.damage = /урон: (\d+) \((\d+)\)/.exec(allText);
+                this.myPers.damage = /урон: (\d+)(\+\d+)? \((\d+)\)/.
+                        exec(allText);
             }
         };
 
@@ -1128,7 +1127,7 @@
                     span = general.doc.createElement('span');
                     span.innerHTML = ' <img src="' + general.imgPath +
                         'envelope.gif" style="width: 15px; cursor: pointer; ' +
-                        'margin-right: 5px;">';
+                        'margin-right: 5px;" alt="img" />';
                     before = !i ? mass[i][j].nextElementSibling :
                             mass[i][j].previousElementSibling;
                     mass[i][j].parentNode.insertBefore(span, before);
@@ -1146,29 +1145,38 @@
             // если здоровье меньше максимального, то меняем цвет
             var color = this.myPers.hp[1] === this.myPers.hp[2] ?
                         '#008000' : '#B84906',
-                str = '<span style="font-weight: bold; font-style: italic; ' +
-                    'color: #0000FF;">HP:</span> <span style="color: ' +
-                    color + ';">' + this.myPers.hp[1] + '</span>/' +
+                str = '<span style="color: ' + color + ';">' +
+                    // HP
+                    this.myPers.hp[1] + '</span>/' +
                     '<span style="color: #008000; font-weight: bold;">' +
-                    this.myPers.hp[2] + '</span><span style="margin-left: ' +
-                    '20px;">урон: ' + this.myPers.damage[1] +
+                    this.myPers.hp[2] + '</span>' +
+                    // урон
+                    '<span style="margin-left: 15px;">' +
+                    this.myPers.damage[1] +
+                    (this.myPers.damage[2] ? '<span style="color: #009900; ' +
+                        'font-weight: bold;">' + this.myPers.damage[2] +
+                            '</span>' : '') +
                     '(<span style="font-weight: bold; color: #FF0000;">' +
-                    this.myPers.damage[2] + '</span>)</span><span ' +
-                    'style="margin-left: 20px;">видимость: <span ' +
-                    'style="font-weight: bold;">' + this.myPers.visib +
-                    '</span></span><span style="margin-left: 20px; ' +
-                    'font-weight: bold;"><span style="color: #FF0000;">' +
-                    this.leftPers.length + '</span> / <span style="color: ' +
-                    '#0000FF;">' + this.rightPers.length + '</span></span>' +
-                    '<span style="margin-left: 20px;">' +
+                    this.myPers.damage[3] + '</span>)</span>' +
+                    // видимость
+                    '<span style="margin-left: 15px; font-weight: bold;">' +
+                    this.myPers.visib + '</span>' +
+                    // количество бойцов
+                    '<span style="margin-left: 15px; font-weight: bold;">' +
+                    '<span style="color: #FF0000;">' + this.leftPers.length +
+                    '</span> / <span style="color: #0000FF;">' +
+                    this.rightPers.length + '</span></span>' +
+                    // ссылка "Наблюдение"
                     '<a href="http://www.gwars.ru/warlog.php?bid=' +
-                    (/\?bid=(\d+)/.exec(general.loc)[1]) + '&rev=1" ' +
-                    'target="_blank" style="color: #007700; ' +
-                    'text-decoration: none;">Наблюдение</a></span>';
+                    /\?bid=(\d+)/.exec(general.loc)[1] + '&rev=1" ' +
+                    'target="_blank" style="margin-left: 15px;"><img src="' +
+                    general.imgPath + 'AdvBattleAll/eyes.png" width="16" ' +
+                    'height="9" title="Режим наблюдения за боем" alt="img" />' +
+                    '</a>';
 
+            // счетчик количества бойцов сделавших ход
             if (count) {
-                str += '<span style="margin-left: 20px;">Сделали ход: ' +
-                    count + '/' +
+                str += '<span style="margin-left: 15px;">' + count + '/' +
                     (this.leftPers.length + this.rightPers.length) + '</span>';
             }
 
@@ -1185,7 +1193,7 @@
                 return;
             }
 
-            var id = +(/\d/.exec(_this.id)[0]),
+            var id = +/\d/.exec(_this.id)[0],
                 i;
             // выделяем жирным на что нажали, остальные обычным шрифтом
             _this.setAttribute('style', 'font-weight: bold;');
@@ -1243,7 +1251,6 @@
 
             // если есть чекбокс "Подойти ближе"
             if (walk) {
-                // noinspection JSCheckFunctionSignatures
                 walk.parentNode.insertBefore(general.doc.createElement('br'),
                         walk);
             } else {
@@ -1293,6 +1300,7 @@
                 walk = general.$('walk');
 
             if (walk) {
+                // noinspection JSRemoveUnnecessaryParentheses
                 if ((!walk.checked && dataSt[ind]) ||
                         (walk.checked && !dataSt[ind])) {
                     walk.click();
@@ -1480,8 +1488,8 @@
                     'margin: 5px 0 0 5px;');
 
             // если две руки, то "не дублировать цель" делаем видимым
-            var vis = (general.$('left_attack1') &&
-                    general.$('right_attack1')) ? '' : 'none';
+            var vis = general.$('left_attack1') && general.$('right_attack1') ?
+                        '' : 'none';
 
             // если одна рука, то сбрасываем чекбокс
             // "Говорить только левую руку (для БЩ)"
@@ -1663,14 +1671,14 @@
 
             for (i = 0; i < img.length; i++) {
                 ttl = img[i].getAttribute('title');
-                if (!ttl || !(/(.*) \[\d+/.test(ttl))) {
+                if (!ttl || !/(.*) \[\d+/.test(ttl)) {
                     continue;
                 }
 
                 ttlName = /(.*) \[\d+/.exec(ttl)[1].replace(/&amp;/, '&');
                 // если есть список выбора врага (ход не сделан)
                 if (options) {
-                    // opt = false;
+                    // noinspection JSUnresolvedVariable
                     for (j = 0; j < options.length; j++) {
                         txtOptions = options[j].innerHTML.replace(/&amp;/, '&');
                         if (txtOptions.indexOf(ttlName) !== -1) {
@@ -1701,7 +1709,7 @@
                             pers.allWeapon + '</div>';
 
                         // прозрачность перса в зависимости от его видимости
-                        visib = +(/\d+/.exec(pers.visib)[0]);
+                        visib = +/\d+/.exec(pers.visib)[0];
                         visib = (visib / 100).toFixed(1);
                         if (visib < 0.3) {
                             visib = 0.3;
@@ -1745,12 +1753,9 @@
                 if (/Ждём ход противника/i.test(bf.innerHTML)) {
                     if (this.graphTable) {
                         var target = bf.querySelector('a').parentNode;
-                        // noinspection JSCheckFunctionSignatures
                         target.appendChild(general.doc.createElement('br'));
-                        // noinspection JSCheckFunctionSignatures
                         target.appendChild(general.doc.createElement('br'));
                         target.appendChild(this.graphTable);
-                        // noinspection JSCheckFunctionSignatures
                         target.appendChild(general.doc.createElement('br'));
                         this.setTooltipsFighters(this.graphTable);
                         return;
@@ -1773,10 +1778,8 @@
 
             // вставим пустую строку после таблицы
             if (!general.viewMode) {    // в бою
-                // noinspection JSCheckFunctionSignatures
                 table.parentNode.appendChild(general.doc.createElement('br'));
             } else {    // режим наблюдения за боем
-                // noinspection JSCheckFunctionSignatures
                 table.parentNode.insertBefore(general.doc.createElement('br'),
                     table.nextElementSibling);
             }
@@ -1858,13 +1861,13 @@
 
                         // вычисляем процент оставшегося здоровья
                         hp = Math.ceil(+hp[1] * 100 / +hp[2]);
-                        hpClr = hp < 30 ? 'FF0000' :
-                                    hp < 80 ? 'C44A00' : '339933';
+                        hpClr = hp < 30 ? '#FF0000' :
+                                    hp < 80 ? '#C44A00' : '#339933';
 
                         divHealth.innerHTML = '<div style="' +
                             'height: 2px; width: ' +
                                 Math.ceil(prBarWidth / 100 * hp) + 'px; ' +
-                            'background-color: #' + hpClr + ';"></div>';
+                            'background-color: ' + hpClr + ';"></div>';
                         divBattleField.appendChild(divHealth);
                     }
 
@@ -1897,7 +1900,7 @@
 
             DC = Math.abs(leftDC - rightDC);
             even = this.isEven(DC);
-            DC = even ? (leftDC + DC / 2) : (leftDC + Math.floor(DC / 2));
+            DC = even ? leftDC + DC / 2 : leftDC + Math.floor(DC / 2);
 
             // если нет изображения моего перса на поле боя (бывает такой глюк)
             // будем отсчитывать от динамического центра
@@ -2010,6 +2013,7 @@
                 i;
 
             // в бою
+            // noinspection JSUnresolvedVariable
             if (!general.viewMode && general.root.bvhc) {
                 // если есть список выбора врага (ход не сделан)
                 if (selectEnemies) {
@@ -2040,6 +2044,7 @@
                 general.setData(dataSt);
             }
 
+            // noinspection JSUnresolvedVariable
             if (general.root.bvhc) {
                 this.getLeftRightCommands();
             }
@@ -2157,7 +2162,7 @@
                 if (thisChk.checked) {
                     dataSt[8] = '1';
                     // noinspection RegExpSingleCharAlternation
-                    if (!(/^(~|\*|@)/.test(chatMessage))) {
+                    if (!/^(~|\*|@)/.test(chatMessage)) {
                         _this.inpTextChat.value = '~' + chatMessage;
                     }
 
@@ -2304,8 +2309,7 @@
                 /** @namespace general.root.bf3 */
                 /** @namespace general.root.bfndl */
                 general.$('bf').innerHTML = !general.root.waitforturn ?
-                        general.root.bf1 :
-                        (general.root.bf2 + general.root.bf3);
+                        general.root.bf1 : general.root.bf2 + general.root.bf3;
                 general.$('bfndl').innerHTML = general.root.bfndl;
                 _this.start();
             };
@@ -2325,7 +2329,7 @@
             var bf = general.$('bf');
 
             if (this.inpTextChat && bf &&
-                    !(/Загружаются данные/.test(bf.innerHTML))) {
+                    !/Загружаются данные/.test(bf.innerHTML)) {
                 this.changeMakebf();
                 this.setChatInterface();
                 this.start();
@@ -2342,16 +2346,6 @@
          * @method init
          */
         this.init = function () {
-            if (!general.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.\n' +
-                    'MyRequiеm рекомендует вам установить один из\nниже ' +
-                    'перечисленных браузеров или удалите скрипт\n' +
-                    'AdvBattleAll\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
-
-                return;
-            }
-
             // графическое оформление боев
             if (general.doc.querySelector('table[style*="battleground"]') ||
                     general.root.self !== general.root.top) {
@@ -2434,7 +2428,9 @@
     }
 
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (mainObj.root.cpigwchbl) {
+            // noinspection JSUnresolvedFunction
             if (mainObj.myID &&
                     !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
                         exec(mainObj.doc.cookie)[2])) {

@@ -590,7 +590,7 @@
 
             return (day < 10 ? '0' + day : day) +  '.' +
                         (month < 10 ? '0' + month : month) + '.' +
-                            (/20(\d+)/.exec(date.getFullYear().toString())[1]);
+                            /20(\d+)/.exec(date.getFullYear().toString())[1];
         };
     };
 
@@ -721,6 +721,7 @@
          */
         this.init = function () {
             this.changeFavicon();
+            // noinspection JSUnresolvedVariable
             if (!/\/news\.php\?set=1/.test(general.loc) &&
                     general.root.aqyq) {
                 this.changeIcons();
@@ -753,7 +754,6 @@
                 audio.src = (general.myID === '2095458' ?
                         'http://127.0.0.1/' : general.mainPath) + 'sounds/' +
                             sound + '.ogg';
-                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -798,6 +798,7 @@
                 topPanel = general.doc.
                     querySelector('td.txt[align="left"] nobr:first-child');
                 if (topPanel) {
+                    // noinspection JSUnresolvedFunction
                     topPanel.parentNode.setAttribute('style', 'width: 70%;');
                 }
             }
@@ -977,6 +978,7 @@
                 '" style="color: #0000FF;">' + scriptName + '.user.js</a>';
         };
 
+        // noinspection HtmlUnknownAttribute
         /**
          * @property infoScripts
          * @type {Object}
@@ -988,10 +990,10 @@
                 ['Логотип игры', 'На всех страницах заменяет логотип игры ' +
                     '&nbsp;&nbsp;<img style="box-shadow: 2px 3px 3px ' +
                     'rgba(122,122,122, 0.5);" src="http://images.gwars.' +
-                    'ru/i/gon.gif" /> &nbsp;&nbsp;на зеленый листик &nbsp;' +
-                    '&nbsp;<img style="box-shadow: 2px 3px 3px ' +
+                    'ru/i/gon.gif" alt="img" /> &nbsp;&nbsp;на зеленый ' +
+                    'листик &nbsp;&nbsp;<img style="box-shadow: 2px 3px 3px ' +
                     'rgba(122,122,122,0.5);" src="' + general.imgPath +
-                    'NotGiveCannabisLeaf/on.gif" />' +
+                    'NotGiveCannabisLeaf/on.gif" alt="img" />' +
                     this.getGitHubLink('notGiveCannabisLeaf'), '0'],
                 ['Таймер выздоровления', 'Таймер выздоровления персонажа ' +
                     'на главной странице.<br>' +
@@ -1453,6 +1455,7 @@
          */
         this.init = function () {
             general.doc.title = 'CPIGW :: Настройки';
+            // noinspection HtmlUnknownAttribute
             var tdStyle = ' style="background-color: #E0FFE0;">',
                 gwImgUrl = 'http://images.gwars.ru/i/home/',
                 str = '<table style="width: 100%; box-shadow: 8px 10px 7px ' +
@@ -1859,14 +1862,13 @@
          */
         this.init = function (num, separator, flagSign) {
             var x = +num,
-                sign = (x > 0 && flagSign) ? '+' : '',
+                sign = x > 0 && flagSign ? '+' : '',
                 i;
 
             if (isNaN(x)) {
                 return 'NaN';
             }
 
-            // noinspection JSValidateTypes
             x = x.toString().split('').reverse();
             for (i = 2; i < x.length; i += 3) {
                 if (x[i] === '-' || !x[i + 1] || x[i + 1] === '-') {
@@ -1929,7 +1931,6 @@
             // добавление в панель
             var target = this.navigPanel.
                     lastElementChild.previousSibling;
-            // noinspection JSCheckFunctionSignatures
             this.navigPanel.insertBefore(general.doc.createTextNode(' | '),
                     target);
             this.navigPanel.insertBefore(link, target);
@@ -2078,6 +2079,7 @@
             // добавляем ссылки из хранилища в панель и в div
             var linkName, lnk;
             for (linkName in dataSt) {
+                // noinspection JSUnresolvedVariable
                 if (dataSt.hasOwnProperty(linkName) && general.root.zsdm) {
                     lnk = this.createLink(linkName, dataSt[linkName]);
                     this.addLink(lnk);
@@ -2253,6 +2255,7 @@
                 return;
             }
 
+            // noinspection JSUnresolvedVariable
             if (general.root.vx8r) {
                 this.spanContainer = general.doc.createElement('span');
                 this.spanContainer.setAttribute('style', 'margin-left: 10px;');
@@ -2796,7 +2799,7 @@
          * @return  {int}
          */
         this.getRandom1to3 = function () {
-            return (Math.round((Math.random() * 1000)) % 3) + 1;
+            return Math.round(Math.random() * 1000) % 3 + 1;
         };
 
         /**
@@ -2836,7 +2839,7 @@
                     '[name="defence"]:checked'),
                 dataSt = general.getData(4);
 
-            dataSt[14] = def ? (/\d/.exec(def.id)[0]) : _this.getRandom1to3();
+            dataSt[14] = def ? /\d/.exec(def.id)[0] : _this.getRandom1to3();
 
             // подходим или нет
             dataSt[16] = general.doc.querySelector('input[type="checkbox"]' +
@@ -2854,7 +2857,7 @@
                     tmps = enemyList[i].innerHTML;
                     // ecли пок то будет
                     // 1. Electrode [Major][20] 182 HP - 13!
-                    enemy = reg.exec(tmps) || (/^(\d+)\. ([^\s]+)/.exec(tmps));
+                    enemy = reg.exec(tmps) || /^(\d+)\. ([^\s]+)/.exec(tmps);
 
                     break;
                 }
@@ -2908,8 +2911,8 @@
                 return;
             }
 
-            dataSt[12] = leftAttack ? (/\d/.exec(leftAttack.id)[0]) : '';
-            dataSt[13] = rightAttack ? (/\d/.exec(rightAttack.id)[0]) : '';
+            dataSt[12] = leftAttack ? /\d/.exec(leftAttack.id)[0] : '';
+            dataSt[13] = rightAttack ? /\d/.exec(rightAttack.id)[0] : '';
 
             general.setData(dataSt, 4);
 
@@ -2976,7 +2979,6 @@
             var pers = obj.querySelectorAll('a[href*="/info.php?id="]');
             // поки
             if (!pers.length) {
-                // noinspection JSValidateTypes
                 pers = [];
                 var divs = obj.querySelectorAll('div'),
                     i;
@@ -2999,13 +3001,13 @@
             objPers.lvl = persLink.nextSibling.textContent;
             var allText = prnt.textContent;
             objPers.hp = /HP: \d+\/\d+/.test(allText) ?
-                    (/HP: (\d+)\/(\d+)/.exec(allText)) : '';
+                    /HP: (\d+)\/(\d+)/.exec(allText) : '';
             objPers.dist = /расстояние: \d+/.test(allText) ?
-                    (/расстояние: (\d+)/.exec(allText)[1]) : '';
+                    /расстояние: (\d+)/.exec(allText)[1] : '';
             objPers.visib = /видимость: \d+%/.test(allText) ?
-                    (/видимость: (\d+%)/.exec(allText)[1]) : '';
+                    /видимость: (\d+%)/.exec(allText)[1] : '';
             objPers.power = /мощность: \d+/.test(allText) ?
-                    (/мощность: (\d+)/.exec(allText)[1]) : '';
+                    /мощность: (\d+)/.exec(allText)[1] : '';
             objPers.skill = '';
 
             // добавляем умелку
@@ -3140,7 +3142,8 @@
                     persLink.href.indexOf('?id=' + general.myID) !== -1) {
                 this.myPers = objPers;
                 this.myPers.name = name;
-                this.myPers.damage = /урон: (\d+) \((\d+)\)/.exec(allText);
+                this.myPers.damage = /урон: (\d+)(\+\d+)? \((\d+)\)/.
+                        exec(allText);
             }
         };
 
@@ -3177,7 +3180,7 @@
                     span = general.doc.createElement('span');
                     span.innerHTML = ' <img src="' + this.imgPath +
                         'envelope.gif" style="width: 15px; cursor: pointer; ' +
-                        'margin-right: 5px;">';
+                        'margin-right: 5px;" alt="img" />';
                     before = !i ? mass[i][j].nextElementSibling :
                             mass[i][j].previousElementSibling;
                     mass[i][j].parentNode.insertBefore(span, before);
@@ -3195,29 +3198,38 @@
             // если здоровье меньше максимального, то меняем цвет
             var color = this.myPers.hp[1] === this.myPers.hp[2] ?
                         '#008000' : '#B84906',
-                str = '<span style="font-weight: bold; font-style: italic; ' +
-                    'color: #0000FF;">HP:</span> <span style="color: ' +
-                    color + ';">' + this.myPers.hp[1] + '</span>/' +
+                str = '<span style="color: ' + color + ';">' +
+                    // HP
+                    this.myPers.hp[1] + '</span>/' +
                     '<span style="color: #008000; font-weight: bold;">' +
-                    this.myPers.hp[2] + '</span><span style="margin-left: ' +
-                    '20px;">урон: ' + this.myPers.damage[1] +
+                    this.myPers.hp[2] + '</span>' +
+                    // урон
+                    '<span style="margin-left: 15px;">' +
+                    this.myPers.damage[1] +
+                    (this.myPers.damage[2] ? '<span style="color: #009900; ' +
+                        'font-weight: bold;">' + this.myPers.damage[2] +
+                            '</span>' : '') +
                     '(<span style="font-weight: bold; color: #FF0000;">' +
-                    this.myPers.damage[2] + '</span>)</span><span ' +
-                    'style="margin-left: 20px;">видимость: <span ' +
-                    'style="font-weight: bold;">' + this.myPers.visib +
-                    '</span></span><span style="margin-left: 20px; ' +
-                    'font-weight: bold;"><span style="color: #FF0000;">' +
-                    this.leftPers.length + '</span> / <span style="color: ' +
-                    '#0000FF;">' + this.rightPers.length + '</span></span>' +
-                    '<span style="margin-left: 20px;">' +
+                    this.myPers.damage[3] + '</span>)</span>' +
+                    // видимость
+                    '<span style="margin-left: 15px; font-weight: bold;">' +
+                    this.myPers.visib + '</span>' +
+                    // количество бойцов
+                    '<span style="margin-left: 15px; font-weight: bold;">' +
+                    '<span style="color: #FF0000;">' + this.leftPers.length +
+                    '</span> / <span style="color: #0000FF;">' +
+                    this.rightPers.length + '</span></span>' +
+                    // ссылка "Наблюдение"
                     '<a href="http://www.gwars.ru/warlog.php?bid=' +
-                    (/\?bid=(\d+)/.exec(general.loc)[1]) + '&rev=1" ' +
-                    'target="_blank" style="color: #007700; ' +
-                    'text-decoration: none;">Наблюдение</a></span>';
+                    /\?bid=(\d+)/.exec(general.loc)[1] + '&rev=1" ' +
+                    'target="_blank" style="margin-left: 15px;"><img src="' +
+                    general.imgPath + 'AdvBattleAll/eyes.png" width="16" ' +
+                    'height="9" title="Режим наблюдения за боем" alt="img" />' +
+                    '</a>';
 
+            // счетчик количества бойцов сделавших ход
             if (count) {
-                str += '<span style="margin-left: 20px;">Сделали ход: ' +
-                    count + '/' +
+                str += '<span style="margin-left: 15px;">' + count + '/' +
                     (this.leftPers.length + this.rightPers.length) + '</span>';
             }
 
@@ -3234,7 +3246,7 @@
                 return;
             }
 
-            var id = +(/\d/.exec(_this.id)[0]),
+            var id = +/\d/.exec(_this.id)[0],
                 i;
             // выделяем жирным на что нажали, остальные обычным шрифтом
             _this.setAttribute('style', 'font-weight: bold;');
@@ -3292,7 +3304,6 @@
 
             // если есть чекбокс "Подойти ближе"
             if (walk) {
-                // noinspection JSCheckFunctionSignatures
                 walk.parentNode.insertBefore(general.doc.createElement('br'),
                         walk);
             } else {
@@ -3342,6 +3353,7 @@
                 walk = general.$('walk');
 
             if (walk) {
+                // noinspection JSRemoveUnnecessaryParentheses
                 if ((!walk.checked && dataSt[ind]) ||
                         (walk.checked && !dataSt[ind])) {
                     walk.click();
@@ -3541,8 +3553,8 @@
                     'margin: 5px 0 0 5px;');
 
             // если две руки, то "не дублировать цель" делаем видимым
-            var vis = (general.$('left_attack1') &&
-                    general.$('right_attack1')) ? '' : 'none';
+            var vis = general.$('left_attack1') && general.$('right_attack1') ?
+                        '' : 'none';
 
             // если одна рука, то сбрасываем чекбоксы
             // "Говорить только левую руку" и "Говорить только правую руку"
@@ -3724,14 +3736,14 @@
 
             for (i = 0; i < img.length; i++) {
                 ttl = img[i].getAttribute('title');
-                if (!ttl || !(/(.*) \[\d+/.test(ttl))) {
+                if (!ttl || !/(.*) \[\d+/.test(ttl)) {
                     continue;
                 }
 
                 ttlName = /(.*) \[\d+/.exec(ttl)[1].replace(/&amp;/, '&');
                 // если есть список выбора врага (ход не сделан)
                 if (options) {
-                    // opt = false;
+                    // noinspection JSUnresolvedVariable
                     for (j = 0; j < options.length; j++) {
                         txtOptions = options[j].innerHTML.replace(/&amp;/, '&');
                         if (txtOptions.indexOf(ttlName) !== -1) {
@@ -3762,7 +3774,7 @@
                             pers.allWeapon + '</div>';
 
                         // прозрачность перса в зависимости от его видимости
-                        visib = +(/\d+/.exec(pers.visib)[0]);
+                        visib = +/\d+/.exec(pers.visib)[0];
                         visib = (visib / 100).toFixed(1);
                         if (visib < 0.3) {
                             visib = 0.3;
@@ -3806,12 +3818,9 @@
                 if (/Ждём ход противника/i.test(bf.innerHTML)) {
                     if (this.graphTable) {
                         var target = bf.querySelector('a').parentNode;
-                        // noinspection JSCheckFunctionSignatures
                         target.appendChild(general.doc.createElement('br'));
-                        // noinspection JSCheckFunctionSignatures
                         target.appendChild(general.doc.createElement('br'));
                         target.appendChild(this.graphTable);
-                        // noinspection JSCheckFunctionSignatures
                         target.appendChild(general.doc.createElement('br'));
                         this.setTooltipsFighters(this.graphTable);
                         return;
@@ -3833,10 +3842,8 @@
 
             // вставим пустую строку после таблицы
             if (!general.viewMode) {    // в бою
-                // noinspection JSCheckFunctionSignatures
                 table.parentNode.appendChild(general.doc.createElement('br'));
             } else {    // режим наблюдения за боем
-                // noinspection JSCheckFunctionSignatures
                 table.parentNode.insertBefore(general.doc.createElement('br'),
                     table.nextElementSibling);
             }
@@ -3918,13 +3925,13 @@
 
                         // вычисляем процент оставшегося здоровья
                         hp = Math.ceil(+hp[1] * 100 / +hp[2]);
-                        hpClr = hp < 30 ? 'FF0000' :
-                                    hp < 80 ? 'C44A00' : '339933';
+                        hpClr = hp < 30 ? '#FF0000' :
+                                    hp < 80 ? '#C44A00' : '#339933';
 
                         divHealth.innerHTML = '<div style="' +
                             'height: 2px; width: ' +
                                 Math.ceil(prBarWidth / 100 * hp) + 'px; ' +
-                            'background-color: #' + hpClr + ';"></div>';
+                            'background-color: ' + hpClr + ';"></div>';
                         divBattleField.appendChild(divHealth);
                     }
 
@@ -3957,7 +3964,7 @@
 
             DC = Math.abs(leftDC - rightDC);
             even = this.isEven(DC);
-            DC = even ? (leftDC + DC / 2) : (leftDC + Math.floor(DC / 2));
+            DC = even ? leftDC + DC / 2 : leftDC + Math.floor(DC / 2);
 
             // если нет изображения моего перса на поле боя (бывает такой глюк)
             // будем отсчитывать от динамического центра
@@ -4070,6 +4077,7 @@
                 i;
 
             // в бою
+            // noinspection JSUnresolvedVariable
             if (!general.viewMode && general.root.bvhc) {
                 // если есть список выбора врага (ход не сделан)
                 if (selectEnemies) {
@@ -4100,6 +4108,7 @@
                 general.setData(dataSt, 4);
             }
 
+            // noinspection JSUnresolvedVariable
             if (general.root.bvhc) {
                 this.getLeftRightCommands();
             }
@@ -4181,7 +4190,7 @@
                             if (updLink) {
                                 updLink.click();
                             }
-                        }, (+refreshBattle) * 1000);
+                        }, +refreshBattle * 1000);
                 }
 
                 // подсвечиваем персонажей, которые уже сделали ход,
@@ -4217,7 +4226,7 @@
                 if (thisChk.checked) {
                     dataSt[10] = '1';
                     // noinspection RegExpSingleCharAlternation
-                    if (!(/^(~|\*|@)/.test(chatMessage))) {
+                    if (!/^(~|\*|@)/.test(chatMessage)) {
                         _this.inpTextChat.value = '~' + chatMessage;
                     }
 
@@ -4364,8 +4373,7 @@
                 /** @namespace general.root.bf3 */
                 /** @namespace general.root.bfndl */
                 general.$('bf').innerHTML = !general.root.waitforturn ?
-                        general.root.bf1 :
-                        (general.root.bf2 + general.root.bf3);
+                        general.root.bf1 : general.root.bf2 + general.root.bf3;
                 general.$('bfndl').innerHTML = general.root.bfndl;
                 _this.start();
             };
@@ -4385,7 +4393,7 @@
             var bf = general.$('bf');
 
             if (this.inpTextChat && bf &&
-                    !(/Загружаются данные/.test(bf.innerHTML))) {
+                    !/Загружаются данные/.test(bf.innerHTML)) {
                 this.changeMakebf();
                 this.setChatInterface();
                 this.start();
@@ -4422,7 +4430,7 @@
                     if (updateLink) {
                         general.root.setTimeout(function () {
                             general.root.location = updateLink.parentNode.href;
-                        }, (+refreshAppl) * 1000);
+                        }, +refreshAppl * 1000);
                     }
                 }
 
@@ -4541,12 +4549,13 @@
                 a[i].style.background = '';
                 id = /\?id=(\d+)$/.exec(a[i].href);
                 id = id && id[1].length > 3 ? id[1] : null;
+                // noinspection JSUnresolvedVariable
                 if (id && stData[0].indexOf(id) !== -1 && general.root.vutw) {
                     a[i].style.background = '#B6B5B5';
                     // блокировка ссылки принятия боя в одиночных заявках
                     // noinspection JSUnresolvedVariable
-                    if (stData[1] && (/Подтверждаете бой с/.
-                            test(a[i].parentNode.innerHTML))) {
+                    if (stData[1] && /Подтверждаете бой с/.
+                            test(a[i].parentNode.innerHTML)) {
                         link = general.doc.
                             querySelector('a[class="mainbutton"]' +
                                 '[href*="/warlist.php?war=armed&do=5&cu="]');
@@ -4763,10 +4772,9 @@
 
                 // время до окончания работы
                 var time;
-                // noinspection Annotator
-                if (/[Вы сможете устроиться на|осталось][^\d]*\d+ минут/i.
+                if (/(Вы сможете устроиться на|осталось)[^\d]*\d+ минут/i.
                         test(content)) {
-                    time = +(/(\d+) минут/i.exec(content)[1]);
+                    time = +/(\d+) минут/i.exec(content)[1];
                     time = !time ? 1 : time;
                 } else if (/Последний раз вы работали/i.test(content)) {
                     time = 0;
@@ -4790,15 +4798,15 @@
                 }
 
                 var ttl = '" title="Объект #' +
-                    (/object\.php\?id=(\d+)/.exec(linkObj.href)[1]) +
-                    '" alt="GW объект" /></a>]';
+                        /object\.php\?id=(\d+)/.exec(linkObj.href)[1] +
+                        '" alt="GW объект" /></a>]';
 
                 if (time) {
                     if (stData[2]) {
                         _this.wpgbContainer.innerHTML = '[<span style=' +
                             '"color: #0000FF;">' + time + '</span> мин ' +
-                            '<a href="' + linkObj.href + '"><img src="' +
-                            _this.blueFactory + ttl;
+                            '<a href="' + linkObj.href + '"><img alt="img" ' +
+                            'src="' + _this.blueFactory + ttl;
                     }
 
                     stData[1] = '';
@@ -4806,8 +4814,8 @@
                 } else {
                     if (stData[2]) {
                         _this.wpgbContainer.innerHTML = '[<a href="' +
-                            linkObj.href + '"><img src="' + _this.redFactory +
-                            ttl;
+                            linkObj.href + '"><img alt="img" src="' +
+                            _this.redFactory + ttl;
                     }
 
                     if (!stData[1]) {
@@ -4835,8 +4843,8 @@
          */
         this.init = function () {
             var topPanel = new GetTopPanel().init();
+            // noinspection JSUnresolvedVariable
             if (topPanel && general.root.hvi6) {
-                // noinspection JSCheckFunctionSignatures
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(this.wpgbContainer);
 
@@ -4867,7 +4875,7 @@
         this.fillData = function (data) {
             this.divResult.innerHTML = data + '<div style="margin-top: 5px;">' +
                 '<img id="divres_close" style="cursor: pointer;" ' +
-                'src="' + general.imgPath + 'close.gif" /></div>';
+                'src="' + general.imgPath + 'close.gif" alt="img" /></div>';
 
             var _this = this;
             general.$('divres_close').addEventListener('click', function () {
@@ -4886,7 +4894,7 @@
             this.divResult.style.top = pos.y + 25;
             this.divResult.style.visibility = 'visible';
             this.divResult.innerHTML = '<img src="' + general.imgPath +
-                'preloader.gif' + '">';
+                'preloader.gif' + '" alt="img" />';
 
             var url = 'http://www.gwars.ru/info.php?id=' + general.myID,
                 idElem = _this.id,
@@ -4940,6 +4948,7 @@
          */
         this.init = function () {
             var topPanel = new GetTopPanel().init();
+            // noinspection JSUnresolvedVariable
             if (topPanel && general.root.udgq) {
                 this.divResult.setAttribute('style', 'visibility: hidden; ' +
                         'position: absolute; padding: 3px; background-color: ' +
@@ -4948,10 +4957,8 @@
                         '5px 6px 6px rgba(122,122,122,0.5); z-index: 999;');
                 general.doc.body.appendChild(this.divResult);
 
-                // noinspection JSCheckFunctionSignatures
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(this.createButton('Ресурсы', 'res'));
-                // noinspection JSCheckFunctionSignatures
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(this.createButton('Бонусы', 'bonus'));
             }
@@ -5024,8 +5031,8 @@
 
             for (i = 0; i < b.length; i++) {
                 // если это урон (-XX), 'vs', пок с '['
-                if ((/^-\d+$|vs|\[|,/.test(b[i].innerHTML)) ||
-                        (/может взять предметы/.test(b[i].innerHTML))) {
+                if (/^-\d+$|vs|\[|,/.test(b[i].innerHTML) ||
+                        /может взять предметы/.test(b[i].innerHTML)) {
                     continue;
                 }
 
@@ -5084,8 +5091,8 @@
                         // считаем криты
                         if (/в пах/.test(str)) {
                             if (/\d+ в пах/.test(str)) {
-                                criticalShots.groin += (+(/(\d+) в пах/.
-                                            exec(str)[1]));
+                                criticalShots.groin += +/(\d+) в пах/.
+                                            exec(str)[1];
                             } else {
                                 criticalShots.groin++;
                             }
@@ -5093,8 +5100,8 @@
 
                         if (/в шею/.test(str)) {
                             if (/\d+ в шею/.test(str)) {
-                                criticalShots.neck += (+(/(\d+) в шею/.
-                                            exec(str)[1]));
+                                criticalShots.neck += +/(\d+) в шею/.
+                                            exec(str)[1];
                             } else {
                                 criticalShots.neck++;
                             }
@@ -5102,8 +5109,8 @@
 
                         if (/в ухо/.test(str)) {
                             if (/\d+ в ухо/.test(str)) {
-                                criticalShots.ear += (+(/(\d+) в ухо/.
-                                            exec(str)[1]));
+                                criticalShots.ear += +/(\d+) в ухо/.
+                                            exec(str)[1];
                             } else {
                                 criticalShots.ear++;
                             }
@@ -5111,8 +5118,8 @@
 
                         if (/в висок/.test(str)) {
                             if (/\d+ в висок/.test(str)) {
-                                criticalShots.temple += (+(/(\d+) в висок/.
-                                            exec(str)[1]));
+                                criticalShots.temple += +/(\d+) в висок/.
+                                            exec(str)[1];
                             } else {
                                 criticalShots.temple++;
                             }
@@ -5167,6 +5174,7 @@
          * @param   {Boolean}   mode
          */
         this.setDataDiv = function (target, mode) {
+            // noinspection JSUnresolvedVariable
             if (this.showCritShots && general.root.zdsc) {
                 var d = general.doc.createElement('div');
                 d.innerHTML = '<span style="color: #008000; font-weight: ' +
@@ -5207,7 +5215,7 @@
                 // ждем загрузки данных на странице
                 var lPers = general.$('listleft');
                 log = general.$('log');
-                if (!lPers || (/загружаются данные/i.test(lPers.innerHTML)) ||
+                if (!lPers || /загружаются данные/i.test(lPers.innerHTML) ||
                         !log || !chat) {
                     general.root.setTimeout(function () {
                         _this.init();
@@ -5221,9 +5229,7 @@
             } else {    // режим наблюдения за боем
                 var center = general.doc.querySelector('td[valign="top"]' +
                         '[width="70%"]>center');
-                // noinspection JSCheckFunctionSignatures
                 center.appendChild(general.doc.createElement('br'));
-                // noinspection JSCheckFunctionSignatures
                 center.appendChild(general.doc.createElement('br'));
                 this.setDataDiv(center, true);
                 this.showCrits(this.getCrits(general.doc.
@@ -5327,12 +5333,12 @@
                 this.checkSms(smsChk[i], false, true);
             }
 
+            // noinspection JSUnresolvedVariable
             if (!general.root.s40h) {
                 target = '';
             }
 
             target = target.parentNode.parentNode;
-            // noinspection JSUndefinedPropertyAssignment
             target.innerHTML += '<td valign="top" class="greengreenbg" ' +
                 'align="center" style="width: 150px;"></td>';
             target = target.lastElementChild;
@@ -5445,9 +5451,10 @@
                 price2 = +/\$(\d+)/.exec(plants[i].querySelector('font' +
                     '[color="#990000"]>b').innerHTML)[1];
                 time = +/созревания:\s(\d+)/.exec(plants[i].innerHTML)[1];
-                // noinspection JSCheckFunctionSignatures
-                exp = parseFloat(/(\d+\.?\d*) опыта/.exec(plants[i].innerHTML));
+                exp = parseFloat(/(\d+\.?\d*) опыта/.
+                                    exec(plants[i].innerHTML)[1]);
                 span.innerHTML = this.calculateFarm(price1, price2, time, exp);
+                // noinspection JSUnresolvedVariable
                 if (general.root.dnlo) {
                     target = plants[i].querySelector('br');
                     target.parentNode.insertBefore(span, target);
@@ -5487,7 +5494,7 @@
          * @method checkState
          */
         this.checkState = function () {
-            if (!(/bold/.test(this.farmLink.getAttribute('style')))) {
+            if (!/bold/.test(this.farmLink.getAttribute('style'))) {
                 if (this.checkInterval) {
                     general.root.clearInterval(this.checkInterval);
                 }
@@ -5580,6 +5587,7 @@
                 s,
                 h;
 
+            // noinspection JSUnresolvedVariable
             if (!sec || !general.root.sozs) {
                 this.setReminder();
                 return;
@@ -5635,8 +5643,8 @@
             // на ферме запоминаем данные, выходим
             if (/\/ferma\.php/.test(general.loc)) {
                 // не на своей ферме
-                if ((/id=\d+/.test(general.loc)) &&
-                        (/id=(\d+)/.exec(general.loc)[1]) !== general.myID) {
+                if (/id=\d+/.test(general.loc) &&
+                        /id=(\d+)/.exec(general.loc)[1] !== general.myID) {
                     return;
                 }
 
@@ -5648,8 +5656,7 @@
                     a[l].addEventListener('click', this.runInit(), false);
                 }
 
-                // noinspection Annotator
-                var actionStr = /Ближайшее действие:.*[собрать|полить].*\(.*\)/.
+                var actionStr = /Ближайшее действие:.*(собрать|полить).*\(.*\)/.
                         exec(general.doc.querySelector('td[width="400"]' +
                                 '[valign="top"]').innerHTML);
 
@@ -5668,7 +5675,7 @@
                     return;
                 }
 
-                var timeLeft = +(/через (\d+) мин/.exec(aStr)[1]);
+                var timeLeft = +/через (\d+) мин/.exec(aStr)[1];
                 general.setData([timeNow + timeLeft * 60 * 1000,
                     action, timeNow, '', stData[4], stData[5]], 9);
 
@@ -5683,7 +5690,6 @@
                 this.farmLink.href = 'http://www.gwars.ru/ferma.php?id=' +
                     general.myID;
                 this.farmLink.setAttribute('target', '_blank');
-                // noinspection JSCheckFunctionSignatures
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(this.farmLink);
 
@@ -5801,7 +5807,8 @@
                 general.$('dataNPC').lastElementChild.innerHTML = '<td>' +
                     '<a target="_blank" href="' + syndLink.href +
                     '"><img src="http://images.gwars.ru/img/synds/' +
-                    (/\?id=(\d+)/.exec(syndLink.href)[1]) + '.gif" />' +
+                    /\?id=(\d+)/.exec(syndLink.href)[1] + '.gif" ' +
+                    'alt="img" />' +
                     '</a></td><td><a target="_blank" href="' + url +
                     '" style="font-size: 8pt;">' + nameNPC + '</a></td>' +
                     '<td style="font-size: 8pt;">' +
@@ -5871,12 +5878,15 @@
 
                 sec -= 1;
                 var _this = this;
+                // noinspection JSUnresolvedVariable
                 if (sec > -1 && general.root.wl32) {
                     general.root.setTimeout(function () {
                         _this.showTimerNPC(sec);
                     }, 1000);
-                } else if (general.root.wl32) {
-                    this.goQuest();
+                } else { // noinspection JSUnresolvedVariable
+                    if (general.root.wl32) {
+                        this.goQuest();
+                    }
                 }
             }
         };
@@ -5969,7 +5979,7 @@
 
                 stData[1] = talk[1];
                 // говорим с NPC, но время квеста еще не пришло
-                var timer = (/\[подождите (\d+) мин/.exec(talkNPC.innerHTML));
+                var timer = /\[подождите (\d+) мин/.exec(talkNPC.innerHTML);
                 if (timer) {
                     stData[2] = +timer[1] * 60 * 1000 + this.getTimeNow();
                     general.setData(stData, 10);
@@ -6122,12 +6132,13 @@
                 str = '';
 
             cont.innerHTML = '';
+            // noinspection JSUnresolvedVariable
             if (val !== '0' && general.root.so1k) {
                 var i;
                 for (i = 3; i < 7; i++) {
                     str += '<img src="http://images.gwars.ru/' +
                         'img/ferma_hd/' + val + i + '.png" ' +
-                        'style="width: 50px; height: 50px;" />';
+                        'style="width: 50px; height: 50px;" alt="img" />';
                 }
 
                 str += '<br><label for="' + id + '">' +
@@ -6224,7 +6235,6 @@
 
             // опыт виден (на пустой вскопанной клетке)
             if (prod) {
-                // noinspection JSUnresolvedFunction
                 var target = table.querySelector('a[name="pf"]').parentNode,
                     gb = target.querySelectorAll('b'),
                     exp = prod[1],
@@ -6259,6 +6269,7 @@
                 var min = t.getMinutes();
                 time += min < 10 ? '0' + min : min;
 
+                // noinspection JSRemoveUnnecessaryParentheses
                 var setPoint = new SetPoints().init,
                     diffGb = gb - (+stData[2]),
                     diffExp = (+exp - (+stData[3])).toFixed(3).split('.');
@@ -6440,6 +6451,7 @@
                 '.gwm td.bold span.darkorange {color: #A44B00;}' +
                 '.gwm a {text-decoration: none; color: #0000FF; ' +
                     'font-size: 8pt;}';
+            // noinspection JSUnresolvedVariable
             if (general.root.nbzy) {
                 general.doc.querySelector('head').appendChild(cssStyle);
             }
@@ -7225,6 +7237,7 @@
                 }
 
                 // показываем количество только если оно больше 1
+                // noinspection JSUnresolvedVariable
                 if (linesObj[i].count !== 1 && general.root.yjae) {
                     id = linesObj[i].line.id;
                     // вставим скрытые вещи
@@ -7333,7 +7346,6 @@
 
             for (i = 0; i < btlLogs.length; i++) {
                 if (this.reg.test(btlLogs[i].innerHTML) && general.root.xtyz) {
-                    // noinspection JSUnresolvedVariable
                     this.rez.btls.push(btlLogs[i].parentNode.parentNode.
                             nextElementSibling);
                 } else {
@@ -7431,7 +7443,7 @@
 
             // если перс НЕ в заявке/бою и мы на первой странице протоколов
             if (target && !inBattle && !(pageId && pageId[1] !== '0') &&
-                    !(/\(0 всего\)/.test(general.doc.body.innerHTML))) {
+                    !/\(0 всего\)/.test(general.doc.body.innerHTML)) {
                 this.divContainer = general.doc.createElement('div');
                 this.divContainer.setAttribute('style', 'margin-left: 10px;');
                 target.parentNode.insertBefore(this.divContainer, target);
@@ -7484,6 +7496,7 @@
                 return;
             }
 
+            // noinspection JSRemoveUnnecessaryParentheses
             var diff = this.countGbNow - (+countGbOld);
             this.spanCountGB.innerHTML = '[' +
                 new SetPoints().init(diff, '.', true) + ']';
@@ -7501,6 +7514,7 @@
             }
 
             var divGB = general.doc.querySelector('td>b>div[id="cdiv"]');
+            // noinspection JSUnresolvedVariable
             if (divGB && general.root.fbba) {
                 this.countGbNow = +divGB.innerHTML.replace(/,/g, '');
                 this.spanCountGB = general.doc.createElement('span');
@@ -7727,6 +7741,7 @@
                 if (tdName && tdName.innerHTML) {
                     bonusName = tdName.innerHTML.
                                     replace(/\s?(\(%\))?:/, '').toLowerCase();
+                    // noinspection JSUnresolvedVariable
                     if (this.bonus[bonusName] && general.root.amp4) {
                         tdName.innerHTML = '<span style="cursor: pointer;">' +
                             tdName.innerHTML + '</span>';
@@ -7758,6 +7773,7 @@
          * @method init
          */
         this.init = function () {
+            // noinspection JSUnresolvedVariable
             if (/\/shopc\.php/.test(general.loc) && general.root.hoxr) {
                 var descrTd = general.doc.querySelectorAll('td[class$=' +
                          '"lightbg"][valign="top"][align="left"]' +
@@ -7768,7 +7784,6 @@
                     i;
 
                 for (i = 0; i < descrTd.length; i++) {
-                    // noinspection JSUnresolvedFunction
                     id = /id=(.+)$/.exec(descrTd[i].parentNode.
                             querySelector('a').href)[1];
                     price = /(\d+) EUN/.exec(descrTd[i].innerHTML)[1];
@@ -7834,6 +7849,7 @@
          * @return   {Boolean}
          */
         this.isForumPage = function () {
+            // noinspection JSRemoveUnnecessaryParentheses
             return (/fid=1&tid=\d+/.test(general.loc));
         };
 
@@ -7888,6 +7904,7 @@
             var newsLinks = general.doc.querySelectorAll('nobr>' +
                     'a[href*="/messages.php?fid=1&tid="]');
 
+            // noinspection JSUnresolvedVariable
             if (newsLinks.length && general.root.g7rd) {
                 var newData = {},
                     i;
@@ -8016,6 +8033,7 @@
                 a.setAttribute('title', 'Страница описания предмета');
                 a.setAttribute('style', 'margin-left: 2px; color: #808080; ' +
                         'text-decoration: none;');
+                // noinspection JSUnresolvedVariable
                 if (general.root.crng) {
                     this.selects[i].parentNode.appendChild(a);
                 }
@@ -8029,6 +8047,7 @@
             }
 
             // вставляем текстовое поле ввода
+            // noinspection JSUnresolvedVariable
             if (general.root.crng) {
                 var divSearch = general.doc.createElement('div');
                 divSearch.innerHTML = '<span style="color: #008000; ' +
@@ -8071,6 +8090,7 @@
             var tbl = general.doc.querySelector('table[border="0"]' +
                     '[class="wb"]');
 
+            // noinspection JSUnresolvedVariable
             if (tbl && general.root.muad) {
                 var res = this.delSpaces(general.getData(15)[0]).split(','),
                     trs = tbl.querySelectorAll('tr'),
@@ -8111,7 +8131,7 @@
             for (i = 0; i < tr.length; i++) {
                 /*eslint-disable no-useless-escape */
                 if (tr[i].firstElementChild &&
-                        (/<b>[^\[]*\[\d+\]/.test(tr[i].innerHTML))) {
+                        /<b>[^\[]*\[\d+\]/.test(tr[i].innerHTML)) {
                     /*eslint-enable no-useless-escape */
                     tr[i].style.display = '';
                     if (weapon) {
@@ -8136,6 +8156,7 @@
             var filtForm = general.doc.
                     querySelector('form[action$="/warlist.php"]');
 
+            // noinspection JSUnresolvedVariable
             if (filtForm && this.table && general.root.ayxx) {
                 filtForm = filtForm.cloneNode(false);
                 filtForm.setAttribute('style', 'display: inline-block; ' +
@@ -8155,13 +8176,10 @@
 
                 filtForm.appendChild(hidden1);
                 filtForm.appendChild(hidden2);
-                // noinspection JSCheckFunctionSignatures
                 filtForm.appendChild(general.doc.createTextNode('от '));
                 filtForm.appendChild(s_lmin);
-                // noinspection JSCheckFunctionSignatures
                 filtForm.appendChild(general.doc.createTextNode(' до '));
                 filtForm.appendChild(s_lmax);
-                // noinspection JSCheckFunctionSignatures
                 filtForm.appendChild(general.doc.createTextNode(' тип '));
                 filtForm.appendChild(s_ltype);
                 var subm = general.doc.createElement('input');
@@ -8233,6 +8251,7 @@
                 x = /\([^>]+>(\d+.?\d*)<\/span>\s?\)\s*.*\+-\d+.?\d*<\/font>/.
                     exec(nbrs[i].innerHTML);
 
+                // noinspection JSUnresolvedVariable
                 if (x && general.root.wdlm) {
                     x = parseFloat(x[1]);
 
@@ -8292,6 +8311,7 @@
         this.init = function () {
             var link;
 
+            // noinspection JSUnresolvedVariable
             if (/\/me(\/|\.php)/.test(general.loc) && general.root.eakq) {
                 link = general.doc.querySelector('[src$="images.gwars.' +
                         'ru/i/home/farm.gif"]').parentNode;
@@ -8302,6 +8322,7 @@
                 return;
             }
 
+            // noinspection JSUnresolvedVariable
             if (general.root.eakq) {
                 link = general.doc.
                     querySelector('a[href*="/info.ach.php?id="]+' +
@@ -8449,7 +8470,7 @@
                     this.sortMess();
                 }
 
-                counter.innerHTML = (id + 1) + '/' + this.sms.length;
+                counter.innerHTML = (id + 1).toString() + '/' + this.sms.length;
                 url = this.sms[id].href;
             }
 
@@ -8477,13 +8498,14 @@
 
                     for (i = 0; i < linksSms.length; i++) {
                         _this.sms.push({
-                            id: +(/&id=(\d+)/.exec(linksSms[i].href)[1]),
+                            id: +/&id=(\d+)/.exec(linksSms[i].href)[1],
                             href: linksSms[i].href,
                             mess: color + (outbox ? 'Я' : _this.nik),
                             ofSyndLink: ''
                         });
 
-                        if ((allCountSms === _this.sms.length) ||
+                        // noinspection JSRemoveUnnecessaryParentheses
+                        if (allCountSms === _this.sms.length ||
                                 // последняя ссылка на странице,
                                 // но ссылок меньше 30 => больше страниц нет
                                 // (по 30 сообщений на одной странице)
@@ -8544,7 +8566,7 @@
                 '" title="Количество исходящих сообщений" /> ' +
                 '<span id="preloader" style="margin: 0 10px 0 10px; ' +
                 'display: none;"><img src="' + general.imgPath +
-                'preloader.gif" /></span><span id="counter"></span>' +
+                'preloader.gif" alt="img" /></span><span id="counter"></span>' +
                 '<span id="showOfSyndLinks" style="cursor: pointer; ' +
                 'display: none; text-decoration: underline;">ссылки</span>';
 
@@ -8587,6 +8609,7 @@
                 _this.sms = [];
                 general.$('preloader').style.display = '';
                 general.$('showOfSyndLinks').style.display = 'none';
+                // noinspection JSUnresolvedVariable
                 if (general.root.idla) {
                     _this.showHistory(0, 0, 0);
                 }
@@ -8622,6 +8645,7 @@
                 i;
 
             for (i = 0; i < links.length; i++) {
+                // noinspection JSUnresolvedVariable
                 if (links[i].innerHTML && general.root.fyrr) {
                     group = /\?shop=shop_(.*)$/.exec(links[i].href)[1];
                     if (this.highTechItems.htGroup.indexOf(group) !== -1) {
@@ -8642,7 +8666,6 @@
      * @constructor
      */
     var GameMania = function () {
-        // noinspection JSUnresolvedVariable
         /**
          * @property target
          * @type {HTMLTableCellElement}
@@ -8690,8 +8713,8 @@
         this.getStrGameRez = function (rez, game, ttl) {
             return '<tr><td style="' +
                 (!ttl ? 'color: #008000' : 'font-weight: bold') + ';">' +
-                game + ':</td>' + '<td style="color: #' +
-                (rez < 0 ? '0000FF' : 'FF0000') + ';">$' +
+                game + ':</td>' + '<td style="color: ' +
+                (rez < 0 ? '#0000FF' : '#FF0000') + ';">$' +
                 new SetPoints().init(rez, ',', false) + '</td></tr>';
         };
 
@@ -8704,22 +8727,17 @@
                 return;
             }
 
-            // noinspection RegExpRedundantEscape
             var roul = this.calc(/Потрачено в казино: <b>\$([^<]*)/i,
                     /Выигрыш в казино: <b>\$([^<]*)/i),
                 tot = this.calc(/Потрачено в тотализаторе: <b>\$([^<]*)/i,
                     /Выигрыш в тотализаторе: <b>\$([^<]*)/i),
-                // eslint-disable-next-line no-useless-escape
-                reg1 = /Потрачено на покер:\s?<b>[^\$]*\$([^<]*)/i,
-                // eslint-disable-next-line no-useless-escape
-                reg2 = /Получено с покера:\s?<b>[^\$]*\$([^<]*)/i,
-                poker = this.calc(reg1, reg2),
                 fight = /Выигрыш в боях/i.test(this.target.innerHTML);
 
-            if ((roul || tot || poker || fight) && general.root.nu6j) {
+            // noinspection JSUnresolvedVariable
+            if ((roul || tot || fight) && general.root.nu6j) {
                 if (fight) {
-                    this.total += +(/Выигрыш в боях: <b>\$([^<]*)/i.
-                            exec(this.target.innerHTML)[1].replace(/,/g, ''));
+                    this.total += +/Выигрыш в боях: <b>\$([^<]*)/i.
+                            exec(this.target.innerHTML)[1].replace(/,/g, '');
                 }
 
                 var str = '<hr><table>';
@@ -8729,10 +8747,6 @@
 
                 if (tot) {
                     str += this.getStrGameRez(tot, 'Тотализатор', false);
-                }
-
-                if (poker) {
-                    str += this.getStrGameRez(poker, 'Покер', false);
                 }
 
                 str += this.getStrGameRez(this.total, 'Всего', true);
@@ -8785,6 +8799,7 @@
 
             var synd, opt;
             for (synd in objs) {
+                // noinspection JSUnresolvedVariable
                 if (objs.hasOwnProperty(synd) && general.root.w4sx) {
                     for (i = 0; i < objs[synd].length; i++) {
                         prnt.appendChild(objs[synd][i]);
@@ -8859,9 +8874,9 @@
                 }
 
                 if (val3) {
-                    if ((val3 === '0' &&
-                        (/\/syndicate\.php\?id=\d+/.
-                            test(this.trs[i].innerHTML))) ||
+                    // noinspection JSRemoveUnnecessaryParentheses
+                    if ((val3 === '0' && /\/syndicate\.php\?id=\d+/.
+                            test(this.trs[i].innerHTML)) ||
                                 (+val3 && this.trs[i].innerHTML.
                                     indexOf('/img/synds/' + val3 +
                                         '.gif') === -1)) {
@@ -9001,6 +9016,7 @@
                 btl;
 
             for (btl in battles) {
+                // noinspection JSUnresolvedVariable
                 if (battles.hasOwnProperty(btl) && general.root.yg2k) {
                     color = '';
                     for (i = 0; i < syndBattles.length; i++) {
@@ -9104,6 +9120,7 @@
                 return;
             }
 
+            // noinspection JSUnresolvedVariable
             if (general.getData(19)[0] && general.root.zhwo) {
                 general.setData('', 19);
 
@@ -9128,6 +9145,7 @@
             var table = general.doc.querySelector('td[class="txt"]>' +
                     'table[border="0"][cellpadding="5"][cellspacing="1"]');
 
+            // noinspection JSUnresolvedVariable
             if (table && general.root.ylrj) {
                 var trs = table.querySelectorAll('tr'),
                     last,
@@ -9179,7 +9197,7 @@
                 range = /стрельбы: (\d+) ходов/i.exec(xml.responseText);
                 str += range ? range[1] : 'не найдена';
 
-                if (!_this.twoHand || ind || (a[1].href === url)) {
+                if (!_this.twoHand || ind || a[1].href === url) {
                     var div = general.doc.createElement('div');
                     div.setAttribute('style', 'color: #0000FF; ' +
                         'font-weight: bold;');
@@ -9205,6 +9223,7 @@
             var called = general.doc.querySelector('td[class="greengreenbg"]' +
                     '[colspan="2"]>center>b>a[href*="/info.php?id="]');
 
+            // noinspection JSUnresolvedVariable
             if (!called || !general.root.bgqs) {
                 return;
             }
@@ -9312,8 +9331,8 @@
                 coord = /\d+&sy=\d+/.exec(cells[i].parentNode.href)[0];
                 for (j = 0; j < this.sectors.length; j++) {
                     tmp = this.sectors[j].split('|');
+                    // noinspection JSUnresolvedVariable
                     if (coord === tmp[0] && general.root.fue0) {
-                        // noinspection JSUnresolvedFunction
                         cls = cells[i].parentNode.parentNode.
                                 getAttribute('class');
 
@@ -9425,6 +9444,7 @@
          * @method init
          */
         this.init = function () {
+            // noinspection JSUnresolvedVariable
             if (this.equipment &&
                     /(Левая|Правая) рука/.test(this.equipment.innerHTML) &&
                         general.root.kth0) {
@@ -9432,7 +9452,7 @@
                     txt = this.equipment.innerHTML;
 
                 this.weapon = this.equipment.querySelectorAll(css);
-                if (/Левая/.test(txt) && (/Правая/.test(txt))) {
+                if (/Левая/.test(txt) && /Правая/.test(txt)) {
                     this.weapon = [this.weapon[0].href, this.weapon[1].href];
                 } else {
                     this.weapon = [this.weapon[0].href];
@@ -9468,6 +9488,7 @@
         this.init = function () {
             var radio = general.doc.querySelectorAll('input[name="sendtype"]');
 
+            // noinspection JSUnresolvedVariable
             if (radio.length && general.root.ojtl) {
                 var scrpt = general.doc.createElement('script');
                 scrpt.innerHTML = 'function checkPrice(){if(document.' +
@@ -9500,8 +9521,8 @@
                 var karma = /Карма:\s\d+\.?\d*\s\((\d+\/\d+)\)/i.
                         exec(general.doc.body.textContent);
 
+                // noinspection JSUnresolvedVariable
                 if (karma && general.root.lnvd) {
-                    // noinspection JSValidateTypes
                     karma = karma[1];
                     if (!general.getData(23)[0]) {
                         general.setData(karma, 23);
@@ -9519,11 +9540,8 @@
                     oldKarma[0] = +oldKarma[0];
                     oldKarma[1] = +oldKarma[1];
 
-                    // noinspection JSValidateTypes
                     karma = karma.split('/');
-                    // noinspection JSValidateTypes
                     karma[0] = +karma[0];
-                    // noinspection JSValidateTypes
                     karma[1] = +karma[1];
 
                     var str = 'Ваша карма была изменена \n\n';
@@ -9588,6 +9606,7 @@
                     vis = settings.style.visibility,
                     pos = new GetPos().init(this);
 
+                // noinspection JSUnresolvedVariable
                 if (general.root.xq5b) {
                     settings.style.top = (pos.y + 25).toString();
                     settings.style.left = (pos.x - 80).toString();
@@ -9834,7 +9853,7 @@
                         '<input type="button" id="spSave" value="Сохранить">' +
                         '<img id="spPreloader" src="' + general.imgPath +
                         'preloader.gif" style="margin-left: 10px; ' +
-                        'visibility: hidden;">' +
+                        'visibility: hidden;" alt="img" />' +
                         '<input type="button" id="spReset" value="Сброс" ' +
                         'style="margin-left: 20px;"></td></tr>' +
                 '<tr>' +
@@ -9993,11 +10012,13 @@
                 messHeader = author + '&nbsp;&nbsp;&nbsp;<a href="' + lastLink +
                     '">[&#8593;]</a><br>';
 
+            // noinspection JSUnresolvedFunction
             divMess.parentNode.setAttribute('style', 'border: 1px dashed ' +
                 '#339933; background: #C2EDC1;');
+            // noinspection HtmlUnknownAttribute
             divMess.innerHTML = messHeader +
                 (!longMess ? messComplete :
-                        ((messComplete.length > 400 ?
+                        (messComplete.length > 400 ?
                                 messComplete.substring(0, 200) : messComplete.
                             substring(0, Math.round(messComplete.length / 2))).
                             // убираем тэги <br> в конце сокращенного сообщения
@@ -10007,7 +10028,7 @@
                                 '') +
                         ' ...[<span style="text-decoration: underline; ' +
                         'color: #007700; cursor: pointer;" name="openMess">' +
-                        'развернуть</span>]'));
+                        'развернуть</span>]');
             target.parentNode.insertBefore(tr, target);
 
             if (longMess) {
@@ -10025,6 +10046,7 @@
          * @param   {int}   ind
          */
         this.parseMessages = function (ind) {
+            // noinspection JSUnresolvedVariable
             if (!this.messages[ind] || !general.root.jbw6) {
                 return;
             }
@@ -10039,7 +10061,6 @@
             var reg = /^\s*\+?\s*(\d+)(,\D+|\.\D+|\)|\s|:|\+\D+)/,
                 numReply = reg.exec(messDiv.innerHTML);
 
-            // noinspection JSValidateTypes
             numReply = numReply ? +numReply[1] : 0;
 
             // нет номера/номер === 0 или число > текущего сообщения
@@ -10090,7 +10111,7 @@
          */
         this.init = function () {
             if (/&page_id=\d+/.exec(general.loc)) {
-                this.pageNum = +(/&page_id=(\d+)/.exec(general.loc)[1]);
+                this.pageNum = +/&page_id=(\d+)/.exec(general.loc)[1];
             } else if (/page_id=last/.test(general.loc)) {
                 var num = general.doc.querySelector('td[style="cursor:' +
                         'pointer;"][class="greenlightbg"]');
@@ -10114,6 +10135,7 @@
          */
         this.init = function () {
             var topPanel = new GetTopPanel().init();
+            // noinspection JSUnresolvedVariable
             if (topPanel && general.root.md9o) {
                 var td = general.doc.createElement('td');
                 td.setAttribute('style', 'width: 130px;');
@@ -10122,7 +10144,6 @@
                     '<input id="skey" name="key" value="" ' +
                     'style="width: 130px;" ' +
                     'title="Введите ник и нажмите Enter" /></form>';
-                // noinspection JSValidateTypes
                 topPanel = general.DESIGN_VERSION === 'v2' ?
                         topPanel.parentNode : topPanel.parentNode.parentNode;
                 topPanel.appendChild(td);
@@ -10178,7 +10199,7 @@
             str += month < 10 ? '0' + month : month;
             str += '.';
             var year = /20(\d+)/.exec(date.getFullYear().toString())[1];
-            str += year + ' ' + (/(\d+:\d+):\d+/.exec(date.toString())[1]);
+            str += year + ' ' + /(\d+:\d+):\d+/.exec(date.toString())[1];
 
             return str;
         };
@@ -10206,7 +10227,6 @@
                     push(this.getValue(this.counters[i], i < 3 ? 0 : 2));
 
                 if (loadPage) {
-                    // noinspection JSUnresolvedVariable
                     this.counters[i].parentNode.parentNode.lastElementChild.
                         innerHTML = '<span id="' + this.ids[i] +
                         '" style="color: #FF0000; font-size: 9px;"></span>';
@@ -10256,10 +10276,11 @@
                 i;
 
             for (i = 0; i < this.counters.length; i++) {
+                // noinspection JSUnresolvedVariable
                 if (general.root.gjzo) {
                     general.$(this.ids[i]).innerHTML = '[' +
-                        ((parseFloat(this.dataNow[i]) - parseFloat(stData[i])).
-                            toFixed(i < 3 ? 0 : 2)) + ']';
+                        (parseFloat(this.dataNow[i]) - parseFloat(stData[i])).
+                            toFixed(i < 3 ? 0 : 2) + ']';
                 }
             }
 
@@ -10271,6 +10292,7 @@
                     general.setData(stData, 25);
                 }
 
+                // noinspection JSRemoveUnnecessaryParentheses
                 general.$('cSyndExp').innerHTML = '[' +
                     (+this.dataNow[9] - (+stData[9])) + ']';
                 this.setLeftToLevel(+this.dataNow[9]);
@@ -10356,7 +10378,6 @@
          * @type {Array|null}
          */
         this.soExpForPTS = null;
-        // noinspection JSUnusedGlobalSymbols
         /**
          * @property from
          * @type {int}
@@ -10372,7 +10393,6 @@
          * @type {Array|null}
          */
         this.summ = null;
-        // noinspection JSUnusedGlobalSymbols
         /**
          * @property all
          * @type {int}
@@ -10645,7 +10665,6 @@
             }
 
             this.summ[ind] += val;
-            // noinspection JSUnusedGlobalSymbols
             this.all += val;
         };
 
@@ -10790,10 +10809,10 @@
             }
 
             var butShowPTSAnalizePanel = general.doc.createElement('a');
+            // noinspection JSUnresolvedVariable
             if (general.root.tmqu) {
                 butShowPTSAnalizePanel.innerHTML = 'Анализ PTS';
                 butShowPTSAnalizePanel.setAttribute('style', 'cursor: pointer');
-                // noinspection JSCheckFunctionSignatures
                 target.appendChild(general.doc.createTextNode(' | '));
                 target.appendChild(butShowPTSAnalizePanel);
             }
@@ -10829,9 +10848,10 @@
                     getStrDate('now')  + '" style="width: 70px;" disabled> ' +
                     '<input type="button" id="goPTS" value=">>" disabled>' +
                     '<span id="ptsPreloader" style="margin-left: 10px;">' +
-                    '<img src="' + general.imgPath + 'preloader.gif" />' +
-                    '<span id="analizePTSCounter" style="color: #0000FF; ' +
-                    'margin-left: 10px;">2/0</span></span></td></tr>';
+                    '<img src="' + general.imgPath + 'preloader.gif" ' +
+                    'alt="img" /><span id="analizePTSCounter" ' +
+                    'style="color: #0000FF; margin-left: 10px;">2/0</span>' +
+                    '</span></td></tr>';
 
                 _this.getLastDate('');
 
@@ -10899,7 +10919,6 @@
          * @type {String}
          */
         this.lastDate = '';
-        // noinspection JSUnusedGlobalSymbols
         /**
          * @property from
          * @type {int}
@@ -11011,8 +11030,9 @@
             }, function () {
                 var preloader = general.$('syndAnalysePreloader');
                 preloader.style.display = 'none';
-                preloader.parentNode.innerHTML += '<br><span style="color: ' +
-                    '#FF0000;">Ошибка ответа сервера...</span>';
+                preloader.parentNode.innerHTML += '<br>' +
+                    '<span style="color: #FF0000;">Ошибка ответа сервера...' +
+                    '</span>';
             });
         };
 
@@ -11059,8 +11079,7 @@
          * @return  {int|Object}
          */
         this.getTypeLine = function (str) {
-            if (/инициировал нападение/i.test(str) &&
-                    !(/контроль/i.test(str))) {
+            if (/инициировал нападение/i.test(str) && !/контроль/i.test(str)) {
                 return 1;
             }
 
@@ -11069,11 +11088,11 @@
             }
 
             if (/снято со счета/i.test(str)) {
-                return {takeOff: +(/\$(\d+)/.exec(str)[1])};
+                return {takeOff: +/\$(\d+)/.exec(str)[1]};
             }
 
             if (/переведено на счет/i.test(str)) {
-                return {takeOn: +(/\$(\d+)/.exec(str)[1])};
+                return {takeOn: +/\$(\d+)/.exec(str)[1]};
             }
 
             if (/на нападения на электростанции/i.test(str)) {
@@ -11421,8 +11440,8 @@
             var butShowAnalysePanel = general.doc.createElement('a');
             butShowAnalysePanel.innerHTML = 'Анализ активности';
             butShowAnalysePanel.setAttribute('style', 'cursor: pointer');
-            // noinspection JSCheckFunctionSignatures
             target.appendChild(general.doc.createTextNode(' | '));
+            // noinspection JSUnresolvedVariable
             if (general.root.qfci) {
                 target.appendChild(butShowAnalysePanel);
             }
@@ -11448,9 +11467,9 @@
                     '<input type="button" id="goSAnalyse" value=">>" ' +
                     'disabled><span id="syndAnalysePreloader" ' +
                     'style="margin-left: 10px;"><img src="' + general.imgPath +
-                    'preloader.gif" /><span id="syndAnalyseCounter" ' +
-                    'style="color: #0000FF; margin-left: 10px;">2/0</span>' +
-                    '</span></td></tr>';
+                    'preloader.gif" alt="img" />' +
+                    '<span id="syndAnalyseCounter" style="color: #0000FF; ' +
+                    'margin-left: 10px;">2/0</span></span></td></tr>';
 
                 _this.getLastDate('');
 
@@ -11504,7 +11523,7 @@
         this.addCloseButton = function () {
             this.divResult.innerHTML += '<img id="closemyachiev" ' +
                 'src="' + general.imgPath + 'close.gif" style="cursor: ' +
-                'pointer;" />';
+                'pointer;" alt="img" />';
 
             var _this = this;
             general.$('closemyachiev').addEventListener('click', function () {
@@ -11531,7 +11550,7 @@
             this.divResult.style.top = pos.y + 25;
             this.divResult.style.visibility = 'visible';
             this.divResult.innerHTML = '<img src="' + general.imgPath +
-                'preloader.gif' + '">';
+                'preloader.gif" alt="img" />';
 
             var stData = general.getData(26),
                 url = 'http://www.gwars.ru/info.ach.php?id=' + general.myID;
@@ -11552,6 +11571,7 @@
 
                     for (i = 0; i < achievNow.length; i++) {
                         if (new RegExp('(^|,)' + i + '(,|$)').test(stData[0])) {
+                            // noinspection JSUnresolvedVariable
                             str += '<tr>' + achievNow[i].parentNode.parentNode.
                                 innerHTML + '</tr>';
                         }
@@ -11577,7 +11597,7 @@
 
             for (i = 0; i < chks.length; i++) {
                 if (chks[i].checked) {
-                    str += (/\d+/.exec(chks[i].id)[0]) + ',';
+                    str += /\d+/.exec(chks[i].id)[0] + ',';
                 }
             }
 
@@ -11616,6 +11636,7 @@
         this.init = function () {
             var topPanel = new GetTopPanel().init();
 
+            // noinspection JSUnresolvedVariable
             if (topPanel && general.root.bxhu) {
                 this.divResult = general.doc.createElement('div');
                 this.divResult.setAttribute('style', 'visibility: hidden; ' +
@@ -11635,7 +11656,6 @@
                     _this.showData(this);
                 }, false);
 
-                // noinspection JSCheckFunctionSignatures
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(span);
 
@@ -11677,7 +11697,8 @@
                         nobrs[i].innerHTML += '<a target="_blank" ' +
                             'href="/sms-create.php?mailto=' +
                             pLink.firstElementChild.innerHTML + '"><img ' +
-                            'src="http://images.gwars.ru/i/sms.gif" /></a>';
+                            'src="http://images.gwars.ru/i/sms.gif" ' +
+                            'alt="img" /></a>';
                     }
                 }
 
@@ -11698,7 +11719,7 @@
 
             target = type ? target.lastElementChild : target.firstElementChild;
             target.innerHTML = '<img src="' + general.imgPath +
-                'preloader.gif" />';
+                'preloader.gif" alt="img" />';
 
             var url = (type ? this.syndUnion.href : this.syndMain.href) +
                     '&page=online',
@@ -11710,9 +11731,9 @@
 
                 target.innerHTML = '<a href="' + url + '">' +
                     '<img src="http://images.gwars.ru/img/synds/' +
-                    (/\?id=(\d+)/.exec(url)[1]) + '.gif" /></a> (' +
-                    (/<b>(\d+) бойцов онлайн<\/b>/.
-                        exec(spanContent.innerHTML)[1]) + ')<br>';
+                    /\?id=(\d+)/.exec(url)[1] + '.gif" alt="img" /></a> (' +
+                    /<b>(\d+) бойцов онлайн<\/b>/.
+                        exec(spanContent.innerHTML)[1] + ')<br>';
 
                 var cssSelector = 'table[class="bordersupdown"][width="100%"]',
                     trs = spanContent.querySelector(cssSelector).
@@ -11740,8 +11761,8 @@
                         nobr.innerHTML += ' <a target="_blank" ' +
                             'href="http://www.gwars.ru/sms-create.php?' +
                             'mailto=' + pers.firstElementChild.innerHTML +
-                            '"><img src="http://images.gwars.ru/i/' +
-                            'sms.gif" /></a>';
+                            '"><img src="http://images.gwars.ru/i/sms.gif" ' +
+                            'alt="img" /></a>';
 
                         target.appendChild(nobr);
                         target.innerHTML += i < trs.length - 1 ? ',<wbr>' : '';
@@ -11789,9 +11810,9 @@
             this.syndMain = general.doc.
                     querySelector('span>b+nobr>a[href*="/syndicate.php?id="]');
 
+            // noinspection JSUnresolvedVariable
             if (this.syndMain && general.root.vpmo) {
                 var b = general.doc.createElement('b');
-                // noinspection JSCheckFunctionSignatures
                 b.appendChild(general.doc.createTextNode(' / '));
                 b.appendChild(this.createLink('Основа', false));
                 guests.parentNode.parentNode.appendChild(b);
@@ -11809,7 +11830,6 @@
                     _this.syndUnion = spanContent.querySelector(cssSelector);
 
                     if (_this.syndUnion) {
-                        // noinspection JSCheckFunctionSignatures
                         b.appendChild(general.doc.createTextNode(' '));
                         b.appendChild(_this.createLink('Союз', true));
                     }
@@ -11845,6 +11865,7 @@
 
             var _this = this;
             general.root.setTimeout(function () {
+                // noinspection JSUnresolvedVariable
                 if (general.root.gsig) {
                     _this.formatTime(sec - 1);
                 }
@@ -11862,8 +11883,8 @@
 
             // поставили карму, запоминаем время
             if (/vote/.test(general.loc) &&
-                    (/Спасибо, Ваше мнение учтено/.
-                        test(general.doc.body.innerHTML))) {
+                    /Спасибо, Ваше мнение учтено/.
+                        test(general.doc.body.innerHTML)) {
                 general.setData(new Date().getTime().toString(), 27);
                 return;
             }
@@ -11946,6 +11967,7 @@
                     size = [70, 80];
                 }
 
+                // noinspection JSUnresolvedVariable
                 if (name && general.root.dkyx) {
                     pos = getPos(enemies[i].parentNode);
                     div = general.doc.createElement('div');
@@ -12008,6 +12030,7 @@
             s = sec - 1;
             if (s > -1) {
                 general.root.setTimeout(function () {
+                    // noinspection JSUnresolvedVariable
                     if (general.root.ff49) {
                         _this.setTimer(s);
                     }
@@ -12065,6 +12088,7 @@
                 sound2 = +stData[2];
 
             if (time && timeLimit > 14) {
+                // noinspection JSRemoveUnnecessaryParentheses
                 var t = +time[1] * 60 + (+time[2]);
                 this.redLink.href = '/wargroup.php?war=attacks';
                 this.setTimer(t);
@@ -12149,7 +12173,7 @@
                     continue;
                 }
 
-                tid = this.toHex(+(/&tid=(\d+)/.exec(themeLink.href)[1]));
+                tid = this.toHex(+/&tid=(\d+)/.exec(themeLink.href)[1]);
                 // верхняя тема на первой странице
                 if (/\?fid=\d+(&page_id=0)?$/.test(general.loc) && lastTheme) {
                     lastTheme = false;
@@ -12206,8 +12230,8 @@
                             this.cleanStorage(fid, tid, tableContent), false);
 
                         // появилось новое сообщение
-                        if (themeDataStorage.c !== (/\d+/.exec(trs[i].
-                                querySelectorAll('td')[2].innerHTML)[0])) {
+                        if (themeDataStorage.c !== /\d+/.exec(trs[i].
+                                querySelectorAll('td')[2].innerHTML)[0]) {
                             imgEyes.src += 'eyesPlus.png';
                         } else {
                             imgEyes.src += 'eyes.png';
@@ -12499,6 +12523,7 @@
                 i;
 
             // на странице списка форумов
+            // noinspection JSUnresolvedVariable
             if (/\/forum\.php$/.test(general.loc) && general.root.wkdk) {
                 var allBranches = general.doc.querySelectorAll('tr>' +
                         'td[valign="top"][onclick*="/threads.php?fid="]'),
@@ -12506,8 +12531,8 @@
                     j = 0;
 
                 for (i = 0; i < allBranches.length; i++) {
-                    if (!(/Форум синдиката #\d+/.
-                            test(allBranches[i].innerHTML))) {
+                    if (!/Форум синдиката #\d+/.
+                            test(allBranches[i].innerHTML)) {
 
                         // noinspection JSUnresolvedVariable
                         allBranches[i].parentNode.style.display = f[j] ?
@@ -12527,6 +12552,7 @@
 
             fid = this.toHex(fid);
             // на странице сообщений в теме
+            // noinspection JSUnresolvedVariable
             if (/\/messages\.php\?/.test(general.loc) && general.root.wkdk) {
                 var json = JSON.parse(stData[7]),
                     tid = this.toHex(this.parseLoc[3]);
@@ -12552,7 +12578,7 @@
 
                 for (i = 0; i < allMess.length; i++) {
                     lastSavedId = this.toDec(json[fid][tid].l);
-                    currMessId = +(/\d+/.exec(allMess[i].id)[0]);
+                    currMessId = +/\d+/.exec(allMess[i].id)[0];
                     // или сообщение новое или еще не заходили в тему
                     if (lastSavedId < currMessId) {
                         // если это сообщение не наше и уже заходили
@@ -12581,6 +12607,7 @@
             }
 
             // на странице списка тем ветки форума
+            // noinspection JSUnresolvedVariable
             if (/\/threads\.php\?/.test(general.loc) && general.root.wkdk) {
                 var spanClean = general.doc.createElement('span');
                 general.doc.body.appendChild(spanClean);
@@ -12606,6 +12633,7 @@
             var del = general.doc.querySelector('td>a[class="mainbutton"]' +
                     '[href*="&do_black=1&addblack="]');
 
+            // noinspection JSUnresolvedVariable
             if (del && general.root.y7ci) {
                 del.setAttribute('style', 'background: #FDD8D8;');
 
@@ -12725,7 +12753,7 @@
             }
 
             if (hpPercent < 80) {
-                sec = Math.floor(((this.maxHp * 0.8) - this.currentHp) /
+                sec = Math.floor((this.maxHp * 0.8 - this.currentHp) /
                         this.speedHpRecovery);
                 this.spanHP.innerHTML += ' <span ' +
                     'style="font-weight: bold; color: #FF0000;"> [' +
@@ -12824,6 +12852,7 @@
         this.init = function () {
             var i;
             for (i = 0; i < this.activeProfs.length; i++) {
+                // noinspection JSUnresolvedVariable
                 if (general.root.u34c) {
                     this.activeProfs[i].setAttribute('color', '#FF0000');
                 }
@@ -12878,7 +12907,7 @@
                     return;
                 }
 
-                var isDone = +reg[2] >= (+reg[3]),
+                var isDone = +reg[2] >= +reg[3],
                     span = general.doc.createElement('span');
 
                 span.setAttribute('style', 'margin-left: 7px; font-size: 8pt;');
@@ -12894,7 +12923,8 @@
                     'sid=102&pid=45">' + acQuests[1] + '</a>)' +
                     '<img src="https://images.gwars.ru/i/home/wlog.gif" ' +
                     'id="showHideQuestList" border="0" width="12" ' +
-                    'height="10" style="margin-left: 3px; cursor: pointer;">' +
+                    'height="10" style="margin-left: 3px; cursor: pointer;" ' +
+                    'alt="img" />' +
                     '<div id="questList" style="display: none;">' +
                     '<ul>' +
                         '<li>Поймать рыбу 1 раз<br>' +
@@ -12906,7 +12936,7 @@
                             '<span style="color: #4E4E4E;">(засчитывается и ' +
                             'в прибрежной зоне)</span>' +
                         '<li>Нанести в синдикатных боях суммарный урон в ' +
-                            (bLevel * 20) + ' HP' +
+                            (bLevel * 20).toString() + ' HP' +
                         '<li>Убить хотя бы одного врага в 3 синдикатных ' +
                             'боях<br><span style="color: #4E4E4E;">(бои за ' +
                             'бункер не учитываются)</span>' +
@@ -12925,7 +12955,7 @@
                             'пустыми руками, то все попадания, сделанные в ' +
                             'этом бою, не засчитаются)</span>' +
                         '<li>На Outland нанести Z-Lands суммарный урон ' +
-                            (bLevel * 20) + ' HP' +
+                            (bLevel * 20).toString() + ' HP' +
                         '<li>Убить гранатой 2 Z-Lands<br>' +
                             '<span style="color: #4E4E4E;">(горение идёт в ' +
                             'зачёт)</span>' +
@@ -12995,6 +13025,7 @@
         };
 
         this.init = function () {
+            // noinspection JSUnresolvedVariable
             if (this.persID && this.target && general.root.swdf) {
                 this.showQuest('http://www.gwars.ru/questlog.php?id=' +
                     this.persID);
@@ -13036,16 +13067,19 @@
                 row.style.display = '';
 
                 stData[0] = +stData[0];
+                // noinspection JSUnresolvedVariable
                 if (stData[0] && this.getLvl(row) > stData[0] &&
                         general.root.zfjx) {
                     row.style.display = 'none';
                 }
 
+                // noinspection JSUnresolvedVariable
                 if (stData[1] && !/<s>именные<\/s>/.test(row.innerHTML) &&
                         general.root.zfjx) {
                     row.style.display = 'none';
                 }
 
+                // noinspection JSUnresolvedVariable
                 if (stData[2] && !/по мощности/.test(row.innerHTML) &&
                         general.root.zfjx) {
                     row.style.display = 'none';
@@ -13278,6 +13312,7 @@
                 now = new Date();
 
             stData.current = stData.current.split(':');
+            // noinspection JSRemoveUnnecessaryParentheses
             return (+stData.current[0] * 60 + (+stData.current[1])) -
                 ((now.getUTCHours() + 3) * 60 + now.getMinutes());
         };
@@ -13323,13 +13358,14 @@
          */
         this.setInterface = function () {
             var mainTimer = general.doc.createElement('span');
+            // noinspection JSUnresolvedVariable
             if (general.root.iul3) {
                 mainTimer.innerHTML = '<a href="' + this.url +
                     '" style="text-decoration: none;" target="_blank">' +
                     'Порты</a> <span id="portTime" style="font-weight: ' +
                     'bold;"></span> [<span id="portTimer" style=""></span>]';
             }
-            // noinspection JSCheckFunctionSignatures
+
             this.topPanel.appendChild(general.doc.createTextNode(' | '));
             this.topPanel.appendChild(mainTimer);
         };
@@ -13403,7 +13439,7 @@
 
             serverHour = serverHour > 23 ? serverHour - 24 : serverHour;
             this.date = new Date(now.setHours(now.getHours() +
-                    (now.getTimezoneOffset() / 60) + 3)).getDate();
+                    now.getTimezoneOffset() / 60 + 3)).getDate();
 
             if (+stData.date !== this.date && serverHour >= 7) {
                 this.getBattles();
@@ -13487,6 +13523,7 @@
                 var synd = tbl.querySelector('td>' +
                         'a[href*="/syndicate.php?id=' + _this.syndID + '"]');
                 if (synd) {
+                    // noinspection JSRemoveUnnecessaryParentheses
                     var tds = synd.parentNode.parentNode.querySelectorAll('td'),
                         currLvl = +tds[3].querySelector('font').innerHTML,
                         current = tds[4].innerHTML.replace(/k/g, '000').
@@ -13554,12 +13591,14 @@
                 'style="margin-left: 10px; cursor: pointer; color: #004400; ' +
                 'text-decoration: underline;">Уровень</span>' +
                 '<img id="preloader" src="' + general.imgPath +
-                'preloader.gif" style="margin-left: 10px; display: none;" />' +
+                'preloader.gif" style="margin-left: 10px; display: none;" ' +
+                'alt="img" />' +
                 '<span id="pageCounter" style="margin-left: 10px;"></span>';
             target.insertBefore(span, target.querySelector('br'));
 
             var _this = this;
             general.$('calcSyndLvl').addEventListener('click', function () {
+                // noinspection JSUnresolvedVariable
                 if (general.$('preloader').style.display && general.root.ljde) {
                     _this.preScan(true);
                     _this.scan(0);
@@ -13592,6 +13631,7 @@
                     link = syndLinks[i];
                     reg = /&sid=(\d+)$/.exec(link.href);
 
+                    // noinspection JSUnresolvedVariable
                     if (reg && general.root.ppcz) {
                         sign = general.doc.createElement('a');
                         sign.setAttribute('href', 'http://www.gwars.ru/' +
@@ -13600,7 +13640,7 @@
                         sign.setAttribute('style', 'margin-right: 2px;');
                         sign.innerHTML = '<img src="http://images.gwars.ru/' +
                             'img/synds/' + reg[1] + '.gif" width="20" ' +
-                            'height="14" border="0" />';
+                            'height="14" border="0" alt="img" />';
 
                         link.parentNode.insertBefore(sign, link);
                     }
@@ -13664,21 +13704,26 @@
         this.changepostdo = function () {
             var _this = this;
             general.root.postdo = function (url) {
+                // noinspection JSUnresolvedFunction
                 var url_loaded = url,
                     my_main_div = $('#my_main_div');
 
+                // noinspection JSUnresolvedFunction
                 my_main_div.css('opacity', '0.6');
 
                 /*jslint unparam: true */
                 /*eslint no-unused-vars: 0 */
+                // noinspection JSUnusedLocalSymbols
                 my_main_div.load(url,
                     function (responseTxt, statusTxt, xhr) {
                         if (statusTxt === 'success') {
+                            // noinspection JSUnresolvedFunction
                             $('#my_main_div').css('opacity', '1');
                             window.history.
                                 replaceState({}, null, url_loaded);
                             _this.init();
                         } else {
+                            // noinspection JSUnresolvedFunction
                             $('#my_main_div').css('opacity', '0.3');
                             window.location.href = url_loaded;
                         }
@@ -13695,6 +13740,7 @@
             var npcLink = general.doc.querySelector('a[href*="/me.php?nid="]' +
                 '[onclick^="dolink"]');
 
+            // noinspection JSUnresolvedVariable
             if (npcLink && general.root.spua) {
                 var url = 'http://www.gwars.ru/info.php?id=' +
                         /\?nid=(\d+)/.exec(npcLink.href)[1],
@@ -13708,7 +13754,7 @@
                             querySelector('#namespan').parentNode,
                         health = /\[(\d+) \/ (\d+)\]/.exec(div.innerHTML);
 
-                    // noinspection JSValidateTypes
+                    // noinspection JSRemoveUnnecessaryParentheses
                     health = Math.floor(+health[1] * 100 / (+health[2]));
 
                     if (link.innerHTML === 'Ожидает распоряжений' &&
@@ -13775,7 +13821,9 @@
 
     var main_init;
     function get_cpigwchbl() {
+        // noinspection JSUnresolvedVariable
         if (general.root.cpigwchbl) {
+            // noinspection JSRemoveUnnecessaryParentheses,JSUnresolvedFunction
             if (/ganjafoto|ganjafile|photos|quest\.gwars/.test(general.loc) ||
                     (general.myID &&
                         !general.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
@@ -13831,7 +13879,7 @@
         }
 
         // везде кроме фермы
-        if (!(/\/ferma\.php/.test(general.loc))) {
+        if (!/\/ferma\.php/.test(general.loc)) {
             if (initScript[41]) {
                 try {
                     new ScanPers().init();
@@ -13850,7 +13898,7 @@
         }
 
         // везде кроме боев
-        if (!(/\/b0\//.test(general.loc))) {
+        if (!/\/b0\//.test(general.loc)) {
             try {
                 new SetSettingsButton().init();
             } catch (e) {
@@ -13867,7 +13915,7 @@
 
             if (/\/market(-p)?\.php/.test(general.loc)) {
                 if (initScript[2] &&
-                        (/\?(stage=2&item_id=|buy=)/.test(general.loc))) {
+                        /\?(stage=2&item_id=|buy=)/.test(general.loc)) {
                     try {
                         new AdsFilter().init();
                     } catch (e) {
@@ -13956,7 +14004,7 @@
                 }
             }
 
-            if (!(/\/ferma\.php/.test(general.loc))) {
+            if (!/\/ferma\.php/.test(general.loc)) {
                 if (initScript[47]) {
                     try {
                         new ShowMyAchievements().init();
@@ -14090,7 +14138,7 @@
             }
 
             if (/\/(messages|threads)\.php\?fid=/.test(general.loc) ||
-                    (/\/forum.php$/.test(general.loc))) {
+                    /\/forum.php$/.test(general.loc)) {
                 if (initScript[53]) {
                     try {
                         new AdvForum().init();
