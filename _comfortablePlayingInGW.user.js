@@ -6949,12 +6949,9 @@
                 ], prnt: 'shop_1', arrow: 'shop_rent', offsetY: -30},
                 {divm: 0, lines: [
                     ['Гранаты', '/sshop.php?tshop=grenades'],
-                    ['Чипы на урон',
-                        'http://www.gwars.ru/sshop.php?tshop=chipsets'],
-                    ['Чипы защитные',
-                        'http://www.gwars.ru/sshop.php?tshop=chipsets1'],
-                    ['Чипы специальные',
-                        'http://www.gwars.ru/sshop.php?tshop=chipsets2'],
+                    ['Чипы на урон', '/sshop.php?tshop=chipsets'],
+                    ['Чипы защитные', '/sshop.php?tshop=chipsets1'],
+                    ['Чипы специальные', '/sshop.php?tshop=chipsets2'],
                     ['Турели', '/sshop.php?tshop=turrels']
                 ], prnt: 'shop_1', arrow: 'shop_synd', offsetY: -15},
                 {divm: 'pay_grenades_1', lines: [
