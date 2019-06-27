@@ -2906,11 +2906,6 @@
                 rightAttack = general.doc.querySelector('input[type="radio"]' +
                     '[name^="right_attack"]:checked');
 
-            if (!leftAttack && !rightAttack) {
-                alert('Не выбрано направление стрельбы');
-                return;
-            }
-
             dataSt[12] = leftAttack ? /\d/.exec(leftAttack.id)[0] : '';
             dataSt[13] = rightAttack ? /\d/.exec(rightAttack.id)[0] : '';
 
@@ -3009,6 +3004,12 @@
             objPers.power = /мощность: \d+/.test(allText) ?
                     /мощность: (\d+)/.exec(allText)[1] : '';
             objPers.skill = '';
+
+            // номера противников в режиме наблюдения за боем
+            if (general.viewMode) {
+                var persNum = prnt.querySelector('span.battletags');
+                objPers.num = persNum ? persNum.innerHTML : null;
+            }
 
             // добавляем умелку
             var skill = prnt.querySelectorAll('img[src*="/skill_"]+b>' +
@@ -3762,8 +3763,10 @@
                             name === ttlName) {
                         pers = this.allFighters[name];
                         ttl = '<span style="font-weight: bold;">' +
-                            (general.viewMode ? '' : this.enemies[name] ?
-                                    this.enemies[name] + '. ' : '') +
+                            (general.viewMode ?
+                                    (pers.num ? pers.num + '. ' : '') :
+                                        this.enemies[name] ?
+                                            this.enemies[name] + '. ' : '') +
                             '<span style="color: #0000FF;">' + pers.lvl +
                             '</span>' + name + ' [' + pers.hp[1] + '/' +
                             pers.hp[2] + ']</span><div style="color: ' +
