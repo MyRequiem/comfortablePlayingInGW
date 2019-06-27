@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.134-270519
+// @version         1.135-270619
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.134-270519';
+        this.version = '1.135-270619';
         /**
          * @property stString
          * @type {String}
@@ -2906,11 +2906,6 @@
                 rightAttack = general.doc.querySelector('input[type="radio"]' +
                     '[name^="right_attack"]:checked');
 
-            if (!leftAttack && !rightAttack) {
-                alert('Не выбрано направление стрельбы');
-                return;
-            }
-
             dataSt[12] = leftAttack ? /\d/.exec(leftAttack.id)[0] : '';
             dataSt[13] = rightAttack ? /\d/.exec(rightAttack.id)[0] : '';
 
@@ -3009,6 +3004,12 @@
             objPers.power = /мощность: \d+/.test(allText) ?
                     /мощность: (\d+)/.exec(allText)[1] : '';
             objPers.skill = '';
+
+            // номера противников в режиме наблюдения за боем
+            if (general.viewMode) {
+                var persNum = prnt.querySelector('span.battletags');
+                objPers.num = persNum ? persNum.innerHTML : null;
+            }
 
             // добавляем умелку
             var skill = prnt.querySelectorAll('img[src*="/skill_"]+b>' +
@@ -3762,8 +3763,10 @@
                             name === ttlName) {
                         pers = this.allFighters[name];
                         ttl = '<span style="font-weight: bold;">' +
-                            (general.viewMode ? '' : this.enemies[name] ?
-                                    this.enemies[name] + '. ' : '') +
+                            (general.viewMode ?
+                                    (pers.num ? pers.num + '. ' : '') :
+                                        this.enemies[name] ?
+                                            this.enemies[name] + '. ' : '') +
                             '<span style="color: #0000FF;">' + pers.lvl +
                             '</span>' + name + ' [' + pers.hp[1] + '/' +
                             pers.hp[2] + ']</span><div style="color: ' +
@@ -6949,12 +6952,9 @@
                 ], prnt: 'shop_1', arrow: 'shop_rent', offsetY: -30},
                 {divm: 0, lines: [
                     ['Гранаты', '/sshop.php?tshop=grenades'],
-                    ['Чипы на урон',
-                        'http://www.gwars.ru/sshop.php?tshop=chipsets'],
-                    ['Чипы защитные',
-                        'http://www.gwars.ru/sshop.php?tshop=chipsets1'],
-                    ['Чипы специальные',
-                        'http://www.gwars.ru/sshop.php?tshop=chipsets2'],
+                    ['Чипы на урон', '/sshop.php?tshop=chipsets'],
+                    ['Чипы защитные', '/sshop.php?tshop=chipsets1'],
+                    ['Чипы специальные', '/sshop.php?tshop=chipsets2'],
                     ['Турели', '/sshop.php?tshop=turrels']
                 ], prnt: 'shop_1', arrow: 'shop_synd', offsetY: -15},
                 {divm: 'pay_grenades_1', lines: [
