@@ -1,3 +1,14 @@
+2019-06-27[1.135-270619]
+--------------------------------------
+	- Обновлены скрипты:
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
+
+		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+			В режиме наблюдения за боем во всплывающем окошке с информацией о
+			бойце добавлено отображение его номера.
+			Спасибо exXxclusiF, Л_мила
+
+
 2019-05-27[1.134-270519]
 --------------------------------------
 	- "В информации об участниках боя теперь отображается урон, нанесенный на
