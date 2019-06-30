@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.19-270619
+// @version         4.20-300619
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -69,6 +69,7 @@
     [17] - общий навык
     [18] - навык специалиста
     [19] - чекбокс "Говорить только правую руку"
+    [20] - Подствольник
 */
 
     /**
@@ -138,8 +139,8 @@
          */
         getData: function () {
             var stData = this.st.getItem(this.STNAME);
-            if (!stData || stData.split('|').length !== 20) {
-                stData = '|||||||||||||||||||';
+            if (!stData || stData.split('|').length !== 21) {
+                stData = '||||||||||||||||||||';
                 this.st.setItem(this.STNAME, stData);
             }
 
@@ -763,6 +764,7 @@
             dataSt[14] = '';
             dataSt[17] = '';
             dataSt[18] = '';
+            dataSt[20] = '';
             general.setData(dataSt);
         };
 
@@ -772,10 +774,11 @@
          * @param   {Boolean}   fake
          */
         this.sayMove = function (_this, fake) {
-            /** fake - если нажали <Enter> в поле ввода или кнопку "Написать",
-             *          (т.е. отправляем обычное сообщение), то реально не
-             *          говорим ход, а просто сохраняем его для восстановления
-             *          после отправки сооощения.
+            /**
+             * fake - если нажали <Enter> в поле ввода или кнопку "Написать",
+             *  (т.е. отправляем обычное сообщение), то реально не говорим ход,
+             *  а просто сохраняем его для восстановления после отправки
+             *  сооощения.
              */
 
             // ход сделан
@@ -849,6 +852,15 @@
                 isGren = true;
             }
 
+            // подствол
+            var isLauncher = false;
+            if (general.doc.querySelector('input[type="checkbox"]' +
+                    '[name="subweapon_shot"]:checked')) {
+                str += 'Подствол в ';
+                dataSt[20] = '1';
+                isLauncher = true;
+            }
+
             var leftAttack = general.doc.querySelector('input[type="radio"]' +
                 '[name^="left_attack"]:checked'),
                 rightAttack = general.doc.querySelector('input[type="radio"]' +
@@ -858,19 +870,20 @@
             dataSt[11] = rightAttack ? /\d/.exec(rightAttack.id)[0] : '';
 
             general.setData(dataSt);
+
             if (!isGren) {
                 str += enemy[1];
 
                 // правая рука
                 // (если не установлен чекбокс "Говорить только левую руку")
-                if (dataSt[11] && !dataSt[16]) {
+                if (!isLauncher && dataSt[11] && !dataSt[16]) {
                     str += dataSt[11] === '1' ? ' ле' :
                             dataSt[11] === '2' ? ' ц' : ' пр';
                 }
 
                 // левая рука
                 // (если не установлен чекбокс "Говорить только правую руку")
-                if (dataSt[10] && !dataSt[19]) {
+                if (!isLauncher && dataSt[10] && !dataSt[19]) {
                     str += dataSt[10] === '1' ? ' ле' :
                             dataSt[10] === '2' ? ' ц' : ' пр';
                 }
@@ -1371,6 +1384,11 @@
                     this.clickElem(general.$('apsid'));
                 }
 
+                // подствол
+                if (dataSt[20]) {
+                    this.clickElem(general.$('sbw'));
+                }
+
                 this.clearSavedStrokeAfterSay();
 
                 return;
@@ -1396,6 +1414,11 @@
                 // граната
                 if (dataSt[6] && general.$('bagaboom')) {
                     this.clickElem(general.$('bagaboom'));
+                }
+
+                // подствол
+                if (dataSt[20] && general.$('sbw')) {
+                    this.clickElem(general.$('sbw'));
                 }
 
                 // подходим или нет

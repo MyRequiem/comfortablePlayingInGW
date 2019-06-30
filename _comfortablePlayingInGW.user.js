@@ -196,8 +196,9 @@
                         [20] - навык специалиста
                         [21] - звук при начале боя
                         [22] - звук при начале хода
-                        [23] - чекбокс "Говорить только правую руку" */
-                        '@|||||||||||||||||||||||' +
+                        [23] - чекбокс "Говорить только правую руку"
+                        [24] - подствольник */
+                        '@||||||||||||||||||||||||' +
                     /*
                     [5]  - BlacklistHighlighting
                         [0]  - ID персов из ЧС ('id1,id2,...')
@@ -2815,6 +2816,7 @@
             dataSt[16] = '';
             dataSt[19] = '';
             dataSt[20] = '';
+            dataSt[24] = '';
             general.setData(dataSt, 4);
         };
         /**
@@ -2823,10 +2825,11 @@
          * @param   {Boolean}   fake
          */
         this.sayMove = function (_this, fake) {
-            /** fake - если нажали <Enter> в поле ввода или кнопку "Написать",
-             *          (т.е. отправляем обычное сообщение), то реально не
-             *          говорим ход, а просто сохраняем его для восстановления
-             *          после отправки сооощения.
+            /**
+             * fake - если нажали <Enter> в поле ввода или кнопку "Написать",
+             *  (т.е. отправляем обычное сообщение), то реально не говорим ход,
+             *  а просто сохраняем его для восстановления после отправки
+             *  сооощения.
              */
 
             // ход сделан
@@ -2901,6 +2904,16 @@
                 isGren = true;
             }
 
+            // подствол
+            var isLauncher = false;
+            if (general.doc.querySelector('input[type="checkbox"]' +
+                    '[name="subweapon_shot"]:checked')) {
+                str += 'Подствол в ';
+                dataSt[24] = '1';
+                isLauncher = true;
+            }
+
+
             var leftAttack = general.doc.querySelector('input[type="radio"]' +
                 '[name^="left_attack"]:checked'),
                 rightAttack = general.doc.querySelector('input[type="radio"]' +
@@ -2916,14 +2929,14 @@
 
                 // правая рука
                 // (если не установлен чекбокс "Говорить только левую руку")
-                if (dataSt[13] && !dataSt[18]) {
+                if (!isLauncher && dataSt[13] && !dataSt[18]) {
                     str += dataSt[13] === '1' ? ' ле' :
                             dataSt[13] === '2' ? ' ц' : ' пр';
                 }
 
                 // левая рука
                 // (если не установлен чекбокс "Говорить только правую руку")
-                if (dataSt[12] && !dataSt[23]) {
+                if (!isLauncher && dataSt[12] && !dataSt[23]) {
                     str += dataSt[12] === '1' ? ' ле' :
                             dataSt[12] === '2' ? ' ц' : ' пр';
                 }
@@ -3425,6 +3438,11 @@
                     this.clickElem(general.$('apsid'));
                 }
 
+                // подствол
+                if (dataSt[24]) {
+                    this.clickElem(general.$('sbw'));
+                }
+
                 this.clearSavedStrokeAfterSay();
 
                 return;
@@ -3450,6 +3468,11 @@
                 // граната
                 if (dataSt[8] && general.$('bagaboom')) {
                     this.clickElem(general.$('bagaboom'));
+                }
+
+                // подствол
+                if (dataSt[24]) {
+                    this.clickElem(general.$('sbw'));
                 }
 
                 // подходим или нет
