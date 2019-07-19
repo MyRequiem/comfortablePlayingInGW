@@ -29,6 +29,7 @@
 //  /_/   /_/\__,_/\__, /_/_/ /_/\__, /  /___/_/ /_/   \____/  |__/|__/
 //                /____/        /____/
 
+// lint {{{1
 /*global unsafeWindow */
 /*jslint browser: true, maxlen: 80, regexp: true, vars: true, plusplus: true,
     continue: true, devel: true, nomen: true
@@ -43,12 +44,13 @@
 /*jscs:disable requireMultipleVarDecl, requireVarDeclFirst */
 /*jscs:disable disallowKeywords, disallowDanglingUnderscores */
 /*jscs:disable validateIndentation */
+// 1}}}
 
 (function () {
     'use strict';
 
     /**
-     * @class General
+     * @class General {{{1
      * @constructor
      */
     var General = function () {
@@ -83,7 +85,7 @@
          */
         this.version = '1.136-300619';
         /**
-         * @property stString
+         * @property stString {{{2
          * @type {String}
          */
         this.stString = this.version +  // [0] - script version
@@ -403,8 +405,7 @@
                                 '3': получили 80%, но еще не получили 100%
                                 '4': финиш
                     */
-                        '@||';
-
+                        '@||'; // 2}}}
         /**
          * @property myID
          * @type {RegExpExecArray}
@@ -449,23 +450,23 @@
          * @type {Boolean}
          */
         this.mainDomain = /\/\/www.gwars.ru\//.test(this.loc);
-    };
+    }; // 1}}}
 
     /**
-     * @lends General.prototype
+     * @lends General.prototype {{{1
      */
     General.prototype = {
         /**
-         * @method getRoot
+         * @method getRoot {{{2
          * @return  {Object}
          */
         getRoot: function () {
             var rt = typeof unsafeWindow;
             return rt !== 'undefined' ? unsafeWindow : window;
-        },
+        }, // 2}}}
 
         /**
-         * @method setNewStorage
+         * @method setNewStorage {{{2
          */
         setNewStorage: function () {
             var oldSt = this.st.getItem(this.STORAGENAME);
@@ -494,20 +495,20 @@
             }
 
             this.st.setItem(this.STORAGENAME, newSt.join('@'));
-        },
+        }, // 2}}}
 
         /**
-         * @method getData
+         * @method getData {{{2
          * @param   {int}   ind
          * @return  {Array}
          */
         getData: function (ind) {
             return this.st.getItem(this.STORAGENAME).
                 split('@')[ind].split('|');
-        },
+        }, // 2}}}
 
         /**
-         * @method setData
+         * @method setData {{{2
          * @param   {String|Array}  data
          * @param   {int}           ind
          */
@@ -515,10 +516,10 @@
             var dt = this.st.getItem(this.STORAGENAME).split('@');
             dt[ind] = typeof data !== 'string' ? data.join('|') : data;
             this.st.setItem(this.STORAGENAME, dt.join('@'));
-        },
+        }, // 2}}}
 
         /**
-         * @method getInitScript
+         * @method getInitScript {{{2
          * @return  {Array}
          */
         getInitScript: function () {
@@ -527,19 +528,19 @@
             }
 
             return [];
-        },
+        }, // 2}}}
 
         /**
-         * @method $
+         * @method $ {{{2
          * @param   {String}    id
          * @return  {HTMLElement|null}
          */
         $: function (id) {
             return this.doc.querySelector('#' + id);
-        },
+        }, // 2}}}
 
         /**
-         * @method checkMainData
+         * @method checkMainData {{{2
          * @return  {Boolean}
          */
         checkMainData: function () {
@@ -569,13 +570,13 @@
             }
 
             return true;
-        }
-    };
+        } // 2}}}
+    }; // 1}}}
 
     var general, initScript;
 
     /**
-     * @class GetStrDate
+     * @class GetStrDate {{{1
      * @constructor
      */
     var GetStrDate = function () {
@@ -593,10 +594,10 @@
                         (month < 10 ? '0' + month : month) + '.' +
                             /20(\d+)/.exec(date.getFullYear().toString())[1];
         };
-    };
+    }; // 1}}}
 
     /**
-     * @class GetTimestamp
+     * @class GetTimestamp {{{1
      * @constructor
      */
     var GetTimestamp = function () {
@@ -622,10 +623,10 @@
 
             return new Date(2000 + y, m - 1, d).getTime();
         };
-    };
+    }; // 1}}}
 
     /**
-     * @class UrlEncode
+     * @class UrlEncode {{{1
      * @constructor
      */
     var UrlEncode = function () {
@@ -666,72 +667,10 @@
 
             return result;
         };
-    };
+    }; // 1}}}
 
     /**
-     * @class NotGiveCannabisLeaf
-     * @constructor
-     */
-    var NotGiveCannabisLeaf = function () {
-        /**
-         * @method  changeFavicon
-         */
-        this.changeFavicon = function () {
-            var head = general.doc.querySelector('head');
-
-            if (head) {
-                var linkTags = head.querySelectorAll('link[rel*="icon"]'),
-                    i;
-
-                for (i = 0; i < linkTags.length; i++) {
-                    head.removeChild(linkTags[i]);
-                }
-
-                var link = general.doc.createElement('link');
-                link.setAttribute('type', 'image/x-icon');
-                link.setAttribute('rel', 'shortcut icon');
-                link.setAttribute('href', general.imgPath +
-                        'NotGiveCannabisLeaf/favicon.ico');
-                head.appendChild(link);
-            }
-        };
-
-        /**
-         * @method  changeIcons
-         */
-        this.changeIcons = function () {
-            var imgPath = general.imgPath + 'NotGiveCannabisLeaf/',
-                imgOn = imgPath + 'on.gif',
-                imgOff = imgPath + 'off.gif',
-                imgs = general.doc.querySelectorAll('img'),
-                src,
-                i;
-
-            for (i = 0; i < imgs.length; i++) {
-                src = imgs[i].getAttribute('src');
-                if (/\/i\/gon\.gif|\/info\.online\.php\?id=/.test(src)) {
-                    imgs[i].setAttribute('src', imgOn);
-                } else if (/\/i\/goff\.gif/.test(src)) {
-                    imgs[i].setAttribute('src', imgOff);
-                }
-            }
-        };
-
-        /**
-         * @method init
-         */
-        this.init = function () {
-            this.changeFavicon();
-            // noinspection JSUnresolvedVariable
-            if (!/\/news\.php\?set=1/.test(general.loc) &&
-                    general.root.aqyq) {
-                this.changeIcons();
-            }
-        };
-    };
-
-    /**
-     * @class PlaySound
+     * @class PlaySound {{{1
      * @constructor
      */
     var PlaySound = function () {
@@ -758,10 +697,10 @@
                 audio.play();
             }
         };
-    };
+    }; // 1}}}
 
     /**
-     * @class GetRandom
+     * @class GetRandom {{{1
      * @constructor
      */
     var GetRandom = function () {
@@ -774,10 +713,10 @@
         this.init = function (a, b) {
             return Math.round(a + (b - a) * Math.random());
         };
-    };
+    }; // 1}}}
 
     /**
-     * @class GetTopPanel
+     * @class GetTopPanel {{{1
      * @constructor
      */
     var GetTopPanel = function () {
@@ -806,10 +745,10 @@
 
             return topPanel;
         };
-    };
+    }; // 1}}}
 
     /**
-     * @class SetSettingsButton
+     * @class SetSettingsButton {{{1
      * @constructor
      */
     var SetSettingsButton = function () {
@@ -835,10 +774,10 @@
                     appendChild(settingsButton);
             }
         };
-    };
+    }; // 1}}}
 
     /**
-     * @class AjaxQuery
+     * @class AjaxQuery {{{1
      * @constructor
      */
     var AjaxQuery = function () {
@@ -895,10 +834,10 @@
                 }
             }
         };
-    };
+    }; // 1}}}
 
     /**
-     * @class CheckInputText
+     * @class CheckInputText {{{1
      * @constructor
      */
     var CheckInputText = function () {
@@ -915,10 +854,10 @@
 
             return !(!val || isNaN(+val) || +val < lim);
         };
-    };
+    }; // 1}}}
 
     /**
-     * @class GetSelectSound
+     * @class GetSelectSound {{{1
      * @constructor
      */
     var GetSelectSound = function () {
@@ -952,10 +891,10 @@
                 '<input type="button" id="l' + id + '" ' +
                 'value="»" disabled>';
         };
-    };
+    }; // 1}}}
 
     /**
-     * @class ShowMainSettings
+     * @class ShowMainSettings {{{1
      * @constructor
      */
     var ShowMainSettings = function () {
@@ -964,24 +903,9 @@
          * @type {Function}
          */
         this.getSelectSound = new GetSelectSound().init;
-
-        /**
-         * @method getGitHubLink
-         * @param   {String}    scriptName
-         * @return  {String}
-         */
-        this.getGitHubLink = function (scriptName) {
-            var gitHubPage = 'https://github.com/MyRequiem/' +
-                    general.selfName + '/tree/master/separatedScripts/';
-
-            return '<br><a target="_blank" href="' + gitHubPage +
-                scriptName[0].toUpperCase() + scriptName.substr(1) +
-                '" style="color: #0000FF;">' + scriptName + '.user.js</a>';
-        };
-
         // noinspection HtmlUnknownAttribute
         /**
-         * @property infoScripts
+         * @property infoScripts {{{2
          * @type {Object}
          */
         this.infoScripts = {
@@ -1361,10 +1285,10 @@
                 ['Играем без фермы', 'Убирает ссылку на ферму на главной ' +
                     'странице и на странице информации персонажа.' +
                     this.getGitHubLink('fuckTheFarm'), '25']]
-        };
+        }; // 2}}}
 
         /**
-         * @method showHideScriptInfo
+         * @method showHideScriptInfo // {{{2
          */
         this.showHideScriptInfo = function () {
             var _this = this,
@@ -1377,10 +1301,10 @@
                 info.style.display = 'none';
                 _this.innerHTML = '[+]';
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method onOffScript
+         * @method onOffScript // {{{2
          */
         this.onOffScript = function () {
             var _this = this,
@@ -1401,10 +1325,10 @@
             for (i = 0; i < sel.length; i++) {
                 sel[i].disabled = !_this.checked;
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method checkScriptUpdate
+         * @method checkScriptUpdate // {{{2
          */
         this.checkScriptUpdate = function () {
             var url = 'http://www.gwars.ru/info.php?id=2095458';
@@ -1416,10 +1340,10 @@
                     general.$('refreshVer').innerHTML = '(' + ver[1] + ')';
                 }
             }, null);
-        };
+        }; // 2}}}
 
         /**
-         * @method setSettingsForAdvBattleAll
+         * @method setSettingsForAdvBattleAll // {{{2
          */
         this.setSettingsForAdvBattleAll = function () {
             var _this = this,
@@ -1429,18 +1353,18 @@
             data[ind] = new CheckInputText().init(_this, 0) ?
                     _this.value : '';
             general.setData(data, 4);
-        };
+        }; // 2}}}
 
         /**
-         * @method testSound
+         * @method testSound // {{{2
          */
         this.testSound = function () {
             var _this = this;
             new PlaySound().init(_this.previousElementSibling.value);
-        };
+        }; // 2}}}
 
         /**
-         * @method modifyData
+         * @method modifyData // {{{2
          * @param   {int}       ind
          * @param   {int}       ind1
          * @param   {String}    val
@@ -1449,10 +1373,10 @@
             var tmp = general.getData(ind);
             tmp[ind1] = val;
             general.setData(tmp, ind);
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init // {{{2
          */
         this.init = function () {
             general.doc.title = 'CPIGW :: Настройки';
@@ -1846,11 +1770,30 @@
                 addEventListener('click', this.testSound, false);
             general.$('lsound100HP').
                 addEventListener('click', this.testSound, false);
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class SetPoints
+     * @lends ShowMainSettings.prototype {{{1
+     */
+    ShowMainSettings.prototype = {
+        /**
+         * @method getGitHubLink
+         * @param   {String}    scriptName
+         * @return  {String}
+         */
+        getGitHubLink: function (scriptName) {
+            var gitHubPage = 'https://github.com/MyRequiem/' +
+                    general.selfName + '/tree/master/separatedScripts/';
+
+            return '<br><a target="_blank" href="' + gitHubPage +
+                scriptName[0].toUpperCase() + scriptName.substr(1) +
+                '" style="color: #0000FF;">' + scriptName + '.user.js</a>';
+        }
+    }; // 1}}}
+
+    /**
+     * @class SetPoints {{{1
      * @constructor
      */
     var SetPoints = function () {
@@ -1881,10 +1824,10 @@
 
             return sign + x.reverse().join('');
         };
-    };
+    }; // 1}}}
 
     /**
-     * @class GetPos
+     * @class GetPos {{{1
      * @constructor
      */
     var GetPos = function () {
@@ -1906,10 +1849,72 @@
 
             return {x: x, y: y};
         };
-    };
+    }; // 1}}}
 
     /**
-     * @class AdditionForNavigationBar
+     * @class NotGiveCannabisLeaf {{{1
+     * @constructor
+     */
+    var NotGiveCannabisLeaf = function () {
+        /**
+         * @method  changeFavicon
+         */
+        this.changeFavicon = function () { // {{{2
+            var head = general.doc.querySelector('head');
+
+            if (head) {
+                var linkTags = head.querySelectorAll('link[rel*="icon"]'),
+                    i;
+
+                for (i = 0; i < linkTags.length; i++) {
+                    head.removeChild(linkTags[i]);
+                }
+
+                var link = general.doc.createElement('link');
+                link.setAttribute('type', 'image/x-icon');
+                link.setAttribute('rel', 'shortcut icon');
+                link.setAttribute('href', general.imgPath +
+                        'NotGiveCannabisLeaf/favicon.ico');
+                head.appendChild(link);
+            }
+        }; // 2}}}
+
+        /**
+         * @method  changeIcons {{{2
+         */
+        this.changeIcons = function () {
+            var imgPath = general.imgPath + 'NotGiveCannabisLeaf/',
+                imgOn = imgPath + 'on.gif',
+                imgOff = imgPath + 'off.gif',
+                imgs = general.doc.querySelectorAll('img'),
+                src,
+                i;
+
+            for (i = 0; i < imgs.length; i++) {
+                src = imgs[i].getAttribute('src');
+                if (/\/i\/gon\.gif|\/info\.online\.php\?id=/.test(src)) {
+                    imgs[i].setAttribute('src', imgOn);
+                } else if (/\/i\/goff\.gif/.test(src)) {
+                    imgs[i].setAttribute('src', imgOff);
+                }
+            }
+        }; // 2}}}
+
+        /**
+         * @method init {{{2
+         */
+        this.init = function () {
+            this.changeFavicon();
+            // noinspection JSUnresolvedVariable
+            if (!/\/news\.php\?set=1/.test(general.loc) &&
+                    general.root.aqyq) {
+                this.changeIcons();
+            }
+        }; // 2}}}
+    }; // 1}}}
+
+    /**
+     * @class AdditionForNavigationBar {{{1
      * @constructor
      */
     var AdditionForNavigationBar = function () {
@@ -1925,7 +1930,7 @@
         this.divMain = null;
 
         /**
-         * @method addLink
+         * @method addLink {{{2
          * @param   {Node}  link
          */
         this.addLink = function (link) {
@@ -1990,10 +1995,10 @@
 
                 general.setData(JSON.stringify(temp), 2);
             }, false);
-        };
+        }; // 2}}};
 
         /**
-         * @method createLink
+         * @method createLink {{{2
          * @param   {String}    name
          * @param   {Array}     attr    href, style
          * @return  {HTMLElement}
@@ -2005,19 +2010,19 @@
             link.innerHTML = name;
             link.href = attr[0];
             return link;
-        };
+        }; // 2}}}
 
         /**
-         * @method clearFields
+         * @method clearFields {{{2
          */
         this.clearFields = function () {
             general.$('lname').value = '';
             general.$('lhref').value = '';
             general.$('lstyle').value = '';
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             this.navigPanel = general.DESIGN_VERSION === 'v2' ?
@@ -2126,11 +2131,11 @@
 
                 _this.clearFields();
             }, false);
-        };
-    };
+        }; // 2}}};
+    }; // 1}}}
 
     /**
-     * @class AdsFilter
+     * @class AdsFilter {{{1
      * @constructor
      */
     var AdsFilter = function () {
@@ -2156,7 +2161,7 @@
         this.styleBold =  this.stl + 'color: #990000; font-weight: bold;';
 
         /**
-         * @method setButton
+         * @method setButton {{{2
          * @param   {String}        id
          * @param   {String}        value
          */
@@ -2166,10 +2171,10 @@
             button.id = id;
             button.innerHTML = value;
             this.spanContainer.appendChild(button);
-        };
+        }; // 2}}}
 
         /**
-         * @method setFilter
+         * @method setFilter {{{2
          * @param   {NodeList}  trs
          * @param   {String}    type
          * @param   {String}    island
@@ -2240,10 +2245,10 @@
             default:
                 break;
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var table = general.doc.querySelector('table.wb[align="center"]');
@@ -2299,11 +2304,11 @@
             if (dataSt[1]) {
                 general.$('online').click();
             }
-        };
-    };
+        }; // 2}}};
+    }; // 1}}}
 
     /**
-     * @class AdvBattleAll
+     * @class AdvBattleAll {{{1
      * @constructor
      */
     var AdvBattleAll = function () {
@@ -2395,7 +2400,7 @@
          */
         this.checkSound = true;
         /**
-         * @property weapon
+         * @property weapon {{{2
          * @type {Object}
          */
         this.rangeWeapon = {
@@ -2742,9 +2747,9 @@
             'ga2gl': '60',
             // другое
             '11y_revolver': '0'
-        };
+        }; // 2}}};
         /**
-         * @property art
+         * @property art {{{2
          * @type {Array}
          */
         this.art = [
@@ -2783,9 +2788,9 @@
             'flashlight', 'heartglasses', 'radio_gw148', 'bors', 'ganjacola2',
             'mentats2', 'minimedikit', 'medikit', 'bigmedikit', 'slr', 'apache',
             'mi8', 'cadillac', 'chinook', 'harley', 'ch148'
-        ];
+        ]; // 2}}}
         /**
-         * @property rent
+         * @property rent {{{2
          * @type {Array}
          */
         this.rent = [
@@ -2793,18 +2798,18 @@
             'sig750', 'blaser_93', 'blaser-t', 'sharpshooter', 'irlights',
             'mask_hawster', 'mask_hawster1', 'nokia8800', 'nokia8800_se',
             'tesla_armour'
-        ];
+        ]; // 2}}}
 
         /**
-         * @metod getRandom1to3
+         * @metod getRandom1to3 {{{2
          * @return  {int}
          */
         this.getRandom1to3 = function () {
             return Math.round(Math.random() * 1000) % 3 + 1;
-        };
+        }; // 2}}}
 
         /**
-         * @method clearSavedStrokeAfterSay
+         * @method clearSavedStrokeAfterSay {{{2
          */
         this.clearSavedStrokeAfterSay = function () {
             var dataSt = general.getData(4);
@@ -2818,9 +2823,10 @@
             dataSt[20] = '';
             dataSt[24] = '';
             general.setData(dataSt, 4);
-        };
+        }; // 2}}}
+
         /**
-         * @metod sayMove
+         * @metod sayMove {{{2
          * @param   {Object}    _this
          * @param   {Boolean}   fake
          */
@@ -2950,10 +2956,10 @@
             // отправляем сообщение в чат
             general.doc.querySelector('input[type="submit"]' +
                 '[value="Написать"]').click();
-        };
+        }; // 2}}};
 
         /**
-         * @method getLeftRightCommands
+         * @method getLeftRightCommands {{{2
          */
         this.getLeftRightCommands = function () {
             if (this.leftRightCommands.length) {
@@ -2976,10 +2982,10 @@
             this.leftRightCommands[1] =
                 this.leftRightCommands[0].id === 'listleft' ?
                         general.$('listright') : general.$('listleft');
-        };
+        }; // 2}}}
 
         /**
-         * @method getPers
+         * @method getPers {{{2
          * @param   {HTMLElement}   obj
          * @return  {NodeList}
          */
@@ -2996,10 +3002,10 @@
             }
 
             return pers;
-        };
+        }; // 2}}}
 
         /**
-         * @method getDataFighters
+         * @method getDataFighters {{{2
          * @param   {HTMLLinkElement}   persLink
          */
         this.getDataFighters = function (persLink) {
@@ -3159,10 +3165,10 @@
                 this.myPers.damage = /урон: (\d+)(\+\d+)? \((\d+)\)/.
                         exec(allText);
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method setNameInChat
+         * @method setNameInChat {{{2
          */
         this.setNameInChat = function (persName) {
             var _this = this;
@@ -3170,10 +3176,10 @@
                 _this.inpTextChat.value += persName + ': ';
                 _this.inpTextChat.focus();
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method setEnvelope
+         * @method setEnvelope {{{2
          */
         this.setEnvelope = function () {
             var mass = [this.leftPers, this.rightPers],
@@ -3202,10 +3208,10 @@
                         this.setNameInChat(mass[i][j].textContent), false);
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method setMyInfo
+         * @method setMyInfo {{{2
          * @param   {int}   count   количество персонажей сделавших ход
          */
         this.setMyInfo = function (count) {
@@ -3248,10 +3254,10 @@
             }
 
             this.myInfoTopPanel.innerHTML = str;
-        };
+        }; // 2}}}
 
         /**
-         * @method sortEnemyList
+         * @method sortEnemyList {{{2
          */
         this.sortEnemyList = function () {
             var _this = this;
@@ -3306,10 +3312,10 @@
 
             // выбираем первого противника в списке
             select.options[0].selected = true;
-        };
+        }; // 2}}}
 
         /**
-         * @method setSortListEnemy
+         * @method setSortListEnemy {{{2
          */
         this.setSortListEnemy = function () {
             var walk = general.$('walk'),
@@ -3345,10 +3351,10 @@
             }
 
             general.$('s' + (general.getData(4)[2] || '0')).click();
-        };
+        }; // 2}}}
 
         /**
-         * @method clickElem
+         * @method clickElem {{{2
          * @param   {HTMLElement}   elem
          */
         this.clickElem = function (elem) {
@@ -3356,10 +3362,10 @@
             if (_elem) {
                 _elem.click();
             }
-        };
+        }; // 2}}}
 
         /*
-         * @method setWalk
+         * @method setWalk {{{2
          * @param   {int}   ind
          */
         this.setWalk = function (ind) {
@@ -3373,10 +3379,10 @@
                     walk.click();
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method setStroke
+         * @method setStroke {{{2
          */
         this.setStroke = function () {
             var dataSt = general.getData(4);
@@ -3498,10 +3504,10 @@
                     this.clickElem(general.$('left_attack' + y));
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method setHandlerSubmit
+         * @method setHandlerSubmit {{{2
          */
         this.setHandlerSubmit = function () {
             var s = general.doc.createElement('script');
@@ -3562,10 +3568,10 @@
                 '}';
 
             general.doc.body.appendChild(s);
-        };
+        }; // 2}}}
 
         /**
-         * @method setControlOfShooting
+         * @method setControlOfShooting {{{2
          */
         this.setControlOfShooting = function () {
             var divGenerator = general.doc.createElement('div'),
@@ -3652,10 +3658,10 @@
             } else {                            // все чекбоксы сброшены
                 this.setStroke();
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method changeSelectEnemies
+         * @method changeSelectEnemies {{{2
          */
         this.changeSelectEnemies = function () {
             var select = general.$('euids'),
@@ -3670,10 +3676,10 @@
                     break;
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method clickImageFighters
+         * @method clickImageFighters {{{2
          * @param   {Object}   opt
          * @param   {Object}    _this
          */
@@ -3682,10 +3688,10 @@
                 opt.selected = true;
                 _this.changeSelectEnemies();
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method showTooltip
+         * @method showTooltip {{{2
          * @param   {String}    ttl
          * @param   {Object}    _this
          */
@@ -3711,20 +3717,20 @@
                 _this.tooltip.style.left = String(getPos.init(this).x - 50);
                 _this.tooltip.style.display = '';
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method hideTooltip
+         * @method hideTooltip {{{2
          * @param   {Object}    _this
          */
         this.hideTooltip = function (_this) {
             return function () {
                 _this.tooltip.style.display = 'none';
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method setTooltipsFighters
+         * @method setTooltipsFighters {{{2
          * @param   {HTMLTableElement}  table
          */
         this.setTooltipsFighters = function (table) {
@@ -3822,18 +3828,18 @@
                 // удаляем оригинальный title
                 img[i].removeAttribute('title');
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method isEven
+         * @method isEven {{{2
          * @param   {int}   x
          */
         this.isEven = function (x) {
             return x % 2 === 0;
-        };
+        }; // 2}}}
 
         /**
-         * @method changeLocationFighters
+         * @method changeLocationFighters {{{2
          */
         this.changeLocationFighters = function () {
             var table;
@@ -4040,10 +4046,10 @@
             }
 
             this.setTooltipsFighters(table);
-        };
+        }; // 2}}}
 
         /**
-         * @method setCountStroke
+         * @method setCountStroke {{{2
          * @param   {object}    obj
          */
         this.setCountStroke = function (obj) {
@@ -4065,10 +4071,10 @@
 
                 this.setMyInfo(greenPersLinks.length);
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method setColorFighters
+         * @method setColorFighters {{{2
          * @param   {Object}    _this
          */
         this.setColorFighters = function (_this) {
@@ -4088,10 +4094,10 @@
                     });
                 }
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method start
+         * @method start {{{2
          */
         this.start = function () {
             // сразу скрываем тултип (на всякий случай, если остался)
@@ -4230,10 +4236,10 @@
 
             // изменяем расположение бойцов, ставим тултипы...
             this.changeLocationFighters();
-        };
+        }; // 2}}}
 
         /**
-         * @method setChatInterface
+         * @method setChatInterface {{{2
          */
         this.setChatInterface = function () {
             var sayOnlyMyCommand = general.doc.createElement('input');
@@ -4385,10 +4391,10 @@
                     ['javascript', ':', 'void(updatedata())'].join(''));
 
             this.inpTextChat.parentNode.appendChild(buttonUpdate);
-        };
+        }; // 2}}}
 
         /**
-         * @method changeMakebf
+         * @method changeMakebf {{{2
          */
         this.changeMakebf = function () {
             var _this = this;
@@ -4403,10 +4409,10 @@
                 general.$('bfndl').innerHTML = general.root.bfndl;
                 _this.start();
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method tryStart
+         * @method tryStart {{{2
          */
         this.tryStart = function () {
             if (general.viewMode) {
@@ -4430,10 +4436,10 @@
                     _this.tryStart();
                 }, 100);
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             // графическое оформление боев или НЕ JS-версия боя
@@ -4503,11 +4509,11 @@
             }, false);
 
             this.tryStart();
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class BlacklistHighlighting
+     * @class BlacklistHighlighting {{{1
      * @constructor
      */
     var BlacklistHighlighting = function () {
@@ -4518,7 +4524,7 @@
         this.blTable = null;
 
         /**
-         * @method rememberClick
+         * @method rememberClick {{{2
          * @param   {Object}    _this
          */
         this.rememberClick = function (_this) {
@@ -4543,10 +4549,10 @@
             stData[0] = mass.join(',');
             general.setData(stData, 5);
             _this.setHighlighting();
-        };
+        }; // 2}}}
 
         /**
-         * @method clearClick
+         * @method clearClick {{{2
          * @param   {Object}    _this
          */
         this.clearClick = function (_this) {
@@ -4559,10 +4565,10 @@
             } else {
                 alert('В памяти скрипта нет ЧС');
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method setHighlighting
+         * @method setHighlighting {{{2
          */
         this.setHighlighting = function () {
             var a = general.doc.querySelectorAll('a[href*="/info.php?id="]'),
@@ -4592,10 +4598,10 @@
                     }
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             if (/home\.friends\.php/.test(general.loc)) {
@@ -4643,11 +4649,11 @@
                     this.setHighlighting();
                 }
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class WorkPostGrenadesBroken
+     * @class WorkPostGrenadesBroken {{{1
      * @constructor
      */
     var WorkPostGrenadesBroken = function () {
@@ -4669,7 +4675,7 @@
         this.blueFactory = general.imgPath + 'WorkPostGrenadesBroken/' +
                 'blueFactory.gif';
         /**
-         * @property grenades
+         * @property grenades {{{2
          * @type {Array}
          */
         this.grenades = [
@@ -4689,10 +4695,10 @@
             'ags30', 'gm94', 'gl06', 'gmg', 'balkan', 'rg6', 'm202', 'mm1',
             /* арт */
             'milkor', 'm32', 'mk47'
-        ];
+        ]; // 2}}}
 
         /**
-         * @method addContent
+         * @method addContent {{{2
          * @param   {Array}     sms
          * @param   {Boolean}   gren
          * @param   {Boolean}   broken
@@ -4726,10 +4732,10 @@
             }
 
             return str;
-        };
+        }; // 2}}}
 
         /**
-         * @method startWorkPostGrenadesBroken
+         * @method startWorkPostGrenadesBroken {{{2
          * @param   {Object}    _this
          */
         this.startWorkPostGrenadesBroken = function (_this) {
@@ -4862,10 +4868,10 @@
                     _this.startWorkPostGrenadesBroken(_this);
                 }, 1000);
             });
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var topPanel = new GetTopPanel().init();
@@ -4880,11 +4886,11 @@
                     _this.startWorkPostGrenadesBroken(_this);
                 }, new GetRandom().init(20, 40) * 1000);
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class ResourcesAndBonuses
+     * @class ResourcesAndBonuses {{{1
      * @constructor
      */
     var ResourcesAndBonuses = function () {
@@ -4895,7 +4901,7 @@
         this.divResult = general.doc.createElement('div');
 
         /**
-         * @method fillData
+         * @method fillData {{{2
          * @param   {String}    data
          */
         this.fillData = function (data) {
@@ -4907,10 +4913,10 @@
             general.$('divres_close').addEventListener('click', function () {
                 _this.divResult.style.visibility = 'hidden';
             }, false);
-        };
+        }; // 2}}}
 
         /**
-         * @method showData
+         * @method showData {{{2
          * @param   {Object}    _this
          */
         this.showData = function (_this) {
@@ -4947,10 +4953,10 @@
                 ths.fillData('<span style="color: #FF0000;">' +
                     'Ошибка ответа сервера...</span>');
             });
-        };
+        }; // 2}}}
 
         /**
-         * @method createButton
+         * @method createButton {{{2
          * @param   {String}    value
          * @param   {String}    id
          * @return  {HTMLElement}
@@ -4967,10 +4973,10 @@
                 _this.showData(ths);
             }, false);
             return span;
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var topPanel = new GetTopPanel().init();
@@ -4988,11 +4994,11 @@
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(this.createButton('Бонусы', 'bonus'));
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class CritShotsAndLinksBtlLog
+     * @class CritShotsAndLinksBtlLog {{{1
      * @constructor
      */
     var CritShotsAndLinksBtlLog = function () {
@@ -5003,7 +5009,7 @@
         this.showCritShots = general.getData(7)[0];
 
         /**
-         * @class
+         * @class CriticalShots {{{2
          * @constructor
          */
         this.CriticalShots = function () {
@@ -5035,10 +5041,10 @@
             this.getAllCrits = function () {
                 return this.groin + this.neck + this.ear + this.temple;
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method getCrits
+         * @method getCrits {{{2
          * @param   {NodeList}  b
          * @return  {Object|null}
          */
@@ -5155,10 +5161,10 @@
             }
 
             return this.showCritShots ? criticalShots : null;
-        };
+        }; // 2}}}
 
         /**
-         * @method showCrits
+         * @method showCrits {{{2
          * @param   {Object}    result
          */
         this.showCrits = function (result) {
@@ -5169,10 +5175,10 @@
                 general.$('crits_ear').innerHTML = result.ear;
                 general.$('crits_temple').innerHTML = result.temple;
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method change_updatechatlines
+         * @method change_updatechatlines {{{2
          */
         this.change_updatechatlines = function () {
             var _this = this;
@@ -5192,10 +5198,10 @@
                             querySelector('#log').querySelectorAll('b')));
                 }
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method setDataDiv
+         * @method setDataDiv {{{2
          * @param   {Object}    target
          * @param   {Boolean}   mode
          */
@@ -5222,10 +5228,10 @@
                     target.appendChild(general.doc.createElement('br'));
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             // НЕ JS-версия боя
@@ -5262,16 +5268,16 @@
                         querySelector('td>span[class="txt"]').
                     querySelectorAll('b')));
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class DeleteSms
+     * @class DeleteSms {{{1
      * @constructor
      */
     var DeleteSms = function () {
         /**
-         * @method testSubject
+         * @method testSubject {{{2
          * @param   {HTMLInputElement}  chk
          * @param   {Object}            reg
          * @return  {Boolean}
@@ -5279,10 +5285,10 @@
         this.testSubject = function (chk, reg) {
             // noinspection JSUnresolvedVariable
             return reg.test(chk.parentNode.nextElementSibling.innerHTML);
-        };
+        }; // 2}}}
 
         /**
-         * @method checkSms
+         * @method checkSms {{{2
          * @param   {HTMLElement}   chk
          * @param   {Boolean}       is_check
          * @param   {Boolean}       load
@@ -5291,7 +5297,7 @@
             var stData = general.getData(8);
             // [0]  - отмечать синдовые рассылки
             // [1]  - отмечать рассылки от робота
-            // [2]  - НЕ отмечать письма с пометкой "важное" |)}>#
+            // [2]  - НЕ отмечать письма с пометкой "важное"
 
             if (is_check) {
                 chk.checked = false;
@@ -5327,19 +5333,19 @@
                     chk.checked = false;
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method get_checkbox_checked
+         * @method get_checkbox_checked {{{2
          * @return  {HTMLElement|null}
          */
         this.get_checkbox_checked = function () {
             return general.doc.querySelector('input[type="checkbox"]' +
                 '[name^="kill"]:checked');
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var target = general.doc.querySelector('tr>td>a:last-child' +
@@ -5406,16 +5412,16 @@
                     _this.checkSms(smsChk[l], is_check, false);
                 }
             }, false);
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class FarmExperience
+     * @class FarmExperience {{{1
      * @constructor
      */
     var FarmExperience = function () {
         /**
-         * @method calculateFarm
+         * @method calculateFarm {{{2
          * @param   {int}       p1
          * @param   {int}       p2
          * @param   {int}       time
@@ -5428,10 +5434,10 @@
 
             return ' <span style="color: #FF0000;">[$' + money + ']</span>' +
                     '<span style="color: #0000FF;">[' + experience + ']</span>';
-        };
+        }; // 2}}}
 
         /**
-         * @method runInit
+         * @method runInit {{{2
          */
         this.runInit = function () {
             var _this = this;
@@ -5440,10 +5446,10 @@
                     _this.init();
                 }, 700);
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var a = general.doc.querySelectorAll('*[onclick*="gotourl("],' +
@@ -5486,11 +5492,11 @@
                     target.parentNode.insertBefore(span, target);
                 }
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class FarmTimer
+     * @class FarmTimer {{{1
      * @constructor
      */
     var FarmTimer = function () {
@@ -5506,7 +5512,7 @@
         this.checkInterval = 0;
 
         /**
-         * @method setRedLink
+         * @method setRedLink {{{2
          * @param   {String}    str
          */
         this.setRedLink = function (str) {
@@ -5514,10 +5520,10 @@
             this.farmLink.setAttribute('style', 'color: #FF0000; ' +
                     'font-weight: bold; text-decoration: none;');
             this.farmLink.innerHTML = '[' + action + ']';
-        };
+        }; // 2}}}
 
         /**
-         * @method checkState
+         * @method checkState {{{2
          */
         this.checkState = function () {
             if (!/bold/.test(this.farmLink.getAttribute('style'))) {
@@ -5544,10 +5550,10 @@
                 general.setData(stData, 9);
                 this.showTimer(+((time - timeNow) / 1000).toFixed(0));
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method setReminder
+         * @method setReminder {{{2
          */
         this.setReminder = function () {
             var stData = general.getData(9);
@@ -5602,10 +5608,10 @@
                     _this.setReminder();
                 }, intrvl - (timeNow - soundTime) + random.init(1000, 10000));
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method showTimer
+         * @method showTimer {{{2
          * @param   {int}   sec
          */
         this.showTimer = function (sec) {
@@ -5639,10 +5645,10 @@
                 general.root.setTimeout(this.setReminder,
                                 new GetRandom().init(1000, 3000));
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method runInit
+         * @method runInit {{{2
          */
         this.runInit = function () {
             var _this = this;
@@ -5651,10 +5657,10 @@
                     _this.init();
                 }, 700);
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             /** localStorage:
@@ -5731,11 +5737,11 @@
 
                 this.showTimer(+((+stData[0] - timeNow) / 1000).toFixed(0));
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class TimeNpc
+     * @class TimeNpc {{{1
      * @constructor
      */
     var TimeNpc = function () {
@@ -5745,14 +5751,14 @@
          */
         this.imgPath = general.imgPath + 'TimeNpc/';
         /**
-         * @property npc
+         * @property npc {{{2
          * @type {Object}
          */
         this.npc = {
             g: ['2', '3', '6', '8', '10', '12'],
             z: ['1', '4', '5', '7', '9', '11'],
             p: ['16', '17', '18', '19', '20']
-        };
+        }; // 2}}}
         /**
          * @property tm
          * @type {int}
@@ -5760,14 +5766,14 @@
         this.tm = 1000;
 
         /**
-         * @method clearNPCData
+         * @method clearNPCData {{{2
          */
         this.clearNPCData = function () {
             general.$('dataNPC').innerHTML = '';
-        };
+        }; // 2}}}
 
         /**
-         * @method setCloseButton
+         * @method setCloseButton {{{2
          */
         this.setCloseButton = function () {
             general.$('dataNPC').innerHTML += '<tr><td colspan="3" ' +
@@ -5779,10 +5785,10 @@
             general.$('npsDataClose').
                 addEventListener('click', this.clearNPCData, false);
             general.$('imgSoundNPC').removeAttribute('checkscan');
-        };
+        }; // 2}}}
 
         /**
-         * @method  scanNPC
+         * @method  scanNPC {{{2
          * @param   {int}       ind
          * @param   {Array}     npcs
          */
@@ -5858,18 +5864,18 @@
                     _this.scanNPC(ind, npcs);
                 }, _this.tm);
             });
-        };
+        }; // 2}}}
 
         /**
-         * @method getTimeNow
+         * @method getTimeNow {{{2
          * @return  {int}
          */
         this.getTimeNow = function () {
             return new Date().getTime();
-        };
+        }; // 2}}}
 
         /**
-         * @method goQuest
+         * @method goQuest {{{2
          */
         this.goQuest = function () {
             var stData = general.getData(10);
@@ -5880,10 +5886,10 @@
             if (stData[0]) {
                 new PlaySound().init(stData[3]);
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method showTimerNPC
+         * @method showTimerNPC {{{2
          * @param   {int}   sec
          */
         this.showTimerNPC = function (sec) {
@@ -5915,10 +5921,10 @@
                     }
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             // на главной странице личного NPC
@@ -6019,11 +6025,11 @@
                     general.setData(stData, 10);
                 }
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class AllPlantsOnFarm
+     * @class AllPlantsOnFarm {{{1
      * @constructor
      */
     var AllPlantsOnFarm = function () {
@@ -6033,7 +6039,7 @@
          */
         this.target = null;
         /**
-         * @property plant
+         * @property plant {{{2
          * @type {Object}
          */
         this.plant = {
@@ -6115,10 +6121,10 @@
                 bonus: 213, exp: 0.087},
             'poganka': {name: 'Бледная поганка', price: 1500, time: 338,
                 bonus: 1604, exp: 0.694}
-        };
+        }; // 2}}}
 
         /**
-         * @method getHourTime
+         * @method getHourTime {{{2
          * @param   {int}       min
          * @param   {Boolean}   mode
          * @return  {String}
@@ -6134,10 +6140,10 @@
             m = m < 10 ? '0' + m : m;
             return mode ? '(' + h + ' ч ' + m + ' мин)' :
                             '[' + h + ':' + m + ']';
-        };
+        }; // 2}}}
 
         /**
-         * @method calculatePerHour
+         * @method calculatePerHour {{{2
          * @param   {int}   val1
          * @param   {int}   val2
          * @param   {int}   fix
@@ -6145,10 +6151,10 @@
          */
         this.calculatePerHour = function (val1, val2, fix) {
             return (60 * val2 / val1).toFixed(fix);
-        };
+        }; // 2}}}
 
         /**
-         * @method setPlantData
+         * @method setPlantData {{{2
          */
         this.setPlantData = function () {
             var cont = general.$('checkBoxContainer'),
@@ -6183,10 +6189,10 @@
 
                 cont.innerHTML = str;
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method createSelectList
+         * @method createSelectList {{{2
          * @return  {HTMLElement}
          */
         this.createSelectList = function () {
@@ -6209,10 +6215,10 @@
             }, false);
 
             return sel;
-        };
+        }; // 2}}}
 
         /**
-         * @method setMainPanel
+         * @method setMainPanel {{{2
          */
         this.setMainPanel = function () {
             // основной контейнер
@@ -6235,10 +6241,10 @@
             chkContainer.setAttribute('align', 'left');
             chkContainer.id = 'checkBoxContainer';
             div.appendChild(chkContainer);
-        };
+        }; // 2}}}
 
         /**
-         * @method clearCounter
+         * @method clearCounter {{{2
          * @param   {String}    gb
          * @param   {String}    exp
          */
@@ -6249,10 +6255,10 @@
             stData[2] = gb;
             stData[3] = exp;
             general.setData(stData, 11);
-        };
+        }; // 2}}}
 
         /**
-         * @method setCounter
+         * @method setCounter {{{2
          */
         this.setCounter = function () {
             var table = general.doc.querySelector('table[cellpadding="3"]' +
@@ -6340,10 +6346,10 @@
                         }
                     }, false);
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method runInit
+         * @method runInit {{{2
          */
         this.runInit = function () {
             var _this = this;
@@ -6352,10 +6358,10 @@
                     _this.init();
                 }, 700);
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             // noinspection RegExpSingleCharAlternation
@@ -6416,11 +6422,11 @@
                     a[l].addEventListener('click', this.runInit(), false);
                 }
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class GwMenu
+     * @class GwMenu {{{1
      * @constructor
      */
     var GwMenu = function () {
@@ -6443,7 +6449,7 @@
                 test(general.root.navigator.userAgent) ? -1 : 0;
 
         /**
-         * @method setCSSGwMenu
+         * @method setCSSGwMenu {{{2
          */
         this.setCSSGwMenu = function () {
             var cssStyle = general.doc.createElement('style');
@@ -6481,10 +6487,10 @@
             if (general.root.nbzy) {
                 general.doc.querySelector('head').appendChild(cssStyle);
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method createGwMenuDiv
+         * @method createGwMenuDiv {{{2
          * @param   {String}    id
          * @return  {Object}
          */
@@ -6503,10 +6509,10 @@
             div.setAttribute('class', 'gwm');
             div.style.display = 'none';
             return div;
-        };
+        }; // 2}}}
 
         /**
-         * @method getLineMenu
+         * @method getLineMenu {{{2
          * @param   {String}    name
          * @param   {String}    id
          * @param   {String}    color
@@ -6541,10 +6547,10 @@
             _color = color || 'norm';
             return '<td class="bold"><span class="' + _color + '">' + name +
                 '</span></td><td class="arrow" id="' + id + '">&#187;</td>';
-        };
+        }; // 2}}}
 
         /**
-         * @method fOver
+         * @method fOver {{{2
          * @param   {Object}    div
          * @param   {Object}    arrow
          * @param   {int}       offsettop
@@ -6564,10 +6570,10 @@
                 this.correctYGwMenu);
             arrow.style.background = '#7FF89E';
             div.style.display = '';
-        };
+        }; // 2}}}
 
         /**
-         * @method fOut
+         * @method fOut {{{2
          * @param   {Object}    div
          * @param   {Object}    arrow
          */
@@ -6577,10 +6583,10 @@
                 arrow.style.background = '#C4F8D1';
                 arrow.removeAttribute('tm');
             }, 100).toString());
-        };
+        }; // 2}}}
 
         /**
-         * @method setHandlersGWMenu
+         * @method setHandlersGWMenu {{{2
          * @param   {Object}    arrow
          * @param   {Object}    div
          * @param   {int}       offset
@@ -6607,10 +6613,10 @@
                 arrow.style.boxShadow = '';
                 _this.fOut(div, arrow);
             }, false);
-        };
+        }; // 2}}}
 
         /**
-         * @method createGWMenuItems
+         * @method createGWMenuItems {{{2
          * @param   {Array}    gwM
          */
         this.createGWMenuItems = function (gwM) {
@@ -6643,10 +6649,10 @@
                             gwM[i].offsetY);
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method gwMenuInit
+         * @method gwMenuInit {{{2
          */
         this.gwMenuInit = function () {
             var gw_menu = general.$('gw_menu'),
@@ -7111,10 +7117,10 @@
             }, false);
 
             this.gwMenuInit();
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             // ссылка в главном меню игры
@@ -7139,16 +7145,16 @@
                     general.$('showt').checked = true;
                 }
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class InventoryPlus
+     * @class InventoryPlus {{{1
      * @constructor
      */
     var InventoryPlus = function () {
         /**
-         * @method openCloseItem
+         * @method openCloseItem {{{2
          * @param   {String}    id
          */
         this.openCloseItem = function (id) {
@@ -7164,10 +7170,10 @@
                     _this.innerHTML = _this.innerHTML.replace('+', '-');
                 }
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method compareLines
+         * @method compareLines {{{2
          * @param   {Object}        line
          * @param   {Array}         linesObj
          * @return  {Object|null}
@@ -7184,10 +7190,10 @@
             }
 
             return null;
-        };
+        }; // 2}}}
 
         /**
-         * @method startInventoryPlus
+         * @method startInventoryPlus {{{2
          * @param   {Object}    _this
          */
         this.startInventoryPlus = function (_this) {
@@ -7300,10 +7306,10 @@
                     linesObj[i].line.link.parentNode.appendChild(divn);
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var _this = this;
@@ -7323,11 +7329,11 @@
             };
 
             this.startInventoryPlus(this);
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class CountBattles
+     * @class CountBattles {{{1
      * @constructor
      */
     var CountBattles = function () {
@@ -7358,7 +7364,7 @@
         this.tm = 1000;
 
         /**
-         * @method getBattles
+         * @method getBattles {{{2
          * @param   {Object}    obj
          * @return  {Boolean}
          */
@@ -7377,10 +7383,10 @@
             }
 
             return !!btlLogs.length;
-        };
+        }; // 2}}}
 
         /**
-         * @method showRezult
+         * @method showRezult {{{2
          */
         this.showReault = function () {
             var i, b, stl;
@@ -7406,10 +7412,10 @@
                 this.rez.win + '</span>/<span style="color: #0000FF;">' +
                 this.rez.loss + '</span>/<span style="color :#008000;">' +
                 this.rez.draw + '</span>)</span>';
-        };
+        }; // 2}}}
 
         /**
-         * @method startCountBattles
+         * @method startCountBattles {{{2
          * @param   {int}   ind
          */
         this.startCountBattles = function (ind) {
@@ -7453,10 +7459,10 @@
                     }, _this.tm);
                 });
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var target = general.doc.querySelector('center+br+br'),
@@ -7482,11 +7488,11 @@
 
                 this.startCountBattles(0);
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class GbCounter
+     * @class GbCounter {{{1
      * @constructor
      */
     var GbCounter = function () {
@@ -7502,15 +7508,15 @@
         this.countGbNow = 0;
 
         /**
-         * @method resetGBCounter
+         * @method resetGBCounter {{{2
          */
         this.resetGBCounter = function () {
             general.setData([this.countGbNow.toString()], 13);
             this.setGBCounter();
-        };
+        }; // 2}}}
 
         /**
-         *  @method setGBCounter
+         *  @method setGBCounter {{{2
          */
         this.setGBCounter = function () {
             var countGbOld = general.getData(13)[0];
@@ -7525,10 +7531,10 @@
                 new SetPoints().init(diff, '.', true) + ']';
             this.spanCountGB.style.color = diff >= 0 ?
                     '#FF0000' : '#0000FF';
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             // на главной странице личного NPC
@@ -7555,11 +7561,11 @@
                     }
                 }, false);
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class BonusInfo
+     * @class BonusInfo {{{1
      * @constructor
      */
     var BonusInfo = function () {
@@ -7575,7 +7581,7 @@
          */
         this.savecontent = '';
         /**
-         * @property bonus
+         * @property bonus {{{2
          * @type {Object}
          */
         this.bonus = {
@@ -7722,10 +7728,10 @@
                 'должно быть на 5 ходов меньше дальности оружия, увеличение ' +
                 'урона в процентах равно значению бонуса, и арифметически ' +
                 'суммируется с бонусами урона.']
-        };
+        }; // 2}}}
 
         /**
-         * @method advSetBonusInfo
+         * @method advSetBonusInfo {{{2
          * @param   {String}    name
          */
         this.advSetBonusInfo = function (name) {
@@ -7748,10 +7754,10 @@
                     _this.setBonusInfo();
                 }, false);
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method setBonusInfo
+         * @method setBonusInfo {{{2
          */
         this.setBonusInfo = function () {
             var trs = this.target.querySelectorAll('tr'),
@@ -7774,26 +7780,26 @@
                     }
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             if (this.target) {
                 this.savecontent = this.target.innerHTML;
                 this.setBonusInfo();
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class BuyHightech
+     * @class BuyHightech {{{1
      * @constructor
      */
     var BuyHightech = function () {
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             // noinspection JSUnresolvedVariable
@@ -7859,25 +7865,25 @@
                 general.doc.
                     querySelector('select[name="date_len"]').value = '7';
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class NewsAndInvit
+     * @class NewsAndInvit {{{1
      * @constructor
      */
     var NewsAndInvit = function () {
         /**
-         * @method isForumPage
+         * @method isForumPage {{{2
          * @return   {Boolean}
          */
         this.isForumPage = function () {
             // noinspection JSRemoveUnnecessaryParentheses
             return (/fid=1&tid=\d+/.test(general.loc));
-        };
+        }; // 2}}}
 
         /**
-         * @method blink
+         * @method blink {{{2
          * @param   {Object}    link
          */
         this.blink = function (link) {
@@ -7885,19 +7891,19 @@
             general.root.setInterval(function () {
                 link.style.color = link.style.color ? '' : '#FF0000';
             }, 700);
-        };
+        }; // 2}}}
 
         /**
-         * @method getNewsId
+         * @method getNewsId {{{2
          * @param    {String}   link
          * @return   {String}
          */
         this.getNewsId = function (link) {
             return (/&tid=(\d+)/.exec(link))[1];
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var stData = general.getData(14)[0];
@@ -7953,11 +7959,11 @@
 
                 general.setData(JSON.stringify(newData), 14);
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class DoFilter
+     * @class DoFilter {{{1
      * @constructor
      */
     var DoFilter = function () {
@@ -7968,7 +7974,7 @@
         this.selects = general.doc.querySelectorAll('select[name="item_id"]');
 
         /**
-         * @method setHrefItem
+         * @method setHrefItem {{{2
          * @param   {HTMLSelectElement}     sel
          */
         this.setHrefItem = function (sel) {
@@ -7982,10 +7988,10 @@
                 a.href = itemId;
                 a.removeAttribute('target');
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method selectChange
+         * @method selectChange {{{2
          * @param   {HTMLSelectElement}     sel
          */
         this.selectChange = function (sel) {
@@ -7994,10 +8000,10 @@
             return function () {
                 _this.setHrefItem(sel);
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method findItem
+         * @method findItem {{{2
          * @param   {Object}  inp
          */
         this.findItem = function (inp) {
@@ -8024,10 +8030,10 @@
 
                 this.setHrefItem(this.selects[i]);
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var target = general.doc.querySelector('table+br+center');
@@ -8087,16 +8093,16 @@
                 _this.findItem(textField);
             }, false);
             textField.focus();
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class FilterResOnStat
+     * @class FilterResOnStat {{{1
      * @constructor
      */
     var FilterResOnStat = function () {
         /**
-         * @method delSpaces
+         * @method delSpaces {{{2
          * @param   {String}    str
          * @return  {String}
          */
@@ -8104,10 +8110,10 @@
             return str.replace(/^\s*/, '').replace(/\s*$/, '').
                 replace(/\s,/g, ',').replace(/,\s/g, ',').
                 replace(/&nbsp;/g, '').replace(/&amp;/g, '&');
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var tbl = general.doc.querySelector('table[border="0"]' +
@@ -8128,11 +8134,11 @@
                     }
                 }
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class FilterWarlistOne2One
+     * @class FilterWarlistOne2One {{{1
      * @constructor
      */
     var FilterWarlistOne2One = function () {
@@ -8143,7 +8149,7 @@
         this.table = general.doc.querySelector('table[cellpadding="5"]');
 
         /**
-         * @method sortWeapon
+         * @method sortWeapon {{{2
          */
         this.sortWeapon = function () {
             var weapon = general.$('w_name').value.toLowerCase(),
@@ -8166,10 +8172,10 @@
                     }
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             if (/Подтверждаете бой с/.test(general.doc.body.innerHTML)) {
@@ -8236,16 +8242,16 @@
 
                 this.sortWeapon();
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class FixSkills
+     * @class FixSkills {{{1
      * @constructor
      */
     var FixSkills = function () {
         /**
-         * @property skills
+         * @property skills {{{2
          * @type {Array}
          */
         this.skills = [
@@ -8256,10 +8262,10 @@
             ['20', 5500], ['20/1', 7140], ['20/2', 9270], ['20/3', 12050],
             ['20/4', 15600], ['20/5', 20000], ['20/6', 26300], ['20/7', 34200],
             ['20/8', 45000], ['20/9', 58000]
-        ];
+        ]; // 2}}}
 
         /**
-         * @method fixSkills
+         * @method fixSkills {{{2
          * @param   {NodeList}  nbrs
          */
         this.fixSkills = function (nbrs) {
@@ -8302,10 +8308,10 @@
                     }
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var nobrs, css;
@@ -8320,16 +8326,16 @@
             }
 
             this.fixSkills(nobrs);
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class FuckTheFarm
+     * @class FuckTheFarm {{{1
      * @constructor
      */
     var FuckTheFarm = function () {
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var link;
@@ -8354,11 +8360,11 @@
                     link.parentNode.removeChild(link.nextSibling);
                 }
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class HistorySms
+     * @class HistorySms {{{1
      * @constructor
      */
     var HistorySms = function () {
@@ -8390,7 +8396,7 @@
         this.numberSms = 3;
 
         /**
-         * @method sortMess
+         * @method sortMess {{{2
          * @return   {int}
          */
         this.sortMess = function () {
@@ -8407,10 +8413,10 @@
 
                 return ret;
             });
-        };
+        }; // 2}}}
 
         /**
-         * @method createDivSms
+         * @method createDivSms {{{2
          * @return   {Object}
          */
         this.createDivSms = function () {
@@ -8423,10 +8429,10 @@
             target.insertBefore(divSms, target.firstChild);
 
             return divSms;
-        };
+        }; // 2}}}
 
         /**
-         * @method showOfSyndLinks
+         * @method showOfSyndLinks {{{2
          */
         this.showOfSyndLinks = function () {
             var mass = [],
@@ -8441,10 +8447,10 @@
                 '</span><div style="color: #000000;">' +
                 mass.reverse().join('<br>') + '</div><hr>';
             general.$('showOfSyndLinks').style.display = 'none';
-        };
+        }; // 2}}}
 
         /**
-         * @method showSms
+         * @method showSms {{{2
          */
         this.showSms = function () {
             var i;
@@ -8458,10 +8464,10 @@
             general.$('counter').innerHTML = '';
             general.$('preloader').style.display = 'none';
             general.$('showHistory').removeAttribute('on');
-        };
+        }; // 2}}}
 
         /**
-         * @method nextAjaxQuery
+         * @method nextAjaxQuery {{{2
          * @param    {Boolean}  outbox
          */
         this.nextAjaxQuery = function (outbox) {
@@ -8470,10 +8476,10 @@
             general.root.setTimeout(function () {
                 _this.showHistory(outbox ? 0 : 1, 0, outbox ? null : 1);
             }, 1000);
-        };
+        }; // 2}}}
 
         /**
-         * @method showHistory
+         * @method showHistory {{{2
          * @param   {int}       id
          * @param   {int}       id1
          * @param   {int|null}  id2
@@ -8572,10 +8578,10 @@
                     _this.showHistory(id, id1, id2);
                 }, 1000);
             });
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var target = general.doc.querySelector('td[width="100%"]>' +
@@ -8637,16 +8643,16 @@
                     _this.showHistory(0, 0, 0);
                 }
             }, false);
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class LinksToHighTech
+     * @class LinksToHighTech {{{1
      * @constructor
      */
     var LinksToHighTech = function () {
         /**
-         * @property highTechItems
+         * @property highTechItems {{{2
          * @type {Object}
          */
         this.highTechItems = {
@@ -8655,10 +8661,10 @@
                 'belts', 'rightpocket', 'leftpocket', 'epockets', 'drugs',
                 'transport'],
             'sniper': 'snipe'
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var links = general.doc.
@@ -8681,11 +8687,11 @@
                     }
                 }
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class GameMania
+     * @class GameMania {{{1
      * @constructor
      */
     var GameMania = function () {
@@ -8703,7 +8709,7 @@
         this.total = 0;
 
         /**
-         * @method calc
+         * @method calc {{{2
          * @param   {Object}    reg1
          * @param   {Object}    reg2
          * @return  {int}
@@ -8724,10 +8730,10 @@
             // noinspection JSUnusedGlobalSymbols
             this.total += rez;
             return rez;
-        };
+        }; // 2}}}
 
         /**
-         * @method getStrGameRez
+         * @method getStrGameRez {{{2
          * @param   {int}       rez
          * @param   {String}    game
          * @param   {Boolean}   ttl
@@ -8739,10 +8745,10 @@
                 game + ':</td>' + '<td style="color: ' +
                 (rez < 0 ? '#0000FF' : '#FF0000') + ';">$' +
                 new SetPoints().init(rez, ',', false) + '</td></tr>';
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             if (!this.target ||
@@ -8785,11 +8791,11 @@
                 div.innerHTML = str;
                 this.target.appendChild(div);
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class GosEnergoAtomFilter
+     * @class GosEnergoAtomFilter {{{1
      * @constructor
      */
     var GosEnergoAtomFilter = function () {
@@ -8800,7 +8806,7 @@
         this.trs = null;
 
         /**
-         * @method sortGosEnergoAtomBySynd
+         * @method sortGosEnergoAtomBySynd {{{2
          */
         this.sortGosEnergoAtomBySynd = function () {
             var prnt = this.trs[0].parentNode,
@@ -8836,10 +8842,10 @@
             }
 
             this.getTrsTable();
-        };
+        }; // 2}}}
 
         /**
-         * @method resetGosEnergoAtom
+         * @method resetGosEnergoAtom {{{2
          */
         this.resetGosEnergoAtom = function () {
             var i;
@@ -8847,10 +8853,10 @@
             for (i = 1; i < this.trs.length; i++) {
                 this.trs[i].style.display = '';
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method sortGosEnergoAtom
+         * @method sortGosEnergoAtom {{{2
          */
         this.sortGosEnergoAtom = function () {
             var stData = general.getData(17),
@@ -8907,10 +8913,10 @@
                     }
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method selectChangeHandler
+         * @method selectChangeHandler {{{2
          * @param    {Object}   sel
          */
         this.selectChangeHandler = function (sel) {
@@ -8923,10 +8929,10 @@
                     (val === 'all' ? '' : val);
             general.setData(stData, 17);
             this.sortGosEnergoAtom();
-        };
+        }; // 2}}}
 
         /**
-         * @method getTrsTable
+         * @method getTrsTable {{{2
          * @return  {Array}
          */
         this.getTrsTable = function () {
@@ -8934,10 +8940,10 @@
                     '[cellpadding="3"][cellspacing="0"][class="wb"]' +
                     '[bgcolor="#ffffff"][align="center"]').
                         querySelectorAll('tr');
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var divSort = general.doc.createElement('div');
@@ -8981,11 +8987,11 @@
             obj.value = stData[1] || '0';
             synd.value = stData[2] || 'all';
             this.sortGosEnergoAtom();
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class SortSyndOnline
+     * @class SortSyndOnline {{{1
      * @constructor
      */
     var SortSyndOnline = function () {
@@ -8997,7 +9003,7 @@
                 '[align="center"][cellspacing="0"][cellpadding="0"]');
 
         /**
-         * @method sortBattles
+         * @method sortBattles {{{2
          */
         this.sortBattles = function () {
             var trs = this.mainTable.querySelectorAll('tr'),
@@ -9064,10 +9070,10 @@
                     countBattles++;
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             if (/&page=online$/.test(general.loc) && this.mainTable &&
@@ -9076,16 +9082,16 @@
                             'img[src*="/i/icons/"]')) {
                 this.sortBattles();
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class HousHealth
+     * @class HousHealth {{{1
      * @constructor
      */
     var HousHealth = function () {
         /**
-         * @method showSector
+         * @method showSector {{{2
          * @param   {String}    url
          * @param   {string}    sector
          */
@@ -9132,10 +9138,10 @@
                     _this.showSector(url, sector);
                 }, 1000);
             });
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             if (/b0/.test(general.loc)) {
@@ -9153,16 +9159,16 @@
                             general.myID, '');
                 }
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class LinksInOne2One
+     * @class LinksInOne2One {{{1
      * @constructor
      */
     var LinksInOne2One = function () {
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var table = general.doc.querySelector('td[class="txt"]>' +
@@ -9186,11 +9192,11 @@
                     }
                 }
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class One2OneCallerInfo
+     * @class One2OneCallerInfo {{{1
      * @constructor
      */
     var One2OneCallerInfo = function () {
@@ -9206,7 +9212,7 @@
         this.twoHand = false;
 
         /**
-         * @method getRange
+         * @method getRange {{{2
          * @param   {int}       ind
          * @param   {string}    str
          */
@@ -9237,10 +9243,10 @@
                     _this.getRange(ind, str);
                 }, 1000);
             });
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var called = general.doc.querySelector('td[class="greengreenbg"]' +
@@ -9311,16 +9317,16 @@
             }, function () {
                 general.cons.log('Error xhr on One2OneCallerInfo');
             });
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class PortsAndTerminals
+     * @class PortsAndTerminals {{{1
      * @constructor
      */
     var PortsAndTerminals = function () {
         /**
-         * @property sectors
+         * @property sectors {{{2
          * @type {Array}
          */
         this.sectors = [
@@ -9330,7 +9336,7 @@
             '48&sy=53|1', '49&sy=53|', '53&sy=53|', '152&sy=148|',
             '149&sy=149|', '152&sy=149|1', '150&sy=150|1', '151&sy=150|',
             '149&sy=152|', '151&sy=152|2'
-        ];
+        ]; // 2}}}
         /**
          * @property imgPath
          * @type {String}
@@ -9338,7 +9344,7 @@
         this.imgPath = general.imgPath + 'PortsAndTerminals/';
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var cells = general.doc.
@@ -9375,11 +9381,11 @@
                     }
                 }
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class RangeWeapon
+     * @class RangeWeapon {{{1
      * @constructor
      */
     var RangeWeapon = function () {
@@ -9401,7 +9407,7 @@
         this.range = [];
 
         /**
-         * @method setRange
+         * @method setRange {{{2
          * @param   {Object}    target
          * @param   {int}       ind
          */
@@ -9411,10 +9417,10 @@
             targt.innerHTML += '<span style="color: #0000FF; ' +
                     'margin-left: 5px; font-weight: bold;">[' +
                     this.range[ind] + ']</span>';
-        };
+        }; // 2}}}
 
         /**
-         * @method showRange
+         * @method showRange {{{2
          */
         this.showRange = function () {
             var a  = this.equipment.
@@ -9426,10 +9432,10 @@
             for (i = 0; i < this.range.length; i++) {
                 this.setRange(target, i);
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method getRange
+         * @method getRange {{{2
          * @param   {int}   ind
          */
         this.getRange = function (ind) {
@@ -9461,10 +9467,10 @@
                     _this.getRange(ind);
                 }, 1000);
             });
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             // noinspection JSUnresolvedVariable
@@ -9483,16 +9489,16 @@
 
                 this.getRange(0);
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class RentAndSale
+     * @class RentAndSale {{{1
      * @constructor
      */
     var RentAndSale = function () {
         /**
-         * @method changeColor
+         * @method changeColor {{{2
          */
         this.changeColor = function () {
             var td = general.doc.querySelector('input[name="sendtype"]').
@@ -9503,10 +9509,10 @@
 
             td.style.background = color;
             td.previousElementSibling.style.background = color;
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var radio = general.doc.querySelectorAll('input[name="sendtype"]');
@@ -9528,16 +9534,16 @@
                     radio[i].addEventListener('click', this.changeColor, false);
                 }
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class ScanKarma
+     * @class ScanKarma {{{1
      * @constructor
      */
     var ScanKarma = function () {
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             if (/\?id=(\d+)/.exec(general.loc)[1] === general.myID) {
@@ -9591,11 +9597,11 @@
                     alert(str);
                 }
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class ScanPers
+     * @class ScanPers {{{1
      * @constructor
      */
     var ScanPers = function () {
@@ -9621,7 +9627,7 @@
         this.playSound = new PlaySound().init;
 
         /**
-         * @method showSettings
+         * @method showSettings {{{2
          */
         this.showSettings = function () {
             return function () {
@@ -9637,10 +9643,10 @@
                             'visible' : 'hidden';
                 }
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method changeSelect
+         * @method changeSelect {{{2
          * @param   {int}   ind
          */
         this.changeSelect = function (ind) {
@@ -9649,20 +9655,20 @@
                 stData[ind] = this.value !== '0' ? this.value : '';
                 general.setData(stData, 24);
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method listenSound
+         * @method listenSound {{{2
          */
         this.listenSound = function () {
             var _this = this;
             return function () {
                 _this.playSound(this.previousElementSibling.value);
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method showHideLink
+         * @method showHideLink {{{2
          */
         this.showHideLink = function () {
             var stData = general.getData(24),
@@ -9684,10 +9690,10 @@
                 butReset.disabled = true;
                 butSave.disabled = false;
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method scan
+         * @method scan {{{2
          */
         this.scan = function () {
             var stData = general.getData(24),
@@ -9725,10 +9731,10 @@
                     _this.scan();
                 }, 1000);
             });
-        };
+        }; // 2}}}
 
         /**
-         * @method start
+         * @method start {{{2
          */
         this.start = function () {
             var _this = this;
@@ -9742,10 +9748,10 @@
                     _this.scan();
                 }
             }, Math.round(this.interval * 1000 + 3000 * Math.random()));
-        };
+        }; // 2}}}
 
         /**
-         * @method getPers
+         * @method getPers {{{2
          * @param   {String}    id
          * @return  {Element|null}
          */
@@ -9757,10 +9763,10 @@
 
             css1 = 'a[href$="/info.php?id=' + id + '"]>b';
             return table ? table.querySelector(css1) : null;
-        };
+        }; // 2}}}
 
         /**
-         * @method saveData
+         * @method saveData {{{2
          */
         this.saveData = function () {
             var reg = /^\d+$/,
@@ -9812,10 +9818,10 @@
                     _this.saveData();
                 }, 1000);
             });
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var topPanel = new GetTopPanel().init();
@@ -9980,11 +9986,11 @@
 
             this.showHideLink();
             this.start();
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class ShowInitMessOnForum
+     * @class ShowInitMessOnForum {{{1
      * @constructor
      */
     var ShowInitMessOnForum = function () {
@@ -10000,17 +10006,17 @@
         this.messages = null;
 
         /**
-         * @method getMessagesOnPages
+         * @method getMessagesOnPages {{{2
          * @param   {Object}    obj
          * @return  {NodeList}
          */
         this.getMessagesOnPages = function (obj) {
             return obj.querySelectorAll('td>table[cellpadding="5"]' +
                     '[cellspacing="0"][border="0"]');
-        };
+        }; // 2}}}
 
         /**
-         * @method insertMess
+         * @method insertMess {{{2
          * @param   {Element}  target
          * @param   {Element}  last
          */
@@ -10062,10 +10068,10 @@
                     }, false);
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method parseMessages
+         * @method parseMessages {{{2
          * @param   {int}   ind
          */
         this.parseMessages = function (ind) {
@@ -10127,10 +10133,10 @@
                     }, 1000);
                 });
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             if (/&page_id=\d+/.exec(general.loc)) {
@@ -10145,16 +10151,16 @@
 
             this.messages = this.getMessagesOnPages(general.doc);
             this.parseMessages(0);
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class SearchUser
+     * @class SearchUser {{{1
      * @constructor
      */
     var SearchUser = function () {
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var topPanel = new GetTopPanel().init();
@@ -10178,11 +10184,11 @@
                     }
                 }, false);
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class SkillCounters
+     * @class SkillCounters {{{1
      * @constructor
      */
     var SkillCounters = function () {
@@ -10193,13 +10199,13 @@
         this.counters = general.doc.querySelectorAll('td[valign="top"]' +
                 '[bgcolor="#e9ffe9"]>div>table[border="0"] tr>td+td>nobr');
         /**
-         * @property ids
+         * @property ids {{{2
          * @type {Array}
          */
         this.ids = [
             'cFighting', 'cEconomic', 'cProduction', 'cGuns', 'cGrenades',
             'cAuto', 'cHeavy', 'cShotguns', 'cSnipers'
-        ];
+        ]; // 2}}}
         /**
          * @property dataNow
          * @type {Array|null}
@@ -10207,7 +10213,7 @@
         this.dataNow = null;
 
         /**
-         * @method getHtime
+         * @method getHtime {{{2
          * @param   {int}   time
          * @return  {String}
          */
@@ -10225,10 +10231,10 @@
             str += year + ' ' + /(\d+:\d+):\d+/.exec(date.toString())[1];
 
             return str;
-        };
+        }; // 2}}}
 
         /**
-         * @method getValue
+         * @method getValue {{{2
          * @param   {Element}   obj
          * @param   {int}       fix
          * @return  {String}
@@ -10236,10 +10242,10 @@
         this.getValue = function (obj, fix) {
             return parseFloat(/\((\s?<span [^>]+>)?(\d+.?\d*)(\s?<\/span>)?\)/.
                 exec(obj.innerHTML)[2]).toFixed(fix);
-        };
+        }; // 2}}}
 
         /**
-         * @method getDataNow
+         * @method getDataNow {{{2
          * @param   {Boolean}   loadPage
          */
         this.getDataNow = function (loadPage) {
@@ -10266,10 +10272,10 @@
 
             this.dataNow.push(syndExp ? this.getValue(syndExp, 0) : '');
             this.dataNow.push(new Date().getTime());
-        };
+        }; // 2}}}
 
         /**
-         * @method setLeftToLevel
+         * @method setLeftToLevel {{{2
          * @param   {int}   val
          */
         this.setLeftToLevel = function (val) {
@@ -10289,10 +10295,10 @@
                     break;
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method setCounters
+         * @method setCounters {{{2
          */
         this.setCounters = function () {
             var stData = general.getData(25),
@@ -10320,10 +10326,10 @@
                     (+this.dataNow[9] - (+stData[9])) + ']';
                 this.setLeftToLevel(+this.dataNow[9]);
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             // на главной странице личного NPC
@@ -10362,11 +10368,11 @@
             }, false);
 
             this.setCounters();
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class SyndPtsAnalyser
+     * @class SyndPtsAnalyser {{{1
      * @constructor
      */
     var SyndPtsAnalyser = function () {
@@ -10433,7 +10439,7 @@
         this.imgPath = general.imgPath + 'SyndPtsAnalyser/';
 
         /**
-         * @method getLastDate
+         * @method getLastDate {{{2
          * @param   {String}    url
          */
         this.getLastDate = function (url) {
@@ -10478,10 +10484,10 @@
                 preloader.parentNode.innerHTML += '<br><span style="color: ' +
                     '#FF0000;">Ошибка ответа сервера...</span>';
             });
-        };
+        }; // 2}}}
 
         /**
-         * @method enterPress
+         * @method enterPress {{{2
          * @param   {Object}    e
          */
         this.enterPress = function (e) {
@@ -10489,10 +10495,10 @@
             if (ev.keyCode === 13) {
                 general.$('goPTS').click();
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method showRezult
+         * @method showRezult {{{2
          * @param   {String}    id
          */
         this.showRezult = function (id) {
@@ -10624,10 +10630,10 @@
                 addEventListener('click', this.titleClick('sign'), false);
             general.$('all').
                 addEventListener('click', this.titleClick('all'), false);
-        };
+        }; // 2}}}
 
         /**
-         * @method titleClick
+         * @method titleClick {{{2
          * @param   {String}    id
          */
         this.titleClick = function (id) {
@@ -10635,10 +10641,10 @@
             return function () {
                 _this.sortPers(id);
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method sortPers
+         * @method sortPers {{{2
          * @param   {String}    prop
          */
         this.sortPers = function (prop) {
@@ -10657,10 +10663,10 @@
             });
 
             this.showRezult(prop);
-        };
+        }; // 2}}}
 
         /**
-         * @method addData
+         * @method addData {{{2
          * @param   {Object}    pers
          * @param   {String}    prop
          * @param   {int}       val
@@ -10689,10 +10695,10 @@
 
             this.summ[ind] += val;
             this.all += val;
-        };
+        }; // 2}}}
 
         /**
-         * @method parsePTSProtocols
+         * @method parsePTSProtocols {{{2
          * @param   {int}   ind
          */
         this.parsePTSProtocols = function (ind) {
@@ -10791,10 +10797,10 @@
                     _this.parsePTSProtocols(ind);
                 }, _this.tm);
             });
-        };
+        }; // 2}}}
 
         /**
-         * @method getPers
+         * @method getPers {{{2
          * @param   {String}    nik
          * @return  {Object}
          */
@@ -10810,10 +10816,10 @@
             this.pers.push(pers);
 
             return pers;
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var target = general.doc.
@@ -10913,11 +10919,11 @@
                     _this.parsePTSProtocols(0);
                 }, false);
             }, false);
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class SyndAnalyser
+     * @class SyndAnalyser {{{1
      * @constructor
      */
     var SyndAnalyser = function () {
@@ -10959,7 +10965,7 @@
         this.mainData = null;
 
         /**
-         * @class MainData
+         * @class MainData {{{2
          * @constructor
          */
         var MainData = function () {
@@ -11008,10 +11014,10 @@
                 bars: {mMoney: 0, pMoney: 0, mPTS: 0, pPTS: 0},
                 another: {mMoney: 0, pMoney: 0, mPTS: 0, pPTS: 0}
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method getLastDate
+         * @method getLastDate {{{2
          * @param   {String}    url
          */
         this.getLastDate = function (url) {
@@ -11057,10 +11063,10 @@
                     '<span style="color: #FF0000;">Ошибка ответа сервера...' +
                     '</span>';
             });
-        };
+        }; // 2}}}
 
         /**
-         * @method enterPress
+         * @method enterPress {{{2
          * @param   {Object}    e
          */
         this.enterPress = function (e) {
@@ -11068,10 +11074,10 @@
             if (ev.keyCode === 13) {
                 general.$('goSAnalyse').click();
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method getPers
+         * @method getPers {{{2
          * @param   {Object}   link
          * @return  {Object}
          */
@@ -11094,10 +11100,10 @@
             this.mainData.pers.push(pers);
 
             return pers;
-        };
+        }; // 2}}}
 
         /**
-         * @method getTypeLine
+         * @method getTypeLine {{{2
          * @param   {String}    str
          * @return  {int|Object}
          */
@@ -11148,20 +11154,20 @@
             }
 
             return 0;
-        };
+        }; // 2}}}
 
         /**
-         * @method getPersLink
+         * @method getPersLink {{{2
          * @param    {Element}  elem
          * @return   {Element}
          */
         this.getPersLink = function (elem) {
             // noinspection JSUnresolvedVariable
             return elem.parentNode.nextElementSibling.querySelector('a');
-        };
+        }; // 2}}}
 
         /**
-         * @method parseLine
+         * @method parseLine {{{2
          * @param   {String}    str
          * @param   {Object}    obj
          */
@@ -11174,10 +11180,10 @@
                 obj.pMoney += +rez[3].replace(/,/g, '');
                 obj.pPTS += +rez[4].replace(/,/g, '');
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method getRealEstateStr
+         * @method getRealEstateStr {{{2
          * @param   {Object}    obj
          * @param   {String}    name
          * @param   {String}    title
@@ -11205,10 +11211,10 @@
                 '<span style="font-weight: bold;">' +
                 setPoints(obj.pPTS - obj.mPTS, '\'', true) + '</span>' +
                 str3;
-        };
+        }; // 2}}}
 
         /**
-         * @method showRezult
+         * @method showRezult {{{2
          */
         this.showRezult = function () {
             this.sortPers();
@@ -11303,10 +11309,10 @@
                 '<tr><td colspan="2" class="wb"><span style="font-weight: ' +
                 'bold; color: #0000FF;">Приняты в синдикат</span> (всего ' +
                 main.takenSynd.length + ')' + str3 + strTakenSynd;
-        };
+        }; // 2}}}
 
         /**
-         * @method sortPers
+         * @method sortPers {{{2
          */
         this.sortPers = function () {
             this.mainData.pers.sort(function (a, b) {
@@ -11322,10 +11328,10 @@
 
                 return ret;
             });
-        };
+        }; // 2}}}
 
         /**
-         * @method parseSyndProtocols
+         * @method parseSyndProtocols {{{2
          * @param   {int}   ind
          */
         this.parseSyndProtocols = function (ind) {
@@ -11446,10 +11452,10 @@
                 }, _this.tm);
             });
 
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var target = general.doc.
@@ -11526,11 +11532,11 @@
                     _this.parseSyndProtocols(0);
                 }, false);
             }, false);
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class ShowMyAchievements
+     * @class ShowMyAchievements {{{1
      * @constructor
      */
     var ShowMyAchievements = function () {
@@ -11541,7 +11547,7 @@
         this.divResult = null;
 
         /**
-         * @method addCloseButton
+         * @method addCloseButton {{{2
          */
         this.addCloseButton = function () {
             this.divResult.innerHTML += '<img id="closemyachiev" ' +
@@ -11552,19 +11558,19 @@
             general.$('closemyachiev').addEventListener('click', function () {
                 _this.divResult.style.visibility = 'hidden';
             }, false);
-        };
+        }; // 2}}}
 
         /**
-         * @method getAchievNow
+         * @method getAchievNow {{{2
          * @param   {Object}    obj
          */
         this.getAchievNow = function (obj) {
             return obj.querySelectorAll('td[bgcolor="#ffffff"]>' +
                     'font[color="#336633"]');
-        };
+        }; // 2}}}
 
         /**
-         * @method showData
+         * @method showData {{{2
          * @param   {Object}    ths
          */
         this.showData = function (ths) {
@@ -11608,10 +11614,10 @@
                     _this.addCloseButton();
                 });
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method setChkHandler
+         * @method setChkHandler {{{2
          */
         this.setChkHandler = function () {
             var chks = general.doc.querySelectorAll('input[id^="achiev"]'),
@@ -11625,10 +11631,10 @@
             }
 
             general.setData([str.replace(/,$/, '')], 26);
-        };
+        }; // 2}}}
 
         /**
-         * @method setCheckboxes
+         * @method setCheckboxes {{{2
          */
         this.setCheckboxes = function () {
             var achievNow = this.getAchievNow(general.doc),
@@ -11651,10 +11657,10 @@
                 prnt.insertBefore(chk, target);
                 chk.addEventListener('click', this.setChkHandler, false);
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var topPanel = new GetTopPanel().init();
@@ -11688,11 +11694,11 @@
                     this.setCheckboxes();
                 }
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class SyndOnlineOnMainPage
+     * @class SyndOnlineOnMainPage {{{1
      * @constructor
      */
     var SyndOnlineOnMainPage = function () {
@@ -11708,7 +11714,7 @@
         this.syndMain = null;
 
         /**
-         * @method setSms
+         * @method setSms {{{2
          */
         this.setSms = function () {
             var nobrs = general.$('friendsbody').querySelectorAll('nobr');
@@ -11727,10 +11733,10 @@
 
                 return false;
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method getOnline
+         * @method getOnline {{{2
          * @param   {Boolean}   type
          */
         this.getOnline = function (type) {
@@ -11796,10 +11802,10 @@
                     _this.getOnline(type);
                 }, 1000);
             });
-        };
+        }; // 2}}}
 
         /**
-         * @method createLink
+         * @method createLink {{{2
          * @param   {String}    name
          * @param   {Boolean}   type
          * @return  {HTMLElement}
@@ -11815,10 +11821,10 @@
             }, false);
 
             return link;
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             // гости, друзья - ставим конвертики для отправки письма
@@ -11860,16 +11866,16 @@
                     general.cons.log('Error request to: ' + url);
                 });
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class TimeKarma
+     * @class TimeKarma {{{1
      * @constructor
      */
     var TimeKarma = function () {
         /**
-         * @method formatTime
+         * @method formatTime {{{2
          * @param   {int}   sec
          */
         this.formatTime = function (sec) {
@@ -11893,10 +11899,10 @@
                     _this.formatTime(sec - 1);
                 }
             }, 1000);
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             // на странице личных NPC не работает
@@ -11941,16 +11947,16 @@
                     this.formatTime(tm);
                 }
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class ImgPokemonsOnBattle
+     * @class ImgPokemonsOnBattle {{{1
      * @constructor
      */
     var ImgPokemonsOnBattle = function () {
         /**
-         * @method deleteImagePoks
+         * @method deleteImagePoks {{{2
          */
         this.deleteImagePoks = function () {
             var divs = general.doc.querySelectorAll('div[name="imagepokemon"]'),
@@ -11959,10 +11965,10 @@
             for (i = 0; i < divs.length; i++) {
                 divs[i].parentNode.removeChild(divs[i]);
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method showImagePoks
+         * @method showImagePoks {{{2
          */
         this.showImagePoks = function () {
             var enemies = general.doc.
@@ -12006,10 +12012,10 @@
                         'px;" title="' + name + '" alt="' + name + '" />';
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             this.showImagePoks();
@@ -12022,11 +12028,11 @@
                     _this.showImagePoks();
                 }, 1000);
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class SoundSyndBattle
+     * @class SoundSyndBattle {{{1
      * @constructor
      */
     var SoundSyndBattle = function () {
@@ -12037,7 +12043,7 @@
         this.redLink = null;
 
         /**
-         * @method setTimer
+         * @method setTimer {{{2
          * @param   {int}   sec
          */
         this.setTimer = function (sec) {
@@ -12059,10 +12065,10 @@
                     }
                 }, 1000);
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method syndAlert
+         * @method syndAlert {{{2
          * @param   {String}    dataCheck
          * @param   {String}    data
          * @param   {int}       sound
@@ -12077,10 +12083,10 @@
                     new PlaySound().init(sound);
                 }
             }, tm);
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var stData = general.getData(28);
@@ -12133,11 +12139,11 @@
                     this.syndAlert('1', '2', sound2, getRandom(0, 3000));
                 }
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class AdvForum
+     * @class AdvForum {{{1
      * @constructor
      */
     var AdvForum = function () {
@@ -12153,15 +12159,15 @@
         this.parseLoc = /\?fid=(\d+)(&tid=(\d+))?/.exec(general.loc);
 
         /**
-         * @method getForumTable
+         * @method getForumTable {{{2
          * @return  {HTMLElement}
          */
         this.getForumTable = function () {
             return general.doc.querySelector('center+br+center+table');
-        };
+        }; // 2}}}
 
         /**
-         * @method processingThemesList
+         * @method processingThemesList {{{2
          */
         this.processingThemesList = function () {
             var table = this.getForumTable(),
@@ -12269,10 +12275,10 @@
                     general.root.location.reload();
                 }, tm * 1000);
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method cleanStorage
+         * @method cleanStorage {{{2
          * @param   {String}    f
          * @param   {String}    t
          * @param   {String}    tableHTML
@@ -12327,28 +12333,28 @@
                     _this.processingThemesList();
                 }
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method toDec
+         * @method toDec {{{2
          * @param   {String} hex
          * @return  {int}
          */
         this.toDec = function (hex) {
             return parseInt(hex, 16);
-        };
+        }; // 2}}}
 
         /**
-         * @method toHex
+         * @method toHex {{{2
          * @param   {int}       dec
          * @return  {String}
          */
         this.toHex = function (dec) {
             return Number(dec).toString(16);
-        };
+        }; // 2}}}
 
         /**
-         * @method showHideForum
+         * @method showHideForum {{{2
          */
         this.showHideForum = function () {
             return function () {
@@ -12361,10 +12367,10 @@
                 stData[6] = f.join(',');
                 general.setData(stData, 29);
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method setSettins
+         * @method setSettins {{{2
          * @param   {HTMLElement}   table
          * @param   {String}        fid
          */
@@ -12536,10 +12542,10 @@
                         addEventListener('click', _this.showHideForum(), false);
                 }
             }, false);
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var stData = general.getData(29),
@@ -12641,16 +12647,16 @@
 
                 this.processingThemesList();
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class DelAndAddBlackSms
+     * @class DelAndAddBlackSms {{{1
      * @constructor
      */
     var DelAndAddBlackSms = function () {
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var del = general.doc.querySelector('td>a[class="mainbutton"]' +
@@ -12669,11 +12675,11 @@
                     }
                 }, false);
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class Regeneration
+     * @class Regeneration {{{1
      * @constructor
      */
     var Regeneration = function () {
@@ -12715,7 +12721,7 @@
         this.pbHeight = 4;
 
         /**
-         * @method formatTime
+         * @method formatTime {{{2
          * @param   {int}   sec
          * @return  {String}
          */
@@ -12734,10 +12740,10 @@
 
             str += sec < 10 ? '0' + sec : sec;
             return str;
-        };
+        }; // 2}}}
 
         /**
-         * @method hpupdate
+         * @method hpupdate {{{2
          * @param   {Boolean}   first
          */
         this.hpupdate = function (first) {
@@ -12813,10 +12819,10 @@
                     _this.hpupdate(false);
                 }, 1000);
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             // на главной странице личного NPC
@@ -12857,11 +12863,11 @@
 
                 this.hpupdate(true);
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class ProfColor
+     * @class ProfColor {{{1
      * @constructor
      */
     var ProfColor = function () {
@@ -12872,6 +12878,9 @@
         this.activeProfs = general.doc.
                 querySelectorAll('tr>td>font[color="#006600"]');
 
+        /**
+         * @method init {{{2
+         */
         this.init = function () {
             var i;
             for (i = 0; i < this.activeProfs.length; i++) {
@@ -12880,11 +12889,11 @@
                     this.activeProfs[i].setAttribute('color', '#FF0000');
                 }
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class CurrentQuestOnInfo
+     * @class CurrentQuestOnInfo {{{1
      * @constructor
      */
     var CurrentQuestOnInfo = function () {
@@ -12905,7 +12914,7 @@
         this.target = general.doc.querySelector('#actiondivin');
 
         /**
-         * @method showQuest
+         * @method showQuest {{{2
          * @param   {String}    url
          */
         this.showQuest = function (url) {
@@ -13045,19 +13054,22 @@
                     _this.showQuest(url);
                 }, _this.tm);
             });
-        };
+        }; // 2}}}
 
+        /**
+         * @method init {{{2
+         */
         this.init = function () {
             // noinspection JSUnresolvedVariable
             if (this.persID && this.target && general.root.swdf) {
                 this.showQuest('http://www.gwars.ru/questlog.php?id=' +
                     this.persID);
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class CommonBattleFilter
+     * @class CommonBattleFilter {{{1
      * @constructor
      */
     var CommonBattleFilter = function () {
@@ -13068,17 +13080,17 @@
         this.battleTable = null;
 
         /**
-         * @method getLvl
+         * @method getLvl {{{2
          * @param   {Object}    row
          * @return  {int}
          */
         this.getLvl = function (row) {
             return +row.querySelector('font[color="red"]').innerHTML.
                 split('-')[1];
-        };
+        }; // 2}}}
 
         /**
-         * @method sortBattleTable
+         * @method sortBattleTable {{{2
          */
         this.sortBattleTable = function () {
             var stData = general.getData(20),
@@ -13108,10 +13120,10 @@
                     row.style.display = 'none';
                 }
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method getSelect
+         * @method getSelect {{{2
          * @param   {String}    id
          * @return  {String}
          */
@@ -13165,10 +13177,10 @@
                 '<option value="49">49</option>' +
                 '<option value="50">50</option>' +
                 '</select>';
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             // форма создания заявки
@@ -13245,11 +13257,11 @@
             }, false);
 
             this.sortBattleTable();
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class PortTimer
+     * @class PortTimer {{{1
      * @constructor
      */
     var PortTimer = function () {
@@ -13275,7 +13287,7 @@
         this.date = 0;
 
         /**
-         * @method getBattles
+         * @method getBattles {{{2
          */
         this.getBattles = function () {
             var _this = this;
@@ -13312,10 +13324,10 @@
                     _this.getBattles();
                 }, _this.tm);
             });
-        };
+        }; // 2}}}
 
         /**
-         * @method resetStorage
+         * @method resetStorage {{{2
          */
         this.resetStorage = function () {
             general.setData(JSON.stringify({
@@ -13324,10 +13336,10 @@
                 'time': [],
                 'current': ''
             }), 22);
-        };
+        }; // 2}}}
 
         /**
-         * @method getTimeDiff
+         * @method getTimeDiff {{{2
          * @return  {int}
          */
         this.getTimeDiff = function () {
@@ -13338,10 +13350,10 @@
             // noinspection JSRemoveUnnecessaryParentheses
             return (+stData.current[0] * 60 + (+stData.current[1])) -
                 ((now.getUTCHours() + 3) * 60 + now.getMinutes());
-        };
+        }; // 2}}}
 
         /**
-         * @method setTimer
+         * @method setTimer {{{2
          */
         this.setTimer = function () {
             var diff = this.getTimeDiff(),
@@ -13350,10 +13362,10 @@
 
             general.$('portTimer').innerHTML = (hours < 10 ? '0' + hours :
                     hours) + ':' + (min < 10 ? '0' + min : min);
-        };
+        }; // 2}}}
 
         /**
-         * @method changeCurrentTime
+         * @method changeCurrentTime {{{2
          */
         this.changeCurrentTime = function () {
             var stData = JSON.parse(general.getData(22)[0]);
@@ -13374,10 +13386,10 @@
             this.setInterface();
             general.$('portTime').innerHTML = time;
             this.setTimer();
-        };
+        }; // 2}}}
 
         /**
-         * @method setInterface
+         * @method setInterface {{{2
          */
         this.setInterface = function () {
             var mainTimer = general.doc.createElement('span');
@@ -13391,10 +13403,10 @@
 
             this.topPanel.appendChild(general.doc.createTextNode(' | '));
             this.topPanel.appendChild(mainTimer);
-        };
+        }; // 2}}}
 
         /**
-         * @method setTime
+         * @method setTime {{{2
          */
         this.setTime = function () {
             var stData = JSON.parse(general.getData(22)[0]);
@@ -13405,10 +13417,10 @@
                 general.$('portTime').innerHTML = stData.current;
                 this.setTimer();
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             // верхняя панель
@@ -13469,11 +13481,11 @@
             } else {
                 this.setTime();
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class CalculateSyndLvl
+     * @class CalculateSyndLvl {{{1
      * @constructor
      */
     var CalculateSyndLvl = function () {
@@ -13488,14 +13500,15 @@
          */
         this.spanContent = general.doc.createElement('span');
         /**
-         * @property lvls
+         * @property lvls {{{2
          * @type {Array}
          */
         this.lvls = [50000, 150000, 250000, 350000, 450000, 550000, 650000,
-            750000, 850000, 950000, 1350000, 1750000, 2150000, 2550000, 2950000,
-            3350000, 3750000, 4150000, 4550000, 4950000, 6550000, 8150000,
-            9750000, 11350000, 12950000, 14550000, 16150000, 17750000, 19350000,
-            20950000];
+                750000, 850000, 950000, 1350000, 1750000, 2150000, 2550000,
+                2950000, 3350000, 3750000, 4150000, 4550000, 4950000, 6550000,
+                8150000, 9750000, 11350000, 12950000, 14550000, 16150000,
+                17750000, 19350000, 20950000
+            ]; // 2}}}
         /**
          * @property tm
          * @type {int}
@@ -13508,16 +13521,16 @@
         this.ajax = new AjaxQuery();
 
         /**
-         * @method preScan
+         * @method preScan {{{2
          * @param   {Boolean}   mode
          */
         this.preScan = function (mode) {
             general.$('calcSyndLvl').style.color = mode ? '#AAAAAA' : '#004400';
             general.$('preloader').style.display = mode ? '' : 'none';
-        };
+        }; // 2}}}
 
         /**
-         * @method scan
+         * @method scan {{{2
          * @param   {int}   ind
          */
         this.scan = function (ind) {
@@ -13596,10 +13609,10 @@
                     _this.scan(ind);
                 }, _this.tm);
             });
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var target = general.doc.querySelector('td[class="greengreenbg"]' +
@@ -13627,16 +13640,16 @@
                     _this.scan(0);
                 }
             }, false);
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class PortsSyndLinks
+     * @class PortsSyndLinks {{{1
      * @constructor
      */
     var PortsSyndLinks = function () {
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             var css = 'td>table[cellspacing="1"][cellpadding="5"]' +
@@ -13669,11 +13682,11 @@
                     }
                 }
             }
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     /**
-     * @class PersonalNPCNotifications
+     * @class PersonalNPCNotifications {{{1
      * @constructor
      */
     var PersonalNPCNotifications = function () {
@@ -13699,7 +13712,7 @@
         this.playSound = new PlaySound().init;
 
         /**
-         * @method setCss
+         * @method setCss {{{2
          */
         this.setCss = function () {
             // css-ботва для ссылки на главную страницу NPC
@@ -13719,10 +13732,10 @@
 
             general.doc.querySelector('head').appendChild(npcLinkStyle);
             this.isCssSet = true;
-        };
+        }; // 2}}}
 
         /**
-         * @method changepostdo
+         * @method changepostdo {{{2
          */
         this.changepostdo = function () {
             var _this = this;
@@ -13754,10 +13767,10 @@
 
                 return false;
             };
-        };
+        }; // 2}}}
 
         /**
-         * @method start
+         * @method start {{{2
          */
         this.start = function () {
             var npcLink = general.doc.querySelector('a[href*="/me.php?nid="]' +
@@ -13802,10 +13815,10 @@
                     }, 3000);
                 });
             }
-        };
+        }; // 2}}}
 
         /**
-         * @method init
+         * @method init {{{2
          */
         this.init = function () {
             if (!this.isCssSet) {
@@ -13814,8 +13827,8 @@
 
             this.changepostdo();
             this.start();
-        };
-    };
+        }; // 2}}}
+    }; // 1}}}
 
     general = new General();
 
@@ -13862,7 +13875,7 @@
 
     get_cpigwchbl();
 
-    main_init = function () {
+    main_init = function () { // {{{1
         initScript = general.getInitScript();
 
         // на ganjafoto, ganjafile или на ауте меняем фавикон
@@ -14430,7 +14443,8 @@
                 }
             }
         }
-    };
+    }; // 1}}}
 
 }());
 
+// vim:fdm=marker
