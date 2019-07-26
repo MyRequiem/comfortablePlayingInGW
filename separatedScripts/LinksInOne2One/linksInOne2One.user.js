@@ -6,9 +6,10 @@
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/LinksInOne2One/linksInOne2One.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/LinksInOne2One/linksInOne2One.user.js
 // @include         http://www.gwars.ru/warlist.php?war=armed*
+// @include         http://www.gwars.ru/warlist.php?war=duels*
 // @grant           none
 // @license         MIT
-// @version         2.06-260519
+// @version         2.07-260719
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 

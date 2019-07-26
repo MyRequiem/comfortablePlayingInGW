@@ -14368,7 +14368,7 @@
         }
 
         // бои
-        if (/(\/b0\/|\/(wargroup|warlist|warlog|battlelog)\.php)/.
+        if (/(\/b0\/|\/(wargroup|warlist|warlog|battlelog|duels)\.php)/.
                 test(general.loc)) {
 
             if (initScript[3]) {
@@ -14422,7 +14422,7 @@
                     }
                 }
 
-                if (/\?war=armed/.test(general.loc)) {
+                if (/\?war=(armed|duels)/.test(general.loc)) {
                     if (initScript[33]) {
                         try {
                             new LinksInOne2One().init();
