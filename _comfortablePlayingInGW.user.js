@@ -694,6 +694,7 @@
                 audio.src = (general.myID === '2095458' ?
                         'http://127.0.0.1/' : general.mainPath) + 'sounds/' +
                             sound + '.ogg';
+                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -7202,7 +7203,7 @@
             var i;
 
             line.link = line.line_1.querySelectorAll('a')[1];
-            line.id = /id=(.*)$/.exec(line.link)[1];
+            line.id = /id=(.*)$/.exec(line.link.href)[1];
             for (i = 0; i < linesObj.length; i++) {
                 if (linesObj[i].line.id === line.id) {
                     return linesObj[i];
@@ -8421,6 +8422,7 @@
          */
         this.numberSms = 3;
 
+        // noinspection FunctionWithInconsistentReturnsJS
         /**
          * @method sortMess {{{2
          * @return   {int}
@@ -8957,6 +8959,7 @@
             this.sortGosEnergoAtom();
         }; // 2}}}
 
+        // noinspection FunctionWithInconsistentReturnsJS
         /**
          * @method getTrsTable {{{2
          * @return  {Array}
@@ -11216,7 +11219,7 @@
          * @param   {String}    str1
          * @param   {String}    str2
          * @param   {String}    str3
-         * @return  {String}    str
+         * @return  {String}
          */
         this.getRealEstateStr = function (obj, name, title, str1, str2, str3) {
             var setPoints = new SetPoints().init;
@@ -11589,6 +11592,7 @@
         /**
          * @method getAchievNow {{{2
          * @param   {Object}    obj
+         * @return  {Object|null}
          */
         this.getAchievNow = function (obj) {
             return obj.querySelectorAll('td[bgcolor="#ffffff"]>' +
@@ -11739,8 +11743,10 @@
          */
         this.syndMain = null;
 
+        // noinspection FunctionWithInconsistentReturnsJS
         /**
          * @method setSms {{{2
+         * @return  {Boolean}
          */
         this.setSms = function () {
             var nobrs = general.$('friendsbody').querySelectorAll('nobr');

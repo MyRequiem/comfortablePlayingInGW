@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/sms-read.php?type=*
 // @grant           none
 // @license         MIT
-// @version         2.11-260519
+// @version         2.12-190819
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -198,6 +198,7 @@
          */
         this.numberSms = 3;
 
+        // noinspection FunctionWithInconsistentReturnsJS
         /**
          * @method sortMess
          * @return   {int}

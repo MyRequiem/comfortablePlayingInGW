@@ -1,1154 +1,1154 @@
 2019-07-29[1.137-290719]
 --------------------------------------
-	- Обновлены скрипты
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BonusInfo
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/LinksInOne2One
+    - Обновлены скрипты
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BonusInfo
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/LinksInOne2One
 
 
 2019-06-30[1.136-300619]
 --------------------------------------
-	- Обновлен скрипт
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
-			При нажатии на кнопку "Сказать ход" теперь учитываются подстволы.
+    - Обновлен скрипт
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+            При нажатии на кнопку "Сказать ход" теперь учитываются подстволы.
 
 
 2019-06-27[1.135-270619]
 --------------------------------------
-	- Обновлены скрипты:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
+    - Обновлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
 
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
-			В режиме наблюдения за боем во всплывающем окошке с информацией о
-			бойце добавлено отображение его номера.
-			Спасибо exXxclusiF, Л_мила
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+            В режиме наблюдения за боем во всплывающем окошке с информацией о
+            бойце добавлено отображение его номера.
+            Спасибо exXxclusiF, Л_мила
 
 
 2019-05-27[1.134-270519]
 --------------------------------------
-	- "В информации об участниках боя теперь отображается урон, нанесенный на
-		прошлом ходу" [http://www.gwars.ru/messages.php?fid=1&tid=1518]
-		В связи с этим изменением исправлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
-			Спасибо Зазулику (id 1917027) за изображение для ссылки на режим
-			наблюдения за боем. :)
+    - "В информации об участниках боя теперь отображается урон, нанесенный на
+        прошлом ходу" [http://www.gwars.ru/messages.php?fid=1&tid=1518]
+        В связи с этим изменением исправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+            Спасибо Зазулику (id 1917027) за изображение для ссылки на режим
+            наблюдения за боем. :)
 
 
 2019-05-24[1.133-240519]
 --------------------------------------
-	- Обновлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
+    - Обновлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
 
 
 2019-05-19[1.132-190519]
 --------------------------------------
-	- Исправлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
-		Спасибо Зазулька, BuhOi.
+    - Исправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
+        Спасибо Зазулька, BuhOi.
 
 
 2019-05-18[1.131-180519]
 --------------------------------------
-	- Обновлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
+    - Обновлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
 
 
 2019-05-14[1.130-140519]
 --------------------------------------
-	- Исправлен скрипт
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
+    - Исправлен скрипт
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
 
-	- Обновлены скрипты:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ScanPers
+    - Обновлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ScanPers
 
 
 2019-05-04[1.129-040519]
 --------------------------------------
-	- Исправлены скрипты:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FarmExperience
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FarmTimer
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AllPlantsOnFarm
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ResourcesAndBonuses
+    - Исправлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FarmExperience
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FarmTimer
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AllPlantsOnFarm
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ResourcesAndBonuses
 
-	- Обновлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/TimeNpc
+    - Обновлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/TimeNpc
 
-	- Удален скрипт для фермы, размещающий удобные ссылки для полива, сбора,
-		вскапывания, посадки растений (ComfortableLinksForFarm)
+    - Удален скрипт для фермы, размещающий удобные ссылки для полива, сбора,
+        вскапывания, посадки растений (ComfortableLinksForFarm)
 
 
 2019-04-15[1.128-150419]
 --------------------------------------
-	- Поправлен скрипт
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+    - Поправлен скрипт
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
 
-	- Изменены пути к новым изображениям растений на ферме в скрипте
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AllPlantsOnFarm
-		(ссылка на новость: http://www.gwars.ru/messages.php?fid=1&tid=1510)
+    - Изменены пути к новым изображениям растений на ферме в скрипте
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AllPlantsOnFarm
+        (ссылка на новость: http://www.gwars.ru/messages.php?fid=1&tid=1510)
 
 
 2019-02-20[1.127-200219]
 --------------------------------------
-	Service version: prohibition of caching external scripts.
+    Service version: prohibition of caching external scripts.
 
 
 2019-02-19[1.126-190219]
 --------------------------------------
-	- Обновлен скрипт
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+    - Обновлен скрипт
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
 
-		- во всплывающих окошках с экипировкой персонажей добавлены умения
-			для оружия в правой руке.
+        - во всплывающих окошках с экипировкой персонажей добавлены умения
+            для оружия в правой руке.
 
 
 2019-02-10[1.125-100219]
 --------------------------------------
-	- Обновлен скрипт
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+    - Обновлен скрипт
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
 
-		- во всплывающих окошках с экипировкой персонажей добавлены дальность
-			оружия, дальность и радиус действия для гранат и подствольных
-			гранатометов
-		- выделение цветом ссылок на High-tech и Rent-A-Gun предметы в
-			экипировке каждого персонажа
-		- ссылки на предметы открываются в новой вкладке
-		- установки хода (направление стрельбы и др.) не сбрасываются после
-			отправки сообщений в чат боя
+        - во всплывающих окошках с экипировкой персонажей добавлены дальность
+            оружия, дальность и радиус действия для гранат и подствольных
+            гранатометов
+        - выделение цветом ссылок на High-tech и Rent-A-Gun предметы в
+            экипировке каждого персонажа
+        - ссылки на предметы открываются в новой вкладке
+        - установки хода (направление стрельбы и др.) не сбрасываются после
+            отправки сообщений в чат боя
 
-		Параметры в настройках персонажа для правильной работы скрипта:
-			оформление боя в desktop-версии игры - упрощенное
-			расположение в бою - примитивное
-			JavaScript-версия - использовать
+        Параметры в настройках персонажа для правильной работы скрипта:
+            оформление боя в desktop-версии игры - упрощенное
+            расположение в бою - примитивное
+            JavaScript-версия - использовать
 
 
 2019-02-06[1.124-060219]
 --------------------------------------
-	- Обновлен скрипт
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CalculateSyndLvl
-		В который раз исправлена формула расчета уровня синдиката:
-			http://www.ganjawiki.ru/Боевой_синдикат#.D0.A3.D0.A1
+    - Обновлен скрипт
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CalculateSyndLvl
+        В который раз исправлена формула расчета уровня синдиката:
+            http://www.ganjawiki.ru/Боевой_синдикат#.D0.A3.D0.A1
 
 
 2019-02-04[1.123-040219]
 --------------------------------------
-	- Обновлены скрипты:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CritShotsAndLinksBtlLog
+    - Обновлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CritShotsAndLinksBtlLog
 
-		Параметры в настройках персонажа для правильной работы указанных
-		скриптов:
-			оформление боя в desktop-версии игры - упрощенное
-			расположение в бою - примитивное
-			JavaScript-версия - использовать
+        Параметры в настройках персонажа для правильной работы указанных
+        скриптов:
+            оформление боя в desktop-версии игры - упрощенное
+            расположение в бою - примитивное
+            JavaScript-версия - использовать
 
-	- Обновлен список гранат и гранатометов в скрипте
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/WorkPostGrenadesBroken
-		Спасибо Зазулька :)
+    - Обновлен список гранат и гранатометов в скрипте
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/WorkPostGrenadesBroken
+        Спасибо Зазулька :)
 
-	- Исправлен скрипт
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BuyHightech
+    - Исправлен скрипт
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BuyHightech
 
-	- В связи с изменением формулы расчета уровня синдиката
-		(ссылка на новость: http://www.gwars.ru/messages.php?fid=1&tid=1498)
-		поправлен скрипт
-			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CalculateSyndLvl
+    - В связи с изменением формулы расчета уровня синдиката
+        (ссылка на новость: http://www.gwars.ru/messages.php?fid=1&tid=1498)
+        поправлен скрипт
+            https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CalculateSyndLvl
 
 
 2018-12-15[1.122-151218]
 --------------------------------------
-	- Поправлен скрипт
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PersonalNPCNotifications
+    - Поправлен скрипт
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PersonalNPCNotifications
 
 
 2018-12-05[1.121-051218]
 --------------------------------------
-	- Обновлен скрипт
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PersonalNPCNotifications
-			Добавлены звуковые уведомления.
+    - Обновлен скрипт
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PersonalNPCNotifications
+            Добавлены звуковые уведомления.
 
 
 2018-11-30[1.120-301118]
 --------------------------------------
-	- В скрипт ImgPokemonsOnBattle добавлено отображение изображений для
-		личных NPC:
-			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ImgPokemonsOnBattle
+    - В скрипт ImgPokemonsOnBattle добавлено отображение изображений для
+        личных NPC:
+            https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ImgPokemonsOnBattle
 
 
 2018-11-22[1.119-221118]
 --------------------------------------
-	- Изменены все ссылки на изображения с
-		http://gwscripts.ucoz.net/comfortablePlayingInGW/imgs/
-		на
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/imgs/
+    - Изменены все ссылки на изображения с
+        http://gwscripts.ucoz.net/comfortablePlayingInGW/imgs/
+        на
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/imgs/
 
 
 2018-11-21[1.118-211118]
 --------------------------------------
-	- Добавлен новый скрипт для персональных NPC:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PersonalNPCNotifications
+    - Добавлен новый скрипт для персональных NPC:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PersonalNPCNotifications
 
-	- Следующие скрипты больше не будут работать на главной странице персонального NPC:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GbCounter
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/Regeneration
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SkillCounters
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/TimeNpc
+    - Следующие скрипты больше не будут работать на главной странице персонального NPC:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GbCounter
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/Regeneration
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SkillCounters
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/TimeNpc
 
-	- Скрипт не будет наботать на странице информации персонального NPC:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/TimeKarma
+    - Скрипт не будет наботать на странице информации персонального NPC:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/TimeKarma
 
 
 2018-11-19[1.117-191118]
 --------------------------------------
-	- Исправлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FixSkills
-	- Удален код для примитивного оформления страниц информации о персонаже и
-		экипировки. C 01.11.18 примитивное оформление отключено:
-			http://www.gwars.ru/messages.php?fid=1&tid=1481
+    - Исправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FixSkills
+    - Удален код для примитивного оформления страниц информации о персонаже и
+        экипировки. C 01.11.18 примитивное оформление отключено:
+            http://www.gwars.ru/messages.php?fid=1&tid=1481
 
 
 2018-11-04[1.116-041118]
 --------------------------------------
-	- Добавлен новый скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PortsSyndLinks
+    - Добавлен новый скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PortsSyndLinks
 
 
 2018-10-29[1.115-291018]
 --------------------------------------
-	- В связи с изменением главной страницы персонажа
-		(ссылка на новость: http://www.gwars.ru/messages.php?fid=1&tid=1482)
-		поправлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SkillCounters
+    - В связи с изменением главной страницы персонажа
+        (ссылка на новость: http://www.gwars.ru/messages.php?fid=1&tid=1482)
+        поправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SkillCounters
 
 
 2018-10-15[1.114-151018]
 --------------------------------------
-	- Обновлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ScanPers
+    - Обновлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ScanPers
 
 
 2018-10-10[1.113-101018]
 --------------------------------------
-	- Поправлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
-		Спасибо Wrait
+    - Поправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
+        Спасибо Wrait
 
 
 2018-10-08[1.112-081018]
 --------------------------------------
-	- Обновлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
+    - Обновлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
 
 
 2018-10-01[1.111-011018]
 --------------------------------------
-	- Исправлены скрипты:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FarmTimer
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PortTimer
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ResourcesAndBonuses
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ScanPers
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SearchUser
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ShowMyAchievements
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/WorkPostGrenadesBroken
+    - Исправлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FarmTimer
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PortTimer
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ResourcesAndBonuses
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ScanPers
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SearchUser
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ShowMyAchievements
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/WorkPostGrenadesBroken
 
 
 2018-09-30[1.110-300918]
 --------------------------------------
-	- Исправлены скрипты:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SearchUser
+    - Исправлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SearchUser
 
 
 2018-09-25[1.109-250918]
 --------------------------------------
-	- Исправлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CritShotsAndLinksBtlLog
-		Спасибо Wrait за найденный баг.
-	- Обновлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/NotGiveCannabisLeaf
+    - Исправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CritShotsAndLinksBtlLog
+        Спасибо Wrait за найденный баг.
+    - Обновлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/NotGiveCannabisLeaf
 
 
 2018-09-17[1.108-170918]
 --------------------------------------
-	- Исправлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FilterWarlistOne2One
+    - Исправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FilterWarlistOne2One
 
 
 2018-09-17[1.107-170918]
 --------------------------------------
-	- В связи с изменением адреса и названия игры все скрипты пропатчены для
-		работы на домене gwars.ru
+    - В связи с изменением адреса и названия игры все скрипты пропатчены для
+        работы на домене gwars.ru
 
 
 2018-09-14[1.106-140918]
 --------------------------------------
-	- Исправлены скрипты:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndAnalyser
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndPtsAnalyser
+    - Исправлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndAnalyser
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndPtsAnalyser
 
 
 2018-08-24[1.105-240818]
 --------------------------------------
-	- Добавлен новый скрипт
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CalculateSyndLvl
+    - Добавлен новый скрипт
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CalculateSyndLvl
 
 
 2018-08-13[1.104-130818]
 --------------------------------------
-	- Исправлены скрипты:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndAnalyser
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndPtsAnalyser
+    - Исправлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndAnalyser
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndPtsAnalyser
 
 
 2018-08-10[1.103-100818]
 --------------------------------------
-	- Обновлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ShowInitMessOnForum
-		Длинные сообщения, на которые отвечают теперь сокращаются до 2-7
-		строк, с возможностью просмотра всего сообщения.
-		Спасибо Day-X: "А это приводит, в частности, к преждевременному износу
-		колёсика манипулятора типа мышь и к психологической усталости от поста
-		в целом."
+    - Обновлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ShowInitMessOnForum
+        Длинные сообщения, на которые отвечают теперь сокращаются до 2-7
+        строк, с возможностью просмотра всего сообщения.
+        Спасибо Day-X: "А это приводит, в частности, к преждевременному износу
+        колёсика манипулятора типа мышь и к психологической усталости от поста
+        в целом."
 
 
 2018-08-06[1.102-060818]
 --------------------------------------
-	- Обновлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
-		Добавлен чекбокс "Говорить только правую руку". Спасибо Quaramba
+    - Обновлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+        Добавлен чекбокс "Говорить только правую руку". Спасибо Quaramba
 
 
 2018-08-02[1.101-020818]
 --------------------------------------
-	- Исправлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
-		(исправления для дуэлей)
+    - Исправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+        (исправления для дуэлей)
 
 
 2018-07-28[1.100-280718]
 --------------------------------------
-	- Исправлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/DeleteSms
+    - Исправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/DeleteSms
 
 
 2018-07-24[1.99-240718]
 --------------------------------------
-	- Исправлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ImgPokemonsOnBattle
+    - Исправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ImgPokemonsOnBattle
 
 
 2018-07-15[1.98-150718]
 --------------------------------------
-	- Обновлены скрипты:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
+    - Обновлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
 
 
 2018-06-25[1.97-250618]
 --------------------------------------
-	- Исправлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CommonBattleFilter
+    - Исправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CommonBattleFilter
 
 
 2018-06-11[1.96-110618]
 --------------------------------------
-	- Исправлены скрипты:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/RangeWeapon
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
+    - Исправлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/RangeWeapon
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
 
 
 2018-04-23[1.95-230418]
 --------------------------------------
-	- Обновлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AllPlantsOnFarm
-		Счетчик Гб теперь учитывает количество урожая в схроне (спасибо ЗАГАШУ)
+    - Обновлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AllPlantsOnFarm
+        Счетчик Гб теперь учитывает количество урожая в схроне (спасибо ЗАГАШУ)
 
 
 2018-04-20[1.94-200418]
 --------------------------------------
-	- Обновлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
-		Ссылка "Накоплено" ведет на страницу описания ежедневных мини-квестов.
-		[http://www.gwars.ru/help/index.php?sid=102&pid=45]
+    - Обновлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
+        Ссылка "Накоплено" ведет на страницу описания ежедневных мини-квестов.
+        [http://www.gwars.ru/help/index.php?sid=102&pid=45]
 
 
 2018-04-11[1.93-110418]
 --------------------------------------
-	- Исправлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
-	- inspection code minifixes
+    - Исправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
+    - inspection code minifixes
 
 
 2018-03-26[1.92-260318]
 --------------------------------------
-	- Изменились страницы боев и страницы наблюдения за боем
-		(новость: http://www.gwars.ru/messages.php?fid=1&tid=1451)
-		В скрипте AdvBattleAll удалены порядковые номера персонажей
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
-		а так же исправлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ImgPokemonsOnBattle
-	- Исправлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PortTimer
+    - Изменились страницы боев и страницы наблюдения за боем
+        (новость: http://www.gwars.ru/messages.php?fid=1&tid=1451)
+        В скрипте AdvBattleAll удалены порядковые номера персонажей
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+        а так же исправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ImgPokemonsOnBattle
+    - Исправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PortTimer
 
 
 2018-03-25[1.91-250318]
 --------------------------------------
-	- Исправлены настройки скрипта:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvForum
-		(со страницы списка форумов удалена ссылка на форум "Тотализатор"
-		[http://www.gwars.ru/threads.php?fid=5])
+    - Исправлены настройки скрипта:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvForum
+        (со страницы списка форумов удалена ссылка на форум "Тотализатор"
+        [http://www.gwars.ru/threads.php?fid=5])
 
 
 2018-03-20[1.90-200318]
 --------------------------------------
-	- Minifix:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+    - Minifix:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
 
 
 2018-03-12[1.89-120318]
 --------------------------------------
-	- в связи с выходом новости http://www.gwars.ru/messages.php?fid=1&tid=1445
-		"В общих групповых боях теперь разрешен только симметричный формат
-		заявки: ограничения по количеству и боевым уровням бойцов теперь будет
-		одинаковым для обеих сторон."
-		модифицирован скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CommonBattleFilter
-	- Добавлен новый скрипт
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PortTimer
-		Идея: Enemy333
+    - в связи с выходом новости http://www.gwars.ru/messages.php?fid=1&tid=1445
+        "В общих групповых боях теперь разрешен только симметричный формат
+        заявки: ограничения по количеству и боевым уровням бойцов теперь будет
+        одинаковым для обеих сторон."
+        модифицирован скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CommonBattleFilter
+    - Добавлен новый скрипт
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PortTimer
+        Идея: Enemy333
 
 
 2018-02-25[1.88-250218]
 --------------------------------------
-	- В скрипт
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BonusInfo
-		добавлен новый бонус: "Бонус точности"
-		(ссылка на новость: http://www.gwars.ru/messages.php?fid=1&tid=1443)
+    - В скрипт
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BonusInfo
+        добавлен новый бонус: "Бонус точности"
+        (ссылка на новость: http://www.gwars.ru/messages.php?fid=1&tid=1443)
 
 
 2018-02-18[1.87-180218]
 --------------------------------------
-	- Добавлен новый скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CommonBattleFilter
-	- mimifix
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ScanKarma
+    - Добавлен новый скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CommonBattleFilter
+    - mimifix
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ScanKarma
 
 
 2018-01-19[1.86-190118]
 --------------------------------------
-	- Добавлен новый скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
-	- Minifixes
+    - Добавлен новый скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CurrentQuestOnInfo
+    - Minifixes
 
 
 2017-12-03[1.85-031217]
 --------------------------------------
-	- Исправлены скрипты:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BlacklistHighlighting
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FilterWarlistOne2One
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/One2OneCallerInfo
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/NewsAndInvit
+    - Исправлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BlacklistHighlighting
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FilterWarlistOne2One
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/One2OneCallerInfo
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/NewsAndInvit
 
 
 2017-11-20[1.84-201117]
 --------------------------------------
-	- В связи с изменением страниц онлайна синдикатов исправлены скрипты:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SortSyndOnline
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndOnlineOnMainPage
+    - В связи с изменением страниц онлайна синдикатов исправлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SortSyndOnline
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndOnlineOnMainPage
 
 
 2017-11-12[1.83-121117]
 --------------------------------------
-	- Исправлен скрипт для фермы AllPlantsOnFarm (скрипт не должен работать
-		при появлении капчи):
-			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AllPlantsOnFarm
+    - Исправлен скрипт для фермы AllPlantsOnFarm (скрипт не должен работать
+        при появлении капчи):
+            https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AllPlantsOnFarm
 
-	- В связи с изменениями главной страницы персонажа исправлены скрипты:
-		(ссылка на новость: http://www.gwars.ru/messages.php?fid=1&tid=1423)
-			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SkillCounters
-			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/TimeNpc
-			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FixSkills
+    - В связи с изменениями главной страницы персонажа исправлены скрипты:
+        (ссылка на новость: http://www.gwars.ru/messages.php?fid=1&tid=1423)
+            https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SkillCounters
+            https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/TimeNpc
+            https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FixSkills
 
 
 2017-11-10[1.82-101117]
 --------------------------------------
-	- Исправлены скрипты для фермы (спасибо Зачупатель):
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FarmExperience
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AllPlantsOnFarm
+    - Исправлены скрипты для фермы (спасибо Зачупатель):
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FarmExperience
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AllPlantsOnFarm
 
 
 2017-11-06[1.81-061117]
 --------------------------------------
-	- Обновлены скрипты:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/LinksToHighTech
+    - Обновлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/LinksToHighTech
 
 
 2017-11-01[1.80-011117]
 --------------------------------------
-	- Обновлен скрипт выводящий информацию о бонусах:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BonusInfo
+    - Обновлен скрипт выводящий информацию о бонусах:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BonusInfo
 
 
 2017-10-21[1.79-211017]
 --------------------------------------
-	- Обновлена таблица боевого опыта в скрипте SkillCounters:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SkillCounters
-		Спасибо Nicotine_ за информацию об устаревших данных.
+    - Обновлена таблица боевого опыта в скрипте SkillCounters:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SkillCounters
+        Спасибо Nicotine_ за информацию об устаревших данных.
 
 
 2017-10-17[1.78-171017]
 --------------------------------------
-	- Исправлен скрипт
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GosEnergoAtomFilter
-	- Удалены скрипты с функционалом, реализованным в игре.
+    - Исправлен скрипт
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GosEnergoAtomFilter
+    - Удалены скрипты с функционалом, реализованным в игре.
 
 
 2017-10-12[1.77-121017]
 --------------------------------------
-	- Изменен функционал сохранения настроек скрипта пользователем.
-		Удалена библиотека ZeroClipboard.min.js для доступа к сиcтемному
-		буферу обмена посредством Adobe Flash и JavaScript интерфейса.
+    - Изменен функционал сохранения настроек скрипта пользователем.
+        Удалена библиотека ZeroClipboard.min.js для доступа к сиcтемному
+        буферу обмена посредством Adobe Flash и JavaScript интерфейса.
 
 
 2017-10-09[1.76-091017]
 --------------------------------------
-	- Исправлены скрипты:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/InventoryPlus
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/NotGiveCannabisLeaf
+    - Исправлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/InventoryPlus
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/NotGiveCannabisLeaf
 
 
 2017-09-25[1.75-250917]
 --------------------------------------
-	- Удалены все скрипты для Аутленда
+    - Удалены все скрипты для Аутленда
 
 
 2017-09-25[1.74-250917]
 --------------------------------------
-	- В скрипте GwMenu удалены ссылки на бои: графические, картофелемёты и рогатки
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
-	- Исправлен скрипт One2OneCallerInfo
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/One2OneCallerInfo
-	- В игре изменены некоторые адреса страниц. В связи с этим поправлены
-		многие скрипты для их корректной работы.
-	- Удалены скрипты сортировки общих и синдикатных заявок, звук при начале
-		графического боя
-		(filterGeneralFighting.user.js, sortSyndWars.user.js, soundGraph.user.js)
+    - В скрипте GwMenu удалены ссылки на бои: графические, картофелемёты и рогатки
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
+    - Исправлен скрипт One2OneCallerInfo
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/One2OneCallerInfo
+    - В игре изменены некоторые адреса страниц. В связи с этим поправлены
+        многие скрипты для их корректной работы.
+    - Удалены скрипты сортировки общих и синдикатных заявок, звук при начале
+        графического боя
+        (filterGeneralFighting.user.js, sortSyndWars.user.js, soundGraph.user.js)
 
 
 2017-09-22[1.73-220917]
-	- Изменены ссылки в скрипте GwMenu:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
+    - Изменены ссылки в скрипте GwMenu:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
 
 
 2017-09-06[1.72-060917]
 --------------------------------------
-	- Исправлен скрипт:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CritShotsAndLinksBtlLog
+    - Исправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CritShotsAndLinksBtlLog
 
 
 2017-07-30[1.71-300717]
 --------------------------------------
-	Для проигрывания звуков во всех скриптах больше не требуется наличия
-	FlashPlayer. С данного момента будет использоваться HTML5 тег <audio>
+    Для проигрывания звуков во всех скриптах больше не требуется наличия
+    FlashPlayer. С данного момента будет использоваться HTML5 тег <audio>
 
 
 2017-07-16[1.70-160717]
 --------------------------------------
-	- Исправлены скрипты, работающие на страницах форума:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvForum
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ShowInitMessOnForum
+    - Исправлены скрипты, работающие на страницах форума:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvForum
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ShowInitMessOnForum
 
 
 2017-07-10[1.69-100717]
 --------------------------------------
-	- в связи с изменением страницы Аутленда и прибрежки поправлены скрипты:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvancedOutland
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AutLinksOnChat
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/MoveArrowOnAut
+    - в связи с изменением страницы Аутленда и прибрежки поправлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvancedOutland
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AutLinksOnChat
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/MoveArrowOnAut
 
 
 2017-06-26[1.68-260617]
 --------------------------------------
-	Some minor fixes
+    Some minor fixes
 
 
 2017-04-24[1.67-240417]
 --------------------------------------
-	- в cкрипт SortSyndWars
-			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SortSyndWars
-		добавлена возможность сортировки по боям за контроль портов.
+    - в cкрипт SortSyndWars
+            https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SortSyndWars
+        добавлена возможность сортировки по боям за контроль портов.
 
 
 2017-04-20[1.66-200417]
 --------------------------------------
-	- в связи с изменением страницы синдикатных заявок исправлен скрипт
-		SortSyndWars
-			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SortSyndWars
+    - в связи с изменением страницы синдикатных заявок исправлен скрипт
+        SortSyndWars
+            https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SortSyndWars
 
 
 2017-04-13[1.65-130417]
 --------------------------------------
-	- в связи с изменением страницы заявок общих, уличных, графических боев
-		исправлен скрипт FilterGeneralFighting
-			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FilterGeneralFighting
+    - в связи с изменением страницы заявок общих, уличных, графических боев
+        исправлен скрипт FilterGeneralFighting
+            https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FilterGeneralFighting
 
 
 2017-01-14[1.64-140117]
 --------------------------------------
-	- исправлен скрипт ComfortableLinksForFarm
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ComfortableLinksForFarm
-	- добавлен скрипт ProfColor
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ProfColor
+    - исправлен скрипт ComfortableLinksForFarm
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ComfortableLinksForFarm
+    - добавлен скрипт ProfColor
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ProfColor
 
 
 2016-12-20[1.63-201216]
 --------------------------------------
-	- исправлен скрипт InventoryPlus, достала меня эта глючная ботва
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/InventoryPlus
+    - исправлен скрипт InventoryPlus, достала меня эта глючная ботва
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/InventoryPlus
 
 
 2016-12-17[1.62-171216]
 --------------------------------------
-	- исправлен скрипт InventoryPlus
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/InventoryPlus
+    - исправлен скрипт InventoryPlus
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/InventoryPlus
 
 
 2016-12-12[1.61-121216]
 --------------------------------------
-	- Небольшое исправление скриптa AdvBattleAll
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+    - Небольшое исправление скриптa AdvBattleAll
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
 
 
 2016-12-05[1.60-051216]
 --------------------------------------
-	- Добавлен скрипт Regeneration
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/Regeneration
+    - Добавлен скрипт Regeneration
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/Regeneration
 
 
 2016-11-13[1.50-131116]
 --------------------------------------
-	- Обновлен скрипт AdvBattleAll
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
-		Добавлено визуальное отображение здоровья персонажей на поле боя.
-		Спасибо Kriss_ :)
+    - Обновлен скрипт AdvBattleAll
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+        Добавлено визуальное отображение здоровья персонажей на поле боя.
+        Спасибо Kriss_ :)
 
 
 2016-07-21[1.49-210716]
 --------------------------------------
-	- Скрипт WorkPostGrenadesBroken
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/WorkPostGrenadesBroken
-		теперь работает только на главной странице персонажа, на страницах
-		логов боев и на страницах заявок.
-		Обновлен список гранат.
+    - Скрипт WorkPostGrenadesBroken
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/WorkPostGrenadesBroken
+        теперь работает только на главной странице персонажа, на страницах
+        логов боев и на страницах заявок.
+        Обновлен список гранат.
 
 
 2016-07-19[1.48-190716]
 --------------------------------------
-	- Поправлен скрипт AdvBattleAll
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
-		Подсвечивание персонажей сделавших ход.
+    - Поправлен скрипт AdvBattleAll
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+        Подсвечивание персонажей сделавших ход.
 
 
 2016-06-30[1.47-300616]
 --------------------------------------
-	- Удален скрипт SyndPersInfo
-		Весь функционал скрипта введен в игру на постоянной основе.
-	- Подправлен скрипт SortSyndOnline
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SortSyndOnline
+    - Удален скрипт SyndPersInfo
+        Весь функционал скрипта введен в игру на постоянной основе.
+    - Подправлен скрипт SortSyndOnline
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SortSyndOnline
 
 2016-06-29[1.46-290616]
 --------------------------------------
-	- Изменент скрипт AdvBattleAll
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
-		Добавлен вывод использования навыков при нажатии кнопки "Сказать ход".
+    - Изменент скрипт AdvBattleAll
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+        Добавлен вывод использования навыков при нажатии кнопки "Сказать ход".
 
 
 2016-06-27[1.45-270616]
 --------------------------------------
-	- В связи с вводом отображения HP персонажей на страницах онлайна
-		синдиката, исправлен скрипт SortSyndOnline
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SortSyndOnline
+    - В связи с вводом отображения HP персонажей на страницах онлайна
+        синдиката, исправлен скрипт SortSyndOnline
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SortSyndOnline
 
 
 2016-06-26[1.44-260616]
 --------------------------------------
-	- В связи с вводом отображения HP персонажей на страницах онлайна
-		синдиката, исправлен скрипт SyndPersInfo
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndPersInfo
+    - В связи с вводом отображения HP персонажей на страницах онлайна
+        синдиката, исправлен скрипт SyndPersInfo
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndPersInfo
 
 
 2016-06-06[1.43-060616]
 --------------------------------------
-	В связи с выходом новости
-	http://www.gwars.ru/messages.php?fid=1&tid=1333
-	в скриптах были сделаны некоторые изменения:
-		- удален скрипт	AutRefreshLink: обновление страниц на ауте теперь
-			происходит при нажатии на пробел.
-		- в связи с появлением на Аутленд стрелок направления движения и
-			функционала передвижения с помощью клавиатуры исправлен скрипт
-			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/MoveArrowOnAut
-		- в скрипте advBattleAll
-			https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
-			отключена подсветка случайного хода.
+    В связи с выходом новости
+    http://www.gwars.ru/messages.php?fid=1&tid=1333
+    в скриптах были сделаны некоторые изменения:
+        - удален скрипт    AutRefreshLink: обновление страниц на ауте теперь
+            происходит при нажатии на пробел.
+        - в связи с появлением на Аутленд стрелок направления движения и
+            функционала передвижения с помощью клавиатуры исправлен скрипт
+            https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/MoveArrowOnAut
+        - в скрипте advBattleAll
+            https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+            отключена подсветка случайного хода.
 
 
 2016-06-03[1.42-030616]
 --------------------------------------
-	- Поправлен скрипт adsFilter
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdsFilter
+    - Поправлен скрипт adsFilter
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdsFilter
 
 
 2016-06-02[1.41-020616]
 --------------------------------------
-	- увеличен таймаут запросов на сервер с 700ms до 1000-1500ms во избежании
-		ситуаций изображенных на скриншоте:
-		https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/accessTempDisabled.png
+    - увеличен таймаут запросов на сервер с 700ms до 1000-1500ms во избежании
+        ситуаций изображенных на скриншоте:
+        https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/accessTempDisabled.png
 
 
 2016-05-26[1.40-260516]
 --------------------------------------
-	- добавлен скрипт FilterGeneralFighting
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FilterGeneralFighting
+    - добавлен скрипт FilterGeneralFighting
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FilterGeneralFighting
 
 
 2016-04-16[1.33-110416]
 --------------------------------------
-	- В скрипт SyndPtsAnalyser
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndPtsAnalyser
-		добавлен вывод переводов синдикатного опыта за PTS. Спасибо (_v_)
+    - В скрипт SyndPtsAnalyser
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndPtsAnalyser
+        добавлен вывод переводов синдикатного опыта за PTS. Спасибо (_v_)
 
 
 2016-04-16[1.32-110416]
 --------------------------------------
-	Изменения на Ауте и в прибрежной зоне. В игру на постоянной основе
-	был введен функционал подсветки дорожек. В связи с этим данная функция
-	была удалена из скрипта AdvancedOutland
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvancedOutland
+    Изменения на Ауте и в прибрежной зоне. В игру на постоянной основе
+    был введен функционал подсветки дорожек. В связи с этим данная функция
+    была удалена из скрипта AdvancedOutland
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvancedOutland
 
-	- Поправлен скрипт MoveArrowOnAut:
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/MoveArrowOnAut
+    - Поправлен скрипт MoveArrowOnAut:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/MoveArrowOnAut
 
 
 2016-04-08[1.31-080416]
 --------------------------------------
-	- изменен скрипт SyndPtsAnalyser
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndPtsAnalyser
-		Добавлено текстовое поле для удобного копирования
-		результатов сканирования. Спасибо Иринесса
+    - изменен скрипт SyndPtsAnalyser
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndPtsAnalyser
+        Добавлено текстовое поле для удобного копирования
+        результатов сканирования. Спасибо Иринесса
 
 
 2016-04-07 [1.30-070416]
 --------------------------------------
-	- добавлен скрипт AdvancedOutland
-		Автор: W_or_M (редакция MyRequiem)
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvancedOutland
+    - добавлен скрипт AdvancedOutland
+        Автор: W_or_M (редакция MyRequiem)
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvancedOutland
 
 
 2016-03-31 [1.29-310316]
 --------------------------------------
-	- исправлен скрипт SyndPersInfo в связи с изменением HTML кода
-		нового оформления страницы информации персонажа.
+    - исправлен скрипт SyndPersInfo в связи с изменением HTML кода
+        нового оформления страницы информации персонажа.
 
 
 2016-03-20 [1.28-200316]
 --------------------------------------
-	- добавлен скрипт DelAndAddBlackSms
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/DelAndAddBlackSms
+    - добавлен скрипт DelAndAddBlackSms
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/DelAndAddBlackSms
 
 
 2016-03-11
 --------------------------------------
-	- добавлен скрипт FindSyndUser
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FindSyndUser
+    - добавлен скрипт FindSyndUser
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/FindSyndUser
 
 
 2016-03-03 [1.27-030316]
 --------------------------------------
-	- добавлен файл, который Вы смотрите :) + ссылка в настройках скрипта
-		на лог изменений
+    - добавлен файл, который Вы смотрите :) + ссылка в настройках скрипта
+        на лог изменений
 
 
 2016-02-29 [1.26-290216]
 --------------------------------------
-	- изменен скрипт GosEnergoAtomFilter. Добавлена сортировка урановых
-		рудников площадью 2 и 3 клетки. Спасибо Candy_ :)
+    - изменен скрипт GosEnergoAtomFilter. Добавлена сортировка урановых
+        рудников площадью 2 и 3 клетки. Спасибо Candy_ :)
 
 
 2016-02-18 [1.25-180216]
 --------------------------------------
-	- добавлен скрипт AdvForum
-		https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvForum
+    - добавлен скрипт AdvForum
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvForum
 
 
 2016-02-16 [1.24-160216]
 --------------------------------------
-	- изменен скрипт LinksToHighTech в связи с появлением в High-tech
-		магазине раздела "Подарки"
+    - изменен скрипт LinksToHighTech в связи с появлением в High-tech
+        магазине раздела "Подарки"
 
 
 2016-02-08 [1.23-080216]
 --------------------------------------
-	- исправлен скрипт HistorySms в связи с вводом в игру отображения
-		истории переписки с персонажем
+    - исправлен скрипт HistorySms в связи с вводом в игру отображения
+        истории переписки с персонажем
 
 
 2016-02-01 [1.22-010216]
 --------------------------------------
-	- исправлен скрипт TimeNpc в связи с изменением кода главной страницы
-		персонажа
+    - исправлен скрипт TimeNpc в связи с изменением кода главной страницы
+        персонажа
 
 
 2016-02-01 [1.21-010216]
 --------------------------------------
-	- библиотека ZeroClipboard.js заменена на ZeroClipboard.min.js
+    - библиотека ZeroClipboard.js заменена на ZeroClipboard.min.js
 
 
 2016-02-01 [1.20-010216]
 --------------------------------------
-	- изменена панель сохранения/восстановления/сброса настроек скрипта
+    - изменена панель сохранения/восстановления/сброса настроек скрипта
 
 
 2016-01-25 [1.17-250116]
 --------------------------------------
-	- исправлен скрипт DeleteSms в связи с изменением кода страниц
-		входящий и исходящих сообщений
+    - исправлен скрипт DeleteSms в связи с изменением кода страниц
+        входящий и исходящих сообщений
 
 
 2016-01-19 [1.16-190116]
 --------------------------------------
-	- исправлен скрипт InventoryPlus в связи с изменением кода
-		страницы инвентаря
+    - исправлен скрипт InventoryPlus в связи с изменением кода
+        страницы инвентаря
 
 
 2016-01-18 [1.15-180116]
 --------------------------------------
-	- исправлен скрипт SortSyndOnline в связи с вводом отображения
-		боевого и синдикатного уровня персонажей на странице онлайна синдиката
+    - исправлен скрипт SortSyndOnline в связи с вводом отображения
+        боевого и синдикатного уровня персонажей на странице онлайна синдиката
 
 
 2016-01-17 [1.14-170116]
 --------------------------------------
-	- исправлен скрипт GosEnergoAtomFilter в связи с вводом отображения
-		боевого и синдикатного уровня персонажей на странице онлайна синдиката
+    - исправлен скрипт GosEnergoAtomFilter в связи с вводом отображения
+        боевого и синдикатного уровня персонажей на странице онлайна синдиката
 
 
 2016-01-17 [1.13-170116]
 --------------------------------------
-	- исправлен скрипт SyndPersInfo в связи с вводом отображения
-		боевого и синдикатного уровня персонажей на странице онлайна синдиката
+    - исправлен скрипт SyndPersInfo в связи с вводом отображения
+        боевого и синдикатного уровня персонажей на странице онлайна синдиката
 
 
 2016-01-07 [1.12-070116]
 --------------------------------------
-	- исправлен скрипт CritShotsAndLinksBtlLog в связи с изменением кода
-		лога боя и выделением критических выстрелов
+    - исправлен скрипт CritShotsAndLinksBtlLog в связи с изменением кода
+        лога боя и выделением критических выстрелов
 
 
 2015-12-08 [1.11-081215]
 --------------------------------------
-	- изменен скрипт LinksToHighTech в связи с появлением в гос и High-tech
-		магазинах раздела "Пояса"
-	- исправлен скрипт ScanPers в связи с изменением кода страницы
-		информации персонажа
+    - изменен скрипт LinksToHighTech в связи с появлением в гос и High-tech
+        магазинах раздела "Пояса"
+    - исправлен скрипт ScanPers в связи с изменением кода страницы
+        информации персонажа
 
 
 2015-12-06 [1.10-061215]
 --------------------------------------
-	- исправлен скрипт WorkPostGrenadesBroken в связи с изменением кода
-		главной страницы персонажа
+    - исправлен скрипт WorkPostGrenadesBroken в связи с изменением кода
+        главной страницы персонажа
 
 
 2015-12-03 [1.09-031215]
 --------------------------------------
-	- исправлен скрипт InventoryPlus в связи с изменением кода
-		страницы инвентаря
+    - исправлен скрипт InventoryPlus в связи с изменением кода
+        страницы инвентаря
 
 
 2015-11-30 [1.08-301115]
 --------------------------------------
-	- исправлен скрипт FarmExperience в связи с изменением кода страниц фермы
+    - исправлен скрипт FarmExperience в связи с изменением кода страниц фермы
 
 
 2015-11-24 [1.07-241115]
 --------------------------------------
-	- исправлен скрипт InventoryPlus. Спасибо Candy_ :)
-	- исправлен код проверки обновлений скрипта
+    - исправлен скрипт InventoryPlus. Спасибо Candy_ :)
+    - исправлен код проверки обновлений скрипта
 
 
 2015-11-21 [1.06-211115]
 --------------------------------------
-	- изменен код проверки обновлений скрипта
+    - изменен код проверки обновлений скрипта
 
 
 2015-11-13 [1.05-131115]
 --------------------------------------
-	- исправлен скрипт MoveArrowOnAut для Mozilla Firefox
+    - исправлен скрипт MoveArrowOnAut для Mozilla Firefox
 
 
 2015-11-11 [1.04-111115]
 --------------------------------------
-	- исправлен скрипт InventoryPlus
+    - исправлен скрипт InventoryPlus
 
 
 2015-11-05 [1.03-051115]
 --------------------------------------
-	- оптимизация кода скрипта SyndAnalyser
+    - оптимизация кода скрипта SyndAnalyser
 
 
 2015-11-04 [1.02-041115]
 --------------------------------------
-	- в скрипт для боев AdvBattleAll добавлен чекбокс
-		"Говорить только левую руку" (для навыка "Баллистический щит")
+    - в скрипт для боев AdvBattleAll добавлен чекбокс
+        "Говорить только левую руку" (для навыка "Баллистический щит")
 
 
 2015-11-02 [1.01-021115]
 --------------------------------------
-	- оптимизация кода скрипта PortsAndTerminals
+    - оптимизация кода скрипта PortsAndTerminals
 
 
 2015-10-26 [1.00-261015]
 --------------------------------------
-	- релиз версии 1.00
+    - релиз версии 1.00
 
 
 2015-10-22 [1.00-221015-b]
 --------------------------------------
-	- добавлен скрипт:
-		> SoundSyndBattle
+    - добавлен скрипт:
+        > SoundSyndBattle
 
 
 2015-10-21 [1.00-211015-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> ImgPokemonsOnBattle
+    - добавлен скрипт:
+        > ImgPokemonsOnBattle
 
 
 2015-10-20 [1.00-201015-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> TimeKarma
+    - добавлен скрипт:
+        > TimeKarma
 
 
 2015-10-19 [1.00-191015-dev]
 --------------------------------------
-	- добавлены скрипты:
-		> SyndOnlineOnMainPage
-		> SoundGraph
+    - добавлены скрипты:
+        > SyndOnlineOnMainPage
+        > SoundGraph
 
 
 2015-10-18 [1.00-181015-dev]
 --------------------------------------
-	- добавлены скрипты:
-		> ShowMyAchievements
-		> SyndPersInfo
+    - добавлены скрипты:
+        > ShowMyAchievements
+        > SyndPersInfo
 
 
 2015-10-15 [1.00-151015-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> SyndAnalyser
+    - добавлен скрипт:
+        > SyndAnalyser
 
 
 2015-10-14 [1.00-141015-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> SyndPtsAnalyser
+    - добавлен скрипт:
+        > SyndPtsAnalyser
 
 
 2015-10-12 [1.00-121015-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> SkillCounters
+    - добавлен скрипт:
+        > SkillCounters
 
 
 2015-10-11 [1.00-111015-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> SearchUser
+    - добавлен скрипт:
+        > SearchUser
 
 
 2015-10-10 [1.00-101015-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> ShowInitMessOnForum
+    - добавлен скрипт:
+        > ShowInitMessOnForum
 
 
 2015-10-09 [1.00-091015-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> ScanPers
+    - добавлен скрипт:
+        > ScanPers
 
 
 2015-10-08 [1.00-081015-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> ScanKarma
+    - добавлен скрипт:
+        > ScanKarma
 
 
 2015-10-07 [1.00-071015-dev]
 --------------------------------------
-	- добавлены скрипты:
-		> RangeWeapon
-		> RentAndSale
+    - добавлены скрипты:
+        > RangeWeapon
+        > RentAndSale
 
 
 2015-10-06 [1.00-061015-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> PortsAndTerminals
+    - добавлен скрипт:
+        > PortsAndTerminals
 
 
 2015-10-04 [1.00-041015-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> NotesForFriends
+    - добавлен скрипт:
+        > NotesForFriends
 
 
 2015-09-23 [1.00-230915-dev]
 --------------------------------------
-	- добавлены скрипты:
-		> One2OneCallerInfo
-		> MinBetAtRoulette
+    - добавлены скрипты:
+        > One2OneCallerInfo
+        > MinBetAtRoulette
 
 
 2015-09-21 [1.00-210915-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> MoveArrowOnAut
+    - добавлен скрипт:
+        > MoveArrowOnAut
 
 
 2015-09-20 [1.00-200915-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> LinksInOne2One
+    - добавлен скрипт:
+        > LinksInOne2One
 
 
 2015-09-19 [1.00-190915-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> SortSyndWars
+    - добавлен скрипт:
+        > SortSyndWars
 
 
 2015-09-18 [1.00-180915-dev]
 --------------------------------------
-	- добавлены скрипты:
-		> SortSyndOnline
-		> HousHealth
+    - добавлены скрипты:
+        > SortSyndOnline
+        > HousHealth
 
 
 2015-09-16 [1.00-160915-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> GosEnergoAtomFilter
+    - добавлен скрипт:
+        > GosEnergoAtomFilter
 
 
 2015-09-13 [1.00-130915-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> GameMania
+    - добавлен скрипт:
+        > GameMania
 
 
 2015-09-12 [1.00-120915-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> LinksToHighTech
+    - добавлен скрипт:
+        > LinksToHighTech
 
 
 2015-09-11 [1.00-110915-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> HistorySms
+    - добавлен скрипт:
+        > HistorySms
 
 
 2015-09-10 [1.00-100915-dev]
 --------------------------------------
-	- добавлены скрипты:
-		> FilterWarlistOne2One
-		> FixSkills
-		> FuckTheFarm
+    - добавлены скрипты:
+        > FilterWarlistOne2One
+        > FixSkills
+        > FuckTheFarm
 
 
 2015-09-09 [1.00-090915-dev]
 --------------------------------------
-	- добавлены скрипты:
-		> NewsAndInvit
-		> DoFilter
-		> FilterResOnStat
+    - добавлены скрипты:
+        > NewsAndInvit
+        > DoFilter
+        > FilterResOnStat
 
 
 2015-09-04 [1.00-040915-dev]
 --------------------------------------
-	- добавлены скрипты:
-		> GbCounter
-		> BonusInfo
-		> BuyHightech
+    - добавлены скрипты:
+        > GbCounter
+        > BonusInfo
+        > BuyHightech
 
 
 2015-09-03 [1.00-030915-dev]
 --------------------------------------
-	- добавлены скрипты:
-		> GwMenu
-		> InventoryPlus
-		> CountBattles
+    - добавлены скрипты:
+        > GwMenu
+        > InventoryPlus
+        > CountBattles
 
 
 2015-09-01 [1.00-010915-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> AllPlantsOnFarm
+    - добавлен скрипт:
+        > AllPlantsOnFarm
 
 
 2015-08-31 [1.00-310815-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> TimeNpc
+    - добавлен скрипт:
+        > TimeNpc
 
 
 2015-08-29 [1.00-290815-dev]
 --------------------------------------
-	- добавлены скрипты:
-		> DeleteSms
-		> FarmExperience
-		> FarmTimer
-		> ComfortableLinksForFarm
+    - добавлены скрипты:
+        > DeleteSms
+        > FarmExperience
+        > FarmTimer
+        > ComfortableLinksForFarm
 
 
 2015-08-28 [1.00-280815-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> CritShotsAndLinksBtlLog
+    - добавлен скрипт:
+        > CritShotsAndLinksBtlLog
 
 
 2015-08-25 [1.00-250815-dev]
 --------------------------------------
-	- добавлены скрипты:
-		> WorkPostGrenadesBroken
-		> ResourcesAndBonuses
+    - добавлены скрипты:
+        > WorkPostGrenadesBroken
+        > ResourcesAndBonuses
 
 
 2015-08-21 [1.00-210815-dev]
 --------------------------------------
-	- добавлены скрипты:
-		> BlacklistHighlighting
-		> AutLinksOnChat
-		> AutRefreshLink
+    - добавлены скрипты:
+        > BlacklistHighlighting
+        > AutLinksOnChat
+        > AutRefreshLink
 
 
 2015-08-18 [1.00-180815-dev]
 --------------------------------------
-	- добавлен скрипт:
-		> advBattleAll
+    - добавлен скрипт:
+        > advBattleAll
 
 
 2015-08-03 [1.0-310715-dev]
 --------------------------------------
-	- добавлены скрипты:
-		> NotGiveCannabisLeaf
-		> AdditionForNavigationBar
-		> AdsFilter
+    - добавлены скрипты:
+        > NotGiveCannabisLeaf
+        > AdditionForNavigationBar
+        > AdsFilter
 
 
 2015-07-31 [1.0-310715]
 -------------------------------------
-	- создание проекта
+    - создание проекта
 

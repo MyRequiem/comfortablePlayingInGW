@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.28-260519
+// @version         2.29-190819
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -145,8 +145,10 @@
          */
         this.syndMain = null;
 
+        // noinspection FunctionWithInconsistentReturnsJS
         /**
          * @method setSms
+         * @return {Boolean}
          */
         this.setSms = function () {
             var nobrs = general.$('friendsbody').querySelectorAll('nobr');
