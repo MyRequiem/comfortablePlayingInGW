@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.20-300619
+// @version         4.21-190819
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -191,6 +191,7 @@
                 audio.volume = 0.3;
                 audio.src = 'https://raw.githubusercontent.com/MyRequiem/' +
                     'comfortablePlayingInGW/master/sounds/' + sound + '.ogg';
+                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -1096,6 +1097,12 @@
             }
 
             var name = persLink.textContent.replace(/&amp;/, '&');
+
+            // личные NPC персонажей
+            if (/\[NPC\]$/.test(name)) {
+                objPers.npc = true;
+            }
+
             this.allFighters[name] = objPers;
 
             // в бою и если это мой перс, то запоминаем его
@@ -1725,8 +1732,14 @@
                                         this.enemies[name] ?
                                             this.enemies[name] + '. ' : '') +
                             '<span style="color: #0000FF;">' + pers.lvl +
-                            '</span>' + name + ' [' + pers.hp[1] + '/' +
-                            pers.hp[2] + ']</span><div style="color: ' +
+                            '</span> ' +
+                            '<span' +
+                            (pers.npc ? ' style="opacity:0.6;"' : '') + '>' +
+                            name + '</span> ' +
+                            '<span>[' + pers.hp[1] + '/' + pers.hp[2] + ']' +
+                            '</span>' +
+                            '</span>' +
+                            '<div style="color: ' +
                             '#B85006; margin-left: 10px;">Видимость: ' +
                             pers.visib + '<br><span style="color: #000000;">' +
                             'Мощность: ' + pers.power + '</span>' + pers.skill +

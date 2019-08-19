@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.realty.php?id=2
 // @grant           none
 // @license         MIT
-// @version         4.05-260519
+// @version         4.06-190819
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -247,6 +247,7 @@
             this.sortGosEnergoAtom();
         };
 
+        // noinspection FunctionWithInconsistentReturnsJS
         /**
          * @method getTrsTable
          * @return  {Array}

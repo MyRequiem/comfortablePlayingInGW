@@ -12,7 +12,7 @@
 // @include         http://www.gwars.ru/wargroup.php*
 // @grant           none
 // @license         MIT
-// @version         2.43-260519
+// @version         2.44-190819
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -76,10 +76,10 @@
         this.STNAME = 'workPostGrenadesBroken';
         /**
          * @property DESIGN_VERSION
-         * @type {String}
+         * @type {RegExpExecArray}
          */
         this.DESIGN_VERSION = /(^|;) ?version=([^;]*)(;|$)/.
-                exec(this.doc.cookie)[2];
+                exec(this.doc.cookie);
         /**
          * @property myID
          * @type {String}
@@ -148,7 +148,7 @@
             // ищем верхнюю панель "MyRequiem [603/603] ... 21:01, 3095 онлайн"
             var topPanel;
 
-            if (general.DESIGN_VERSION === 'v2') {  // новый дизайн
+            if (general.DESIGN_VERSION[2] === 'v2') {  // новый дизайн
                 topPanel = general.doc.querySelector('td.gw-header-col2 ' +
                         'td[width="50%"][valign="middle"]');
                 if (topPanel) {
@@ -230,6 +230,7 @@
                 audio.volume = 0.3;
                 audio.src = 'https://raw.githubusercontent.com/MyRequiem/' +
                     'comfortablePlayingInGW/master/sounds/' + sound + '.ogg';
+                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
