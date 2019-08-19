@@ -40,7 +40,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.137-290719
+// @version         1.138-190819
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -111,7 +111,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.137-290719';
+        this.version = '1.138-190819';
         /**
          * @property stString {{{2
          * @type {String}
@@ -722,6 +722,7 @@
                 audio.src = (general.myID === '2095458' ?
                         'http://127.0.0.1/' : general.mainPath) + 'sounds/' +
                             sound + '.ogg';
+                // noinspection JSIgnoredPromiseFromCall
                 audio.play();
             }
         };
@@ -1114,17 +1115,25 @@
                     'выбора противника + сортировка списка по номеру, ' +
                     'дальности, уровню, видимости и т.д. Динамический центр, ' +
                     'продвинутое расположение бойцов на поле боя в бою и в ' +
-                    'режиме наблюдения за боем, полный лог боя в НЕ ' +
-                    'JS-версии, кнопка "Сказать ход", чекбоксы "Говорить ' +
-                    'только правую руку" и "Говорить только левую руку", ' +
-                    'быстрая вставка ника в поле чата. Информация вверху ' +
-                    'страницы о набитом HP, вашем здоровье, видимости и т.д. ' +
-                    'При клике по противнику на схеме поля боя происходит ' +
-                    'его выбор в качестве цели. Кнопка "Обновить". ' +
-                    'В JS-версии боя подсвечивает зеленым цветом тех ' +
-                    'персонажей, которые уже сделали ход. В обоих версиях ' +
-                    'выводит количество персонажей, сделавших ход.' +
-                    '&lt;br>&lt;br>Таймаут обновления данных в бою:' +
+                    'режиме наблюдения за боем, кнопка "Сказать ход", ' +
+                    'чекбоксы "Говорить только правую руку" и "Говорить ' +
+                    'только левую руку", быстрая вставка ника в поле чата. ' +
+                    'Информация вверху страницы о набитом HP, вашем ' +
+                    'здоровье, видимости и т.д. При клике по противнику на ' +
+                    'схеме поля боя происходит его выбор в качестве цели. ' +
+                    'Кнопка "Обновить". Подсвечивает зеленым цветом тех ' +
+                    'персонажей, которые уже сделали ход. Выводит общее ' +
+                    'количество персонажей и количество персонажей сделавших ' +
+                    'ход. Таймаут обновления заявки после входа в нее и ' +
+                    'таймаут обновления данных в бою.&lt;br>' +
+                    '&lt;span style="color: #0000FF;">Параметры в настройках ' +
+                    'персонажа для правильной работы скрипта&lt;/span>: ' +
+                    '(&lt;a href="' + general.mainPath + 'imgs/AdvBattleAll/' +
+                    'screen1.png" target="_blank">скриншот&lt;/a>)&lt;br>' +
+                    ' - оформление боя в desktop-версии игры: упрощенное&lt;br>' +
+                    ' - расположение в бою: примитивное&lt;br>' +
+                    ' - JavaScript-версия: использовать.&lt;br>&lt;br>' +
+                    'Таймаут обновления данных в бою:' +
                     '&lt;span style="margin-left: 54px;"> &lt;/span>' +
                     '&lt;input id="refreshBattle" maxlength="2" style="width: ' +
                     '30px;" value="' + (general.getData(4)[0] || '0') +
@@ -3183,6 +3192,12 @@
             }
 
             var name = persLink.textContent.replace(/&amp;amp;/, '&amp;');
+
+            // личные NPC персонажей
+            if (/\[NPC\]$/.test(name)) {
+                objPers.npc = true;
+            }
+
             this.allFighters[name] = objPers;
 
             // в бою и если это мой перс, то запоминаем его
@@ -3825,8 +3840,14 @@
                                         this.enemies[name] ?
                                             this.enemies[name] + '. ' : '') +
                             '&lt;span style="color: #0000FF;">' + pers.lvl +
-                            '&lt;/span>' + name + ' [' + pers.hp[1] + '/' +
-                            pers.hp[2] + ']&lt;/span>&lt;div style="color: ' +
+                            '&lt;/span> ' +
+                            '&lt;span' +
+                            (pers.npc ? ' style="opacity:0.6;"' : '') + '>' +
+                            name + '&lt;/span> ' +
+                            '&lt;span>[' + pers.hp[1] + '/' + pers.hp[2] + ']' +
+                            '&lt;/span>' +
+                            '&lt;/span>' +
+                            '&lt;div style="color: ' +
                             '#b85006; margin-left: 10px;">Видимость: ' +
                             pers.visib + '&lt;br>&lt;span style="color: #000000;">' +
                             'Мощность: ' + pers.power + '&lt;/span>' + pers.skill +
@@ -7210,7 +7231,7 @@
             var i;
 
             line.link = line.line_1.querySelectorAll('a')[1];
-            line.id = /id=(.*)$/.exec(line.link)[1];
+            line.id = /id=(.*)$/.exec(line.link.href)[1];
             for (i = 0; i &lt; linesObj.length; i++) {
                 if (linesObj[i].line.id === line.id) {
                     return linesObj[i];
@@ -8429,6 +8450,7 @@
          */
         this.numberSms = 3;
 
+        // noinspection FunctionWithInconsistentReturnsJS
         /**
          * @method sortMess {{{2
          * @return   {int}
@@ -8965,6 +8987,7 @@
             this.sortGosEnergoAtom();
         }; // 2}}}
 
+        // noinspection FunctionWithInconsistentReturnsJS
         /**
          * @method getTrsTable {{{2
          * @return  {Array}
@@ -11224,7 +11247,7 @@
          * @param   {String}    str1
          * @param   {String}    str2
          * @param   {String}    str3
-         * @return  {String}    str
+         * @return  {String}
          */
         this.getRealEstateStr = function (obj, name, title, str1, str2, str3) {
             var setPoints = new SetPoints().init;
@@ -11597,6 +11620,7 @@
         /**
          * @method getAchievNow {{{2
          * @param   {Object}    obj
+         * @return  {Object|null}
          */
         this.getAchievNow = function (obj) {
             return obj.querySelectorAll('td[bgcolor="#ffffff"]>' +
@@ -11747,8 +11771,10 @@
          */
         this.syndMain = null;
 
+        // noinspection FunctionWithInconsistentReturnsJS
         /**
          * @method setSms {{{2
+         * @return  {Boolean}
          */
         this.setSms = function () {
             var nobrs = general.$('friendsbody').querySelectorAll('nobr');
@@ -14498,7 +14524,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Jul 29 2019 21:02:44 GMT+0400 (+04)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Aug 19 2019 20:15:31 GMT+0400 (+04)
 </footer>
 
 <script> prettyPrint(); </script>
