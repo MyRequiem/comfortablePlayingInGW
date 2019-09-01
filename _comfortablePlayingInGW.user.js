@@ -11137,7 +11137,7 @@
          * @return  {int|Object}
          */
         this.getTypeLine = function (str) {
-            if (/инициировал нападение/i.test(str) && !/контроль/i.test(str)) {
+            if (/инициировал нападение/i.test(str)) {
                 return 1;
             }
 
