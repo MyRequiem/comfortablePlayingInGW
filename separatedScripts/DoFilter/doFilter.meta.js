@@ -9,6 +9,6 @@
 // @include         http://www.gwars.ru/market-p.php*
 // @grant           none
 // @license         MIT
-// @version         2.09-240819
+// @version         2.10-070919
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
