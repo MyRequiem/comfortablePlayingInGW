@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.141-070919
+// @version         1.142-210919
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -83,7 +83,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.141-070919';
+        this.version = '1.142-210919';
         /**
          * @property stString {{{2
          * @type {String}
@@ -152,14 +152,15 @@
                         [58] - CurrentQuestOnInfo
                         [59] - CommonBattleFilter
                         [60] - CalculateSyndLvl
-                        [61] - PortsSyndLinks */
+                        [61] - PortsSyndLinks
+                        [62] - BbCodeInMessages */
                         '@||||||||||' +
                         '||||||||||' +
                         '||||||||||' +
                         '||||||||||' +
                         '||||||||||' +
                         '||||||||||' +
-                        '|' +
+                        '||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -1066,7 +1067,13 @@
                     '<span style="margin-left: 15px;">идея: ' +
                     '<a href="http://www.gwars.ru/info.php?id=54662" ' +
                     'style="font-weight: bold;" target="_blank">kaa</a>' +
-                    '</span>', '58']],
+                    '</span>', '58'],
+                ['Кнопки для вставки bb-кодов цитирования и наклонного шрифта',
+                    'В формах для отправки личных сообщений и сообщений на ' +
+                    'форуме добавляет кнопки для вставки в позиции курсора ' +
+                    'bb-кодов для цитирования [q][/q] и наклонного шрифта ' +
+                    '[i][/i]' +
+                    this.getGitHubLink('bbCodeInMessages'), '62']],
 
             'Персональный NPC': [
                 ['Оповещения', 'Если личный NPC ожидает распоряжений и его ' +
@@ -2927,7 +2934,6 @@
                 dataSt[24] = '1';
                 isLauncher = true;
             }
-
 
             var leftAttack = general.doc.querySelector('input[type="radio"]' +
                 '[name^="left_attack"]:checked'),
@@ -13863,6 +13869,69 @@
         }; // 2}}}
     }; // 1}}}
 
+    /**
+     * @class BbCodeInMessages {{{1
+     * @constructor
+     */
+    var BbCodeInMessages = function () {
+        /**
+         * @property textArea
+         * @type {Object|null}
+         */
+        this.textArea = general.doc.querySelector('textarea[name="msg"],' +
+                'textarea[name="message"]');
+
+        /**
+         * @method  setButton {{{2
+         * @param   {String}    imgName
+         * @param   {String}    title
+         * @param   {Object}    target
+         * @param   {String}    tag
+         */
+        this.setButton = function (imgName, title, target, tag) {
+            var button = general.doc.createElement('span');
+            button.setAttribute('style', 'margin-left: 10px; cursor: pointer;');
+            button.innerHTML = '<img src="' + general.imgPath +
+                'BbCodeInMessages/' + imgName +
+                '.png" width="14" height="14" title="' + title + '" ' +
+                'alt="' + title + '">';
+            target.appendChild(button);
+
+            var _this = this;
+            button.addEventListener('click', function () {
+                var text = _this.textArea.value,
+                    cursorPos = _this.textArea.selectionStart;
+
+                if (!general.root.KKaf) {
+                    _this.textArea.value = '';
+                } else if (general.root.v0WD) {
+                    _this.textArea.value = text.substring(0, cursorPos) + tag +
+                        text.substring(cursorPos, text.length);
+                    _this.textArea.focus();
+                    _this.textArea.selectionEnd = cursorPos + 3;
+                }
+            }, false);
+        }; // 2}}}
+
+        /**
+         * @method  init {{{2
+         */
+        this.init = function () {
+            var sendButton = general.doc.
+                    querySelector('input[value="Отправить сообщение"]');
+
+            if (this.textArea && sendButton) {
+                var target = sendButton.parentNode.parentNode.parentNode.
+                        parentNode.querySelectorAll('td');
+
+                target = /sms-create/.test(general.loc) ? target[4] : target[0];
+
+                this.setButton('quote', 'Цитирование', target, '[q][/q]');
+                this.setButton('italic', 'Наклонный шрифт', target, '[i][/i]');
+            }
+        }; // 2}}}
+    }; // 1}}}
+
     general = new General();
 
     // не в игре
@@ -14189,6 +14258,16 @@
                 if (initScript[27]) {
                     try {
                         new LinksToHighTech().init();
+                    } catch (e) {
+                        general.cons.log(e);
+                    }
+                }
+            }
+
+            if (/(messages|sms-(create|read)).php/.test(general.loc)) {
+                if (initScript[62]) {
+                    try {
+                        new BbCodeInMessages().init();
                     } catch (e) {
                         general.cons.log(e);
                     }
