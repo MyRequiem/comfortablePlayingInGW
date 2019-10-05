@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/market.php?buy=*
 // @grant           none
 // @license         MIT
-// @version         2.26-250519
+// @version         2.27-051019
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -213,8 +213,8 @@
          * @method init
          */
         init: function () {
-            var table = this.doc.querySelector('table.wb' +
-                    '[align="center"]');
+            var table = this.doc.
+                    querySelector('table.withborders[align="center"]');
 
             if (!table) {
                 return;

@@ -2267,7 +2267,9 @@
          * @method init {{{2
          */
         this.init = function () {
-            var table = general.doc.querySelector('table.wb[align="center"]');
+            var table = general.doc.
+                    querySelector('table.withborders[align="center"]');
+
             if (!table) {
                 return;
             }
