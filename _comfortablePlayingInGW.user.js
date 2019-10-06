@@ -8071,7 +8071,7 @@
          * @method init {{{2
          */
         this.init = function () {
-            var target = general.doc.querySelector('table+div+br+center') ||
+            var target = general.doc.querySelector('table+div+div+br+center') ||
                             general.doc.querySelector('table+br+center');
 
             if (!this.selects.length || !this.selects[0].options || !target) {
