@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.142-210919
+// @version         1.143-061019
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -83,7 +83,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.142-210919';
+        this.version = '1.143-061019';
         /**
          * @property stString {{{2
          * @type {String}
@@ -2267,7 +2267,9 @@
          * @method init {{{2
          */
         this.init = function () {
-            var table = general.doc.querySelector('table.wb[align="center"]');
+            var table = general.doc.
+                    querySelector('table.withborders[align="center"]');
+
             if (!table) {
                 return;
             }
@@ -8069,7 +8071,7 @@
          * @method init {{{2
          */
         this.init = function () {
-            var target = general.doc.querySelector('table+div+br+center') ||
+            var target = general.doc.querySelector('table+div+div+br+center') ||
                             general.doc.querySelector('table+br+center');
 
             if (!this.selects.length || !this.selects[0].options || !target) {
