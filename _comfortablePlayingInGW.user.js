@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.143-061019
+// @version         1.144-181119
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -83,7 +83,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.143-061019';
+        this.version = '1.144-181119';
         /**
          * @property stString {{{2
          * @type {String}
@@ -3221,6 +3221,7 @@
                     }
 
                     span = general.doc.createElement('span');
+                    span.setAttribute('name', 'sendmessenv');
                     span.innerHTML = ' <img src="' + this.imgPath +
                         'envelope.gif" style="width: 15px; cursor: pointer; ' +
                         'margin-right: 5px;" alt="img" />';
@@ -4186,7 +4187,8 @@
 
             // расстановка конвертиков и сбор дополнительной
             // информации (если они еще не были установлены)
-            if (this.leftPers[0].nextElementSibling.nodeName !== 'SPAN') {
+            if (this.leftPers[0].nextElementSibling.
+                    getAttribute('name') !== 'sendmessenv') {
                 this.allFighters = {};
                 this.setEnvelope();
             }
