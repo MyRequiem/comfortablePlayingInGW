@@ -4812,8 +4812,7 @@
                 }
 
                 // ищем ссылку на объект где работаем/работали
-                var cssSelector = 'td[align="center"][style="font-size:8pt"]' +
-                        '[bgcolor="#e9ffe9"]',
+                var cssSelector = 'td.font8pt[align="center"]',
                     linkObj = spanContent.querySelector(cssSelector);
 
                 // видимо что-то случилось
