@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.21-190819
+// @version         4.22-181119
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -1146,6 +1146,7 @@
                     }
 
                     span = general.doc.createElement('span');
+                    span.setAttribute('name', 'sendmessenv');
                     span.innerHTML = ' <img src="' + general.imgPath +
                         'envelope.gif" style="width: 15px; cursor: pointer; ' +
                         'margin-right: 5px;" alt="img" />';
@@ -2099,7 +2100,8 @@
 
             // расстановка конвертиков и сбор дополнительной
             // информации (если они еще не были установлены)
-            if (this.leftPers[0].nextElementSibling.nodeName !== 'SPAN') {
+            if (this.leftPers[0].nextElementSibling.
+                    getAttribute('name') !== 'sendmessenv') {
                 this.allFighters = {};
                 this.setEnvelope();
             }

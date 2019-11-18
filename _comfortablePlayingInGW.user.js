@@ -3221,6 +3221,7 @@
                     }
 
                     span = general.doc.createElement('span');
+                    span.setAttribute('name', 'sendmessenv');
                     span.innerHTML = ' <img src="' + this.imgPath +
                         'envelope.gif" style="width: 15px; cursor: pointer; ' +
                         'margin-right: 5px;" alt="img" />';
@@ -4186,7 +4187,8 @@
 
             // расстановка конвертиков и сбор дополнительной
             // информации (если они еще не были установлены)
-            if (this.leftPers[0].nextElementSibling.nodeName !== 'SPAN') {
+            if (this.leftPers[0].nextElementSibling.
+                    getAttribute('name') !== 'sendmessenv') {
                 this.allFighters = {};
                 this.setEnvelope();
             }
