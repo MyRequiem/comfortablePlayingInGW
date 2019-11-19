@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.144-181119
+// @version         1.145-191119
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -83,7 +83,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.144-181119';
+        this.version = '1.145-191119';
         /**
          * @property stString {{{2
          * @type {String}
@@ -4812,8 +4812,7 @@
                 }
 
                 // ищем ссылку на объект где работаем/работали
-                var cssSelector = 'td[align="center"][style="font-size:8pt"]' +
-                        '[bgcolor="#e9ffe9"]',
+                var cssSelector = 'td.font8pt[align="center"]',
                     linkObj = spanContent.querySelector(cssSelector);
 
                 // видимо что-то случилось
