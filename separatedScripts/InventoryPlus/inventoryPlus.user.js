@@ -111,7 +111,7 @@
         this.compareLines = function (line, linesObj) {
             var i;
             line.link = line.line_1.querySelectorAll('a')[1];
-            line.id = /id=(.*)$/.exec(line.link)[1];
+            line.id = /id=(.*)$/.exec(line.link.href)[1];
             for (i = 0; i < linesObj.length; i++) {
                 if (linesObj[i].line.id === line.id) {
                     return linesObj[i];
