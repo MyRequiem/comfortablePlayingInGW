@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.22-181119
+// @version         4.23-020220
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -731,7 +731,8 @@
             'tacticalgps', 'oldcompass', 'bottleopener', 'ganjacup', 'pendant',
             'flashlight', 'heartglasses', 'radio_gw148', 'bors', 'ganjacola2',
             'mentats2', 'minimedikit', 'medikit', 'bigmedikit', 'slr', 'apache',
-            'mi8', 'cadillac', 'chinook', 'harley', 'ch148'
+            'mi8', 'cadillac', 'chinook', 'harley', 'ch148', 'irvs12', 'jscamo',
+            'tactilight'
         ];
         /**
          * @property rent
