@@ -2806,7 +2806,7 @@
             'flashlight', 'heartglasses', 'radio_gw148', 'bors', 'ganjacola2',
             'mentats2', 'minimedikit', 'medikit', 'bigmedikit', 'slr', 'apache',
             'mi8', 'cadillac', 'chinook', 'harley', 'ch148', 'irvs12', 'jscamo',
-            'tactilight'
+            'tactilight', 'gwtab7', 'triforce_xb', 'gcombatflask'
         ]; // 2}}}
         /**
          * @property rent {{{2
