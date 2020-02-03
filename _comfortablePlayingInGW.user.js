@@ -4354,6 +4354,11 @@
                         _this.inpTextChat.value = '~' + chatMessage;
                     }
 
+                    if (_this.intervalUpdateInpTextChat) {
+                        general.root.clearInterval(_this.
+                            intervalUpdateInpTextChat);
+                    }
+
                     // костыль после отправки сообщения в чат
                     _this.intervalUpdateInpTextChat = general.root.
                         setInterval(function () {
@@ -4395,11 +4400,29 @@
                     if (!/^!\*/.test(chatMessage)) {
                         _this.inpTextChat.value = '!*' + chatMessage;
                     }
+
+                    if (_this.intervalUpdateInpTextChat) {
+                        general.root.clearInterval(_this.
+                            intervalUpdateInpTextChat);
+                    }
+
+                    // костыль после отправки сообщения в чат
+                    _this.intervalUpdateInpTextChat = general.root.
+                        setInterval(function () {
+                            if (!_this.inpTextChat.value) {
+                                _this.inpTextChat.value = '!*';
+                            }
+                        }, 1000);
                 } else {
                     dataSt[26] = '';
                     // noinspection RegExpSingleCharAlternation
                     _this.inpTextChat.value = _this.inpTextChat.value.
                         replace(/^\s*!\*\s*/, '');
+
+                    if (_this.intervalUpdateInpTextChat) {
+                        general.root.clearInterval(_this.
+                            intervalUpdateInpTextChat);
+                    }
                 }
 
                 general.setData(dataSt, 4);
