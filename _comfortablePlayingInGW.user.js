@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.145-191119
+// @version         1.146-030220
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -83,7 +83,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.145-191119';
+        this.version = '1.146-030220';
         /**
          * @property stString {{{2
          * @type {String}
@@ -200,8 +200,10 @@
                         [21] - звук при начале боя
                         [22] - звук при начале хода
                         [23] - чекбокс "Говорить только правую руку"
-                        [24] - подствольник */
-                        '@||||||||||||||||||||||||' +
+                        [24] - подствольник
+                        [25] - показывать чекбокс "Сказать как координатор"
+                        [26] - чекбокс "Сказать как координатор" отмечен */
+                        '@||||||||||||||||||||||||||' +
                     /*
                     [5]  - BlacklistHighlighting
                         [0]  - ID персов из ЧС ('id1,id2,...')
@@ -1095,16 +1097,19 @@
                     'дальности, уровню, видимости и т.д. Динамический центр, ' +
                     'продвинутое расположение бойцов на поле боя в бою и в ' +
                     'режиме наблюдения за боем, кнопка "Сказать ход", ' +
-                    'чекбоксы "Говорить только правую руку" и "Говорить ' +
-                    'только левую руку", быстрая вставка ника в поле чата. ' +
+                    'чекбоксы "Говорить только правую руку", "Говорить ' +
+                    'только левую руку", "Сказать своей команде", "Сказать ' +
+                    'как координатор". Быстрая вставка ника в поле чата (при ' +
+                    'клике на "конвертике" рядом с никами бойцов или при ' +
+                    'двойном клике на изображении бойца на схеме поле боя). ' +
                     'Информация вверху страницы о набитом HP, вашем ' +
-                    'здоровье, видимости и т.д. При клике по противнику на ' +
-                    'схеме поля боя происходит его выбор в качестве цели. ' +
-                    'Кнопка "Обновить". Подсвечивает зеленым цветом тех ' +
-                    'персонажей, которые уже сделали ход. Выводит общее ' +
-                    'количество персонажей и количество персонажей сделавших ' +
-                    'ход. Таймаут обновления заявки после входа в нее и ' +
-                    'таймаут обновления данных в бою.<br>' +
+                    'здоровье, видимости и т.д. При одиночном клике по ' +
+                    'противнику на схеме поля боя происходит его выбор в ' +
+                    'качестве цели. Кнопка "Обновить". Подсвечивает зеленым ' +
+                    'цветом тех персонажей, которые уже сделали ход. Выводит ' +
+                    'общее количество персонажей и количество персонажей ' +
+                    'сделавших ход. Таймаут обновления заявки после входа в ' +
+                    'нее и таймаут обновления данных в бою.<br>' +
                     '<span style="color: #0000FF;">Параметры в настройках ' +
                     'персонажа для правильной работы скрипта</span>: ' +
                     '(<a href="' + general.mainPath + 'imgs/AdvBattleAll/' +
@@ -1112,7 +1117,10 @@
                     ' - оформление боя в desktop-версии игры: упрощенное<br>' +
                     ' - расположение в бою: примитивное<br>' +
                     ' - JavaScript-версия: использовать.<br><br>' +
-                    'Таймаут обновления данных в бою:' +
+                    'Показывать чекбокс "Сказать как координатор" ' +
+                    '(вставка \'!*\' в поле чата боя): ' +
+                    '<input type="checkbox" id="showCoordButton" disabled />' +
+                    '<br><br>Таймаут обновления данных в бою:' +
                     '<span style="margin-left: 54px;"> </span>' +
                     '<input id="refreshBattle" maxlength="2" style="width: ' +
                     '30px;" value="' + (general.getData(4)[0] || '0') +
@@ -1567,6 +1575,14 @@
 
             var checkInputText = new CheckInputText().init,
                 _this = this;
+
+            // Показывать чекбокс "Сказать как координатор"
+            // (вставка '!*' в поле чата боя)
+            var showCoordButton = general.$('showCoordButton');
+            showCoordButton.checked = general.getData(4)[25] === '1';
+            showCoordButton.addEventListener('click', function () {
+                _this.modifyData(4, 25, showCoordButton.checked ? '1' : '');
+            }, false);
 
             // выбор звука начала боя и начала хода
             var advBattleSound1 = general.$('advBattleSound1'),
@@ -2805,7 +2821,8 @@
             'tacticalgps', 'oldcompass', 'bottleopener', 'ganjacup', 'pendant',
             'flashlight', 'heartglasses', 'radio_gw148', 'bors', 'ganjacola2',
             'mentats2', 'minimedikit', 'medikit', 'bigmedikit', 'slr', 'apache',
-            'mi8', 'cadillac', 'chinook', 'harley', 'ch148'
+            'mi8', 'cadillac', 'chinook', 'harley', 'ch148', 'irvs12', 'jscamo',
+            'tactilight', 'gwtab7', 'triforce_xb', 'gcombatflask'
         ]; // 2}}}
         /**
          * @property rent {{{2
@@ -3191,7 +3208,23 @@
         }; // 2}}}
 
         /**
+         * @method  setPersNikInChat {{{2
+         * @param   {String}    eventType
+         * @param   {Object}    _this
+         * @param   {String}    pName
+         * @return  {Function}
+         */
+        this.setPersNikInChat = function (_this, pName) {
+            return function () {
+                _this.inpTextChat.value = _this.inpTextChat.value + ' ' +
+                    pName + ' ';
+                _this.inpTextChat.focus();
+            };
+        }; // 2}}}
+
+        /**
          * @method setNameInChat {{{2
+         * @return  {Function}
          */
         this.setNameInChat = function (persName) {
             var _this = this;
@@ -3706,6 +3739,7 @@
          * @method clickImageFighters {{{2
          * @param   {Object}   opt
          * @param   {Object}    _this
+         * @return  {Function}
          */
         this.clickImageFighters = function (opt, _this) {
             return function () {
@@ -3718,6 +3752,7 @@
          * @method showTooltip {{{2
          * @param   {String}    ttl
          * @param   {Object}    _this
+         * @return  {Function}
          */
         this.showTooltip = function (ttl, _this) {
             return function () {
@@ -3746,6 +3781,7 @@
         /**
          * @method hideTooltip {{{2
          * @param   {Object}    _this
+         * @return  {Function}
          */
         this.hideTooltip = function (_this) {
             return function () {
@@ -3854,6 +3890,9 @@
                 // скрываем тултип
                 img[i].addEventListener('mouseout',
                         this.hideTooltip(this), false);
+                // по двойному клику вставляем ник персонажа в поле ввода чата
+                img[i].addEventListener('dblclick',
+                    _this.setPersNikInChat(_this, ttlName), false);
 
                 // удаляем оригинальный title
                 img[i].removeAttribute('title');
@@ -4106,6 +4145,7 @@
         /**
          * @method setColorFighters {{{2
          * @param   {Object}    _this
+         * @return  {Function}
          */
         this.setColorFighters = function (_this) {
             return function () {
@@ -4273,24 +4313,50 @@
          * @method setChatInterface {{{2
          */
         this.setChatInterface = function () {
+            // чекбокс "Сказать своей команде"
             var sayOnlyMyCommand = general.doc.createElement('input');
             sayOnlyMyCommand.type = 'checkbox';
-            sayOnlyMyCommand.setAttribute('style', 'margin-right: 10px;');
             sayOnlyMyCommand.setAttribute('title', 'Сказать своей команде');
             this.inpTextChat.parentNode.insertBefore(sayOnlyMyCommand,
                     this.inpTextChat);
 
+            // чекбокс "Сказать как координатор"
+            var sayAsCoord = general.doc.createElement('input');
+            sayAsCoord.type = 'checkbox';
+            sayAsCoord.setAttribute('style', 'margin-right: 10px;');
+            sayAsCoord.setAttribute('title', 'Сказать как координатор');
+            this.inpTextChat.parentNode.insertBefore(sayAsCoord,
+                    this.inpTextChat);
+
+            var stData = general.getData(4);
+            if (!stData[25]) {
+                sayAsCoord.style.display = 'none';
+                sayOnlyMyCommand.setAttribute('style', 'margin-right: 10px;');
+            }
+
             var _this = this;
             sayOnlyMyCommand.addEventListener('click', function () {
                 var dataSt = general.getData(4),
-                    chatMessage = _this.inpTextChat.value,
                     thisChk = this;
 
                 if (thisChk.checked) {
+                    if (sayAsCoord.checked) {
+                        dataSt[26] = '';
+                        sayAsCoord.checked = false;
+                        _this.inpTextChat.value = _this.inpTextChat.value.
+                            replace(/^\s*!\*\s*/, '');
+                    }
+
                     dataSt[10] = '1';
+                    var chatMessage = _this.inpTextChat.value;
                     // noinspection RegExpSingleCharAlternation
-                    if (!/^(~|\*|@)/.test(chatMessage)) {
+                    if (!/^\s*(~|\*|@)/.test(chatMessage)) {
                         _this.inpTextChat.value = '~' + chatMessage;
+                    }
+
+                    if (_this.intervalUpdateInpTextChat) {
+                        general.root.clearInterval(_this.
+                            intervalUpdateInpTextChat);
                     }
 
                     // костыль после отправки сообщения в чат
@@ -4304,7 +4370,7 @@
                     dataSt[10] = '';
                     // noinspection RegExpSingleCharAlternation
                     _this.inpTextChat.value = _this.inpTextChat.value.
-                        replace(/^(~|\*|@)+/, '');
+                        replace(/^\s*(~|\*|@)\s*/, '');
 
                     if (_this.intervalUpdateInpTextChat) {
                         general.root.clearInterval(_this.
@@ -4316,16 +4382,72 @@
                 _this.inpTextChat.focus();
             }, false);
 
-            var stData = general.getData(4);
+            sayAsCoord.addEventListener('click', function () {
+                var dataSt = general.getData(4),
+                    thisChk = this;
+
+                if (thisChk.checked) {
+                    if (sayOnlyMyCommand.checked) {
+                        dataSt[10] = '';
+                        sayOnlyMyCommand.checked = false;
+                        _this.inpTextChat.value = _this.inpTextChat.value.
+                            replace(/^\s*~\s*/, '');
+                    }
+
+                    dataSt[26] = '1';
+                    var chatMessage = _this.inpTextChat.value;
+                    // noinspection RegExpSingleCharAlternation
+                    if (!/^!\*/.test(chatMessage)) {
+                        _this.inpTextChat.value = '!*' + chatMessage;
+                    }
+
+                    if (_this.intervalUpdateInpTextChat) {
+                        general.root.clearInterval(_this.
+                            intervalUpdateInpTextChat);
+                    }
+
+                    // костыль после отправки сообщения в чат
+                    _this.intervalUpdateInpTextChat = general.root.
+                        setInterval(function () {
+                            if (!_this.inpTextChat.value) {
+                                _this.inpTextChat.value = '!*';
+                            }
+                        }, 1000);
+                } else {
+                    dataSt[26] = '';
+                    // noinspection RegExpSingleCharAlternation
+                    _this.inpTextChat.value = _this.inpTextChat.value.
+                        replace(/^\s*!\*\s*/, '');
+
+                    if (_this.intervalUpdateInpTextChat) {
+                        general.root.clearInterval(_this.
+                            intervalUpdateInpTextChat);
+                    }
+                }
+
+                general.setData(dataSt, 4);
+                _this.inpTextChat.focus();
+            }, false);
+
             if (stData[10]) {
                 sayOnlyMyCommand.click();
+            } else if (stData[26]) {
+                sayAsCoord.click();
             }
 
-            // если отмечен чекбокс, символ '~' стереть будет нельзя
+            // если отмечен чекбокс "Сказать своей команде", символ '~' стереть
+            // будет нельзя
+            // если отмечен чекбокс "Сказать как координатор", символы '!*'
+            // стереть будет нельзя
             this.inpTextChat.addEventListener('input', function (e) {
                 var thisInp = this;
                 if (sayOnlyMyCommand.checked && !thisInp.value) {
                     thisInp.value = '~';
+                }
+
+                if (sayAsCoord.checked &&
+                        (!thisInp.value || thisInp.value === '!')) {
+                    thisInp.value = '!*';
                 }
 
                 // при нажатии <Enter> сохраняем установленный ход

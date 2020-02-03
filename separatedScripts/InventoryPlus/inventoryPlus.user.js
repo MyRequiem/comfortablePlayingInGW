@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/items.php*
 // @grant           none
 // @license         MIT
-// @version         2.48-260519
+// @version         2.49-131219
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -111,7 +111,7 @@
         this.compareLines = function (line, linesObj) {
             var i;
             line.link = line.line_1.querySelectorAll('a')[1];
-            line.id = /id=(.*)$/.exec(line.link)[1];
+            line.id = /id=(.*)$/.exec(line.link.href)[1];
             for (i = 0; i < linesObj.length; i++) {
                 if (linesObj[i].line.id === line.id) {
                     return linesObj[i];
