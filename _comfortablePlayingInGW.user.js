@@ -4378,7 +4378,7 @@
             }, false);
 
             sayAsCoord.addEventListener('click', function () {
-                var dataSt = general.getData(),
+                var dataSt = general.getData(4),
                     thisChk = this;
 
                 if (thisChk.checked) {
@@ -4402,7 +4402,7 @@
                         replace(/^\s*!\*\s*/, '');
                 }
 
-                general.setData(dataSt);
+                general.setData(dataSt, 4);
                 _this.inpTextChat.focus();
             }, false);
 
