@@ -3209,7 +3209,6 @@
 
         /**
          * @method  setPersNikInChat {{{2
-         * @param   {String}    eventType
          * @param   {Object}    _this
          * @param   {String}    pName
          * @return  {Function}
