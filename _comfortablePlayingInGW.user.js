@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.146-030220
+// @version         1.147-230220
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -83,7 +83,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.146-030220';
+        this.version = '1.147-230220';
         /**
          * @property stString {{{2
          * @type {String}
@@ -3209,7 +3209,6 @@
 
         /**
          * @method  setPersNikInChat {{{2
-         * @param   {String}    eventType
          * @param   {Object}    _this
          * @param   {String}    pName
          * @return  {Function}
@@ -4334,6 +4333,10 @@
                 sayOnlyMyCommand.setAttribute('style', 'margin-right: 10px;');
             }
 
+            if (general.viewMode) {
+                sayOnlyMyCommand.style.display = 'none';
+            }
+
             var _this = this;
             sayOnlyMyCommand.addEventListener('click', function () {
                 var dataSt = general.getData(4),
@@ -4350,7 +4353,8 @@
                     dataSt[10] = '1';
                     var chatMessage = _this.inpTextChat.value;
                     // noinspection RegExpSingleCharAlternation
-                    if (!/^\s*(~|\*|@)/.test(chatMessage)) {
+                    if (!general.viewMode &&
+                            !/^\s*(~|\*|@)/.test(chatMessage)) {
                         _this.inpTextChat.value = '~' + chatMessage;
                     }
 
@@ -4360,12 +4364,14 @@
                     }
 
                     // костыль после отправки сообщения в чат
-                    _this.intervalUpdateInpTextChat = general.root.
-                        setInterval(function () {
-                            if (!_this.inpTextChat.value) {
-                                _this.inpTextChat.value = '~';
-                            }
-                        }, 1000);
+                    if (!general.viewMode) {
+                        _this.intervalUpdateInpTextChat = general.root.
+                            setInterval(function () {
+                                if (!_this.inpTextChat.value) {
+                                    _this.inpTextChat.value = '~';
+                                }
+                            }, 1000);
+                    }
                 } else {
                     dataSt[10] = '';
                     // noinspection RegExpSingleCharAlternation
@@ -4433,6 +4439,10 @@
                 sayOnlyMyCommand.click();
             } else if (stData[26]) {
                 sayAsCoord.click();
+            }
+
+            if (general.viewMode) {
+                return;
             }
 
             // если отмечен чекбокс "Сказать своей команде", символ '~' стереть
@@ -4569,6 +4579,7 @@
          */
         this.tryStart = function () {
             if (general.viewMode) {
+                this.setChatInterface();
                 this.start();
                 return;
             }
@@ -9662,14 +9673,17 @@
          * @method changeColor {{{2
          */
         this.changeColor = function () {
-            var td = general.doc.querySelector('input[name="sendtype"]').
-                        parentNode,
-                _this = this,
-                color = _this.id === 'donotsend' ? '#E0EEE0' :
-                            _this.id === 'send1' ? '#FB8F8F' : '#95CCF6';
+            var td = general.doc.querySelector('td[valign="top"]+' +
+                    'td.greengraybg[align="left"]');
 
-            td.style.background = color;
-            td.previousElementSibling.style.background = color;
+            if (td) {
+                var _this = this,
+                    color = _this.id === 'donotsend' ? '#E0EEE0' :
+                                _this.id === 'send1' ? '#FB8F8F' : '#95CCF6';
+
+                td.style.background = color;
+                td.previousElementSibling.style.background = color;
+            }
         }; // 2}}}
 
         /**

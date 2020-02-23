@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/home.senditem.php*
 // @grant           none
 // @license         MIT
-// @version         2.08-260519
+// @version         2.09-230220
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -86,14 +86,17 @@
          * @method changeColor
          */
         this.changeColor = function () {
-            var td = general.doc.querySelector('input[name="sendtype"]').
-                        parentNode,
-                _this = this,
-                color = _this.id === 'donotsend' ? '#E0EEE0' :
-                            _this.id === 'send1' ? '#FB8F8F' : '#95CCF6';
+            var td = general.doc.querySelector('td[valign="top"]+' +
+                    'td.greengraybg[align="left"]');
 
-            td.style.background = color;
-            td.previousElementSibling.style.background = color;
+            if (td) {
+                var _this = this,
+                    color = _this.id === 'donotsend' ? '#E0EEE0' :
+                                _this.id === 'send1' ? '#FB8F8F' : '#95CCF6';
+
+                td.style.background = color;
+                td.previousElementSibling.style.background = color;
+            }
         };
 
         /**
