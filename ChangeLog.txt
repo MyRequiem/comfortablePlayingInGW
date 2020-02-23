@@ -1,3 +1,15 @@
+2020-02-23[1.147-230220]
+--------------------------------------
+    - Исправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/RentAndSale
+
+    - Обновлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+
+        - добавлен чекбокс "Сказать как координатор" в режиме наблюдения за
+            боем
+
+
 2020-02-03[1.146-030220]
 --------------------------------------
     - Обновлен скрипт:
