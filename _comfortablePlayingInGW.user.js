@@ -4333,6 +4333,10 @@
                 sayOnlyMyCommand.setAttribute('style', 'margin-right: 10px;');
             }
 
+            if (general.viewMode) {
+                sayOnlyMyCommand.style.display = 'none';
+            }
+
             var _this = this;
             sayOnlyMyCommand.addEventListener('click', function () {
                 var dataSt = general.getData(4),
@@ -4349,7 +4353,8 @@
                     dataSt[10] = '1';
                     var chatMessage = _this.inpTextChat.value;
                     // noinspection RegExpSingleCharAlternation
-                    if (!/^\s*(~|\*|@)/.test(chatMessage)) {
+                    if (!general.viewMode &&
+                            !/^\s*(~|\*|@)/.test(chatMessage)) {
                         _this.inpTextChat.value = '~' + chatMessage;
                     }
 
@@ -4359,12 +4364,14 @@
                     }
 
                     // костыль после отправки сообщения в чат
-                    _this.intervalUpdateInpTextChat = general.root.
-                        setInterval(function () {
-                            if (!_this.inpTextChat.value) {
-                                _this.inpTextChat.value = '~';
-                            }
-                        }, 1000);
+                    if (!general.viewMode) {
+                        _this.intervalUpdateInpTextChat = general.root.
+                            setInterval(function () {
+                                if (!_this.inpTextChat.value) {
+                                    _this.inpTextChat.value = '~';
+                                }
+                            }, 1000);
+                    }
                 } else {
                     dataSt[10] = '';
                     // noinspection RegExpSingleCharAlternation
@@ -4432,6 +4439,10 @@
                 sayOnlyMyCommand.click();
             } else if (stData[26]) {
                 sayAsCoord.click();
+            }
+
+            if (general.viewMode) {
+                return;
             }
 
             // если отмечен чекбокс "Сказать своей команде", символ '~' стереть
@@ -4568,6 +4579,7 @@
          */
         this.tryStart = function () {
             if (general.viewMode) {
+                this.setChatInterface();
                 this.start();
                 return;
             }
