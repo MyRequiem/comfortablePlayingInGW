@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.32-180420
+// @version         4.33-180420
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -830,22 +830,24 @@
 
             // общий навык
             var generalSkill = '';
-            if (!notWriteSkillsWhenSayMove &&
-                    general.doc.querySelector('input[type="checkbox"]' +
-                        '[name="apm_activate"]:checked')) {
+            if (general.doc.querySelector('input[type="checkbox"]' +
+                    '[name="apm_activate"]:checked')) {
                 dataSt[17] = general.doc.querySelector('label[for="apmid"]').
                     innerHTML;
-                generalSkill = ' + ' + dataSt[17];
+                if (!notWriteSkillsWhenSayMove) {
+                    generalSkill = ' + ' + dataSt[17];
+                }
             }
 
             // навык специалиста
             var specialSkill = '';
-            if (!notWriteSkillsWhenSayMove &&
-                    general.doc.querySelector('input[type="checkbox"]' +
-                        '[name="aps_activate"]:checked')) {
+            if (general.doc.querySelector('input[type="checkbox"]' +
+                    '[name="aps_activate"]:checked')) {
                 dataSt[18] = general.doc.querySelector('label[for="apsid"]').
                     innerHTML;
-                specialSkill = ' + ' + dataSt[18];
+                if (!notWriteSkillsWhenSayMove) {
+                    specialSkill = ' + ' + dataSt[18];
+                }
             }
 
             var str = '~';

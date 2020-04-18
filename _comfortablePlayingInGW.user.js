@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.148-180420
+// @version         1.149-180420
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -83,7 +83,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.148-180420';
+        this.version = '1.149-180420';
         /**
          * @property stString {{{2
          * @type {String}
@@ -2942,22 +2942,24 @@
 
             // общий навык
             var generalSkill = '';
-            if (!dataSt[28] &&
-                    general.doc.querySelector('input[type="checkbox"]' +
-                        '[name="apm_activate"]:checked')) {
+            if (general.doc.querySelector('input[type="checkbox"]' +
+                    '[name="apm_activate"]:checked')) {
                 dataSt[19] = general.doc.querySelector('label[for="apmid"]').
                     innerHTML;
-                generalSkill = ' + ' + dataSt[19];
+                if (!dataSt[28]) {
+                    generalSkill = ' + ' + dataSt[19];
+                }
             }
 
             // навык специалиста
             var specialSkill = '';
-            if (!dataSt[28] &&
-                    general.doc.querySelector('input[type="checkbox"]' +
-                        '[name="aps_activate"]:checked')) {
+            if (general.doc.querySelector('input[type="checkbox"]' +
+                    '[name="aps_activate"]:checked')) {
                 dataSt[20] = general.doc.querySelector('label[for="apsid"]').
                     innerHTML;
-                specialSkill = ' + ' + dataSt[20];
+                if (!dataSt[28]) {
+                    specialSkill = ' + ' + dataSt[20];
+                }
             }
 
             var str = '~';
