@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.31-230220
+// @version         4.32-180420
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -45,7 +45,14 @@
         // звук при начале хода (0 - без звука)
         sound2 = 0,
         // чекбокс для координаторов боя '!*' (1/0 - показывать/не показывать)
-        coordButton = 1;
+        coordButton = 1,
+        // ###
+        // # при нажатии на кнопку "Сказать ход"
+        // ###
+        // не выводить имя противника (0/1 - выводить/не выводить)
+        notWriteEnemyNameWhenSayMove = 0,
+        // не выводить применяемые навыки (0/1 - выводить/не выводить)
+        notWriteSkillsWhenSayMove = 0;
     //============= КОНЕЦ НАСТРОЕК ===============
 
 /* localStorage data
@@ -823,8 +830,9 @@
 
             // общий навык
             var generalSkill = '';
-            if (general.doc.querySelector('input[type="checkbox"]' +
-                    '[name="apm_activate"]:checked')) {
+            if (!notWriteSkillsWhenSayMove &&
+                    general.doc.querySelector('input[type="checkbox"]' +
+                        '[name="apm_activate"]:checked')) {
                 dataSt[17] = general.doc.querySelector('label[for="apmid"]').
                     innerHTML;
                 generalSkill = ' + ' + dataSt[17];
@@ -832,8 +840,9 @@
 
             // навык специалиста
             var specialSkill = '';
-            if (general.doc.querySelector('input[type="checkbox"]' +
-                    '[name="aps_activate"]:checked')) {
+            if (!notWriteSkillsWhenSayMove &&
+                    general.doc.querySelector('input[type="checkbox"]' +
+                        '[name="aps_activate"]:checked')) {
                 dataSt[18] = general.doc.querySelector('label[for="apsid"]').
                     innerHTML;
                 specialSkill = ' + ' + dataSt[18];
@@ -851,7 +860,9 @@
 
                 if (!fake) {
                     _this.inpTextChat.value = str + ' в ' + enemy[1] +
-                        ' [' + enemy[2] + ']' + generalSkill + specialSkill;
+                        (!notWriteEnemyNameWhenSayMove ?
+                                ' [' + enemy[2] + ']' : '') +
+                                    generalSkill + specialSkill;
                 }
 
                 isGren = true;
@@ -894,8 +905,10 @@
                 }
 
                 if (!fake) {
-                    _this.inpTextChat.value = str + ' [' + enemy[2] + ']' +
-                        generalSkill + specialSkill;
+                    _this.inpTextChat.value = str +
+                        (!notWriteEnemyNameWhenSayMove ?
+                                ' [' + enemy[2] + ']' : '') +
+                                    generalSkill + specialSkill;
                 }
             }
 
