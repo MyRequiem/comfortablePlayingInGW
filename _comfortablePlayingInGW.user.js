@@ -202,8 +202,11 @@
                         [23] - чекбокс "Говорить только правую руку"
                         [24] - подствольник
                         [25] - показывать чекбокс "Сказать как координатор"
-                        [26] - чекбокс "Сказать как координатор" отмечен */
-                        '@||||||||||||||||||||||||||' +
+                        [26] - чекбокс "Сказать как координатор" отмечен
+                        ### при нажатии на кнопку "Сказать ход":
+                        [27] - не выводить имя противника
+                        [28] - не выводить применяемые навыки */
+                        '@||||||||||||||||||||||||||||' +
                     /*
                     [5]  - BlacklistHighlighting
                         [0]  - ID персов из ЧС ('id1,id2,...')
@@ -1114,12 +1117,24 @@
                     'персонажа для правильной работы скрипта</span>: ' +
                     '(<a href="' + general.mainPath + 'imgs/AdvBattleAll/' +
                     'screen1.png" target="_blank">скриншот</a>)<br>' +
-                    ' - оформление боя в desktop-версии игры: упрощенное<br>' +
-                    ' - расположение в бою: примитивное<br>' +
-                    ' - JavaScript-версия: использовать.<br><br>' +
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                    '- оформление боя в desktop-версии игры: упрощенное<br>' +
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                    '- расположение в бою: примитивное<br>' +
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                    '- JavaScript-версия: использовать.<br><br>' +
                     'Показывать чекбокс "Сказать как координатор" ' +
                     '(вставка \'!*\' в поле чата боя): ' +
                     '<input type="checkbox" id="showCoordButton" disabled />' +
+                    '<br><br>При нажатии на кнопку "Сказать ход":<br>' +
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                    '<input type="checkbox" ' +
+                        'id="notWriteEnemyNameWhenSayMove" disabled /> ' +
+                    'не выводить имя противника<br>' +
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                    '<input type="checkbox" ' +
+                        'id="notWriteSkillsWhenSayMove" disabled /> ' +
+                    'не выводить применяемые навыки' +
                     '<br><br>Таймаут обновления данных в бою:' +
                     '<span style="margin-left: 54px;"> </span>' +
                     '<input id="refreshBattle" maxlength="2" style="width: ' +
@@ -1582,6 +1597,22 @@
             showCoordButton.checked = general.getData(4)[25] === '1';
             showCoordButton.addEventListener('click', function () {
                 _this.modifyData(4, 25, showCoordButton.checked ? '1' : '');
+            }, false);
+
+            // ###
+            // # При нажатии на кнопку "Сказать ход"
+            // ###
+            // чекбокc "не выводить имя противника"
+            var notWriteEnemyName = general.$('notWriteEnemyNameWhenSayMove');
+            notWriteEnemyName.checked = general.getData(4)[27] === '1';
+            notWriteEnemyName.addEventListener('click', function () {
+                _this.modifyData(4, 27, notWriteEnemyName.checked ? '1' : '');
+            }, false);
+            // чекбокc "не выводить применяемые навыки"
+            var notWriteSkills = general.$('notWriteSkillsWhenSayMove');
+            notWriteSkills.checked = general.getData(4)[28] === '1';
+            notWriteSkills.addEventListener('click', function () {
+                _this.modifyData(4, 28, notWriteSkills.checked ? '1' : '');
             }, false);
 
             // выбор звука начала боя и начала хода
@@ -2911,8 +2942,9 @@
 
             // общий навык
             var generalSkill = '';
-            if (general.doc.querySelector('input[type="checkbox"]' +
-                    '[name="apm_activate"]:checked')) {
+            if (!dataSt[28] &&
+                    general.doc.querySelector('input[type="checkbox"]' +
+                        '[name="apm_activate"]:checked')) {
                 dataSt[19] = general.doc.querySelector('label[for="apmid"]').
                     innerHTML;
                 generalSkill = ' + ' + dataSt[19];
@@ -2920,8 +2952,9 @@
 
             // навык специалиста
             var specialSkill = '';
-            if (general.doc.querySelector('input[type="checkbox"]' +
-                    '[name="aps_activate"]:checked')) {
+            if (!dataSt[28] &&
+                    general.doc.querySelector('input[type="checkbox"]' +
+                        '[name="aps_activate"]:checked')) {
                 dataSt[20] = general.doc.querySelector('label[for="apsid"]').
                     innerHTML;
                 specialSkill = ' + ' + dataSt[20];
@@ -2939,7 +2972,8 @@
 
                 if (!fake) {
                     _this.inpTextChat.value = str + ' в ' + enemy[1] +
-                        ' [' + enemy[2] + ']' + generalSkill + specialSkill;
+                        (!dataSt[27] ? ' [' + enemy[2] + ']' : '') +
+                            generalSkill + specialSkill;
                 }
 
                 isGren = true;
@@ -2982,8 +3016,9 @@
                 }
 
                 if (!fake) {
-                    _this.inpTextChat.value = str + ' [' + enemy[2] + ']' +
-                        generalSkill + specialSkill;
+                    _this.inpTextChat.value = str +
+                        (!dataSt[27] ? ' [' + enemy[2] + ']' : '') +
+                            generalSkill + specialSkill;
                 }
             }
 
