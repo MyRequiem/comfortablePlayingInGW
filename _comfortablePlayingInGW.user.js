@@ -13145,7 +13145,7 @@
                         previousElementSibling,
                     questDescr = td.firstElementChild.nextSibling.nodeValue,
                     reg = /^\s*(.*):\s*(\d+) из (\d+)/.exec(questDescr),
-                    acQuests = /-квестов:<\/b>\s?(\d+)/.exec(td.innerHTML),
+                    acQuests = />(\d+)</.exec(td.innerHTML),
                     bLevel = general.doc.
                         querySelector('span[onclick^="return pip_load("]').
                             previousElementSibling.firstElementChild.innerHTML;

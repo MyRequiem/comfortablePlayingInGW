@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.16-260519
+// @version         1.17-190420
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458], идея kaa
 // ==/UserScript==
 
@@ -131,7 +131,7 @@
                          previousElementSibling,
                     questDescr = td.firstElementChild.nextSibling.nodeValue,
                     reg = /^\s*(.*):\s*(\d+) из (\d+)/.exec(questDescr),
-                    acQuests = /-квестов:<\/b>\s?(\d+)/.exec(td.innerHTML),
+                    acQuests = />(\d+)</.exec(td.innerHTML),
                     bLevel = _this.doc.
                         querySelector('span[onclick^="return pip_load("]').
                             previousElementSibling.firstElementChild.innerHTML;
