@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.149-180420
+// @version         1.150-200420
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -83,7 +83,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.149-180420';
+        this.version = '1.150-200420';
         /**
          * @property stString {{{2
          * @type {String}
@@ -4895,7 +4895,9 @@
             'rpg', 'ptrk', 'glauncher', 'grg', 'paw20', 'rpgu', 'grom2',
             'ags30', 'gm94', 'gl06', 'gmg', 'balkan', 'rg6', 'm202', 'mm1',
             /* арт */
-            'milkor', 'm32', 'mk47'
+            'milkor', 'm32', 'mk47',
+            /* пасхальные яйца */
+            'pegg1', 'pegg2', 'pegg3', 'egg1', 'egg2', 'egg3'
         ]; // 2}}}
 
         /**
@@ -13145,7 +13147,7 @@
                         previousElementSibling,
                     questDescr = td.firstElementChild.nextSibling.nodeValue,
                     reg = /^\s*(.*):\s*(\d+) из (\d+)/.exec(questDescr),
-                    acQuests = /-квестов:<\/b>\s?(\d+)/.exec(td.innerHTML),
+                    acQuests = />(\d+)</.exec(td.innerHTML),
                     bLevel = general.doc.
                         querySelector('span[onclick^="return pip_load("]').
                             previousElementSibling.firstElementChild.innerHTML;
