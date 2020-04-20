@@ -12,7 +12,7 @@
 // @include         http://www.gwars.ru/wargroup.php*
 // @grant           none
 // @license         MIT
-// @version         2.45-181119
+// @version         2.46-200420
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -276,7 +276,9 @@
             'rpg', 'ptrk', 'glauncher', 'grg', 'paw20', 'rpgu', 'grom2',
             'ags30', 'gm94', 'gl06', 'gmg', 'balkan', 'rg6', 'm202', 'mm1',
             /* арт */
-            'milkor', 'm32', 'mk47'
+            'milkor', 'm32', 'mk47',
+            /* пасхальные яйца */
+            'pegg1', 'pegg2', 'pegg3', 'egg1', 'egg2', 'egg3'
         ];
 
         /**
