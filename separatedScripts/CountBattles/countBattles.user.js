@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/info.warstats.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.31-260519
+// @version         2.32-270420
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -165,7 +165,7 @@
          */
         this.getBattles = function (obj) {
             var btlLogs = obj.querySelectorAll('nobr>a[href*=' +
-                    '"/warlog.php?bid="]>font[color="green"]'),
+                    '"/warlog.php?bid="]>font.greenfont'),
                 i;
 
             for (i = 0; i < btlLogs.length; i++) {
@@ -182,19 +182,21 @@
         };
 
         /**
-         * @method showRezult
+         * @method showResult
          */
-        this.showReault = function () {
-            var i, b, stl;
+        this.showResult = function () {
+            var persLink, cls, i;
 
             for (i = 0; i < this.rez.btls.length; i++) {
-                b = this.rez.btls[i].querySelector('a>b');
-                if (b) {
+                persLink = this.rez.btls[i].
+                    querySelector('a[href$="?id=' + this.persId + '"]');
+
+                if (persLink) {
                     // noinspection JSUnresolvedFunction
-                    stl = b.parentNode.getAttribute('style');
-                    if (/red/.test(stl)) {
+                    cls = persLink.getAttribute('class');
+                    if (/red/.test(cls)) {
                         this.rez.win++;
-                    } else if (/blue/.test(stl)) {
+                    } else if (/blue/.test(cls)) {
                         this.rez.loss++;
                     } else {
                         this.rez.draw++;
@@ -224,7 +226,7 @@
                     ind++;
                     this.startCountBattles(ind);
                 } else {
-                    this.showReault();
+                    this.showResult();
                 }
             } else {
                 var url = 'http://www.gwars.ru/info.warstats.php?id=' +
@@ -247,7 +249,7 @@
                             _this.startCountBattles(ind);
                         }, _this.tm);
                     } else {
-                        _this.showReault();
+                        _this.showResult();
                     }
                 }, function () {
                     general.root.setTimeout(function () {
