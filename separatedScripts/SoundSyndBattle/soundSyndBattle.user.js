@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.19-190819
+// @version         2.20-180520
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -217,8 +217,9 @@
                 return;
             }
 
-            this.redLink = general.doc.querySelector('a[style*="color:red;"]' +
-                    '[title^="Ваш синдикат в нападении"]');
+            this.redLink = general.doc.
+                    querySelector('a[style*="color:#ff0000;"]' +
+                        '[title^="Ваш синдикат в нападении"]');
 
             if (!this.redLink) {
                 general.setData('');

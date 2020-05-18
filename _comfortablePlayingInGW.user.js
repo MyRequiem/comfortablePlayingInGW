@@ -12315,8 +12315,9 @@
                 return;
             }
 
-            this.redLink = general.doc.querySelector('a[style*="color:red;"]' +
-                    '[title^="Ваш синдикат в нападении"]');
+            this.redLink = general.doc.
+                    querySelector('a[style*="color:#ff0000;"]' +
+                        '[title^="Ваш синдикат в нападении"]');
 
             if (!this.redLink) {
                 stData[3] = '';
