@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.152-180520
+// @version         1.153-200520
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -83,7 +83,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.152-180520';
+        this.version = '1.153-200520';
         /**
          * @property stString {{{2
          * @type {String}
@@ -153,14 +153,15 @@
                         [59] - CommonBattleFilter
                         [60] - CalculateSyndLvl
                         [61] - PortsSyndLinks
-                        [62] - BbCodeInMessages */
+                        [62] - BbCodeInMessages
+                        [63] - ProfessionLevels */
                         '@||||||||||' +
                         '||||||||||' +
                         '||||||||||' +
                         '||||||||||' +
                         '||||||||||' +
                         '||||||||||' +
-                        '||' +
+                        '|||' +
                     /*
                     [2]  - AdditionForNavigationBar
                         [0] - '{"linkName": ["href", "style"], ...}' */
@@ -1078,7 +1079,15 @@
                     'форуме добавляет кнопки для вставки в позиции курсора ' +
                     'bb-кодов для цитирования [q][/q] и наклонного шрифта ' +
                     '[i][/i]' +
-                    this.getGitHubLink('bbCodeInMessages'), '62']],
+                    this.getGitHubLink('bbCodeInMessages'), '62'],
+                ['Счетчик опыта профессий',
+                    'На странице информации персонажа отображает оставшееся ' +
+                    'количество очков до следующего уровня професии.' +
+                    this.getGitHubLink('professionLevels') +
+                    '<span style="margin-left: 15px;">идея: ' +
+                    '<a href="http://www.gwars.ru/info.php?id=285394" ' +
+                    'style="font-weight: bold;" target="_blank">Bodyarm</a>' +
+                    '</span>', '63']],
 
             'Персональный NPC': [
                 ['Оповещения', 'Если личный NPC ожидает распоряжений и его ' +
@@ -14113,6 +14122,69 @@
         }; // 2}}}
     }; // 1}}}
 
+    /**
+     * @class ProfessionLevels {{{1
+     * @constructor
+     */
+    var ProfessionLevels = function () {
+        /**
+         * @property profLevels
+         * @type {Array}
+         */
+        this.profLevels = [51, 109, 184, 284, 422, 609, 856, 1176, 1581, 2085];
+
+        /**
+         * @method  setCounter {{{2
+         * @param   {Object}    target
+         * @param   {int}       value
+         */
+        this.setCounter = function (target, value) {
+            var td = general.doc.createElement('td');
+            td.setAttribute('style', 'padding-left: 5px; font-size: 10px; ' +
+                'color: #809980;');
+            td.innerHTML = '+' + (general.root.jsvn ? value : ')');
+            target.appendChild(td);
+        }; // 2}}}
+
+        /**
+         * @method  init {{{2
+         */
+        this.init = function () {
+            var killer = general.doc.querySelector('table[border="0"] ' +
+                    'td[style*="font-size:10px"]');
+
+            if (!killer) {
+                return;
+            }
+
+            var profsTrs = killer.parentNode.parentNode.querySelectorAll('tr'),
+                currentVal,
+                i,
+                j;
+
+            for (i = 0; i < 3; i++) {
+                currentVal = /\((\d+(\.\d+)?)\)/.exec(profsTrs[i].innerHTML)[1];
+                currentVal = Math.floor(currentVal);
+                for (j = 0; j < this.profLevels.length; j++) {
+                    if (currentVal < this.profLevels[j]) {
+                        this.setCounter(profsTrs[i],
+                            this.profLevels[j] - currentVal);
+                        if (general.root.jzPZ) {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            var tr = general.doc.createElement('tr');
+            tr.innerHTML = '<td colspan="3"><a target="_blank" ' +
+                'style=" font-size: 10px;" href="http://www.ganjawiki.ru/' +
+                'Очки_опыта#Таблица_опыта_профессий">Таблица опыта ' +
+                'профессий</a></td>';
+            profsTrs[0].parentNode.appendChild(tr);
+        }; // 2}}}
+    }; // 1}}}
+
     general = new General();
 
     // не в игре
@@ -14568,6 +14640,14 @@
                     if (initScript[58]) {
                         try {
                             new CurrentQuestOnInfo().init();
+                        } catch (e) {
+                            general.cons.log(e);
+                        }
+                    }
+
+                    if (initScript[63]) {
+                        try {
+                            new ProfessionLevels().init();
                         } catch (e) {
                             general.cons.log(e);
                         }

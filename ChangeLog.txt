@@ -1,3 +1,9 @@
+2020-05-20[1.153-200520]
+--------------------------------------
+    - Добавлен новый скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ProfessionLevels
+
+
 2020-05-18[1.152-180520]
 --------------------------------------
     - Исправлен скрипт:
