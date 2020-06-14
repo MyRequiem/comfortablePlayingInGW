@@ -6,7 +6,7 @@
 ![ChromeLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/chromeLogo.png)
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
 
-Версия: 1.153-200520
+Версия: 1.154-140620
 
 Нашли ошибку? Пожалуйста, [сообщите](http://www.gwars.ru/sms-create.php?mailto=MyRequiem)
 
@@ -46,7 +46,7 @@
 
 **AdvBattleAll**
 <br>
-Версия: 4.33-180420
+Версия: 4.34-140620
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll)
 <br>
@@ -214,7 +214,7 @@
 
 **GwMenu**
 <br>
-Версия: 2.45-130619
+Версия: 2.46-140620
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GwMenu/gwMenu.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GwMenu/gwMenu.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu)
 <br>

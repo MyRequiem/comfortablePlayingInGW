@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru*
 // @grant           none
 // @license         MIT
-// @version         2.45-130619
+// @version         2.46-140620
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -676,7 +676,8 @@
                     ['Чипы на урон', '/sshop.php?tshop=chipsets'],
                     ['Чипы защитные', '/sshop.php?tshop=chipsets1'],
                     ['Чипы специальные', '/sshop.php?tshop=chipsets2'],
-                    ['Турели', '/sshop.php?tshop=turrels']
+                    ['Турели', '/sshop.php?tshop=turrels'],
+                    ['Звания', '/sshop.php?tshop=ranks']
                 ], prnt: 'shop_1', arrow: 'shop_synd', offsetY: -15},
                 {divm: 'pay_grenades_1', lines: [
                     ['Свет', 'ligntgr'],
