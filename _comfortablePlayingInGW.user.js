@@ -7196,7 +7196,8 @@
                     ['Чипы на урон', '/sshop.php?tshop=chipsets'],
                     ['Чипы защитные', '/sshop.php?tshop=chipsets1'],
                     ['Чипы специальные', '/sshop.php?tshop=chipsets2'],
-                    ['Турели', '/sshop.php?tshop=turrels']
+                    ['Турели', '/sshop.php?tshop=turrels'],
+                    ['Звания', '/sshop.php?tshop=ranks']
                 ], prnt: 'shop_1', arrow: 'shop_synd', offsetY: -15},
                 {divm: 'pay_grenades_1', lines: [
                     ['Свет', 'ligntgr'],
