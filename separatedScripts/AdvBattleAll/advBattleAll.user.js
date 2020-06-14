@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.33-180420
+// @version         4.34-140620
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -623,6 +623,7 @@
             'vepr': '12',
             'mag7': '7',
             'usas12': '14',
+            'sw_xgl40_sg': '22/1',
             'ksg': '18',
             'usas15': '22',
             'uts15': '26',
