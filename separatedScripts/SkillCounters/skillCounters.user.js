@@ -9,7 +9,7 @@
 // @include         http://www.gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.15-260519
+// @version         2.16-210620
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -128,7 +128,6 @@
          */
         this.dataNow = null;
 
-
         /**
          * @method getHtime
          * @param   {int}   time
@@ -225,8 +224,8 @@
                 // noinspection JSUnresolvedVariable
                 if (general.root.gjzo) {
                     general.$(this.ids[i]).innerHTML = '[' +
-                        (parseFloat(this.dataNow[i]) - parseFloat(stData[i]).
-                            toFixed(i < 3 ? 0 : 2)).toString() + ']';
+                        (parseFloat(this.dataNow[i]) - parseFloat(stData[i])).
+                            toFixed(i < 3 ? 0 : 2) + ']';
                 }
             }
 
