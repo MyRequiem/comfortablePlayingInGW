@@ -11,7 +11,7 @@
 // @include         http://www.gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.34-140620
+// @version         4.35-220620
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -1869,6 +1869,7 @@
                 leftDC = -1,
                 divBattleField,
                 diffCommand,
+                pTitleName,
                 trNumbers,
                 divHealth,
                 tdNumber,
@@ -1912,10 +1913,11 @@
                 flag = false;
                 for (j = 0; j < img.length; j++) {
                     title = img[j].getAttribute('title');
+                    pTitleName = /^(.*) \[/.exec(title);
 
                     // ячейка где находится мой перс
-                    if (!general.viewMode &&
-                            title.indexOf(this.myPers.name) !== -1) {
+                    if (!general.viewMode && pTitleName &&
+                            pTitleName[1] === this.myPers.name) {
                         myInd = -1 * i;
                     }
 
