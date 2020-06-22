@@ -1913,7 +1913,7 @@
                 flag = false;
                 for (j = 0; j < img.length; j++) {
                     title = img[j].getAttribute('title');
-                    pTitleName = /^(.*) \[/.exec(title);
+                    pTitleName = /^(.*)\s\[\d+/.exec(title);
 
                     // ячейка где находится мой перс
                     if (!general.viewMode && pTitleName &&
