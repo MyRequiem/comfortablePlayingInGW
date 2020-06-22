@@ -4002,6 +4002,7 @@
                 leftDC = -1,
                 divBattleField,
                 diffCommand,
+                pTitleName,
                 trNumbers,
                 divHealth,
                 tdNumber,
@@ -4045,10 +4046,11 @@
                 flag = false;
                 for (j = 0; j < img.length; j++) {
                     title = img[j].getAttribute('title');
+                    pTitleName = /^(.*)\s\[\d+/.exec(title);
 
                     // ячейка где находится мой перс
-                    if (!general.viewMode &&
-                            title.indexOf(this.myPers.name) !== -1) {
+                    if (!general.viewMode && pTitleName &&
+                            pTitleName[1] === this.myPers.name) {
                         myInd = -1 * i;
                     }
 
