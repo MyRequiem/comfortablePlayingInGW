@@ -11795,7 +11795,7 @@
          * @return  {Object|null}
          */
         this.getAchievNow = function (obj) {
-            return obj.querySelectorAll('td[bgcolor="#ffffff"]>' +
+            return obj.querySelectorAll('td.simplewhitebg>' +
                     'font[color="#336633"]');
         }; // 2}}}
 
