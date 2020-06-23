@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.12-190819
+// @version         2.13-220620
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458] Идея: Горыныч
 // ==/UserScript==
 
@@ -253,7 +253,7 @@
          * @param   {Object}    obj
          */
         this.getAchievNow = function (obj) {
-            return obj.querySelectorAll('td[bgcolor="#ffffff"]>' +
+            return obj.querySelectorAll('td.simplewhitebg>' +
                     'font[color="#336633"]');
         };
 
@@ -375,7 +375,6 @@
 
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(span);
-
 
                 // на странице своих ачивок
                 if (general.loc.

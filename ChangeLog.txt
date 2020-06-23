@@ -1,3 +1,10 @@
+2020-06-23[1.155-230620]
+--------------------------------------
+    - Исправлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ShowMyAchievements
+
+
 2020-06-14[1.154-140620]
 --------------------------------------
     - Обновлены скрипты:

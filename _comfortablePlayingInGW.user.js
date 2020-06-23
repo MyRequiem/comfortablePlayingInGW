@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.154-140620
+// @version         1.155-230620
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -83,7 +83,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.154-140620';
+        this.version = '1.155-230620';
         /**
          * @property stString {{{2
          * @type {String}
@@ -4002,6 +4002,7 @@
                 leftDC = -1,
                 divBattleField,
                 diffCommand,
+                pTitleName,
                 trNumbers,
                 divHealth,
                 tdNumber,
@@ -4045,10 +4046,11 @@
                 flag = false;
                 for (j = 0; j < img.length; j++) {
                     title = img[j].getAttribute('title');
+                    pTitleName = /^(.*)\s\[\d+/.exec(title);
 
                     // ячейка где находится мой перс
-                    if (!general.viewMode &&
-                            title.indexOf(this.myPers.name) !== -1) {
+                    if (!general.viewMode && pTitleName &&
+                            pTitleName[1] === this.myPers.name) {
                         myInd = -1 * i;
                     }
 
@@ -11793,7 +11795,7 @@
          * @return  {Object|null}
          */
         this.getAchievNow = function (obj) {
-            return obj.querySelectorAll('td[bgcolor="#ffffff"]>' +
+            return obj.querySelectorAll('td.simplewhitebg>' +
                     'font[color="#336633"]');
         }; // 2}}}
 
