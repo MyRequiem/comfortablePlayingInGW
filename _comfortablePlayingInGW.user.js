@@ -5277,8 +5277,9 @@
 
             for (i = 0; i < b.length; i++) {
                 // если это урон (-XX), 'vs', пок с '['
-                if (/^-\d+$|vs|\[|,/.test(b[i].innerHTML) ||
-                        /может взять предметы/.test(b[i].innerHTML)) {
+                if ((/^-\d+$|vs|\[|,/.test(b[i].innerHTML) &&
+                        !/\[NPC\]/.test(b[i].innerHTML)) ||
+                            /может взять предметы/.test(b[i].innerHTML)) {
                     continue;
                 }
 
@@ -5301,6 +5302,12 @@
                         nik = font.innerHTML;
                     } else {
                         nik = b[i].innerHTML;
+                    }
+
+                    // личный NPC
+                    if (/\[NPC\]/.test(b[i].innerHTML)) {
+                        nik = b[i].innerText;
+                        linkStyle += ' opacity: 0.6;';
                     }
 
                     // noinspection JSUndefinedPropertyAssignment
