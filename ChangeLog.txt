@@ -1,3 +1,9 @@
+2020-06-29[1.156-290620]
+--------------------------------------
+    - Обновлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CritShotsAndLinksBtlLog
+
+
 2020-06-23[1.155-230620]
 --------------------------------------
     - Исправлены скрипты:
