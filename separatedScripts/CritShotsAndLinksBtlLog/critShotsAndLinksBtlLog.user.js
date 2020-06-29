@@ -10,7 +10,7 @@
 // @include         http://www.gwars.ru/battlelog.php*
 // @grant           none
 // @license         MIT
-// @version         2.50-260519
+// @version         2.51-240620
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -32,9 +32,11 @@
 (function () {
     'use strict';
 
+    // ###
     // ================ НАСТРОЙКИ =======================
     var showCritShots = 1; // 1 - показывать криты, 0 - нет
     // ============= КОНЕЦ НАСТРОЕК =====================
+    // ###
 
     /**
      * @class General
@@ -153,14 +155,16 @@
 
             for (i = 0; i < b.length; i++) {
                 // если это урон (-XX), 'vs', пок с '['
-                if (/^-\d+$|vs|\[|,/.test(b[i].innerHTML) ||
-                        /может взять предметы/.test(b[i].innerHTML)) {
+                if ((/^-\d+$|vs|\[|,/.test(b[i].innerHTML) &&
+                        !/\[NPC\]/.test(b[i].innerHTML)) ||
+                            /может взять предметы/.test(b[i].innerHTML)) {
                     continue;
                 }
 
                 // делаем ссылки на персов, если ссылка еще не установлена
                 if (!b[i].querySelector('a:first-child') &&
                         !b[i].getAttribute('style')) {
+
                     linkStyle = 'text-decoration: none; font-weight: 700; ' +
                         'font-size: ' + (general.viewMode ? '12px;' : '11px;');
 
@@ -177,6 +181,12 @@
                         nik = font.innerHTML;
                     } else {
                         nik = b[i].innerHTML;
+                    }
+
+                    // личный NPC
+                    if (/\[NPC\]/.test(b[i].innerHTML)) {
+                        nik = b[i].innerText;
+                        linkStyle += ' opacity: 0.6;';
                     }
 
                     // noinspection JSUndefinedPropertyAssignment

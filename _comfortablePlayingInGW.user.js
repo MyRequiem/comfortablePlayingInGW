@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.155-230620
+// @version         1.156-290620
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -83,7 +83,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.155-230620';
+        this.version = '1.156-290620';
         /**
          * @property stString {{{2
          * @type {String}
@@ -5277,8 +5277,9 @@
 
             for (i = 0; i < b.length; i++) {
                 // если это урон (-XX), 'vs', пок с '['
-                if (/^-\d+$|vs|\[|,/.test(b[i].innerHTML) ||
-                        /может взять предметы/.test(b[i].innerHTML)) {
+                if ((/^-\d+$|vs|\[|,/.test(b[i].innerHTML) &&
+                        !/\[NPC\]/.test(b[i].innerHTML)) ||
+                            /может взять предметы/.test(b[i].innerHTML)) {
                     continue;
                 }
 
@@ -5301,6 +5302,12 @@
                         nik = font.innerHTML;
                     } else {
                         nik = b[i].innerHTML;
+                    }
+
+                    // личный NPC
+                    if (/\[NPC\]/.test(b[i].innerHTML)) {
+                        nik = b[i].innerText;
+                        linkStyle += ' opacity: 0.6;';
                     }
 
                     // noinspection JSUndefinedPropertyAssignment
