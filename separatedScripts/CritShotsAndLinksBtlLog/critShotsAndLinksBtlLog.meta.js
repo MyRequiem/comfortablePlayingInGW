@@ -10,6 +10,6 @@
 // @include         http://www.gwars.ru/battlelog.php*
 // @grant           none
 // @license         MIT
-// @version         2.50-260519
+// @version         2.51-240620
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
