@@ -12,7 +12,7 @@
 // @include         http://www.ganjafoto.ru*
 // @grant           none
 // @license         MIT
-// @version         1.156-290620
+// @version         1.157-090720
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -83,7 +83,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.156-290620';
+        this.version = '1.157-090720';
         /**
          * @property stString {{{2
          * @type {String}
@@ -9577,13 +9577,29 @@
         this.imgPath = general.imgPath + 'PortsAndTerminals/';
 
         /**
+         * @method  createDiv
+         * @param   {Object}   pos
+         * @param   {String}   img
+         * @param   {int}      shiftX
+         */
+        this.createDiv = function (pos, img, shiftX) {
+            var div = general.doc.createElement('div');
+            div.setAttribute('style', 'position: absolute; z-index: 999;');
+            div.style.left = pos.x + shiftX;
+            div.style.top = pos.y + 3;
+            div.innerHTML = '<img src="' + this.imgPath + img +
+                '" alt="img" />';
+            general.doc.body.appendChild(div);
+        };
+
+        /**
          * @method init {{{2
          */
         this.init = function () {
             var cells = general.doc.
                     querySelectorAll('a[href*="/map.php?sx="]>img'),
+                getPos = new GetPos().init,
                 coord,
-                cls,
                 tmp,
                 j,
                 i;
@@ -9595,21 +9611,16 @@
                     tmp = this.sectors[j].split('|');
                     // noinspection JSUnresolvedVariable
                     if (coord === tmp[0] && general.root.fue0) {
-                        cls = cells[i].parentNode.parentNode.
-                                getAttribute('class');
-
                         if (!tmp[1]) {
-                            cells[i].src = this.imgPath + (cls === 'wbr' ?
-                                    'anchorS.png' : cls === 'wbb' ?
-                                        'anchorS2.png' : 'anchor.png');
+                            // порт
+                            this.createDiv(getPos(cells[i]), 'anchor.png', 3);
                         } else if (tmp[1] === '1') {
-                            cells[i].src = this.imgPath + (cls === 'wbr' ?
-                                    'coinsS.png' : cls === 'wbb' ?
-                                        'coinsS2.png' : 'coins.png');
+                            // терминал
+                            this.createDiv(getPos(cells[i]), 'coins.png', 3);
                         } else {
-                            cells[i].src = this.imgPath + (cls === 'wbr' ?
-                                    'bothS.png' : cls === 'wbb' ?
-                                        'bothS2.png' : 'both.png');
+                            // порт + терминал
+                            this.createDiv(getPos(cells[i]), 'anchor.png', 3);
+                            this.createDiv(getPos(cells[i]), 'coins.png', 22);
                         }
                     }
                 }
