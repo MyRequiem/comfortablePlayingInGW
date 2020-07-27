@@ -1,7 +1,7 @@
 Панель с множеством полезных ссылок для игры.
 <br>
 <br>
-Версия: 2.46-140620
+Версия: 2.47-270720
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GwMenu/gwMenu.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GwMenu/gwMenu.user.js.zip)
 <br>
