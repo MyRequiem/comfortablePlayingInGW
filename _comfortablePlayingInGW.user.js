@@ -93,7 +93,7 @@
                     [1]  - initScript
                         [0]  - NotGiveCannabisLeaf
                         [1]  - AdditionForNavigationBar
-                        [2]  - AdsFilter
+                        [2]  - AdsFilter (удален)
                         [3]  - AdvBattleAll
                         [4]  - BlacklistHighlighting
                         [5]  - WorkPostGrenadesBroken
@@ -167,7 +167,7 @@
                         [0] - '{"linkName": ["href", "style"], ...}' */
                         '@' +
                     /*
-                    [3]  - AdsFilter
+                    [3]  - AdsFilter (удален)
                         [0] - остров (нет,Z,G: '', 1, 2)
                         [1] - фильтр по онлайну */
                         '@|' +
@@ -1269,10 +1269,6 @@
                     this.getGitHubLink('advForum'), '53']],
 
             'Торговля': [
-                ['Фильтр поиска продажи/покупки/аренды', 'Фильтр ' +
-                    'онлайн/оффлайн и по островам на страницах поиска ' +
-                    'продажи/покупки/аренды предметов.' +
-                    this.getGitHubLink('adsFilter'), '2'],
                 ['Ссылки в HighTech магазине для подачи объявлений',  'В ' +
                     'HighTech магазине добавляет ссылки "Продать" и "Купить" ' +
                     'для каждого предмета, при нажатии на которые, выводится ' +
@@ -2203,181 +2199,6 @@
 
                 _this.clearFields();
             }, false);
-        }; // 2}}};
-    }; // 1}}}
-
-    /**
-     * @class AdsFilter {{{1
-     * @constructor
-     */
-    var AdsFilter = function () {
-        /**
-         * @property spanContainer
-         * @type {HTMLElement|null}
-         */
-        this.spanContainer = null;
-        /**
-         * @property stl
-         * @type {String}
-         */
-        this.stl = 'cursor: pointer; margin-right: 3px; ';
-        /**
-         * @property styleNormal
-         * @type {String}
-         */
-        this.styleNormal = this.stl + 'color: #808080';
-        /**
-         * @property styleBold
-         * @type {String}
-         */
-        this.styleBold =  this.stl + 'color: #990000; font-weight: bold;';
-
-        /**
-         * @method setButton {{{2
-         * @param   {String}        id
-         * @param   {String}        value
-         */
-        this.setButton = function (id, value) {
-            var button = general.doc.createElement('span');
-            button.setAttribute('style', this.styleNormal);
-            button.id = id;
-            button.innerHTML = value;
-            this.spanContainer.appendChild(button);
-        }; // 2}}}
-
-        /**
-         * @method setFilter {{{2
-         * @param   {NodeList}  trs
-         * @param   {String}    type
-         * @param   {String}    island
-         */
-        this.setFilter = function (trs, type, island) {
-            var dataSt = general.getData(3),
-                i;
-
-            switch (type) {
-            case 'reset':
-                if (!island) {
-                    general.setData('|', 3);
-                    general.$('islZ').
-                        setAttribute('style', this.styleNormal);
-                    general.$('islG').
-                        setAttribute('style', this.styleNormal);
-                    general.$('online').
-                        setAttribute('style', this.styleNormal);
-                }
-
-                for (i = 3; i < trs.length; i++) {
-                    trs[i].style.display = '';
-                }
-
-                break;
-
-            case 'island':
-                this.setFilter(trs, 'reset', 'flag');
-                dataSt[0] = island === 'Z' ? '1' : '2';
-                general.setData(dataSt, 3);
-                general.$('isl' + island).
-                    setAttribute('style', this.styleBold);
-                general.$('isl' + (island === 'G' ? 'Z' : 'G')).
-                    setAttribute('style', this.styleNormal);
-
-                var tdIsl;
-                for (i = 3; i < trs.length; i++) {
-                    tdIsl = trs[i].querySelector('td:nth-child(4)');
-                    if (tdIsl && tdIsl.innerHTML.indexOf(island) === -1) {
-                        trs[i].style.display = 'none';
-                    }
-                }
-
-                if (dataSt[1]) {
-                    this.setFilter(trs, 'online', 'flag');
-                }
-
-                break;
-
-            case 'online':
-                if (!island) {
-                    dataSt[1] = '1';
-                    general.setData(dataSt, 3);
-                    general.$('online').
-                        setAttribute('style', this.styleBold);
-                }
-
-                for (i = 3; i < trs.length; i++) {
-                    if (trs[i].querySelector('a[style*="#999999"]') ||
-                            trs[i].querySelector('a[style*=' +
-                                '"rgb(153, 153, 153)"]')) {
-                        trs[i].style.display = 'none';
-                    }
-                }
-
-                break;
-
-            default:
-                break;
-            }
-        }; // 2}}}
-
-        /**
-         * @method init {{{2
-         */
-        this.init = function () {
-            var table = general.doc.
-                    querySelector('table.withborders[align="center"]');
-
-            if (!table) {
-                return;
-            }
-
-            var li = table.querySelector('li');
-            if (!li) {
-                return;
-            }
-
-            // noinspection JSUnresolvedVariable
-            if (general.root.vx8r) {
-                this.spanContainer = general.doc.createElement('span');
-                this.spanContainer.setAttribute('style', 'margin-left: 10px;');
-                this.setButton('islz', '[Z]');
-                this.setButton('islg', '[G]');
-                this.setButton('online', '[Online]');
-                this.setButton('resetFilter', '[Сброс]');
-                li.insertBefore(this.spanContainer, li.lastElementChild);
-            }
-            if (this.spanContainer.previousElementSibling.nodeName === 'BR') {
-                li.removeChild(this.spanContainer.previousElementSibling);
-            }
-
-            var trs = table.querySelectorAll('tr'),
-                _this = this;
-
-            general.$('resetFilter').addEventListener('click', function () {
-                _this.setFilter(trs, 'reset', null);
-            }, false);
-
-            general.$('islZ').addEventListener('click', function () {
-                _this.setFilter(trs, 'island', 'Z');
-            }, false);
-
-            general.$('islG').addEventListener('click', function () {
-                _this.setFilter(trs, 'island', 'G');
-            }, false);
-
-            general.$('online').addEventListener('click', function () {
-                _this.setFilter(trs, 'online', null);
-            }, false);
-
-            var dataSt = general.getData(3);
-            if (dataSt[0] === '1') {
-                general.$('islZ').click();
-            } else if (dataSt[0] === '2') {
-                general.$('islG').click();
-            }
-
-            if (dataSt[1]) {
-                general.$('online').click();
-            }
         }; // 2}}};
     }; // 1}}}
 
@@ -14323,17 +14144,6 @@
                     new ShowMainSettings().init();
                 } catch (e) {
                     general.cons.log(e);
-                }
-            }
-
-            if (/\/market(-p)?\.php/.test(general.loc)) {
-                if (initScript[2] &&
-                        /\?(stage=2&item_id=|buy=)/.test(general.loc)) {
-                    try {
-                        new AdsFilter().init();
-                    } catch (e) {
-                        general.cons.log(e);
-                    }
                 }
             }
 
