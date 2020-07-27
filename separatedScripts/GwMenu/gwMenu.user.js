@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru*
 // @grant           none
 // @license         MIT
-// @version         2.46-140620
+// @version         2.47-270720
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -553,9 +553,9 @@
                     ['Предметы в аренде', '/info.rent.php?id=' + general.myID]
                 ], prnt: 'gw_menu', arrow: 'doska', offsetY: -30},
                 {divm: 0, lines: [
-                    ['Входящие', '/sms.php?page=0'],
-                    ['Исходящие', '/sms.php?page=1'],
-                    ['Написать новое', '/sms-create.php']
+                    ['Чаты', '/sms.php'],
+                    ['Новое сообщение', '/sms-create.php'],
+                    ['Удаление', '/sms.php?page=2']
                 ], prnt: 'gw_menu', arrow: 'post', offsetY: -15},
                 {divm: 'forums_1', lines: [
                     ['Основные форумы', '', 'zag', 1],
