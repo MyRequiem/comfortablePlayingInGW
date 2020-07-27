@@ -8,7 +8,7 @@
 // @include         http://www.gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.21-260519
+// @version         1.22-230720
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -27,11 +27,11 @@
 /*jscs:disable disallowKeywords, disallowDanglingUnderscores */
 /*jscs:disable validateIndentation */
 
-
-// Уровень синдиката обновляется 3 раза в месяц: 6, 17 и 28.
+// Уровень синдиката обновляется каждое воскресенье
+// (http://www.gwars.ru/messages.php?fid=1&tid=1585)
 //
-// Расчет уровня:
-// Итоговый_опыт = 4/3 * Боевой_опыт + (6.4 * Экономический_опыт)
+// Расчет уровня (http://www.ganjawiki.ru/Боевой_синдикат#.D0.A3.D0.A1):
+// Итоговый_опыт = 4/3 * Боевой_опыт + (4.6 * Экономический_опыт)
 //
 // Таблица рейтинга синдикатов:
 //  http://www.gwars.ru/srating.php
@@ -240,7 +240,7 @@
                             replace(/,/g, '').split(' / '),
                         eExp = +/\d+/.exec(current[0])[0],
                         bExp = +/\d+/.exec(current[1])[0],
-                        experience = 4 / 3 * bExp + (6.4 * eExp),
+                        experience = 4 / 3 * bExp + (4.6 * eExp),
                         syndLvl,
                         i;
 
