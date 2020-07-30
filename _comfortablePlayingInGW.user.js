@@ -13584,9 +13584,7 @@
          * @method init {{{2
          */
         this.init = function () {
-            var css = 'td>table[cellspacing="1"][cellpadding="5"]' +
-                    '[width="100%"]',
-                table = general.doc.querySelector(css);
+            var table = general.doc.querySelector('td>table.simplewhitebg');
 
             if (table) {
                 var syndLinks = table.querySelectorAll('a[href*="&page="]'),
