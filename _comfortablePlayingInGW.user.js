@@ -13770,7 +13770,8 @@
          * @type {Object|null}
          */
         this.textArea = general.doc.querySelector('textarea[name="msg"],' +
-                'textarea[name="message"]');
+                'textarea[name="message"]') ||
+                    general.doc.querySelector('textarea#newsms');
 
         /**
          * @method  setButton {{{2
@@ -13793,14 +13794,10 @@
                 var text = _this.textArea.value,
                     cursorPos = _this.textArea.selectionStart;
 
-                if (!general.root.KKaf) {
-                    _this.textArea.value = '';
-                } else if (general.root.v0WD) {
-                    _this.textArea.value = text.substring(0, cursorPos) + tag +
-                        text.substring(cursorPos, text.length);
-                    _this.textArea.focus();
-                    _this.textArea.selectionEnd = cursorPos + 3;
-                }
+                _this.textArea.value = text.substring(0, cursorPos) + tag +
+                    text.substring(cursorPos, text.length);
+                _this.textArea.focus();
+                _this.textArea.selectionEnd = cursorPos + 3;
             }, false);
         }; // 2}}}
 
@@ -13811,14 +13808,24 @@
             var sendButton = general.doc.
                     querySelector('input[value="Отправить сообщение"]');
 
-            if (this.textArea && sendButton) {
-                var target = sendButton.parentNode.parentNode.parentNode.
-                        parentNode.querySelectorAll('td');
+            if (this.textArea) {
+                var target;
+                if (sendButton) { // старая версия почты и форум
+                    target = sendButton.parentNode.parentNode.parentNode.
+                            parentNode.querySelectorAll('td');
 
-                target = /sms-create/.test(general.loc) ? target[4] : target[0];
+                    target = /sms-create/.test(general.loc) ? target[4] :
+                            target[0];
+                } else {
+                    target = general.doc.
+                        querySelector('span[style="opacity:0.8;"]');
+                }
 
-                this.setButton('quote', 'Цитирование', target, '[q][/q]');
-                this.setButton('italic', 'Наклонный шрифт', target, '[i][/i]');
+                if (target) {
+                    this.setButton('quote', 'Цитирование', target, '[q][/q]');
+                    this.setButton('italic', 'Наклонный шрифт', target,
+                        '[i][/i]');
+                }
             }
         }; // 2}}}
     }; // 1}}}
@@ -14207,7 +14214,7 @@
                 }
             }
 
-            if (/(messages|sms-(create|read)).php/.test(general.loc)) {
+            if (/(messages|sms-(create|read|chat)).php/.test(general.loc)) {
                 if (initScript[62]) {
                     try {
                         new BbCodeInMessages().init();

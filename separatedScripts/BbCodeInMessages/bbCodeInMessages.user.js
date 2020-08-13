@@ -5,13 +5,14 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BbCodeInMessages/bbCodeInMessages.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BbCodeInMessages/bbCodeInMessages.user.js
-// @include         http://www.gwars.ru/messages.php?fid=*
-// @include         http://www.gwars.ru/sms-create.php*
-// @include         http://www.gwars.ru/sms-read.php*
-// @include         http://www.gwars.ru/hmessages.php*
+// @include         https://*gwars.ru/messages.php?fid=*
+// @include         https://*gwars.ru/sms-create.php*
+// @include         https://*gwars.ru/sms-read.php*
+// @include         https://*gwars.ru/sms-chat.php?id=*
+// @include         https://*gwars.ru/hmessages.php*
 // @grant           none
 // @license         MIT
-// @version         1.00-210919
+// @version         1.01-130820
 // @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -57,11 +58,6 @@
          */
         this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
             'comfortablePlayingInGW/master/imgs/BbCodeInMessages/';
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|)/.exec(this.doc.cookie)[2];
     };
 
     /**
@@ -75,15 +71,6 @@
         getRoot: function () {
             var rt = typeof unsafeWindow;
             return rt !== 'undefined' ? unsafeWindow : window;
-        },
-
-        /**
-         * @method  $
-         * @param   {String}    id
-         * @return  {HTMLElement|null}
-         */
-        $: function (id) {
-            return this.doc.querySelector('#' + id);
         }
     };
 
@@ -99,7 +86,8 @@
          * @type {Object|null}
          */
         this.textArea = general.doc.querySelector('textarea[name="msg"],' +
-                'textarea[name="message"]');
+                'textarea[name="message"]') ||
+                    general.doc.querySelector('textarea#newsms');
 
         /**
          * @method  setButton
@@ -121,14 +109,10 @@
                 var text = _this.textArea.value,
                     cursorPos = _this.textArea.selectionStart;
 
-                if (!general.root.KKaf) {
-                    _this.textArea.value = '';
-                } else if (general.root.v0WD) {
-                    _this.textArea.value = text.substring(0, cursorPos) + tag +
-                        text.substring(cursorPos, text.length);
-                    _this.textArea.focus();
-                    _this.textArea.selectionEnd = cursorPos + 3;
-                }
+                _this.textArea.value = text.substring(0, cursorPos) + tag +
+                    text.substring(cursorPos, text.length);
+                _this.textArea.focus();
+                _this.textArea.selectionEnd = cursorPos + 3;
             }, false);
         };
 
@@ -139,49 +123,29 @@
             var sendButton = general.doc.
                     querySelector('input[value="Отправить сообщение"]');
 
-            if (this.textArea && sendButton) {
-                var target = sendButton.parentNode.parentNode.parentNode.
+            if (this.textArea) {
+                var target;
+                if (sendButton) { // старая версия почты и форум
+                    target = sendButton.parentNode.parentNode.parentNode.
                         parentNode.querySelectorAll('td');
 
-                target = /sms-create/.test(general.loc) ? target[4] : target[0];
+                    target = /sms-create/.test(general.loc) ? target[4] :
+                            target[0];
+                } else {          // sms-версия почты
+                    target = general.doc.
+                        querySelector('span[style="opacity:0.8;"]');
+                }
 
-                this.setButton('quote', 'Цитирование', target, '[q][/q]');
-                this.setButton('italic', 'Наклонный шрифт', target, '[i][/i]');
+                if (target) {
+                    this.setButton('quote', 'Цитирование', target, '[q][/q]');
+                    this.setButton('italic', 'Наклонный шрифт', target,
+                        '[i][/i]');
+                }
             }
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new BbCodeInMessages().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new BbCodeInMessages().init();
 
 }());
 
