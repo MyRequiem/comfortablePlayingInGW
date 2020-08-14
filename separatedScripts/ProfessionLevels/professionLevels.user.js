@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ProfessionLevels/professionLevels.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ProfessionLevels/professionLevels.user.js
-// @include         http://www.gwars.ru/info.php?id=*
+// @include         https://*gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.00-200520
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458], идея Bodyarm
+// @version         1.01-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458], идея Bodyarm
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -43,11 +43,6 @@
          * @type {Object}
          */
         this.doc = this.root.document;
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|)/.exec(this.doc.cookie)[2];
     };
 
     /**
@@ -61,15 +56,6 @@
         getRoot: function () {
             var rt = typeof unsafeWindow;
             return rt !== 'undefined' ? unsafeWindow : window;
-        },
-
-        /**
-         * @method  $
-         * @param   {String}    id
-         * @return  {HTMLElement|null}
-         */
-        $: function (id) {
-            return this.doc.querySelector('#' + id);
         }
     };
 
@@ -95,7 +81,7 @@
             var td = general.doc.createElement('td');
             td.setAttribute('style', 'padding-left: 5px; font-size: 10px; ' +
                 'color: #809980;');
-            td.innerHTML = '+' + (general.root.jsvn ? value : ')');
+            td.innerHTML = '+' + value;
             target.appendChild(td);
         };
 
@@ -122,9 +108,7 @@
                     if (currentVal < this.profLevels[j]) {
                         this.setCounter(profsTrs[i],
                             this.profLevels[j] - currentVal);
-                        if (general.root.jzPZ) {
-                            break;
-                        }
+                        break;
                     }
                 }
             }
@@ -138,37 +122,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new ProfessionLevels().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new ProfessionLevels().init();
 
 }());
 

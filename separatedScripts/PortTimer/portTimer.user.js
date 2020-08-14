@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortTimer/portTimer.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortTimer/portTimer.user.js
-// @include         http://www.gwars.ru/*
+// @include         https://*gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.18-190819
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458], идея Enemy333
+// @version         1.19-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458], идея Enemy333
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -59,11 +59,6 @@
          * @type {String}
          */
         this.STORAGENAME = 'portTimer';
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
         /**
          * @property DESIGN_VERSION
          * @type {RegExpExecArray}
@@ -311,13 +306,10 @@
          */
         this.setInterface = function () {
             var mainTimer = general.doc.createElement('span');
-            // noinspection JSUnresolvedVariable
-            if (general.root.iul3) {
-                mainTimer.innerHTML = '<a href="' + this.url +
-                    '" style="text-decoration: none;" target="_blank">' +
-                    'Порты</a> <span id="portTime" style="font-weight: ' +
-                    'bold;"></span> [<span id="portTimer" style=""></span>]';
-            }
+            mainTimer.innerHTML = '<a href="' + this.url +
+                '" style="text-decoration: none;" target="_blank">' +
+                'Порты</a> <span id="portTime" style="font-weight: ' +
+                'bold;"></span> [<span id="portTimer" style=""></span>]';
 
             this.topPanel.appendChild(general.doc.createTextNode(' | '));
             this.topPanel.appendChild(mainTimer);
@@ -383,7 +375,7 @@
                 return;
             }
 
-            this.url = 'http://www.gwars.ru/object.php?id=11712&' +
+            this.url = 'https://www.gwars.ru/object.php?id=11712&' +
                 'page=oncoming1&sid=' + stData.syndid;
 
             // сегодня запрос не делали, делаем не ранее 7 утра.
@@ -402,37 +394,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new PortTimer().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new PortTimer().init();
 
 }());
 

@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CurrentQuestOnInfo/currentQuestOnInfo.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CurrentQuestOnInfo/currentQuestOnInfo.user.js
-// @include         http://www.gwars.ru/info.php?id=*
+// @include         https://*gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.17-190420
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458], идея kaa
+// @version         1.18-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458], идея kaa
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -50,11 +50,6 @@
          * @type {String}
          */
         this.persID = /\?id=(\d+)/.exec(this.root.location.href)[1];
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
         /**
          * @property target
          * @type {Element|null}
@@ -145,14 +140,14 @@
 
                 span.setAttribute('style', 'margin-left: 7px; font-size: 8pt;');
                 span.innerHTML = '<span id="questDesc">' + reg[1] + ' [' +
-                    '<a href="http://www.gwars.ru/questlog.php?id=' +
+                    '<a href="https://www.gwars.ru/questlog.php?id=' +
                     _this.persID + '" style="color: ' +
                     (isDone ? '#008700' : '#AA5500') + '; ' +
                     'text-decoration: none; font-size: 8pt;" target="_blank">' +
                     reg[2] + '</a>/' + reg[3] + ']</span> ' +
                     '(<a target="_blank" style="color:#007700; ' +
                     'font-weight: bold; text-decoration: none;" ' +
-                    'href="http://www.gwars.ru/help/index.php?' +
+                    'href="https://www.gwars.ru/help/index.php?' +
                     'sid=102&pid=45">' + acQuests[1] + '</a>)' +
                     '<img src="https://images.gwars.ru/i/home/wlog.gif" ' +
                     'id="showHideQuestList" border="0" width="12" ' +
@@ -261,45 +256,14 @@
          * @method init
          */
         init: function () {
-            // noinspection JSUnresolvedVariable
-            if (this.persID && this.target && this.root.swdf) {
-                this.showQuest('http://www.gwars.ru/questlog.php?id=' +
+            if (this.persID && this.target) {
+                this.showQuest('https://www.gwars.ru/questlog.php?id=' +
                     this.persID);
             }
         }
     };
 
-    var mainObj = new CurrentQuestOnInfo();
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                mainObj.init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new CurrentQuestOnInfo().init();
 
 }());
 

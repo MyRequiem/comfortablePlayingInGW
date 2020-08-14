@@ -5,19 +5,18 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndOnlineOnMainPage/syndOnlineOnMainPage.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndOnlineOnMainPage/syndOnlineOnMainPage.user.js
-// @include         http://www.gwars.ru/me.php*
-// @include         http://www.gwars.ru/me/*
+// @include         https://*gwars.ru/me.php*
+// @include         https://*gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.29-190819
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         2.30-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
 /*jslint browser: true, maxlen: 80, vars: true, plusplus: true, nomen: true,
     regexp: true
 */
-
 
 /*eslint-env browser */
 /*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
@@ -53,11 +52,6 @@
          */
         this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
             'comfortablePlayingInGW/master/imgs/';
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
         /**
          * @property cons
          * @type {Object}
@@ -160,7 +154,7 @@
                         nobrs[i].innerHTML += '<a target="_blank" ' +
                             'href="/sms-create.php?mailto=' +
                             pLink.firstElementChild.innerHTML + '">' +
-                            '<img src="http://images.gwars.ru/i/sms.gif" ' +
+                            '<img src="https://images.gwars.ru/i/sms.gif" ' +
                             'alt="img" /></a>';
                     }
                 }
@@ -193,7 +187,7 @@
                 spanContent.innerHTML = xml.responseText;
 
                 target.innerHTML = '<a href="' + url + '">' +
-                    '<img src="http://images.gwars.ru/img/synds/' +
+                    '<img src="https://images.gwars.ru/img/synds/' +
                     /\?id=(\d+)/.exec(url)[1] + '.gif" alt="img" /></a> (' +
                     /<b>(\d+) бойцов онлайн<\/b>/.
                         exec(spanContent.innerHTML)[1] + ')<br>';
@@ -222,9 +216,9 @@
 
                         nobr.appendChild(pers);
                         nobr.innerHTML += ' <a target="_blank" ' +
-                            'href="http://www.gwars.ru/sms-create.php?' +
+                            'href="https://www.gwars.ru/sms-create.php?' +
                             'mailto=' + pers.firstElementChild.innerHTML +
-                            '"><img src="http://images.gwars.ru/i/' +
+                            '"><img src="https://images.gwars.ru/i/' +
                             'sms.gif" alt="img" /></a>';
 
                         target.appendChild(nobr);
@@ -273,8 +267,7 @@
             this.syndMain = general.doc.
                     querySelector('span>b+nobr>a[href*="/syndicate.php?id="]');
 
-            // noinspection JSUnresolvedVariable
-            if (this.syndMain && general.root.vpmo) {
+            if (this.syndMain) {
                 var b = general.doc.createElement('b');
                 b.appendChild(general.doc.createTextNode(' / '));
                 b.appendChild(this.createLink('Основа', false));
@@ -303,37 +296,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new SyndOnlineOnMainPage().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new SyndOnlineOnMainPage().init();
 
 }());
 

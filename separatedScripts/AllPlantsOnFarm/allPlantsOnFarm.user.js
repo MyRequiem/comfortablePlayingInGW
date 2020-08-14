@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AllPlantsOnFarm/allPlantsOnFarm.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AllPlantsOnFarm/allPlantsOnFarm.user.js
-// @include         http://www.gwars.ru/ferma.php*
+// @include         https://*gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         1.42-260519
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         1.43-130820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -35,6 +35,15 @@
     var showGb = 1,     // счетчик Гб
         showExp = 1;    // счетчик производа
     // ================= КОНЕЦ НАСТРОЕК ======================
+
+    /**
+     * localStorage
+     * [0] - номер первого недоступного растения
+     *          (не используется с версии 1.30-101117)
+     * [1] - время сброса счетчика
+     * [2] - количество гб
+     * [3] - количество производа
+     */
 
     /**
      * @class General
@@ -292,10 +301,10 @@
 
             cont.innerHTML = '';
             // noinspection JSUnresolvedVariable
-            if (val !== '0' && general.root.so1k) {
+            if (val !== '0') {
                 var i;
                 for (i = 3; i < 7; i++) {
-                    str += '<img src="http://images.gwars.ru/' +
+                    str += '<img src="https://images.gwars.ru/' +
                         'img/ferma_hd/' + val + i + '.png" ' +
                         'style="width: 50px; height: 50px;" alt="img" />';
                 }
@@ -548,45 +557,7 @@
         };
     };
 
-    /**
-     * localStorage
-     * [0] - номер первого недоступного растения
-     *          (не используется с версии 1.30-101117)
-     * [1] - время сброса счетчика
-     * [2] - количество гб
-     * [3] - количество производа
-     */
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new AllPlantsOnFarm().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new AllPlantsOnFarm().init();
 
 }());
 

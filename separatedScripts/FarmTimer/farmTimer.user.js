@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FarmTimer/farmTimer.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FarmTimer/farmTimer.user.js
-// @include         http://www.gwars.ru/*
+// @include         https://*gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.21-190819
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         2.22-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -114,15 +114,6 @@
             stData = ['', '', '', ''];
             this.setData(stData);
             return stData;
-        },
-
-        /**
-         * @method $
-         * @param   {String}    id
-         * @return  {HTMLElement|null}
-         */
-        $: function (id) {
-            return this.doc.querySelector('#' + id);
         }
     };
 
@@ -329,8 +320,7 @@
                 s,
                 h;
 
-            // noinspection JSUnresolvedVariable
-            if (!sec || !general.root.sozs) {
+            if (!sec) {
                 this.setReminder();
                 return;
             }
@@ -431,7 +421,7 @@
             this.farmLink = general.doc.createElement('a');
             this.farmLink.setAttribute('style', 'color: #0000FF; ' +
                     'text-decoration: none;');
-            this.farmLink.href = 'http://www.gwars.ru/ferma.php?id=' +
+            this.farmLink.href = 'https://www.gwars.ru/ferma.php?id=' +
                 general.myID;
             this.farmLink.setAttribute('target', '_blank');
             topPanel.appendChild(general.doc.createTextNode(' | '));
@@ -451,37 +441,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new FarmTimer().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new FarmTimer().init();
 
 }());
 

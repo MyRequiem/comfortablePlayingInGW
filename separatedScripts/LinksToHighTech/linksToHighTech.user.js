@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/LinksToHighTech/linksToHighTech.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/LinksToHighTech/linksToHighTech.user.js
-// @include         http://www.gwars.ru/shop.php*
+// @include         https://*gwars.ru/shop.php*
 // @grant           none
 // @license         MIT
-// @version         1.29-260519
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458] идея Buger_man
+// @version         1.30-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458] идея Buger_man
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -43,11 +43,6 @@
          * @type {Object}
          */
         this.doc = this.root.document;
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
     };
 
     /**
@@ -61,15 +56,6 @@
         getRoot: function () {
             var rt = typeof unsafeWindow;
             return rt !== 'undefined' ? unsafeWindow : window;
-        },
-
-        /**
-         * @method $
-         * @param   {String}    id
-         * @return  {HTMLElement|null}
-         */
-        $: function (id) {
-            return this.doc.querySelector('#' + id);
         }
     };
 
@@ -92,7 +78,6 @@
             'sniper': 'snipe'
         };
 
-
         /**
          * @method init
          */
@@ -104,8 +89,7 @@
                 i;
 
             for (i = 0; i < links.length; i++) {
-                // noinspection JSUnresolvedVariable
-                if (links[i].innerHTML && general.root.fyrr) {
+                if (links[i].innerHTML) {
                     group = /\?shop=shop_(.*)$/.exec(links[i].href)[1];
                     if (this.highTechItems.htGroup.indexOf(group) !== -1) {
                         // noinspection JSUnresolvedVariable
@@ -120,37 +104,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new LinksToHighTech().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new LinksToHighTech().init();
 
 }());
 

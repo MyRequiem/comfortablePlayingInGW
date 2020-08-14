@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdditionForNavigationBar/additionForNavigationBar.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdditionForNavigationBar/additionForNavigationBar.user.js
-// @include         http://www.gwars.ru/*
+// @include         https://*gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.08-250519
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         2.09-130820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -50,11 +50,6 @@
          * @type {Object}
          */
         this.st = this.root.localStorage;
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
         /**
          * @property STNAME
          * @type {String}
@@ -270,8 +265,8 @@
             divAddLink.setAttribute('style', 'margin-top: 5px;');
             divAddLink.innerHTML = 'Название:<br><input id="lname" ' +
                 'maxlength="20" style="width: 237px;" /><br>' +
-                'Ссылка:<br><input id="lhref" style="width: 237px;" ' +
-                'value="http://"/><br>Стиль, например: "color: blue;"<br>' +
+                'Ссылка:<br><input id="lhref" style="width: 237px;" /><br>' +
+                'Стиль, например: "color: blue;"<br>' +
                 '<input id="lstyle" style="width: 237px;" />' +
                 '<br><span id="set_link" style="cursor: pointer; color: ' +
                 '#0000FF;">Добавить</span><span id="hide_nav_div" ' +
@@ -290,8 +285,7 @@
             // добавляем ссылки из хранилища в панель и в div
             var linkName, lnk;
             for (linkName in dataSt) {
-                // noinspection JSUnresolvedVariable
-                if (dataSt.hasOwnProperty(linkName) && this.root.zsdm) {
+                if (dataSt.hasOwnProperty(linkName)) {
                     lnk = this.createLink(linkName, dataSt[linkName]);
                     this.addLink(lnk);
                 }
@@ -303,7 +297,6 @@
                     _this.clearFields();
                     _this.divMain.style.display = 'none';
                 }, false);
-
 
             // обработчик кнопы добавления ссылки
             this.$('set_link').addEventListener('click', function () {
@@ -340,36 +333,7 @@
         }
     };
 
-    var mainObj = new AdditionForNavigationBar();
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                mainObj.init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new AdditionForNavigationBar().init();
 
 }());
 

@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name            GosEnergoAtomFilter
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     Сортировка объектов по типу, островам и контролирующим синдикатам на странице недвижимости ГосЭнегоАтом [http://www.gwars.ru/info.realty.php?id=2]
+// @description     Сортировка объектов по типу, островам и контролирующим синдикатам на странице недвижимости ГосЭнегоАтом [https://www.gwars.ru/info.realty.php?id=2]
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GosEnergoAtomFilter/gosEnergoAtomFilter.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GosEnergoAtomFilter/gosEnergoAtomFilter.user.js
-// @include         http://www.gwars.ru/info.realty.php?id=2
+// @include         https://*gwars.ru/info.realty.php?id=2
 // @grant           none
 // @license         MIT
-// @version         4.06-190819
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         4.07-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -50,11 +50,6 @@
          * @type {Object}
          */
         this.st = this.root.localStorage;
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
         /**
          * @property STORAGENAME
          * @type {String}
@@ -144,8 +139,7 @@
 
             var synd, opt;
             for (synd in objs) {
-                // noinspection JSUnresolvedVariable
-                if (objs.hasOwnProperty(synd) && general.root.w4sx) {
+                if (objs.hasOwnProperty(synd)) {
                     for (i = 0; i < objs[synd].length; i++) {
                         prnt.appendChild(objs[synd][i]);
                     }
@@ -307,36 +301,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
+    new GosEnergoAtomFilter().init();
 
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new GosEnergoAtomFilter().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
 }());
 

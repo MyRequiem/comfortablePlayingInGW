@@ -5,15 +5,13 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NotGiveCannabisLeaf/notGiveCannabisLeaf.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NotGiveCannabisLeaf/notGiveCannabisLeaf.user.js
-// @include         http://www.gwars.ru*
-// @include         http://quest.gwars.ru*
-// @include         http://photos.gwars.ru*
-// @include         http://www.ganjafile.ru*
-// @include         http://www.ganjafoto.ru*
+// @include         https://*gwars.ru*
+// @include         https://*ganjafoto.ru*
+// @include         http*://*ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         2.17-260519
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         2.18-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -48,11 +46,6 @@
          */
         this.doc = this.root.document;
         /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
-        /**
          * @property imgPath
          * @type {String}
          */
@@ -71,15 +64,6 @@
         getRoot: function () {
             var rt = typeof unsafeWindow;
             return rt !== 'undefined' ? unsafeWindow : window;
-        },
-
-        /**
-         * @method $
-         * @param   {String}    id
-         * @return  {HTMLElement|null}
-         */
-        $: function (id) {
-            return this.doc.querySelector('#' + id);
         },
 
         /**
@@ -129,45 +113,13 @@
          */
         init: function () {
             this.changeFavicon();
-            // noinspection JSUnresolvedVariable
-            if (!/\/news\.php\?set=1/.test(this.root.location.href) &&
-                    this.root.aqyq) {
+            if (!/\/news\.php\?set=1/.test(this.root.location.href)) {
                 this.changeIcons();
             }
         }
     };
 
-    var mainObj = new NotGiveCannabisLeaf();
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                mainObj.init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new NotGiveCannabisLeaf().init();
 
 }());
 

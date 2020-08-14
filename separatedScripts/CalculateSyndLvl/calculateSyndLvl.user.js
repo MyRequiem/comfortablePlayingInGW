@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CalculateSyndLvl/calculateSyndLvl.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CalculateSyndLvl/calculateSyndLvl.user.js
-// @include         http://www.gwars.ru/syndicate.php?id=*
+// @include         https://*gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.22-230720
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         1.23-130820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -28,13 +28,13 @@
 /*jscs:disable validateIndentation */
 
 // Уровень синдиката обновляется каждое воскресенье
-// (http://www.gwars.ru/messages.php?fid=1&tid=1585)
+// (https://www.gwars.ru/messages.php?fid=1&tid=1585)
 //
 // Расчет уровня (http://www.ganjawiki.ru/Боевой_синдикат#.D0.A3.D0.A1):
 // Итоговый_опыт = 4/3 * Боевой_опыт + (4.6 * Экономический_опыт)
 //
 // Таблица рейтинга синдикатов:
-//  http://www.gwars.ru/srating.php
+//  https://www.gwars.ru/srating.php
 //  EXP/опыт = экономический/боевой
 //
 //  Расчетный уровень  Итоговый опыт
@@ -99,11 +99,6 @@
          * @type {String}
          */
         this.loc = this.root.location.href;
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
         /**
          * @property imgPath
          * @type {String}
@@ -208,7 +203,7 @@
          * @param   {int}   ind
          */
         this.scan = function (ind) {
-            var url = 'http://www.gwars.ru/srating.php?rid=0&page_id=' +
+            var url = 'https://www.gwars.ru/srating.php?rid=0&page_id=' +
                     ind,
                 pageCounter = general.$('pageCounter'),
                 _this = this;
@@ -224,7 +219,7 @@
                 if (!tbl || !tbl.
                         querySelector('td>a[href*="/syndicate.php?id="]')) {
                     pageCounter.innerHTML = 'синдикат в <a target="_blank" ' +
-                        'href="http://www.gwars.ru/srating.php?rid=0&' +
+                        'href="https://www.gwars.ru/srating.php?rid=0&' +
                         'page_id=0">рейтинге</a> не найден';
                     _this.preScan(false);
                     return;
@@ -308,8 +303,7 @@
 
             var _this = this;
             general.$('calcSyndLvl').addEventListener('click', function () {
-                // noinspection JSUnresolvedVariable
-                if (general.$('preloader').style.display && general.root.ljde) {
+                if (general.$('preloader').style.display) {
                     _this.preScan(true);
                     _this.scan(0);
                 }
@@ -317,37 +311,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new CalculateSyndLvl().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new CalculateSyndLvl().init();
 
 }());
 

@@ -5,13 +5,13 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvForum/advForum.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvForum/advForum.user.js
-// @include         http://www.gwars.ru/threads.php?fid=*
-// @include         http://www.gwars.ru/messages.php?fid=*
-// @include         http://www.gwars.ru/forum.php
+// @include         https://*gwars.ru/threads.php?fid=*
+// @include         https://*gwars.ru/messages.php?fid=*
+// @include         https://*gwars.ru/forum.php
 // @grant           none
 // @license         MIT
-// @version         2.31-190819
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         2.32-130820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -451,14 +451,14 @@
             var tableContent = table.innerHTML,
                 imgSettins = general.doc.createElement('img');
 
-            imgSettins.src = 'http://images.gwars.ru/i/home/properties.gif';
+            imgSettins.src = 'https://images.gwars.ru/i/home/properties.gif';
             imgSettins.setAttribute('style', 'cursor: pointer; ' +
                     'margin-left: 10px;');
             imgSettins.setAttribute('title', 'Настройки');
 
             // кнопка сброса всех данных ветки
             var imgReset = general.doc.createElement('img');
-            imgReset.src = 'http://images.gwars.ru/i/home/questlog.gif';
+            imgReset.src = 'https://images.gwars.ru/i/home/questlog.gif';
             imgReset.setAttribute('style', 'cursor: pointer; ' +
                     'margin-left: 10px;');
             imgReset.setAttribute('title', 'Сбросить все данные ветки');
@@ -504,7 +504,7 @@
 
                 for (i = 0; i < themes.length; i++) {
                     str += '<tr><td><a target="_blank" ' +
-                        'href="http://www.gwars.ru/threads.php?fid=' +
+                        'href="https://www.gwars.ru/threads.php?fid=' +
                         themes[i][1] + '">' + themes[i][0] + '</a></td>' +
                         '<td><input id="showForum_' + i + '" ' +
                         'type="checkbox"' + (f[i] ? ' checked' : '') +
@@ -532,7 +532,7 @@
                     'bold;"><< Назад</span></td></tr><tr><td colspan="2" ' +
                     'style="font-weight: bold; padding-top: 10px;">' +
                     'Показывать ветки форума на <a target="_blank" ' +
-                    'href="http://www.gwars.ru/forum.php">этой странице' +
+                    'href="https://www.gwars.ru/forum.php">этой странице' +
                     '</a>:</td></tr>' + str + '</table></td></tr>';
 
                 // чекбокс "Отмечать закрытые"
@@ -624,8 +624,7 @@
                 i;
 
             // на странице списка форумов
-            // noinspection JSUnresolvedVariable
-            if (/\/forum\.php$/.test(general.loc) && general.root.wkdk) {
+            if (/\/forum\.php$/.test(general.loc)) {
                 var allBranches = general.doc.querySelectorAll('tr>' +
                         'td[valign="top"][onclick*="/threads.php?fid="]'),
                     f = stData[6].split(','),
@@ -653,8 +652,7 @@
 
             fid = this.toHex(fid);
             // на странице сообщений в теме
-            // noinspection JSUnresolvedVariable
-            if (/\/messages\.php\?/.test(general.loc) && general.root.wkdk) {
+            if (/\/messages\.php\?/.test(general.loc)) {
                 var json = JSON.parse(stData[7]),
                     tid = this.toHex(this.parseLoc[3]);
 
@@ -708,8 +706,7 @@
             }
 
             // на странице списка тем ветки форума
-            // noinspection JSUnresolvedVariable
-            if (/\/threads\.php\?/.test(general.loc) && general.root.wkdk) {
+            if (/\/threads\.php\?/.test(general.loc)) {
                 var spanClean = general.doc.createElement('span');
                 general.doc.body.appendChild(spanClean);
                 spanClean.addEventListener('click',
@@ -722,37 +719,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new AdvForum().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new AdvForum().init();
 
 }());
 

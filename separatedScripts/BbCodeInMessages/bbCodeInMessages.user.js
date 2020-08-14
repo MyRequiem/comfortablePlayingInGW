@@ -13,7 +13,7 @@
 // @grant           none
 // @license         MIT
 // @version         1.01-130820
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
