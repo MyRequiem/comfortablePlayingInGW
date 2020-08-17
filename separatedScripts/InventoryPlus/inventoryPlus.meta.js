@@ -5,9 +5,9 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/InventoryPlus/inventoryPlus.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/InventoryPlus/inventoryPlus.user.js
-// @include         http://www.gwars.ru/items.php*
+// @include         https://*gwars.ru/items.php*
 // @grant           none
 // @license         MIT
-// @version         2.49-131219
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         2.50-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==

@@ -5,10 +5,10 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeKarma/timeKarma.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeKarma/timeKarma.user.js
-// @include         http://www.gwars.ru/info.php?id=*
-// @include         http://www.gwars.ru/info.vote.php?id=*
+// @include         https://*gwars.ru/info.php?id=*
+// @include         https://*gwars.ru/info.vote.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.10-260519
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         2.11-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==

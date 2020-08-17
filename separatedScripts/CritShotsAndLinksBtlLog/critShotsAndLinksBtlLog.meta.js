@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CritShotsAndLinksBtlLog/critShotsAndLinksBtlLog.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CritShotsAndLinksBtlLog/critShotsAndLinksBtlLog.user.js
-// @include         http://www.gwars.ru/b0/*
-// @include         http://www.gwars.ru/warlog.php*
-// @include         http://www.gwars.ru/battlelog.php*
+// @include         https://*gwars.ru/b0/*
+// @include         https://*gwars.ru/warlog.php*
+// @include         https://*gwars.ru/battlelog.php*
 // @grant           none
 // @license         MIT
-// @version         2.51-240620
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         2.52-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==

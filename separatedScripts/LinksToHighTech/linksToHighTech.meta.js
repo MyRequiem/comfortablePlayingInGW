@@ -5,9 +5,9 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/LinksToHighTech/linksToHighTech.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/LinksToHighTech/linksToHighTech.user.js
-// @include         http://www.gwars.ru/shop.php*
+// @include         https://*gwars.ru/shop.php*
 // @grant           none
 // @license         MIT
-// @version         1.29-260519
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458] идея Buger_man
+// @version         1.30-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458] идея Buger_man
 // ==/UserScript==

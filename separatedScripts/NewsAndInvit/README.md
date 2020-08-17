@@ -1,7 +1,7 @@
 Выделение и мигание приглашений в синдикаты, новых и не прочитанных новостей на главной странице персонажа.
 <br>
 <br>
-Версия: 2.10-260519
+Версия: 2.11-140820
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NewsAndInvit/newsAndInvit.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/NewsAndInvit/newsAndInvit.user.js.zip)
 <br>

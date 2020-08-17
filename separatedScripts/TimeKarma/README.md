@@ -1,7 +1,7 @@
 На странице информации персонажа показывает динамический счетчик времени до возможности поставить карму.
 <br>
 <br>
-Версия: 2.10-260519
+Версия: 2.11-140820
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeKarma/timeKarma.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeKarma/timeKarma.user.js.zip)
 <br>
