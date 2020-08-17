@@ -5,9 +5,9 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortsAndTerminals/portsAndTerminals.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortsAndTerminals/portsAndTerminals.user.js
-// @include         http://www.gwars.ru/map.php*
+// @include         https://*gwars.ru/map.php*
 // @grant           none
 // @license         MIT
-// @version         2.20-090720
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         2.21-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==

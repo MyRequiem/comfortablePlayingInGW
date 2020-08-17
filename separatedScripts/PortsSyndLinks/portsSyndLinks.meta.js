@@ -5,9 +5,9 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortsSyndLinks/portsSyndLinks.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortsSyndLinks/portsSyndLinks.user.js
-// @include         http://www.gwars.ru/object.php?id=*
+// @include         https://*gwars.ru/object.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.06-300720
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         1.07-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==

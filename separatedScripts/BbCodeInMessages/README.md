@@ -1,7 +1,7 @@
 В формах для отправки личных сообщений и сообщений на форуме добавляет кнопки для вставки в позиции курсора bb-кодов для цитирования [q][/q] и наклонного шрифта [i][/i].
 <br>
 <br>
-Версия: 1.00-210919
+Версия: 1.01-130820
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BbCodeInMessages/bbCodeInMessages.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BbCodeInMessages/bbCodeInMessages.user.js.zip)
 <br>

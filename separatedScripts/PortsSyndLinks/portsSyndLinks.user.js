@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortsSyndLinks/portsSyndLinks.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortsSyndLinks/portsSyndLinks.user.js
-// @include         http://www.gwars.ru/object.php?id=*
+// @include         https://*gwars.ru/object.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.06-300720
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         1.07-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -48,11 +48,6 @@
          * @type {String}
          */
         this.loc = this.root.location.href;
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
     };
 
     /**
@@ -66,15 +61,6 @@
         getRoot: function () {
             var rt = typeof unsafeWindow;
             return rt !== 'undefined' ? unsafeWindow : window;
-        },
-
-        /**
-         * @method $
-         * @param   {String}    id
-         * @return  {HTMLElement|null}
-         */
-        $: function (id) {
-            return this.doc.querySelector('#' + id);
         },
 
         /**
@@ -94,14 +80,13 @@
                     link = syndLinks[i];
                     reg = /&sid=(\d+)$/.exec(link.href);
 
-                    // noinspection JSUnresolvedVariable
-                    if (reg && this.root.ppcz) {
+                    if (reg) {
                         sign = this.doc.createElement('a');
-                        sign.setAttribute('href', 'http://www.gwars.ru/' +
+                        sign.setAttribute('href', 'https://www.gwars.ru/' +
                             'syndicate.php?id=' + reg[1] + '&page=online');
                         sign.setAttribute('target', '_blank');
                         sign.setAttribute('style', 'margin-right: 2px;');
-                        sign.innerHTML = '<img src="http://images.gwars.ru/' +
+                        sign.innerHTML = '<img src="https://images.gwars.ru/' +
                             'img/synds/' + reg[1] + '.gif" width="20" ' +
                             'height="14" border="0" alt="img" />';
 
@@ -112,37 +97,7 @@
         }
     };
 
-    var mainObj = new PortsSyndLinks();
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                mainObj.init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new PortsSyndLinks().init();
 
 }());
 

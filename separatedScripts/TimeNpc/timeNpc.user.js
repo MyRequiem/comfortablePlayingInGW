@@ -5,13 +5,13 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeNpc/timeNpc.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeNpc/timeNpc.user.js
-// @include         http://www.gwars.ru/me.php*
-// @include         http://www.gwars.ru/me/*
-// @include         http://www.gwars.ru/npc.php?id=*
+// @include         https://*gwars.ru/me.php*
+// @include         https://*gwars.ru/me/*
+// @include         https://*gwars.ru/npc.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.35-190819
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         2.36-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -66,11 +66,6 @@
          * @type {String}
          */
         this.STNAME = 'timeNpc';
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
         /**
          * @property imgPath
          * @type {String}
@@ -258,7 +253,7 @@
                 general.$('imgSoundNPC').setAttribute('checkscan', 'yes');
             }
 
-            var url = 'http://www.gwars.ru/npc.php?id=' + npcs[ind],
+            var url = 'https://www.gwars.ru/npc.php?id=' + npcs[ind],
                 _this = this,
                 tr,
                 td;
@@ -294,7 +289,7 @@
 
                 general.$('dataNPC').lastElementChild.innerHTML = '<td>' +
                     '<a target="_blank" href="' + syndLink.href +
-                    '"><img src="http://images.gwars.ru/img/synds/' +
+                    '"><img src="https://images.gwars.ru/img/synds/' +
                     /\?id=(\d+)/.exec(syndLink.href)[1] + '.gif" ' +
                     'alt="img" /></a></td><td><a target="_blank" href="' + url +
                     '" style="font-size: 8pt;">' + nameNPC + '</a></td>' +
@@ -365,15 +360,12 @@
 
                 sec -= 1;
                 var _this = this;
-                // noinspection JSUnresolvedVariable
-                if (sec > -1 && general.root.wl32) {
+                if (sec > -1) {
                     general.root.setTimeout(function () {
                         _this.showTimerNPC(sec);
                     }, 1000);
-                } else { // noinspection JSUnresolvedVariable
-                    if (general.root.wl32) {
-                        this.goQuest();
-                    }
+                } else {
+                    this.goQuest();
                 }
             }
         };
@@ -490,37 +482,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new TimeNpc().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new TimeNpc().init();
 
 }());
 

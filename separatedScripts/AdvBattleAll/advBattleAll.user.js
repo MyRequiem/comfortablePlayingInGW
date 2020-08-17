@@ -5,14 +5,14 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js
-// @include         http://www.gwars.ru/b0/btl.php?bid=*
-// @include         http://www.gwars.ru/warlog.php*
-// @include         http://www.gwars.ru/wargroup.php*
-// @include         http://www.gwars.ru/warlist.php*
+// @include         https://*gwars.ru/b0/btl.php?bid=*
+// @include         https://*gwars.ru/warlog.php*
+// @include         https://*gwars.ru/wargroup.php*
+// @include         https://*gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.35-220620
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         4.36-130820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -1209,7 +1209,7 @@
                     '</span> / <span style="color: #0000FF;">' +
                     this.rightPers.length + '</span></span>' +
                     // ссылка "Наблюдение"
-                    '<a href="http://www.gwars.ru/warlog.php?bid=' +
+                    '<a href="https://www.gwars.ru/warlog.php?bid=' +
                     /\?bid=(\d+)/.exec(general.loc)[1] + '&rev=1" ' +
                     'target="_blank" style="margin-left: 15px;"><img src="' +
                     general.imgPath + 'eyes.png" width="16" height="9" ' +
@@ -2093,8 +2093,7 @@
                 i;
 
             // в бою
-            // noinspection JSUnresolvedVariable
-            if (!general.viewMode && general.root.bvhc) {
+            if (!general.viewMode) {
                 // если есть список выбора врага (ход не сделан)
                 if (selectEnemies) {
                     // играем звук о начале хода
@@ -2124,10 +2123,7 @@
                 general.setData(dataSt);
             }
 
-            // noinspection JSUnresolvedVariable
-            if (general.root.bvhc) {
-                this.getLeftRightCommands();
-            }
+            this.getLeftRightCommands();
 
             // ссылки на персов слева и справа
             this.leftPers = this.getPers(this.leftRightCommands[0]);
@@ -2588,37 +2584,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new AdvBattleAll().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new AdvBattleAll().init();
 
 }());
 

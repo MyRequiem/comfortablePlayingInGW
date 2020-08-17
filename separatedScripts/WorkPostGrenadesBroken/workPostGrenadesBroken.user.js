@@ -5,15 +5,15 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.user.js
-// @include         http://www.gwars.ru/me.php*
-// @include         http://www.gwars.ru/me/*
-// @include         http://www.gwars.ru/warlog.php?bid=*
-// @include         http://www.gwars.ru/warlist.php*
-// @include         http://www.gwars.ru/wargroup.php*
+// @include         https://*gwars.ru/me.php*
+// @include         https://*gwars.ru/me/*
+// @include         https://*gwars.ru/warlog.php?bid=*
+// @include         https://*gwars.ru/warlist.php*
+// @include         https://*gwars.ru/wargroup.php*
 // @grant           none
 // @license         MIT
-// @version         2.46-200420
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         2.47-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -80,11 +80,6 @@
          */
         this.DESIGN_VERSION = /(^|;) ?version=([^;]*)(;|$)/.
                 exec(this.doc.cookie);
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
         /**
          * @property imgPath
          * @type {String}
@@ -289,17 +284,17 @@
          * @return  {String}
          */
         this.addContent = function (sms, gren, broken) {
-            var host = ' [<a href="http://www.gwars.ru/',
+            var host = ' [<a href="https://www.gwars.ru/',
                 str = '';
 
             if (sms[0] && showSms) {    // письмо
-                str += host + 'sms.php"><img src="http://www.gwars.ru/i/' +
+                str += host + 'sms.php"><img src="https://www.gwars.ru/i/' +
                     'sms.gif" title="' + sms[0].getAttribute('title') +
                     '" alt="Вам письмо"></a>]';
             }
 
             if (sms[1] && showSms) {    // посылка
-                str += host + 'items.php"><img src="http://www.gwars.ru/' +
+                str += host + 'items.php"><img src="https://www.gwars.ru/' +
                     'i/woodbox.gif" title="Пришла посылка!" ' +
                     'alt="посылка"></a>]';
             }
@@ -325,7 +320,7 @@
             var ajaxQuery = new AjaxQuery();
 
             _this = _this || this;
-            ajaxQuery.init('http://www.gwars.ru/me.php', function (xml) {
+            ajaxQuery.init('https://www.gwars.ru/me.php', function (xml) {
                 var spanContent = general.doc.createElement('span');
                 spanContent.innerHTML = xml.responseText;
                 _this.wpgbContainer.innerHTML = '';
@@ -464,8 +459,7 @@
             }
 
             var topPanel = new GetTopPanel().init();
-            // noinspection JSUnresolvedVariable
-            if (topPanel && general.root.hvi6) {
+            if (topPanel) {
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(this.wpgbContainer);
 
@@ -478,37 +472,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new WorkPostGrenadesBroken().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new WorkPostGrenadesBroken().init();
 
 }());
 

@@ -5,12 +5,12 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BuyHightech/buyHightech.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BuyHightech/buyHightech.user.js
-// @include         http://www.gwars.ru/shopc.php*
-// @include         http://www.gwars.ru/market-p.php?stage=2&item_id=*
+// @include         https://*gwars.ru/shopc.php*
+// @include         https://*gwars.ru/market-p.php?stage=2&item_id=*
 // @grant           none
 // @license         MIT
-// @version         2.08-250519
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         2.09-130820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -49,11 +49,6 @@
          * @type {String}
          */
         this.loc = this.root.location.href;
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
     };
 
     /**
@@ -67,15 +62,6 @@
         getRoot: function () {
             var rt = typeof unsafeWindow;
             return rt !== 'undefined' ? unsafeWindow : window;
-        },
-
-        /**
-         * @method $
-         * @param   {String}    id
-         * @return  {HTMLElement|null}
-         */
-        $: function (id) {
-            return this.doc.querySelector('#' + id);
         }
     };
 
@@ -90,8 +76,7 @@
          * @method init
          */
         this.init = function () {
-            // noinspection JSUnresolvedVariable
-            if (/\/shopc\.php/.test(general.loc) && general.root.hoxr) {
+            if (/\/shopc\.php/.test(general.loc)) {
                 var descrTd = general.doc.querySelectorAll('td[class$=' +
                          '"lightbg"][valign="top"][align="left"]' +
                              '[width="100%"]'),
@@ -111,11 +96,11 @@
                     descrTd[i].innerHTML += ' <span style="font-weight: ' +
                         'bold; margin-left: 7px;"> Создать объявление: ' +
                         '</span><a target="_blank" style="color: #0000FF;" ' +
-                        'href="http://www.gwars.ru/market-p.php?' +
+                        'href="https://www.gwars.ru/market-p.php?' +
                         'stage=2&item_id=' + id + '&action_id=2&p=' + price +
                         '&s=' + strength + '">[Купить]' + '</a> ' +
                         '<a target="_blank" style="color: #990000;" href=' +
-                        '"http://www.gwars.ru/market-p.php?' +
+                        '"https://www.gwars.ru/market-p.php?' +
                         'stage=2&item_id=' + id + '&action_id=1&p=' + price +
                         '&s=' + strength + '">[Продать]</a>';
                 }
@@ -156,37 +141,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new BuyHightech().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new BuyHightech().init();
 
 }());
 

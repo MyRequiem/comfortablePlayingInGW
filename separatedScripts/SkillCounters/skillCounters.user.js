@@ -5,12 +5,12 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SkillCounters/skillCounters.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SkillCounters/skillCounters.user.js
-// @include         http://www.gwars.ru/me.php*
-// @include         http://www.gwars.ru/me/*
+// @include         https://*gwars.ru/me.php*
+// @include         https://*gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.16-210620
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         2.17-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -51,11 +51,6 @@
          * @type {Object}
          */
         this.st = this.root.localStorage;
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
         /**
          * @property STORAGENAME
          * @type {String}
@@ -221,12 +216,9 @@
                 i;
 
             for (i = 0; i < this.counters.length; i++) {
-                // noinspection JSUnresolvedVariable
-                if (general.root.gjzo) {
-                    general.$(this.ids[i]).innerHTML = '[' +
-                        (parseFloat(this.dataNow[i]) - parseFloat(stData[i])).
-                            toFixed(i < 3 ? 0 : 2) + ']';
-                }
+                general.$(this.ids[i]).innerHTML = '[' +
+                    (parseFloat(this.dataNow[i]) - parseFloat(stData[i])).
+                        toFixed(i < 3 ? 0 : 2) + ']';
             }
 
             // синдовый уровень
@@ -287,37 +279,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new SkillCounters().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new SkillCounters().init();
 
 }());
 

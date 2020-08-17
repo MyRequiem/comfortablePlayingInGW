@@ -5,9 +5,9 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AllPlantsOnFarm/allPlantsOnFarm.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AllPlantsOnFarm/allPlantsOnFarm.user.js
-// @include         http://www.gwars.ru/ferma.php*
+// @include         https://*gwars.ru/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         1.42-260519
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         1.43-130820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==

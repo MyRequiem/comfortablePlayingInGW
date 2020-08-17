@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CommonBattleFilter/commonBattleFilter.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CommonBattleFilter/commonBattleFilter.user.js
-// @include         http://www.gwars.ru/wargroup.php?war=armed*
+// @include         https://*gwars.ru/wargroup.php?war=armed*
 // @grant           none
 // @license         MIT
-// @version         1.16-260519
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         1.17-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -55,11 +55,6 @@
          * @type {Object}
          */
         this.st = this.root.localStorage;
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
         /**
          * @property STORAGENAME
          * @type {String}
@@ -150,21 +145,15 @@
                 row.style.display = '';
 
                 stData[0] = +stData[0];
-                // noinspection JSUnresolvedVariable
-                if (stData[0] && this.getLvl(row) > stData[0] &&
-                        general.root.zfjx) {
+                if (stData[0] && this.getLvl(row) > stData[0]) {
                     row.style.display = 'none';
                 }
 
-                // noinspection JSUnresolvedVariable
-                if (stData[1] && !/<s>именные<\/s>/.test(row.innerHTML) &&
-                        general.root.zfjx) {
+                if (stData[1] && !/<s>именные<\/s>/.test(row.innerHTML)) {
                     row.style.display = 'none';
                 }
 
-                // noinspection JSUnresolvedVariable
-                if (stData[2] && !/по мощности/.test(row.innerHTML) &&
-                        general.root.zfjx) {
+                if (stData[2] && !/по мощности/.test(row.innerHTML)) {
                     row.style.display = 'none';
                 }
             }
@@ -313,37 +302,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new CommonBattleFilter().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new CommonBattleFilter().init();
 
 }());
 

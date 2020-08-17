@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SortSyndOnline/sortSyndOnline.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SortSyndOnline/sortSyndOnline.user.js
-// @include         http://www.gwars.ru/syndicate.php?id=*
+// @include         https://*gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.05-260519
-// @author          MyRequiem
+// @version         2.06-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -50,11 +50,6 @@
          * @type {String}
          */
         this.loc = this.root.location.href;
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
     };
 
     /**
@@ -68,15 +63,6 @@
         getRoot: function () {
             var rt = typeof unsafeWindow;
             return rt !== 'undefined' ? unsafeWindow : window;
-        },
-
-        /**
-         * @method $
-         * @param   {String}    id
-         * @return  {HTMLElement|null}
-         */
-        $: function (id) {
-            return this.doc.querySelector('#' + id);
         }
     };
 
@@ -137,8 +123,7 @@
                 btl;
 
             for (btl in battles) {
-                // noinspection JSUnresolvedVariable
-                if (battles.hasOwnProperty(btl) && general.root.yg2k) {
+                if (battles.hasOwnProperty(btl)) {
                     color = '';
                     for (i = 0; i < syndBattles.length; i++) {
                         // если бой синдикатный, выделяем зеленым цветом
@@ -177,37 +162,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new SortSyndOnline().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new SortSyndOnline().init();
 
 }());
 

@@ -5,9 +5,9 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SortSyndOnline/sortSyndOnline.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SortSyndOnline/sortSyndOnline.user.js
-// @include         http://www.gwars.ru/syndicate.php?id=*
+// @include         https://*gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.05-260519
-// @author          MyRequiem
+// @version         2.06-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==

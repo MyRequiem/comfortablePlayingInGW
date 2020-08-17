@@ -11,11 +11,11 @@ def getstrings():
     """
     docstring
     """
-    mainreadme1 = '''![GWars.ru](http://images.gwars.ru/img/\
+    mainreadme1 = '''![GWars.ru](https://images.gwars.ru/img/\
 apple144.png)
 
 #### Many buns for a comfortable game in \
-[GWars.ru](http://www.gwars.ru/index.php)
+[GWars.ru](https://www.gwars.ru/index.php)
 ![OperaLogo]({1}imgs/operaLogo.png)
 ![FirefoxLogo]({1}imgs/firefoxLogo.png)
 ![ChromeLogo]({1}imgs/chromeLogo.png)
@@ -23,8 +23,15 @@ apple144.png)
 
 Версия: {0}
 
-Нашли ошибку? Пожалуйста, [сообщите](http://www.gwars.ru/\
-sms-create.php?mailto=MyRequiem)
+![TelegramLogo](https://raw.githubusercontent.com/MyRequiem/\
+comfortablePlayingInGW/master/imgs/telegramLogo.png)
+<br>
+Канал: [comfortablePlayingInGW](https://t.me/comfortableplayingingw)
+<br>
+Чат: [comfortablePlayingInGW Chat](https://t.me/comfortableplayingingw_chat)
+<br>
+[Почта](https://www.gwars.ru/sms-create.php?mailto=MyRequiem&\
+subject=comfortablePlayingInGW) в игре
 
 * [Установить]({1}_comfortablePlayingInGW.user.js)
 * [Скачать zip-архив]({1}_comfortablePlayingInGW.user.js.zip)

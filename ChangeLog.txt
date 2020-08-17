@@ -1,3 +1,9 @@
+2020-08-17[1.160-170820]
+    - Обновлен скрипт
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BbCodeInMessages
+    - Все скрипты исправлены для https
+
+
 2020-07-30[1.159-300720]
 --------------------------------------
     - Исправлен скрипт:

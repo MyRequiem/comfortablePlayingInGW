@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndPtsAnalyser/syndPtsAnalyser.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndPtsAnalyser/syndPtsAnalyser.user.js
-// @include         http://www.gwars.ru/syndicate.php?id=*
+// @include         https://*gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.31-260519
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         2.32-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -50,11 +50,6 @@
          * @type {String}
          */
         this.loc = this.root.location.href;
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
         /**
          * @property imgPath
          * @type {String}
@@ -283,7 +278,7 @@
          * @param   {String}    url
          */
         this.getLastDate = function (url) {
-            var _url = url || 'http://www.gwars.ru/syndicate.log.php?id=' +
+            var _url = url || 'https://www.gwars.ru/syndicate.log.php?id=' +
                     this.syndId + '&ptslog=1&page_id=100500',
                 counter = general.$('analizePTSCounter'),
                 _this = this;
@@ -358,7 +353,7 @@
                     this.imgPath + 'rank.png" title="Выдача званий" ' +
                     'alt="Звания"></td><td class="wb1"><img id="sign" ' +
                     'style="cursor: pointer; margin: 2px;" ' +
-                    'src="http://images.gwars.ru/img/synds/' + this.syndId +
+                    'src="https://images.gwars.ru/img/synds/' + this.syndId +
                     '.gif" title="Выдача знаков" alt="Знаки"></td>' +
                     '<td class="wb1"><span id="all" style="color: #008000; ' +
                     'cursor: pointer;">Всего</span></td></tr>',
@@ -386,7 +381,7 @@
                 all = setPoints(this.pers[i].all, '\'', false);
 
                 str += '<tr><td class="wb2"><a target="_blank" ' +
-                    'href="http://www.gwars.ru/search.php?key=' + name +
+                    'href="https://www.gwars.ru/search.php?key=' + name +
                     '" style="text-decoration: none; font-weight: bold; ' +
                     'color: #004400;">' + name + '</a></td><td class="wb1">' +
                     gren + '</td><td class="wb1">' + chip + '</td>' +
@@ -543,7 +538,7 @@
          */
         this.parsePTSProtocols = function (ind) {
             general.$('analizePTSCounter').innerHTML = ind;
-            var url = 'http://www.gwars.ru/syndicate.log.php?id=' +
+            var url = 'https://www.gwars.ru/syndicate.log.php?id=' +
                     this.syndId + '&ptslog=1&page_id=' + ind,
                 _this = this;
 
@@ -678,13 +673,10 @@
             }
 
             var butShowPTSAnalizePanel = general.doc.createElement('a');
-            // noinspection JSUnresolvedVariable
-            if (general.root.tmqu) {
-                butShowPTSAnalizePanel.innerHTML = 'Анализ PTS';
-                butShowPTSAnalizePanel.setAttribute('style', 'cursor: pointer');
-                target.appendChild(general.doc.createTextNode(' | '));
-                target.appendChild(butShowPTSAnalizePanel);
-            }
+            butShowPTSAnalizePanel.innerHTML = 'Анализ PTS';
+            butShowPTSAnalizePanel.setAttribute('style', 'cursor: pointer');
+            target.appendChild(general.doc.createTextNode(' | '));
+            target.appendChild(butShowPTSAnalizePanel);
 
             var _this = this;
             butShowPTSAnalizePanel.addEventListener('click', function () {
@@ -762,37 +754,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new SyndPtsAnalyser().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new SyndPtsAnalyser().init();
 
 }());
 

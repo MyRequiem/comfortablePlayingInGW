@@ -5,13 +5,13 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanPers/scanPers.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanPers/scanPers.user.js
-// @include         http://www.gwars.ru/*
-// @exclude         http://www.gwars.ru/ferma.php*
-// @exclude         http://www.gwars.ru/b0/*
+// @include         https://*gwars.ru/*
+// @exclude         https://*gwars.ru/ferma.php*
+// @exclude         https://*gwars.ru/b0/*
 // @grant           none
 // @license         MIT
-// @version         3.09-190819
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         3.10-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -63,11 +63,6 @@
          */
         this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
             'comfortablePlayingInGW/master/imgs/';
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
         /**
          * @property DESIGN_VERSION
          * @type {RegExpExecArray}
@@ -269,13 +264,10 @@
                     vis = settings.style.visibility,
                     pos = _this.getPos(this);
 
-                // noinspection JSUnresolvedVariable
-                if (general.root.xq5b) {
-                    settings.style.top = (pos.y + 25).toString();
-                    settings.style.left = (pos.x - 80).toString();
-                    settings.style.visibility = vis === 'hidden' ?
-                            'visible' : 'hidden';
-                }
+                settings.style.top = (pos.y + 25).toString();
+                settings.style.left = (pos.x - 80).toString();
+                settings.style.visibility = vis === 'hidden' ?
+                        'visible' : 'hidden';
             };
         };
 
@@ -338,7 +330,7 @@
             if (persID) {
                 tdLink.innerHTML = '<a target="_blank" ' +
                     'style="color: #008000;" ' +
-                    'href="http://www.gwars.ru/info.php?id=' + persID + '">' +
+                    'href="https://www.gwars.ru/info.php?id=' + persID + '">' +
                     stData[7] + '</a>';
                 tdLink.style.display = '';
                 butReset.disabled = false;
@@ -355,7 +347,7 @@
          */
         this.scan = function () {
             var stData = general.getData(),
-                url = 'http://www.gwars.ru/syndicate.php?id=' + stData[1] +
+                url = 'https://www.gwars.ru/syndicate.php?id=' + stData[1] +
                     '&page=online',
                 _this = this;
 
@@ -444,7 +436,7 @@
             }
 
             var preloader = general.$('spPreloader'),
-                url = 'http://www.gwars.ru/syndicate.php?id=' + syndID +
+                url = 'https://www.gwars.ru/syndicate.php?id=' + syndID +
                     '&page=members',
                 _this = this;
 
@@ -646,37 +638,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new ScanPers().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new ScanPers().init();
 
 }());
 

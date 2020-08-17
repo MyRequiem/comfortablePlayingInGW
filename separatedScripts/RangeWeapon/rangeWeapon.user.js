@@ -5,18 +5,17 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/RangeWeapon/rangeWeapon.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/RangeWeapon/rangeWeapon.user.js
-// @include         http://www.gwars.ru/info.php*
+// @include         https://*gwars.ru/info.php*
 // @grant           none
 // @license         MIT
-// @version         2.09-260519
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         2.10-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
 /*jslint browser: true, maxlen: 80, vars: true, plusplus: true, nomen: true,
     regexp: true
 */
-
 
 /*eslint-env browser */
 /*eslint no-useless-escape: 'warn', linebreak-style: ['error', 'unix'],
@@ -46,11 +45,6 @@
          * @type {Object}
          */
         this.doc = this.root.document;
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
     };
 
     /**
@@ -64,15 +58,6 @@
         getRoot: function () {
             var rt = typeof unsafeWindow;
             return rt !== 'undefined' ? unsafeWindow : window;
-        },
-
-        /**
-         * @method $
-         * @param   {String}    id
-         * @return  {HTMLElement|null}
-         */
-        $: function (id) {
-            return this.doc.querySelector('#' + id);
         }
     };
 
@@ -206,10 +191,8 @@
          * @method init
          */
         this.init = function () {
-            // noinspection JSUnresolvedVariable
             if (this.equipment &&
-                    /(Левая|Правая) рука/.test(this.equipment.innerHTML) &&
-                        general.root.kth0) {
+                    /(Левая|Правая) рука/.test(this.equipment.innerHTML)) {
                 var css = 'td[valign="top"]>a[href*="/item.php?item_id="]',
                     txt = this.equipment.innerHTML;
 
@@ -225,37 +208,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new RangeWeapon().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new RangeWeapon().init();
 
 }());
 

@@ -5,13 +5,13 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CritShotsAndLinksBtlLog/critShotsAndLinksBtlLog.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CritShotsAndLinksBtlLog/critShotsAndLinksBtlLog.user.js
-// @include         http://www.gwars.ru/b0/*
-// @include         http://www.gwars.ru/warlog.php*
-// @include         http://www.gwars.ru/battlelog.php*
+// @include         https://*gwars.ru/b0/*
+// @include         https://*gwars.ru/warlog.php*
+// @include         https://*gwars.ru/battlelog.php*
 // @grant           none
 // @license         MIT
-// @version         2.51-240620
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         2.52-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -191,7 +191,7 @@
 
                     // noinspection JSUndefinedPropertyAssignment
                     b[i].innerHTML = '<a target="_blank" style="' + linkStyle +
-                        '"  href="http://www.gwars.ru/search.php?key=' +
+                        '"  href="https://www.gwars.ru/search.php?key=' +
                         nik + '">' + nik + '</a>';
                 }
 
@@ -306,8 +306,7 @@
          * @param   {Boolean}   mode
          */
         this.setDataDiv = function (target, mode) {
-            // noinspection JSUnresolvedVariable
-            if (showCritShots && general.root.zdsc) {
+            if (showCritShots) {
                 var d = general.doc.createElement('div');
                 d.innerHTML = '<span style="color: #008000; font-weight: ' +
                     'bold;">Криты:</span> <span id="count_all_crits" ' +
@@ -371,37 +370,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new CritShotsLinksOnBattleLog().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new CritShotsLinksOnBattleLog().init();
 
 }());
 

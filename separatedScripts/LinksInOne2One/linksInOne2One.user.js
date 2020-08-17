@@ -5,12 +5,12 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/LinksInOne2One/linksInOne2One.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/LinksInOne2One/linksInOne2One.user.js
-// @include         http://www.gwars.ru/warlist.php?war=armed*
-// @include         http://www.gwars.ru/warlist.php?war=duels*
+// @include         https://*gwars.ru/warlist.php?war=armed*
+// @include         https://*gwars.ru/warlist.php?war=duels*
 // @grant           none
 // @license         MIT
-// @version         2.07-260719
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         2.08-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -44,11 +44,6 @@
          * @type {Object}
          */
         this.doc = this.root.document;
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
     };
 
     /**
@@ -62,15 +57,6 @@
         getRoot: function () {
             var rt = typeof unsafeWindow;
             return rt !== 'undefined' ? unsafeWindow : window;
-        },
-
-        /**
-         * @method $
-         * @param   {String}    id
-         * @return  {HTMLElement|null}
-         */
-        $: function (id) {
-            return this.doc.querySelector('#' + id);
         }
     };
 
@@ -88,8 +74,7 @@
             var table = general.doc.querySelector('td[class="txt"]>' +
                     'table[border="0"][cellpadding="5"][cellspacing="1"]');
 
-            // noinspection JSUnresolvedVariable
-            if (table && general.root.ylrj) {
+            if (table) {
                 var trs = table.querySelectorAll('tr'),
                     last,
                     name,
@@ -100,7 +85,7 @@
                     name = /вызван (.*)( \[\d+\])/.exec(last.innerHTML);
                     if (name) {
                         last.innerHTML = 'вызван <a target="_blank" ' +
-                            'href="http://www.gwars.ru/search.php?key=' +
+                            'href="https://www.gwars.ru/search.php?key=' +
                             name[1] + '" style="text-decoration: none; ' +
                             'font-weight: bold;">' + name[1] + '</a>' + name[2];
                     }
@@ -109,37 +94,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new LinksInOne2One().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new LinksInOne2One().init();
 
 }());
 

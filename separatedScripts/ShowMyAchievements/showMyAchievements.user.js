@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ShowMyAchievements/showMyAchievements.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ShowMyAchievements/showMyAchievements.user.js
-// @include         http://www.gwars.ru/*
+// @include         https://*gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         2.13-220620
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458] Идея: Горыныч
+// @version         2.14-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458] Идея: Горыныч
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -270,7 +270,7 @@
                 'preloader.gif' + '" alt="img" />';
 
             var stData = general.getData(),
-                url = 'http://www.gwars.ru/info.ach.php?id=' + general.myID;
+                url = 'https://www.gwars.ru/info.ach.php?id=' + general.myID;
 
             if (!stData[0]) {
                 this.divResult.innerHTML = 'Не выбрано ни одной ачивки на ' +
@@ -352,9 +352,7 @@
          */
         this.init = function () {
             var topPanel = new GetTopPanel().init();
-
-            // noinspection JSUnresolvedVariable
-            if (topPanel && general.root.bxhu) {
+            if (topPanel) {
                 this.divResult = general.doc.createElement('div');
                 this.divResult.setAttribute('style', 'visibility: hidden; ' +
                         'position: absolute; padding: 3px; background-color: ' +
@@ -385,37 +383,7 @@
         };
     };
 
-    var mainObj = general;
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                new ShowMyAchievements().init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new ShowMyAchievements().init();
 
 }());
 

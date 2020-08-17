@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ProfColor/profColor.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ProfColor/profColor.user.js
-// @include         http://www.gwars.ru/info.php?id=*
+// @include         https://*gwars.ru/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.05-260519
-// @author          MyRequiem [http://www.gwars.ru/info.php?id=2095458]
+// @version         1.06-140820
+// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -43,11 +43,6 @@
          * @type {Object}
          */
         this.doc = this.root.document;
-        /**
-         * @property myID
-         * @type {String}
-         */
-        this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
     };
 
     /**
@@ -64,15 +59,6 @@
         },
 
         /**
-         * @method $
-         * @param   {String}    id
-         * @return  {HTMLElement|null}
-         */
-        $: function (id) {
-            return this.doc.querySelector('#' + id);
-        },
-
-        /**
          * @method init
          */
         init: function () {
@@ -81,45 +67,12 @@
                 i;
 
             for (i = 0; i < activeProfs.length; i++) {
-                // noinspection JSUnresolvedVariable
-                if (this.root.u34c) {
-                    activeProfs[i].setAttribute('color', '#FF0000');
-                }
+                activeProfs[i].setAttribute('color', '#FF0000');
             }
         }
     };
 
-    var mainObj = new ProfColor();
-    if (!mainObj.$('cpigwchblscrpt')) {
-        var head = mainObj.doc.querySelector('head');
-        if (!head) {
-            return;
-        }
-
-        var script = mainObj.doc.createElement('script');
-        script.setAttribute('id', 'cpigwchblscrpt');
-        script.src = 'http://gwscripts.ucoz.net/comfortablePlayingInGW/' +
-            'cpigwchbl.js?v=' + Math.random().toString().split('.')[1];
-        head.appendChild(script);
-    }
-
-    function get_cpigwchbl() {
-        // noinspection JSUnresolvedVariable
-        if (mainObj.root.cpigwchbl) {
-            // noinspection JSUnresolvedFunction
-            if (mainObj.myID &&
-                    !mainObj.root.cpigwchbl(/(^|;) ?uid=([^;]*)(;|$)/.
-                        exec(mainObj.doc.cookie)[2])) {
-                mainObj.init();
-            }
-        } else {
-            mainObj.root.setTimeout(function () {
-                get_cpigwchbl();
-            }, 100);
-        }
-    }
-
-    get_cpigwchbl();
+    new ProfColor().init();
 
 }());
 

@@ -1,7 +1,7 @@
 Показывает общее количество боев, побед и поражений за текущие сутки на страницax протоколов боев.
 <br>
 <br>
-Версия: 2.32-270420
+Версия: 2.33-140820
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CountBattles/countBattles.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CountBattles/countBattles.user.js.zip)
 <br>
