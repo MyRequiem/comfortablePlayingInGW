@@ -13731,7 +13731,7 @@
                             target[0];
                 } else {
                     target = general.doc.
-                        querySelector('span[style="opacity:0.8;"]');
+                        querySelector('td>span[style="opacity:0.8;"]');
                 }
 
                 if (target) {
