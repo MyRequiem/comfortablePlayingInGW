@@ -1,6 +1,16 @@
-2020-08-17[1.160-170820]
-    - Обновлен скрипт
+2020-08-29[1.161-290820]
+    - Исправлен скрипт:
         https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BbCodeInMessages
+
+    - Обновлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/WorkPostGrenadesBroken
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndOnlineOnMainPage
+
+
+2020-08-17[1.160-170820]
+    - Обновлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BbCodeInMessages
+
     - Все скрипты исправлены для https
 
 

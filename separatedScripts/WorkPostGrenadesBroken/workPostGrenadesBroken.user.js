@@ -12,7 +12,7 @@
 // @include         https://*gwars.ru/wargroup.php*
 // @grant           none
 // @license         MIT
-// @version         2.47-140820
+// @version         2.48-290820
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -288,8 +288,9 @@
                 str = '';
 
             if (sms[0] && showSms) {    // письмо
-                str += host + 'sms.php"><img src="https://www.gwars.ru/i/' +
-                    'sms.gif" title="' + sms[0].getAttribute('title') +
+                str += host + 'sms.php">' +
+                    '<img src="https://images.gwars.ru/img/letter-pc.png" ' +
+                    'title="' + sms[0].getAttribute('title') +
                     '" alt="Вам письмо"></a>]';
             }
 
@@ -341,7 +342,7 @@
 
                 // проверка на новое письмо и/или посылку
                 var testSms = [
-                    spanContent.querySelector('a>img[src$="/i/sms.gif"]'),
+                    spanContent.querySelector('img[src$="/img/letter-pc.png"]'),
                     spanContent.querySelector('a>img[src$="/i/woodbox.gif"]')
                 ];
 

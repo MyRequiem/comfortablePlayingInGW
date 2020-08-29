@@ -12,7 +12,7 @@
 // @include         https://*gwars.ru/hmessages.php*
 // @grant           none
 // @license         MIT
-// @version         1.01-130820
+// @version         1.02-260820
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -133,7 +133,7 @@
                             target[0];
                 } else {          // sms-версия почты
                     target = general.doc.
-                        querySelector('span[style="opacity:0.8;"]');
+                        querySelector('td>span[style="opacity:0.8;"]');
                 }
 
                 if (target) {
