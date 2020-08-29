@@ -9,7 +9,7 @@
 // @include         https://*gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.30-140820
+// @version         2.31-290820
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -154,8 +154,8 @@
                         nobrs[i].innerHTML += '<a target="_blank" ' +
                             'href="/sms-create.php?mailto=' +
                             pLink.firstElementChild.innerHTML + '">' +
-                            '<img src="https://images.gwars.ru/i/sms.gif" ' +
-                            'alt="img" /></a>';
+                            '<img src="https://images.gwars.ru/img/' +
+                            'letter-pc.png" alt="img" /></a>';
                     }
                 }
 
@@ -216,10 +216,8 @@
 
                         nobr.appendChild(pers);
                         nobr.innerHTML += ' <a target="_blank" ' +
-                            'href="https://www.gwars.ru/sms-create.php?' +
-                            'mailto=' + pers.firstElementChild.innerHTML +
-                            '"><img src="https://images.gwars.ru/i/' +
-                            'sms.gif" alt="img" /></a>';
+                            '"><img src="https://images.gwars.ru/img/' +
+                            'letter-pc.png" alt="img" /></a>';
 
                         target.appendChild(nobr);
                         target.innerHTML += i < trs.length - 1 ? ',<wbr>' : '';

@@ -4736,8 +4736,9 @@
                 str = '';
 
             if (sms[0] && stData[3]) {    // письмо
-                str += host + 'sms.php"><img src="https://www.gwars.ru/i/' +
-                    'sms.gif" title="' + sms[0].getAttribute('title') +
+                str += host + 'sms.php">' +
+                    '<img src="https://images.gwars.ru/img/letter-pc.png" ' +
+                    'title="' + sms[0].getAttribute('title') +
                     '" alt="Вам письмо"></a>]';
             }
 
@@ -4790,7 +4791,7 @@
 
                 // проверка на новое письмо и/или посылку
                 var testSms = [
-                    spanContent.querySelector('a>img[src$="/i/sms.gif"]'),
+                    spanContent.querySelector('img[src$="/img/letter-pc.png"]'),
                     spanContent.querySelector('a>img[src$="/i/woodbox.gif"]')
                 ];
 
@@ -11595,10 +11596,11 @@
                     pLink = nobrs[i].querySelector('a[href*="/info.php?id="]');
                     if (pLink) {
                         nobrs[i].innerHTML += '<a target="_blank" ' +
+                            'style="margin-left: 3px;" ' +
                             'href="/sms-create.php?mailto=' +
-                            pLink.firstElementChild.innerHTML + '"><img ' +
-                            'src="https://images.gwars.ru/i/sms.gif" ' +
-                            'alt="img" /></a>';
+                            pLink.firstElementChild.innerHTML + '">' +
+                            '<img src="https://images.gwars.ru/img/' +
+                            'letter-pc.png" alt="img" /></a>';
                     }
                 }
 
@@ -11661,8 +11663,8 @@
                         nobr.innerHTML += ' <a target="_blank" ' +
                             'href="https://www.gwars.ru/sms-create.php?' +
                             'mailto=' + pers.firstElementChild.innerHTML +
-                            '"><img src="https://images.gwars.ru/i/sms.gif" ' +
-                            'alt="img" /></a>';
+                            '"><img src="https://images.gwars.ru/img/' +
+                            'letter-pc.png" alt="img" /></a>';
 
                         target.appendChild(nobr);
                         target.innerHTML += i < trs.length - 1 ? ',<wbr>' : '';
