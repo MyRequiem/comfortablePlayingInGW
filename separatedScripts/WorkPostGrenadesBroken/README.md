@@ -1,7 +1,7 @@
 Окончание работы, осталось времени работать, пришла почта/посылка, нет гранаты, имеются сломанные вещи. На все события оповещения звуковые и визуальные.
 <br>
 <br>
-Версия: 2.47-140820
+Версия: 2.48-290820
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.user.js.zip)
 <br>

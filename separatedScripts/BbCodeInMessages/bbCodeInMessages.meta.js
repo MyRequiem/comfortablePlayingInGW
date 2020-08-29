@@ -12,6 +12,6 @@
 // @include         https://*gwars.ru/hmessages.php*
 // @grant           none
 // @license         MIT
-// @version         1.01-130820
+// @version         1.02-260820
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==

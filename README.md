@@ -6,7 +6,7 @@
 ![ChromeLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/chromeLogo.png)
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
 
-Версия: 1.159-300720
+Версия: 1.161-290820
 
 ![TelegramLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/telegramLogo.png)
 <br>
@@ -66,7 +66,7 @@
 
 **BbCodeInMessages**
 <br>
-Версия: 1.01-130820
+Версия: 1.02-260820
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BbCodeInMessages/bbCodeInMessages.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BbCodeInMessages/bbCodeInMessages.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BbCodeInMessages)
 <br>
@@ -409,7 +409,7 @@
 
 **SyndOnlineOnMainPage**
 <br>
-Версия: 2.30-140820
+Версия: 2.31-290820
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndOnlineOnMainPage/syndOnlineOnMainPage.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndOnlineOnMainPage/syndOnlineOnMainPage.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndOnlineOnMainPage)
 <br>
@@ -437,7 +437,7 @@
 
 **WorkPostGrenadesBroken**
 <br>
-Версия: 2.47-140820
+Версия: 2.48-290820
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/WorkPostGrenadesBroken)
 <br>
