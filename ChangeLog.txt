@@ -1,3 +1,12 @@
+2020-08-30[1.162-300820]
+    - Исправлено отображение страницы настроек скрипта
+    - Обновлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+
+        Добавлена возможность вставки ников наблюдателей за боем в стоку чата.
+        Спасибо H3aD
+
+
 2020-08-29[1.161-290820]
     - Исправлен скрипт:
         https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BbCodeInMessages
