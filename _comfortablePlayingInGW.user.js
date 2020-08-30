@@ -3095,6 +3095,20 @@
         }; // 2}}}
 
         /**
+         * @method  createEnvelopSpan
+         * @return  {Element}
+         */
+        this.createEnvelopSpan = function () {
+            var span = general.doc.createElement('span');
+            span.setAttribute('name', 'sendmessenv');
+            span.innerHTML = ' <img src="' + this.imgPath +
+                'envelope.gif" style="width: 15px; cursor: pointer; ' +
+                'margin-right: 5px;" alt="img" />';
+
+            return span;
+        };
+
+        /**
          * @method setEnvelope {{{2
          */
         this.setEnvelope = function () {
@@ -3113,16 +3127,38 @@
                         continue;
                     }
 
-                    span = general.doc.createElement('span');
-                    span.setAttribute('name', 'sendmessenv');
-                    span.innerHTML = ' <img src="' + this.imgPath +
-                        'envelope.gif" style="width: 15px; cursor: pointer; ' +
-                        'margin-right: 5px;" alt="img" />';
+                    span = this.createEnvelopSpan();
                     before = !i ? mass[i][j].nextElementSibling :
                             mass[i][j].previousElementSibling;
                     mass[i][j].parentNode.insertBefore(span, before);
                     span.querySelector('img').addEventListener('click',
                         this.setNameInChat(mass[i][j].textContent), false);
+                }
+            }
+
+            // ставим конвертики для наблюдающих за боем
+            if (general.viewMode) {
+                var observersPanel = general.doc.
+                        querySelector('td[align="left"][class="greengraybg"]');
+
+                if (!observersPanel) {
+                    return;
+                }
+
+                var observers = observersPanel.querySelectorAll('nobr'),
+                    observer;
+
+                for (i = 0; i < observers.length; i++) {
+                    observer = observers[i].
+                        querySelector('a[href*="/info.php?id="]');
+
+                    if (observer) {
+                        span = this.createEnvelopSpan();
+                        observers[i].appendChild(span);
+                        span.querySelector('img').addEventListener('click',
+                            this.setNameInChat(observer.textContent),
+                                false);
+                    }
                 }
             }
         }; // 2}}}
