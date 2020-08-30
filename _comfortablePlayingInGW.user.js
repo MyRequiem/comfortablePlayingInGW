@@ -10,7 +10,7 @@
 // @include         http*://*ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.161-290820
+// @version         1.162-300820
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.161-290820';
+        this.version = '1.162-300820';
         /**
          * @property stString {{{2
          * @type {String}
@@ -3095,6 +3095,20 @@
         }; // 2}}}
 
         /**
+         * @method  createEnvelopSpan
+         * @return  {Element}
+         */
+        this.createEnvelopSpan = function () {
+            var span = general.doc.createElement('span');
+            span.setAttribute('name', 'sendmessenv');
+            span.innerHTML = ' <img src="' + this.imgPath +
+                'envelope.gif" style="width: 15px; cursor: pointer; ' +
+                'margin-right: 5px;" alt="img" />';
+
+            return span;
+        };
+
+        /**
          * @method setEnvelope {{{2
          */
         this.setEnvelope = function () {
@@ -3113,16 +3127,38 @@
                         continue;
                     }
 
-                    span = general.doc.createElement('span');
-                    span.setAttribute('name', 'sendmessenv');
-                    span.innerHTML = ' <img src="' + this.imgPath +
-                        'envelope.gif" style="width: 15px; cursor: pointer; ' +
-                        'margin-right: 5px;" alt="img" />';
+                    span = this.createEnvelopSpan();
                     before = !i ? mass[i][j].nextElementSibling :
                             mass[i][j].previousElementSibling;
                     mass[i][j].parentNode.insertBefore(span, before);
                     span.querySelector('img').addEventListener('click',
                         this.setNameInChat(mass[i][j].textContent), false);
+                }
+            }
+
+            // ставим конвертики для наблюдающих за боем
+            if (general.viewMode) {
+                var observersPanel = general.doc.
+                        querySelector('td[align="left"][class="greengraybg"]');
+
+                if (!observersPanel) {
+                    return;
+                }
+
+                var observers = observersPanel.querySelectorAll('nobr'),
+                    observer;
+
+                for (i = 0; i < observers.length; i++) {
+                    observer = observers[i].
+                        querySelector('a[href*="/info.php?id="]');
+
+                    if (observer) {
+                        span = this.createEnvelopSpan();
+                        observers[i].appendChild(span);
+                        span.querySelector('img').addEventListener('click',
+                            this.setNameInChat(observer.textContent),
+                                false);
+                    }
                 }
             }
         }; // 2}}}
@@ -13809,8 +13845,9 @@
     general = new General();
 
     // не в игре
-    if (general.doc.querySelector('a[href$="/login.php"]') ||
-            general.doc.querySelector('a[href$="/regform.php"]')) {
+    if ((general.doc.querySelector('a[href$="/login.php"]') ||
+            general.doc.querySelector('a[href$="/regform.php"]')) &&
+                !/\/news\.php/.test(general.loc)) {
         return;
     }
 
