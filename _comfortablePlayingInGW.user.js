@@ -13809,8 +13809,9 @@
     general = new General();
 
     // не в игре
-    if (general.doc.querySelector('a[href$="/login.php"]') ||
-            general.doc.querySelector('a[href$="/regform.php"]')) {
+    if ((general.doc.querySelector('a[href$="/login.php"]') ||
+            general.doc.querySelector('a[href$="/regform.php"]')) &&
+                !/\/news\.php/.test(general.loc)) {
         return;
     }
 
