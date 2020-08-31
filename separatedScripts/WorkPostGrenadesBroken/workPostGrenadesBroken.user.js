@@ -12,7 +12,7 @@
 // @include         https://*gwars.ru/wargroup.php*
 // @grant           none
 // @license         MIT
-// @version         2.48-290820
+// @version         2.49-310820
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -291,7 +291,8 @@
                 str += host + 'sms.php">' +
                     '<img src="https://images.gwars.ru/img/letter-pc.png" ' +
                     'title="' + sms[0].getAttribute('title') +
-                    '" alt="Вам письмо"></a>]';
+                    '" alt="Вам письмо"></a> <span style="color: #005F00">' +
+                    sms[2] + '</span>]';
             }
 
             if (sms[1] && showSms) {    // посылка
@@ -341,10 +342,25 @@
                 }
 
                 // проверка на новое письмо и/или посылку
+                // [письмо, посылка, количество новых писем]
                 var testSms = [
                     spanContent.querySelector('img[src$="/img/letter-pc.png"]'),
-                    spanContent.querySelector('a>img[src$="/i/woodbox.gif"]')
+                    spanContent.querySelector('a>img[src$="/i/woodbox.gif"]'),
+                    ''
                 ];
+
+                // если есть письмо, смотрим количество новых/не прочитанных
+                if (testSms[0]) {
+                    var countSmsLink = spanContent.
+                            querySelector('a[href$="/sms.php"]' +
+                                '[class="graybutton"]');
+
+                    if (countSmsLink) {
+                        var countSms = /В почте (\d+)/.
+                                exec(countSmsLink.innerHTML);
+                        testSms[2] = countSms ? countSms[1] : '';
+                    }
+                }
 
                 var stData = general.getData(),
                     playSound = new PlaySound();
