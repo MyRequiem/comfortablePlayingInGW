@@ -10,7 +10,7 @@
 // @include         http*://*ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.162-300820
+// @version         1.163-220920
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.162-300820';
+        this.version = '1.163-220920';
         /**
          * @property stString {{{2
          * @type {String}
@@ -4775,7 +4775,8 @@
                 str += host + 'sms.php">' +
                     '<img src="https://images.gwars.ru/img/letter-pc.png" ' +
                     'title="' + sms[0].getAttribute('title') +
-                    '" alt="Вам письмо"></a>]';
+                    '" alt="Вам письмо"></a> <span style="color: #005F00">' +
+                    sms[2] + '</span>]';
             }
 
             if (sms[1] && stData[3]) {    // посылка
@@ -4826,10 +4827,25 @@
                 }
 
                 // проверка на новое письмо и/или посылку
+                // [письмо, посылка, количество новых писем]
                 var testSms = [
                     spanContent.querySelector('img[src$="/img/letter-pc.png"]'),
-                    spanContent.querySelector('a>img[src$="/i/woodbox.gif"]')
+                    spanContent.querySelector('a>img[src$="/i/woodbox.gif"]'),
+                    ''
                 ];
+
+                // если есть письмо, смотрим количество новых/не прочитанных
+                if (testSms[0]) {
+                    var countSmsLink = spanContent.
+                            querySelector('a[href$="/sms.php"]' +
+                                '[class="graybutton"]');
+
+                    if (countSmsLink) {
+                        var countSms = /В почте (\d+)/.
+                                exec(countSmsLink.innerHTML);
+                        testSms[2] = countSms ? countSms[1] : '';
+                    }
+                }
 
                 var stData = general.getData(6),
                     playSound = new PlaySound();
@@ -12876,11 +12892,7 @@
                             'криты считаются с левой, при этом в правой ' +
                             'должен быть тип оружия, на которое в квесте ' +
                             'запрошены криты.)</span>' +
-                        '<li>Сделать 30 критических попаданий из пулемета<br>' +
-                            '<span style="color: #4E4E4E;">(если после боя ' +
-                            'ломается оружие и персонаж оказывается с ' +
-                            'пустыми руками, то все попадания, сделанные в ' +
-                            'этом бою, не засчитаются)</span>' +
+                        '<li>Сделать 30 критических попаданий из пулемета' +
                         '<li>На Outland нанести Z-Lands суммарный урон ' +
                             (bLevel * 20).toString() + ' HP' +
                         '<li>Убить гранатой 2 Z-Lands<br>' +
