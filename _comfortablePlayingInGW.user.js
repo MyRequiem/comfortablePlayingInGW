@@ -10,7 +10,7 @@
 // @include         http*://*ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.163-220920
+// @version         1.164-300920
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.163-220920';
+        this.version = '1.164-300920';
         /**
          * @property stString {{{2
          * @type {String}
@@ -13193,8 +13193,8 @@
             var _this = this;
             new AjaxQuery().init(_this.url, 'GET', null, true, function (xhr) {
                 var spanContent = general.doc.createElement('span'),
-                    cssSelector = 'table[cellspacing="1"][cellpadding="5"]' +
-                        '[width="100%"]';
+                    cssSelector = 'table+table+table[cellspacing="1"]' +
+                        '[cellpadding="5"][width="100%"]';
 
                 spanContent.innerHTML = xhr.responseText;
                 var table = spanContent.querySelector(cssSelector);
@@ -13202,14 +13202,17 @@
                 if (table) {
                     var data = JSON.parse(general.getData(22)[0]),
                         trs = table.querySelectorAll('tr'),
+                        nobr,
                         i;
 
                     data.time = [];
-                    if (trs.length > 1 && !/<i>\(отсутствуют\)<\/i>/.
-                            test(trs[1].innerHTML)) {
+                    if (trs.length > 1 &&
+                            !/<i>\(отсутствуют\)<\/i>/.test(trs[1].innerHTML)) {
                         for (i = 1; i < trs.length; i++) {
-                            data.time.push(trs[i].
-                                querySelector('nobr').innerHTML);
+                            nobr = trs[i].querySelector('nobr');
+                            if (nobr && /^\d+:\d+$/.test(nobr.innerHTML)) {
+                                data.time.push(nobr.innerHTML);
+                            }
                         }
                     }
 

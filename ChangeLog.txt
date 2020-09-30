@@ -1,3 +1,8 @@
+2020-09-30[1.164-300920]
+    - Исправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/PortTimer
+
+
 2020-09-22[1.163-220920]
     - Обновлены скрипты:
         https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/WorkPostGrenadesBroken

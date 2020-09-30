@@ -8,7 +8,7 @@
 // @include         https://*gwars.ru/*
 // @grant           none
 // @license         MIT
-// @version         1.19-140820
+// @version         1.20-300920
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458], идея Enemy333
 // ==/UserScript==
 
@@ -208,21 +208,24 @@
                 var spanContent = general.doc.createElement('span');
 
                 spanContent.innerHTML = xhr.responseText;
-                var cssSelector = 'table[cellspacing="1"][cellpadding="5"]' +
-                        '[width="100%"]',
+                var cssSelector = 'table+table+table[cellspacing="1"]' +
+                        '[cellpadding="5"][width="100%"]',
                     table = spanContent.querySelector(cssSelector);
 
                 if (table) {
                     var data = JSON.parse(general.getData()),
                         trs = table.querySelectorAll('tr'),
+                        nobr,
                         i;
 
                     data.time = [];
-                    if (trs.length > 1 && !/<i>\(отсутствуют\)<\/i>/.
-                            test(trs[1].innerHTML)) {
+                    if (trs.length > 1 &&
+                            !/<i>\(отсутствуют\)<\/i>/.test(trs[1].innerHTML)) {
                         for (i = 1; i < trs.length; i++) {
-                            data.time.push(trs[i].
-                                querySelector('nobr').innerHTML);
+                            nobr = trs[i].querySelector('nobr');
+                            if (nobr && /^\d+:\d+$/.test(nobr.innerHTML)) {
+                                data.time.push(nobr.innerHTML);
+                            }
                         }
                     }
 
