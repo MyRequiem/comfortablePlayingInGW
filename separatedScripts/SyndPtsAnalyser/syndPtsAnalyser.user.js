@@ -8,7 +8,7 @@
 // @include         https://*gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.32-140820
+// @version         2.33-291120
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -577,6 +577,13 @@
                     nobr1 = lines[i].parentNode;
                     nobr2 = nobr1.nextElementSibling;
                     str = nobr2.innerHTML;
+
+                    rez = /(.*) получил звание .* \((\d+) PTS/.exec(str);
+                    if (rez) {
+                        pers = _this.getPers(rez[1]);
+                        _this.addData(pers, 'rank', +rez[2]);
+                        continue;
+                    }
 
                     rez = /(.*) купил.* за (\d+) PTS/.exec(str);
                     if (rez) {

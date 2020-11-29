@@ -10,7 +10,7 @@
 // @include         http*://*ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.164-300920
+// @version         1.165-291120
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.164-300920';
+        this.version = '1.165-291120';
         /**
          * @property stString {{{2
          * @type {String}
@@ -4743,7 +4743,7 @@
             'emp_irs', 'emp_a', 'rgd5', 'grenade_f1', 'rgd2', 'lightst',
             'lights', 'rkg3', 'mdn', 'rgd2m', 'rgo', 'm84', 'rgn', 'emp_ir',
             'fg3l', 'l83a1', 'emp_s', 'm67', 'm3', 'hg78', 'hg84', 'fg6',
-            'anm14', 'm34ph', 'fg7', 'fg8bd',
+            'anm14', 'm34ph', 'fg7', 'fg8bd', 'r10',
             //синдовые
             'lightss', 'lightsm', 'rgd2s', 'grenade_dg1', 'fg5', 'molotov',
             'hellsbreath', 'napalm', 'ghtb', 'me85',
@@ -10670,6 +10670,13 @@
                     nobr1 = lines[i].parentNode;
                     nobr2 = nobr1.nextElementSibling;
                     str = nobr2.innerHTML;
+
+                    rez = /(.*) получил звание .* \((\d+) PTS/.exec(str);
+                    if (rez) {
+                        pers = _this.getPers(rez[1]);
+                        _this.addData(pers, 'rank', +rez[2]);
+                        continue;
+                    }
 
                     rez = /(.*) купил.* за (\d+) PTS/.exec(str);
                     if (rez) {
