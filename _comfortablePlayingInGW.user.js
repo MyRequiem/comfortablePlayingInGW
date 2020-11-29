@@ -10671,6 +10671,13 @@
                     nobr2 = nobr1.nextElementSibling;
                     str = nobr2.innerHTML;
 
+                    rez = /(.*) получил звание .* \((\d+) PTS/.exec(str);
+                    if (rez) {
+                        pers = _this.getPers(rez[1]);
+                        _this.addData(pers, 'rank', +rez[2]);
+                        continue;
+                    }
+
                     rez = /(.*) купил.* за (\d+) PTS/.exec(str);
                     if (rez) {
                         pers = _this.getPers(rez[1]);
