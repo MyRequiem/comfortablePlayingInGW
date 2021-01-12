@@ -10,7 +10,7 @@
 // @include         http*://*ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.165-291120
+// @version         1.166-120121
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.165-291120';
+        this.version = '1.166-120121';
         /**
          * @property stString {{{2
          * @type {String}
@@ -4026,11 +4026,14 @@
                             '[style*="#008800"]');
 
             if (greenPersLinks.length) {
-                var persLinkInBattle, i;
+                var persLinkInBattle, greenPersId, i;
                 for (i = 0; i < greenPersLinks.length; i++) {
+                    greenPersId = /\/info\.php\?id=(\d+)/.
+                        exec(greenPersLinks[i].href)[1];
                     persLinkInBattle = general.doc.
-                        querySelector('a[href="' + greenPersLinks[i].href +
-                                '"]');
+                        querySelector('a[href$="/info.php?id=' + greenPersId +
+                            '"]');
+
                     if (persLinkInBattle) {
                         persLinkInBattle.style.color = '#008800';
                     }
