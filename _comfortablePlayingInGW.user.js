@@ -4026,11 +4026,14 @@
                             '[style*="#008800"]');
 
             if (greenPersLinks.length) {
-                var persLinkInBattle, i;
+                var persLinkInBattle, greenPersId, i;
                 for (i = 0; i < greenPersLinks.length; i++) {
+                    greenPersId = /\/info\.php\?id=(\d+)/.
+                        exec(greenPersLinks[i].href)[1];
                     persLinkInBattle = general.doc.
-                        querySelector('a[href="' + greenPersLinks[i].href +
-                                '"]');
+                        querySelector('a[href$="/info.php?id=' + greenPersId +
+                            '"]');
+
                     if (persLinkInBattle) {
                         persLinkInBattle.style.color = '#008800';
                     }
