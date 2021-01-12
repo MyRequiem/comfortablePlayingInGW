@@ -1,3 +1,9 @@
+2021-01-12[1.166-120121]
+    - Исправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+        Спасибо POSEIDON 666
+
+
 2020-11-29[1.165-291120]
     - Исправлен скрипт:
         https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndPtsAnalyser
