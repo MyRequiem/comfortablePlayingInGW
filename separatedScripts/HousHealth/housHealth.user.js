@@ -9,7 +9,7 @@
 // @include         https://*gwars.ru/b0/*
 // @grant           none
 // @license         MIT
-// @version         2.09-140820
+// @version         2.10-040221
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -174,18 +174,18 @@
                             'info.realty.php?id=' + general.myID, sector);
                     }, 1000);
                 } else {
-                    cssSelector = 'table[class="wb"][align="center"]';
+                    cssSelector = 'table.withborders';
                     var table = spanContent.querySelector(cssSelector);
 
                     if (table) {
                         var trs = table.querySelectorAll('tr'),
-                            node,
+                            td,
                             i;
 
                         for (i = 1; i < trs.length; i++) {
-                            node = trs[i].firstElementChild;
-                            if (/Частный дом/.test(node.innerHTML) &&
-                                    node.nextElementSibling.innerHTML.
+                            td = trs[i].firstElementChild;
+                            if (/Частный дом/.test(td.innerHTML) &&
+                                    td.nextElementSibling.innerHTML.
                                         indexOf(sector) !== -1) {
                                 return;
                             }
