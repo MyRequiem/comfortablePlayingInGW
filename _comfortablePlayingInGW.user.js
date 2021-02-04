@@ -11659,8 +11659,8 @@
                     if (pLink) {
                         nobrs[i].innerHTML += '<a target="_blank" ' +
                             'style="margin-left: 3px;" ' +
-                            'href="/sms-create.php?mailto=' +
-                            pLink.firstElementChild.innerHTML + '">' +
+                            'href="/sms-chat.php?id=' +
+                            /\d+$/.exec(pLink.href)[0] + '">' +
                             '<img src="https://images.gwars.ru/img/' +
                             'letter-pc.png" alt="img" /></a>';
                     }

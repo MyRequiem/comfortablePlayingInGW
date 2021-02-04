@@ -9,7 +9,7 @@
 // @include         https://*gwars.ru/me/*
 // @grant           none
 // @license         MIT
-// @version         2.31-290820
+// @version         2.32-040221
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -152,8 +152,9 @@
                     pLink = nobrs[i].querySelector('a[href*="/info.php?id="]');
                     if (pLink) {
                         nobrs[i].innerHTML += '<a target="_blank" ' +
-                            'href="/sms-create.php?mailto=' +
-                            pLink.firstElementChild.innerHTML + '">' +
+                            'style="margin-left: 3px;" ' +
+                            'href="/sms-chat.php?id=' +
+                            /\d+$/.exec(pLink.href)[0] + '">' +
                             '<img src="https://images.gwars.ru/img/' +
                             'letter-pc.png" alt="img" /></a>';
                     }
