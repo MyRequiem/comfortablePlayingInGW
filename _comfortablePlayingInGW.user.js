@@ -10,7 +10,7 @@
 // @include         http*://*ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.166-120121
+// @version         1.167-040221
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.166-120121';
+        this.version = '1.167-040221';
         /**
          * @property stString {{{2
          * @type {String}
@@ -9046,18 +9046,18 @@
                             'info.realty.php?id=' + general.myID, sector);
                     }, 1000);
                 } else {
-                    cssSelector = 'table[class="wb"][align="center"]';
+                    cssSelector = 'table.withborders';
                     var table = spanContent.querySelector(cssSelector);
 
                     if (table) {
                         var trs = table.querySelectorAll('tr'),
-                            node,
+                            td,
                             i;
 
                         for (i = 1; i < trs.length; i++) {
-                            node = trs[i].firstElementChild;
-                            if (/Частный дом/.test(node.innerHTML) &&
-                                    node.nextElementSibling.innerHTML.
+                            td = trs[i].firstElementChild;
+                            if (/Частный дом/.test(td.innerHTML) &&
+                                    td.nextElementSibling.innerHTML.
                                         indexOf(sector) !== -1) {
                                 return;
                             }
@@ -11659,8 +11659,8 @@
                     if (pLink) {
                         nobrs[i].innerHTML += '<a target="_blank" ' +
                             'style="margin-left: 3px;" ' +
-                            'href="/sms-create.php?mailto=' +
-                            pLink.firstElementChild.innerHTML + '">' +
+                            'href="/sms-chat.php?id=' +
+                            /\d+$/.exec(pLink.href)[0] + '">' +
                             '<img src="https://images.gwars.ru/img/' +
                             'letter-pc.png" alt="img" /></a>';
                     }
