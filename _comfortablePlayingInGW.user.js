@@ -10,7 +10,7 @@
 // @include         http*://*ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.167-040221
+// @version         1.168-060221
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.167-040221';
+        this.version = '1.168-060221';
         /**
          * @property stString {{{2
          * @type {String}
@@ -622,7 +622,7 @@
                 m = +date[2],
                 y = +date[3];
 
-            if (!d || d > 31 || !m || m > 12 || !y || y < 9 || y > 20) {
+            if (!d || d > 31 || !m || m > 12 || !y) {
                 return 0;
             }
 

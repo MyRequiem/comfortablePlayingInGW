@@ -8,7 +8,7 @@
 // @include         https://*gwars.ru/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.25-140820
+// @version         2.26-060221
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -163,7 +163,7 @@
                 m = +date[2],
                 y = +date[3];
 
-            if (!d || d > 31 || !m || m > 12 || !y || y < 9 || y > 20) {
+            if (!d || d > 31 || !m || m > 12 || !y) {
                 return 0;
             }
 
