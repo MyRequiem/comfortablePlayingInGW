@@ -1,6 +1,13 @@
+2021-02-06[1.168-060221]
+    - Исправлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndAnalyser
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndPtsAnalyser
+
+
 2021-02-04[1.167-040221]
     - Исправлен скрипт:
         https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/HousHealth
+
     - Обновлен скрипт:
         https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndOnlineOnMainPage
 
