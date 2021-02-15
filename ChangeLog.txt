@@ -1,3 +1,7 @@
+2021-02-15[1.169-150221]
+    - Исправлен скрипт:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GosEnergoAtomFilter
+
 2021-02-06[1.168-060221]
     - Исправлены скрипты:
         https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/SyndAnalyser

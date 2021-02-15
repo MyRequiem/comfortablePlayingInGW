@@ -8,7 +8,7 @@
 // @include         https://*gwars.ru/info.realty.php?id=2
 // @grant           none
 // @license         MIT
-// @version         4.07-140820
+// @version         4.08-150221
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -190,11 +190,11 @@
                 break;
 
             case '3':
-                val2 = 'Урановый рудник</a>&nbsp;[2]';
+                val2 = 'Урановый рудник [2]';
                 break;
 
             case '4':
-                val2 = 'Урановый рудник</a>&nbsp;[3]';
+                val2 = 'Урановый рудник [3]';
                 break;
 
             default:
@@ -208,7 +208,7 @@
                     this.trs[i].style.display = 'none';
                 }
 
-                if (val2 && this.trs[i].innerHTML.indexOf(val2) === -1) {
+                if (val2 && this.trs[i].innerText.indexOf(val2) === -1) {
                     this.trs[i].style.display = 'none';
                 }
 
@@ -247,10 +247,9 @@
          * @return  {Array}
          */
         this.getTrsTable = function () {
-            this.trs = general.doc.querySelector('table[border="0"]' +
-                    '[cellpadding="3"][cellspacing="0"][class="wb"]' +
-                    '[bgcolor="#ffffff"][align="center"]').
-                        querySelectorAll('tr');
+            this.trs = general.doc.querySelector('table.withborders' +
+                    '[cellpadding="5"][cellspacing="1"]').
+                            querySelectorAll('tr');
         };
 
         /**
