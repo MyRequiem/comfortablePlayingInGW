@@ -8,7 +8,7 @@
 // @include         https://*gwars.ru*
 // @grant           none
 // @license         MIT
-// @version         2.48-140820
+// @version         2.49-010921
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -566,7 +566,6 @@
                     ['Объявления синдикатов', '/threads.php?fid=38', 0, 1],
                     ['Вступлю в синдикат', '/threads.php?fid=56', 0, 1],
                     ['Тотализатор', '/threads.php?fid=5', 0, 1],
-                    ['Общение гостей острова', '/threads.php?fid=30', 0, 1],
                     ['Конкурсы', '/threads.php?fid=3', 0, 1],
                     ['Благодарности и поздравления',
                         '/threads.php?fid=4', 0, 1],

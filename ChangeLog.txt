@@ -1,3 +1,9 @@
+2021-09-01[1.170-010921]
+    - Обновлены скрипты:
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvForum
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GwMenu
+
+
 2021-02-15[1.169-150221]
     - Исправлен скрипт:
         https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GosEnergoAtomFilter
