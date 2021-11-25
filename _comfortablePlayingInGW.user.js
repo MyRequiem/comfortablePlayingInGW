@@ -149,7 +149,7 @@
                         [57] - ProfColor
                         [58] - CurrentQuestOnInfo
                         [59] - CommonBattleFilter
-                        [60] - CalculateSyndLvl
+                        [60] - CalculateSyndLvl (удален)
                         [61] - PortsSyndLinks
                         [62] - BbCodeInMessages
                         [63] - ProfessionLevels */
@@ -1249,10 +1249,7 @@
                     'сообщения каждому бойцу. Если персонаж в бою, то ссылка ' +
                     'красного цвета. Так же добавляются конвертики для ' +
                     'отправки сообщений в разделах "Мои друзья" и "Гости".' +
-                    this.getGitHubLink('syndOnlineOnMainPage'), '49'],
-                ['Расчет ожидаемого уровня синдиката', 'Расчет ожидаемого ' +
-                    'уровня синдиката (сброс 6, 17 и 28 числа каждого ' +
-                    'месяца).' + this.getGitHubLink('calculateSyndLvl'), '60']],
+                    this.getGitHubLink('syndOnlineOnMainPage'), '49']],
 
             'Форум': [
                 ['Отображение сообщения, на которое отвечают', 'В ответе на ' +
@@ -2889,7 +2886,7 @@
             // поки
             if (!pers.length) {
                 pers = [];
-                var divs = obj.querySelectorAll('div'),
+                var divs = obj.querySelectorAll('div.customscroll'),
                     i;
                 for (i = 0; i < divs.length; i++) {
                     pers.push(divs[i].querySelector('b'));
@@ -2904,19 +2901,22 @@
          * @param   {HTMLLinkElement}   persLink
          */
         this.getDataFighters = function (persLink) {
-            var prnt = persLink.parentNode,
+            var prnt = persLink.parentNode.nextElementSibling.
+                    nextElementSibling,
                 objPers = {};
 
-            objPers.lvl = persLink.nextSibling.textContent;
+            objPers.lvl = '';
+            if (persLink.nextSibling && persLink.nextSibling.textContent) {
+                objPers.lvl = persLink.nextSibling.textContent;
+            }
+
             var allText = prnt.textContent;
             objPers.hp = /HP: \d+\/\d+/.test(allText) ?
                     /HP: (\d+)\/(\d+)/.exec(allText) : '';
-            objPers.dist = /расстояние: \d+/.test(allText) ?
-                    /расстояние: (\d+)/.exec(allText)[1] : '';
-            objPers.visib = /видимость: \d+%/.test(allText) ?
-                    /видимость: (\d+%)/.exec(allText)[1] : '';
-            objPers.power = /мощность: \d+/.test(allText) ?
-                    /мощность: (\d+)/.exec(allText)[1] : '';
+            objPers.dist = /расстояние: \d+/i.test(allText) ?
+                    /расстояние: (\d+)/i.exec(allText)[1] : '';
+            objPers.visib = /видимость: \d+%/i.test(allText) ?
+                    /видимость: (\d+%)/i.exec(allText)[1] : '';
             objPers.skill = '';
 
             // номера противников в режиме наблюдения за боем
@@ -2926,8 +2926,8 @@
             }
 
             // добавляем умелку
-            var skill = prnt.querySelectorAll('img[src*="/skill_"]+b>' +
-                    'font[style="font-size:8px;"]'),
+            var skill = prnt.querySelectorAll('img[src*="/skill_"]'),
+                skillValue,
                 i;
 
             if (skill.length) {
@@ -2935,8 +2935,12 @@
                     '<span style="color: #0087FF; font-size:9px;">';
 
                 for (i = 0; i < skill.length; i++) {
-                    objPers.skill += skill[i].innerHTML +
-                        (i !== skill.length - 1 ? ', ' : '');
+                    skillValue = skill[i].parentNode &&
+                        skill[i].parentNode.nextElementSibling;
+                    if (skillValue) {
+                        objPers.skill += skillValue.innerHTML +
+                            (i !== skill.length - 1 ? ', ' : '');
+                    }
                 }
 
                 objPers.skill += '</span>';
@@ -3063,8 +3067,16 @@
                     persLink.href.indexOf('?id=' + general.myID) !== -1) {
                 this.myPers = objPers;
                 this.myPers.name = name;
-                this.myPers.damage = /урон: (\d+)(\+\d+)? \((\d+)\)/.
-                        exec(allText);
+                this.myPers.damage = ['?', '?', '?'];
+                var myDamage = prnt.querySelector('img[src$="skull.svg"]');
+                if (myDamage && myDamage.parentNode &&
+                        myDamage.parentNode.nextElementSibling) {
+                    var damage = myDamage.parentNode.nextElementSibling;
+                    if (/>(\d+.*(\+\d+)?)\(.*>(\d+)</.test(damage.innerHTML)) {
+                        this.myPers.damage = />(\d+.*(\+\d+)?)\(.*>(\d+)</.
+                            exec(damage.innerHTML);
+                    }
+                }
             }
         }; // 2}}}
 
@@ -3128,9 +3140,16 @@
                     }
 
                     span = this.createEnvelopSpan();
-                    before = !i ? mass[i][j].nextElementSibling :
-                            mass[i][j].previousElementSibling;
-                    mass[i][j].parentNode.insertBefore(span, before);
+                    if (!i) {
+                        // левая команда
+                        mass[i][j].parentNode.appendChild(span);
+                    } else {
+                        // правая команда
+                        before = mass[i][j].parentNode;
+                        before.parentNode.
+                            insertBefore(span, before.previousElementSibling);
+                    }
+
                     span.querySelector('img').addEventListener('click',
                         this.setNameInChat(mass[i][j].textContent), false);
                 }
@@ -3179,11 +3198,8 @@
                     // урон
                     '<span style="margin-left: 15px;">' +
                     this.myPers.damage[1] +
-                    (this.myPers.damage[2] ? '<span style="color: #009900; ' +
-                        'font-weight: bold;">' + this.myPers.damage[2] +
-                            '</span>' : '') +
-                    '(<span style="font-weight: bold; color: #FF0000;">' +
-                    this.myPers.damage[3] + '</span>)</span>' +
+                    '(<span style="color: #009900; font-weight: bold;">' +
+                    this.myPers.damage[3] + '</span>)' +
                     // видимость
                     '<span style="margin-left: 15px; font-weight: bold;">' +
                     this.myPers.visib + '</span>' +
@@ -3760,12 +3776,10 @@
                             '<span>[' + pers.hp[1] + '/' + pers.hp[2] + ']' +
                             '</span>' +
                             '</span>' +
-                            '<div style="color: ' +
-                            '#b85006; margin-left: 10px;">Видимость: ' +
-                            pers.visib + '<br><span style="color: #000000;">' +
-                            'Мощность: ' + pers.power + '</span>' + pers.skill +
-                            '</div><div>' +
-                            pers.allWeapon + '</div>';
+                            '<div style="color: #B85006; ' +
+                            'margin-left: 10px;">Видимость: ' + pers.visib +
+                            pers.skill + '</div>' +
+                            '<div>' + pers.allWeapon + '</div>';
 
                         // прозрачность перса в зависимости от его видимости
                         visib = +/\d+/.exec(pers.visib)[0];
@@ -4125,8 +4139,9 @@
 
             // расстановка конвертиков и сбор дополнительной
             // информации (если они еще не были установлены)
-            if (this.leftPers[0].nextElementSibling.
-                    getAttribute('name') !== 'sendmessenv') {
+            if (this.leftPers[0] &&
+                    !this.leftPers[0].parentNode.
+                        querySelector('span[name="sendmessenv"]')) {
                 this.allFighters = {};
                 this.setEnvelope();
             }
@@ -13393,164 +13408,6 @@
     }; // 1}}}
 
     /**
-     * @class CalculateSyndLvl {{{1
-     * @constructor
-     */
-    var CalculateSyndLvl = function () {
-        /**
-         * @property syndID
-         * @type {String}
-         */
-        this.syndID = /\?id=(\d+)/.exec(general.loc)[1];
-        /**
-         * @property spanContent
-         * @type {Element}
-         */
-        this.spanContent = general.doc.createElement('span');
-        /**
-         * @property lvls {{{2
-         * @type {Array}
-         */
-        this.lvls = [50000, 150000, 250000, 350000, 450000, 550000, 650000,
-                750000, 850000, 950000, 1350000, 1750000, 2150000, 2550000,
-                2950000, 3350000, 3750000, 4150000, 4550000, 4950000, 6550000,
-                8150000, 9750000, 11350000, 12950000, 14550000, 16150000,
-                17750000, 19350000, 20950000
-            ]; // 2}}}
-        /**
-         * @property tm
-         * @type {int}
-         */
-        this.tm = 1500;
-        /**
-         * @property ajax
-         * @type {Object}
-         */
-        this.ajax = new AjaxQuery();
-
-        /**
-         * @method preScan {{{2
-         * @param   {Boolean}   mode
-         */
-        this.preScan = function (mode) {
-            general.$('calcSyndLvl').style.color = mode ? '#AAAAAA' : '#004400';
-            general.$('preloader').style.display = mode ? '' : 'none';
-        }; // 2}}}
-
-        /**
-         * @method scan {{{2
-         * @param   {int}   ind
-         */
-        this.scan = function (ind) {
-            var url = 'https://www.gwars.ru/srating.php?rid=0&page_id=' +
-                    ind,
-                pageCounter = general.$('pageCounter'),
-                _this = this;
-
-            pageCounter.innerHTML = '(' + (ind + 1) + ')';
-
-            this.ajax.init(url, 'GET', null, true,  function (xhr) {
-                _this.spanContent.innerHTML = xhr.responseText;
-                var tbl = _this.spanContent.querySelector('table' +
-                    '[class="bordersupdown"][width="600"]');
-
-                // нет таблицы или таблица пустая, выходим
-                if (!tbl || !tbl.
-                        querySelector('td>a[href*="/syndicate.php?id="]')) {
-                    pageCounter.innerHTML = 'синдикат в <a target="_blank" ' +
-                        'href="https://www.gwars.ru/srating.php?rid=0&' +
-                        'page_id=0">рейтинге</a> не найден';
-                    _this.preScan(false);
-                    return;
-                }
-
-                var synd = tbl.querySelector('td>' +
-                        'a[href*="/syndicate.php?id=' + _this.syndID + '"]');
-                if (synd) {
-                    // noinspection JSRemoveUnnecessaryParentheses
-                    var tds = synd.parentNode.parentNode.querySelectorAll('td'),
-                        currLvl = +tds[3].querySelector('font').innerHTML,
-                        current = tds[4].innerHTML.replace(/k/g, '000').
-                            replace(/,/g, '').split(' / '),
-                        eExp = +/\d+/.exec(current[0])[0],
-                        bExp = +/\d+/.exec(current[1])[0],
-                        experience = 4 / 3 * bExp + (4.6 * eExp),
-                        syndLvl,
-                        i;
-
-                    for (i = 0; i < _this.lvls.length; i++) {
-                        if (experience < _this.lvls[i]) {
-                            syndLvl = i;
-                            break;
-                        }
-                    }
-
-                        // разница текущего и рассчитанного уровня
-                    var diff = currLvl - syndLvl,
-                        // добавка за понижение уровня
-                        add = 0;
-
-                    if (diff > 2) {
-                        add = Math.ceil(diff / 2);
-                        syndLvl += add;
-                    }
-
-                    pageCounter.innerHTML = '<a target="_blank" ' +
-                        'style="color: #990000; font-weight: bold;" ' +
-                        'href="' + url + '">' + syndLvl + '</a>' +
-                        (add ? '(<span style="color: #FF0000;">+' +
-                            add + '</span>)' : '') +
-                        ' (<a target="_blank" href="http://www.ganjawiki.ru/' +
-                        'Боевой_синдикат#.D0.A3.D0.A1">' +
-                        Math.round(experience) + '</a>)' +
-                        '<span style="margin-left: 5px; color: #555555;">' +
-                        tds[5].innerHTML.replace(/\s+/g, '') + ' >>> ' +
-                        tds[4].innerHTML.replace(/\s+/g, '') + '</span>';
-                    _this.preScan(false);
-                } else {
-                    general.root.setTimeout(function () {
-                        _this.scan(ind + 1);
-                    }, _this.tm);
-                }
-            }, function () {
-                general.root.setTimeout(function () {
-                    _this.scan(ind);
-                }, _this.tm);
-            });
-        }; // 2}}}
-
-        /**
-         * @method init {{{2
-         */
-        this.init = function () {
-            var target = general.doc.querySelector('td[class="greengreenbg"]' +
-                    '[colspan="3"]');
-
-            if (!target) {
-                return;
-            }
-
-            var span = general.doc.createElement('span');
-            span.innerHTML = '<span id="calcSyndLvl" ' +
-                'style="margin-left: 10px; cursor: pointer; color: #004400; ' +
-                'text-decoration: underline;">Уровень</span>' +
-                '<img id="preloader" src="' + general.imgPath +
-                'preloader.gif" style="margin-left: 10px; display: none;" ' +
-                'alt="img" />' +
-                '<span id="pageCounter" style="margin-left: 10px;"></span>';
-            target.insertBefore(span, target.querySelector('br'));
-
-            var _this = this;
-            general.$('calcSyndLvl').addEventListener('click', function () {
-                if (general.$('preloader').style.display) {
-                    _this.preScan(true);
-                    _this.scan(0);
-                }
-            }, false);
-        }; // 2}}}
-    }; // 1}}}
-
-    /**
      * @class PortsSyndLinks {{{1
      * @constructor
      */
@@ -14316,14 +14173,6 @@
             if (initScript[46]) {
                 try {
                     new SyndAnalyser().init();
-                } catch (e) {
-                    general.cons.log(e);
-                }
-            }
-
-            if (initScript[60]) {
-                try {
-                    new CalculateSyndLvl().init();
                 } catch (e) {
                     general.cons.log(e);
                 }

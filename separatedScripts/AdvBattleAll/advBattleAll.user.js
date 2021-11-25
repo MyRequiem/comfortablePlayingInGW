@@ -11,7 +11,7 @@
 // @include         https://*gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.38-120121
+// @version         4.39-251121
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -36,14 +36,14 @@
     //============= НАСТРОЙКИ ====================
         // обновление заявки после входа в нее (в секундах)
         // 0 - таймаут по умолчанию (20 сек)
-    var refreshAppl = 0,
+    var refreshAppl = 3,
         // таймаут обновления данных в бою (в секундах)
         // 0 - таймаут по умолчанию, который выставлен в настройках персонажа
-        refreshBattle = 0,
+        refreshBattle = 2,
         // звук при начале боя (0 - без звука)
-        sound1 = 0,
+        sound1 = 4,
         // звук при начале хода (0 - без звука)
-        sound2 = 0,
+        sound2 = 1,
         // чекбокс для координаторов боя '!*' (1/0 - показывать/не показывать)
         coordButton = 1,
         // ###
@@ -956,7 +956,7 @@
             // поки
             if (!pers.length) {
                 pers = [];
-                var divs = obj.querySelectorAll('div'),
+                var divs = obj.querySelectorAll('div.customscroll'),
                     i;
                 for (i = 0; i < divs.length; i++) {
                     pers.push(divs[i].querySelector('b'));
@@ -971,19 +971,22 @@
          * @param   {HTMLLinkElement}   persLink
          */
         this.getDataFighters = function (persLink) {
-            var prnt = persLink.parentNode,
+            var prnt = persLink.parentNode.nextElementSibling.
+                    nextElementSibling,
                 objPers = {};
 
-            objPers.lvl = persLink.nextSibling.textContent;
+            objPers.lvl = '';
+            if (persLink.nextSibling && persLink.nextSibling.textContent) {
+                objPers.lvl = persLink.nextSibling.textContent;
+            }
+
             var allText = prnt.textContent;
             objPers.hp = /HP: \d+\/\d+/.test(allText) ?
                     /HP: (\d+)\/(\d+)/.exec(allText) : '';
-            objPers.dist = /расстояние: \d+/.test(allText) ?
-                    /расстояние: (\d+)/.exec(allText)[1] : '';
-            objPers.visib = /видимость: \d+%/.test(allText) ?
-                    /видимость: (\d+%)/.exec(allText)[1] : '';
-            objPers.power = /мощность: \d+/.test(allText) ?
-                    /мощность: (\d+)/.exec(allText)[1] : '';
+            objPers.dist = /расстояние: \d+/i.test(allText) ?
+                    /расстояние: (\d+)/i.exec(allText)[1] : '';
+            objPers.visib = /видимость: \d+%/i.test(allText) ?
+                    /видимость: (\d+%)/i.exec(allText)[1] : '';
             objPers.skill = '';
 
             // номера противников в режиме наблюдения за боем
@@ -993,8 +996,8 @@
             }
 
             // добавляем умелку
-            var skill = prnt.querySelectorAll('img[src*="/skill_"]+b>' +
-                    'font[style="font-size:8px;"]'),
+            var skill = prnt.querySelectorAll('img[src*="/skill_"]'),
+                skillValue,
                 i;
 
             if (skill.length) {
@@ -1002,8 +1005,12 @@
                     '<span style="color: #0087FF; font-size:9px;">';
 
                 for (i = 0; i < skill.length; i++) {
-                    objPers.skill += skill[i].innerHTML +
-                        (i !== skill.length - 1 ? ', ' : '');
+                    skillValue = skill[i].parentNode &&
+                        skill[i].parentNode.nextElementSibling;
+                    if (skillValue) {
+                        objPers.skill += skillValue.innerHTML +
+                            (i !== skill.length - 1 ? ', ' : '');
+                    }
                 }
 
                 objPers.skill += '</span>';
@@ -1130,8 +1137,16 @@
                     persLink.href.indexOf('?id=' + general.myID) !== -1) {
                 this.myPers = objPers;
                 this.myPers.name = name;
-                this.myPers.damage = /урон: (\d+)(\+\d+)? \((\d+)\)/.
-                        exec(allText);
+                this.myPers.damage = ['?', '?', '?'];
+                var myDamage = prnt.querySelector('img[src$="skull.svg"]');
+                if (myDamage && myDamage.parentNode &&
+                        myDamage.parentNode.nextElementSibling) {
+                    var damage = myDamage.parentNode.nextElementSibling;
+                    if (/>(\d+.*(\+\d+)?)\(.*>(\d+)</.test(damage.innerHTML)) {
+                        this.myPers.damage = />(\d+.*(\+\d+)?)\(.*>(\d+)</.
+                            exec(damage.innerHTML);
+                    }
+                }
             }
         };
 
@@ -1180,9 +1195,16 @@
                     }
 
                     span = this.createEnvelopSpan();
-                    before = !i ? mass[i][j].nextElementSibling :
-                            mass[i][j].previousElementSibling;
-                    mass[i][j].parentNode.insertBefore(span, before);
+                    if (!i) {
+                        // левая команда
+                        mass[i][j].parentNode.appendChild(span);
+                    } else {
+                        // правая команда
+                        before = mass[i][j].parentNode;
+                        before.parentNode.
+                            insertBefore(span, before.previousElementSibling);
+                    }
+
                     span.querySelector('img').addEventListener('click',
                         this.setNameInChat(mass[i][j].textContent), false);
                 }
@@ -1231,11 +1253,8 @@
                     // урон
                     '<span style="margin-left: 15px;">' +
                     this.myPers.damage[1] +
-                    (this.myPers.damage[2] ? '<span style="color: #009900; ' +
-                        'font-weight: bold;">' + this.myPers.damage[2] +
-                            '</span>' : '') +
-                    '(<span style="font-weight: bold; color: #FF0000;">' +
-                    this.myPers.damage[3] + '</span>)</span>' +
+                    '(<span style="color: #009900; font-weight: bold;">' +
+                    this.myPers.damage[3] + '</span>)' +
                     // видимость
                     '<span style="margin-left: 15px; font-weight: bold;">' +
                     this.myPers.visib + '</span>' +
@@ -1812,12 +1831,10 @@
                             '<span>[' + pers.hp[1] + '/' + pers.hp[2] + ']' +
                             '</span>' +
                             '</span>' +
-                            '<div style="color: ' +
-                            '#B85006; margin-left: 10px;">Видимость: ' +
-                            pers.visib + '<br><span style="color: #000000;">' +
-                            'Мощность: ' + pers.power + '</span>' + pers.skill +
-                            '</div><div>' +
-                            pers.allWeapon + '</div>';
+                            '<div style="color: #B85006; ' +
+                            'margin-left: 10px;">Видимость: ' + pers.visib +
+                            pers.skill + '</div>' +
+                            '<div>' + pers.allWeapon + '</div>';
 
                         // прозрачность перса в зависимости от его видимости
                         visib = +/\d+/.exec(pers.visib)[0];
@@ -2176,8 +2193,9 @@
 
             // расстановка конвертиков и сбор дополнительной
             // информации (если они еще не были установлены)
-            if (this.leftPers[0].nextElementSibling.
-                    getAttribute('name') !== 'sendmessenv') {
+            if (this.leftPers[0] &&
+                    !this.leftPers[0].parentNode.
+                        querySelector('span[name="sendmessenv"]')) {
                 this.allFighters = {};
                 this.setEnvelope();
             }
