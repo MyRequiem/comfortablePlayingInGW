@@ -6,7 +6,7 @@
 ![ChromeLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/chromeLogo.png)
 ![YandexLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/yandexLogo.png)
 
-Версия: 1.170-010921
+Версия: 1.171-251121
 
 ![TelegramLogo](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/imgs/telegramLogo.png)
 <br>
@@ -18,7 +18,7 @@
 
 * [Установить](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js)
 * [Скачать zip-архив](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js.zip)
-* *Все скрипты отдельными файлами находятся в директории* [./separatedScripts](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/) (Всего скриптов: 58)
+* *Все скрипты отдельными файлами находятся в директории* [./separatedScripts](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/) (Всего скриптов: 57)
 * [Как устанавливать скрипты](http://gwscripts.ucoz.net/index/how_to_install/0-31)
 * [История изменений](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/ChangeLog.txt)
 
@@ -45,7 +45,7 @@
 
 **AdvBattleAll**
 <br>
-Версия: 4.38-120121
+Версия: 4.39-251121
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll)
 <br>
@@ -90,13 +90,6 @@
 Версия: 2.09-130820
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BuyHightech/buyHightech.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BuyHightech/buyHightech.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/BuyHightech)
-<br>
-
-**CalculateSyndLvl**
-<br>
-Версия: 1.23-130820
-<br>
-[[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CalculateSyndLvl/calculateSyndLvl.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CalculateSyndLvl/calculateSyndLvl.user.js.zip) [[Описание]](https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/CalculateSyndLvl)
 <br>
 
 **CommonBattleFilter**
