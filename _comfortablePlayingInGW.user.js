@@ -10,7 +10,7 @@
 // @include         http*://*ganjafile.ru*
 // @grant           none
 // @license         MIT
-// @version         1.171-251121
+// @version         1.172-271121
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.171-251121';
+        this.version = '1.172-271121';
         /**
          * @property stString {{{2
          * @type {String}
@@ -2921,7 +2921,7 @@
 
             // номера противников в режиме наблюдения за боем
             if (general.viewMode) {
-                var persNum = prnt.querySelector('span.battletags');
+                var persNum = persLink.parentNode.previousElementSibling;
                 objPers.num = persNum ? persNum.innerHTML : null;
             }
 

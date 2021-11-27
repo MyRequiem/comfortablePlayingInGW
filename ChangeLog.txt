@@ -1,3 +1,9 @@
+2021-11-27[1.172-271121]
+    - Исправлен скрипт
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+        (отображение номеров бойцов во всплывающих тултипах в режиме
+        наблюдения за боем, спасибо HUMMINBIRD)
+
 2021-11-25[1.171-251121]
     - Исправлен скрипт
         https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
