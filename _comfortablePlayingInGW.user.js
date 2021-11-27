@@ -2921,7 +2921,7 @@
 
             // номера противников в режиме наблюдения за боем
             if (general.viewMode) {
-                var persNum = prnt.querySelector('span.battletags');
+                var persNum = persLink.parentNode.previousElementSibling;
                 objPers.num = persNum ? persNum.innerHTML : null;
             }
 

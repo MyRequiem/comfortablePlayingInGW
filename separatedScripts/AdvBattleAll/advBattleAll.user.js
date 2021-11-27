@@ -11,7 +11,7 @@
 // @include         https://*gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.39-251121
+// @version         4.40-271121
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
 
@@ -36,16 +36,16 @@
     //============= НАСТРОЙКИ ====================
         // обновление заявки после входа в нее (в секундах)
         // 0 - таймаут по умолчанию (20 сек)
-    var refreshAppl = 3,
+    var refreshAppl = 0,
         // таймаут обновления данных в бою (в секундах)
         // 0 - таймаут по умолчанию, который выставлен в настройках персонажа
-        refreshBattle = 2,
+        refreshBattle = 0,
         // звук при начале боя (0 - без звука)
-        sound1 = 4,
+        sound1 = 0,
         // звук при начале хода (0 - без звука)
-        sound2 = 1,
+        sound2 = 0,
         // чекбокс для координаторов боя '!*' (1/0 - показывать/не показывать)
-        coordButton = 1,
+        coordButton = 0,
         // ###
         // # при нажатии на кнопку "Сказать ход"
         // ###
@@ -991,7 +991,7 @@
 
             // номера противников в режиме наблюдения за боем
             if (general.viewMode) {
-                var persNum = prnt.querySelector('span.battletags');
+                var persNum = persLink.parentNode.previousElementSibling;
                 objPers.num = persNum ? persNum.innerHTML : null;
             }
 
