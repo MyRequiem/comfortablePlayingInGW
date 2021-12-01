@@ -11,6 +11,6 @@
 // @include         https://*gwars.ru/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.40-271121
+// @version         4.41-011221
 // @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
 // ==/UserScript==
