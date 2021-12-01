@@ -1,3 +1,9 @@
+2021-12-01[1.173-011221]
+    - Исправлен скрипт
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
+        (ошибка если в бой берем с собой личного NPC)
+
+
 2021-11-27[1.172-271121]
     - Исправлен скрипт
         https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
