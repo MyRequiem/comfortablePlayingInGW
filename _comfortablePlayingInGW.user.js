@@ -2901,8 +2901,7 @@
          * @param   {HTMLLinkElement}   persLink
          */
         this.getDataFighters = function (persLink) {
-            var prnt = persLink.parentNode.nextElementSibling.
-                    nextElementSibling,
+            var prnt = persLink.parentNode.parentNode.lastElementChild,
                 objPers = {};
 
             objPers.lvl = '';
