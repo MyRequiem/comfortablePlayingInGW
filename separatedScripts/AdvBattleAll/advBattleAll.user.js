@@ -5,14 +5,14 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js
-// @include         https://*gwars.ru/b0/btl.php?bid=*
-// @include         https://*gwars.ru/warlog.php*
-// @include         https://*gwars.ru/wargroup.php*
-// @include         https://*gwars.ru/warlist.php*
+// @include         https://*gwars*/b0/btl.php?bid=*
+// @include         https://*gwars*/warlog.php*
+// @include         https://*gwars*/wargroup.php*
+// @include         https://*gwars*/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.41-011221
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         4.42-120522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -128,6 +128,11 @@
          */
         this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
             'comfortablePlayingInGW/master/imgs/AdvBattleAll/';
+        /**
+         * @property domain
+         * @type {String}
+         */
+        this.domain = this.doc.domain;
     };
 
     /**
@@ -1263,7 +1268,7 @@
                     '</span> / <span style="color: #0000FF;">' +
                     this.rightPers.length + '</span></span>' +
                     // ссылка "Наблюдение"
-                    '<a href="https://www.gwars.ru/warlog.php?bid=' +
+                    '<a href="https://' + general.domain + '/warlog.php?bid=' +
                     /\?bid=(\d+)/.exec(general.loc)[1] + '&rev=1" ' +
                     'target="_blank" style="margin-left: 15px;"><img src="' +
                     general.imgPath + 'eyes.png" width="16" height="9" ' +

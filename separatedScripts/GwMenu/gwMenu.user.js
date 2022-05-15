@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GwMenu/gwMenu.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/GwMenu/gwMenu.user.js
-// @include         https://*gwars.ru*
+// @include         https://*gwars*
 // @grant           none
 // @license         MIT
-// @version         2.49-010921
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         2.50-140522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -383,9 +383,9 @@
                     ['Переодевалка', 'changeclothing'],
                     ['Настройки', 'settings', 'darkgray'],
                     // ссылки
-                    ['Мои фото', 'https://www.ganjafoto.ru/albums.php?id=' +
+                    ['Мои фото', 'https://www.ganjafoto.io/albums.php?id=' +
                         general.myID, 0, 1],
-                    ['Мои файлы', 'http://www.ganjafile.ru/login.php', 0, 1],
+                    ['Мои файлы', 'http://www.ganjafile.io/login.php', 0, 1],
                     ['Мои Друзья', '/home.friends.php', 0, 1],
                     ['Мои синдикаты', '/syndicates.php', 0, 1],
                     ['Мои достижения', '/info.ach.php?id=' +
@@ -435,7 +435,7 @@
                 ], prnt: 'battles_1', arrow: 'battles_1_group', offsetY: -15},
                 {divm: 0, lines: [
                     ['ГосЭнергоАтом', '/info.realty.php?id=2'],
-                    ['Статистика GWars.ru от vasena',
+                    ['Статистика GWars.io от vasena',
                         'http://gw-utils.ru/'],
                     ['GWTools от Bas', 'https://www.gwtools.ru/']
                 ], prnt: 'gw_menu', arrow: 'real_estate'},
@@ -450,17 +450,17 @@
                     ['Скрипты на born2kill.clan.su',
                         'http://born2kill.clan.su/load/9'],
                     ['Скрипты от W_or_M',
-                        'https://www.ganjafoto.ru/image.php?aid=435039'],
+                        'https://www.ganjafoto.io/image.php?aid=435039'],
                     ['Скрипты от Bick',
-                        'https://www.ganjafoto.ru/image.php?aid=331880'],
+                        'https://www.ganjafoto.io/image.php?aid=331880'],
                     ['Скрипты от Jimmy Banditto',
-                        'https://www.ganjafoto.ru/image.php?aid=334909'],
+                        'https://www.ganjafoto.io/image.php?aid=334909'],
                     ['Скрипты от VSOP_juDGe',
-                        'https://www.ganjafoto.ru/image.php?aid=260018'],
+                        'https://www.ganjafoto.io/image.php?aid=260018'],
                     ['Скрипты от z0man',
-                        'https://www.ganjafoto.ru/image.php?aid=285332'],
+                        'https://www.ganjafoto.io/image.php?aid=285332'],
                     ['Скрипты от гном убийца',
-                        'https://www.ganjafoto.ru/image.php?aid=256649']
+                        'https://www.ganjafoto.io/image.php?aid=256649']
                 ], prnt: 'gw_menu', arrow: 'scripts', offsetY: -45},
                 {divm: 'syndicates_1', lines: [
                     ['Официальные синдикаты', 'offic_synd'],

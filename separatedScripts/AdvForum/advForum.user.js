@@ -5,13 +5,13 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvForum/advForum.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvForum/advForum.user.js
-// @include         https://*gwars.ru/threads.php?fid=*
-// @include         https://*gwars.ru/messages.php?fid=*
-// @include         https://*gwars.ru/forum.php
+// @include         https://*gwars*/threads.php?fid=*
+// @include         https://*gwars*/messages.php?fid=*
+// @include         https://*gwars*/forum.php
 // @grant           none
 // @license         MIT
-// @version         2.33-310821
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         2.34-120522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -73,6 +73,11 @@
          * @type {String}
          */
         this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
+        /**
+         * @property domain
+         * @type {String}
+         */
+        this.domain = this.doc.domain;
     };
 
     /**
@@ -451,14 +456,16 @@
             var tableContent = table.innerHTML,
                 imgSettins = general.doc.createElement('img');
 
-            imgSettins.src = 'https://images.gwars.ru/i/home/properties.gif';
+            imgSettins.src = 'https://images.' +
+                general.domain.replace('www.', '') + '/i/home/properties.gif';
             imgSettins.setAttribute('style', 'cursor: pointer; ' +
                     'margin-left: 10px;');
             imgSettins.setAttribute('title', 'Настройки');
 
             // кнопка сброса всех данных ветки
             var imgReset = general.doc.createElement('img');
-            imgReset.src = 'https://images.gwars.ru/i/home/questlog.gif';
+            imgReset.src = 'https://images.' +
+                general.domain.replace('www.', '') + '/i/home/questlog.gif';
             imgReset.setAttribute('style', 'cursor: pointer; ' +
                     'margin-left: 10px;');
             imgReset.setAttribute('title', 'Сбросить все данные ветки');
@@ -503,11 +510,11 @@
 
                 for (i = 0; i < themes.length; i++) {
                     str += '<tr><td><a target="_blank" ' +
-                        'href="https://www.gwars.ru/threads.php?fid=' +
-                        themes[i][1] + '">' + themes[i][0] + '</a></td>' +
-                        '<td><input id="showForum_' + i + '" ' +
-                        'type="checkbox"' + (f[i] ? ' checked' : '') +
-                        ' /></td></tr>';
+                        'href="https://' + general.domain +
+                        '/threads.php?fid=' + themes[i][1] + '">' +
+                        themes[i][0] + '</a></td>' + '<td>' +
+                        '<input id="showForum_' + i + '" ' + 'type="checkbox"' +
+                        (f[i] ? ' checked' : '') + ' /></td></tr>';
                 }
 
                 table.innerHTML = '<tr><td><table><tr><td>Отмечать закрытые ' +
@@ -531,8 +538,8 @@
                     'bold;"><< Назад</span></td></tr><tr><td colspan="2" ' +
                     'style="font-weight: bold; padding-top: 10px;">' +
                     'Показывать ветки форума на <a target="_blank" ' +
-                    'href="https://www.gwars.ru/forum.php">этой странице' +
-                    '</a>:</td></tr>' + str + '</table></td></tr>';
+                    'href="https://' + general.domain + '/forum.php">' +
+                    'этой странице</a>:</td></tr>' + str + '</table></td></tr>';
 
                 // чекбокс "Отмечать закрытые"
                 var markClosed = general.$('markClosed');

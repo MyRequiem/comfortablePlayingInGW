@@ -5,12 +5,12 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BuyHightech/buyHightech.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BuyHightech/buyHightech.user.js
-// @include         https://*gwars.ru/shopc.php*
-// @include         https://*gwars.ru/market-p.php?stage=2&item_id=*
+// @include         https://*gwars*/shopc.php*
+// @include         https://*gwars*/market-p.php?stage=2&item_id=*
 // @grant           none
 // @license         MIT
-// @version         2.09-130820
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         2.10-130522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -49,6 +49,11 @@
          * @type {String}
          */
         this.loc = this.root.location.href;
+        /**
+         * @property domain
+         * @type {String}
+         */
+        this.domain = this.doc.domain;
     };
 
     /**
@@ -96,11 +101,11 @@
                     descrTd[i].innerHTML += ' <span style="font-weight: ' +
                         'bold; margin-left: 7px;"> Создать объявление: ' +
                         '</span><a target="_blank" style="color: #0000FF;" ' +
-                        'href="https://www.gwars.ru/market-p.php?' +
+                        'href="https://' + general.domain + '/market-p.php?' +
                         'stage=2&item_id=' + id + '&action_id=2&p=' + price +
                         '&s=' + strength + '">[Купить]' + '</a> ' +
                         '<a target="_blank" style="color: #990000;" href=' +
-                        '"https://www.gwars.ru/market-p.php?' +
+                        '"https://' + general.domain + '/market-p.php?' +
                         'stage=2&item_id=' + id + '&action_id=1&p=' + price +
                         '&s=' + strength + '">[Продать]</a>';
                 }

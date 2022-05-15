@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CountBattles/countBattles.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CountBattles/countBattles.user.js
-// @include         https://*gwars.ru/info.warstats.php?id=*
+// @include         https://*gwars*/info.warstats.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.33-140820
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         2.34-130522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -56,6 +56,11 @@
          */
         this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
             'comfortablePlayingInGW/master/imgs/';
+        /**
+         * @property domain
+         * @type {String}
+         */
+        this.domain = this.doc.domain;
     };
 
     /**
@@ -214,8 +219,8 @@
                     this.showResult();
                 }
             } else {
-                var url = 'https://www.gwars.ru/info.warstats.php?id=' +
-                    this.persId + '&page_id=' + ind,
+                var url = 'https://' + general.domain +
+                    '/info.warstats.php?id=' + this.persId + '&page_id=' + ind,
                     _this = this;
 
                 new AjaxQuery().init(url, function (xml) {

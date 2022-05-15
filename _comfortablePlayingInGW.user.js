@@ -1,17 +1,17 @@
 // ==UserScript==
 // @name            ComfortablePlayingInGW
 // @namespace       https://github.com/MyRequiem/comfortablePlayingInGW
-// @description     Веселые плюшки для www.gwars.ru
+// @description     Веселые плюшки для Gwars
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/_comfortablePlayingInGW.user.js
-// @include         https://*gwars.ru*
-// @include         https://*ganjafoto.ru*
-// @include         http*://*ganjafile.ru*
+// @include         https://*gwars*
+// @include         https://*ganjafoto*
+// @include         http*://*ganjafile*
 // @grant           none
 // @license         MIT
 // @version         1.173-011221
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
 //     ______                ____           __        __    __
@@ -451,10 +451,15 @@
          */
         this.viewMode = /\/(warlog|battlelog)\.php/.test(this.loc);
         /**
+         * @property domain
+         * @type {String}
+         */
+        this.domain = this.doc.domain;
+        /**
          * @property mainDomain
          * @type {Boolean}
          */
-        this.mainDomain = /\/\/www.gwars.ru\//.test(this.loc);
+        this.mainDomain = /gwars/.test(this.loc);
     }; // 1}}}
 
     /**
@@ -550,12 +555,7 @@
          */
         checkMainData: function () {
             if (!this.st) {
-                alert('Ваш браузер не поддерживает технологию localStorage.\n' +
-                    'MyRequiеm рекомендует вам установить один из\n' +
-                    'ниже перечисленных браузеров или удалите скрипт\n' +
-                    'Comfortable Playing In GW\n\nFireFox 4+\nOpera 11+\n' +
-                    'Chrome 12+');
-
+                alert('Ваш браузер не поддерживает технологию localStorage');
                 return false;
             }
 
@@ -695,7 +695,7 @@
                     general.doc.body.appendChild(divAudio);
                 }
 
-                audio.volume = 0.3;
+                audio.volume = 0.2;
                 audio.src = (general.myID === '2095458' ?
                         'http://127.0.0.1/' : general.mainPath) + 'sounds/' +
                             sound + '.ogg';
@@ -774,7 +774,7 @@
                     'NotGiveCannabisLeaf/on.gif" width="15" height="15" ' +
                     'title="Настройки" alt="Настройки" />';
                 settingsButton.setAttribute('href',
-                        'https://www.gwars.ru/news.php?set=1');
+                        'https://' + general.domain + '/news.php?set=1');
                 settingsButton.setAttribute('style', 'margin-left: 7px;');
                 target.querySelector('table td:last-child>nobr').
                     appendChild(settingsButton);
@@ -920,8 +920,9 @@
                     this.getGitHubLink('gwMenu'), '14'],
                 ['Логотип игры', 'На всех страницах заменяет логотип игры ' +
                     '&nbsp;&nbsp;<img style="box-shadow: 2px 3px 3px ' +
-                    'rgba(122,122,122, 0.5);" src="https://images.gwars.' +
-                    'ru/i/gon.gif" alt="img" /> &nbsp;&nbsp;на зеленый ' +
+                    'rgba(122,122,122, 0.5);" src="https://images.' +
+                    general.domain.replace('www.', '') +
+                    '/i/gon.gif" alt="img" /> &nbsp;&nbsp;на зеленый ' +
                     'листик &nbsp;&nbsp;<img style="box-shadow: 2px 3px 3px ' +
                     'rgba(122,122,122,0.5);" src="' + general.imgPath +
                     'NotGiveCannabisLeaf/on.gif" alt="img" />' +
@@ -934,9 +935,9 @@
                     ' звук при достижении 100% HP' +
                     this.getGitHubLink('regeneration') +
                     '<span style="margin-left: 15px;">идея: ' +
-                    '<a href="https://www.gwars.ru/info.php?id=73295" ' +
-                    'style="font-weight: bold;" target="_blank">W_or_M' +
-                    '</a></span>', '56'],
+                    '<a href="https://' + general.domain +
+                    '/info.php?id=73295" style="font-weight: bold;" ' +
+                    'target="_blank">W_or_M</a></span>', '56'],
                 ['Дополнение для панели навигации',
                     'Добавляет возможность установить дополнительные ссылки ' +
                     'в панель навигации.' +
@@ -946,11 +947,11 @@
                     'игры. Делает неактивной ссылку принятия боя c ' +
                     'персонажем из черного списка в одиночных боях.<br><br>' +
                     '&nbsp;&nbsp;<a target="_blank" href=' +
-                    '"https://www.gwars.ru/home.friends.php">Запомнить ' +
-                    'черный список</a> (скрипт должен быть включен)<br>' +
-                    '<input type="checkbox" id="blockBLOne2One" disabled> ' +
-                    'блокировать ссылку принятия боя с персонажем из ЧС в ' +
-                    'одиночных заявках' +
+                    '"https://' + general.domain + '/home.friends.php">' +
+                    'Запомнить черный список</a> (скрипт должен быть включен)' +
+                    '<br><input type="checkbox" id="blockBLOne2One" ' +
+                    'disabled> блокировать ссылку принятия боя с персонажем ' +
+                    'из ЧС в одиночных заявках' +
                     this.getGitHubLink('blacklistHighlighting'), '4'],
                 ['Работа, письмо, посылка, граната, слом', 'Окончание ' +
                     'работы, осталось времени работать, почта, посылка, ' +
@@ -1005,9 +1006,9 @@
                     'выводится описание бонуса.' +
                     this.getGitHubLink('bonusInfo') +
                     '<span style="margin-left: 15px;">идея: ' +
-                    '<a href="https://www.gwars.ru/info.php?id=1845550" ' +
-                    'style="font-weight: bold;" target="_blank">signed' +
-                    '</a></span>', '18'],
+                    '<a href="https://' + general.domain + '/info.php?' +
+                    'id=1845550" style="font-weight: bold;" target="_blank">' +
+                    'signed</a></span>', '18'],
                 ['Новости и приглашения в синдикаты', 'Выделение и мигание ' +
                     'приглашений в синдикаты, новых и не прочитанных ' +
                     'новостей на главной странице персонажа.' +
@@ -1049,13 +1050,13 @@
                     '"Достижения" в верхней части страниц игры при нажатии ' +
                     'на которую выводятся Ваши ачивки, но только те, ' +
                     'которые были отмечены на <a target="_blank" ' +
-                    'href="https://www.gwars.ru/info.ach.php?id=' +
+                    'href="https://' + general.domain + '/info.ach.php?id=' +
                     general.myID + '">странице достижений</a>.' +
                     this.getGitHubLink('showMyAchievements') +
                     '<span style="margin-left: 15px;">идея: ' +
-                    '<a href="https://www.gwars.ru/info.php?id=134292" ' +
-                    'style="font-weight: bold;" target="_blank">Горыныч' +
-                    '</a></span>', '47'],
+                    '<a href="https://' + general.domain + '/info.php?' +
+                    'id=134292" style="font-weight: bold;" target="_blank">' +
+                    'Горыныч</a></span>', '47'],
                 ['Время до возможности выставить карму', 'На странице ' +
                     'информации персонажа показывает динамический счетчик ' +
                     'времени до возможности поставить карму.' +
@@ -1069,9 +1070,9 @@
                     'информации персонажа.' +
                     this.getGitHubLink('currentQuestOnInfo') +
                     '<span style="margin-left: 15px;">идея: ' +
-                    '<a href="https://www.gwars.ru/info.php?id=54662" ' +
-                    'style="font-weight: bold;" target="_blank">kaa</a>' +
-                    '</span>', '58'],
+                    '<a href="https://' + general.domain + '/info.php?' +
+                    'id=54662" style="font-weight: bold;" target="_blank">' +
+                    'kaa</a></span>', '58'],
                 ['Кнопки для вставки bb-кодов цитирования и наклонного шрифта',
                     'В формах для отправки личных сообщений и сообщений на ' +
                     'форуме добавляет кнопки для вставки в позиции курсора ' +
@@ -1083,9 +1084,9 @@
                     'количество очков до следующего уровня професии.' +
                     this.getGitHubLink('professionLevels') +
                     '<span style="margin-left: 15px;">идея: ' +
-                    '<a href="https://www.gwars.ru/info.php?id=285394" ' +
-                    'style="font-weight: bold;" target="_blank">Bodyarm</a>' +
-                    '</span>', '63']],
+                    '<a href="https://' + general.domain + '/info.php?' +
+                    'id=285394" style="font-weight: bold;" target="_blank">' +
+                    'Bodyarm</a></span>', '63']],
 
             'Персональный NPC': [
                 ['Оповещения', 'Если личный NPC ожидает распоряжений и его ' +
@@ -1184,8 +1185,8 @@
                     'одиночых заявках. Фильтр по уровням и типу оружия, ' +
                     'встроенный в игре, переносится вверх страницы. Все ' +
                     'настройки находятся на <a target="_blank" ' +
-                    'href="https://www.gwars.ru/warlist.php?war=armed">' +
-                    'странице одиночных заявок</a>' +
+                    'href="https://' + general.domain + '/warlist.php?' +
+                    'war=armed">странице одиночных заявок</a>' +
                     this.getGitHubLink('filterWarlistOne2One'), '23'],
                 ['Ссылки на странице одиночных заявок', 'На странице ' +
                     'заявок одиночных боев делает ники вызывающих на бой ' +
@@ -1200,8 +1201,8 @@
                     this.getGitHubLink('one2OneCallerInfo'), '34'],
                 ['Контроль Уранa и ЭC', 'Сортировка объектов по типу, ' +
                     'островам и контролирующим синдикатам на странице ' +
-                    '<a target="_blank" href="https://www.gwars.ru/' +
-                    'info.realty.php?id=2">ГосЭнегоАтом</a>' +
+                    '<a target="_blank" href="https://' + general.domain +
+                    '/info.realty.php?id=2">ГосЭнегоАтом</a>' +
                     this.getGitHubLink('gosEnergoAtomFilter'), '29'],
                 ['Проверка сектора после боя', 'Выводит сообщение после боя, ' +
                     'если персонаж находится не в секторе со своим домом и ' +
@@ -1212,16 +1213,16 @@
                     'прибрежная зона) показывает изображения для каждого ' +
                     'пока.' + this.getGitHubLink('imgPokemonsOnBattle') +
                     '<span style="margin-left: 15px;">идея: ' +
-                    '<a href="https://www.gwars.ru/info.php?id=436429" ' +
-                    'style="font-weight: bold;" target="_blank">Buger_man</a>' +
-                    '</span>', '51'],
+                    '<a href="https://' + general.domain + '/info.php?' +
+                    'id=436429" style="font-weight: bold;" target="_blank">' +
+                    'Buger_man</a></span>', '51'],
                 ['Таймер для боев за порты', 'Вывод точного/оставшегося ' +
                     'времени до боя за порт в верхней части страницы.' +
                     this.getGitHubLink('portTimer') +
                     '<span style="margin-left: 15px;">идея: ' +
-                    '<a href="https://www.gwars.ru/info.php?id=205482" ' +
-                    'style="font-weight: bold;" target="_blank">Enemy333</a>' +
-                    '</span>', '36'],
+                    '<a href="https://' + general.domain + '/info.php?' +
+                    'id=205482" style="font-weight: bold;" target="_blank">' +
+                    'Enemy333</a></span>', '36'],
                 ['Знаки синдикатов на страницах списков ближайших/прошедших ' +
                     'боев за порты', 'На страницах списков ближайших/' +
                     'прошедших боев за порты добавляет знаки синдикатов, ' +
@@ -1271,8 +1272,8 @@
                     this.getGitHubLink('buyHightech'), '19'],
                 ['Фильтр ресурсов на странице экономической статистики',
                     'Фильтр ресурсов на <a target="_blank" ' +
-                    'href="https://www.gwars.ru/stats.php">странице ' +
-                    'экономической статистики</a><br><br>Введите ' +
+                    'href="https://' + general.domain + '/stats.php">' +
+                    'странице экономической статистики</a><br><br>Введите ' +
                     'названия ресурсов через запятую, которые будут ' +
                     'отображаться на вышеуказанной странице. Например: ' +
                     'Уран,Водоросли,Маковая соломка,Трава,Батареи<br>' +
@@ -1283,9 +1284,9 @@
                     'вооружения добавляет ссылки на вооружение High-tech' +
                     this.getGitHubLink('linksToHighTech') +
                     '<span style="margin-left: 15px;">идея: ' +
-                    '<a href="https://www.gwars.ru/info.php?id=436429" ' +
-                    'style="font-weight: bold;" target="_blank">Buger_man' +
-                    '</a></span>', '27'],
+                    '<a href="https://' + general.domain + '/info.php?' +
+                    'id=436429" style="font-weight: bold;" target="_blank">' +
+                    'Buger_man</a></span>', '27'],
                 ['Форма аренды и продажи', 'При передаче предмета в аренду ' +
                     'форма передачи выделяется голубым цветом. Если предмет ' +
                     'продается или передается в постоянное пользование, то ' +
@@ -1365,7 +1366,7 @@
          * @method checkScriptUpdate // {{{2
          */
         this.checkScriptUpdate = function () {
-            var url = 'https://www.gwars.ru/info.php?id=2095458';
+            var url = 'https://' + general.domain + '/info.php?id=2095458';
             new AjaxQuery().init(url, 'GET', null, true, function (xml) {
                 var ver = /cpingw:(\d+\.\d+-\d+)/.exec(xml.responseText);
                 if (ver && ver[1] !== general.version) {
@@ -1416,7 +1417,8 @@
             general.doc.title = 'CPIGW :: Настройки';
             // noinspection HtmlUnknownAttribute
             var tdStyle = ' style="background-color: #E0FFE0;">',
-                gwImgUrl = 'https://images.gwars.ru/i/home/',
+                gwImgUrl = 'https://images.' +
+                    general.domain.replace('www.', '') + '/i/home/',
                 str = '<table style="width: 100%; box-shadow: 8px 10px 7px ' +
                     'rgba(122,122,122,0.5);"><tr><td ' + tdStyle +
                     '<table style="width: 100%;"><tr><td style="width: 23%;">' +
@@ -1440,9 +1442,9 @@
                     '<td style="font-size: 7pt; width: 35%; text-align: ' +
                     'right;"><a target="_blank" style="opacity: 0.5; ' +
                     'text-decoration: none; font-size: 7pt;" ' +
-                    'href="https://www.gwars.ru/info.php?id=2095458">' +
-                    '<span style="color: #F90332;">developed by</span> ' +
-                    '<span style="color: #014305; font-weight: 700;">' +
+                    'href="https://' + general.domain + '/info.php?' +
+                    'id=2095458"><span style="color: #F90332;">developed by' +
+                    '</span> <span style="color: #014305; font-weight: 700;">' +
                     'MyRequiem©</span></a> ' + general.version +
                     '<a target="_blank" title="История изменений" ' +
                     'href="' + general.mainPath + 'ChangeLog.txt" ' +
@@ -3208,7 +3210,7 @@
                     '</span> / <span style="color: #0000FF;">' +
                     this.rightPers.length + '</span></span>' +
                     // ссылка "Наблюдение"
-                    '<a href="https://www.gwars.ru/warlog.php?bid=' +
+                    '<a href="https://' + general.domain + '/warlog.php?bid=' +
                     /\?bid=(\d+)/.exec(general.loc)[1] + '&rev=1" ' +
                     'target="_blank" style="margin-left: 15px;"><img src="' +
                     general.imgPath + 'AdvBattleAll/eyes.png" width="16" ' +
@@ -4718,7 +4720,7 @@
             }
 
             if (general.getData(5)[0]) {
-                if (/www\.gwars\.ru\/b0\//.test(general.loc)) {
+                if (/gwars.*\/b0\//.test(general.loc)) {
                     general.root.setInterval(this.setHighlighting, 1000);
                 } else if (/\/usertransfers\.php/.test(general.loc)) {
                     general.root.setTimeout(this.setHighlighting, 300);
@@ -4784,21 +4786,23 @@
          * @return  {String}
          */
         this.addContent = function (sms, gren, broken) {
-            var host = ' [<a href="https://www.gwars.ru/',
+            var host = ' [<a href="https://' + general.domain + '/',
                 stData = general.getData(6),
                 str = '';
 
             if (sms[0] && stData[3]) {    // письмо
                 str += host + 'sms.php">' +
-                    '<img src="https://images.gwars.ru/img/letter-pc.png" ' +
-                    'title="' + sms[0].getAttribute('title') +
+                    '<img src="https://images.' +
+                    general.domain.replace('www.', '') +
+                    '/img/letter-pc.png" title="' +
+                    sms[0].getAttribute('title') +
                     '" alt="Вам письмо"></a> <span style="color: #005F00">' +
                     sms[2] + '</span>]';
             }
 
             if (sms[1] && stData[3]) {    // посылка
-                str += host + 'items.php"><img src="https://www.gwars.ru/' +
-                    'i/woodbox.gif" title="Пришла посылка!" ' +
+                str += host + 'items.php"><img src="https://' + general.domain +
+                    '/i/woodbox.gif" title="Пришла посылка!" ' +
                     'alt="посылка"></a>]';
             }
 
@@ -4821,7 +4825,7 @@
          */
         this.startWorkPostGrenadesBroken = function (_this) {
             var ajaxQuery = new AjaxQuery(),
-                url = 'https://www.gwars.ru/me.php';
+                url = 'https://' + general.domain + '/me.php';
 
             _this = _this || this;
             ajaxQuery.init(url, 'GET', null, true, function (xml) {
@@ -5023,7 +5027,8 @@
             this.divResult.innerHTML = '<img src="' + general.imgPath +
                 'preloader.gif' + '" alt="img" />';
 
-            var url = 'https://www.gwars.ru/info.php?id=' + general.myID,
+            var url = 'https://' + general.domain + '/info.php?id=' +
+                    general.myID,
                 idElem = _this.id,
                 ths = this;
 
@@ -5193,8 +5198,8 @@
 
                     // noinspection JSUndefinedPropertyAssignment
                     b[i].innerHTML = '<a target="_blank" style="' + linkStyle +
-                        '"  href="https://www.gwars.ru/search.php?key=' +
-                        nik + '">' + nik + '</a>';
+                        '"  href="https://' + general.domain +
+                        '/search.php?key=' + nik + '">' + nik + '</a>';
                 }
 
                 // наш ник не найден или в настройках не установлен checkbox
@@ -5812,8 +5817,8 @@
                 this.farmLink = general.doc.createElement('a');
                 this.farmLink.setAttribute('style', 'color: #0000FF; ' +
                         'text-decoration: none;');
-                this.farmLink.href = 'https://www.gwars.ru/ferma.php?id=' +
-                    general.myID;
+                this.farmLink.href = 'https://' + general.domain +
+                    '/ferma.php?id=' + general.myID;
                 this.farmLink.setAttribute('target', '_blank');
                 topPanel.appendChild(general.doc.createTextNode(' | '));
                 topPanel.appendChild(this.farmLink);
@@ -5895,7 +5900,7 @@
                 general.$('imgSoundNPC').setAttribute('checkscan', 'yes');
             }
 
-            var url = 'https://www.gwars.ru/npc.php?id=' + npcs[ind],
+            var url = 'https://' + general.domain + '/npc.php?id=' + npcs[ind],
                 _this = this,
                 tr,
                 td;
@@ -5931,7 +5936,8 @@
 
                 general.$('dataNPC').lastElementChild.innerHTML = '<td>' +
                     '<a target="_blank" href="' + syndLink.href +
-                    '"><img src="https://images.gwars.ru/img/synds/' +
+                    '"><img src="https://images.' +
+                    general.domain.replace('www.', '') + '/img/synds/' +
                     /\?id=(\d+)/.exec(syndLink.href)[1] + '.gif" ' +
                     'alt="img" />' +
                     '</a></td><td><a target="_blank" href="' + url +
@@ -6024,7 +6030,7 @@
 
             var stData = general.getData(10);
 
-            if (/www\.gwars\.ru\/me(\/|\.php)/.test(general.loc)) {
+            if (/gwars.*\/me(\/|\.php)/.test(general.loc)) {
                 var mainDiv = general.doc.createElement('div'),
                     target = general.doc.querySelector('td[rowspan="3"]' +
                         '[valign="top"][bgcolor="#e9ffe9"]>' +
@@ -6258,8 +6264,9 @@
             if (val !== '0') {
                 var i;
                 for (i = 3; i < 7; i++) {
-                    str += '<img src="https://images.gwars.ru/' +
-                        'img/ferma_hd/' + val + i + '.png" ' +
+                    str += '<img src="https://images.' +
+                        general.domain.replace('www.', '') +
+                        '/img/ferma_hd/' + val + i + '.png" ' +
                         'style="width: 50px; height: 50px;" alt="img" />';
                 }
 
@@ -6782,9 +6789,9 @@
                     ['Переодевалка', 'changeclothing'],
                     ['Настройки', 'settings', 'darkgray'],
                     // ссылки
-                    ['Мои фото', 'https://www.ganjafoto.ru/albums.php?id=' +
+                    ['Мои фото', 'https://www.ganjafoto.io/albums.php?id=' +
                         general.myID, 0, 1],
-                    ['Мои файлы', 'http://www.ganjafile.ru/login.php', 0, 1],
+                    ['Мои файлы', 'http://www.ganjafile.io/login.php', 0, 1],
                     ['Мои Друзья', '/home.friends.php', 0, 1],
                     ['Мои синдикаты', '/syndicates.php', 0, 1],
                     ['Мои достижения', '/info.ach.php?id=' +
@@ -6834,7 +6841,7 @@
                 ], prnt: 'battles_1', arrow: 'battles_1_group', offsetY: -15},
                 {divm: 0, lines: [
                     ['ГосЭнергоАтом', '/info.realty.php?id=2'],
-                    ['Статистика GWars.ru от vasena',
+                    ['Статистика GWars.io от vasena',
                         'http://gw-utils.ru/'],
                     ['GWTools от Bas', 'https://www.gwtools.ru/']
                 ], prnt: 'gw_menu', arrow: 'real_estate'},
@@ -6849,17 +6856,17 @@
                     ['Скрипты на born2kill.clan.su',
                         'http://born2kill.clan.su/load/9'],
                     ['Скрипты от W_or_M',
-                        'https://www.ganjafoto.ru/image.php?aid=435039'],
+                        'https://www.ganjafoto.io/image.php?aid=435039'],
                     ['Скрипты от Bick',
-                        'https://www.ganjafoto.ru/image.php?aid=331880'],
+                        'https://www.ganjafoto.io/image.php?aid=331880'],
                     ['Скрипты от Jimmy Banditto',
-                        'https://www.ganjafoto.ru/image.php?aid=334909'],
+                        'https://www.ganjafoto.io/image.php?aid=334909'],
                     ['Скрипты от VSOP_juDGe',
-                        'https://www.ganjafoto.ru/image.php?aid=260018'],
+                        'https://www.ganjafoto.io/image.php?aid=260018'],
                     ['Скрипты от z0man',
-                        'https://www.ganjafoto.ru/image.php?aid=285332'],
+                        'https://www.ganjafoto.io/image.php?aid=285332'],
                     ['Скрипты от гном убийца',
-                        'https://www.ganjafoto.ru/image.php?aid=256649']
+                        'https://www.ganjafoto.io/image.php?aid=256649']
                 ], prnt: 'gw_menu', arrow: 'scripts', offsetY: -45},
                 {divm: 'syndicates_1', lines: [
                     ['Официальные синдикаты', 'offic_synd'],
@@ -6888,7 +6895,7 @@
                     ['GW - Загс', '/syndicate.php?id=1354'],
                     ['GW - 911', '/syndicate.php?id=911'],
                     ['GW - GanjaWiki', '/syndicate.php?id=6949'],
-                    ['GW - Модераторы GanjaFoto.Ru', '/syndicate.php?id=3516'],
+                    ['GW - Модераторы GanjaFoto.io', '/syndicate.php?id=3516'],
                     ['GW - Модераторы рейтинга сайтов',
                         '/syndicate.php?id=3516'],
                     ['GW - Модераторы чата', '/syndicate.php?id=274'],
@@ -7520,8 +7527,8 @@
                     this.showResult();
                 }
             } else {
-                var url = 'https://www.gwars.ru/info.warstats.php?id=' +
-                    this.persId + '&page_id=' + ind,
+                var url = 'https://' + general.domain + '/info.warstats.php?' +
+                    'id=' + this.persId + '&page_id=' + ind,
                     _this = this;
 
                 new AjaxQuery().init(url, 'GET', null, true, function (xml) {
@@ -7915,11 +7922,11 @@
                     descrTd[i].innerHTML += ' <span style="font-weight: ' +
                         'bold; margin-left: 7px;"> Создать объявление: ' +
                         '</span><a target="_blank" style="color: #0000FF;" ' +
-                        'href="https://www.gwars.ru/market-p.php?' +
+                        'href="https://' + general.domain + '/market-p.php?' +
                         'stage=2&item_id=' + id + '&action_id=2&p=' + price +
                         '&s=' + strength + '">[Купить]' + '</a> ' +
                         '<a target="_blank" style="color: #990000;" href=' +
-                        '"https://www.gwars.ru/market-p.php?' +
+                        '"https://' + general.domain + '/market-p.php?' +
                         'stage=2&item_id=' + id + '&action_id=1&p=' + price +
                         '&s=' + strength + '">[Продать]</a>';
                 }
@@ -8296,8 +8303,9 @@
             var link;
 
             if (/\/me(\/|\.php)/.test(general.loc)) {
-                link = general.doc.querySelector('[src$="images.gwars.' +
-                        'ru/i/home/farm.gif"]').parentNode;
+                link = general.doc.querySelector('[src$="images.' +
+                    general.domain.replace('www.', '') +
+                    '/i/home/farm.gif"]').parentNode;
                 var lparent = link.parentNode;
                 lparent.removeChild(link.previousElementSibling);
                 lparent.removeChild(link.nextElementSibling);
@@ -8443,7 +8451,7 @@
             // noinspection JSIncompatibleTypesComparison
             if (id2 !== null) {
                 counter.innerHTML = !id ? 'входящие...' : 'исходящие...';
-                url = 'https://www.gwars.ru/sms.php?page=' + id +
+                url = 'https://' + general.domain + '/sms.php?page=' + id +
                     '&page_id1=' + (!id ? id1 : 0) + '&page_id2=' +
                     (id ? id1 : 0) + '&search=' + this.uncodeNik;
             } else {
@@ -9054,8 +9062,8 @@
                     sector = spanContent.querySelector(cssSelector).innerHTML;
                     general.root.setTimeout(function () {
                         // на недвижимость перса
-                        _this.showSector('https://www.gwars.ru/' +
-                            'info.realty.php?id=' + general.myID, sector);
+                        _this.showSector('https://' + general.domain +
+                            '/info.realty.php?id=' + general.myID, sector);
                     }, 1000);
                 } else {
                     cssSelector = 'table.withborders';
@@ -9099,8 +9107,8 @@
 
                 // если здоровье менее 80%
                 if (general.doc.querySelector('#hpheader>font')) {
-                    this.showSector('https://www.gwars.ru/info.php?id=' +
-                            general.myID, '');
+                    this.showSector('https://' + general.domain +
+                        '/info.php?id=' + general.myID, '');
                 }
             }
         }; // 2}}}
@@ -9129,8 +9137,9 @@
                     name = /вызван (.*)( \[\d+\])/.exec(last.innerHTML);
                     if (name) {
                         last.innerHTML = 'вызван <a target="_blank" ' +
-                            'href="https://www.gwars.ru/search.php?key=' +
-                            name[1] + '" style="text-decoration: none; ' +
+                            'href="https://' + general.domain +
+                            '/search.php?key=' + name[1] +
+                            '" style="text-decoration: none; ' +
                             'font-weight: bold;">' + name[1] + '</a>' + name[2];
                     }
                 }
@@ -9627,9 +9636,8 @@
 
             if (persID) {
                 tdLink.innerHTML = '<a target="_blank" ' +
-                    'style="color: #008000;" ' +
-                    'href="https://www.gwars.ru/info.php?id=' + persID + '">' +
-                    stData[7] + '</a>';
+                    'style="color: #008000;" href="https://' + general.domain +
+                    '/info.php?id=' + persID + '">' + stData[7] + '</a>';
                 tdLink.style.display = '';
                 butReset.disabled = false;
                 butSave.disabled = true;
@@ -9645,8 +9653,8 @@
          */
         this.scan = function () {
             var stData = general.getData(24),
-                url = 'https://www.gwars.ru/syndicate.php?id=' + stData[1] +
-                    '&page=online',
+                url = 'https://' + general.domain + '/syndicate.php?id=' +
+                    stData[1] + '&page=online',
                 _this = this;
 
             this.ajax(url, 'GET', null, true, function (xml) {
@@ -9734,8 +9742,8 @@
             }
 
             var preloader = general.$('spPreloader'),
-                url = 'https://www.gwars.ru/syndicate.php?id=' + syndID +
-                    '&page=members',
+                url = 'https://' + general.domain + '/syndicate.php?id=' +
+                    syndID + '&page=members',
                 _this = this;
 
             preloader.style.visibility = 'visible';
@@ -10386,8 +10394,9 @@
          * @param   {String}    url
          */
         this.getLastDate = function (url) {
-            var _url = url || 'https://www.gwars.ru/syndicate.log.php?id=' +
-                    this.syndId + '&ptslog=1&page_id=100500',
+            var _url = url || 'https://' + general.domain +
+                    '/syndicate.log.php?id=' + this.syndId +
+                    '&ptslog=1&page_id=100500',
                 counter = general.$('analizePTSCounter'),
                 _this = this;
 
@@ -10461,10 +10470,12 @@
                     this.imgPath + 'rank.png" title="Выдача званий" ' +
                     'alt="Звания"></td><td class="wb1"><img id="sign" ' +
                     'style="cursor: pointer; margin: 2px;" ' +
-                    'src="https://images.gwars.ru/img/synds/' + this.syndId +
-                    '.gif" title="Выдача знаков" alt="Знаки"></td>' +
-                    '<td class="wb1"><span id="all" style="color: #008000; ' +
-                    'cursor: pointer;">Всего</span></td></tr>',
+                    'src="https://images.' +
+                    general.domain.replace('www.', '') + '/img/synds/' +
+                    this.syndId + '.gif" title="Выдача знаков" alt="Знаки">' +
+                    '</td><td class="wb1"><span id="all" ' +
+                    'style="color: #008000; cursor: pointer;">Всего</span>' +
+                    '</td></tr>',
                 setPoints = new SetPoints().init;
 
             var getStrDate = new GetStrDate().init,
@@ -10489,13 +10500,13 @@
                 all = setPoints(this.pers[i].all, '\'', false);
 
                 str += '<tr><td class="wb2"><a target="_blank" ' +
-                    'href="https://www.gwars.ru/search.php?key=' + name +
-                    '" style="text-decoration: none; font-weight: bold; ' +
-                    'color: #004400;">' + name + '</a></td><td class="wb1">' +
-                    gren + '</td><td class="wb1">' + chip + '</td>' +
-                    '<td class="wb1">' + rank + '</td><td class="wb1">' +
-                    sign + '</td><td class="wb1" style="color: #008000;">' +
-                    all + '</td></tr>';
+                    'href="https://' + general.domain + '/search.php?key=' +
+                    name + '" style="text-decoration: none; ' +
+                    'font-weight: bold; color: #004400;">' + name +
+                    '</a></td><td class="wb1">' + gren + '</td>' +
+                    '<td class="wb1">' + chip + '</td><td class="wb1">' + rank +
+                    '</td><td class="wb1">' + sign + '</td><td class="wb1" ' +
+                    'style="color: #008000;">' + all + '</td></tr>';
 
                 txtAreaStr += name + ':\nГранаты: ' + gren + ', Чипы: ' + chip +
                     ', Звания: ' + rank + ', Знак: ' + sign + ', Всего: ' +
@@ -10646,7 +10657,7 @@
          */
         this.parsePTSProtocols = function (ind) {
             general.$('analizePTSCounter').innerHTML = ind;
-            var url = 'https://www.gwars.ru/syndicate.log.php?id=' +
+            var url = 'https://' + general.domain + '/syndicate.log.php?id=' +
                     this.syndId + '&ptslog=1&page_id=' + ind,
                 _this = this;
 
@@ -10968,8 +10979,8 @@
          * @param   {String}    url
          */
         this.getLastDate = function (url) {
-            var _url = url || 'https://www.gwars.ru/syndicate.log.php?id=' +
-                    this.syndId + '&page_id=100500',
+            var _url = url || 'https://' + general.domain +
+                    '/syndicate.log.php?id=' + this.syndId + '&page_id=100500',
                 counter = general.$('syndAnalyseCounter'),
                 _this = this;
 
@@ -11203,7 +11214,8 @@
 
             var str4 = '<tr><td colspan="2" class="wb"><a target="_blank" ' +
                     'style="text-decoration: none; font-weight: bold; color: ' +
-                    '#004400;" href="https://www.gwars.ru/search.php?key=',
+                    '#004400;" href="https://' + general.domain +
+                    '/search.php?key=',
                 strDismissedSynd = '',
                 strTakenSynd = '';
 
@@ -11283,7 +11295,7 @@
          */
         this.parseSyndProtocols = function (ind) {
             general.$('syndAnalyseCounter').innerHTML = ind;
-            var url = 'https://www.gwars.ru/syndicate.log.php?id=' +
+            var url = 'https://' + general.domain + '/syndicate.log.php?id=' +
                     this.syndId + '&page_id=' + ind,
                 _this = this;
 
@@ -11527,7 +11539,8 @@
                 'preloader.gif" alt="img" />';
 
             var stData = general.getData(26),
-                url = 'https://www.gwars.ru/info.ach.php?id=' + general.myID;
+                url = 'https://' + general.domain + '/info.ach.php?id=' +
+                    general.myID;
 
             if (!stData[0]) {
                 this.divResult.innerHTML = 'Не выбрано ни одной ачивки на ' +
@@ -11673,7 +11686,8 @@
                             'style="margin-left: 3px;" ' +
                             'href="/sms-chat.php?id=' +
                             /\d+$/.exec(pLink.href)[0] + '">' +
-                            '<img src="https://images.gwars.ru/img/' +
+                            '<img src="https://images.' +
+                            general.domain.replace('www.', '') + '/img/' +
                             'letter-pc.png" alt="img" /></a>';
                     }
                 }
@@ -11706,7 +11720,8 @@
                 spanContent.innerHTML = xml.responseText;
 
                 target.innerHTML = '<a href="' + url + '">' +
-                    '<img src="https://images.gwars.ru/img/synds/' +
+                    '<img src="https://images.' +
+                    general.domain.replace('www.', '') + '/img/synds/' +
                     /\?id=(\d+)/.exec(url)[1] + '.gif" alt="img" /></a> (' +
                     /<b>(\d+) бойцов онлайн<\/b>/.
                         exec(spanContent.innerHTML)[1] + ')<br>';
@@ -11735,10 +11750,12 @@
 
                         nobr.appendChild(pers);
                         nobr.innerHTML += ' <a target="_blank" ' +
-                            'href="https://www.gwars.ru/sms-create.php?' +
-                            'mailto=' + pers.firstElementChild.innerHTML +
-                            '"><img src="https://images.gwars.ru/img/' +
-                            'letter-pc.png" alt="img" /></a>';
+                            'href="https://' + general.domain +
+                            '/sms-create.php?mailto=' +
+                            pers.firstElementChild.innerHTML +
+                            '"><img src="https://images.' +
+                            general.domain.replace('www.', '') +
+                            '/img/letter-pc.png" alt="img" /></a>';
 
                         target.appendChild(nobr);
                         target.innerHTML += i < trs.length - 1 ? ',<wbr>' : '';
@@ -12319,14 +12336,16 @@
             var tableContent = table.innerHTML,
                 imgSettins = general.doc.createElement('img');
 
-            imgSettins.src = 'https://images.gwars.ru/i/home/properties.gif';
+            imgSettins.src = 'https://images.' +
+                general.domain.replace('www.', '') + '/i/home/properties.gif';
             imgSettins.setAttribute('style', 'cursor: pointer; ' +
                     'margin-left: 10px;');
             imgSettins.setAttribute('title', 'Настройки');
 
             // кнопка сброса всех данных ветки
             var imgReset = general.doc.createElement('img');
-            imgReset.src = 'https://images.gwars.ru/i/home/questlog.gif';
+            imgReset.src = 'https://images.' +
+                general.domain.replace('www.', '') + '/i/home/questlog.gif';
             imgReset.setAttribute('style', 'cursor: pointer; ' +
                     'margin-left: 10px;');
             imgReset.setAttribute('title', 'Сбросить все данные ветки');
@@ -12371,9 +12390,9 @@
 
                 for (i = 0; i < themes.length; i++) {
                     str += '<tr><td><a target="_blank" ' +
-                        'href="https://www.gwars.ru/threads.php?fid=' +
-                        themes[i][1] + '">' + themes[i][0] + '</a></td>' +
-                        '<td><input id="showForum_' + i + '" ' +
+                        'href="https://' + general.domain + '/threads.php?' +
+                        'fid=' + themes[i][1] + '">' + themes[i][0] + '</a>' +
+                        '</td><td><input id="showForum_' + i + '" ' +
                         'type="checkbox"' + (f[i] ? ' checked' : '') +
                         ' /></td></tr>';
                 }
@@ -12399,8 +12418,8 @@
                     'bold;"><< Назад</span></td></tr><tr><td colspan="2" ' +
                     'style="font-weight: bold; padding-top: 10px;">' +
                     'Показывать ветки форума на <a target="_blank" ' +
-                    'href="https://www.gwars.ru/forum.php">этой странице' +
-                    '</a>:</td></tr>' + str + '</table></td></tr>';
+                    'href="https://' + general.domain + '/forum.php">' +
+                    'этой странице</a>:</td></tr>' + str + '</table></td></tr>';
 
                 // чекбокс "Отмечать закрытые"
                 var markClosed = general.$('markClosed');
@@ -12876,16 +12895,17 @@
 
                 span.setAttribute('style', 'margin-left: 7px; font-size: 8pt;');
                 span.innerHTML = '<span id="questDesc">' + reg[1] + ' [' +
-                    '<a href="https://www.gwars.ru/questlog.php?id=' +
+                    '<a href="https://' + general.domain + '/questlog.php?id=' +
                     _this.persID + '" style="color: ' +
                     (isDone ? '#008700' : '#AA5500') + '; ' +
                     'text-decoration: none; font-size: 8pt;" target="_blank">' +
                     reg[2] + '</a>/' + reg[3] + ']</span> ' +
                     '(<a target="_blank" style="color:#007700; ' +
                     'font-weight: bold; text-decoration: none;" ' +
-                    'href="https://www.gwars.ru/help/index.php?' +
+                    'href="https://' + general.domain + '/help/index.php?' +
                     'sid=102&pid=45">' + acQuests[1] + '</a>)' +
-                    '<img src="https://images.gwars.ru/i/home/wlog.gif" ' +
+                    '<img src="https://images.' +
+                    general.domain.replace('www.', '') + '/i/home/wlog.gif" ' +
                     'id="showHideQuestList" border="0" width="12" ' +
                     'height="10" style="margin-left: 3px; cursor: pointer;" ' +
                     'alt="img" />' +
@@ -12989,8 +13009,8 @@
          */
         this.init = function () {
             if (this.persID && this.target) {
-                this.showQuest('https://www.gwars.ru/questlog.php?id=' +
-                    this.persID);
+                this.showQuest('https://' + general.domain +
+                    '/questlog.php?id=' + this.persID);
             }
         }; // 2}}}
     }; // 1}}}
@@ -13386,7 +13406,7 @@
                 return;
             }
 
-            this.url = 'https://www.gwars.ru/object.php?id=11712&' +
+            this.url = 'https://' + general.domain + '/object.php?id=11712&' +
                 'page=oncoming1&sid=' + stData.syndid;
 
             // сегодня запрос не делали, делаем не ранее 7 утра.
@@ -13430,12 +13450,13 @@
 
                     if (reg) {
                         sign = general.doc.createElement('a');
-                        sign.setAttribute('href', 'https://www.gwars.ru/' +
-                            'syndicate.php?id=' + reg[1] + '&page=online');
+                        sign.setAttribute('href', 'https://' + general.domain +
+                            '/syndicate.php?id=' + reg[1] + '&page=online');
                         sign.setAttribute('target', '_blank');
                         sign.setAttribute('style', 'margin-right: 2px;');
-                        sign.innerHTML = '<img src="https://images.gwars.ru/' +
-                            'img/synds/' + reg[1] + '.gif" width="20" ' +
+                        sign.innerHTML = '<img src="https://images.' +
+                            general.domain.replace('www.', '') +
+                            '/img/synds/' + reg[1] + '.gif" width="20" ' +
                             'height="14" border="0" alt="img" />';
 
                         link.parentNode.insertBefore(sign, link);
@@ -13537,7 +13558,7 @@
                 '[onclick^="dolink"]');
 
             if (npcLink) {
-                var url = 'https://www.gwars.ru/info.php?id=' +
+                var url = 'https://' + general.domain + '/info.php?id=' +
                         /\?nid=(\d+)/.exec(npcLink.href)[1],
                     _this = this;
 
@@ -13752,7 +13773,7 @@
         return;
     }
 
-    // везде на www.gwars.ru
+    // везде на www.gwars
     if (initScript[0]) {
         try {
             new NotGiveCannabisLeaf().init();

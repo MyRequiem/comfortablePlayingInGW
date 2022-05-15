@@ -5,13 +5,13 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanPers/scanPers.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanPers/scanPers.user.js
-// @include         https://*gwars.ru/*
-// @exclude         https://*gwars.ru/ferma.php*
-// @exclude         https://*gwars.ru/b0/*
+// @include         https://*gwars*
+// @exclude         https://*gwars*/ferma.php*
+// @exclude         https://*gwars*/b0/*
 // @grant           none
 // @license         MIT
-// @version         3.10-140820
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         3.11-140522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -69,6 +69,11 @@
          */
         this.DESIGN_VERSION = /(^|;) ?version=([^;]*)(;|$)/.
                 exec(this.doc.cookie);
+        /**
+         * @property domain
+         * @type {String}
+         */
+        this.domain = this.doc.domain;
     };
 
     /**
@@ -329,9 +334,8 @@
 
             if (persID) {
                 tdLink.innerHTML = '<a target="_blank" ' +
-                    'style="color: #008000;" ' +
-                    'href="https://www.gwars.ru/info.php?id=' + persID + '">' +
-                    stData[7] + '</a>';
+                    'style="color: #008000;" href="https://' + general.domain +
+                    '/info.php?id=' + persID + '">' + stData[7] + '</a>';
                 tdLink.style.display = '';
                 butReset.disabled = false;
                 butSave.disabled = true;
@@ -347,8 +351,8 @@
          */
         this.scan = function () {
             var stData = general.getData(),
-                url = 'https://www.gwars.ru/syndicate.php?id=' + stData[1] +
-                    '&page=online',
+                url = 'https://' + general.domain + '/syndicate.php?id=' +
+                    stData[1] + '&page=online',
                 _this = this;
 
             this.ajax(url, function (xml) {
@@ -436,8 +440,8 @@
             }
 
             var preloader = general.$('spPreloader'),
-                url = 'https://www.gwars.ru/syndicate.php?id=' + syndID +
-                    '&page=members',
+                url = 'https://' + general.domain + '/syndicate.php?id=' +
+                    syndID + '&page=members',
                 _this = this;
 
             preloader.style.visibility = 'visible';

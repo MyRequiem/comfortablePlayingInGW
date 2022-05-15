@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ResourcesAndBonuses/resourcesAndBonuses.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ResourcesAndBonuses/resourcesAndBonuses.user.js
-// @include         https://*gwars.ru*
+// @include         https://*gwars*
 // @grant           none
 // @license         MIT
-// @version         2.26-140820
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         2.27-140522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -54,6 +54,11 @@
          */
         this.DESIGN_VERSION = /(^|;) ?version=([^;]*)(;|$)/.
                 exec(this.doc.cookie);
+        /**
+         * @property domain
+         * @type {String}
+         */
+        this.domain = this.doc.domain;
     };
 
     /**
@@ -214,7 +219,8 @@
             this.divResult.innerHTML = '<img src="' + this.imgPath +
                 'preloader.gif' + '" alt="img" />';
 
-            var url = 'https://www.gwars.ru/info.php?id=' + general.myID,
+            var url = 'https://' + general.domain + '/info.php?id=' +
+                    general.myID,
                 idElem = _this.id,
                 ths = this;
 

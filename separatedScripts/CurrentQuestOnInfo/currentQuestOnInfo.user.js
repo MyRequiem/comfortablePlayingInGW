@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CurrentQuestOnInfo/currentQuestOnInfo.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/CurrentQuestOnInfo/currentQuestOnInfo.user.js
-// @include         https://*gwars.ru/info.php?id=*
+// @include         https://*gwars*/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.19-210920
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458], идея kaa
+// @version         1.20-130522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458], идея kaa
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -55,6 +55,11 @@
          * @type {Element|null}
          */
         this.target = this.doc.querySelector('#actiondivin');
+        /**
+         * @property domain
+         * @type {String}
+         */
+        this.domain = this.doc.domain;
     };
 
     /**
@@ -140,16 +145,17 @@
 
                 span.setAttribute('style', 'margin-left: 7px; font-size: 8pt;');
                 span.innerHTML = '<span id="questDesc">' + reg[1] + ' [' +
-                    '<a href="https://www.gwars.ru/questlog.php?id=' +
+                    '<a href="https://' + _this.domain + '/questlog.php?id=' +
                     _this.persID + '" style="color: ' +
                     (isDone ? '#008700' : '#AA5500') + '; ' +
                     'text-decoration: none; font-size: 8pt;" target="_blank">' +
                     reg[2] + '</a>/' + reg[3] + ']</span> ' +
                     '(<a target="_blank" style="color:#007700; ' +
                     'font-weight: bold; text-decoration: none;" ' +
-                    'href="https://www.gwars.ru/help/index.php?' +
+                    'href="https://' + _this.domain + '/help/index.php?' +
                     'sid=102&pid=45">' + acQuests[1] + '</a>)' +
-                    '<img src="https://images.gwars.ru/i/home/wlog.gif" ' +
+                    '<img src="https://images.' +
+                    _this.domain.replace('www.', '') + '/i/home/wlog.gif" ' +
                     'id="showHideQuestList" border="0" width="12" ' +
                     'height="10" style="margin-left: 3px; cursor: pointer;" ' +
                     'alt="img" />' +
@@ -253,7 +259,7 @@
          */
         init: function () {
             if (this.persID && this.target) {
-                this.showQuest('https://www.gwars.ru/questlog.php?id=' +
+                this.showQuest('https://' + this.domain + '/questlog.php?id=' +
                     this.persID);
             }
         }
