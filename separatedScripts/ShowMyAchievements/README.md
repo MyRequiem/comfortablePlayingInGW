@@ -1,7 +1,7 @@
 Добавляет ссылку "Достижения" в верхней части страниц игры при нажатии на которую выводятся Ваши ачивки, но только те, которые были отмечены на странице достижений.
 <br>
 <br>
-Версия: 2.14-140820
+Версия: 2.15-140522
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ShowMyAchievements/showMyAchievements.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ShowMyAchievements/showMyAchievements.user.js.zip)
 <br>

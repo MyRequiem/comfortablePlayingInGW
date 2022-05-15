@@ -5,9 +5,9 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndPtsAnalyser/syndPtsAnalyser.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndPtsAnalyser/syndPtsAnalyser.user.js
-// @include         https://*gwars.ru/syndicate.php?id=*
+// @include         https://*gwars*/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.34-060221
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         2.35-140522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==

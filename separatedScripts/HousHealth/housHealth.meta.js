@@ -5,10 +5,10 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/HousHealth/housHealth.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/HousHealth/housHealth.user.js
-// @include         https://*gwars.ru/warlog.php?bid=*
-// @include         https://*gwars.ru/b0/*
+// @include         https://*gwars*/warlog.php?bid=*
+// @include         https://*gwars*/b0/*
 // @grant           none
 // @license         MIT
-// @version         2.10-040221
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         2.11-140522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==

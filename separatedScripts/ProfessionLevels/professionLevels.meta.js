@@ -5,9 +5,9 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ProfessionLevels/professionLevels.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ProfessionLevels/professionLevels.user.js
-// @include         https://*gwars.ru/info.php?id=*
+// @include         https://*gwars*/info.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.01-140820
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458], идея Bodyarm
+// @version         1.02-140522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458], идея Bodyarm
 // ==/UserScript==

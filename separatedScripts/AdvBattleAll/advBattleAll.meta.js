@@ -5,12 +5,12 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvBattleAll/advBattleAll.user.js
-// @include         https://*gwars.ru/b0/btl.php?bid=*
-// @include         https://*gwars.ru/warlog.php*
-// @include         https://*gwars.ru/wargroup.php*
-// @include         https://*gwars.ru/warlist.php*
+// @include         https://*gwars*/b0/btl.php?bid=*
+// @include         https://*gwars*/warlog.php*
+// @include         https://*gwars*/wargroup.php*
+// @include         https://*gwars*/warlist.php*
 // @grant           none
 // @license         MIT
-// @version         4.41-011221
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         4.42-120522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
