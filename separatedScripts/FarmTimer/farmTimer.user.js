@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FarmTimer/farmTimer.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/FarmTimer/farmTimer.user.js
-// @include         https://*gwars.ru/*
+// @include         https://*gwars*
 // @grant           none
 // @license         MIT
-// @version         2.22-140820
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         2.23-140522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -78,6 +78,11 @@
          */
         this.DESIGN_VERSION = /(^|;) ?version=([^;]*)(;|$)/.
                 exec(this.doc.cookie);
+        /**
+         * @property domain
+         * @type {String}
+         */
+        this.domain = this.doc.domain;
     };
 
     /**
@@ -421,8 +426,8 @@
             this.farmLink = general.doc.createElement('a');
             this.farmLink.setAttribute('style', 'color: #0000FF; ' +
                     'text-decoration: none;');
-            this.farmLink.href = 'https://www.gwars.ru/ferma.php?id=' +
-                general.myID;
+            this.farmLink.href = 'https://' + general.domain +
+                '/ferma.php?id=' + general.myID;
             this.farmLink.setAttribute('target', '_blank');
             topPanel.appendChild(general.doc.createTextNode(' | '));
             topPanel.appendChild(this.farmLink);

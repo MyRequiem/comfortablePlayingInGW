@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvForum/advForum.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AdvForum/advForum.user.js
-// @include         https://*gwars.ru/threads.php?fid=*
-// @include         https://*gwars.ru/messages.php?fid=*
-// @include         https://*gwars.ru/forum.php
+// @include         https://*gwars*/threads.php?fid=*
+// @include         https://*gwars*/messages.php?fid=*
+// @include         https://*gwars*/forum.php
 // @grant           none
 // @license         MIT
-// @version         2.33-310821
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         2.34-120522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==

@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PersonalNPCNotifications/personalNPCNotifications.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PersonalNPCNotifications/personalNPCNotifications.user.js
-// @include         https://*gwars.ru/me.php*
+// @include         https://*gwars*/me.php*
 // @grant           none
 // @license         MIT
-// @version         1.17-140820
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         1.18-140522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow, $ */
@@ -50,6 +50,11 @@
          * @type {Object}
          */
         this.doc = this.root.document;
+        /**
+         * @property domain
+         * @type {String}
+         */
+        this.domain = this.doc.domain;
     };
 
     /**
@@ -210,7 +215,7 @@
                 '[onclick^="dolink"]');
 
             if (npcLink) {
-                var url = 'https://www.gwars.ru/info.php?id=' +
+                var url = 'https://' + general.domain + '/info.php?id=' +
                         /\?nid=(\d+)/.exec(npcLink.href)[1],
                     _this = this;
 

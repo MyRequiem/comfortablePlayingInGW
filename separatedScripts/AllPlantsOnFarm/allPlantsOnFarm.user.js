@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AllPlantsOnFarm/allPlantsOnFarm.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/AllPlantsOnFarm/allPlantsOnFarm.user.js
-// @include         https://*gwars.ru/ferma.php*
+// @include         https://*gwars*/ferma.php*
 // @grant           none
 // @license         MIT
-// @version         1.43-130820
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         1.44-130522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -80,6 +80,11 @@
          * @type {String}
          */
         this.STNAME = 'allPlantsOnFarm';
+        /**
+         * @property domain
+         * @type {String}
+         */
+        this.domain = this.doc.domain;
     };
 
     /**
@@ -304,9 +309,10 @@
             if (val !== '0') {
                 var i;
                 for (i = 3; i < 7; i++) {
-                    str += '<img src="https://images.gwars.ru/' +
-                        'img/ferma_hd/' + val + i + '.png" ' +
-                        'style="width: 50px; height: 50px;" alt="img" />';
+                    str += '<img src="https://images.' +
+                        general.domain.replace('www.', '') + '/img/ferma_hd/' +
+                        val + i + '.png" style="width: 50px; height: 50px;" ' +
+                        'alt="img" />';
                 }
 
                 str += '<br><label for="' + id + '">' +

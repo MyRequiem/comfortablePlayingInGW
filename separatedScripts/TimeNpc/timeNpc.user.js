@@ -5,13 +5,13 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeNpc/timeNpc.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/TimeNpc/timeNpc.user.js
-// @include         https://*gwars.ru/me.php*
-// @include         https://*gwars.ru/me/*
-// @include         https://*gwars.ru/npc.php?id=*
+// @include         https://*gwars*/me.php*
+// @include         https://*gwars*/me/*
+// @include         https://*gwars*/npc.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.36-140820
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         2.37-140522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -72,6 +72,11 @@
          */
         this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
             'comfortablePlayingInGW/master/imgs/';
+        /**
+         * @property domain
+         * @type {String}
+         */
+        this.domain = this.doc.domain;
     };
 
     /**
@@ -253,7 +258,7 @@
                 general.$('imgSoundNPC').setAttribute('checkscan', 'yes');
             }
 
-            var url = 'https://www.gwars.ru/npc.php?id=' + npcs[ind],
+            var url = 'https://' + general.domain + '/npc.php?id=' + npcs[ind],
                 _this = this,
                 tr,
                 td;
@@ -289,7 +294,8 @@
 
                 general.$('dataNPC').lastElementChild.innerHTML = '<td>' +
                     '<a target="_blank" href="' + syndLink.href +
-                    '"><img src="https://images.gwars.ru/img/synds/' +
+                    '"><img src="https://images.' +
+                    general.domain.replace('www.', '') + '/img/synds/' +
                     /\?id=(\d+)/.exec(syndLink.href)[1] + '.gif" ' +
                     'alt="img" /></a></td><td><a target="_blank" href="' + url +
                     '" style="font-size: 8pt;">' + nameNPC + '</a></td>' +
@@ -388,7 +394,7 @@
 
             var stData = general.getData();
 
-            if (/www\.gwars\.ru\/me(\/|\.php)/.test(general.loc)) {
+            if (/gwars.*\/me(\/|\.php)/.test(general.loc)) {
                 var mainDiv = general.doc.createElement('div'),
                     target = general.doc.querySelector('td[rowspan="3"]' +
                         '[valign="top"][bgcolor="#e9ffe9"]>' +

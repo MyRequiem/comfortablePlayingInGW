@@ -5,15 +5,15 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BbCodeInMessages/bbCodeInMessages.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/BbCodeInMessages/bbCodeInMessages.user.js
-// @include         https://*gwars.ru/messages.php?fid=*
-// @include         https://*gwars.ru/sms-create.php*
-// @include         https://*gwars.ru/sms-read.php*
-// @include         https://*gwars.ru/sms-chat.php?id=*
-// @include         https://*gwars.ru/hmessages.php*
+// @include         https://*gwars*/messages.php?fid=*
+// @include         https://*gwars*/sms-create.php*
+// @include         https://*gwars*/sms-read.php*
+// @include         https://*gwars*/sms-chat.php?id=*
+// @include         https://*gwars*/hmessages.php*
 // @grant           none
 // @license         MIT
-// @version         1.02-260820
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         1.03-130522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */

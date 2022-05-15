@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndPtsAnalyser/syndPtsAnalyser.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndPtsAnalyser/syndPtsAnalyser.user.js
-// @include         https://*gwars.ru/syndicate.php?id=*
+// @include         https://*gwars*/syndicate.php?id=*
 // @grant           none
 // @license         MIT
-// @version         2.34-060221
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         2.35-140522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -56,6 +56,11 @@
          */
         this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
             'comfortablePlayingInGW/master/imgs/';
+        /**
+         * @property domain
+         * @type {String}
+         */
+        this.domain = this.doc.domain;
     };
 
     /**
@@ -278,8 +283,9 @@
          * @param   {String}    url
          */
         this.getLastDate = function (url) {
-            var _url = url || 'https://www.gwars.ru/syndicate.log.php?id=' +
-                    this.syndId + '&ptslog=1&page_id=100500',
+            var _url = url || 'https://' + general.domain +
+                    '/syndicate.log.php?id=' + this.syndId +
+                    '&ptslog=1&page_id=100500',
                 counter = general.$('analizePTSCounter'),
                 _this = this;
 
@@ -353,10 +359,12 @@
                     this.imgPath + 'rank.png" title="Выдача званий" ' +
                     'alt="Звания"></td><td class="wb1"><img id="sign" ' +
                     'style="cursor: pointer; margin: 2px;" ' +
-                    'src="https://images.gwars.ru/img/synds/' + this.syndId +
-                    '.gif" title="Выдача знаков" alt="Знаки"></td>' +
-                    '<td class="wb1"><span id="all" style="color: #008000; ' +
-                    'cursor: pointer;">Всего</span></td></tr>',
+                    'src="https://images.' +
+                    general.domain.replace('www.', '') + '/img/synds/' +
+                    this.syndId + '.gif" title="Выдача знаков" alt="Знаки">' +
+                    '</td><td class="wb1"><span id="all" ' +
+                    'style="color: #008000; cursor: pointer;">Всего</span>' +
+                    '</td></tr>',
                 setPoints = new SetPoints().init;
 
             var getStrDate = new GetStrDate().init,
@@ -381,13 +389,13 @@
                 all = setPoints(this.pers[i].all, '\'', false);
 
                 str += '<tr><td class="wb2"><a target="_blank" ' +
-                    'href="https://www.gwars.ru/search.php?key=' + name +
-                    '" style="text-decoration: none; font-weight: bold; ' +
-                    'color: #004400;">' + name + '</a></td><td class="wb1">' +
-                    gren + '</td><td class="wb1">' + chip + '</td>' +
-                    '<td class="wb1">' + rank + '</td><td class="wb1">' +
-                    sign + '</td><td class="wb1" style="color: #008000;">' +
-                    all + '</td></tr>';
+                    'href="https://' + general.domain + '/search.php?key=' +
+                    name + '" style="text-decoration: none; ' +
+                    'font-weight: bold; color: #004400;">' + name + '</a>' +
+                    '</td><td class="wb1">' + gren + '</td><td class="wb1">' +
+                    chip + '</td><td class="wb1">' + rank + '</td>' +
+                    '<td class="wb1">' + sign + '</td><td class="wb1" ' +
+                    'style="color: #008000;">' + all + '</td></tr>';
 
                 txtAreaStr += name + ':\nГранаты: ' + gren + ', Чипы: ' + chip +
                     ', Звания: ' + rank + ', Знак: ' + sign + ', Всего: ' +
@@ -538,7 +546,7 @@
          */
         this.parsePTSProtocols = function (ind) {
             general.$('analizePTSCounter').innerHTML = ind;
-            var url = 'https://www.gwars.ru/syndicate.log.php?id=' +
+            var url = 'https://' + general.domain + '/syndicate.log.php?id=' +
                     this.syndId + '&ptslog=1&page_id=' + ind,
                 _this = this;
 

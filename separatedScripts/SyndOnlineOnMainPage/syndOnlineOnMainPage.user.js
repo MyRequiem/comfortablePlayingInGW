@@ -5,12 +5,12 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndOnlineOnMainPage/syndOnlineOnMainPage.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/SyndOnlineOnMainPage/syndOnlineOnMainPage.user.js
-// @include         https://*gwars.ru/me.php*
-// @include         https://*gwars.ru/me/*
+// @include         https://*gwars*/me.php*
+// @include         https://*gwars*/me/*
 // @grant           none
 // @license         MIT
-// @version         2.32-040221
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         2.33-140522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -57,6 +57,11 @@
          * @type {Object}
          */
         this.cons = this.root.console;
+        /**
+         * @property domain
+         * @type {String}
+         */
+        this.domain = this.doc.domain;
     };
 
     /**
@@ -155,8 +160,9 @@
                             'style="margin-left: 3px;" ' +
                             'href="/sms-chat.php?id=' +
                             /\d+$/.exec(pLink.href)[0] + '">' +
-                            '<img src="https://images.gwars.ru/img/' +
-                            'letter-pc.png" alt="img" /></a>';
+                            '<img src="https://images.' +
+                            general.domain.replace('www.', '') +
+                            '/img/letter-pc.png" alt="img" /></a>';
                     }
                 }
 
@@ -188,7 +194,8 @@
                 spanContent.innerHTML = xml.responseText;
 
                 target.innerHTML = '<a href="' + url + '">' +
-                    '<img src="https://images.gwars.ru/img/synds/' +
+                    '<img src="https://images.' +
+                    general.domain.replace('www.', '') + '/img/synds/' +
                     /\?id=(\d+)/.exec(url)[1] + '.gif" alt="img" /></a> (' +
                     /<b>(\d+) бойцов онлайн<\/b>/.
                         exec(spanContent.innerHTML)[1] + ')<br>';
@@ -217,8 +224,9 @@
 
                         nobr.appendChild(pers);
                         nobr.innerHTML += ' <a target="_blank" ' +
-                            '"><img src="https://images.gwars.ru/img/' +
-                            'letter-pc.png" alt="img" /></a>';
+                            '"><img src="https://images.' +
+                            general.domain.replace('www.', '') +
+                            '/img/letter-pc.png" alt="img" /></a>';
 
                         target.appendChild(nobr);
                         target.innerHTML += i < trs.length - 1 ? ',<wbr>' : '';

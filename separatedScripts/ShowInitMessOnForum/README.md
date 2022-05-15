@@ -1,7 +1,7 @@
 В ответе на сообщение показывает то сообщение, на которое отвечают.
 <br>
 <br>
-Версия: 2.26-140820
+Версия: 2.27-140522
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ShowInitMessOnForum/showInitMessOnForum.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ShowInitMessOnForum/showInitMessOnForum.user.js.zip)
 <br>

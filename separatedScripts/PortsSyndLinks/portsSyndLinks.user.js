@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortsSyndLinks/portsSyndLinks.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/PortsSyndLinks/portsSyndLinks.user.js
-// @include         https://*gwars.ru/object.php?id=*
+// @include         https://*gwars*/object.php?id=*
 // @grant           none
 // @license         MIT
-// @version         1.07-140820
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         1.08-140522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -48,6 +48,11 @@
          * @type {String}
          */
         this.loc = this.root.location.href;
+        /**
+         * @property domain
+         * @type {String}
+         */
+        this.domain = this.doc.domain;
     };
 
     /**
@@ -82,12 +87,13 @@
 
                     if (reg) {
                         sign = this.doc.createElement('a');
-                        sign.setAttribute('href', 'https://www.gwars.ru/' +
-                            'syndicate.php?id=' + reg[1] + '&page=online');
+                        sign.setAttribute('href', 'https://' + this.domain +
+                            '/syndicate.php?id=' + reg[1] + '&page=online');
                         sign.setAttribute('target', '_blank');
                         sign.setAttribute('style', 'margin-right: 2px;');
-                        sign.innerHTML = '<img src="https://images.gwars.ru/' +
-                            'img/synds/' + reg[1] + '.gif" width="20" ' +
+                        sign.innerHTML = '<img src="https://images.' +
+                            this.domain.replace('www.', '') +
+                            '/img/synds/' + reg[1] + '.gif" width="20" ' +
                             'height="14" border="0" alt="img" />';
 
                         link.parentNode.insertBefore(sign, link);

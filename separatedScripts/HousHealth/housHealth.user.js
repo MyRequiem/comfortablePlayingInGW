@@ -5,12 +5,12 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/HousHealth/housHealth.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/HousHealth/housHealth.user.js
-// @include         https://*gwars.ru/warlog.php?bid=*
-// @include         https://*gwars.ru/b0/*
+// @include         https://*gwars*/warlog.php?bid=*
+// @include         https://*gwars*/b0/*
 // @grant           none
 // @license         MIT
-// @version         2.10-040221
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         2.11-140522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -66,6 +66,11 @@
          * @type {String}
          */
         this.myID = /(^|;) ?uid=([^;]*)(;|$)/.exec(this.doc.cookie)[2];
+        /**
+         * @property domain
+         * @type {String}
+         */
+        this.domain = this.doc.domain;
     };
 
     /**
@@ -170,8 +175,8 @@
                     sector = spanContent.querySelector(cssSelector).innerHTML;
                     general.root.setTimeout(function () {
                         // на недвижимость перса
-                        _this.showSector('https://www.gwars.ru/' +
-                            'info.realty.php?id=' + general.myID, sector);
+                        _this.showSector('https://' + general.domain +
+                            '/info.realty.php?id=' + general.myID, sector);
                     }, 1000);
                 } else {
                     cssSelector = 'table.withborders';
@@ -215,8 +220,8 @@
 
                 // если здоровье менее 80%
                 if (general.doc.querySelector('#hpheader>font')) {
-                    this.showSector('https://www.gwars.ru/info.php?id=' +
-                            general.myID, '');
+                    this.showSector('https://' + general.domain +
+                        '/info.php?id=' + general.myID, '');
                 }
             }
         };

@@ -1,7 +1,7 @@
 Выводит сообщение после боя, если персонаж находится не в секторе со своим домом и его здоровье менее 80%.
 <br>
 <br>
-Версия: 2.10-040221
+Версия: 2.11-140522
 <br>
 [[Установить]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/HousHealth/housHealth.user.js) [[Скачать zip-архив]](https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/HousHealth/housHealth.user.js.zip)
 <br>

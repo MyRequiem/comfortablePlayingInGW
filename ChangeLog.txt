@@ -1,3 +1,7 @@
+2022-05-15[1.174-150522]
+    Домен верхнего уровня .ru изменен на .io
+
+
 2021-12-01[1.173-011221]
     - Исправлен скрипт
         https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll

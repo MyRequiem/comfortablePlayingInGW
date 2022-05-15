@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanPers/scanPers.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ScanPers/scanPers.user.js
-// @include         https://*gwars.ru/*
-// @exclude         https://*gwars.ru/ferma.php*
-// @exclude         https://*gwars.ru/b0/*
+// @include         https://*gwars*
+// @exclude         https://*gwars*/ferma.php*
+// @exclude         https://*gwars*/b0/*
 // @grant           none
 // @license         MIT
-// @version         3.10-140820
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         3.11-140522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==

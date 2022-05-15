@@ -5,11 +5,11 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ShowMyAchievements/showMyAchievements.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/ShowMyAchievements/showMyAchievements.user.js
-// @include         https://*gwars.ru/*
+// @include         https://*gwars*
 // @grant           none
 // @license         MIT
-// @version         2.14-140820
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458] Идея: Горыныч
+// @version         2.15-140522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458] Идея: Горыныч
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -77,6 +77,11 @@
          */
         this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
             'comfortablePlayingInGW/master/imgs/';
+        /**
+         * @property domain
+         * @type {String}
+         */
+        this.domain = this.doc.domain;
     };
 
     /**
@@ -270,7 +275,8 @@
                 'preloader.gif' + '" alt="img" />';
 
             var stData = general.getData(),
-                url = 'https://www.gwars.ru/info.ach.php?id=' + general.myID;
+                url = 'https://' + general.domain + '/info.ach.php?id=' +
+                    general.myID;
 
             if (!stData[0]) {
                 this.divResult.innerHTML = 'Не выбрано ни одной ачивки на ' +

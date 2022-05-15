@@ -5,15 +5,15 @@
 // @id              comfortablePlayingInGW@MyRequiem
 // @updateURL       https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.meta.js
 // @downloadURL     https://raw.githubusercontent.com/MyRequiem/comfortablePlayingInGW/master/separatedScripts/WorkPostGrenadesBroken/workPostGrenadesBroken.user.js
-// @include         https://*gwars.ru/me.php*
-// @include         https://*gwars.ru/me/*
-// @include         https://*gwars.ru/warlog.php?bid=*
-// @include         https://*gwars.ru/warlist.php*
-// @include         https://*gwars.ru/wargroup.php*
+// @include         https://*gwars*/me.php*
+// @include         https://*gwars*/me/*
+// @include         https://*gwars*/warlog.php?bid=*
+// @include         https://*gwars*/warlist.php*
+// @include         https://*gwars*/wargroup.php*
 // @grant           none
 // @license         MIT
-// @version         2.50-171020
-// @author          MyRequiem [https://www.gwars.ru/info.php?id=2095458]
+// @version         2.51-140522
+// @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
 /*global unsafeWindow */
@@ -86,6 +86,11 @@
          */
         this.imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
             'comfortablePlayingInGW/master/imgs/WorkPostGrenadesBroken/';
+        /**
+         * @property domain
+         * @type {String}
+         */
+        this.domain = this.doc.domain;
     };
 
     /**
@@ -284,20 +289,21 @@
          * @return  {String}
          */
         this.addContent = function (sms, gren, broken) {
-            var host = ' [<a href="https://www.gwars.ru/',
+            var host = ' [<a href="https://' + general.domain + '/',
                 str = '';
 
             if (sms[0] && showSms) {    // письмо
                 str += host + 'sms.php">' +
-                    '<img src="https://images.gwars.ru/img/letter-pc.png" ' +
-                    'title="' + sms[0].getAttribute('title') +
-                    '" alt="Вам письмо"></a> <span style="color: #005F00">' +
-                    sms[2] + '</span>]';
+                    '<img src="https://images.' +
+                    general.domain.replace('www.', '') +
+                    '/img/letter-pc.png" title="' +
+                    sms[0].getAttribute('title') + '" alt="Вам письмо"></a> ' +
+                    '<span style="color: #005F00">' + sms[2] + '</span>]';
             }
 
             if (sms[1] && showSms) {    // посылка
-                str += host + 'items.php"><img src="https://www.gwars.ru/' +
-                    'i/woodbox.gif" title="Пришла посылка!" ' +
+                str += host + 'items.php"><img src="https://' + general.domain +
+                    '/i/woodbox.gif" title="Пришла посылка!" ' +
                     'alt="посылка"></a>]';
             }
 
@@ -319,10 +325,11 @@
          * @param   {Object}    _this
          */
         this.startWorkPostGrenadesBroken = function (_this) {
-            var ajaxQuery = new AjaxQuery();
+            var ajaxQuery = new AjaxQuery(),
+                ajaxUrl = 'https://' + general.domain + '/me.php';
 
             _this = _this || this;
-            ajaxQuery.init('https://www.gwars.ru/me.php', function (xml) {
+            ajaxQuery.init(ajaxUrl, function (xml) {
                 var spanContent = general.doc.createElement('span');
                 spanContent.innerHTML = xml.responseText;
                 _this.wpgbContainer.innerHTML = '';
