@@ -11933,7 +11933,7 @@
         this.showImagePoks = function () {
             var enemies = general.doc.
                     querySelectorAll('div[style*="font-size:8pt;"]>' +
-                        'span[class="battletags"]+b'),
+                        'span[class="battletags"]+nobr>b'),
                 getPos = new GetPos().init,
                 name,
                 size,

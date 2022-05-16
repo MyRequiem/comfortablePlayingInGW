@@ -9,7 +9,7 @@
 // @include         https://*gwars*/warlog.php*
 // @grant           none
 // @license         MIT
-// @version         2.22-140522
+// @version         2.23-170522
 // @author          MyRequiem, идея Buger_man
 // ==/UserScript==
 
@@ -127,7 +127,7 @@
         this.showImagePoks = function () {
             var enemies = general.doc.
                     querySelectorAll('div[style*="font-size:8pt;"]>' +
-                        'span[class="battletags"]+b'),
+                        'span[class="battletags"]+nobr>b'),
                 getPos = new GetPos().init,
                 imgPath = 'https://raw.githubusercontent.com/MyRequiem/' +
                     'comfortablePlayingInGW/master/imgs/ImgPokemonsOnBattle/',
