@@ -1,3 +1,8 @@
+2022-05-17[1.175-170522]
+    - Исправлен скрипт
+        https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ImgPokemonsOnBattle
+
+
 2022-05-15[1.174-150522]
     Домен верхнего уровня .ru изменен на .io
 
@@ -13,6 +18,7 @@
         https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/AdvBattleAll
         (отображение номеров бойцов во всплывающих тултипах в режиме
         наблюдения за боем, спасибо HUMMINBIRD)
+
 
 2021-11-25[1.171-251121]
     - Исправлен скрипт
@@ -31,6 +37,7 @@
 2021-02-15[1.169-150221]
     - Исправлен скрипт:
         https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/GosEnergoAtomFilter
+
 
 2021-02-06[1.168-060221]
     - Исправлены скрипты:
