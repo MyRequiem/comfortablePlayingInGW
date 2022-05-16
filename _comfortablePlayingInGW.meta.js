@@ -10,6 +10,6 @@
 // @include         http*://*ganjafile*
 // @grant           none
 // @license         MIT
-// @version         1.174-150522
+// @version         1.175-170522
 // @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==

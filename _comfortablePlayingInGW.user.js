@@ -10,7 +10,7 @@
 // @include         http*://*ganjafile*
 // @grant           none
 // @license         MIT
-// @version         1.174-150522
+// @version         1.175-170522
 // @author          MyRequiem [https://www.gwars.io/info.php?id=2095458]
 // ==/UserScript==
 
@@ -81,7 +81,7 @@
          * @property version
          * @type {String}
          */
-        this.version = '1.174-150522';
+        this.version = '1.175-170522';
         /**
          * @property stString {{{2
          * @type {String}
@@ -11933,7 +11933,7 @@
         this.showImagePoks = function () {
             var enemies = general.doc.
                     querySelectorAll('div[style*="font-size:8pt;"]>' +
-                        'span[class="battletags"]+b'),
+                        'span[class="battletags"]+nobr>b'),
                 getPos = new GetPos().init,
                 name,
                 size,
