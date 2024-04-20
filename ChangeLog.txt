@@ -1,3 +1,7 @@
+2024-04-20[1.176-200424]
+    - Удален скрипт BonusInfo
+
+
 2022-05-17[1.175-170522]
     - Исправлен скрипт
         https://github.com/MyRequiem/comfortablePlayingInGW/tree/master/separatedScripts/ImgPokemonsOnBattle
